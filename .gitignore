@@ -13,3 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+coverage.json
+coverage.txt
+coverage.xml
+testresults.xml
