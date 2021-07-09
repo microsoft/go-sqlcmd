@@ -41,14 +41,14 @@ func ReadOnlyVariable(variable string) *SqlCmdVariableError {
 // Syntax errors for specific sqlcmd commands
 type SqlCmdCommandError struct {
 	Command    string
-	LineNumber uint64
+	LineNumber uint
 }
 
 func (e *SqlCmdCommandError) Error() string {
 	return errorPrefix + fmt.Sprintf("Syntax error at line %d near command '%s'.", e.LineNumber, e.Command)
 }
 
-func InvalidCommandError(command string, lineNumber uint64) *SqlCmdCommandError {
+func InvalidCommandError(command string, lineNumber uint) *SqlCmdCommandError {
 	return &SqlCmdCommandError{
 		Command:    command,
 		LineNumber: lineNumber,

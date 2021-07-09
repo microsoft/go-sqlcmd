@@ -21,25 +21,19 @@ var (
 type Sqlcmd struct {
 	lineIo           rline.IO
 	workingDirectory string
-	variables        *Variables
-	//	lastBatch        []string
-	//	batch            []string
-	batchLine   int
-	currentLine int
 	//	db               *sql.DB
-	out        io.WriteCloser
-	noPassword bool
+	out   io.WriteCloser
+	batch *Batch
+	// Exitcode is returned to the operating system when the process exits
+	Exitcode int
 }
 
 // New creates a new Sqlcmd instance
-func New(l rline.IO, workingDirectory string, initialVariables *Variables, nopw bool) *Sqlcmd {
+func New(l rline.IO, workingDirectory string) *Sqlcmd {
 	return &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
-		noPassword:       nopw,
-		variables:        initialVariables,
-		currentLine:      1,
-		batchLine:        1,
+		batch:            &Batch{read: l.Next},
 	}
 }
 
@@ -47,42 +41,56 @@ func (s *Sqlcmd) Run() error {
 	stdout, stderr, iactive := s.lineIo.Stdout(), s.lineIo.Stderr(), s.lineIo.Interactive()
 	var lastError error
 	for {
+		var execute bool
 		if iactive {
 			s.lineIo.Prompt(s.Prompt())
 		}
-		line, err := s.lineIo.Next()
+		cmd, args, err := s.batch.Next()
 		switch {
 		case err == rline.ErrInterrupt:
+			s.batch.Reset(nil)
 			continue
 		case err != nil:
 			if err == io.EOF {
-				return lastError
+				if s.batch.Length == 0 {
+					return lastError
+				} else {
+					execute = true
+				}
+			} else {
+				return err
 			}
-			return err
 		}
-		isCommand, err := s.TryRunCommand(line)
-		if err == ErrExitRequested {
-			if s.out != nil {
-				s.out.Close()
+		if cmd != nil {
+			err = s.RunCommand(cmd, args)
+			if err == ErrExitRequested {
+				if s.out != nil {
+					s.out.Close()
+				}
+				break
 			}
-			return nil
+			if err != nil {
+				fmt.Fprintln(stderr, err)
+				lastError = err
+				continue
+			}
 		}
-		if err != nil {
-			fmt.Fprintln(stderr, err)
-			continue
-		} else if isCommand {
-			continue
+		if execute {
+			fmt.Fprintln(stdout, "Execute: "+s.batch.String())
+			s.batch.Reset(nil)
 		}
-		fmt.Fprintln(stdout, string(line))
-		break
 	}
 	return lastError
 }
 
 func (s *Sqlcmd) Prompt() string {
-	return fmt.Sprint(s.batchLine) + ">"
+	ch := ">"
+	if s.batch.quote != 0 || s.batch.comment {
+		ch = "~"
+	}
+	return fmt.Sprint(s.batch.batchline) + ch
 }
 
-func (s *Sqlcmd) TryRunCommand(line []rune) (bool, error) {
-	return false, nil
+func (s *Sqlcmd) RunCommand(cmd *Command, args []string) error {
+	return cmd.action(s, args, s.batch.linecount)
 }

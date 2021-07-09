@@ -5,28 +5,38 @@ import (
 
 	"fmt"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
 	"github.com/alecthomas/kong"
 	"github.com/microsoft/go-sqlcmd/errors"
+	"github.com/microsoft/go-sqlcmd/sqlcmd"
+	"github.com/xo/usql/rline"
 )
 
 // The exhaustive list is at https://docs.microsoft.com/sql/tools/sqlcmd-utility?view=sql-server-ver15
 type SqlCmdArguments struct {
-	BatchTerminator        string   `short:"c" default:"GO" arghelp:"Specifies the batch terminator. The default value is GO."`
-	TrustServerCertificate bool     `short:"C" help:"Implicitly trust the server certificate without validation."`
-	DatabaseName           string   `short:"d" help:"This option sets the sqlcmd scripting variable SQLCMDDBNAME. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits."`
-	UseTrustedConnection   bool     `short:"E" xor:"uid" help:"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any any environment variables that define user name and password."`
-	Password               string   `short:"P" xor:"pwd" env:"SQLCMDPASSWORD" help:"User-specified password."`
-	UserName               string   `short:"U" xor:"uid" env:"SQLCMDUSER"  help:"The login name or contained database user name.  For contained database users, you must provide the database name option"`
-	InputFile              []string `short:"i" type:"existingFile" help:"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with -Q/-q."`
-	OutputFile             string   `short:"o" type:"path" help:"Identifies the file that receives output from sqlcmd."`
-	InitialQuery           string   `short:"q" help:"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed."`
-	Query                  string   `short:"Q" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
-	Server                 string   `short:"S" env:"SQLCMDSERVER" default:"." help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
-	Port                   uint64   `kong:"-"`
-	Instance               string   `kong:"-"`
+	// Which batch terminator to use. Default is GO
+	BatchTerminator string `short:"c" default:"GO" arghelp:"Specifies the batch terminator. The default value is GO."`
+	// Whether to trust the server certificate on an encrypted connection
+	TrustServerCertificate bool   `short:"C" help:"Implicitly trust the server certificate without validation."`
+	DatabaseName           string `short:"d" help:"This option sets the sqlcmd scripting variable SQLCMDDBNAME. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits."`
+	UseTrustedConnection   bool   `short:"E" xor:"uid" help:"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any any environment variables that define user name and password."`
+	Password               string `short:"P" xor:"pwd" help:"User-specified password."`
+	UserName               string `short:"U" xor:"uid" help:"The login name or contained database user name.  For contained database users, you must provide the database name option"`
+	// Files from which to read query text
+	InputFile  []string `short:"i" xor:"input1, input2" type:"existingFile" help:"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with -Q/-q."`
+	OutputFile string   `short:"o" type:"path" help:"Identifies the file that receives output from sqlcmd."`
+	// First query to run in interactive mode
+	InitialQuery string `short:"q" xor:"input1" help:"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed."`
+	// Query to run then exit
+	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
+	Server string `short:"S" default:"." help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
+	// Disable syscommands with a warning
+	DisableCmdAndWarn bool   `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+	Port              uint64 `kong:"-"`
+	Instance          string `kong:"-"`
 }
 
 var Args SqlCmdArguments
@@ -115,10 +125,43 @@ func validate(args *SqlCmdArguments) error {
 
 func main() {
 	kong.Parse(&Args)
+	vars := sqlcmd.InitializeVariables(!Args.DisableCmdAndWarn)
+	setVars(vars, &Args)
 	connectionString, err := connectionString(&Args)
+	if err == nil {
+		if Args.BatchTerminator != "GO" {
+			err = sqlcmd.SetBatchTerminator(Args.BatchTerminator)
+			if err != nil {
+				err = fmt.Errorf("Invalid batch terminator '%s'", Args.BatchTerminator)
+			}
+		}
+	}
 	if err != nil {
 		fmt.Println(err.Error())
+		os.Exit(1)
 	} else {
-		fmt.Println(connectionString)
+		run(vars, connectionString)
+
 	}
+}
+
+// Initializes scripting variables from command line arguments
+func setVars(vars *sqlcmd.Variables, args *SqlCmdArguments) {
+	//varmap := map[string]func(*SqlCmdArguments) string {	}
+}
+
+func run(vars *sqlcmd.Variables, connectionString string) (exitcode int, err error) {
+	_, err = os.Getwd()
+	if err != nil {
+		return 1, err
+	}
+	iactive := Args.Query == "" && Args.InputFile == nil
+	line, err := rline.New(iactive, Args.OutputFile, "")
+	if err != nil {
+		return 1, err
+	}
+	defer line.Close()
+	fmt.Println(connectionString)
+	fmt.Println(vars)
+	return 0, nil
 }

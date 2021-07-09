@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"testing"
 
@@ -54,6 +53,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-S", "tcp:someserver,10245"}, func(args SqlCmdArguments) bool {
 			return args.Server == "tcp:someserver,10245"
 		}},
+		{[]string{"-X"}, func(args SqlCmdArguments) bool {
+			return args.DisableCmdAndWarn
+		}},
 	}
 
 	for _, test := range commands {
@@ -70,22 +72,6 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 	}
 }
 
-func TestEnvironmentVariablesAsCommandLineArguments(t *testing.T) {
-	os.Setenv("SQLCMDSERVER", "someserver")
-	defer os.Unsetenv("SQLCMDSERVER")
-	os.Setenv("SQLCMDUSER", "someuser")
-	defer os.Unsetenv("SQLCMDUSER")
-	os.Setenv("SQLCMDPASSWORD", "1")
-	defer os.Unsetenv("SQLCMDPASSWORD")
-	arguments := &SqlCmdArguments{}
-	parser := newKong(t, arguments)
-	_, err := parser.Parse([]string{})
-	if assert.NoError(t, err, "Unable to parse empty commandline with environment variables") {
-		assert.Equal(t, "someserver", arguments.Server)
-		assert.Equal(t, "someuser", arguments.UserName)
-		assert.Equal(t, "1", arguments.Password)
-	}
-}
 func TestInvalidCommandLine(t *testing.T) {
 	type cmdLineTest struct {
 		commandLine  []string

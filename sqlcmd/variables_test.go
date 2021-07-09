@@ -1,6 +1,7 @@
 package sqlcmd
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -28,4 +29,15 @@ func TestSetvarFailsForReadOnlyVariables(t *testing.T) {
 	assert.NoError(t, err, "Setvar should succeed when SQLCMDDBNAME is not set")
 	err = Setvar("SQLCMDDBNAME", "newdatabase")
 	assert.EqualError(t, err, "Sqlcmd: Error: The scripting variable: 'SQLCMDDBNAME' is read-only")
+}
+
+func TestEnvironmentVariablesAsInput(t *testing.T) {
+	os.Setenv("SQLCMDSERVER", "someserver")
+	defer os.Unsetenv("SQLCMDSERVER")
+	os.Setenv("$(x)", "invalidname")
+	defer os.Unsetenv("$(x)")
+	vars := InitializeVariables(true).All()
+	assert.Equal(t, "someserver", vars["SQLCMDSERVER"], "InitializeVariables should read a valid environment variable")
+	_, ok := vars["$(x)"]
+	assert.False(t, ok, "InitializeVariables should skip invalid names")
 }

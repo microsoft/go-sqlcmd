@@ -55,7 +55,7 @@ func SqlCmdUser() string {
 
 // Initializes variables with default values.
 // When fromEnvironment is true, then loads from the runtime environment
-func Initialize(fromEnvironment bool) {
+func InitializeVariables(fromEnvironment bool) *Variables {
 	variables = Variables{
 		"SQLCMDUSER":              "",
 		"SQLCMDPASSWORD":          "",
@@ -85,6 +85,7 @@ func Initialize(fromEnvironment bool) {
 			}
 		}
 	}
+	return &variables
 }
 
 // Implements the :Setvar command
