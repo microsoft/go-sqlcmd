@@ -1,0 +1,36 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "delve",
+            "type": "shell",
+            "command": "dlv debug --headless --listen=:23456 --api-version=2 \"${workspaceFolder}\"",
+            "isBackground": true,
+            "presentation": {
+                "focus": true,
+                "panel": "dedicated",
+                "clear": false
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": ""
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": {
+                        "regexp": ".*"
+                    },
+                    "endsPattern": {
+                        "regexp": ".*server listening.*"
+                    }
+                }
+            }
+        }
+    ]
+}
