@@ -12,6 +12,7 @@ import (
 	"github.com/alecthomas/kong"
 	"github.com/microsoft/go-sqlcmd/errors"
 	"github.com/microsoft/go-sqlcmd/sqlcmd"
+	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/xo/usql/rline"
 )
 
@@ -125,14 +126,14 @@ func validate(args *SqlCmdArguments) error {
 
 func main() {
 	kong.Parse(&Args)
-	vars := sqlcmd.InitializeVariables(!Args.DisableCmdAndWarn)
+	vars := variables.InitializeVariables(!Args.DisableCmdAndWarn)
 	setVars(vars, &Args)
 	connectionString, err := connectionString(&Args)
 	if err == nil {
 		if Args.BatchTerminator != "GO" {
 			err = sqlcmd.SetBatchTerminator(Args.BatchTerminator)
 			if err != nil {
-				err = fmt.Errorf("Invalid batch terminator '%s'", Args.BatchTerminator)
+				err = fmt.Errorf("invalid batch terminator '%s'", Args.BatchTerminator)
 			}
 		}
 	}
@@ -141,16 +142,37 @@ func main() {
 		os.Exit(1)
 	} else {
 		run(vars, connectionString)
-
 	}
 }
 
 // Initializes scripting variables from command line arguments
-func setVars(vars *sqlcmd.Variables, args *SqlCmdArguments) {
-	//varmap := map[string]func(*SqlCmdArguments) string {	}
+func setVars(vars *variables.Variables, args *SqlCmdArguments) {
+	varmap := map[string]func(*SqlCmdArguments) string{
+		variables.SQLCMDDBNAME:            func(a *SqlCmdArguments) string { return a.DatabaseName },
+		variables.SQLCMDLOGINTIMEOUT:      func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDUSEAAD:            func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDWORKSTATION:       func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDPASSWORD:          func(a *SqlCmdArguments) string { return a.Password },
+		variables.SQLCMDSERVER:            func(a *SqlCmdArguments) string { return a.Server },
+		variables.SQLCMDERRORLEVEL:        func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDPACKETSIZE:        func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDUSER:              func(a *SqlCmdArguments) string { return a.UserName },
+		variables.SQLCMDSTATTIMEOUT:       func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDHEADERS:           func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDCOLSEP:            func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDCOLDWIDTH:         func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDMAXVARTYPEWIDTH:   func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDMAXFIXEDTYPEWIDTH: func(a *SqlCmdArguments) string { return "" },
+	}
+	for varname, set := range varmap {
+		val := set(args)
+		if val != "" {
+			vars.Set(varname, val)
+		}
+	}
 }
 
-func run(vars *sqlcmd.Variables, connectionString string) (exitcode int, err error) {
+func run(vars *variables.Variables, connectionString string) (exitcode int, err error) {
 	_, err = os.Getwd()
 	if err != nil {
 		return 1, err

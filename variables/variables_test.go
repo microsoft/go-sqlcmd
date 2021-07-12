@@ -1,4 +1,4 @@
-package sqlcmd
+package variables
 
 import (
 	"os"
