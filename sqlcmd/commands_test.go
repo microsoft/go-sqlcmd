@@ -27,8 +27,8 @@ func TestCommandParsing(t *testing.T) {
 		{"quite", "", nil},
 		{"quit", "QUIT", []string{""}},
 		{":QUIT\n", "QUIT", []string{""}},
-		{" QUIT \n", "QUIT", []string{" "}},
-		{"quit extra\n", "QUIT", []string{" extra"}},
+		{" QUIT \n", "QUIT", []string{""}},
+		{"quit extra\n", "QUIT", []string{"extra"}},
 	}
 
 	for _, test := range commands {

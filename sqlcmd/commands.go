@@ -18,7 +18,7 @@ type Command struct {
 
 var Commands = []Command{
 	{
-		regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:([ ]+.*$)|$)`),
+		regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:[ \t]+(.*$)|$)`),
 		action: Quit,
 		name:   "QUIT",
 	},
@@ -40,7 +40,7 @@ func matchCommand(line string) (*Command, []string) {
 }
 
 func batchTerminatorRegex(terminator string) string {
-	return fmt.Sprintf(`(?im)^[\t ]*?%s(?:([ ]+.*$)|$)`, regexp.QuoteMeta(terminator))
+	return fmt.Sprintf(`(?im)^[\t ]*?%s(?:[ ]+(.*$)|$)`, regexp.QuoteMeta(terminator))
 }
 
 func SetBatchTerminator(terminator string) error {
@@ -58,23 +58,27 @@ func SetBatchTerminator(terminator string) error {
 }
 
 func Quit(s *Sqlcmd, args []string, line uint) error {
-	if len(args) > 0 {
+	if args != nil && strings.TrimSpace(args[0]) != "" {
 		return errors.InvalidCommandError("QUIT", line)
 	}
 	return ErrExitRequested
 }
 
-func Go(s *Sqlcmd, args []string, line uint) error {
+func Go(s *Sqlcmd, args []string, line uint) (err error) {
 	// default to 1 execution
 	var n int = 1
 	if len(args) > 0 {
-		c, err := fmt.Sscanf(strings.TrimSpace(args[0]), "%d", &n)
-		if err != nil || c != 1 || n < 0 || len(args) > 1 {
-			return errors.InvalidCommandError("QUIT", line)
+		cnt := strings.TrimSpace(args[0])
+		if cnt != "" {
+			_, err = fmt.Sscanf(cnt, "%d", &n)
 		}
 	}
-	for i := 0; i < n; i++ {
-		fmt.Fprintf(s.lineIo.Stdout(), "GO: %s", s.batch.String())
+	if err != nil || n < 1 {
+		return errors.InvalidCommandError("GO", line)
 	}
+	for i := 0; i < n; i++ {
+		fmt.Fprintf(s.lineIo.Stdout(), "GO: %s\n", s.batch.String())
+	}
+	s.batch.Reset(nil)
 	return nil
 }

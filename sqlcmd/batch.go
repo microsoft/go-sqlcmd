@@ -31,6 +31,7 @@ func NewBatch(reader func() ([]rune, error)) *Batch {
 	b := &Batch{
 		read: reader,
 	}
+	b.Reset(nil)
 	return b
 }
 
@@ -115,9 +116,11 @@ parse:
 		}
 		// log.Printf(">> appending: `%s`", string(r[st:i]))
 		b.Append(b.raw[st:i], lineend)
+		b.batchline++
 	}
 	b.raw = b.raw[i:]
 	b.rawlen = len(b.raw)
+	b.linecount++
 	return command, args, nil
 }
 
@@ -150,7 +153,6 @@ func (b *Batch) Append(r, sep []rune) {
 	copy(b.Buffer[blen:], sep)
 	copy(b.Buffer[blen+seplen:], r)
 	b.Length = tlen
-	b.linecount++
 }
 
 // State returns a string representing the state of statement parsing.

@@ -33,7 +33,7 @@ func New(l rline.IO, workingDirectory string) *Sqlcmd {
 	return &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
-		batch:            &Batch{read: l.Next},
+		batch:            NewBatch(l.Next),
 	}
 }
 
@@ -88,7 +88,7 @@ func (s *Sqlcmd) Prompt() string {
 	if s.batch.quote != 0 || s.batch.comment {
 		ch = "~"
 	}
-	return fmt.Sprint(s.batch.batchline) + ch
+	return fmt.Sprint(s.batch.batchline) + ch + " "
 }
 
 func (s *Sqlcmd) RunCommand(cmd *Command, args []string) error {

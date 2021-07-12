@@ -141,7 +141,11 @@ func main() {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	} else {
-		run(vars, connectionString)
+		exitCode, err := run(vars, connectionString)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		os.Exit(exitCode)
 	}
 }
 
@@ -173,17 +177,18 @@ func setVars(vars *variables.Variables, args *SqlCmdArguments) {
 }
 
 func run(vars *variables.Variables, connectionString string) (exitcode int, err error) {
-	_, err = os.Getwd()
+	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
 	}
 	iactive := Args.Query == "" && Args.InputFile == nil
-	line, err := rline.New(iactive, Args.OutputFile, "")
+	line, err := rline.New(!iactive, Args.OutputFile, "")
 	if err != nil {
 		return 1, err
 	}
 	defer line.Close()
 	fmt.Println(connectionString)
-	fmt.Println(vars)
-	return 0, nil
+	s := sqlcmd.New(line, wd)
+	err = s.Run()
+	return s.Exitcode, err
 }
