@@ -1,6 +1,7 @@
 package sqlcmd
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -43,5 +44,14 @@ func TestCommandParsing(t *testing.T) {
 		} else {
 			assert.Nil(t, cmd, "Unexpected match for %s", test.line)
 		}
+	}
+}
+
+func TestCustomBatchSeparator(t *testing.T) {
+	SetBatchTerminator("me!")
+	cmd, args := matchCommand("  me! 5 \n")
+	if assert.NotNil(t, cmd, "matchCommand didn't find GO for custom batch separator") {
+		assert.Equal(t, "GO", cmd.name, "command name")
+		assert.Equal(t, "5", strings.TrimSpace(args[0]), "go argument")
 	}
 }

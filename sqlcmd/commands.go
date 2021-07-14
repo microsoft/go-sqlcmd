@@ -56,13 +56,13 @@ func batchTerminatorRegex(terminator string) string {
 }
 
 func SetBatchTerminator(terminator string) error {
-	for _, cmd := range Commands {
+	for i, cmd := range Commands {
 		if cmd.name == "GO" {
 			regex, err := regexp.Compile(batchTerminatorRegex(terminator))
 			if err != nil {
 				return err
 			}
-			cmd.regex = regex
+			Commands[i].regex = regex
 			break
 		}
 	}
