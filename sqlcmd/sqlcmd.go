@@ -23,6 +23,7 @@ type Sqlcmd struct {
 	workingDirectory string
 	//	db               *sql.DB
 	out   io.WriteCloser
+	err   io.WriteCloser
 	batch *Batch
 	// Exitcode is returned to the operating system when the process exits
 	Exitcode int
@@ -38,7 +39,7 @@ func New(l rline.IO, workingDirectory string) *Sqlcmd {
 }
 
 func (s *Sqlcmd) Run() error {
-	stdout, stderr, iactive := s.lineIo.Stdout(), s.lineIo.Stderr(), s.lineIo.Interactive()
+	stderr, iactive := s.GetError(), s.lineIo.Interactive()
 	var lastError error
 	for {
 		var execute bool
@@ -64,9 +65,8 @@ func (s *Sqlcmd) Run() error {
 		if cmd != nil {
 			err = s.RunCommand(cmd, args)
 			if err == ErrExitRequested {
-				if s.out != nil {
-					s.out.Close()
-				}
+				s.SetOutput(nil)
+				s.SetError(nil)
 				break
 			}
 			if err != nil {
@@ -76,7 +76,7 @@ func (s *Sqlcmd) Run() error {
 			}
 		}
 		if execute {
-			fmt.Fprintln(stdout, "Execute: "+s.batch.String())
+			fmt.Fprintln(s.GetOutput(), "Execute: "+s.batch.String())
 			s.batch.Reset(nil)
 		}
 	}
@@ -93,4 +93,32 @@ func (s *Sqlcmd) Prompt() string {
 
 func (s *Sqlcmd) RunCommand(cmd *Command, args []string) error {
 	return cmd.action(s, args, s.batch.linecount)
+}
+
+func (s *Sqlcmd) GetOutput() io.Writer {
+	if s.out == nil {
+		return s.lineIo.Stdout()
+	}
+	return s.out
+}
+
+func (s *Sqlcmd) SetOutput(o io.WriteCloser) {
+	if s.out != nil {
+		s.out.Close()
+	}
+	s.out = o
+}
+
+func (s *Sqlcmd) GetError() io.Writer {
+	if s.err == nil {
+		return s.lineIo.Stderr()
+	}
+	return s.err
+}
+
+func (s *Sqlcmd) SetError(e io.WriteCloser) {
+	if s.err != nil {
+		s.err.Close()
+	}
+	s.err = e
 }

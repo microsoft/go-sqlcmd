@@ -29,6 +29,8 @@ func TestCommandParsing(t *testing.T) {
 		{":QUIT\n", "QUIT", []string{""}},
 		{" QUIT \n", "QUIT", []string{""}},
 		{"quit extra\n", "QUIT", []string{"extra"}},
+		{`:Out c:\folder\file`, "OUT", []string{`c:\folder\file`}},
+		{` :Error c:\folder\file`, "ERROR", []string{`c:\folder\file`}},
 	}
 
 	for _, test := range commands {

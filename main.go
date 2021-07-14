@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	"github.com/alecthomas/kong"
-	"github.com/microsoft/go-sqlcmd/errors"
 	"github.com/microsoft/go-sqlcmd/sqlcmd"
+	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
 	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/xo/usql/rline"
 )
@@ -90,25 +90,25 @@ func validate(args *SqlCmdArguments) error {
 		serverName := args.Server
 		if strings.HasPrefix(serverName, "tcp:") {
 			if len(args.Server) == 4 {
-				return &errors.InvalidServerName
+				return &sqlcmderrors.InvalidServerName
 			}
 			serverName = serverName[4:]
 		}
 		serverNameParts := strings.Split(serverName, ",")
 		if len(serverNameParts) > 2 {
-			return &errors.InvalidServerName
+			return &sqlcmderrors.InvalidServerName
 		}
 		if len(serverNameParts) == 2 {
 			var err error
 			args.Port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
 			if err != nil {
-				return &errors.InvalidServerName
+				return &sqlcmderrors.InvalidServerName
 			}
 			serverName = serverNameParts[0]
 		} else {
 			serverNameParts = strings.Split(serverName, "/")
 			if len(serverNameParts) > 2 {
-				return &errors.InvalidServerName
+				return &sqlcmderrors.InvalidServerName
 			}
 			if len(serverNameParts) == 2 {
 				args.Instance = serverNameParts[1]
@@ -182,13 +182,19 @@ func run(vars *variables.Variables, connectionString string) (exitcode int, err 
 		return 1, err
 	}
 	iactive := Args.Query == "" && Args.InputFile == nil
-	line, err := rline.New(!iactive, Args.OutputFile, "")
+	line, err := rline.New(!iactive, "", "")
 	if err != nil {
 		return 1, err
 	}
 	defer line.Close()
 	fmt.Println(connectionString)
 	s := sqlcmd.New(line, wd)
+	if Args.OutputFile != "" {
+		err = sqlcmd.Out(s, []string{Args.OutputFile}, 0)
+		if err != nil {
+			return
+		}
+	}
 	err = s.Run()
 	return s.Exitcode, err
 }

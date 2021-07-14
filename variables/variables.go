@@ -4,7 +4,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/microsoft/go-sqlcmd/errors"
+	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
 )
 
 type Variables map[string]string
@@ -47,7 +47,7 @@ func (v Variables) checkReadOnly(key string) error {
 	if hasValue {
 		for _, variable := range readOnlyVariables {
 			if variable == key && currentValue != "" {
-				return errors.ReadOnlyVariable(key)
+				return sqlcmderrors.ReadOnlyVariable(key)
 			}
 		}
 	}
@@ -125,7 +125,7 @@ func Setvar(name, value string) error {
 
 func ValidIdentifier(name string) error {
 	if strings.HasPrefix(name, "$(") || strings.ContainsAny(name, "'\"\t\n\r ") {
-		return errors.InvalidCommandError(":setvar", 0)
+		return sqlcmderrors.InvalidCommandError(":setvar", 0)
 	}
 	return nil
 }

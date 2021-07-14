@@ -1,10 +1,11 @@
-package errors
+package sqlcmderrors
 
 import (
+	"errors"
 	"fmt"
 )
 
-const errorPrefix = "Sqlcmd: Error: "
+const ErrorPrefix = "Sqlcmd: Error: "
 
 // Errors related to command line switches not handled by kong
 type SqlCmdArgumentError struct {
@@ -13,7 +14,7 @@ type SqlCmdArgumentError struct {
 }
 
 func (e *SqlCmdArgumentError) Error() string {
-	return errorPrefix + e.Rule
+	return ErrorPrefix + e.Rule
 }
 
 var InvalidServerName = SqlCmdArgumentError{
@@ -28,7 +29,7 @@ type SqlCmdVariableError struct {
 }
 
 func (e *SqlCmdVariableError) Error() string {
-	return errorPrefix + fmt.Sprintf(e.MessageFormat, e.Variable)
+	return ErrorPrefix + fmt.Sprintf(e.MessageFormat, e.Variable)
 }
 
 func ReadOnlyVariable(variable string) *SqlCmdVariableError {
@@ -45,7 +46,7 @@ type SqlCmdCommandError struct {
 }
 
 func (e *SqlCmdCommandError) Error() string {
-	return errorPrefix + fmt.Sprintf("Syntax error at line %d near command '%s'.", e.LineNumber, e.Command)
+	return ErrorPrefix + fmt.Sprintf("Syntax error at line %d near command '%s'.", e.LineNumber, e.Command)
 }
 
 func InvalidCommandError(command string, lineNumber uint) *SqlCmdCommandError {
@@ -53,4 +54,8 @@ func InvalidCommandError(command string, lineNumber uint) *SqlCmdCommandError {
 		Command:    command,
 		LineNumber: lineNumber,
 	}
+}
+
+func InvalidFileError(err error, path string) error {
+	return errors.New(ErrorPrefix + " Error occurred while opening or operating on file " + path + " (Reason: " + err.Error() + ").")
 }
