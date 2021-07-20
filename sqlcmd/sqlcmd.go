@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/url"
 
+	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/xo/usql/rline"
 )
 
@@ -12,12 +14,18 @@ var (
 	ErrExitRequested = errors.New("exit")
 )
 
+// ConnectSettings are the global settings for all connections that can't be
+// overridden by :connect or by scripting variables
+type ConnectSettings struct {
+	UseTrustedConnection   bool
+	TrustServerCertificate bool
+}
+
 // Sqlcmd is the core processor for text lines.
 //
 // It accumulates non-command lines in a buffer and  and sends command lines to the appropriate command runner.
 // When the batch delimiter is encountered it sends the current batch to the active connection and prints
 // the results to the output writer
-
 type Sqlcmd struct {
 	lineIo           rline.IO
 	workingDirectory string
@@ -27,14 +35,17 @@ type Sqlcmd struct {
 	batch *Batch
 	// Exitcode is returned to the operating system when the process exits
 	Exitcode int
+	Connect  ConnectSettings
+	vars     *variables.Variables
 }
 
 // New creates a new Sqlcmd instance
-func New(l rline.IO, workingDirectory string) *Sqlcmd {
+func New(l rline.IO, workingDirectory string, vars *variables.Variables) *Sqlcmd {
 	return &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
 		batch:            NewBatch(l.Next),
+		vars:             vars,
 	}
 }
 
@@ -121,4 +132,37 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 		s.err.Close()
 	}
 	s.err = e
+}
+
+func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
+	serverName, instance, port, err := s.vars.SqlCmdServer()
+	if serverName == "" {
+		serverName = "."
+	}
+	if err != nil {
+		return "", err
+	}
+	query := url.Values{}
+	connectionUrl := &url.URL{
+		Scheme: "sqlserver",
+		Path:   instance,
+	}
+	useTrustedConnection := s.Connect.UseTrustedConnection || (s.vars.SqlCmdUser() == "" && !s.vars.UseAad())
+	if !useTrustedConnection {
+		connectionUrl.User = url.UserPassword(s.vars.SqlCmdUser(), s.vars.Password())
+	}
+	if port > 0 {
+		connectionUrl.Host = fmt.Sprintf("%s:%d", serverName, port)
+	} else {
+		connectionUrl.Host = serverName
+	}
+	if s.vars.SqlCmdDatabase() != "" {
+		query.Add("database", s.vars.SqlCmdDatabase())
+	}
+
+	if s.Connect.TrustServerCertificate {
+		query.Add("trustservercertificate", "true")
+	}
+	connectionUrl.RawQuery = query.Encode()
+	return connectionUrl.String(), nil
 }

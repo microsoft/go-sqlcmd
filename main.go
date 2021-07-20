@@ -4,14 +4,10 @@ import (
 	//"database/sql"
 
 	"fmt"
-	"net/url"
 	"os"
-	"strconv"
-	"strings"
 
 	"github.com/alecthomas/kong"
 	"github.com/microsoft/go-sqlcmd/sqlcmd"
-	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
 	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/xo/usql/rline"
 )
@@ -35,118 +31,21 @@ type SqlCmdArguments struct {
 	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
 	Server string `short:"S" default:"." help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
 	// Disable syscommands with a warning
-	DisableCmdAndWarn bool   `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
-	Port              uint64 `kong:"-"`
-	Instance          string `kong:"-"`
+	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
 }
 
 var Args SqlCmdArguments
-
-// Constructs an URL-style connection string from the SqlCmdArguments structure.
-// If the input structure has an instance or port in the server name, it modifies
-// the structure on output to remove those decorations from the Server property
-// and updates the Port and Instance fields appropriately.
-// The URL connection string format supports the entirety of allowed characters and
-// is easily encoded/decoded, unlike the ADO or odbc strings.
-// go-mssqldb doesn't support quoted values or values with semi-colons in the ADO style strings
-func connectionString(args *SqlCmdArguments) (connectionString string, err error) {
-	if err = validate(args); err != nil {
-		return "", err
-	}
-
-	serverName := "."
-	if args.Server != "" {
-		serverName = args.Server
-	}
-
-	query := url.Values{}
-	connectionUrl := &url.URL{
-		Scheme: "sqlserver",
-		Path:   args.Instance,
-	}
-	if !args.UseTrustedConnection {
-		connectionUrl.User = url.UserPassword(args.UserName, args.Password)
-	}
-	if args.Port > 0 {
-		connectionUrl.Host = fmt.Sprintf("%s:%d", serverName, args.Port)
-	} else {
-		connectionUrl.Host = serverName
-	}
-	if args.DatabaseName != "" {
-		query.Add("database", args.DatabaseName)
-	}
-	if args.TrustServerCertificate {
-		query.Add("trustservercertificate", "true")
-	}
-	connectionUrl.RawQuery = query.Encode()
-	return connectionUrl.String(), nil
-}
-
-// Validates combinations not covered by kong.
-// Parses the port number from the server name and replaces the server name with the minimal version
-// Processing of environment variables and default values must have occurred before this is called.
-func validate(args *SqlCmdArguments) error {
-	if args.Server != "" {
-		serverName := args.Server
-		if strings.HasPrefix(serverName, "tcp:") {
-			if len(args.Server) == 4 {
-				return &sqlcmderrors.InvalidServerName
-			}
-			serverName = serverName[4:]
-		}
-		serverNameParts := strings.Split(serverName, ",")
-		if len(serverNameParts) > 2 {
-			return &sqlcmderrors.InvalidServerName
-		}
-		if len(serverNameParts) == 2 {
-			var err error
-			args.Port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
-			if err != nil {
-				return &sqlcmderrors.InvalidServerName
-			}
-			serverName = serverNameParts[0]
-		} else {
-			serverNameParts = strings.Split(serverName, "/")
-			if len(serverNameParts) > 2 {
-				return &sqlcmderrors.InvalidServerName
-			}
-			if len(serverNameParts) == 2 {
-				args.Instance = serverNameParts[1]
-				serverName = serverNameParts[0]
-			}
-		}
-		args.Server = serverName
-	}
-
-	if !args.UseTrustedConnection && args.UserName == "" {
-		args.UseTrustedConnection = true
-	}
-	return nil
-}
 
 func main() {
 	kong.Parse(&Args)
 	vars := variables.InitializeVariables(!Args.DisableCmdAndWarn)
 	setVars(vars, &Args)
-	connectionString, err := connectionString(&Args)
-	if err == nil {
-		if Args.BatchTerminator != "GO" {
-			err = sqlcmd.SetBatchTerminator(Args.BatchTerminator)
-			if err != nil {
-				err = fmt.Errorf("invalid batch terminator '%s'", Args.BatchTerminator)
-			}
-		}
-	}
+
+	exitCode, err := run(vars)
 	if err != nil {
 		fmt.Println(err.Error())
-		os.Exit(1)
-	} else {
-		exitCode, err := run(vars, connectionString)
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		os.Exit(exitCode)
 	}
+	os.Exit(exitCode)
 }
 
 // Initializes scripting variables from command line arguments
@@ -176,23 +75,34 @@ func setVars(vars *variables.Variables, args *SqlCmdArguments) {
 	}
 }
 
-func run(vars *variables.Variables, connectionString string) (exitcode int, err error) {
+func run(vars *variables.Variables) (exitcode int, err error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
 	}
+	if Args.BatchTerminator != "GO" {
+		err = sqlcmd.SetBatchTerminator(Args.BatchTerminator)
+		if err != nil {
+			err = fmt.Errorf("invalid batch terminator '%s'", Args.BatchTerminator)
+		}
+	}
+	if err != nil {
+		return 1, err
+	}
+
 	iactive := Args.Query == "" && Args.InputFile == nil
 	line, err := rline.New(!iactive, "", "")
 	if err != nil {
 		return 1, err
 	}
 	defer line.Close()
-	fmt.Println(connectionString)
-	s := sqlcmd.New(line, wd)
+	s := sqlcmd.New(line, wd, vars)
+	s.Connect.UseTrustedConnection = Args.UseTrustedConnection
+	s.Connect.TrustServerCertificate = Args.TrustServerCertificate
 	if Args.OutputFile != "" {
 		err = sqlcmd.Out(s, []string{Args.OutputFile}, 0)
 		if err != nil {
-			return
+			return 1, err
 		}
 	}
 	err = s.Run()

@@ -34,10 +34,31 @@ func TestSetvarFailsForReadOnlyVariables(t *testing.T) {
 func TestEnvironmentVariablesAsInput(t *testing.T) {
 	os.Setenv("SQLCMDSERVER", "someserver")
 	defer os.Unsetenv("SQLCMDSERVER")
-	os.Setenv("$(x)", "invalidname")
-	defer os.Unsetenv("$(x)")
+	os.Setenv("x", "somevalue")
+	defer os.Unsetenv("x")
 	vars := InitializeVariables(true).All()
-	assert.Equal(t, "someserver", vars["SQLCMDSERVER"], "InitializeVariables should read a valid environment variable")
-	_, ok := vars["$(x)"]
-	assert.False(t, ok, "InitializeVariables should skip invalid names")
+	assert.Equal(t, "someserver", vars["SQLCMDSERVER"], "InitializeVariables should read a valid environment variable from the known list")
+	_, ok := vars["x"]
+	assert.False(t, ok, "InitializeVariables should skip variables not in the known list")
+}
+
+func TestSqlServerSplitsName(t *testing.T) {
+	vars := Variables{
+		SQLCMDSERVER: `tcp:someserver/someinstance`,
+	}
+	serverName, instance, port, err := vars.SqlCmdServer()
+	if assert.NoError(t, err, "tcp:server/someinstance") {
+		assert.Equal(t, "someserver", serverName, "server name for instance")
+		assert.Equal(t, uint64(0), port, "port for instance")
+		assert.Equal(t, "someinstance", instance, "instance for instance")
+	}
+	vars = Variables{
+		SQLCMDSERVER: `tcp:someserver,1111`,
+	}
+	serverName, instance, port, err = vars.SqlCmdServer()
+	if assert.NoError(t, err, "tcp:server,1111") {
+		assert.Equal(t, "someserver", serverName, "server name for port number")
+		assert.Equal(t, uint64(1111), port, "port for port number")
+		assert.Equal(t, "", instance, "instance for port number")
+	}
 }

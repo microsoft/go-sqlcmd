@@ -2,6 +2,7 @@ package variables
 
 import (
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
@@ -70,40 +71,82 @@ func (v Variables) All() map[string]string {
 	return map[string]string(v)
 }
 
-func SqlCmdUser() string {
-	return variables["SQLCMDUSER"]
+func (v Variables) SqlCmdUser() string {
+	return v[SQLCMDUSER]
+}
+
+func (v Variables) SqlCmdServer() (serverName string, instance string, port uint64, err error) {
+	serverName = v[SQLCMDSERVER]
+	if strings.HasPrefix(serverName, "tcp:") {
+		if len(serverName) == 4 {
+			return "", "", 0, &sqlcmderrors.InvalidServerName
+		}
+		serverName = serverName[4:]
+	}
+	serverNameParts := strings.Split(serverName, ",")
+	if len(serverNameParts) > 2 {
+		return "", "", 0, &sqlcmderrors.InvalidServerName
+	}
+	if len(serverNameParts) == 2 {
+		var err error
+		port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
+		if err != nil {
+			return "", "", 0, &sqlcmderrors.InvalidServerName
+		}
+		serverName = serverNameParts[0]
+	} else {
+		serverNameParts = strings.Split(serverName, "/")
+		if len(serverNameParts) > 2 {
+			return "", "", 0, &sqlcmderrors.InvalidServerName
+		}
+		if len(serverNameParts) == 2 {
+			instance = serverNameParts[1]
+			serverName = serverNameParts[0]
+		}
+	}
+	return serverName, instance, port, nil
+}
+func (v Variables) SqlCmdDatabase() string {
+	return v[SQLCMDDBNAME]
+}
+
+func (v Variables) UseAad() bool {
+	return strings.EqualFold(v[SQLCMDUSEAAD], "true")
+}
+
+func (v Variables) Password() string {
+	return v[SQLCMDPASSWORD]
 }
 
 // Initializes variables with default values.
 // When fromEnvironment is true, then loads from the runtime environment
 func InitializeVariables(fromEnvironment bool) *Variables {
 	variables = Variables{
-		SQLCMDUSER:              "",
-		SQLCMDPASSWORD:          "",
-		SQLCMDSERVER:            "",
-		SQLCMDDBNAME:            "",
-		SQLCMDLOGINTIMEOUT:      "8",
-		SQLCMDSTATTIMEOUT:       "0",
-		SQLCMDHEADERS:           "0",
 		SQLCMDCOLSEP:            " ",
 		SQLCMDCOLDWIDTH:         "0",
-		SQLCMDPACKETSIZE:        "4096",
+		SQLCMDDBNAME:            "",
+		SQLCMDEDITOR:            "edit.com",
 		SQLCMDERRORLEVEL:        "0",
-		SQLCMDMAXVARTYPEWIDTH:   "256",
-		SQLCMDMAXFIXEDTYPEWIDTH: "0",
-		SQLCMDEDITOR:            "",
+		SQLCMDHEADERS:           "0",
 		SQLCMDINI:               "",
+		SQLCMDLOGINTIMEOUT:      "8",
+		SQLCMDMAXFIXEDTYPEWIDTH: "0",
+		SQLCMDMAXVARTYPEWIDTH:   "256",
+		SQLCMDPACKETSIZE:        "4096",
+		SQLCMDSERVER:            "",
+		SQLCMDSTATTIMEOUT:       "0",
+		SQLCMDUSER:              "",
+		SQLCMDPASSWORD:          "",
 		SQLCMDUSEAAD:            "",
 	}
 	hostname, _ := os.Hostname()
 	variables.Set(SQLCMDWORKSTATION, hostname)
 
 	if fromEnvironment {
-		for _, envVar := range os.Environ() {
-			varParts := strings.Split(envVar, "=")
-			err := ValidIdentifier(varParts[0])
-			if err == nil {
-				variables.Set(varParts[0], varParts[1])
+		for v := range variables.All() {
+			envVar, ok := os.LookupEnv(v)
+			if ok {
+				variables.Set(v, envVar)
 			}
 		}
 	}
