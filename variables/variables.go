@@ -1,11 +1,15 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package variables
 
 import (
+	"fmt"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
+	"github.com/microsoft/go-sqlcmd/util"
 )
 
 type Variables map[string]string
@@ -77,34 +81,7 @@ func (v Variables) SqlCmdUser() string {
 
 func (v Variables) SqlCmdServer() (serverName string, instance string, port uint64, err error) {
 	serverName = v[SQLCMDSERVER]
-	if strings.HasPrefix(serverName, "tcp:") {
-		if len(serverName) == 4 {
-			return "", "", 0, &sqlcmderrors.InvalidServerName
-		}
-		serverName = serverName[4:]
-	}
-	serverNameParts := strings.Split(serverName, ",")
-	if len(serverNameParts) > 2 {
-		return "", "", 0, &sqlcmderrors.InvalidServerName
-	}
-	if len(serverNameParts) == 2 {
-		var err error
-		port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
-		if err != nil {
-			return "", "", 0, &sqlcmderrors.InvalidServerName
-		}
-		serverName = serverNameParts[0]
-	} else {
-		serverNameParts = strings.Split(serverName, "/")
-		if len(serverNameParts) > 2 {
-			return "", "", 0, &sqlcmderrors.InvalidServerName
-		}
-		if len(serverNameParts) == 2 {
-			instance = serverNameParts[1]
-			serverName = serverNameParts[0]
-		}
-	}
-	return serverName, instance, port, nil
+	return util.SplitServer(serverName)
 }
 func (v Variables) SqlCmdDatabase() string {
 	return v[SQLCMDDBNAME]
@@ -116,6 +93,39 @@ func (v Variables) UseAad() bool {
 
 func (v Variables) Password() string {
 	return v[SQLCMDPASSWORD]
+}
+
+// ColumnSeparator can have 0 or 1 characters
+func (v Variables) ColumnSeparator() string {
+	sep := v[SQLCMDCOLSEP]
+	if len(sep) > 1 {
+		return sep[:1]
+	}
+	return sep
+}
+
+func (v Variables) MaxFixedColumnWidth() int64 {
+	w := v[SQLCMDMAXFIXEDTYPEWIDTH]
+	return mustValue(w)
+}
+
+func (v Variables) MaxVarColumnWidth() int64 {
+	w := v[SQLCMDMAXVARTYPEWIDTH]
+	return mustValue(w)
+}
+
+func (v Variables) ScreenWidth() int64 {
+	w := v[SQLCMDCOLDWIDTH]
+	return mustValue(w)
+}
+
+func mustValue(val string) int64 {
+	var n int64
+	_, err := fmt.Sscanf(val, "%d", &n)
+	if err == nil {
+		return n
+	}
+	panic(err)
 }
 
 // Initializes variables with default values.
@@ -154,6 +164,7 @@ func InitializeVariables(fromEnvironment bool) *Variables {
 }
 
 // Implements the :Setvar command
+// TODO: Add validation functions for the variables.
 func Setvar(name, value string) error {
 	err := ValidIdentifier(name)
 	if err == nil {

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package main
 
 import (
@@ -29,9 +32,20 @@ type SqlCmdArguments struct {
 	InitialQuery string `short:"q" xor:"input1" help:"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed."`
 	// Query to run then exit
 	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
-	Server string `short:"S" default:"." help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
+	Server string `short:"S" help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
 	// Disable syscommands with a warning
 	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+}
+type logger struct {
+	s *sqlcmd.Sqlcmd
+}
+
+func (l logger) Printf(format string, v ...interface{}) {
+	fmt.Fprintf(l.s.GetOutput(), format, v...)
+}
+
+func (l logger) Println(v ...interface{}) {
+	fmt.Fprintln(l.s.GetOutput(), v...)
 }
 
 var Args SqlCmdArguments
@@ -99,12 +113,19 @@ func run(vars *variables.Variables) (exitcode int, err error) {
 	s := sqlcmd.New(line, wd, vars)
 	s.Connect.UseTrustedConnection = Args.UseTrustedConnection
 	s.Connect.TrustServerCertificate = Args.TrustServerCertificate
+	s.Format = sqlcmd.NewSqlCmdDefaultFormatter(false)
 	if Args.OutputFile != "" {
 		err = sqlcmd.Out(s, []string{Args.OutputFile}, 0)
 		if err != nil {
 			return 1, err
 		}
 	}
-	err = s.Run()
+	err = s.ConnectDb("", "", "", !iactive)
+	if err != nil {
+		return 1, err
+	}
+	if iactive {
+		err = s.Run()
+	}
 	return s.Exitcode, err
 }

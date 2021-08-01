@@ -1,17 +1,25 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sqlcmd
 
 import (
+	"database/sql"
 	"errors"
 	"fmt"
 	"io"
 	"net/url"
+	osuser "os/user"
 
+	mssql "github.com/denisenkom/go-mssqldb"
+	"github.com/microsoft/go-sqlcmd/util"
 	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/xo/usql/rline"
 )
 
 var (
 	ErrExitRequested = errors.New("exit")
+	ErrNeedPassword  = errors.New("need password")
 )
 
 // ConnectSettings are the global settings for all connections that can't be
@@ -29,14 +37,15 @@ type ConnectSettings struct {
 type Sqlcmd struct {
 	lineIo           rline.IO
 	workingDirectory string
-	//	db               *sql.DB
-	out   io.WriteCloser
-	err   io.WriteCloser
-	batch *Batch
+	db               *sql.DB
+	out              io.WriteCloser
+	err              io.WriteCloser
+	batch            *Batch
 	// Exitcode is returned to the operating system when the process exits
 	Exitcode int
 	Connect  ConnectSettings
 	vars     *variables.Variables
+	Format   Formatter
 }
 
 // New creates a new Sqlcmd instance
@@ -165,4 +174,78 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 	}
 	connectionUrl.RawQuery = query.Encode()
 	return connectionUrl.String(), nil
+}
+
+// Opens a connection to the database with the given modifications to the connection
+func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw bool) error {
+	if user != "" && password == "" && !nopw {
+		return ErrNeedPassword
+	}
+
+	connstr, err := s.ConnectionString()
+	if err != nil {
+		return err
+	}
+
+	connectionUrl, err := url.Parse(connstr)
+	if err != nil {
+		return err
+	}
+
+	if server != "" {
+		serverName, instance, port, err := util.SplitServer(server)
+		if err != nil {
+			return err
+		}
+		connectionUrl.Path = instance
+		if port > 0 {
+			connectionUrl.Host = fmt.Sprintf("%s:%d", serverName, port)
+		} else {
+			connectionUrl.Host = serverName
+		}
+	}
+
+	if user != "" || password != "" {
+		if user == "" {
+			user = s.vars.SqlCmdUser()
+		}
+		if password == "" {
+			password = s.vars.Password()
+		}
+		connectionUrl.User = url.UserPassword(user, password)
+	}
+
+	connector, err := mssql.NewConnector(connectionUrl.String())
+	if err != nil {
+		return err
+	}
+	db := sql.OpenDB(connector)
+	err = db.Ping()
+	if err != nil {
+		return err
+	}
+	// we got a good connection so we can update the Sqlcmd
+	if s.db != nil {
+		s.db.Close()
+	}
+	s.db = db
+	if server != "" {
+		s.vars.Set(variables.SQLCMDSERVER, server)
+	}
+	if user != "" {
+		s.vars.Set(variables.SQLCMDUSER, user)
+	} else {
+		u, e := osuser.Current()
+		if e != nil {
+			panic("Unable to get user name")
+		}
+		s.vars.Set(variables.SQLCMDUSER, u.Username)
+	}
+	if password != "" {
+		s.vars.Set(variables.SQLCMDPASSWORD, password)
+	}
+	if s.batch != nil {
+		s.batch.batchline = 1
+	}
+	return nil
 }

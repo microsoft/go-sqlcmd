@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sqlcmd
 
 import (
@@ -89,7 +92,35 @@ func Go(s *Sqlcmd, args []string, line uint) (err error) {
 		return sqlcmderrors.InvalidCommandError("GO", line)
 	}
 	for i := 0; i < n; i++ {
-		fmt.Fprintf(s.GetOutput(), "GO: %s\n", s.batch.String())
+		rows, err := s.db.Query(s.batch.String())
+		if err != nil {
+			return err
+		}
+		s.Format.BeginBatch(s.batch.String(), s.vars, s.GetOutput(), s.GetError())
+
+		results := true
+		for results {
+			cols, err := rows.ColumnTypes()
+			if err != nil {
+				s.Format.AddError(err)
+			} else {
+				s.Format.BeginResultSet(cols)
+				active := rows.Next()
+				for active {
+					s.Format.AddRow(rows)
+					active = rows.Next()
+				}
+				if err = rows.Err(); err != nil {
+					s.Format.AddError(err)
+				}
+				s.Format.EndResultSet()
+			}
+			results = rows.NextResultSet()
+			if err = rows.Err(); err != nil {
+				s.Format.AddError(err)
+			}
+		}
+		s.Format.EndBatch()
 	}
 	s.batch.Reset(nil)
 	return nil

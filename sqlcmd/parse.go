@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sqlcmd
 
 import "unicode"
@@ -106,8 +109,36 @@ func max(a, b int) int {
 	return b
 }
 
+func max64(a, b int64) int64 {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func umax(a, b uint) uint {
+	if a > b {
+		return a
+	}
+	return b
+}
+
 // min returns the minimum of a, b.
 func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func min64(a, b int64) int64 {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func umin(a, b uint) uint {
 	if a < b {
 		return a
 	}

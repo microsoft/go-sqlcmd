@@ -1,7 +1,13 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sqlcmd
 
 import (
+	"database/sql"
 	"fmt"
+	"os"
+	"os/user"
 	"testing"
 
 	"github.com/google/uuid"
@@ -70,4 +76,30 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			assert.Equal(t, test.connectionString, connectionString, "Wrong connection string from: %+v", *s)
 		}
 	}
+}
+
+/* The following tests require a working SQL instance and rely on SqlCmd environment variables
+to manage the initial connection string. The default connection when no environment variables are
+set will be to localhost using Windows auth.
+
+*/
+func TestSqlCmdConnectDb(t *testing.T) {
+	v := variables.InitializeVariables(true)
+	s := &Sqlcmd{vars: v}
+	err := s.ConnectDb("", "", "", false)
+	if assert.NoError(t, err, "ConnectDb should succeed") {
+		sqlcmduser := os.Getenv(variables.SQLCMDUSER)
+		if sqlcmduser == "" {
+			u, _ := user.Current()
+			sqlcmduser = u.Username
+		}
+		assert.Equal(t, sqlcmduser, s.vars.SqlCmdUser(), "SQLCMDUSER variable should match connected user")
+	}
+}
+
+func ConnectDb() (*sql.DB, error) {
+	v := variables.InitializeVariables(true)
+	s := &Sqlcmd{vars: v}
+	err := s.ConnectDb("", "", "", false)
+	return s.db, err
 }

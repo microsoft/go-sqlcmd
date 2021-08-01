@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
 package main
 
 import (
@@ -33,7 +35,7 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 	// The long flag names are up for debate.
 	commands := []cmdLineTest{
 		{[]string{}, func(args SqlCmdArguments) bool {
-			return args.Server == "." && !args.UseTrustedConnection && args.UserName == ""
+			return args.Server == "" && !args.UseTrustedConnection && args.UserName == ""
 		}},
 		{[]string{"-c", "MYGO", "-C", "-E", "-i", "file1", "-o", "outfile", "-i", "file2"}, func(args SqlCmdArguments) bool {
 			return args.BatchTerminator == "MYGO" && args.TrustServerCertificate && len(args.InputFile) == 2 && strings.HasSuffix(args.OutputFile, "outfile")
@@ -43,7 +45,7 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		}},
 		// native sqlcmd allows both -q and -Q but only runs the -Q query and exits. We could make them mutually exclusive if desired.
 		{[]string{"-q", "select 1", "-Q", "select 2"}, func(args SqlCmdArguments) bool {
-			return args.Server == "." && args.InitialQuery == "select 1" && args.Query == "select 2"
+			return args.Server == "" && args.InitialQuery == "select 1" && args.Query == "select 2"
 		}},
 		{[]string{"-S", "someserver/someinstance"}, func(args SqlCmdArguments) bool {
 			return args.Server == "someserver/someinstance"
