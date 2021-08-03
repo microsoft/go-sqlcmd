@@ -36,17 +36,6 @@ type SqlCmdArguments struct {
 	// Disable syscommands with a warning
 	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
 }
-type logger struct {
-	s *sqlcmd.Sqlcmd
-}
-
-func (l logger) Printf(format string, v ...interface{}) {
-	fmt.Fprintf(l.s.GetOutput(), format, v...)
-}
-
-func (l logger) Println(v ...interface{}) {
-	fmt.Fprintln(l.s.GetOutput(), v...)
-}
 
 var Args SqlCmdArguments
 
@@ -77,7 +66,7 @@ func setVars(vars *variables.Variables, args *SqlCmdArguments) {
 		variables.SQLCMDSTATTIMEOUT:       func(a *SqlCmdArguments) string { return "" },
 		variables.SQLCMDHEADERS:           func(a *SqlCmdArguments) string { return "" },
 		variables.SQLCMDCOLSEP:            func(a *SqlCmdArguments) string { return "" },
-		variables.SQLCMDCOLDWIDTH:         func(a *SqlCmdArguments) string { return "" },
+		variables.SQLCMDCOLWIDTH:          func(a *SqlCmdArguments) string { return "" },
 		variables.SQLCMDMAXVARTYPEWIDTH:   func(a *SqlCmdArguments) string { return "" },
 		variables.SQLCMDMAXFIXEDTYPEWIDTH: func(a *SqlCmdArguments) string { return "" },
 	}

@@ -48,10 +48,11 @@ func TestCalcColumnDetails(t *testing.T) {
 
 	tests := []colTest{
 		{8, 8,
-			"select 100 as '123456789ABC', getdate() as '987654321'",
+			"select 100 as '123456789ABC', getdate() as '987654321', 'string' as col1",
 			[]columnDetail{
 				{leftJustify: false, displayWidth: 12},
 				{leftJustify: false, displayWidth: 23},
+				{leftJustify: true, displayWidth: 6},
 			},
 		},
 	}
@@ -76,5 +77,28 @@ func TestCalcColumnDetails(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestControlCharacterBehavior(t *testing.T) {
+	type ccbTest struct {
+		raw                 string
+		replaced            string
+		removed             string
+		consecutivereplaced string
+	}
+
+	tests := []ccbTest{
+		{"no control", "no control", "no control", "no control"},
+		{string(rune(1)) + "tabs\t\treturns\r\n\r\n", " tabs  returns    ", "tabsreturns", " tabs returns "},
+	}
+
+	for _, test := range tests {
+		s := applyControlCharacterBehavior(test.raw, ControlReplace)
+		assert.Equalf(t, test.replaced, s, "Incorrect Replaced for '%s'", test.raw)
+		s = applyControlCharacterBehavior(test.raw, ControlRemove)
+		assert.Equalf(t, test.removed, s, "Incorrect Remove for '%s'", test.raw)
+		s = applyControlCharacterBehavior(test.raw, ControlReplaceConsecutive)
+		assert.Equalf(t, test.consecutivereplaced, s, "Incorrect ReplaceConsecutive for '%s'", test.raw)
 	}
 }

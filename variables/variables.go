@@ -29,7 +29,7 @@ const (
 	SQLCMDSTATTIMEOUT       = "SQLCMDSTATTIMEOUT"
 	SQLCMDHEADERS           = "SQLCMDHEADERS"
 	SQLCMDCOLSEP            = "SQLCMDCOLSEP"
-	SQLCMDCOLDWIDTH         = "SQLCMDCOLDWIDTH"
+	SQLCMDCOLWIDTH          = "SQLCMDCOLWIDTH"
 	SQLCMDERRORLEVEL        = "SQLCMDERRORLEVEL"
 	SQLCMDMAXVARTYPEWIDTH   = "SQLCMDMAXVARTYPEWIDTH"
 	SQLCMDMAXFIXEDTYPEWIDTH = "SQLCMDMAXFIXEDTYPEWIDTH"
@@ -37,6 +37,7 @@ const (
 	SQLCMDUSEAAD            = "SQLCMDUSEAAD"
 )
 
+// Variables that can only be set at startup
 var readOnlyVariables []string = []string{
 	SQLCMDDBNAME,
 	SQLCMDINI,
@@ -115,8 +116,16 @@ func (v Variables) MaxVarColumnWidth() int64 {
 }
 
 func (v Variables) ScreenWidth() int64 {
-	w := v[SQLCMDCOLDWIDTH]
+	w := v[SQLCMDCOLWIDTH]
 	return mustValue(w)
+}
+
+func (v Variables) RowsBetweenHeaders() int64 {
+	if v.MaxVarColumnWidth() == 0 {
+		return -1
+	}
+	h := mustValue(v[SQLCMDHEADERS])
+	return h
 }
 
 func mustValue(val string) int64 {
@@ -133,7 +142,7 @@ func mustValue(val string) int64 {
 func InitializeVariables(fromEnvironment bool) *Variables {
 	variables = Variables{
 		SQLCMDCOLSEP:            " ",
-		SQLCMDCOLDWIDTH:         "0",
+		SQLCMDCOLWIDTH:          "0",
 		SQLCMDDBNAME:            "",
 		SQLCMDEDITOR:            "edit.com",
 		SQLCMDERRORLEVEL:        "0",

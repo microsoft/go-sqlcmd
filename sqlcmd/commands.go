@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+// Commands for sqlcmd are defined at https://docs.microsoft.com/sql/tools/sqlcmd-utility#sqlcmd-commands
 package sqlcmd
 
 import (
@@ -16,9 +17,11 @@ import (
 type Command struct {
 	// regex must include at least one group if it has parameters
 	// Will be matched using FindStringSubmatch
-	regex  *regexp.Regexp
+	regex *regexp.Regexp
+	// The function that implements the command. Third parameter is the line number
 	action func(*Sqlcmd, []string, uint) error
-	name   string
+	// Name of the command
+	name string
 }
 
 var Commands = []Command{
@@ -58,6 +61,8 @@ func batchTerminatorRegex(terminator string) string {
 	return fmt.Sprintf(`(?im)^[\t ]*?%s(?:[ ]+(.*$)|$)`, regexp.QuoteMeta(terminator))
 }
 
+// Attempts to set the batch terminator to the given value
+// Returns an error if the new value is not usable in the regex
 func SetBatchTerminator(terminator string) error {
 	for i, cmd := range Commands {
 		if cmd.name == "GO" {
@@ -72,6 +77,7 @@ func SetBatchTerminator(terminator string) error {
 	return nil
 }
 
+// Immediately exits the program without running any more batches
 func Quit(s *Sqlcmd, args []string, line uint) error {
 	if args != nil && strings.TrimSpace(args[0]) != "" {
 		return sqlcmderrors.InvalidCommandError("QUIT", line)
@@ -79,6 +85,7 @@ func Quit(s *Sqlcmd, args []string, line uint) error {
 	return ErrExitRequested
 }
 
+// Runs the current batch the number of times specified
 func Go(s *Sqlcmd, args []string, line uint) (err error) {
 	// default to 1 execution
 	var n int = 1
@@ -91,15 +98,17 @@ func Go(s *Sqlcmd, args []string, line uint) (err error) {
 	if err != nil || n < 1 {
 		return sqlcmderrors.InvalidCommandError("GO", line)
 	}
+
+	// This loop will likely be refactored to a helper when we implement -Q and :EXIT(query)
 	for i := 0; i < n; i++ {
-		rows, err := s.db.Query(s.batch.String())
-		if err != nil {
-			return err
-		}
 		s.Format.BeginBatch(s.batch.String(), s.vars, s.GetOutput(), s.GetError())
+		rows, qe := s.db.Query(s.batch.String())
+		if qe != nil {
+			s.Format.AddError(qe)
+		}
 
 		results := true
-		for results {
+		for qe == nil && results {
 			cols, err := rows.ColumnTypes()
 			if err != nil {
 				s.Format.AddError(err)
@@ -126,6 +135,7 @@ func Go(s *Sqlcmd, args []string, line uint) (err error) {
 	return nil
 }
 
+// Changes the output writer to use a file
 func Out(s *Sqlcmd, args []string, line uint) (err error) {
 	switch {
 	case strings.EqualFold(args[0], "stdout"):
@@ -142,6 +152,7 @@ func Out(s *Sqlcmd, args []string, line uint) (err error) {
 	return nil
 }
 
+// Changes the error writer to use a file
 func Error(s *Sqlcmd, args []string, line uint) error {
 	switch {
 	case strings.EqualFold(args[0], "stderr"):
