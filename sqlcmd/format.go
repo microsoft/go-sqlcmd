@@ -514,11 +514,25 @@ func applyControlCharacterBehavior(val string, ccb ControlCharacterBehavior) str
 }
 
 // Per https://docs.microsoft.com/sql/odbc/reference/appendixes/sql-to-c-binary
+var hexDigits = []rune{'A', 'B', 'C', 'D', 'E', 'F'}
+
 func decodeBinary(b []byte) string {
+
 	s := new(strings.Builder)
 	s.Grow(len(b) * 2)
-	for _, c := range b {
-		s.WriteString(fmt.Sprintf("%2X", c))
+	for _, ch := range b {
+		b1 := ch >> 4
+		b2 := ch & 0x0f
+		if b1 >= 10 {
+			s.WriteRune(hexDigits[b1-10])
+		} else {
+			s.WriteRune(rune('0' + b1))
+		}
+		if b2 >= 10 {
+			s.WriteRune(hexDigits[b2-10])
+		} else {
+			s.WriteRune(rune('0' + b2))
+		}
 	}
 	return s.String()
 }

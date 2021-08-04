@@ -110,11 +110,28 @@ func TestDecodeBinary(t *testing.T) {
 	}
 
 	tests := []decodeTest{
-		{[]byte("123456"), "313233343536"},
+		{[]byte("123456ABCDEF"), "313233343536414243444546"},
 		{[]byte{0x12, 0x34, 0x56}, "123456"},
 	}
 	for _, test := range tests {
 		a := decodeBinary(test.b)
 		assert.Equalf(t, test.s, a, "Incorrect decoded binary string for %v", test.b)
 	}
+}
+
+func BenchmarkDecodeBinary(b *testing.B) {
+	b.ReportAllocs()
+	bytes := make([]byte, 10000)
+	for i := 0; i < 10000; i++ {
+		bytes[i] = byte(i % 0xff)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		s := decodeBinary(bytes)
+		if len(s) != 20000 {
+			b.Fatalf("Incorrect length of returned string. Should be 20k, was %d", len(s))
+		}
+	}
+
 }
