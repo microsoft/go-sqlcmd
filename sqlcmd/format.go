@@ -83,7 +83,8 @@ func (f *sqlCmdFormatterType) WriteOut(s string) {
 		} else if f.writepos == w {
 			f.out.Write([]byte(string(r[:i])))
 			f.out.Write([]byte(SqlcmdEol))
-			r = r[i:]
+			r = []rune(string(r[i:]))
+			f.writepos = 0
 			i = 0
 		} else {
 			c := r[i]
@@ -378,7 +379,11 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 		} else {
 			switch x := (*j).(type) {
 			case []byte:
-				row[n] = string(x)
+				if isBinaryDataType(&f.columnDetails[n].col) {
+					row[n] = decodeBinary(x)
+				} else {
+					row[n] = string(x)
+				}
 			case string:
 				row[n] = x
 			case time.Time:
@@ -506,4 +511,14 @@ func applyControlCharacterBehavior(val string, ccb ControlCharacterBehavior) str
 		}
 	}
 	return b.String()
+}
+
+// Per https://docs.microsoft.com/sql/odbc/reference/appendixes/sql-to-c-binary
+func decodeBinary(b []byte) string {
+	s := new(strings.Builder)
+	s.Grow(len(b) * 2)
+	for _, c := range b {
+		s.WriteString(fmt.Sprintf("%2X", c))
+	}
+	return s.String()
 }

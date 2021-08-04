@@ -102,3 +102,19 @@ func TestControlCharacterBehavior(t *testing.T) {
 		assert.Equalf(t, test.consecutivereplaced, s, "Incorrect ReplaceConsecutive for '%s'", test.raw)
 	}
 }
+
+func TestDecodeBinary(t *testing.T) {
+	type decodeTest struct {
+		b []byte
+		s string
+	}
+
+	tests := []decodeTest{
+		{[]byte("123456"), "313233343536"},
+		{[]byte{0x12, 0x34, 0x56}, "123456"},
+	}
+	for _, test := range tests {
+		a := decodeBinary(test.b)
+		assert.Equalf(t, test.s, a, "Incorrect decoded binary string for %v", test.b)
+	}
+}
