@@ -148,7 +148,7 @@ func InitializeVariables(fromEnvironment bool) *Variables {
 		SQLCMDERRORLEVEL:        "0",
 		SQLCMDHEADERS:           "0",
 		SQLCMDINI:               "",
-		SQLCMDLOGINTIMEOUT:      "8",
+		SQLCMDLOGINTIMEOUT:      "30",
 		SQLCMDMAXFIXEDTYPEWIDTH: "0",
 		SQLCMDMAXVARTYPEWIDTH:   "256",
 		SQLCMDPACKETSIZE:        "4096",

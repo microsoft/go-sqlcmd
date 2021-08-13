@@ -40,8 +40,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-c", "MYGO", "-C", "-E", "-i", "file1", "-o", "outfile", "-i", "file2"}, func(args SqlCmdArguments) bool {
 			return args.BatchTerminator == "MYGO" && args.TrustServerCertificate && len(args.InputFile) == 2 && strings.HasSuffix(args.OutputFile, "outfile")
 		}},
-		{[]string{"-U", "someuser", "-d", "somedatabase", "-P", "somestring", "-S", "someserver"}, func(args SqlCmdArguments) bool {
-			return args.BatchTerminator == "GO" && !args.TrustServerCertificate && args.UserName == "someuser" && args.DatabaseName == "somedatabase" && args.Password == "somestring" && args.Server == "someserver"
+		{[]string{"-U", "someuser", "-d", "somedatabase", "-S", "someserver"}, func(args SqlCmdArguments) bool {
+			return args.BatchTerminator == "GO" && !args.TrustServerCertificate && args.UserName == "someuser" && args.DatabaseName == "somedatabase" && args.Server == "someserver"
 		}},
 		// native sqlcmd allows both -q and -Q but only runs the -Q query and exits. We could make them mutually exclusive if desired.
 		{[]string{"-q", "select 1", "-Q", "select 2"}, func(args SqlCmdArguments) bool {

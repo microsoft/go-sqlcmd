@@ -24,7 +24,6 @@ func TestFitToScreen(t *testing.T) {
 		{9, "123456789A", "123456789" + SqlcmdEol + "A"},
 		{9, "123456789" + SqlcmdEol, "123456789" + SqlcmdEol},
 		{9, "12345678" + SqlcmdEol + "9A", "12345678" + SqlcmdEol + "9A"},
-		{9, "12345678\rA", "12345678\rA"},
 		{9, "123456789\rA", "123456789" + SqlcmdEol + "\rA"},
 	}
 

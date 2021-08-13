@@ -22,8 +22,8 @@ var (
 	ErrNeedPassword  = errors.New("need password")
 )
 
-// ConnectSettings are the global settings for all connections that can't be
-// overridden by :connect or by scripting variables
+// ConnectSettings are the settings for connections that can't be
+// inferred from scripting variables
 type ConnectSettings struct {
 	UseTrustedConnection   bool
 	TrustServerCertificate bool
@@ -205,13 +205,11 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		}
 	}
 
-	if user != "" || password != "" {
-		if user == "" {
-			user = s.vars.SqlCmdUser()
-		}
-		if password == "" {
-			password = s.vars.Password()
-		}
+	if password == "" {
+		password = s.vars.Password()
+	}
+
+	if user != "" {
 		connectionUrl.User = url.UserPassword(user, password)
 	}
 
@@ -234,16 +232,19 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	}
 	if user != "" {
 		s.vars.Set(variables.SQLCMDUSER, user)
-	} else {
+		s.Connect.UseTrustedConnection = false
+		if password != "" {
+			s.vars.Set(variables.SQLCMDPASSWORD, password)
+		}
+	} else if s.vars.SqlCmdUser() == "" {
 		u, e := osuser.Current()
 		if e != nil {
 			panic("Unable to get user name")
 		}
+		s.Connect.UseTrustedConnection = true
 		s.vars.Set(variables.SQLCMDUSER, u.Username)
 	}
-	if password != "" {
-		s.vars.Set(variables.SQLCMDPASSWORD, password)
-	}
+
 	if s.batch != nil {
 		s.batch.batchline = 1
 	}

@@ -23,7 +23,6 @@ type SqlCmdArguments struct {
 	TrustServerCertificate bool   `short:"C" help:"Implicitly trust the server certificate without validation."`
 	DatabaseName           string `short:"d" help:"This option sets the sqlcmd scripting variable SQLCMDDBNAME. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits."`
 	UseTrustedConnection   bool   `short:"E" xor:"uid" help:"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any any environment variables that define user name and password."`
-	Password               string `short:"P" xor:"pwd" help:"User-specified password."`
 	UserName               string `short:"U" xor:"uid" help:"The login name or contained database user name.  For contained database users, you must provide the database name option"`
 	// Files from which to read query text
 	InputFile  []string `short:"i" xor:"input1, input2" type:"existingFile" help:"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with -Q/-q."`
@@ -36,6 +35,11 @@ type SqlCmdArguments struct {
 	// Disable syscommands with a warning
 	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
 }
+
+// Breaking changes in command line are listed here.
+// Any switch not listed in breaking changes and not also included in SqlCmdArguments just has not been implemented yet
+// 1. -P: Passwords have to be provided through SQLCMDPASSWORD environment variable or typed when prompted
+// 2. -R: Go runtime doesn't expose user locale information and syscall would only enable it on Windows, so we won't try to implement it
 
 var Args SqlCmdArguments
 
@@ -58,7 +62,6 @@ func setVars(vars *variables.Variables, args *SqlCmdArguments) {
 		variables.SQLCMDLOGINTIMEOUT:      func(a *SqlCmdArguments) string { return "" },
 		variables.SQLCMDUSEAAD:            func(a *SqlCmdArguments) string { return "" },
 		variables.SQLCMDWORKSTATION:       func(a *SqlCmdArguments) string { return "" },
-		variables.SQLCMDPASSWORD:          func(a *SqlCmdArguments) string { return a.Password },
 		variables.SQLCMDSERVER:            func(a *SqlCmdArguments) string { return a.Server },
 		variables.SQLCMDERRORLEVEL:        func(a *SqlCmdArguments) string { return "" },
 		variables.SQLCMDPACKETSIZE:        func(a *SqlCmdArguments) string { return "" },
