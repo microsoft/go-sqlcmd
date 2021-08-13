@@ -55,6 +55,8 @@ steps:
   displayName: 'run tests'
   env:
     SQLPASSWORD: $(SQLPASSWORD)
+    SQLCMDUSER: sa
+    SQLCMDPASSWORD: $(SQLPASSWORD)
   continueOnError: true
 - task: PublishTestResults@2
   displayName: "Publish junit-style results"
