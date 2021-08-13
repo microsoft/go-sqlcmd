@@ -6,6 +6,7 @@ import (
 )
 
 const ErrorPrefix = "Sqlcmd: Error: "
+const WarningPrefix = "Sqlcmd: Warning: "
 
 // Errors related to command line switches not handled by kong
 type SqlCmdArgumentError struct {

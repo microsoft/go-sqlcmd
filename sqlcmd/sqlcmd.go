@@ -9,9 +9,13 @@ import (
 	"fmt"
 	"io"
 	"net/url"
+	"os"
+	"os/signal"
 	osuser "os/user"
+	"syscall"
 
 	mssql "github.com/denisenkom/go-mssqldb"
+	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
 	"github.com/microsoft/go-sqlcmd/util"
 	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/xo/usql/rline"
@@ -20,6 +24,7 @@ import (
 var (
 	ErrExitRequested = errors.New("exit")
 	ErrNeedPassword  = errors.New("need password")
+	ErrCtrlC         = errors.New(sqlcmderrors.WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
 )
 
 // ConnectSettings are the settings for connections that can't be
@@ -59,6 +64,7 @@ func New(l rline.IO, workingDirectory string, vars *variables.Variables) *Sqlcmd
 }
 
 func (s *Sqlcmd) Run() error {
+	setupCloseHandler(s)
 	stderr, iactive := s.GetError(), s.lineIo.Interactive()
 	var lastError error
 	for {
@@ -69,8 +75,8 @@ func (s *Sqlcmd) Run() error {
 		cmd, args, err := s.batch.Next()
 		switch {
 		case err == rline.ErrInterrupt:
-			s.batch.Reset(nil)
-			continue
+			s.GetOutput().Write([]byte(ErrCtrlC.Error()))
+			return nil
 		case err != nil:
 			if err == io.EOF {
 				if s.batch.Length == 0 {
@@ -249,4 +255,14 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		s.batch.batchline = 1
 	}
 	return nil
+}
+
+func setupCloseHandler(s *Sqlcmd) {
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		s.GetOutput().Write([]byte(ErrCtrlC.Error()))
+		os.Exit(0)
+	}()
 }
