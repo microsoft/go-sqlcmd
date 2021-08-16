@@ -51,6 +51,7 @@ type Sqlcmd struct {
 	Connect  ConnectSettings
 	vars     *variables.Variables
 	Format   Formatter
+	Query    string
 }
 
 // New creates a new Sqlcmd instance
@@ -63,7 +64,7 @@ func New(l rline.IO, workingDirectory string, vars *variables.Variables) *Sqlcmd
 	}
 }
 
-func (s *Sqlcmd) Run() error {
+func (s *Sqlcmd) Run(once bool) error {
 	setupCloseHandler(s)
 	stderr, iactive := s.GetError(), s.lineIo.Interactive()
 	var lastError error
@@ -72,7 +73,15 @@ func (s *Sqlcmd) Run() error {
 		if iactive {
 			s.lineIo.Prompt(s.Prompt())
 		}
-		cmd, args, err := s.batch.Next()
+		var cmd *Command
+		var args []string
+		var err error
+		if s.Query != "" {
+			cmd = Commands["GO"]
+			args = make([]string, 0)
+		} else {
+			cmd, args, err = s.batch.Next()
+		}
 		switch {
 		case err == rline.ErrInterrupt:
 			s.GetOutput().Write([]byte(ErrCtrlC.Error()))
@@ -90,7 +99,7 @@ func (s *Sqlcmd) Run() error {
 		}
 		if cmd != nil {
 			err = s.RunCommand(cmd, args)
-			if err == ErrExitRequested {
+			if err == ErrExitRequested || once {
 				s.SetOutput(nil)
 				s.SetError(nil)
 				break

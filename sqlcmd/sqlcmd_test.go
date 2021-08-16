@@ -13,6 +13,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/stretchr/testify/assert"
+	"github.com/xo/usql/rline"
 )
 
 func TestConnectionStringFromSqlCmd(t *testing.T) {
@@ -102,4 +103,35 @@ func ConnectDb() (*sql.DB, error) {
 	s := &Sqlcmd{vars: v}
 	err := s.ConnectDb("", "", "", false)
 	return s.db, err
+}
+
+func TestSqlCmdQueryAndExit(t *testing.T) {
+	v := variables.InitializeVariables(true)
+	v.Set(variables.SQLCMDMAXVARTYPEWIDTH, "0")
+	line, err := rline.New(false, "", "")
+	if !assert.NoError(t, err, "rline.New") {
+		return
+	}
+	s := New(line, "", v)
+	s.Format = NewSqlCmdDefaultFormatter(true)
+	s.Query = "select 100"
+	file, err := os.CreateTemp("", "sqlcmdout")
+	if !assert.NoError(t, err, "os.CreateTemp") {
+		return
+	}
+	defer file.Close()
+	defer os.Remove(file.Name())
+	s.SetOutput(file)
+	err = s.ConnectDb("", "", "", true)
+	if !assert.NoError(t, err, "s.ConnectDB") {
+		return
+	}
+	err = s.Run(true)
+	if assert.NoError(t, err, "s.Run(once = true)") {
+		s.SetOutput(nil)
+		bytes, err := os.ReadFile(file.Name())
+		if assert.NoError(t, err, "os.ReadFile") {
+			assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+		}
+	}
 }

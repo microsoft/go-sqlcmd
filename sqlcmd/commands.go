@@ -24,23 +24,23 @@ type Command struct {
 	name string
 }
 
-var Commands = []Command{
-	{
+var Commands = map[string]*Command{
+	"QUIT": {
 		regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:[ \t]+(.*$)|$)`),
 		action: Quit,
 		name:   "QUIT",
 	},
-	{
+	"GO": {
 		regex:  regexp.MustCompile(batchTerminatorRegex("GO")),
 		action: Go,
 		name:   "GO",
 	},
-	{
+	"OUT": {
 		regex:  regexp.MustCompile(`(?im)^[ \t]*:OUT(?:[ \t]+(.*$)|$)`),
 		action: Out,
 		name:   "OUT",
 	},
-	{
+	"ERROR": {
 		regex:  regexp.MustCompile(`(?im)^[ \t]*:ERROR(?:[ \t]+(.*$)|$)`),
 		action: Error,
 		name:   "ERROR",
@@ -51,7 +51,7 @@ func matchCommand(line string) (*Command, []string) {
 	for _, cmd := range Commands {
 		matchedCommand := cmd.regex.FindStringSubmatch(line)
 		if matchedCommand != nil {
-			return &cmd, matchedCommand[1:]
+			return cmd, matchedCommand[1:]
 		}
 	}
 	return nil, nil
@@ -64,16 +64,12 @@ func batchTerminatorRegex(terminator string) string {
 // Attempts to set the batch terminator to the given value
 // Returns an error if the new value is not usable in the regex
 func SetBatchTerminator(terminator string) error {
-	for i, cmd := range Commands {
-		if cmd.name == "GO" {
-			regex, err := regexp.Compile(batchTerminatorRegex(terminator))
-			if err != nil {
-				return err
-			}
-			Commands[i].regex = regex
-			break
-		}
+	cmd := Commands["GO"]
+	regex, err := regexp.Compile(batchTerminatorRegex(terminator))
+	if err != nil {
+		return err
 	}
+	cmd.regex = regex
 	return nil
 }
 
@@ -86,9 +82,10 @@ func Quit(s *Sqlcmd, args []string, line uint) error {
 }
 
 // Runs the current batch the number of times specified
-func Go(s *Sqlcmd, args []string, line uint) (err error) {
+func Go(s *Sqlcmd, args []string, line uint) error {
 	// default to 1 execution
 	var n int = 1
+	var err error
 	if len(args) > 0 {
 		cnt := strings.TrimSpace(args[0])
 		if cnt != "" {
@@ -101,8 +98,12 @@ func Go(s *Sqlcmd, args []string, line uint) (err error) {
 
 	// This loop will likely be refactored to a helper when we implement -Q and :EXIT(query)
 	for i := 0; i < n; i++ {
-		s.Format.BeginBatch(s.batch.String(), s.vars, s.GetOutput(), s.GetError())
-		rows, qe := s.db.Query(s.batch.String())
+		query := s.Query
+		if query == "" {
+			query = s.batch.String()
+		}
+		s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
+		rows, qe := s.db.Query(query)
 		if qe != nil {
 			s.Format.AddError(qe)
 		}
@@ -131,12 +132,13 @@ func Go(s *Sqlcmd, args []string, line uint) (err error) {
 		}
 		s.Format.EndBatch()
 	}
+	s.Query = ""
 	s.batch.Reset(nil)
 	return nil
 }
 
 // Changes the output writer to use a file
-func Out(s *Sqlcmd, args []string, line uint) (err error) {
+func Out(s *Sqlcmd, args []string, line uint) error {
 	switch {
 	case strings.EqualFold(args[0], "stdout"):
 		s.SetOutput(nil)

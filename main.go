@@ -96,12 +96,13 @@ func run(vars *variables.Variables) (exitcode int, err error) {
 		return 1, err
 	}
 
-	iactive := Args.Query == "" && Args.InputFile == nil
+	iactive := Args.InputFile == nil
 	line, err := rline.New(!iactive, "", "")
 	if err != nil {
 		return 1, err
 	}
 	defer line.Close()
+
 	s := sqlcmd.New(line, wd, vars)
 	s.Connect.UseTrustedConnection = Args.UseTrustedConnection
 	s.Connect.TrustServerCertificate = Args.TrustServerCertificate
@@ -112,12 +113,19 @@ func run(vars *variables.Variables) (exitcode int, err error) {
 			return 1, err
 		}
 	}
+	once := false
+	if Args.InitialQuery != "" {
+		s.Query = Args.InitialQuery
+	} else if Args.Query != "" {
+		once = true
+		s.Query = Args.Query
+	}
 	err = s.ConnectDb("", "", "", !iactive)
 	if err != nil {
 		return 1, err
 	}
 	if iactive {
-		err = s.Run()
+		err = s.Run(once)
 	}
 	return s.Exitcode, err
 }
