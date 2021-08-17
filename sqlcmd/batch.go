@@ -1,10 +1,11 @@
 package sqlcmd
 
-const MinCapIncrease = 512
+const minCapIncrease = 512
 
 // lineend is the slice to use when appending a line.
 var lineend = []rune{'\n'}
 
+// Batch provides the query text to run
 type Batch struct {
 	// read provides the next chunk of runes
 	read func() ([]rune, error)
@@ -27,6 +28,7 @@ type Batch struct {
 	linecount uint
 }
 
+// NewBatch creates a Batch which converts runes provided by reader into SQL batches
 func NewBatch(reader func() ([]rune, error)) *Batch {
 	b := &Batch{
 		read: reader,
@@ -35,10 +37,12 @@ func NewBatch(reader func() ([]rune, error)) *Batch {
 	return b
 }
 
+// String returns the current SQL batch text
 func (b *Batch) String() string {
 	return string(b.Buffer)
 }
 
+// Reset clears the current batch text and replaces it with new runes
 func (b *Batch) Reset(r []rune) {
 	b.Buffer, b.Length = nil, 0
 	b.quote = 0
@@ -49,6 +53,11 @@ func (b *Batch) Reset(r []rune) {
 	}
 }
 
+// Next processes the next chunk of input and sets the Batch state accordingly.
+// If the input contains a command to run, Next returns the Command and its
+// parameters.
+// Upon exit from Next, the caller can use the State method to determine if
+// it represents a runnable SQL batch text.
 func (b *Batch) Next() (*Command, []string, error) {
 	var err error
 	var i int
@@ -144,7 +153,7 @@ func (b *Batch) Append(r, sep []rune) {
 	// grow
 	if bcap := cap(b.Buffer); tlen > bcap {
 		n := tlen + 2*rlen
-		n += MinCapIncrease - (n % MinCapIncrease)
+		n += minCapIncrease - (n % minCapIncrease)
 		z := make([]rune, blen, n)
 		copy(z, b.Buffer)
 		b.Buffer = z
@@ -156,6 +165,10 @@ func (b *Batch) Append(r, sep []rune) {
 }
 
 // State returns a string representing the state of statement parsing.
+// * Is in the middle of a multi-line comment
+// - Has a non-empty batch ready to run
+// = Is empty
+// ' " Is in the middle of a multi-line quoted string
 func (b *Batch) State() string {
 	switch {
 	case b.quote != 0:

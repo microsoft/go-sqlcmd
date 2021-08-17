@@ -46,7 +46,7 @@ func TestSqlServerSplitsName(t *testing.T) {
 	vars := Variables{
 		SQLCMDSERVER: `tcp:someserver/someinstance`,
 	}
-	serverName, instance, port, err := vars.SqlCmdServer()
+	serverName, instance, port, err := vars.SQLCmdServer()
 	if assert.NoError(t, err, "tcp:server/someinstance") {
 		assert.Equal(t, "someserver", serverName, "server name for instance")
 		assert.Equal(t, uint64(0), port, "port for instance")
@@ -55,7 +55,7 @@ func TestSqlServerSplitsName(t *testing.T) {
 	vars = Variables{
 		SQLCMDSERVER: `tcp:someserver,1111`,
 	}
-	serverName, instance, port, err = vars.SqlCmdServer()
+	serverName, instance, port, err = vars.SQLCmdServer()
 	if assert.NoError(t, err, "tcp:server,1111") {
 		assert.Equal(t, "someserver", serverName, "server name for port number")
 		assert.Equal(t, uint64(1111), port, "port for port number")

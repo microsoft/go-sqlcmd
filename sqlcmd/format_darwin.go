@@ -3,4 +3,5 @@
 
 package sqlcmd
 
+// SqlcmdEol is the end-of-line marker for sqlcmd output
 const SqlcmdEol = "\n"

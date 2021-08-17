@@ -22,9 +22,12 @@ import (
 )
 
 var (
+	// ErrExitRequested tells the hosting application to exit immediately
 	ErrExitRequested = errors.New("exit")
-	ErrNeedPassword  = errors.New("need password")
-	ErrCtrlC         = errors.New(sqlcmderrors.WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
+	// ErrNeedPassword indicates the user should provide a password to enable the connection
+	ErrNeedPassword = errors.New("need password")
+	// ErrCtrlC indicates execution was ended by ctrl-c or ctrl-break
+	ErrCtrlC = errors.New(sqlcmderrors.WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
 )
 
 // ConnectSettings are the settings for connections that can't be
@@ -64,6 +67,8 @@ func New(l rline.IO, workingDirectory string, vars *variables.Variables) *Sqlcmd
 	}
 }
 
+// Run processes all available batches.
+// When once is true it stops after the first query runs.
 func (s *Sqlcmd) Run(once bool) error {
 	setupCloseHandler(s)
 	stderr, iactive := s.GetError(), s.lineIo.Interactive()
@@ -90,9 +95,8 @@ func (s *Sqlcmd) Run(once bool) error {
 			if err == io.EOF {
 				if s.batch.Length == 0 {
 					return lastError
-				} else {
-					execute = true
 				}
+				execute = true
 			} else {
 				return err
 			}
@@ -111,13 +115,15 @@ func (s *Sqlcmd) Run(once bool) error {
 			}
 		}
 		if execute {
-			fmt.Fprintln(s.GetOutput(), "Execute: "+s.batch.String())
+			s.Query = s.batch.String()
+			once = true
 			s.batch.Reset(nil)
 		}
 	}
 	return lastError
 }
 
+// Prompt returns the current user prompt message
 func (s *Sqlcmd) Prompt() string {
 	ch := ">"
 	if s.batch.quote != 0 || s.batch.comment {
@@ -126,10 +132,12 @@ func (s *Sqlcmd) Prompt() string {
 	return fmt.Sprint(s.batch.batchline) + ch + " "
 }
 
+// RunCommand performs the given Command
 func (s *Sqlcmd) RunCommand(cmd *Command, args []string) error {
 	return cmd.action(s, args, s.batch.linecount)
 }
 
+// GetOutput returns the io.Writer to use for non-error output
 func (s *Sqlcmd) GetOutput() io.Writer {
 	if s.out == nil {
 		return s.lineIo.Stdout()
@@ -137,6 +145,7 @@ func (s *Sqlcmd) GetOutput() io.Writer {
 	return s.out
 }
 
+// SetOutput sets the io.WriteCloser to use for non-error output
 func (s *Sqlcmd) SetOutput(o io.WriteCloser) {
 	if s.out != nil {
 		s.out.Close()
@@ -144,6 +153,7 @@ func (s *Sqlcmd) SetOutput(o io.WriteCloser) {
 	s.out = o
 }
 
+// GetError returns the io.Writer to use for errors
 func (s *Sqlcmd) GetError() io.Writer {
 	if s.err == nil {
 		return s.lineIo.Stderr()
@@ -151,6 +161,7 @@ func (s *Sqlcmd) GetError() io.Writer {
 	return s.err
 }
 
+// SetError sets the io.WriteCloser to use for errors
 func (s *Sqlcmd) SetError(e io.WriteCloser) {
 	if s.err != nil {
 		s.err.Close()
@@ -158,8 +169,9 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 	s.err = e
 }
 
+// ConnectionString returns the go-mssql connection string to use for queries
 func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
-	serverName, instance, port, err := s.vars.SqlCmdServer()
+	serverName, instance, port, err := s.vars.SQLCmdServer()
 	if serverName == "" {
 		serverName = "."
 	}
@@ -167,31 +179,31 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 		return "", err
 	}
 	query := url.Values{}
-	connectionUrl := &url.URL{
+	connectionURL := &url.URL{
 		Scheme: "sqlserver",
 		Path:   instance,
 	}
-	useTrustedConnection := s.Connect.UseTrustedConnection || (s.vars.SqlCmdUser() == "" && !s.vars.UseAad())
+	useTrustedConnection := s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && !s.vars.UseAad())
 	if !useTrustedConnection {
-		connectionUrl.User = url.UserPassword(s.vars.SqlCmdUser(), s.vars.Password())
+		connectionURL.User = url.UserPassword(s.vars.SQLCmdUser(), s.vars.Password())
 	}
 	if port > 0 {
-		connectionUrl.Host = fmt.Sprintf("%s:%d", serverName, port)
+		connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)
 	} else {
-		connectionUrl.Host = serverName
+		connectionURL.Host = serverName
 	}
-	if s.vars.SqlCmdDatabase() != "" {
-		query.Add("database", s.vars.SqlCmdDatabase())
+	if s.vars.SQLCmdDatabase() != "" {
+		query.Add("database", s.vars.SQLCmdDatabase())
 	}
 
 	if s.Connect.TrustServerCertificate {
 		query.Add("trustservercertificate", "true")
 	}
-	connectionUrl.RawQuery = query.Encode()
-	return connectionUrl.String(), nil
+	connectionURL.RawQuery = query.Encode()
+	return connectionURL.String(), nil
 }
 
-// Opens a connection to the database with the given modifications to the connection
+// ConnectDb opens a connection to the database with the given modifications to the connection
 func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw bool) error {
 	if user != "" && password == "" && !nopw {
 		return ErrNeedPassword
@@ -202,7 +214,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		return err
 	}
 
-	connectionUrl, err := url.Parse(connstr)
+	connectionURL, err := url.Parse(connstr)
 	if err != nil {
 		return err
 	}
@@ -212,11 +224,11 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		if err != nil {
 			return err
 		}
-		connectionUrl.Path = instance
+		connectionURL.Path = instance
 		if port > 0 {
-			connectionUrl.Host = fmt.Sprintf("%s:%d", serverName, port)
+			connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)
 		} else {
-			connectionUrl.Host = serverName
+			connectionURL.Host = serverName
 		}
 	}
 
@@ -225,10 +237,10 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	}
 
 	if user != "" {
-		connectionUrl.User = url.UserPassword(user, password)
+		connectionURL.User = url.UserPassword(user, password)
 	}
 
-	connector, err := mssql.NewConnector(connectionUrl.String())
+	connector, err := mssql.NewConnector(connectionURL.String())
 	if err != nil {
 		return err
 	}
@@ -251,7 +263,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		if password != "" {
 			s.vars.Set(variables.SQLCMDPASSWORD, password)
 		}
-	} else if s.vars.SqlCmdUser() == "" {
+	} else if s.vars.SQLCmdUser() == "" {
 		u, e := osuser.Current()
 		if e != nil {
 			panic("Unable to get user name")

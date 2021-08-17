@@ -94,7 +94,7 @@ func TestSqlCmdConnectDb(t *testing.T) {
 			u, _ := user.Current()
 			sqlcmduser = u.Username
 		}
-		assert.Equal(t, sqlcmduser, s.vars.SqlCmdUser(), "SQLCMDUSER variable should match connected user")
+		assert.Equal(t, sqlcmduser, s.vars.SQLCmdUser(), "SQLCMDUSER variable should match connected user")
 	}
 }
 
@@ -113,7 +113,7 @@ func TestSqlCmdQueryAndExit(t *testing.T) {
 		return
 	}
 	s := New(line, "", v)
-	s.Format = NewSqlCmdDefaultFormatter(true)
+	s.Format = NewSQLCmdDefaultFormatter(true)
 	s.Query = "select 100"
 	file, err := os.CreateTemp("", "sqlcmdout")
 	if !assert.NoError(t, err, "os.CreateTemp") {

@@ -10,7 +10,10 @@ import (
 	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
 )
 
-func SplitServer(serverName string) (server string, instance string, port uint64, err error) {
+// SplitServer extracts connection parameters from a server name input
+func SplitServer(serverName string) (string, string, uint64, error) {
+	instance := ""
+	port := uint64(0)
 	if strings.HasPrefix(serverName, "tcp:") {
 		if len(serverName) == 4 {
 			return "", "", 0, &sqlcmderrors.InvalidServerName
@@ -41,6 +44,7 @@ func SplitServer(serverName string) (server string, instance string, port uint64
 	return serverName, instance, port, nil
 }
 
+// PadRight appends c instances of s to builder
 func PadRight(builder *strings.Builder, c int64, s string) *strings.Builder {
 	var i int64
 	for ; i < c; i++ {
@@ -49,6 +53,7 @@ func PadRight(builder *strings.Builder, c int64, s string) *strings.Builder {
 	return builder
 }
 
+// PadLeft prepends c instances of s to builder
 func PadLeft(builder *strings.Builder, c int64, s string) *strings.Builder {
 	newBuilder := new(strings.Builder)
 	newBuilder.Grow(builder.Len())

@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-// Commands for sqlcmd are defined at https://docs.microsoft.com/sql/tools/sqlcmd-utility#sqlcmd-commands
 package sqlcmd
 
 import (
@@ -14,6 +13,8 @@ import (
 	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
 )
 
+// Command defines a sqlcmd action which can be intermixed with the SQL batch
+// Commands for sqlcmd are defined at https://docs.microsoft.com/sql/tools/sqlcmd-utility#sqlcmd-commands
 type Command struct {
 	// regex must include at least one group if it has parameters
 	// Will be matched using FindStringSubmatch
@@ -24,6 +25,7 @@ type Command struct {
 	name string
 }
 
+// Commands is the set of Command implementations
 var Commands = map[string]*Command{
 	"QUIT": {
 		regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:[ \t]+(.*$)|$)`),
@@ -61,7 +63,7 @@ func batchTerminatorRegex(terminator string) string {
 	return fmt.Sprintf(`(?im)^[\t ]*?%s(?:[ ]+(.*$)|$)`, regexp.QuoteMeta(terminator))
 }
 
-// Attempts to set the batch terminator to the given value
+// SetBatchTerminator attempts to set the batch terminator to the given value
 // Returns an error if the new value is not usable in the regex
 func SetBatchTerminator(terminator string) error {
 	cmd := Commands["GO"]
@@ -73,7 +75,7 @@ func SetBatchTerminator(terminator string) error {
 	return nil
 }
 
-// Immediately exits the program without running any more batches
+// Quit immediately exits the program without running any more batches
 func Quit(s *Sqlcmd, args []string, line uint) error {
 	if args != nil && strings.TrimSpace(args[0]) != "" {
 		return sqlcmderrors.InvalidCommandError("QUIT", line)
@@ -81,10 +83,10 @@ func Quit(s *Sqlcmd, args []string, line uint) error {
 	return ErrExitRequested
 }
 
-// Runs the current batch the number of times specified
+// Go runs the current batch the number of times specified
 func Go(s *Sqlcmd, args []string, line uint) error {
 	// default to 1 execution
-	var n int = 1
+	n := 1
 	var err error
 	if len(args) > 0 {
 		cnt := strings.TrimSpace(args[0])
@@ -137,7 +139,7 @@ func Go(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
-// Changes the output writer to use a file
+// Out changes the output writer to use a file
 func Out(s *Sqlcmd, args []string, line uint) error {
 	switch {
 	case strings.EqualFold(args[0], "stdout"):
@@ -154,7 +156,7 @@ func Out(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
-// Changes the error writer to use a file
+// Error changes the error writer to use a file
 func Error(s *Sqlcmd, args []string, line uint) error {
 	switch {
 	case strings.EqualFold(args[0], "stderr"):

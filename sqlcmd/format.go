@@ -20,23 +20,35 @@ const (
 	maxPadWidth            = 8000
 )
 
-// Defines methods consumed by the Go command to process query output
+// Formatter defines methods to process query output
 type Formatter interface {
+	// BeginBatch is called before the query runs
 	BeginBatch(query string, vars *variables.Variables, out io.Writer, err io.Writer)
+	// EndBatch is the last function called during batch execution and signals the end of the batch
 	EndBatch()
+	// BeginResultSet is called when a new result set is encountered
 	BeginResultSet([]*sql.ColumnType)
+	// EndResultSet is called after all rows in a result set have been processed
 	EndResultSet()
+	// AddRow is called for each row in a result set
 	AddRow(*sql.Rows)
+	// AddMessage is called for every information message returned by the server during the batch
 	AddMessage(string)
+	// AddError is called for each error encountered during batch execution
 	AddError(err error)
 }
 
+// ControlCharacterBehavior specifies the text handling required for control characters in the output
 type ControlCharacterBehavior int
 
 const (
+	// ControlIgnore preserves control characters in the output
 	ControlIgnore ControlCharacterBehavior = iota
+	// ControlReplace replaces control characters with spaces, 1 space per character
 	ControlReplace
+	// ControlRemove removes control characters from the output
 	ControlRemove
+	// ControlReplaceConsecutive replaces multiple consecutive control characters with a single space
 	ControlReplaceConsecutive
 )
 
@@ -60,8 +72,8 @@ type sqlCmdFormatterType struct {
 	writepos             int64
 }
 
-// returns a Formatter that mimics the original ODBC-based sqlcmd formatter
-func NewSqlCmdDefaultFormatter(removeTrailingSpaces bool) Formatter {
+// NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
+func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool) Formatter {
 	return &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
 	}
