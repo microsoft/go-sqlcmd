@@ -10,7 +10,7 @@ steps:
   inputs:
     command: 'get'
     arguments: '-d'
-    workingDirectory: '$(Build.SourcesDirectory)'
+    workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
 
 
 - task: Go@0
