@@ -1,15 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-package variables
+package sqlcmd
 
 import (
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
-	"github.com/microsoft/go-sqlcmd/util"
 )
 
 // Variables provides set and get of sqlcmd scripting variables
@@ -54,7 +51,7 @@ func (v Variables) checkReadOnly(key string) error {
 	if hasValue {
 		for _, variable := range readOnlyVariables {
 			if variable == key && currentValue != "" {
-				return sqlcmderrors.ReadOnlyVariable(key)
+				return ReadOnlyVariable(key)
 			}
 		}
 	}
@@ -86,7 +83,7 @@ func (v Variables) SQLCmdUser() string {
 // SQLCmdServer returns the server connection parameters derived from the SQLCMDSERVER variable value
 func (v Variables) SQLCmdServer() (serverName string, instance string, port uint64, err error) {
 	serverName = v[SQLCMDSERVER]
-	return util.SplitServer(serverName)
+	return SplitServer(serverName)
 }
 
 // SQLCmdDatabase returns the SQLCMDDBNAME variable value
@@ -206,7 +203,7 @@ func Setvar(name, value string) error {
 // ValidIdentifier determines if a given string can be used as a variable name
 func ValidIdentifier(name string) error {
 	if strings.HasPrefix(name, "$(") || strings.ContainsAny(name, "'\"\t\n\r ") {
-		return sqlcmderrors.InvalidCommandError(":setvar", 0)
+		return InvalidCommandError(":setvar", 0)
 	}
 	return nil
 }

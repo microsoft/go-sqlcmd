@@ -15,9 +15,6 @@ import (
 	"syscall"
 
 	mssql "github.com/denisenkom/go-mssqldb"
-	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
-	"github.com/microsoft/go-sqlcmd/util"
-	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/xo/usql/rline"
 )
 
@@ -27,7 +24,7 @@ var (
 	// ErrNeedPassword indicates the user should provide a password to enable the connection
 	ErrNeedPassword = errors.New("need password")
 	// ErrCtrlC indicates execution was ended by ctrl-c or ctrl-break
-	ErrCtrlC = errors.New(sqlcmderrors.WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
+	ErrCtrlC = errors.New(WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
 )
 
 // ConnectSettings are the settings for connections that can't be
@@ -52,13 +49,13 @@ type Sqlcmd struct {
 	// Exitcode is returned to the operating system when the process exits
 	Exitcode int
 	Connect  ConnectSettings
-	vars     *variables.Variables
+	vars     *Variables
 	Format   Formatter
 	Query    string
 }
 
 // New creates a new Sqlcmd instance
-func New(l rline.IO, workingDirectory string, vars *variables.Variables) *Sqlcmd {
+func New(l rline.IO, workingDirectory string, vars *Variables) *Sqlcmd {
 	return &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
@@ -220,7 +217,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	}
 
 	if server != "" {
-		serverName, instance, port, err := util.SplitServer(server)
+		serverName, instance, port, err := SplitServer(server)
 		if err != nil {
 			return err
 		}
@@ -255,13 +252,13 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	}
 	s.db = db
 	if server != "" {
-		s.vars.Set(variables.SQLCMDSERVER, server)
+		s.vars.Set(SQLCMDSERVER, server)
 	}
 	if user != "" {
-		s.vars.Set(variables.SQLCMDUSER, user)
+		s.vars.Set(SQLCMDUSER, user)
 		s.Connect.UseTrustedConnection = false
 		if password != "" {
-			s.vars.Set(variables.SQLCMDPASSWORD, password)
+			s.vars.Set(SQLCMDPASSWORD, password)
 		}
 	} else if s.vars.SQLCmdUser() == "" {
 		u, e := osuser.Current()
@@ -269,7 +266,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 			panic("Unable to get user name")
 		}
 		s.Connect.UseTrustedConnection = true
-		s.vars.Set(variables.SQLCMDUSER, u.Username)
+		s.vars.Set(SQLCMDUSER, u.Username)
 	}
 
 	if s.batch != nil {

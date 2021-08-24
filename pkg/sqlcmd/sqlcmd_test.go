@@ -11,7 +11,6 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/microsoft/go-sqlcmd/variables"
 	"github.com/stretchr/testify/assert"
 	"github.com/xo/usql/rline"
 )
@@ -19,7 +18,7 @@ import (
 func TestConnectionStringFromSqlCmd(t *testing.T) {
 	type connectionStringTest struct {
 		settings         *ConnectSettings
-		setup            func(*variables.Variables)
+		setup            func(*Variables)
 		connectionString string
 	}
 
@@ -30,41 +29,41 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 		{nil, nil, "sqlserver://."},
 		{
 			&ConnectSettings{TrustServerCertificate: true},
-			func(vars *variables.Variables) {
-				variables.Setvar(variables.SQLCMDDBNAME, "somedatabase")
+			func(vars *Variables) {
+				Setvar(SQLCMDDBNAME, "somedatabase")
 			},
 			"sqlserver://.?database=somedatabase&trustservercertificate=true",
 		},
 		{
 			&ConnectSettings{TrustServerCertificate: true},
-			func(vars *variables.Variables) {
-				vars.Set(variables.SQLCMDSERVER, `someserver/instance`)
-				vars.Set(variables.SQLCMDDBNAME, "somedatabase")
-				vars.Set(variables.SQLCMDUSER, "someuser")
-				vars.Set(variables.SQLCMDPASSWORD, pwd)
+			func(vars *Variables) {
+				vars.Set(SQLCMDSERVER, `someserver/instance`)
+				vars.Set(SQLCMDDBNAME, "somedatabase")
+				vars.Set(SQLCMDUSER, "someuser")
+				vars.Set(SQLCMDPASSWORD, pwd)
 			},
 			fmt.Sprintf("sqlserver://someuser:%s@someserver/instance?database=somedatabase&trustservercertificate=true", pwd),
 		},
 		{
 			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true},
-			func(vars *variables.Variables) {
-				vars.Set(variables.SQLCMDSERVER, `tcp:someserver,1045`)
-				vars.Set(variables.SQLCMDUSER, "someuser")
-				vars.Set(variables.SQLCMDPASSWORD, pwd)
+			func(vars *Variables) {
+				vars.Set(SQLCMDSERVER, `tcp:someserver,1045`)
+				vars.Set(SQLCMDUSER, "someuser")
+				vars.Set(SQLCMDPASSWORD, pwd)
 			},
 			"sqlserver://someserver:1045?trustservercertificate=true",
 		},
 		{
 			nil,
-			func(vars *variables.Variables) {
-				vars.Set(variables.SQLCMDSERVER, `tcp:someserver,1045`)
+			func(vars *Variables) {
+				vars.Set(SQLCMDSERVER, `tcp:someserver,1045`)
 			},
 			"sqlserver://someserver:1045",
 		},
 	}
 
 	for _, test := range commands {
-		v := variables.InitializeVariables(false)
+		v := InitializeVariables(false)
 		if test.setup != nil {
 			test.setup(v)
 		}
@@ -85,11 +84,11 @@ set will be to localhost using Windows auth.
 
 */
 func TestSqlCmdConnectDb(t *testing.T) {
-	v := variables.InitializeVariables(true)
+	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
 	err := s.ConnectDb("", "", "", false)
 	if assert.NoError(t, err, "ConnectDb should succeed") {
-		sqlcmduser := os.Getenv(variables.SQLCMDUSER)
+		sqlcmduser := os.Getenv(SQLCMDUSER)
 		if sqlcmduser == "" {
 			u, _ := user.Current()
 			sqlcmduser = u.Username
@@ -99,15 +98,15 @@ func TestSqlCmdConnectDb(t *testing.T) {
 }
 
 func ConnectDb() (*sql.DB, error) {
-	v := variables.InitializeVariables(true)
+	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
 	err := s.ConnectDb("", "", "", false)
 	return s.db, err
 }
 
 func TestSqlCmdQueryAndExit(t *testing.T) {
-	v := variables.InitializeVariables(true)
-	v.Set(variables.SQLCMDMAXVARTYPEWIDTH, "0")
+	v := InitializeVariables(true)
+	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	line, err := rline.New(false, "", "")
 	if !assert.NoError(t, err, "rline.New") {
 		return

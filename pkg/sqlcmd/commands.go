@@ -9,8 +9,6 @@ import (
 	"regexp"
 	"strings"
 	"syscall"
-
-	"github.com/microsoft/go-sqlcmd/sqlcmderrors"
 )
 
 // Command defines a sqlcmd action which can be intermixed with the SQL batch
@@ -78,7 +76,7 @@ func SetBatchTerminator(terminator string) error {
 // Quit immediately exits the program without running any more batches
 func Quit(s *Sqlcmd, args []string, line uint) error {
 	if args != nil && strings.TrimSpace(args[0]) != "" {
-		return sqlcmderrors.InvalidCommandError("QUIT", line)
+		return InvalidCommandError("QUIT", line)
 	}
 	return ErrExitRequested
 }
@@ -95,7 +93,7 @@ func Go(s *Sqlcmd, args []string, line uint) error {
 		}
 	}
 	if err != nil || n < 1 {
-		return sqlcmderrors.InvalidCommandError("GO", line)
+		return InvalidCommandError("GO", line)
 	}
 
 	// This loop will likely be refactored to a helper when we implement -Q and :EXIT(query)
@@ -149,7 +147,7 @@ func Out(s *Sqlcmd, args []string, line uint) error {
 	default:
 		o, err := os.OpenFile(args[0], os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
-			return sqlcmderrors.InvalidFileError(err, args[0])
+			return InvalidFileError(err, args[0])
 		}
 		s.SetOutput(o)
 	}
@@ -166,7 +164,7 @@ func Error(s *Sqlcmd, args []string, line uint) error {
 	default:
 		o, err := os.OpenFile(args[0], os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
-			return sqlcmderrors.InvalidFileError(err, args[0])
+			return InvalidFileError(err, args[0])
 		}
 		s.SetError(o)
 	}

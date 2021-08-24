@@ -10,8 +10,7 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
-	"github.com/microsoft/go-sqlcmd/sqlcmd"
-	"github.com/microsoft/go-sqlcmd/variables"
+	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/xo/usql/rline"
 )
 
@@ -46,7 +45,7 @@ var args SQLCmdArguments
 
 func main() {
 	kong.Parse(&args)
-	vars := variables.InitializeVariables(!args.DisableCmdAndWarn)
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	setVars(vars, &args)
 
 	exitCode, err := run(vars)
@@ -57,22 +56,22 @@ func main() {
 }
 
 // Initializes scripting variables from command line arguments
-func setVars(vars *variables.Variables, args *SQLCmdArguments) {
+func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 	varmap := map[string]func(*SQLCmdArguments) string{
-		variables.SQLCMDDBNAME:            func(a *SQLCmdArguments) string { return a.DatabaseName },
-		variables.SQLCMDLOGINTIMEOUT:      func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDUSEAAD:            func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDWORKSTATION:       func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDSERVER:            func(a *SQLCmdArguments) string { return a.Server },
-		variables.SQLCMDERRORLEVEL:        func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDPACKETSIZE:        func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDUSER:              func(a *SQLCmdArguments) string { return a.UserName },
-		variables.SQLCMDSTATTIMEOUT:       func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDHEADERS:           func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDCOLSEP:            func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDCOLWIDTH:          func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDMAXVARTYPEWIDTH:   func(a *SQLCmdArguments) string { return "" },
-		variables.SQLCMDMAXFIXEDTYPEWIDTH: func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDDBNAME:            func(a *SQLCmdArguments) string { return a.DatabaseName },
+		sqlcmd.SQLCMDLOGINTIMEOUT:      func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDUSEAAD:            func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDWORKSTATION:       func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDSERVER:            func(a *SQLCmdArguments) string { return a.Server },
+		sqlcmd.SQLCMDERRORLEVEL:        func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDPACKETSIZE:        func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDUSER:              func(a *SQLCmdArguments) string { return a.UserName },
+		sqlcmd.SQLCMDSTATTIMEOUT:       func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDHEADERS:           func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDCOLSEP:            func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDCOLWIDTH:          func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDMAXVARTYPEWIDTH:   func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDMAXFIXEDTYPEWIDTH: func(a *SQLCmdArguments) string { return "" },
 	}
 	for varname, set := range varmap {
 		val := set(args)
@@ -82,7 +81,7 @@ func setVars(vars *variables.Variables, args *SQLCmdArguments) {
 	}
 }
 
-func run(vars *variables.Variables) (exitcode int, err error) {
+func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err

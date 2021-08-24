@@ -11,8 +11,6 @@ import (
 	"time"
 
 	mssql "github.com/denisenkom/go-mssqldb"
-	"github.com/microsoft/go-sqlcmd/util"
-	"github.com/microsoft/go-sqlcmd/variables"
 )
 
 const (
@@ -23,7 +21,7 @@ const (
 // Formatter defines methods to process query output
 type Formatter interface {
 	// BeginBatch is called before the query runs
-	BeginBatch(query string, vars *variables.Variables, out io.Writer, err io.Writer)
+	BeginBatch(query string, vars *Variables, out io.Writer, err io.Writer)
 	// EndBatch is the last function called during batch execution and signals the end of the batch
 	EndBatch()
 	// BeginResultSet is called when a new result set is encountered
@@ -63,7 +61,7 @@ type columnDetail struct {
 type sqlCmdFormatterType struct {
 	out                  io.Writer
 	err                  io.Writer
-	vars                 *variables.Variables
+	vars                 *Variables
 	colsep               string
 	removeTrailingSpaces bool
 	ccb                  ControlCharacterBehavior
@@ -112,7 +110,7 @@ func (f *sqlCmdFormatterType) WriteOut(s string) {
 
 // Stores the settings to use for processing the current batch
 // TODO: add a third io.Writer for messages when we add -r support
-func (f *sqlCmdFormatterType) BeginBatch(_ string, vars *variables.Variables, out io.Writer, err io.Writer) {
+func (f *sqlCmdFormatterType) BeginBatch(_ string, vars *Variables, out io.Writer, err io.Writer) {
 	f.out = out
 	f.err = err
 	f.vars = vars
@@ -194,20 +192,20 @@ func (f *sqlCmdFormatterType) printColumnHeadings() {
 				// special case for unnamed columns when using -W
 				// print a single -
 				rightPad = 1
-				sep = util.PadRight(sep, 1, "-")
+				sep = PadRight(sep, 1, "-")
 			} else {
-				sep = util.PadRight(sep, nameLen, "-")
+				sep = PadRight(sep, nameLen, "-")
 			}
 		} else {
 			length := min64(c.displayWidth, maxPadWidth)
 			if nameLen < length {
 				rightPad = length - nameLen
 			}
-			sep = util.PadRight(sep, length, "-")
+			sep = PadRight(sep, length, "-")
 		}
-		names = util.PadRight(names, leftPad, " ")
+		names = PadRight(names, leftPad, " ")
 		names.WriteString(c.col.Name()[:min64(nameLen, c.displayWidth)])
-		names = util.PadRight(names, rightPad, " ")
+		names = PadRight(names, rightPad, " ")
 		if i != len(f.columnDetails)-1 {
 			names.WriteString(f.colsep)
 			sep.WriteString(f.colsep)
@@ -440,9 +438,9 @@ func (f *sqlCmdFormatterType) printColumnValue(val string, col int) {
 			padding := c.displayWidth - min64(c.displayWidth, int64(len(r)))
 			if padding > 0 {
 				if c.leftJustify {
-					s = util.PadRight(s, padding, " ")
+					s = PadRight(s, padding, " ")
 				} else {
-					s = util.PadLeft(s, padding, " ")
+					s = PadLeft(s, padding, " ")
 				}
 			}
 		}
