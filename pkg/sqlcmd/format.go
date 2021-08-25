@@ -215,8 +215,8 @@ func (f *sqlCmdFormatterType) printColumnHeadings() {
 	sep.WriteString(SqlcmdEol)
 	names = fitToScreen(names, f.vars.ScreenWidth())
 	sep = fitToScreen(sep, f.vars.ScreenWidth())
-	f.out.Write([]byte(names.String()))
-	f.out.Write([]byte(sep.String()))
+	f.mustWriteOut(names.String())
+	f.mustWriteOut(sep.String())
 }
 
 // Wraps the input string every width characters when width > 0

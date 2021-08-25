@@ -133,6 +133,7 @@ func isSpaceOrControl(r rune) bool {
 	return unicode.IsSpace(r) || unicode.IsControl(r)
 }
 
+/*
 // runesLastIndex returns the last index in r of needle, or -1 if not found.
 func runesLastIndex(r []rune, needle rune) int {
 	i := len(r) - 1
@@ -143,3 +144,4 @@ func runesLastIndex(r []rune, needle rune) int {
 	}
 	return i
 }
+*/
