@@ -30,7 +30,7 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 		{
 			&ConnectSettings{TrustServerCertificate: true},
 			func(vars *Variables) {
-				Setvar(SQLCMDDBNAME, "somedatabase")
+				_ = Setvar(SQLCMDDBNAME, "somedatabase")
 			},
 			"sqlserver://.?database=somedatabase&trustservercertificate=true",
 		},
