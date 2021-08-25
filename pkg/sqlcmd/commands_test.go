@@ -10,9 +10,9 @@ import (
 
 func TestQuitCommand(t *testing.T) {
 	s := &Sqlcmd{}
-	err := Quit(s, nil, 1)
+	err := quitCommand(s, nil, 1)
 	require.ErrorIs(t, err, ErrExitRequested)
-	err = Quit(s, []string{"extra parameters"}, 2)
+	err = quitCommand(s, []string{"extra parameters"}, 2)
 	require.Error(t, err, "Quit should error out with extra parameters")
 	assert.NotErrorIs(t, err, ErrExitRequested, "Error with extra arguments")
 }

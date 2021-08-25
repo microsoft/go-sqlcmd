@@ -83,7 +83,7 @@ func (v Variables) SQLCmdUser() string {
 // SQLCmdServer returns the server connection parameters derived from the SQLCMDSERVER variable value
 func (v Variables) SQLCmdServer() (serverName string, instance string, port uint64, err error) {
 	serverName = v[SQLCMDSERVER]
-	return SplitServer(serverName)
+	return splitServer(serverName)
 }
 
 // SQLCmdDatabase returns the SQLCMDDBNAME variable value

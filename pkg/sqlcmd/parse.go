@@ -13,6 +13,17 @@ func grab(r []rune, i, end int) rune {
 	return 0
 }
 
+// findNonSpace finds first non space rune in r, returning end if not found.
+func findNonSpace(r []rune, i, end int) (int, bool) {
+	for ; i < end; i++ {
+		if !isSpaceOrControl(r[i]) {
+			return i, true
+		}
+	}
+	return i, false
+}
+
+/*
 // findSpace finds first space rune in r, returning end if not found.
 func findSpace(r []rune, i, end int) (int, bool) {
 	for ; i < end; i++ {
@@ -23,15 +34,6 @@ func findSpace(r []rune, i, end int) (int, bool) {
 	return i, false
 }
 
-// findNonSpace finds first non space rune in r, returning end if not found.
-func findNonSpace(r []rune, i, end int) (int, bool) {
-	for ; i < end; i++ {
-		if !IsSpaceOrControl(r[i]) {
-			return i, true
-		}
-	}
-	return i, false
-}
 
 // findRune finds the next rune c in r, returning end if not found.
 func findRune(r []rune, i, end int, c rune) (int, bool) {
@@ -42,6 +44,8 @@ func findRune(r []rune, i, end int, c rune) (int, bool) {
 	}
 	return i, false
 }
+
+*/
 
 // isEmptyLine returns true when r is empty or composed of only whitespace.
 func isEmptyLine(r []rune, i, end int) bool {
@@ -101,22 +105,7 @@ func readCommand(r []rune, i, end int) (*Command, []string, int) {
 	return cmd, args, i
 }
 
-// max returns the maximum of a, b.
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 func max64(a, b int64) int64 {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func umax(a, b uint) uint {
 	if a > b {
 		return a
 	}
@@ -138,21 +127,14 @@ func min64(a, b int64) int64 {
 	return b
 }
 
-func umin(a, b uint) uint {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-// IsSpaceOrControl is a special test for either a space or a control (ie, \b)
+// isSpaceOrControl is a special test for either a space or a control (ie, \b)
 // characters.
-func IsSpaceOrControl(r rune) bool {
+func isSpaceOrControl(r rune) bool {
 	return unicode.IsSpace(r) || unicode.IsControl(r)
 }
 
-// RunesLastIndex returns the last index in r of needle, or -1 if not found.
-func RunesLastIndex(r []rune, needle rune) int {
+// runesLastIndex returns the last index in r of needle, or -1 if not found.
+func runesLastIndex(r []rune, needle rune) int {
 	i := len(r) - 1
 	for ; i >= 0; i-- {
 		if r[i] == needle {

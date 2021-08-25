@@ -78,21 +78,21 @@ func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool) Formatter {
 }
 
 // Adds the given string to the current line, wrapping it based on the screen width setting
-func (f *sqlCmdFormatterType) WriteOut(s string) {
+func (f *sqlCmdFormatterType) writeOut(s string) {
 	w := f.vars.ScreenWidth()
 	if w == 0 {
-		f.out.Write([]byte(s))
+		f.mustWriteOut(s)
 		return
 	}
 
 	r := []rune(s)
 	for i := 0; true; {
 		if i == len(r) {
-			f.out.Write([]byte(string(r)))
+			f.mustWriteOut(string(r))
 			return
 		} else if f.writepos == w {
-			f.out.Write([]byte(string(r[:i])))
-			f.out.Write([]byte(SqlcmdEol))
+			f.mustWriteOut(string(r[:i]))
+			f.mustWriteOut(SqlcmdEol)
 			r = []rune(string(r[i:]))
 			f.writepos = 0
 			i = 0
@@ -133,7 +133,7 @@ func (f *sqlCmdFormatterType) BeginResultSet(cols []*sql.ColumnType) {
 
 // Writes a blank line to the designated output writer
 func (f *sqlCmdFormatterType) EndResultSet() {
-	f.WriteOut(SqlcmdEol)
+	f.writeOut(SqlcmdEol)
 }
 
 // Writes the current row to the designated output writer
@@ -142,24 +142,24 @@ func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) {
 	f.writepos = 0
 	values, err := f.scanRow(row)
 	if err != nil {
-		f.err.Write([]byte(err.Error()))
+		f.mustWriteErr(err.Error())
 		return
 	}
 
 	// values are the full values, look at the displaywidth of each column and truncate accordingly
 	for i, v := range values {
 		if i > 0 {
-			f.WriteOut(f.vars.ColumnSeparator())
+			f.writeOut(f.vars.ColumnSeparator())
 		}
 		f.printColumnValue(v, i)
 	}
 	f.rowcount++
 	gap := f.vars.RowsBetweenHeaders()
 	if gap > 0 && (int64(f.rowcount)%gap == 0) {
-		f.WriteOut(SqlcmdEol)
+		f.writeOut(SqlcmdEol)
 		f.printColumnHeadings()
 	}
-	f.WriteOut(SqlcmdEol)
+	f.writeOut(SqlcmdEol)
 }
 
 // Writes a non-error message to the designated message writer
@@ -176,7 +176,7 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 	}
 	b.WriteString(msg)
 	b.WriteString(SqlcmdEol)
-	f.err.Write([]byte(fitToScreen(b, f.vars.ScreenWidth()).String()))
+	f.mustWriteErr(fitToScreen(b, f.vars.ScreenWidth()).String())
 }
 
 // Prints column headings based on columnDetail, variables, and command line arguments
@@ -192,20 +192,20 @@ func (f *sqlCmdFormatterType) printColumnHeadings() {
 				// special case for unnamed columns when using -W
 				// print a single -
 				rightPad = 1
-				sep = PadRight(sep, 1, "-")
+				sep = padRight(sep, 1, "-")
 			} else {
-				sep = PadRight(sep, nameLen, "-")
+				sep = padRight(sep, nameLen, "-")
 			}
 		} else {
 			length := min64(c.displayWidth, maxPadWidth)
 			if nameLen < length {
 				rightPad = length - nameLen
 			}
-			sep = PadRight(sep, length, "-")
+			sep = padRight(sep, length, "-")
 		}
-		names = PadRight(names, leftPad, " ")
+		names = padRight(names, leftPad, " ")
 		names.WriteString(c.col.Name()[:min64(nameLen, c.displayWidth)])
-		names = PadRight(names, rightPad, " ")
+		names = padRight(names, rightPad, " ")
 		if i != len(f.columnDetails)-1 {
 			names.WriteString(f.colsep)
 			sep.WriteString(f.colsep)
@@ -438,9 +438,9 @@ func (f *sqlCmdFormatterType) printColumnValue(val string, col int) {
 			padding := c.displayWidth - min64(c.displayWidth, int64(len(r)))
 			if padding > 0 {
 				if c.leftJustify {
-					s = PadRight(s, padding, " ")
+					s = padRight(s, padding, " ")
 				} else {
-					s = PadLeft(s, padding, " ")
+					s = padLeft(s, padding, " ")
 				}
 			}
 		}
@@ -451,7 +451,21 @@ func (f *sqlCmdFormatterType) printColumnValue(val string, col int) {
 		s.Reset()
 		s.WriteString(string(r[:c.displayWidth]))
 	}
-	f.WriteOut(s.String())
+	f.writeOut(s.String())
+}
+
+func (f *sqlCmdFormatterType) mustWriteOut(s string) {
+	_, err := f.out.Write([]byte(s))
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (f *sqlCmdFormatterType) mustWriteErr(s string) {
+	_, err := f.err.Write([]byte(s))
+	if err != nil {
+		panic(err)
+	}
 }
 
 func isLargeVariableType(col *sql.ColumnType) bool {

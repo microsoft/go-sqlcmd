@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-// SplitServer extracts connection parameters from a server name input
-func SplitServer(serverName string) (string, string, uint64, error) {
+// splitServer extracts connection parameters from a server name input
+func splitServer(serverName string) (string, string, uint64, error) {
 	instance := ""
 	port := uint64(0)
 	if strings.HasPrefix(serverName, "tcp:") {
@@ -42,8 +42,8 @@ func SplitServer(serverName string) (string, string, uint64, error) {
 	return serverName, instance, port, nil
 }
 
-// PadRight appends c instances of s to builder
-func PadRight(builder *strings.Builder, c int64, s string) *strings.Builder {
+// padRight appends c instances of s to builder
+func padRight(builder *strings.Builder, c int64, s string) *strings.Builder {
 	var i int64
 	for ; i < c; i++ {
 		builder.WriteString(s)
@@ -51,8 +51,8 @@ func PadRight(builder *strings.Builder, c int64, s string) *strings.Builder {
 	return builder
 }
 
-// PadLeft prepends c instances of s to builder
-func PadLeft(builder *strings.Builder, c int64, s string) *strings.Builder {
+// padLeft prepends c instances of s to builder
+func padLeft(builder *strings.Builder, c int64, s string) *strings.Builder {
 	newBuilder := new(strings.Builder)
 	newBuilder.Grow(builder.Len())
 	var i int64

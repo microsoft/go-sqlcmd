@@ -124,7 +124,7 @@ parse:
 			st, _ = findNonSpace(b.raw, 0, i)
 		}
 		// log.Printf(">> appending: `%s`", string(r[st:i]))
-		b.Append(b.raw[st:i], lineend)
+		b.append(b.raw[st:i], lineend)
 		b.batchline++
 	}
 	b.raw = b.raw[i:]
@@ -133,15 +133,15 @@ parse:
 	return command, args, nil
 }
 
-// Append appends r to b.Buffer separated by sep when b.Buffer is not already empty.
+// append appends r to b.Buffer separated by sep when b.Buffer is not already empty.
 //
 // Dynamically grows b.Buf as necessary to accommodate r and the separator.
 // Specifically, when b.Buf is not empty, b.Buf will grow by increments of
 // MinCapIncrease.
 //
-// After a call to Append, b.Len will be len(b.Buf)+len(sep)+len(r). Call Reset
+// After a call to append, b.Len will be len(b.Buf)+len(sep)+len(r). Call Reset
 // to reset the Buf.
-func (b *Batch) Append(r, sep []rune) {
+func (b *Batch) append(r, sep []rune) {
 	rlen := len(r)
 	// initial
 	if b.Buffer == nil {

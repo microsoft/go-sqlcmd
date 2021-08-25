@@ -27,22 +27,22 @@ type Command struct {
 var Commands = map[string]*Command{
 	"QUIT": {
 		regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:[ \t]+(.*$)|$)`),
-		action: Quit,
+		action: quitCommand,
 		name:   "QUIT",
 	},
 	"GO": {
 		regex:  regexp.MustCompile(batchTerminatorRegex("GO")),
-		action: Go,
+		action: goCommand,
 		name:   "GO",
 	},
 	"OUT": {
 		regex:  regexp.MustCompile(`(?im)^[ \t]*:OUT(?:[ \t]+(.*$)|$)`),
-		action: Out,
+		action: outCommand,
 		name:   "OUT",
 	},
 	"ERROR": {
 		regex:  regexp.MustCompile(`(?im)^[ \t]*:ERROR(?:[ \t]+(.*$)|$)`),
-		action: Error,
+		action: errorCommand,
 		name:   "ERROR",
 	},
 }
@@ -73,16 +73,16 @@ func SetBatchTerminator(terminator string) error {
 	return nil
 }
 
-// Quit immediately exits the program without running any more batches
-func Quit(s *Sqlcmd, args []string, line uint) error {
+// quitCommand immediately exits the program without running any more batches
+func quitCommand(s *Sqlcmd, args []string, line uint) error {
 	if args != nil && strings.TrimSpace(args[0]) != "" {
 		return InvalidCommandError("QUIT", line)
 	}
 	return ErrExitRequested
 }
 
-// Go runs the current batch the number of times specified
-func Go(s *Sqlcmd, args []string, line uint) error {
+// goCommand runs the current batch the number of times specified
+func goCommand(s *Sqlcmd, args []string, line uint) error {
 	// default to 1 execution
 	n := 1
 	var err error
@@ -137,8 +137,8 @@ func Go(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
-// Out changes the output writer to use a file
-func Out(s *Sqlcmd, args []string, line uint) error {
+// outCommand changes the output writer to use a file
+func outCommand(s *Sqlcmd, args []string, line uint) error {
 	switch {
 	case strings.EqualFold(args[0], "stdout"):
 		s.SetOutput(nil)
@@ -154,8 +154,8 @@ func Out(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
-// Error changes the error writer to use a file
-func Error(s *Sqlcmd, args []string, line uint) error {
+// errorCommand changes the error writer to use a file
+func errorCommand(s *Sqlcmd, args []string, line uint) error {
 	switch {
 	case strings.EqualFold(args[0], "stderr"):
 		s.SetError(nil)

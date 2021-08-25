@@ -4,8 +4,6 @@
 package main
 
 import (
-	//"database/sql"
-
 	"fmt"
 	"os"
 
@@ -108,7 +106,7 @@ func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 	s.Connect.TrustServerCertificate = args.TrustServerCertificate
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
-		err = sqlcmd.Out(s, []string{args.OutputFile}, 0)
+		err = s.RunCommand(sqlcmd.Commands["OUT"], []string{args.OutputFile})
 		if err != nil {
 			return 1, err
 		}

@@ -217,7 +217,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	}
 
 	if server != "" {
-		serverName, instance, port, err := SplitServer(server)
+		serverName, instance, port, err := splitServer(server)
 		if err != nil {
 			return err
 		}
@@ -276,11 +276,11 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 }
 
 func setupCloseHandler(s *Sqlcmd) {
-	c := make(chan os.Signal)
+	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		s.GetOutput().Write([]byte(ErrCtrlC.Error()))
+		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error()))
 		os.Exit(0)
 	}()
 }
