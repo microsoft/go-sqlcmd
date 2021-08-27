@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"bufio"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -56,17 +57,23 @@ type Sqlcmd struct {
 
 // New creates a new Sqlcmd instance
 func New(l rline.IO, workingDirectory string, vars *Variables) *Sqlcmd {
-	return &Sqlcmd{
+	s := &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
-		batch:            NewBatch(l.Next),
 		vars:             vars,
 	}
+	s.batch = NewBatch(s.scanNext)
+	return s
+}
+
+func (s *Sqlcmd) scanNext() ([]rune, error) {
+	return s.lineIo.Next()
 }
 
 // Run processes all available batches.
 // When once is true it stops after the first query runs.
-func (s *Sqlcmd) Run(once bool) error {
+// When processAll is true it executes any remaining batch content when reaching EOF
+func (s *Sqlcmd) Run(once bool, processAll bool) error {
 	setupCloseHandler(s)
 	stderr, iactive := s.GetError(), s.lineIo.Interactive()
 	var lastError error
@@ -94,7 +101,10 @@ func (s *Sqlcmd) Run(once bool) error {
 				if s.batch.Length == 0 {
 					return lastError
 				}
-				execute = true
+				execute = processAll
+				if !execute {
+					return nil
+				}
 			} else {
 				return err
 			}
@@ -102,8 +112,6 @@ func (s *Sqlcmd) Run(once bool) error {
 		if cmd != nil {
 			err = s.RunCommand(cmd, args)
 			if err == ErrExitRequested || once {
-				s.SetOutput(nil)
-				s.SetError(nil)
 				break
 			}
 			if err != nil {
@@ -274,6 +282,43 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		s.batch.batchline = 1
 	}
 	return nil
+}
+
+// IncludeFile opens the given file and processes its batches
+// When processAll is true text not followed by a go statement is run as a query
+func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	b := s.batch.batchline
+	scanner := bufio.NewScanner(f)
+	curLine := s.lineIo
+	l := &rline.Rline{
+		N: func() ([]rune, error) {
+			if !scanner.Scan() {
+				err := scanner.Err()
+				if err == nil {
+					return nil, io.EOF
+				}
+				return nil, err
+			}
+			return []rune(scanner.Text()), nil
+		},
+		Out: s.lineIo.Stdout(),
+		Err: s.lineIo.Stderr(),
+		Pw:  s.lineIo.Password,
+	}
+	s.lineIo = l
+	err = s.Run(false, processAll)
+	s.lineIo = curLine
+	if s.batch.State() == "=" {
+		s.batch.batchline = 1
+	} else {
+		s.batch.batchline = b + 1
+	}
+	return err
 }
 
 func setupCloseHandler(s *Sqlcmd) {

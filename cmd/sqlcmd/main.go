@@ -34,6 +34,14 @@ type SQLCmdArguments struct {
 	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
 }
 
+// Create SQLCmdArguments with default values
+// Any parameter with a "default" Kong attribute should have an assignment here
+func newArguments() SQLCmdArguments {
+	return SQLCmdArguments{
+		BatchTerminator: "GO",
+	}
+}
+
 // Breaking changes in command line are listed here.
 // Any switch not listed in breaking changes and not also included in SqlCmdArguments just has not been implemented yet
 // 1. -P: Passwords have to be provided through SQLCMDPASSWORD environment variable or typed when prompted
@@ -123,7 +131,17 @@ func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 		return 1, err
 	}
 	if iactive {
-		err = s.Run(once)
+		err = s.Run(once, false)
+	} else {
+		for f := range args.InputFile {
+			fmt.Println(args.InputFile[f])
+			err = s.IncludeFile(args.InputFile[f], true)
+			if err != nil {
+				break
+			}
+		}
 	}
+	s.SetOutput(nil)
+	s.SetError(nil)
 	return s.Exitcode, err
 }

@@ -105,27 +105,10 @@ func ConnectDb() (*sql.DB, error) {
 }
 
 func TestSqlCmdQueryAndExit(t *testing.T) {
-	v := InitializeVariables(true)
-	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
-	line, err := rline.New(false, "", "")
-	if !assert.NoError(t, err, "rline.New") {
-		return
-	}
-	s := New(line, "", v)
-	s.Format = NewSQLCmdDefaultFormatter(true)
-	s.Query = "select 100"
-	file, err := os.CreateTemp("", "sqlcmdout")
-	if !assert.NoError(t, err, "os.CreateTemp") {
-		return
-	}
-	defer file.Close()
+	s, file := setupSqlcmdWithFileOutput(t)
 	defer os.Remove(file.Name())
-	s.SetOutput(file)
-	err = s.ConnectDb("", "", "", true)
-	if !assert.NoError(t, err, "s.ConnectDB") {
-		return
-	}
-	err = s.Run(true)
+	s.Query = "select 100"
+	err := s.Run(true, false)
 	if assert.NoError(t, err, "s.Run(once = true)") {
 		s.SetOutput(nil)
 		bytes, err := os.ReadFile(file.Name())
@@ -133,4 +116,78 @@ func TestSqlCmdQueryAndExit(t *testing.T) {
 			assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
 		}
 	}
+}
+
+// Simulate :r command
+func TestIncludeFileNoExecutions(t *testing.T) {
+	s, file := setupSqlcmdWithFileOutput(t)
+	defer os.Remove(file.Name())
+	dataPath := "testdata" + string(os.PathSeparator)
+	err := s.IncludeFile(dataPath+"singlebatchnogo.sql", false)
+	s.SetOutput(nil)
+	if assert.NoError(t, err, "IncludeFile singlebatchnogo.sql false") {
+		assert.Equal(t, "-", s.batch.State(), "s.batch.State() after IncludeFile singlebatchnogo.sql false")
+		assert.Equal(t, "select 100 as num\nselect 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile singlebatchnogo.sql false")
+		bytes, err := os.ReadFile(file.Name())
+		if assert.NoError(t, err, "os.ReadFile") {
+			assert.Equal(t, "", string(bytes), "Incorrect output from Run")
+		}
+		file, err = os.CreateTemp("", "sqlcmdout")
+		assert.NoError(t, err, "os.CreateTemp")
+		s.SetOutput(file)
+		// The second file has a go so it will execute all statements before it
+		err = s.IncludeFile(dataPath+"twobatchnoendinggo.sql", false)
+		if assert.NoError(t, err, "IncludeFile twobatchnoendinggo.sql false") {
+			assert.Equal(t, "-", s.batch.State(), "s.batch.State() after IncludeFile twobatchnoendinggo.sql false")
+			assert.Equal(t, "select 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile twobatchnoendinggo.sql false")
+			bytes, err := os.ReadFile(file.Name())
+			if assert.NoError(t, err, "os.ReadFile") {
+				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+			}
+		}
+	}
+}
+
+// Simulate -i command line usage
+func TestIncludeFileProcessAll(t *testing.T) {
+	s, file := setupSqlcmdWithFileOutput(t)
+	defer os.Remove(file.Name())
+	dataPath := "testdata" + string(os.PathSeparator)
+	err := s.IncludeFile(dataPath+"twobatchwithgo.sql", true)
+	s.SetOutput(nil)
+	if assert.NoError(t, err, "IncludeFile twobatchwithgo.sql true") {
+		assert.Equal(t, "=", s.batch.State(), "s.batch.State() after IncludeFile twobatchwithgo.sql true")
+		assert.Equal(t, "", s.batch.String(), "s.batch.String() after IncludeFile twobatchwithgo.sql true")
+		bytes, err := os.ReadFile(file.Name())
+		if assert.NoError(t, err, "os.ReadFile") {
+			assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+		}
+		file, err = os.CreateTemp("", "sqlcmdout")
+		defer os.Remove(file.Name())
+		assert.NoError(t, err, "os.CreateTemp")
+		s.SetOutput(file)
+		err = s.IncludeFile(dataPath+"twobatchnoendinggo.sql", true)
+		if assert.NoError(t, err, "IncludeFile twobatchnoendinggo.sql true") {
+			assert.Equal(t, "=", s.batch.State(), "s.batch.State() after IncludeFile twobatchnoendinggo.sql true")
+			assert.Equal(t, "", s.batch.String(), "s.batch.String() after IncludeFile twobatchnoendinggo.sql true")
+			bytes, err := os.ReadFile(file.Name())
+			if assert.NoError(t, err, "os.ReadFile") {
+				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+			}
+		}
+	}
+}
+func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
+	v := InitializeVariables(true)
+	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
+	line, err := rline.New(false, "", "")
+	assert.NoError(t, err, "rline.New")
+	s := New(line, "", v)
+	s.Format = NewSQLCmdDefaultFormatter(true)
+	file, err := os.CreateTemp("", "sqlcmdout")
+	assert.NoError(t, err, "os.CreateTemp")
+	s.SetOutput(file)
+	err = s.ConnectDb("", "", "", true)
+	assert.NoError(t, err, "s.ConnectDB")
+	return s, file
 }

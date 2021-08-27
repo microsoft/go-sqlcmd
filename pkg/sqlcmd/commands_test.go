@@ -48,7 +48,11 @@ func TestCommandParsing(t *testing.T) {
 }
 
 func TestCustomBatchSeparator(t *testing.T) {
+	// Maybe the Commands list should not be global, in case we want to run tests in parallel
 	err := SetBatchTerminator("me!")
+	defer func() {
+		_ = SetBatchTerminator("GO")
+	}()
 	if assert.NoError(t, err, "SetBatchTerminator should succeed") {
 		cmd, args := matchCommand("  me! 5 \n")
 		if assert.NotNil(t, cmd, "matchCommand didn't find GO for custom batch separator") {
