@@ -113,3 +113,24 @@ func TestRunInputFiles(t *testing.T) {
 		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+"100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
 	}
 }
+
+func TestQueryAndExit(t *testing.T) {
+	o, err := os.CreateTemp("", "sqlcmdmain")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(o.Name())
+	defer o.Close()
+	args = newArguments()
+	args.Query = "SELECT 100"
+	args.OutputFile = o.Name()
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
+	setVars(vars, &args)
+
+	exitCode, err := run(vars)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	bytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+	}
+}

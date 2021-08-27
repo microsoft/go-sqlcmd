@@ -92,15 +92,6 @@ func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 	if err != nil {
 		return 1, err
 	}
-	if args.BatchTerminator != "GO" {
-		err = sqlcmd.SetBatchTerminator(args.BatchTerminator)
-		if err != nil {
-			err = fmt.Errorf("invalid batch terminator '%s'", args.BatchTerminator)
-		}
-	}
-	if err != nil {
-		return 1, err
-	}
 
 	iactive := args.InputFile == nil
 	line, err := rline.New(!iactive, "", "")
@@ -110,11 +101,20 @@ func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 	defer line.Close()
 
 	s := sqlcmd.New(line, wd, vars)
+	if args.BatchTerminator != "GO" {
+		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
+		if err != nil {
+			err = fmt.Errorf("invalid batch terminator '%s'", args.BatchTerminator)
+		}
+	}
+	if err != nil {
+		return 1, err
+	}
 	s.Connect.UseTrustedConnection = args.UseTrustedConnection
 	s.Connect.TrustServerCertificate = args.TrustServerCertificate
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
-		err = s.RunCommand(sqlcmd.Commands["OUT"], []string{args.OutputFile})
+		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {
 			return 1, err
 		}

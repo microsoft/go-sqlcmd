@@ -53,6 +53,7 @@ type Sqlcmd struct {
 	vars     *Variables
 	Format   Formatter
 	Query    string
+	Cmd      Commands
 }
 
 // New creates a new Sqlcmd instance
@@ -61,8 +62,9 @@ func New(l rline.IO, workingDirectory string, vars *Variables) *Sqlcmd {
 		lineIo:           l,
 		workingDirectory: workingDirectory,
 		vars:             vars,
+		Cmd:              newCommands(),
 	}
-	s.batch = NewBatch(s.scanNext)
+	s.batch = NewBatch(s.scanNext, s.Cmd)
 	return s
 }
 
@@ -86,7 +88,7 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 		var args []string
 		var err error
 		if s.Query != "" {
-			cmd = Commands["GO"]
+			cmd = s.Cmd["GO"]
 			args = make([]string, 0)
 		} else {
 			cmd, args, err = s.batch.Next()
