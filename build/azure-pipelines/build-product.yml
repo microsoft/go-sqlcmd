@@ -1,3 +1,4 @@
+trigger: none
 stages:
   - stage: Compile
     displayName: Compile sqlcmd on all 3 platforms
