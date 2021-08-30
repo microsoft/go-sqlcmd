@@ -24,9 +24,9 @@ stages:
   - stage: CreatePackages
     displayName: Create packages to publish
     jobs:
-    - job: 
+    - job: Sign_and_pack
       pool:
-        vmImage:'windows-latest'
+        vmImage: 'windows-latest'
       steps:
       - task: PowerShell@2
         displayName: Set last tag to variable
