@@ -98,7 +98,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Zip Windows binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindows_NT'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindows_NT\Sqlcmd.exe'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows.zip'
