@@ -1,0 +1,17 @@
+stages:
+  - stage: Compile
+    displayName: Compile sqlcmd on all 3 platforms
+    jobs:
+    - job: Compile sqlcmd
+      strategy:
+        matrix:
+          linux:
+            imageName: 'ubuntu-latest'
+          mac:
+            imageName: 'macOS-latest'
+          windows:
+            imageName: 'windows-latest'
+      pool:
+        vmImage: $(imageName)
+      steps:
+        - template: build-common.yml
