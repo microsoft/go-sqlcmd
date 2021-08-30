@@ -2,7 +2,7 @@ stages:
   - stage: Compile
     displayName: Compile sqlcmd on all 3 platforms
     jobs:
-    - job: Compile sqlcmd
+    - job: Compile_sqlcmd
       strategy:
         matrix:
           linux:
