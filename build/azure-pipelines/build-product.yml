@@ -1,4 +1,8 @@
-trigger: none
+trigger: 
+  tags:
+    include:
+      - v0.*
+
 stages:
   - stage: Compile
     displayName: Compile sqlcmd on all 3 platforms
@@ -16,3 +20,110 @@ stages:
         vmImage: $(imageName)
       steps:
         - template: build-common.yml
+
+  - stage: CreatePackages
+    displayName: Create packages to publish
+    jobs:
+    - job: 
+        pool:
+          vmImage:'windows-latest'
+        steps:
+        - task: PowerShell@2
+          displayName: Set last tag to variable
+          inputs:
+            targetType: 'inline'
+            script: |
+              $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
+              Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
+              Write-Host($VERSION_TAG)
+
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            buildType: 'current'
+            targetPath: '$(Pipeline.Workspace)'
+        
+        - task: EsrpCodeSigning@1
+          displayName: Sign Windows binary
+          inputs:
+            ConnectedServiceName: 'Code Signing'
+            FolderPath: '$(Pipeline.Workspace)\SqlcmdWindows_NT'
+            Pattern: '*.exe'
+            signConfigType: 'inlineSignParams'
+            SessionTimeout: '600'
+            MaxConcurrency: '5'
+            MaxRetryAttempts: '5'
+            inlineOperation: |
+              [
+                {
+                  "keyCode": "CP-230012",
+                  "operationSetCode": "SigntoolSign",
+                  "parameters": [
+                  {
+                    "parameterName": "OpusName",
+                    "parameterValue": "go-sqlcmd"
+                  },
+                  {
+                    "parameterName": "OpusInfo",
+                    "parameterValue": "https://github.com/microsoft/go-sqlcmd"
+                  },
+                  {
+                    "parameterName": "PageHash",
+                    "parameterValue": "/NPH"
+                  },
+                  {
+                    "parameterName": "FileDigest",
+                    "parameterValue": "/fd sha256"
+                  },
+                  {
+                    "parameterName": "TimeStamp",
+                    "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+                  }
+                  ],
+                  "toolName": "signtool.exe",
+                  "toolVersion": "6.2.9304.0"
+                },
+                {
+                  "keyCode": "CP-230012",
+                  "operationSetCode": "SigntoolVerify",
+                  "parameters": [
+                  {
+                    "parameterName": "VerifyAll",
+                    "parameterValue": "/all"
+                  }
+                      ],
+                  "toolName": "signtool.exe",
+                  "toolVersion": "6.2.9304.0"
+                }
+              ]
+        - task: ArchiveFiles@2
+          displayName: Zip Windows binary
+          inputs:
+            rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindows_NT'
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows.zip'
+
+        - task: ArchiveFiles@2
+          displayName: Tar Linux binary
+          inputs:
+            rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinux'
+            includeRootFolder: false
+            archiveType: 'tar'
+            tarCompression: 'bz2'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux.tar.bz2'
+
+        - task: ArchiveFiles@2
+          displayName: Tar Darwin binary
+          inputs:
+            rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdDarwin'
+            includeRootFolder: false
+            archiveType: 'tar'
+            tarCompression: 'bz2'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-darwin.tar.bz2'
+
+        - task: PublishPipelineArtifact@1
+          displayName: 'Publish release archives'
+          inputs:
+            targetPath: $(Build.ArtifactStagingDirectory)
+            artifactName: SqlcmdRelease
+
