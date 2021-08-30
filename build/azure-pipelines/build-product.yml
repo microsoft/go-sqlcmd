@@ -121,6 +121,12 @@ stages:
           tarCompression: 'bz2'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-darwin.tar.bz2'
 
+      - task: GitHubRelease@0
+        displayName: Publish draft Github release
+        inputs:
+          repositoryName: '$(Build.Repository.Name)'
+          gitHubConnection: CrossPlatBuildScripts
+
       - task: PublishPipelineArtifact@1
         displayName: 'Publish release archives'
         inputs:
