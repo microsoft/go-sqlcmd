@@ -14,7 +14,7 @@ steps:
   displayName: 'Go: build sqlcmd'
   inputs:
     command: 'build'
-    argumens: '-o $(Build.BinariesDirectory)'
+    arguments: '-o $(Build.BinariesDirectory)'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
 
 - task: CopyFiles@2
