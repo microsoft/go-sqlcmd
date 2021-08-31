@@ -15,7 +15,7 @@ import (
 	"syscall"
 
 	mssql "github.com/denisenkom/go-mssqldb"
-	"github.com/xo/usql/rline"
+	"github.com/gohxs/readline"
 )
 
 var (
@@ -40,7 +40,7 @@ type ConnectSettings struct {
 // When the batch delimiter is encountered it sends the current batch to the active connection and prints
 // the results to the output writer
 type Sqlcmd struct {
-	lineIo           rline.IO
+	lineIo           *readline.Instance
 	workingDirectory string
 	db               *sql.DB
 	out              io.WriteCloser
@@ -55,11 +55,11 @@ type Sqlcmd struct {
 }
 
 // New creates a new Sqlcmd instance
-func New(l rline.IO, workingDirectory string, vars *Variables) *Sqlcmd {
+func New(l *readline.Instance, workingDirectory string, vars *Variables) *Sqlcmd {
 	return &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
-		batch:            NewBatch(l.Next),
+		batch:            NewBatch(l.Readline),
 		vars:             vars,
 	}
 }
@@ -68,12 +68,12 @@ func New(l rline.IO, workingDirectory string, vars *Variables) *Sqlcmd {
 // When once is true it stops after the first query runs.
 func (s *Sqlcmd) Run(once bool) error {
 	setupCloseHandler(s)
-	stderr, iactive := s.GetError(), s.lineIo.Interactive()
+	stderr, iactive := s.GetError(), s.lineIo != nil
 	var lastError error
 	for {
 		var execute bool
 		if iactive {
-			s.lineIo.Prompt(s.Prompt())
+			s.lineIo.SetPrompt(s.Prompt())
 		}
 		var cmd *Command
 		var args []string
@@ -85,7 +85,7 @@ func (s *Sqlcmd) Run(once bool) error {
 			cmd, args, err = s.batch.Next()
 		}
 		switch {
-		case err == rline.ErrInterrupt:
+		case err == readline.ErrInterrupt:
 			// Ignore any error printing the ctrl-c notice since we are exiting
 			_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error()))
 			return nil
@@ -138,7 +138,7 @@ func (s *Sqlcmd) RunCommand(cmd *Command, args []string) error {
 // GetOutput returns the io.Writer to use for non-error output
 func (s *Sqlcmd) GetOutput() io.Writer {
 	if s.out == nil {
-		return s.lineIo.Stdout()
+		return os.Stdout
 	}
 	return s.out
 }
@@ -154,7 +154,7 @@ func (s *Sqlcmd) SetOutput(o io.WriteCloser) {
 // GetError returns the io.Writer to use for errors
 func (s *Sqlcmd) GetError() io.Writer {
 	if s.err == nil {
-		return s.lineIo.Stderr()
+		return os.Stderr
 	}
 	return s.err
 }

@@ -12,7 +12,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"github.com/xo/usql/rline"
 )
 
 func TestConnectionStringFromSqlCmd(t *testing.T) {
@@ -107,11 +106,7 @@ func ConnectDb() (*sql.DB, error) {
 func TestSqlCmdQueryAndExit(t *testing.T) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
-	line, err := rline.New(false, "", "")
-	if !assert.NoError(t, err, "rline.New") {
-		return
-	}
-	s := New(line, "", v)
+	s := New(nil, "", v)
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	s.Query = "select 100"
 	file, err := os.CreateTemp("", "sqlcmdout")
