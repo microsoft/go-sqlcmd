@@ -87,7 +87,7 @@ func (s *Sqlcmd) Run(once bool) error {
 		switch {
 		case err == rline.ErrInterrupt:
 			// Ignore any error printing the ctrl-c notice since we are exiting
-			_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error()))
+			_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 			return nil
 		case err != nil:
 			if err == io.EOF {
@@ -96,7 +96,7 @@ func (s *Sqlcmd) Run(once bool) error {
 				}
 				execute = true
 			} else {
-				return err
+				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
 			}
 		}
 		if cmd != nil {

@@ -67,3 +67,8 @@ func InvalidCommandError(command string, lineNumber uint) *CommandError {
 func InvalidFileError(err error, path string) error {
 	return errors.New(ErrorPrefix + " Error occurred while opening or operating on file " + path + " (Reason: " + err.Error() + ").")
 }
+
+// SyntaxError indicates a malformed sqlcmd statement
+func syntaxError(lineNumber uint) error {
+	return fmt.Errorf("%sSyntax error at line %d.", ErrorPrefix, lineNumber)
+}

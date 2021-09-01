@@ -95,13 +95,17 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 	if err != nil || n < 1 {
 		return InvalidCommandError("GO", line)
 	}
+	query := s.Query
+	if query == "" {
+		query = s.batch.String()
+	}
+	if query == "" {
+		return nil
+	}
 
 	// This loop will likely be refactored to a helper when we implement -Q and :EXIT(query)
 	for i := 0; i < n; i++ {
-		query := s.Query
-		if query == "" {
-			query = s.batch.String()
-		}
+
 		s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 		rows, qe := s.db.Query(query)
 		if qe != nil {

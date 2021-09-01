@@ -17,12 +17,13 @@ func TestBatchNextReset(t *testing.T) {
 	}{
 		{"", nil, nil, "="},
 		{"select 1", []string{"select 1"}, nil, "-"},
-		{"select 1\nquit", []string{"select 1"}, []string{"QUIT"}, "="},
-		{"select 1\nquite", []string{"select 1\nquite"}, nil, "-"},
+		{"select $(x)\nquit", []string{"select $(x)"}, []string{"QUIT"}, "="},
+		{"select '$ (X' \nquite", []string{"select '$ (X' \nquite"}, nil, "-"},
 		{"select 1\nquit\nselect 2", []string{"select 1", "select 2"}, []string{"QUIT"}, "-"},
 		{"select '1\n", []string{"select '1\n"}, nil, "'"},
 		{"select 1 /* comment\nGO", []string{"select 1 /* comment\nGO"}, nil, "*"},
 		{"select '1\n00' \n/* comm\nent*/\nGO 4", []string{"select '1\n00' \n/* comm\nent*/"}, []string{"GO"}, "="},
+		{"$(x) $(y) 100\nquit", []string{"$(x) $(y) 100"}, []string{"QUIT"}, "="},
 	}
 	for _, test := range tests {
 		b := NewBatch(sp(test.s, "\n"))
@@ -69,5 +70,20 @@ func sp(a, sep string) func() ([]rune, error) {
 			return []rune(z), nil
 		}
 		return nil, io.EOF
+	}
+}
+
+func TestBatchNextErrOnInvalidVariable(t *testing.T) {
+	tests := []string{
+		"select $(x",
+		"$((x",
+		"alter $( x)",
+	}
+	for _, test := range tests {
+		b := NewBatch(sp(test, "\n"))
+		cmd, _, err := b.Next()
+		assert.Nil(t, cmd, "cmd for "+test)
+		assert.Equal(t, uint(1), b.linecount, "linecount should increment on a variable syntax error")
+		assert.EqualErrorf(t, err, "Sqlcmd: Error: Syntax error at line 1.", "expected err for %s", test)
 	}
 }

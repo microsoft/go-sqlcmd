@@ -42,6 +42,9 @@ func TestReadString(t *testing.T) {
 		{` "st'r" `, 1, `"st'r"`, true},
 		{`"st''r"`, 0, `"st''r"`, true},
 		{` "st''r" `, 1, `"st''r"`, true},
+		{`'$(v)'`, 0, `'$(v)'`, true},
+		{`'var $(var1) var2 $(var2)'`, 0, `'var $(var1) var2 $(var2)'`, true},
+		{`'var $(var1) $`, 0, `'var $(var1) $`, false},
 	}
 	for _, test := range tests {
 		r := []rune(test.s)
@@ -49,7 +52,8 @@ func TestReadString(t *testing.T) {
 		if c != '\'' && c != '"' {
 			t.Fatalf("test %+v incorrect!", test)
 		}
-		pos, ok := readString(r, test.i+1, end, c)
+		pos, ok, err := readString(r, test.i+1, end, c, uint(0))
+		assert.NoErrorf(t, err, "should be no error for %s", test)
 		assert.Equal(t, test.ok, ok, "test %+v ok", test)
 		if !ok {
 			continue
@@ -57,5 +61,19 @@ func TestReadString(t *testing.T) {
 		assert.Equal(t, c, r[pos], "test %+v last character")
 		v := string(r[test.i : pos+1])
 		assert.Equal(t, test.exp, v, "test %+v returned string", test)
+	}
+}
+
+func TestReadStringMalformVariable(t *testing.T) {
+	tests := []string{
+		"'select $(x'",
+		"'  $((x'",
+		"'alter $( x)",
+	}
+	for _, test := range tests {
+		r := []rune(test)
+		_, ok, err := readString(r, 1, len(test), '\'', 10)
+		assert.Falsef(t, ok, "ok for %s", test)
+		assert.EqualErrorf(t, err, "Sqlcmd: Error: Syntax error at line 10.", "expected err for %s", test)
 	}
 }

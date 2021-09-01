@@ -6,7 +6,7 @@
         {
             "label": "delve",
             "type": "shell",
-            "command": "dlv debug --headless --listen=:23456 --api-version=2 \"${workspaceFolder}\"",
+            "command": "dlv debug --headless --listen=:23456 --api-version=2 \"${workspaceFolder}\\cmd\\sqlcmd",
             "isBackground": true,
             "presentation": {
                 "focus": true,

@@ -3,7 +3,9 @@
 
 package sqlcmd
 
-import "unicode"
+import (
+	"unicode"
+)
 
 // grab grabs i from r, or returns 0 if i >= end.
 func grab(r []rune, i, end int) rune {
@@ -58,11 +60,19 @@ func isEmptyLine(r []rune, i, end int) bool {
 //
 // If the string's terminator was not found, then the result will be the passed
 // end.
-func readString(r []rune, i, end int, quote rune) (int, bool) {
+// An error is returned if the string contains a malformed variable reference
+func readString(r []rune, i, end int, quote rune, line uint) (int, bool, error) {
 	var prev, c, next rune
 	for ; i < end; i++ {
 		c, next = r[i], grab(r, i+1, end)
 		switch {
+		case c == '$' && next == '(':
+			vl, ok := readVariableReference(r, i+2, end)
+			if ok {
+				i = vl
+			} else {
+				return i, false, syntaxError(line)
+			}
 		case quote == '\'' && c == '\\':
 			i++
 			prev = 0
@@ -72,11 +82,11 @@ func readString(r []rune, i, end int, quote rune) (int, bool) {
 			continue
 		case quote == '\'' && c == '\'' && prev != '\'',
 			quote == '"' && c == '"':
-			return i, true
+			return i, true, nil
 		}
 		prev = c
 	}
-	return end, false
+	return end, false, nil
 }
 
 // readMultilineComment finds the end of a multiline comment (ie, '*/').
@@ -103,6 +113,20 @@ func readCommand(r []rune, i, end int) (*Command, []string, int) {
 	}
 	cmd, args := matchCommand(string(r[:i]))
 	return cmd, args, i
+}
+
+// Returns the length of the variable reference or false if it's not a valid identifier
+func readVariableReference(r []rune, i int, end int) (int, bool) {
+	for ; i < end; i++ {
+		if r[i] == ')' {
+			return i, true
+		}
+		if (r[i] >= 'a' && r[i] <= 'z') || (r[i] >= 'A' && r[i] <= 'Z') || (r[i] >= '0' && r[i] <= '9') {
+			continue
+		}
+		break
+	}
+	return 0, false
 }
 
 func max64(a, b int64) int64 {

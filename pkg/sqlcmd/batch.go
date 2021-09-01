@@ -50,7 +50,10 @@ func (b *Batch) Reset(r []rune) {
 	b.batchline = 1
 	if r != nil {
 		b.raw, b.rawlen = r, len(r)
+	} else {
+		b.rawlen = 0
 	}
+
 }
 
 // Next processes the next chunk of input and sets the Batch state accordingly.
@@ -73,13 +76,17 @@ func (b *Batch) Next() (*Command, []string, error) {
 	var args []string
 	var ok bool
 	var scannedCommand bool
+	b.linecount++
 parse:
 	for ; i < b.rawlen; i++ {
 		c, next := b.raw[i], grab(b.raw, i+1, b.rawlen)
 		switch {
 		// we're in a quoted string
 		case b.quote != 0:
-			i, ok = readString(b.raw, i, b.rawlen, b.quote)
+			i, ok, err = readString(b.raw, i, b.rawlen, b.quote, b.linecount)
+			if err != nil {
+				break parse
+			}
 			if ok {
 				b.quote = 0
 			}
@@ -99,6 +106,16 @@ parse:
 			i++
 		// continue processing quoted string or multiline comment
 		case b.quote != 0 || b.comment:
+
+		// Handle variable references
+		case c == '$' && next == '(':
+			vi, ok := readVariableReference(b.raw, i+2, b.rawlen)
+			if ok {
+				i = vi
+			} else {
+				err = syntaxError(b.linecount)
+				break parse
+			}
 		// Commands have to be alone on the line
 		case !scannedCommand:
 			var cend int
@@ -111,26 +128,29 @@ parse:
 			}
 		}
 	}
-	i = min(i, b.rawlen)
-	empty := isEmptyLine(b.raw, 0, i)
-	appendLine := b.quote != 0 || b.comment || !empty
-	if !b.comment && command != nil && empty {
-		appendLine = false
-	}
-	if appendLine {
-		// skip leading space when empty
-		st := 0
-		if b.Length == 0 {
-			st, _ = findNonSpace(b.raw, 0, i)
+	if err == nil {
+		i = min(i, b.rawlen)
+		empty := isEmptyLine(b.raw, 0, i)
+		appendLine := b.quote != 0 || b.comment || !empty
+		if !b.comment && command != nil && empty {
+			appendLine = false
 		}
-		// log.Printf(">> appending: `%s`", string(r[st:i]))
-		b.append(b.raw[st:i], lineend)
-		b.batchline++
+		if appendLine {
+			// skip leading space when empty
+			st := 0
+			if b.Length == 0 {
+				st, _ = findNonSpace(b.raw, 0, i)
+			}
+			// log.Printf(">> appending: `%s`", string(r[st:i]))
+			b.append(b.raw[st:i], lineend)
+			b.batchline++
+		}
+		b.raw = b.raw[i:]
+		b.rawlen = len(b.raw)
+	} else {
+		b.Reset(nil)
 	}
-	b.raw = b.raw[i:]
-	b.rawlen = len(b.raw)
-	b.linecount++
-	return command, args, nil
+	return command, args, err
 }
 
 // append appends r to b.Buffer separated by sep when b.Buffer is not already empty.
