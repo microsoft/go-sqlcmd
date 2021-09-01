@@ -113,7 +113,7 @@ func TestSqlCmdQueryAndExit(t *testing.T) {
 	}
 	s := New(line, "", v)
 	s.Format = NewSQLCmdDefaultFormatter(true)
-	s.Query = "select 100"
+	s.Query = "select '$(X"
 	file, err := os.CreateTemp("", "sqlcmdout")
 	if !assert.NoError(t, err, "os.CreateTemp") {
 		return
@@ -130,7 +130,7 @@ func TestSqlCmdQueryAndExit(t *testing.T) {
 		s.SetOutput(nil)
 		bytes, err := os.ReadFile(file.Name())
 		if assert.NoError(t, err, "os.ReadFile") {
-			assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+			assert.Equal(t, "Sqlcmd: Error: Syntax error at line 1."+SqlcmdEol, string(bytes), "Incorrect output from Run")
 		}
 	}
 }

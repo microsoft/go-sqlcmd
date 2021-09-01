@@ -81,6 +81,10 @@ func (s *Sqlcmd) Run(once bool) error {
 		if s.Query != "" {
 			cmd = Commands["GO"]
 			args = make([]string, 0)
+			s.batch.Reset([]rune(s.Query))
+			// batch.Next validates variable syntax
+			_, _, err = s.batch.Next()
+			s.Query = ""
 		} else {
 			cmd, args, err = s.batch.Next()
 		}
