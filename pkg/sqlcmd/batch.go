@@ -8,7 +8,7 @@ var lineend = []rune{'\n'}
 // Batch provides the query text to run
 type Batch struct {
 	// read provides the next chunk of runes
-	read func() ([]rune, error)
+	read func() (string, error)
 	// Buffer is the current batch text
 	Buffer []rune
 	// Length is the length of the statement
@@ -29,7 +29,7 @@ type Batch struct {
 }
 
 // NewBatch creates a Batch which converts runes provided by reader into SQL batches
-func NewBatch(reader func() ([]rune, error)) *Batch {
+func NewBatch(reader func() (string, error)) *Batch {
 	b := &Batch{
 		read: reader,
 	}
@@ -59,13 +59,13 @@ func (b *Batch) Reset(r []rune) {
 // Upon exit from Next, the caller can use the State method to determine if
 // it represents a runnable SQL batch text.
 func (b *Batch) Next() (*Command, []string, error) {
-	var err error
 	var i int
 	if b.rawlen == 0 {
-		b.raw, err = b.read()
+		s, err := b.read()
 		if err != nil {
 			return nil, nil, err
 		}
+		b.raw = []rune(s)
 		b.rawlen = len(b.raw)
 	}
 

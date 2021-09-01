@@ -60,14 +60,14 @@ func TestBatchNextReset(t *testing.T) {
 	}
 }
 
-func sp(a, sep string) func() ([]rune, error) {
+func sp(a, sep string) func() (string, error) {
 	s := strings.Split(a, sep)
-	return func() ([]rune, error) {
+	return func() (string, error) {
 		if len(s) > 0 {
 			z := s[0]
 			s = s[1:]
-			return []rune(z), nil
+			return z, nil
 		}
-		return nil, io.EOF
+		return "", io.EOF
 	}
 }

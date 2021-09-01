@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
+	"github.com/gohxs/readline"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
-	"github.com/xo/usql/rline"
 )
 
 // SQLCmdArguments defines the command line arguments for sqlcmd
@@ -79,7 +79,7 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 	}
 }
 
-func run(vars *sqlcmd.Variables) (exitcode int, err error) {
+func run(vars *sqlcmd.Variables) (int, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
@@ -95,11 +95,14 @@ func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 	}
 
 	iactive := args.InputFile == nil
-	line, err := rline.New(!iactive, "", "")
-	if err != nil {
-		return 1, err
+	var line *readline.Instance
+	if iactive {
+		line, err = readline.New(">")
+		if err != nil {
+			return 1, err
+		}
+		defer line.Close()
 	}
-	defer line.Close()
 
 	s := sqlcmd.New(line, wd, vars)
 	s.Connect.UseTrustedConnection = args.UseTrustedConnection
