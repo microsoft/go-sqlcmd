@@ -17,7 +17,6 @@ import (
 
 	mssql "github.com/denisenkom/go-mssqldb"
 	"github.com/gohxs/readline"
-	"github.com/xo/usql/rline"
 )
 
 var (
@@ -297,25 +296,19 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	defer f.Close()
 	b := s.batch.batchline
 	scanner := bufio.NewScanner(f)
-	curLine := s.lineIo
-	l := &rline.Rline{
-		N: func() ([]rune, error) {
-			if !scanner.Scan() {
-				err := scanner.Err()
-				if err == nil {
-					return nil, io.EOF
-				}
-				return nil, err
+	curLine := s.batch.read
+	s.batch.read = func() (string, error) {
+		if !scanner.Scan() {
+			err := scanner.Err()
+			if err == nil {
+				return "", io.EOF
 			}
-			return []rune(scanner.Text()), nil
-		},
-		Out: s.lineIo.Stdout(),
-		Err: s.lineIo.Stderr(),
-		Pw:  s.lineIo.Password,
+			return "", err
+		}
+		return scanner.Text(), nil
 	}
-	s.lineIo = l
 	err = s.Run(false, processAll)
-	s.lineIo = curLine
+	s.batch.read = curLine
 	if s.batch.State() == "=" {
 		s.batch.batchline = 1
 	} else {

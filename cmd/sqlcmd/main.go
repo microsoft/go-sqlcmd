@@ -137,7 +137,6 @@ func run(vars *sqlcmd.Variables) (int, error) {
 		err = s.Run(once, false)
 	} else {
 		for f := range args.InputFile {
-			fmt.Println(args.InputFile[f])
 			if err = s.IncludeFile(args.InputFile[f], true); err != nil {
 				break
 			}
