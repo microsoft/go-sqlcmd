@@ -23,32 +23,43 @@ type Command struct {
 	name string
 }
 
-// Commands is the set of Command implementations
-var Commands = map[string]*Command{
-	"QUIT": {
-		regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:[ \t]+(.*$)|$)`),
-		action: quitCommand,
-		name:   "QUIT",
-	},
-	"GO": {
-		regex:  regexp.MustCompile(batchTerminatorRegex("GO")),
-		action: goCommand,
-		name:   "GO",
-	},
-	"OUT": {
-		regex:  regexp.MustCompile(`(?im)^[ \t]*:OUT(?:[ \t]+(.*$)|$)`),
-		action: outCommand,
-		name:   "OUT",
-	},
-	"ERROR": {
-		regex:  regexp.MustCompile(`(?im)^[ \t]*:ERROR(?:[ \t]+(.*$)|$)`),
-		action: errorCommand,
-		name:   "ERROR",
-	},
+// Commands is the set of sqlcmd command implementations
+type Commands map[string]*Command
+
+func newCommands() Commands {
+	// Commands is the set of Command implementations
+	return map[string]*Command{
+		"QUIT": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:[ \t]+(.*$)|$)`),
+			action: quitCommand,
+			name:   "QUIT",
+		},
+		"GO": {
+			regex:  regexp.MustCompile(batchTerminatorRegex("GO")),
+			action: goCommand,
+			name:   "GO",
+		},
+		"OUT": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:OUT(?:[ \t]+(.*$)|$)`),
+			action: outCommand,
+			name:   "OUT",
+		},
+		"ERROR": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:ERROR(?:[ \t]+(.*$)|$)`),
+			action: errorCommand,
+			name:   "ERROR",
+		},
+		"READFILE": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:R(?:[ \t]+(.*$)|$)`),
+			action: readFileCommand,
+			name:   "READFILE",
+		},
+	}
+
 }
 
-func matchCommand(line string) (*Command, []string) {
-	for _, cmd := range Commands {
+func (c Commands) matchCommand(line string) (*Command, []string) {
+	for _, cmd := range c {
 		matchedCommand := cmd.regex.FindStringSubmatch(line)
 		if matchedCommand != nil {
 			return cmd, matchedCommand[1:]
@@ -63,8 +74,8 @@ func batchTerminatorRegex(terminator string) string {
 
 // SetBatchTerminator attempts to set the batch terminator to the given value
 // Returns an error if the new value is not usable in the regex
-func SetBatchTerminator(terminator string) error {
-	cmd := Commands["GO"]
+func (c Commands) SetBatchTerminator(terminator string) error {
+	cmd := c["GO"]
 	regex, err := regexp.Compile(batchTerminatorRegex(terminator))
 	if err != nil {
 		return err
@@ -169,4 +180,11 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 		s.SetError(o)
 	}
 	return nil
+}
+
+func readFileCommand(s *Sqlcmd, args []string, line uint) error {
+	if args == nil || len(args) != 1 {
+		return InvalidCommandError(":r", line)
+	}
+	return s.IncludeFile(args[0], false)
 }

@@ -21,9 +21,23 @@ We will be implementing as many command line switches and behaviors as possible 
 
 ### Packages
 
-#### sqlcmd
+#### sqlcmd executable
 
-#### batch
+Build [sqlcmd](cmd/sqlcmd)
+
+```sh
+
+go build cmd/sqlcmd
+
+```
+
+#### sqlcmd package
+
+pkg/sqlcmd is consumable by other hosts. Go docs for the package are forthcoming. See the test code and [main.go](cmd/sqlcmd/main.go) for examples of initializing and running sqlcmd.
+
+## Building
+
+Scripts to build the binaries and package them for release will be added in a build folder off the root. We will also add Azure Devops pipeline yml files there to initiate builds and releases. Until then just use `go build cmd/sqlcmd` to create a sqlcmd binary.
 
 ## Contributing
 

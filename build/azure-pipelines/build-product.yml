@@ -3,6 +3,8 @@ trigger:
     include:
       - v0.*
 
+pr: none
+
 stages:
   - stage: Compile
     displayName: Compile sqlcmd on all 3 platforms

@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
+	"github.com/gohxs/readline"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
-	"github.com/xo/usql/rline"
 )
 
 // SQLCmdArguments defines the command line arguments for sqlcmd
@@ -34,6 +34,14 @@ type SQLCmdArguments struct {
 	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
 }
 
+// newArguments constructs a SQLCmdArguments instance with default values
+// Any parameter with a "default" Kong attribute should have an assignment here
+func newArguments() SQLCmdArguments {
+	return SQLCmdArguments{
+		BatchTerminator: "GO",
+	}
+}
+
 // Breaking changes in command line are listed here.
 // Any switch not listed in breaking changes and not also included in SqlCmdArguments just has not been implemented yet
 // 1. -P: Passwords have to be provided through SQLCMDPASSWORD environment variable or typed when prompted
@@ -53,7 +61,7 @@ func main() {
 	os.Exit(exitCode)
 }
 
-// Initializes scripting variables from command line arguments
+// setVars initializes scripting variables from command line arguments
 func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 	varmap := map[string]func(*SQLCmdArguments) string{
 		sqlcmd.SQLCMDDBNAME:            func(a *SQLCmdArguments) string { return a.DatabaseName },
@@ -79,13 +87,25 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 	}
 }
 
-func run(vars *sqlcmd.Variables) (exitcode int, err error) {
+func run(vars *sqlcmd.Variables) (int, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
 	}
+
+	iactive := args.InputFile == nil
+	var line *readline.Instance
+	if iactive {
+		line, err = readline.New(">")
+		if err != nil {
+			return 1, err
+		}
+		defer line.Close()
+	}
+
+	s := sqlcmd.New(line, wd, vars)
 	if args.BatchTerminator != "GO" {
-		err = sqlcmd.SetBatchTerminator(args.BatchTerminator)
+		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {
 			err = fmt.Errorf("invalid batch terminator '%s'", args.BatchTerminator)
 		}
@@ -93,20 +113,11 @@ func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 	if err != nil {
 		return 1, err
 	}
-
-	iactive := args.InputFile == nil
-	line, err := rline.New(!iactive, "", "")
-	if err != nil {
-		return 1, err
-	}
-	defer line.Close()
-
-	s := sqlcmd.New(line, wd, vars)
 	s.Connect.UseTrustedConnection = args.UseTrustedConnection
 	s.Connect.TrustServerCertificate = args.TrustServerCertificate
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
-		err = s.RunCommand(sqlcmd.Commands["OUT"], []string{args.OutputFile})
+		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {
 			return 1, err
 		}
@@ -123,7 +134,15 @@ func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 		return 1, err
 	}
 	if iactive {
-		err = s.Run(once)
+		err = s.Run(once, false)
+	} else {
+		for f := range args.InputFile {
+			if err = s.IncludeFile(args.InputFile[f], true); err != nil {
+				break
+			}
+		}
 	}
+	s.SetOutput(nil)
+	s.SetError(nil)
 	return s.Exitcode, err
 }

@@ -26,7 +26,7 @@ func TestBatchNextReset(t *testing.T) {
 		{"$(x) $(y) 100\nquit", []string{"$(x) $(y) 100"}, []string{"QUIT"}, "="},
 	}
 	for _, test := range tests {
-		b := NewBatch(sp(test.s, "\n"))
+		b := NewBatch(sp(test.s, "\n"), newCommands())
 		var stmts, cmds []string
 	loop:
 		for {
@@ -61,15 +61,15 @@ func TestBatchNextReset(t *testing.T) {
 	}
 }
 
-func sp(a, sep string) func() ([]rune, error) {
+func sp(a, sep string) func() (string, error) {
 	s := strings.Split(a, sep)
-	return func() ([]rune, error) {
+	return func() (string, error) {
 		if len(s) > 0 {
 			z := s[0]
 			s = s[1:]
-			return []rune(z), nil
+			return z, nil
 		}
-		return nil, io.EOF
+		return "", io.EOF
 	}
 }
 
