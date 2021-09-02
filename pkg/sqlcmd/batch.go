@@ -3,7 +3,7 @@ package sqlcmd
 const minCapIncrease = 512
 
 // lineend is the slice to use when appending a line.
-var lineend = []rune{'\n'}
+var lineend = []rune(SqlcmdEol)
 
 // Batch provides the query text to run
 type Batch struct {
@@ -26,6 +26,10 @@ type Batch struct {
 	batchline int
 	// linecount is the total number of batch lines processed in the session
 	linecount uint
+	// varmap tracks the location of expandable variables for the entire batch
+	varmap map[int]string
+	// linevarmap tracks the location of expandable variables on the current line
+	linevarmap map[int]string
 }
 
 // NewBatch creates a Batch which converts runes provided by reader into SQL batches
@@ -53,7 +57,7 @@ func (b *Batch) Reset(r []rune) {
 	} else {
 		b.rawlen = 0
 	}
-
+	b.varmap = make(map[int]string)
 }
 
 // Next processes the next chunk of input and sets the Batch state accordingly.
@@ -62,6 +66,7 @@ func (b *Batch) Reset(r []rune) {
 // Upon exit from Next, the caller can use the State method to determine if
 // it represents a runnable SQL batch text.
 func (b *Batch) Next() (*Command, []string, error) {
+	b.linevarmap = make(map[int]string)
 	var err error
 	var i int
 	if b.rawlen == 0 {
@@ -83,7 +88,7 @@ parse:
 		switch {
 		// we're in a quoted string
 		case b.quote != 0:
-			i, ok, err = readString(b.raw, i, b.rawlen, b.quote, b.linecount)
+			i, ok, err = b.readString(b.raw, i, b.rawlen, b.quote, b.linecount)
 			if err != nil {
 				break parse
 			}
@@ -111,7 +116,9 @@ parse:
 		case c == '$' && next == '(':
 			vi, ok := readVariableReference(b.raw, i+2, b.rawlen)
 			if ok {
+				b.addVariableLocation(i, string(b.raw[i+2:vi]))
 				i = vi
+
 			} else {
 				err = syntaxError(b.linecount)
 				break parse
@@ -136,13 +143,16 @@ parse:
 			appendLine = false
 		}
 		if appendLine {
-			// skip leading space when empty
-			st := 0
-			if b.Length == 0 {
-				st, _ = findNonSpace(b.raw, 0, i)
+			// any variables on the line need to be added to the global map
+			inc := 0
+			if b.Length > 0 {
+				inc = len(lineend)
+			}
+			for v := range b.linevarmap {
+				b.varmap[v+b.Length+inc] = b.linevarmap[v]
 			}
 			// log.Printf(">> appending: `%s`", string(r[st:i]))
-			b.append(b.raw[st:i], lineend)
+			b.append(b.raw[:i], lineend)
 			b.batchline++
 		}
 		b.raw = b.raw[i:]
@@ -199,4 +209,45 @@ func (b *Batch) State() string {
 		return "-"
 	}
 	return "="
+}
+
+// readString seeks to the end of a string returning the position and whether
+// or not the string's end was found.
+//
+// If the string's terminator was not found, then the result will be the passed
+// end.
+// An error is returned if the string contains a malformed variable reference
+func (b *Batch) readString(r []rune, i, end int, quote rune, line uint) (int, bool, error) {
+	var prev, c, next rune
+	for ; i < end; i++ {
+		c, next = r[i], grab(r, i+1, end)
+		switch {
+		case c == '$' && next == '(':
+			vl, ok := readVariableReference(r, i+2, end)
+			if ok {
+				b.addVariableLocation(i, string(r[i+2:vl]))
+				i = vl
+
+			} else {
+				return i, false, syntaxError(line)
+			}
+		case quote == '\'' && c == '\\':
+			i++
+			prev = 0
+			continue
+		case quote == '\'' && c == '\'' && next == '\'':
+			i++
+			continue
+		case quote == '\'' && c == '\'' && prev != '\'',
+			quote == '"' && c == '"':
+			return i, true, nil
+		}
+		prev = c
+	}
+	return end, false, nil
+}
+
+// addVariableLocation is called for each variable on the current line
+func (b *Batch) addVariableLocation(i int, v string) {
+	b.linevarmap[i] = v
 }

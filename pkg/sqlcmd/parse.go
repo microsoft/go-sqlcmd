@@ -55,40 +55,6 @@ func isEmptyLine(r []rune, i, end int) bool {
 	return !ok
 }
 
-// readString seeks to the end of a string returning the position and whether
-// or not the string's end was found.
-//
-// If the string's terminator was not found, then the result will be the passed
-// end.
-// An error is returned if the string contains a malformed variable reference
-func readString(r []rune, i, end int, quote rune, line uint) (int, bool, error) {
-	var prev, c, next rune
-	for ; i < end; i++ {
-		c, next = r[i], grab(r, i+1, end)
-		switch {
-		case c == '$' && next == '(':
-			vl, ok := readVariableReference(r, i+2, end)
-			if ok {
-				i = vl
-			} else {
-				return i, false, syntaxError(line)
-			}
-		case quote == '\'' && c == '\\':
-			i++
-			prev = 0
-			continue
-		case quote == '\'' && c == '\'' && next == '\'':
-			i++
-			continue
-		case quote == '\'' && c == '\'' && prev != '\'',
-			quote == '"' && c == '"':
-			return i, true, nil
-		}
-		prev = c
-	}
-	return end, false, nil
-}
-
 // readMultilineComment finds the end of a multiline comment (ie, '*/').
 func readMultilineComment(r []rune, i, end int) (int, bool) {
 	i++
