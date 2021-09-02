@@ -23,7 +23,7 @@ func TestCommandParsing(t *testing.T) {
 		cmd  string
 		args []string
 	}
-
+	c := newCommands()
 	commands := []commandTest{
 		{"quite", "", nil},
 		{"quit", "QUIT", []string{""}},
@@ -35,7 +35,7 @@ func TestCommandParsing(t *testing.T) {
 	}
 
 	for _, test := range commands {
-		cmd, args := matchCommand(test.line)
+		cmd, args := c.matchCommand(test.line)
 		if test.cmd != "" {
 			if assert.NotNil(t, cmd, "No command found for `%s`", test.line) {
 				assert.Equal(t, test.cmd, cmd.name, "Incorrect command for `%s`", test.line)
@@ -48,9 +48,10 @@ func TestCommandParsing(t *testing.T) {
 }
 
 func TestCustomBatchSeparator(t *testing.T) {
-	err := SetBatchTerminator("me!")
+	c := newCommands()
+	err := c.SetBatchTerminator("me!")
 	if assert.NoError(t, err, "SetBatchTerminator should succeed") {
-		cmd, args := matchCommand("  me! 5 \n")
+		cmd, args := c.matchCommand("  me! 5 \n")
 		if assert.NotNil(t, cmd, "matchCommand didn't find GO for custom batch separator") {
 			assert.Equal(t, "GO", cmd.name, "command name")
 			assert.Equal(t, "5", strings.TrimSpace(args[0]), "go argument")

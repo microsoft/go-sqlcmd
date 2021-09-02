@@ -25,7 +25,7 @@ func TestBatchNextReset(t *testing.T) {
 		{"select '1\n00' \n/* comm\nent*/\nGO 4", []string{"select '1\n00' \n/* comm\nent*/"}, []string{"GO"}, "="},
 	}
 	for _, test := range tests {
-		b := NewBatch(sp(test.s, "\n"))
+		b := NewBatch(sp(test.s, "\n"), newCommands())
 		var stmts, cmds []string
 	loop:
 		for {

@@ -90,18 +90,18 @@ func readMultilineComment(r []rune, i, end int) (int, bool) {
 	return end, false
 }
 
-// Read to the next control character and try to find
+// readCommand reads to the next control character to find
 // a command in the string. Command regexes constrain matches
 // to the beginning of the string, and all commands consume
 // an entire line.
-func readCommand(r []rune, i, end int) (*Command, []string, int) {
+func readCommand(c Commands, r []rune, i, end int) (*Command, []string, int) {
 	for ; i < end; i++ {
 		next := grab(r, i, end)
 		if next == 0 || unicode.IsControl(next) {
 			break
 		}
 	}
-	cmd, args := matchCommand(string(r[:i]))
+	cmd, args := c.matchCommand(string(r[:i]))
 	return cmd, args, i
 }
 

@@ -8,7 +8,7 @@ var lineend = []rune{'\n'}
 // Batch provides the query text to run
 type Batch struct {
 	// read provides the next chunk of runes
-	read func() (string, error)
+	read batchScan
 	// Buffer is the current batch text
 	Buffer []rune
 	// Length is the length of the statement
@@ -26,12 +26,17 @@ type Batch struct {
 	batchline int
 	// linecount is the total number of batch lines processed in the session
 	linecount uint
+	// cmd is the set of Commands available
+	cmd Commands
 }
 
+type batchScan func() (string, error)
+
 // NewBatch creates a Batch which converts runes provided by reader into SQL batches
-func NewBatch(reader func() (string, error)) *Batch {
+func NewBatch(reader batchScan, cmd Commands) *Batch {
 	b := &Batch{
 		read: reader,
+		cmd:  cmd,
 	}
 	b.Reset(nil)
 	return b
@@ -100,10 +105,10 @@ parse:
 		// continue processing quoted string or multiline comment
 		case b.quote != 0 || b.comment:
 		// Commands have to be alone on the line
-		case !scannedCommand:
+		case !scannedCommand && b.cmd != nil:
 			var cend int
 			scannedCommand = true
-			command, args, cend = readCommand(b.raw, i, b.rawlen)
+			command, args, cend = readCommand(b.cmd, b.raw, i, b.rawlen)
 			if command != nil {
 				// remove the command from raw
 				b.raw = append(b.raw[:i], b.raw[cend:]...)

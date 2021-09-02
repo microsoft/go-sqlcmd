@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"bufio"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -52,21 +53,29 @@ type Sqlcmd struct {
 	vars     *Variables
 	Format   Formatter
 	Query    string
+	Cmd      Commands
 }
 
 // New creates a new Sqlcmd instance
 func New(l *readline.Instance, workingDirectory string, vars *Variables) *Sqlcmd {
-	return &Sqlcmd{
+	s := &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
-		batch:            NewBatch(l.Readline),
 		vars:             vars,
+		Cmd:              newCommands(),
 	}
+	s.batch = NewBatch(s.scanNext, s.Cmd)
+	return s
+}
+
+func (s *Sqlcmd) scanNext() (string, error) {
+	return s.lineIo.Readline()
 }
 
 // Run processes all available batches.
 // When once is true it stops after the first query runs.
-func (s *Sqlcmd) Run(once bool) error {
+// When processAll is true it executes any remaining batch content when reaching EOF
+func (s *Sqlcmd) Run(once bool, processAll bool) error {
 	setupCloseHandler(s)
 	stderr, iactive := s.GetError(), s.lineIo != nil
 	var lastError error
@@ -79,7 +88,7 @@ func (s *Sqlcmd) Run(once bool) error {
 		var args []string
 		var err error
 		if s.Query != "" {
-			cmd = Commands["GO"]
+			cmd = s.Cmd["GO"]
 			args = make([]string, 0)
 		} else {
 			cmd, args, err = s.batch.Next()
@@ -94,7 +103,10 @@ func (s *Sqlcmd) Run(once bool) error {
 				if s.batch.Length == 0 {
 					return lastError
 				}
-				execute = true
+				execute = processAll
+				if !execute {
+					return nil
+				}
 			} else {
 				return err
 			}
@@ -102,8 +114,6 @@ func (s *Sqlcmd) Run(once bool) error {
 		if cmd != nil {
 			err = s.RunCommand(cmd, args)
 			if err == ErrExitRequested || once {
-				s.SetOutput(nil)
-				s.SetError(nil)
 				break
 			}
 			if err != nil {
@@ -276,12 +286,43 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	return nil
 }
 
+// IncludeFile opens the given file and processes its batches
+// When processAll is true text not followed by a go statement is run as a query
+func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	b := s.batch.batchline
+	scanner := bufio.NewScanner(f)
+	curLine := s.batch.read
+	s.batch.read = func() (string, error) {
+		if !scanner.Scan() {
+			err := scanner.Err()
+			if err == nil {
+				return "", io.EOF
+			}
+			return "", err
+		}
+		return scanner.Text(), nil
+	}
+	err = s.Run(false, processAll)
+	s.batch.read = curLine
+	if s.batch.State() == "=" {
+		s.batch.batchline = 1
+	} else {
+		s.batch.batchline = b + 1
+	}
+	return err
+}
+
 func setupCloseHandler(s *Sqlcmd) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error()))
+		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 		os.Exit(0)
 	}()
 }
