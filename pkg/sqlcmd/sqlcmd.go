@@ -16,6 +16,7 @@ import (
 	"syscall"
 
 	mssql "github.com/denisenkom/go-mssqldb"
+	"github.com/gohxs/readline"
 	"github.com/xo/usql/rline"
 )
 
@@ -41,7 +42,7 @@ type ConnectSettings struct {
 // When the batch delimiter is encountered it sends the current batch to the active connection and prints
 // the results to the output writer
 type Sqlcmd struct {
-	lineIo           rline.IO
+	lineIo           *readline.Instance
 	workingDirectory string
 	db               *sql.DB
 	out              io.WriteCloser
@@ -57,7 +58,7 @@ type Sqlcmd struct {
 }
 
 // New creates a new Sqlcmd instance
-func New(l rline.IO, workingDirectory string, vars *Variables) *Sqlcmd {
+func New(l *readline.Instance, workingDirectory string, vars *Variables) *Sqlcmd {
 	s := &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
@@ -68,8 +69,8 @@ func New(l rline.IO, workingDirectory string, vars *Variables) *Sqlcmd {
 	return s
 }
 
-func (s *Sqlcmd) scanNext() ([]rune, error) {
-	return s.lineIo.Next()
+func (s *Sqlcmd) scanNext() (string, error) {
+	return s.lineIo.Readline()
 }
 
 // Run processes all available batches.
@@ -77,12 +78,12 @@ func (s *Sqlcmd) scanNext() ([]rune, error) {
 // When processAll is true it executes any remaining batch content when reaching EOF
 func (s *Sqlcmd) Run(once bool, processAll bool) error {
 	setupCloseHandler(s)
-	stderr, iactive := s.GetError(), s.lineIo.Interactive()
+	stderr, iactive := s.GetError(), s.lineIo != nil
 	var lastError error
 	for {
 		var execute bool
 		if iactive {
-			s.lineIo.Prompt(s.Prompt())
+			s.lineIo.SetPrompt(s.Prompt())
 		}
 		var cmd *Command
 		var args []string
@@ -94,7 +95,7 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 			cmd, args, err = s.batch.Next()
 		}
 		switch {
-		case err == rline.ErrInterrupt:
+		case err == readline.ErrInterrupt:
 			// Ignore any error printing the ctrl-c notice since we are exiting
 			_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error()))
 			return nil
@@ -148,7 +149,7 @@ func (s *Sqlcmd) RunCommand(cmd *Command, args []string) error {
 // GetOutput returns the io.Writer to use for non-error output
 func (s *Sqlcmd) GetOutput() io.Writer {
 	if s.out == nil {
-		return s.lineIo.Stdout()
+		return os.Stdout
 	}
 	return s.out
 }
@@ -164,7 +165,7 @@ func (s *Sqlcmd) SetOutput(o io.WriteCloser) {
 // GetError returns the io.Writer to use for errors
 func (s *Sqlcmd) GetError() io.Writer {
 	if s.err == nil {
-		return s.lineIo.Stderr()
+		return os.Stderr
 	}
 	return s.err
 }

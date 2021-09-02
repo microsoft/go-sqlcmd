@@ -30,7 +30,7 @@ type Batch struct {
 	cmd Commands
 }
 
-type batchScan func() ([]rune, error)
+type batchScan func() (string, error)
 
 // NewBatch creates a Batch which converts runes provided by reader into SQL batches
 func NewBatch(reader batchScan, cmd Commands) *Batch {
@@ -64,13 +64,13 @@ func (b *Batch) Reset(r []rune) {
 // Upon exit from Next, the caller can use the State method to determine if
 // it represents a runnable SQL batch text.
 func (b *Batch) Next() (*Command, []string, error) {
-	var err error
 	var i int
 	if b.rawlen == 0 {
-		b.raw, err = b.read()
+		s, err := b.read()
 		if err != nil {
 			return nil, nil, err
 		}
+		b.raw = []rune(s)
 		b.rawlen = len(b.raw)
 	}
 

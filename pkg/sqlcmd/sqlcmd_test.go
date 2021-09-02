@@ -12,7 +12,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"github.com/xo/usql/rline"
 )
 
 func TestConnectionStringFromSqlCmd(t *testing.T) {
@@ -180,9 +179,7 @@ func TestIncludeFileProcessAll(t *testing.T) {
 func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
-	line, err := rline.New(false, "", "")
-	assert.NoError(t, err, "rline.New")
-	s := New(line, "", v)
+	s := New(nil, "", v)
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	file, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
