@@ -328,7 +328,7 @@ func setupCloseHandler(s *Sqlcmd) {
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error()))
+		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 		os.Exit(0)
 	}()
 }

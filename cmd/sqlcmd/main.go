@@ -34,7 +34,7 @@ type SQLCmdArguments struct {
 	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
 }
 
-// Create SQLCmdArguments with default values
+// newArguments constructs a SQLCmdArguments instance with default values
 // Any parameter with a "default" Kong attribute should have an assignment here
 func newArguments() SQLCmdArguments {
 	return SQLCmdArguments{
@@ -61,7 +61,7 @@ func main() {
 	os.Exit(exitCode)
 }
 
-// Initializes scripting variables from command line arguments
+// setVars initializes scripting variables from command line arguments
 func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 	varmap := map[string]func(*SQLCmdArguments) string{
 		sqlcmd.SQLCMDDBNAME:            func(a *SQLCmdArguments) string { return a.DatabaseName },
@@ -135,8 +135,7 @@ func run(vars *sqlcmd.Variables) (exitcode int, err error) {
 	} else {
 		for f := range args.InputFile {
 			fmt.Println(args.InputFile[f])
-			err = s.IncludeFile(args.InputFile[f], true)
-			if err != nil {
+			if err = s.IncludeFile(args.InputFile[f], true); err != nil {
 				break
 			}
 		}
