@@ -18,11 +18,11 @@ func TestBatchNextReset(t *testing.T) {
 		{"", nil, nil, "="},
 		{"select 1", []string{"select 1"}, nil, "-"},
 		{"select $(x)\nquit", []string{"select $(x)"}, []string{"QUIT"}, "="},
-		{"select '$ (X' \nquite", []string{"select '$ (X' \nquite"}, nil, "-"},
+		{"select '$ (X' \nquite", []string{"select '$ (X' " + SqlcmdEol + "quite"}, nil, "-"},
 		{"select 1\nquit\nselect 2", []string{"select 1", "select 2"}, []string{"QUIT"}, "-"},
-		{"select '1\n", []string{"select '1\n"}, nil, "'"},
-		{"select 1 /* comment\nGO", []string{"select 1 /* comment\nGO"}, nil, "*"},
-		{"select '1\n00' \n/* comm\nent*/\nGO 4", []string{"select '1\n00' \n/* comm\nent*/"}, []string{"GO"}, "="},
+		{"select '1\n", []string{"select '1" + SqlcmdEol + ""}, nil, "'"},
+		{"select 1 /* comment\nGO", []string{"select 1 /* comment" + SqlcmdEol + "GO"}, nil, "*"},
+		{"select '1\n00' \n/* comm\nent*/\nGO 4", []string{"select '1" + SqlcmdEol + "00' " + SqlcmdEol + "/* comm" + SqlcmdEol + "ent*/"}, []string{"GO"}, "="},
 		{"$(x) $(y) 100\nquit", []string{"$(x) $(y) 100"}, []string{"QUIT"}, "="},
 	}
 	for _, test := range tests {
@@ -80,7 +80,7 @@ func TestBatchNextErrOnInvalidVariable(t *testing.T) {
 		"alter $( x)",
 	}
 	for _, test := range tests {
-		b := NewBatch(sp(test, "\n"))
+		b := NewBatch(sp(test, "\n"), newCommands())
 		cmd, _, err := b.Next()
 		assert.Nil(t, cmd, "cmd for "+test)
 		assert.Equal(t, uint(1), b.linecount, "linecount should increment on a variable syntax error")
@@ -127,7 +127,7 @@ func TestReadString(t *testing.T) {
 		{`'var $(var1) var2 $(var2)'`, 0, `'var $(var1) var2 $(var2)'`, true},
 		{`'var $(var1) $`, 0, `'var $(var1) $`, false},
 	}
-	b := NewBatch(nil)
+	b := NewBatch(nil, newCommands())
 
 	for _, test := range tests {
 		r := []rune(test.s)
@@ -153,7 +153,7 @@ func TestReadStringMalformVariable(t *testing.T) {
 		"'  $((x'",
 		"'alter $( x)",
 	}
-	b := NewBatch(nil)
+	b := NewBatch(nil, newCommands())
 	for _, test := range tests {
 		r := []rune(test)
 		_, ok, err := b.readString(r, 1, len(test), '\'', 10)
@@ -171,7 +171,7 @@ func TestReadStringVarmap(t *testing.T) {
 		{`'var $(var1) var2 $(var2)'`, map[int]string{5: "var1", 18: "var2"}},
 	}
 	for _, test := range tests {
-		b := NewBatch(nil)
+		b := NewBatch(nil, newCommands())
 		b.linevarmap = make(map[int]string)
 		i, ok, err := b.readString([]rune(test.s), 1, len(test.s), '\'', 0)
 		assert.Truef(t, ok, "ok returned by readString for %s", test.s)
@@ -197,7 +197,7 @@ func TestBatchNextVarMap(t *testing.T) {
 loop:
 	for _, test := range tests {
 		var err error
-		b := NewBatch(sp(test.s, "\n"))
+		b := NewBatch(sp(test.s, "\n"), newCommands())
 		for {
 			_, _, err = b.Next()
 			if err == io.EOF {

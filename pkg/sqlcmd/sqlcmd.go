@@ -13,6 +13,8 @@ import (
 	"os"
 	"os/signal"
 	osuser "os/user"
+	"sort"
+	"strings"
 	"syscall"
 
 	mssql "github.com/denisenkom/go-mssqldb"
@@ -31,8 +33,14 @@ var (
 // ConnectSettings are the settings for connections that can't be
 // inferred from scripting variables
 type ConnectSettings struct {
-	UseTrustedConnection   bool
+	// UseTrustedConnection indicates integrated auth is used when no user name is provided
+	UseTrustedConnection bool
+	// TrustServerCertificate sets the TrustServerCertificate setting on the connection string
 	TrustServerCertificate bool
+	// DisableEnvironmentVariables determines if sqlcmd resolves scripting variables from the process environment
+	DisableEnvironmentVariables bool
+	// DisableVariableSubstitution determines if scripting variables should be evaluated
+	DisableVariableSubstitution bool
 }
 
 // Sqlcmd is the core processor for text lines.
@@ -319,6 +327,48 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 		s.batch.batchline = b + 1
 	}
 	return err
+}
+
+// resolveVariable returns the value of the named variable
+func (s *Sqlcmd) resolveVariable(v string) (string, bool) {
+	if val, ok := s.vars.Get(v); ok {
+		return val, ok
+	}
+
+	if !s.Connect.DisableEnvironmentVariables {
+		return os.LookupEnv(v)
+	}
+	return "", false
+}
+
+// getRunnableQuery converts the raw batch into an executable query by
+// replacing variable references with their resolved values
+// If variables are not used, returns the original string
+func (s *Sqlcmd) getRunnableQuery(q string) string {
+	if s.Connect.DisableVariableSubstitution || len(s.batch.varmap) == 0 {
+		return q
+	}
+	b := new(strings.Builder)
+	b.Grow(len(q))
+	keys := make([]int, 0, len(s.batch.varmap))
+	for k := range s.batch.varmap {
+		keys = append(keys, k)
+	}
+	keys = sort.IntSlice(keys)
+	last := 0
+	for _, i := range keys {
+		b.WriteString(q[last:i])
+		v := s.batch.varmap[i]
+		if val, ok := s.resolveVariable(v); ok {
+			b.WriteString(val)
+		} else {
+			_, _ = fmt.Fprintf(s.GetError(), "'%s' scripting variable not defined.%s", v, SqlcmdEol)
+			b.WriteString(fmt.Sprintf("$(%s)", v))
+		}
+		last = i + len(v) + 3
+	}
+	b.WriteString(q[last:])
+	return b.String()
 }
 
 func setupCloseHandler(s *Sqlcmd) {

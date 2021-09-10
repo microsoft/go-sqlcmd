@@ -126,7 +126,7 @@ func TestIncludeFileNoExecutions(t *testing.T) {
 	s.SetOutput(nil)
 	if assert.NoError(t, err, "IncludeFile singlebatchnogo.sql false") {
 		assert.Equal(t, "-", s.batch.State(), "s.batch.State() after IncludeFile singlebatchnogo.sql false")
-		assert.Equal(t, "select 100 as num\nselect 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile singlebatchnogo.sql false")
+		assert.Equal(t, "select 100 as num"+SqlcmdEol+"select 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile singlebatchnogo.sql false")
 		bytes, err := os.ReadFile(file.Name())
 		if assert.NoError(t, err, "os.ReadFile") {
 			assert.Equal(t, "", string(bytes), "Incorrect output from Run")
@@ -176,6 +176,36 @@ func TestIncludeFileProcessAll(t *testing.T) {
 		}
 	}
 }
+
+func TestGetRunnableQuery(t *testing.T) {
+	v := InitializeVariables(false)
+	v.Set("var1", "v1")
+	v.Set("var2", "variable2")
+
+	type test struct {
+		raw string
+		q   string
+	}
+	tests := []test{
+		{"$(var1)", "v1"},
+		{"$ (var2)", "$ (var2)"},
+		{"select '$(VAR1) $(VAR2)' as  c", "select 'v1 variable2' as  c"},
+		{" $(VAR1) ' $(VAR2) ' as  $(VAR1)", " v1 ' variable2 ' as  v1"},
+	}
+	s := New(nil, "", v)
+	for _, test := range tests {
+		s.batch.Reset([]rune(test.raw))
+		_, _, _ = s.batch.Next()
+		s.Connect.DisableVariableSubstitution = false
+		r := s.getRunnableQuery(test.raw)
+		assert.Equalf(t, test.q, r, `runnableQuery for "%s"`, test.raw)
+		s.Connect.DisableVariableSubstitution = true
+		r = s.getRunnableQuery(test.raw)
+		assert.Equalf(t, test.raw, r, `runnableQuery without variable subs for "%s"`, test.raw)
+	}
+
+}
+
 func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")

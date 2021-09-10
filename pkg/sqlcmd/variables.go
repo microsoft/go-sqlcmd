@@ -64,6 +64,14 @@ func (v Variables) Set(name, value string) {
 	v[key] = value
 }
 
+// Get returns the value of the named variable
+// To distinguish an empty value from an unset value use the bool return value
+func (v Variables) Get(name string) (string, bool) {
+	key := strings.ToUpper(name)
+	s, ok := v[key]
+	return s, ok
+}
+
 // Unset removes the value from the map
 func (v Variables) Unset(name string) {
 	key := strings.ToUpper(name)

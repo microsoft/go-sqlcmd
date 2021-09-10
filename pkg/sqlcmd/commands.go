@@ -110,7 +110,7 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 	if query == "" {
 		return nil
 	}
-
+	query = s.getRunnableQuery(query)
 	// This loop will likely be refactored to a helper when we implement -Q and :EXIT(query)
 	for i := 0; i < n; i++ {
 

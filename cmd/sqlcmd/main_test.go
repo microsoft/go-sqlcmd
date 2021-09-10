@@ -53,10 +53,10 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 			return args.Server == "someserver/someinstance"
 		}},
 		{[]string{"-S", "tcp:someserver,10245"}, func(args SQLCmdArguments) bool {
-			return args.Server == "tcp:someserver,10245"
+			return args.Server == "tcp:someserver,10245" && !args.DisableVariableSubstitution
 		}},
-		{[]string{"-X"}, func(args SQLCmdArguments) bool {
-			return args.DisableCmdAndWarn
+		{[]string{"-X", "-x"}, func(args SQLCmdArguments) bool {
+			return args.DisableCmdAndWarn && args.DisableVariableSubstitution
 		}},
 	}
 
@@ -120,10 +120,11 @@ func TestQueryAndExit(t *testing.T) {
 	defer os.Remove(o.Name())
 	defer o.Close()
 	args = newArguments()
-	args.Query = "SELECT 100"
+	args.Query = "SELECT $(VAR1)"
 	args.OutputFile = o.Name()
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
+	vars.Set("VAR1", "100")
 	setVars(vars, &args)
 
 	exitCode, err := run(vars)

@@ -31,7 +31,8 @@ type SQLCmdArguments struct {
 	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
 	Server string `short:"S" help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
 	// Disable syscommands with a warning
-	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+	DisableCmdAndWarn           bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+	DisableVariableSubstitution bool `short:"x" help:"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name)."`
 }
 
 // newArguments constructs a SQLCmdArguments instance with default values
@@ -115,6 +116,8 @@ func run(vars *sqlcmd.Variables) (int, error) {
 	}
 	s.Connect.UseTrustedConnection = args.UseTrustedConnection
 	s.Connect.TrustServerCertificate = args.TrustServerCertificate
+	s.Connect.DisableEnvironmentVariables = args.DisableCmdAndWarn
+	s.Connect.DisableVariableSubstitution = args.DisableVariableSubstitution
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})

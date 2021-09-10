@@ -71,7 +71,7 @@ func (b *Batch) Reset(r []rune) {
 // Upon exit from Next, the caller can use the State method to determine if
 // it represents a runnable SQL batch text.
 func (b *Batch) Next() (*Command, []string, error) {
-	b.linevarmap = make(map[int]string)
+	b.linevarmap = nil
 	var err error
 	var i int
 	if b.rawlen == 0 {
@@ -154,8 +154,10 @@ parse:
 			if b.Length > 0 {
 				inc = len(lineend)
 			}
-			for v := range b.linevarmap {
-				b.varmap[v+b.Length+inc] = b.linevarmap[v]
+			if b.linevarmap != nil {
+				for v := range b.linevarmap {
+					b.varmap[v+b.Length+inc] = b.linevarmap[v]
+				}
 			}
 			// log.Printf(">> appending: `%s`", string(r[st:i]))
 			b.append(b.raw[:i], lineend)
@@ -255,5 +257,8 @@ func (b *Batch) readString(r []rune, i, end int, quote rune, line uint) (int, bo
 
 // addVariableLocation is called for each variable on the current line
 func (b *Batch) addVariableLocation(i int, v string) {
+	if b.linevarmap == nil {
+		b.linevarmap = make(map[int]string)
+	}
 	b.linevarmap[i] = v
 }
