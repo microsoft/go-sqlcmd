@@ -5,7 +5,19 @@
     "version": "0.2.0",
     "configurations": [
 
+        {
 
+            "name": "Attach to Process",
+
+            "type": "go",
+
+            "request": "attach",
+
+            "mode": "local",
+
+            "processId": 0
+
+        },
         {
             "name": "Attach using delve",
             "type": "go",
