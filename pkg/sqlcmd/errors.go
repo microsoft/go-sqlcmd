@@ -45,6 +45,14 @@ func ReadOnlyVariable(variable string) *VariableError {
 	}
 }
 
+// UndefinedVariable indicates the user tried to reference an undefined variable
+func UndefinedVariable(variable string) *VariableError {
+	return &VariableError{
+		Variable:      variable,
+		MessageFormat: "'%s' scripting variable not defined.",
+	}
+}
+
 // CommandError indicates syntax errors for specific sqlcmd commands
 type CommandError struct {
 	Command    string

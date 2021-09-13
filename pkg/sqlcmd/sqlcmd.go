@@ -124,6 +124,7 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 			}
 		}
 		if cmd != nil {
+			lastError = nil
 			err = s.RunCommand(cmd, args)
 			if err == ErrExitRequested || once {
 				break

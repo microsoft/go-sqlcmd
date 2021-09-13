@@ -55,10 +55,8 @@ func main() {
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	setVars(vars, &args)
 
-	exitCode, err := run(vars)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	// so far sqlcmd prints all the errors itself so ignore it
+	exitCode, _ := run(vars)
 	os.Exit(exitCode)
 }
 

@@ -29,7 +29,7 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 		{
 			&ConnectSettings{TrustServerCertificate: true},
 			func(vars *Variables) {
-				_ = Setvar(SQLCMDDBNAME, "somedatabase")
+				vars.Set(SQLCMDDBNAME, "somedatabase")
 			},
 			"sqlserver://.?database=somedatabase&trustservercertificate=true",
 		},
@@ -197,6 +197,7 @@ func TestGetRunnableQuery(t *testing.T) {
 		s.batch.Reset([]rune(test.raw))
 		_, _, _ = s.batch.Next()
 		s.Connect.DisableVariableSubstitution = false
+		t.Log(test.raw)
 		r := s.getRunnableQuery(test.raw)
 		assert.Equalf(t, test.q, r, `runnableQuery for "%s"`, test.raw)
 		s.Connect.DisableVariableSubstitution = true

@@ -8,7 +8,7 @@ import (
 )
 
 func TestBasicVariableOperations(t *testing.T) {
-	variables = Variables{
+	variables := Variables{
 		"var1": "val1",
 	}
 	variables.Set("var2", "val2")
@@ -24,11 +24,11 @@ func TestBasicVariableOperations(t *testing.T) {
 }
 
 func TestSetvarFailsForReadOnlyVariables(t *testing.T) {
-	variables = Variables{}
-	err := Setvar("SQLCMDDBNAME", "somedatabase")
-	assert.NoError(t, err, "Setvar should succeed when SQLCMDDBNAME is not set")
-	err = Setvar("SQLCMDDBNAME", "newdatabase")
-	assert.EqualError(t, err, "Sqlcmd: Error: The scripting variable: 'SQLCMDDBNAME' is read-only")
+	variables := Variables{}
+	variables.Set("SQLCMDDBNAME", "somedatabase")
+	err := variables.Setvar("SQLCMDDBNAME", "newdatabase")
+	assert.Error(t, err, "setting a readonly variable fails")
+	assert.Equal(t, "somedatabase", variables.SQLCmdDatabase(), "readonly variable shouldn't be changed by Setvar")
 }
 
 func TestEnvironmentVariablesAsInput(t *testing.T) {
@@ -60,5 +60,53 @@ func TestSqlServerSplitsName(t *testing.T) {
 		assert.Equal(t, "someserver", serverName, "server name for port number")
 		assert.Equal(t, uint64(1111), port, "port for port number")
 		assert.Equal(t, "", instance, "instance for port number")
+	}
+}
+
+func TestParseValue(t *testing.T) {
+	type test struct {
+		raw   string
+		val   string
+		valid bool
+	}
+	tests := []test{
+		{`""`, "", true},
+		{`"`, "", false},
+		{`"""`, "", false},
+		{`no quotes`, "", false},
+		{`"is quoted"`, "is quoted", true},
+		{`" " single quote "`, "", false},
+		{`" "" escaped quotes "" "`, ` " escaped quotes " `, true},
+	}
+
+	for _, tst := range tests {
+		v, err := parseValue(tst.raw)
+		if tst.valid {
+			if assert.NoErrorf(t, err, "Unexpected error for value %s", tst.raw) {
+				assert.Equalf(t, tst.val, v, "Incorrect parsed value for %s", tst.raw)
+			}
+		} else {
+			assert.Errorf(t, err, "Expected error for %s", tst.raw)
+		}
+	}
+}
+
+func TestValidIdentifier(t *testing.T) {
+	type test struct {
+		raw   string
+		valid bool
+	}
+	tests := []test{
+		{"1A", false},
+		{"A1", true},
+		{"A+", false},
+	}
+	for _, tst := range tests {
+		err := ValidIdentifier(tst.raw)
+		if tst.valid {
+			assert.NoErrorf(t, err, "%s is valid", tst.raw)
+		} else {
+			assert.Errorf(t, err, "%s is invalid", tst.raw)
+		}
 	}
 }

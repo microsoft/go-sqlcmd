@@ -54,6 +54,11 @@ func newCommands() Commands {
 			action: readFileCommand,
 			name:   "READFILE",
 		},
+		"SETVAR": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:SETVAR(?:[ \t]+(.*$)|$)`),
+			action: setVarCommand,
+			name:   "SETVAR",
+		},
 	}
 
 }
@@ -184,7 +189,35 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 
 func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 {
-		return InvalidCommandError(":r", line)
+		return InvalidCommandError(":R", line)
 	}
 	return s.IncludeFile(args[0], false)
+}
+
+// setVarCommand parses a variable setting and applies it to the current Sqlcmd variables
+// The format of a variable setting is not straightforward.
+// The name of the variable does not have to be delimited by a space from its value.
+func setVarCommand(s *Sqlcmd, args []string, line uint) error {
+	if args == nil || len(args) != 1 || args[0] == "" {
+		return InvalidCommandError(":SETVAR", line)
+	}
+
+	varname := args[0]
+	val := ""
+	// The prior incarnation of sqlcmd doesn't require a space between the variable name and its value
+	// in some very unexpected cases. This version will require the space.
+	sp := strings.IndexRune(args[0], ' ')
+	if sp > -1 {
+		val = strings.TrimSpace(varname[sp:])
+		varname = varname[:sp]
+	}
+	if err := s.vars.Setvar(varname, val); err != nil {
+		switch e := err.(type) {
+		case *VariableError:
+			return e
+		default:
+			return InvalidCommandError(":SETVAR", line)
+		}
+	}
+	return nil
 }
