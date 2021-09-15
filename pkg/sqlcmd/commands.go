@@ -240,7 +240,7 @@ func listVarCommand(s *Sqlcmd, args []string, line uint) error {
 			keys = append(keys, k)
 		}
 	}
-	keys = sort.StringSlice(keys)
+	sort.Strings(keys)
 	keys = append(builtinVariables, keys...)
 	for _, k := range keys {
 		fmt.Fprintf(s.GetOutput(), `%s = "%s"%s`, k, vars[k], SqlcmdEol)

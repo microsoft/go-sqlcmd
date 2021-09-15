@@ -355,7 +355,7 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	for k := range s.batch.varmap {
 		keys = append(keys, k)
 	}
-	keys = sort.IntSlice(keys)
+	sort.Ints(keys)
 	last := 0
 	for _, i := range keys {
 		b.WriteString(q[last:i])
