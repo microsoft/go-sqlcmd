@@ -58,6 +58,10 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-X", "-x"}, func(args SQLCmdArguments) bool {
 			return args.DisableCmdAndWarn && args.DisableVariableSubstitution
 		}},
+		// Notice no "" around the value with a space in it. It seems quotes get stripped out somewhere before Parse when invoking on a real command line
+		{[]string{"-v", "x=y", "-v", `y=a space`}, func(args SQLCmdArguments) bool {
+			return args.Variables[0].name == "x" && args.Variables[1].name == "y" && args.Variables[0].value == "y" && args.Variables[1].value == "a space"
+		}},
 	}
 
 	for _, test := range commands {
@@ -120,8 +124,9 @@ func TestQueryAndExit(t *testing.T) {
 	defer os.Remove(o.Name())
 	defer o.Close()
 	args = newArguments()
-	args.Query = "SELECT $(VAR1)"
+	args.Query = "SELECT '$(VAR1) $(VAR2)'"
 	args.OutputFile = o.Name()
+	args.Variables = []variableInput{{"var2", "val2"}}
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	vars.Set("VAR1", "100")
@@ -132,6 +137,6 @@ func TestQueryAndExit(t *testing.T) {
 	assert.Equal(t, 0, exitCode, "exitCode")
 	bytes, err := os.ReadFile(o.Name())
 	if assert.NoError(t, err, "os.ReadFile") {
-		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+		assert.Equal(t, "100 val2"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
 	}
 }

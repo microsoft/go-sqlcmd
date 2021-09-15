@@ -80,7 +80,7 @@ func TestParseValue(t *testing.T) {
 	}
 
 	for _, tst := range tests {
-		v, err := parseValue(tst.raw)
+		v, err := ParseValue(tst.raw)
 		if tst.valid {
 			if assert.NoErrorf(t, err, "Unexpected error for value %s", tst.raw) {
 				assert.Equalf(t, tst.val, v, "Incorrect parsed value for %s", tst.raw)

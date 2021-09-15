@@ -6,11 +6,45 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/alecthomas/kong"
 	"github.com/gohxs/readline"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 )
+
+// variableInput gives us a class to implement Validate()
+type variableInput struct {
+	name  string
+	value string
+}
+
+// UnmarshalText converts x=y string into the name and value
+func (v *variableInput) UnmarshalText(text []byte) error {
+	variable := string(text)
+	invalidArgument := ""
+	val := ""
+	var err error
+	parts := strings.Split(variable, "=")
+	if len(parts) != 2 {
+		invalidArgument = variable
+	} else {
+		val = parts[1]
+		// put back the quotes for parsing
+		if strings.ContainsAny(val, " \t\n\r") {
+			val, err = sqlcmd.ParseValue(`"` + parts[1] + `"`)
+			if err != nil {
+				invalidArgument = parts[1]
+			}
+		}
+	}
+	if invalidArgument != "" {
+		return fmt.Errorf("Sqlcmd: '%s': Invalid argument.", invalidArgument)
+	}
+	v.name = parts[0]
+	v.value = val
+	return nil
+}
 
 // SQLCmdArguments defines the command line arguments for sqlcmd
 // The exhaustive list is at https://docs.microsoft.com/sql/tools/sqlcmd-utility?view=sql-server-ver15
@@ -31,8 +65,9 @@ type SQLCmdArguments struct {
 	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
 	Server string `short:"S" help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
 	// Disable syscommands with a warning
-	DisableCmdAndWarn           bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
-	DisableVariableSubstitution bool `short:"x" help:"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name)."`
+	DisableCmdAndWarn           bool            `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+	DisableVariableSubstitution bool            `short:"x" help:"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name)."`
+	Variables                   []variableInput `short:"v" help:"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits"`
 }
 
 // newArguments constructs a SQLCmdArguments instance with default values
@@ -84,6 +119,11 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			vars.Set(varname, val)
 		}
 	}
+
+	for _, v := range args.Variables {
+		vars.Set(v.name, v.value)
+	}
+
 }
 
 func run(vars *sqlcmd.Variables) (int, error) {

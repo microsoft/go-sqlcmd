@@ -243,7 +243,7 @@ func (variables *Variables) Setvar(name, value string) error {
 			return nil
 		}
 	} else {
-		value, err = parseValue(value)
+		value, err = ParseValue(value)
 	}
 	if err != nil {
 		return err
@@ -267,12 +267,12 @@ func ValidIdentifier(name string) error {
 	return nil
 }
 
-// parseValue returns the string to use as the variable value
+// ParseValue returns the string to use as the variable value
 // If the string contains a space or a quote, it must be delimited by quotes and literal quotes
 // within the value must be escaped by another quote
 // "this has a quote "" in it" is valid
 // "this has a quote" in it" is not valid
-func parseValue(val string) (string, error) {
+func ParseValue(val string) (string, error) {
 	quoted := val[0] == '"'
 	err := fmt.Errorf("Invalid variable value %s", val)
 	if !quoted {
