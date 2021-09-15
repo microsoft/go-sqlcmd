@@ -103,6 +103,9 @@ func run(vars *sqlcmd.Variables) (int, error) {
 	}
 
 	s := sqlcmd.New(line, wd, vars)
+	if !args.DisableCmdAndWarn {
+		s.Connect.Password = os.Getenv(sqlcmd.SQLCMDPASSWORD)
+	}
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {

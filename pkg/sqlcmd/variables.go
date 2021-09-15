@@ -34,12 +34,31 @@ const (
 	SQLCMDUSEAAD            = "SQLCMDUSEAAD"
 )
 
+// builtinVariables are the predefined SQLCMD variables. Their values are printed first by :listvar
+var builtinVariables = []string{
+	SQLCMDCOLSEP,
+	SQLCMDCOLWIDTH,
+	SQLCMDDBNAME,
+	SQLCMDEDITOR,
+	SQLCMDERRORLEVEL,
+	SQLCMDHEADERS,
+	SQLCMDINI,
+	SQLCMDLOGINTIMEOUT,
+	SQLCMDMAXFIXEDTYPEWIDTH,
+	SQLCMDMAXVARTYPEWIDTH,
+	SQLCMDPACKETSIZE,
+	SQLCMDSERVER,
+	SQLCMDSTATTIMEOUT,
+	SQLCMDUSEAAD,
+	SQLCMDUSER,
+	SQLCMDWORKSTATION,
+}
+
 // readonlyVariables are variables that can't be changed via :setvar
 var readOnlyVariables = []string{
 	SQLCMDDBNAME,
 	SQLCMDINI,
 	SQLCMDPACKETSIZE,
-	SQLCMDPASSWORD,
 	SQLCMDSERVER,
 	SQLCMDUSER,
 	SQLCMDWORKSTATION,
@@ -101,11 +120,6 @@ func (v Variables) SQLCmdDatabase() string {
 // UseAad returns whether the SQLCMDUSEAAD variable value is set to "true"
 func (v Variables) UseAad() bool {
 	return strings.EqualFold(v[SQLCMDUSEAAD], "true")
-}
-
-// Password returns the password used for connections as specified by SQLCMDPASSWORD variable
-func (v Variables) Password() string {
-	return v[SQLCMDPASSWORD]
 }
 
 // ColumnSeparator is the value of SQLCMDCOLSEP variable. It can have 0 or 1 characters
@@ -190,7 +204,6 @@ func InitializeVariables(fromEnvironment bool) *Variables {
 		SQLCMDSERVER:            "",
 		SQLCMDSTATTIMEOUT:       defaultVariables[SQLCMDSTATTIMEOUT],
 		SQLCMDUSER:              "",
-		SQLCMDPASSWORD:          "",
 		SQLCMDUSEAAD:            "",
 	}
 	hostname, _ := os.Hostname()

@@ -41,6 +41,8 @@ type ConnectSettings struct {
 	DisableEnvironmentVariables bool
 	// DisableVariableSubstitution determines if scripting variables should be evaluated
 	DisableVariableSubstitution bool
+	// Password is the password used with SQL authentication
+	Password string
 }
 
 // Sqlcmd is the core processor for text lines.
@@ -206,7 +208,7 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 	}
 	useTrustedConnection := s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && !s.vars.UseAad())
 	if !useTrustedConnection {
-		connectionURL.User = url.UserPassword(s.vars.SQLCmdUser(), s.vars.Password())
+		connectionURL.User = url.UserPassword(s.vars.SQLCmdUser(), s.Connect.Password)
 	}
 	if port > 0 {
 		connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)
@@ -254,7 +256,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	}
 
 	if password == "" {
-		password = s.vars.Password()
+		password = s.Connect.Password
 	}
 
 	if user != "" {
@@ -281,9 +283,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	if user != "" {
 		s.vars.Set(SQLCMDUSER, user)
 		s.Connect.UseTrustedConnection = false
-		if password != "" {
-			s.vars.Set(SQLCMDPASSWORD, password)
-		}
+		s.Connect.Password = password
 	} else if s.vars.SQLCmdUser() == "" {
 		u, e := osuser.Current()
 		if e != nil {

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"sort"
 	"strings"
 	"syscall"
 )
@@ -58,6 +59,11 @@ func newCommands() Commands {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:SETVAR(?:[ \t]+(.*$)|$)`),
 			action: setVarCommand,
 			name:   "SETVAR",
+		},
+		"LISTVAR": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:LISTVAR(?:[ \t]+(.*$)|$)`),
+			action: listVarCommand,
+			name:   "LISTVAR",
 		},
 	}
 
@@ -218,6 +224,26 @@ func setVarCommand(s *Sqlcmd, args []string, line uint) error {
 		default:
 			return InvalidCommandError(":SETVAR", line)
 		}
+	}
+	return nil
+}
+
+func listVarCommand(s *Sqlcmd, args []string, line uint) error {
+	if args != nil && strings.TrimSpace(args[0]) != "" {
+		return InvalidCommandError("LISTVAR", line)
+	}
+
+	vars := s.vars.All()
+	keys := make([]string, 0, len(vars))
+	for k := range vars {
+		if !contains(builtinVariables, k) {
+			keys = append(keys, k)
+		}
+	}
+	keys = sort.StringSlice(keys)
+	keys = append(builtinVariables, keys...)
+	for _, k := range keys {
+		fmt.Fprintf(s.GetOutput(), `%s = "%s"%s`, k, vars[k], SqlcmdEol)
 	}
 	return nil
 }

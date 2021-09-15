@@ -34,21 +34,19 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			"sqlserver://.?database=somedatabase&trustservercertificate=true",
 		},
 		{
-			&ConnectSettings{TrustServerCertificate: true},
+			&ConnectSettings{TrustServerCertificate: true, Password: pwd},
 			func(vars *Variables) {
 				vars.Set(SQLCMDSERVER, `someserver/instance`)
 				vars.Set(SQLCMDDBNAME, "somedatabase")
 				vars.Set(SQLCMDUSER, "someuser")
-				vars.Set(SQLCMDPASSWORD, pwd)
 			},
 			fmt.Sprintf("sqlserver://someuser:%s@someserver/instance?database=somedatabase&trustservercertificate=true", pwd),
 		},
 		{
-			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true},
+			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true, Password: pwd},
 			func(vars *Variables) {
 				vars.Set(SQLCMDSERVER, `tcp:someserver,1045`)
 				vars.Set(SQLCMDUSER, "someuser")
-				vars.Set(SQLCMDPASSWORD, pwd)
 			},
 			"sqlserver://someserver:1045?trustservercertificate=true",
 		},
@@ -85,6 +83,7 @@ set will be to localhost using Windows auth.
 func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
+	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	err := s.ConnectDb("", "", "", false)
 	if assert.NoError(t, err, "ConnectDb should succeed") {
 		sqlcmduser := os.Getenv(SQLCMDUSER)
@@ -99,6 +98,7 @@ func TestSqlCmdConnectDb(t *testing.T) {
 func ConnectDb() (*sql.DB, error) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
+	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	err := s.ConnectDb("", "", "", false)
 	return s.db, err
 }
@@ -211,6 +211,7 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
+	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	file, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
