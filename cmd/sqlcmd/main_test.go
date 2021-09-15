@@ -60,7 +60,7 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		}},
 		// Notice no "" around the value with a space in it. It seems quotes get stripped out somewhere before Parse when invoking on a real command line
 		{[]string{"-v", "x=y", "-v", `y=a space`}, func(args SQLCmdArguments) bool {
-			return args.Variables[0].name == "x" && args.Variables[1].name == "y" && args.Variables[0].value == "y" && args.Variables[1].value == "a space"
+			return args.Variables["x"] == "y" && args.Variables["y"] == "a space"
 		}},
 	}
 
@@ -126,7 +126,7 @@ func TestQueryAndExit(t *testing.T) {
 	args = newArguments()
 	args.Query = "SELECT '$(VAR1) $(VAR2)'"
 	args.OutputFile = o.Name()
-	args.Variables = []variableInput{{"var2", "val2"}}
+	args.Variables = map[string]string{"var2": "val2"}
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	vars.Set("VAR1", "100")
