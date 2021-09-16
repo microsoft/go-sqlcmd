@@ -19,30 +19,12 @@
 
         },
         {
-            "name": "Attach using delve",
-            "type": "go",
-            "request": "attach",
-            "preLaunchTask": "delve",
-            "mode": "remote",
-            "remotePath": "${workspaceFolder}/cmd/sqlcmd",
-            "port" : 23456,
-            "host" : "127.0.0.1",
-            "cwd" : "${workspaceFolder}/cmd/sqlcmd",
-        },
-        {
             "name" : "Run query and exit",
             "type" : "go",
             "request": "launch",
             "mode" : "auto",
             "program": "${workspaceFolder}/cmd/sqlcmd",
-            "args" : ["-Q", "select 100 as Count"],
+            "args" : ["-Q", "\"select 100 as Count\""],
         },
-        {
-            "name" : "Run interactively",
-            "type" : "go",
-            "request": "launch",
-            "mode" : "auto",
-            "program": "${workspaceFolder}/cmd/sqlcmd",
-        }
     ]
 }
