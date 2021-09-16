@@ -25,30 +25,6 @@ func findNonSpace(r []rune, i, end int) (int, bool) {
 	return i, false
 }
 
-/*
-// findSpace finds first space rune in r, returning end if not found.
-func findSpace(r []rune, i, end int) (int, bool) {
-	for ; i < end; i++ {
-		if IsSpaceOrControl(r[i]) {
-			return i, true
-		}
-	}
-	return i, false
-}
-
-
-// findRune finds the next rune c in r, returning end if not found.
-func findRune(r []rune, i, end int, c rune) (int, bool) {
-	for ; i < end; i++ {
-		if r[i] == c {
-			return i, true
-		}
-	}
-	return i, false
-}
-
-*/
-
 // isEmptyLine returns true when r is empty or composed of only whitespace.
 func isEmptyLine(r []rune, i, end int) bool {
 	_, ok := findNonSpace(r, i, end)
@@ -81,7 +57,7 @@ func readCommand(c Commands, r []rune, i, end int) (*Command, []string, int) {
 	return cmd, args, i
 }
 
-// Returns the length of the variable reference or false if it's not a valid identifier
+// readVariableReference returns the length of the variable reference or false if it's not a valid identifier
 func readVariableReference(r []rune, i int, end int) (int, bool) {
 	for ; i < end; i++ {
 		if r[i] == ')' {
@@ -122,16 +98,3 @@ func min64(a, b int64) int64 {
 func isSpaceOrControl(r rune) bool {
 	return unicode.IsSpace(r) || unicode.IsControl(r)
 }
-
-/*
-// runesLastIndex returns the last index in r of needle, or -1 if not found.
-func runesLastIndex(r []rune, needle rune) int {
-	i := len(r) - 1
-	for ; i >= 0; i-- {
-		if r[i] == needle {
-			return i
-		}
-	}
-	return i
-}
-*/

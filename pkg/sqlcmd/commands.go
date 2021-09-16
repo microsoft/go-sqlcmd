@@ -201,8 +201,6 @@ func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 }
 
 // setVarCommand parses a variable setting and applies it to the current Sqlcmd variables
-// The format of a variable setting is not straightforward.
-// The name of the variable does not have to be delimited by a space from its value.
 func setVarCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 || args[0] == "" {
 		return InvalidCommandError(":SETVAR", line)
@@ -228,6 +226,8 @@ func setVarCommand(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
+// listVarCommand prints the set of Sqlcmd scripting variables.
+// Builtin values are printed first, followed by user-set values in sorted order.
 func listVarCommand(s *Sqlcmd, args []string, line uint) error {
 	if args != nil && strings.TrimSpace(args[0]) != "" {
 		return InvalidCommandError("LISTVAR", line)
