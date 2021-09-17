@@ -3,7 +3,9 @@
 
 package sqlcmd
 
-import "unicode"
+import (
+	"unicode"
+)
 
 // grab grabs i from r, or returns 0 if i >= end.
 func grab(r []rune, i, end int) rune {
@@ -23,60 +25,10 @@ func findNonSpace(r []rune, i, end int) (int, bool) {
 	return i, false
 }
 
-/*
-// findSpace finds first space rune in r, returning end if not found.
-func findSpace(r []rune, i, end int) (int, bool) {
-	for ; i < end; i++ {
-		if IsSpaceOrControl(r[i]) {
-			return i, true
-		}
-	}
-	return i, false
-}
-
-
-// findRune finds the next rune c in r, returning end if not found.
-func findRune(r []rune, i, end int, c rune) (int, bool) {
-	for ; i < end; i++ {
-		if r[i] == c {
-			return i, true
-		}
-	}
-	return i, false
-}
-
-*/
-
 // isEmptyLine returns true when r is empty or composed of only whitespace.
 func isEmptyLine(r []rune, i, end int) bool {
 	_, ok := findNonSpace(r, i, end)
 	return !ok
-}
-
-// readString seeks to the end of a string returning the position and whether
-// or not the string's end was found.
-//
-// If the string's terminator was not found, then the result will be the passed
-// end.
-func readString(r []rune, i, end int, quote rune) (int, bool) {
-	var prev, c, next rune
-	for ; i < end; i++ {
-		c, next = r[i], grab(r, i+1, end)
-		switch {
-		case quote == '\'' && c == '\\':
-			i++
-			prev = 0
-			continue
-		case quote == '\'' && c == '\'' && next == '\'':
-			i++
-			continue
-		case quote == '\'' && c == '\'' && prev != '\'',
-			quote == '"' && c == '"':
-			return i, true
-		}
-		prev = c
-	}
-	return end, false
 }
 
 // readMultilineComment finds the end of a multiline comment (ie, '*/').
@@ -103,6 +55,20 @@ func readCommand(c Commands, r []rune, i, end int) (*Command, []string, int) {
 	}
 	cmd, args := c.matchCommand(string(r[:i]))
 	return cmd, args, i
+}
+
+// readVariableReference returns the length of the variable reference or false if it's not a valid identifier
+func readVariableReference(r []rune, i int, end int) (int, bool) {
+	for ; i < end; i++ {
+		if r[i] == ')' {
+			return i, true
+		}
+		if (r[i] >= 'a' && r[i] <= 'z') || (r[i] >= 'A' && r[i] <= 'Z') || (r[i] >= '0' && r[i] <= '9') {
+			continue
+		}
+		break
+	}
+	return 0, false
 }
 
 func max64(a, b int64) int64 {
@@ -132,16 +98,3 @@ func min64(a, b int64) int64 {
 func isSpaceOrControl(r rune) bool {
 	return unicode.IsSpace(r) || unicode.IsControl(r)
 }
-
-/*
-// runesLastIndex returns the last index in r of needle, or -1 if not found.
-func runesLastIndex(r []rune, needle rune) int {
-	i := len(r) - 1
-	for ; i >= 0; i-- {
-		if r[i] == needle {
-			return i
-		}
-	}
-	return i
-}
-*/

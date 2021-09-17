@@ -29,26 +29,24 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 		{
 			&ConnectSettings{TrustServerCertificate: true},
 			func(vars *Variables) {
-				_ = Setvar(SQLCMDDBNAME, "somedatabase")
+				vars.Set(SQLCMDDBNAME, "somedatabase")
 			},
 			"sqlserver://.?database=somedatabase&trustservercertificate=true",
 		},
 		{
-			&ConnectSettings{TrustServerCertificate: true},
+			&ConnectSettings{TrustServerCertificate: true, Password: pwd},
 			func(vars *Variables) {
 				vars.Set(SQLCMDSERVER, `someserver/instance`)
 				vars.Set(SQLCMDDBNAME, "somedatabase")
 				vars.Set(SQLCMDUSER, "someuser")
-				vars.Set(SQLCMDPASSWORD, pwd)
 			},
 			fmt.Sprintf("sqlserver://someuser:%s@someserver/instance?database=somedatabase&trustservercertificate=true", pwd),
 		},
 		{
-			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true},
+			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true, Password: pwd},
 			func(vars *Variables) {
 				vars.Set(SQLCMDSERVER, `tcp:someserver,1045`)
 				vars.Set(SQLCMDUSER, "someuser")
-				vars.Set(SQLCMDPASSWORD, pwd)
 			},
 			"sqlserver://someserver:1045?trustservercertificate=true",
 		},
@@ -85,6 +83,7 @@ set will be to localhost using Windows auth.
 func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
+	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	err := s.ConnectDb("", "", "", false)
 	if assert.NoError(t, err, "ConnectDb should succeed") {
 		sqlcmduser := os.Getenv(SQLCMDUSER)
@@ -99,6 +98,7 @@ func TestSqlCmdConnectDb(t *testing.T) {
 func ConnectDb() (*sql.DB, error) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
+	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	err := s.ConnectDb("", "", "", false)
 	return s.db, err
 }
@@ -106,13 +106,13 @@ func ConnectDb() (*sql.DB, error) {
 func TestSqlCmdQueryAndExit(t *testing.T) {
 	s, file := setupSqlcmdWithFileOutput(t)
 	defer os.Remove(file.Name())
-	s.Query = "select 100"
+	s.Query = "select $(X"
 	err := s.Run(true, false)
 	if assert.NoError(t, err, "s.Run(once = true)") {
 		s.SetOutput(nil)
 		bytes, err := os.ReadFile(file.Name())
 		if assert.NoError(t, err, "os.ReadFile") {
-			assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+			assert.Equal(t, "Sqlcmd: Error: Syntax error at line 1."+SqlcmdEol, string(bytes), "Incorrect output from Run")
 		}
 	}
 }
@@ -126,7 +126,7 @@ func TestIncludeFileNoExecutions(t *testing.T) {
 	s.SetOutput(nil)
 	if assert.NoError(t, err, "IncludeFile singlebatchnogo.sql false") {
 		assert.Equal(t, "-", s.batch.State(), "s.batch.State() after IncludeFile singlebatchnogo.sql false")
-		assert.Equal(t, "select 100 as num\nselect 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile singlebatchnogo.sql false")
+		assert.Equal(t, "select 100 as num"+SqlcmdEol+"select 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile singlebatchnogo.sql false")
 		bytes, err := os.ReadFile(file.Name())
 		if assert.NoError(t, err, "os.ReadFile") {
 			assert.Equal(t, "", string(bytes), "Incorrect output from Run")
@@ -176,10 +176,42 @@ func TestIncludeFileProcessAll(t *testing.T) {
 		}
 	}
 }
+
+func TestGetRunnableQuery(t *testing.T) {
+	v := InitializeVariables(false)
+	v.Set("var1", "v1")
+	v.Set("var2", "variable2")
+
+	type test struct {
+		raw string
+		q   string
+	}
+	tests := []test{
+		{"$(var1)", "v1"},
+		{"$ (var2)", "$ (var2)"},
+		{"select '$(VAR1) $(VAR2)' as  c", "select 'v1 variable2' as  c"},
+		{" $(VAR1) ' $(VAR2) ' as  $(VAR1)", " v1 ' variable2 ' as  v1"},
+	}
+	s := New(nil, "", v)
+	for _, test := range tests {
+		s.batch.Reset([]rune(test.raw))
+		_, _, _ = s.batch.Next()
+		s.Connect.DisableVariableSubstitution = false
+		t.Log(test.raw)
+		r := s.getRunnableQuery(test.raw)
+		assert.Equalf(t, test.q, r, `runnableQuery for "%s"`, test.raw)
+		s.Connect.DisableVariableSubstitution = true
+		r = s.getRunnableQuery(test.raw)
+		assert.Equalf(t, test.raw, r, `runnableQuery without variable subs for "%s"`, test.raw)
+	}
+
+}
+
 func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
+	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	file, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")

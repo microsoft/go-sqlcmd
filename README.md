@@ -27,7 +27,7 @@ Build [sqlcmd](cmd/sqlcmd)
 
 ```sh
 
-go build cmd/sqlcmd
+go build ./cmd/sqlcmd
 
 ```
 
@@ -37,7 +37,25 @@ pkg/sqlcmd is consumable by other hosts. Go docs for the package are forthcoming
 
 ## Building
 
-Scripts to build the binaries and package them for release will be added in a build folder off the root. We will also add Azure Devops pipeline yml files there to initiate builds and releases. Until then just use `go build cmd/sqlcmd` to create a sqlcmd binary.
+Scripts to build the binaries and package them for release will be added in a build folder off the root. We will also add Azure Devops pipeline yml files there to initiate builds and releases. Until then just use `go build ./cmd/sqlcmd` to create a sqlcmd binary.
+
+## Testing
+
+The tests rely on SQLCMD scripting variables to provide the connection string parameters. Set SQLCMDSERVER, SQLCMDDATABASE, SQLCMDUSER, SQLCMDPASSWORD variables appropriately then
+
+```sh
+
+go test ./...
+
+```
+
+If you are developing on Windows, you can use docker or WSL to run the tests on Linux. `docker run` lets you pass the environment variables. For example, if your code is in `i:\git\go-sqlcmd` you can run tests in a docker container:
+
+```cmd
+
+docker run -rm -e SQLCMDSERVER=<yourserver> -e SQLCMDUSER=<youruser> -e SQLCMDPASSWORD=<yourpassword> -v i:\git\go-sqlcmd:/go-sqlcmd -w /go-sqlcmd golang:1.16 go test ./...
+
+```
 
 ## Contributing
 

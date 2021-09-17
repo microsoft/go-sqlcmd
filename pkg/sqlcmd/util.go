@@ -62,3 +62,12 @@ func padLeft(builder *strings.Builder, c int64, s string) *strings.Builder {
 	newBuilder.WriteString(builder.String())
 	return newBuilder
 }
+
+func contains(arr []string, s string) bool {
+	for _, a := range arr {
+		if a == s {
+			return true
+		}
+	}
+	return false
+}

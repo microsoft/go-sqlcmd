@@ -13,6 +13,8 @@ import (
 	"os"
 	"os/signal"
 	osuser "os/user"
+	"sort"
+	"strings"
 	"syscall"
 
 	mssql "github.com/denisenkom/go-mssqldb"
@@ -31,8 +33,16 @@ var (
 // ConnectSettings are the settings for connections that can't be
 // inferred from scripting variables
 type ConnectSettings struct {
-	UseTrustedConnection   bool
+	// UseTrustedConnection indicates integrated auth is used when no user name is provided
+	UseTrustedConnection bool
+	// TrustServerCertificate sets the TrustServerCertificate setting on the connection string
 	TrustServerCertificate bool
+	// DisableEnvironmentVariables determines if sqlcmd resolves scripting variables from the process environment
+	DisableEnvironmentVariables bool
+	// DisableVariableSubstitution determines if scripting variables should be evaluated
+	DisableVariableSubstitution bool
+	// Password is the password used with SQL authentication
+	Password string
 }
 
 // Sqlcmd is the core processor for text lines.
@@ -90,13 +100,17 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 		if s.Query != "" {
 			cmd = s.Cmd["GO"]
 			args = make([]string, 0)
+			s.batch.Reset([]rune(s.Query))
+			// batch.Next validates variable syntax
+			_, _, err = s.batch.Next()
+			s.Query = ""
 		} else {
 			cmd, args, err = s.batch.Next()
 		}
 		switch {
 		case err == readline.ErrInterrupt:
 			// Ignore any error printing the ctrl-c notice since we are exiting
-			_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error()))
+			_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 			return nil
 		case err != nil:
 			if err == io.EOF {
@@ -108,10 +122,11 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 					return nil
 				}
 			} else {
-				return err
+				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
 			}
 		}
 		if cmd != nil {
+			lastError = nil
 			err = s.RunCommand(cmd, args)
 			if err == ErrExitRequested || once {
 				break
@@ -193,7 +208,7 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 	}
 	useTrustedConnection := s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && !s.vars.UseAad())
 	if !useTrustedConnection {
-		connectionURL.User = url.UserPassword(s.vars.SQLCmdUser(), s.vars.Password())
+		connectionURL.User = url.UserPassword(s.vars.SQLCmdUser(), s.Connect.Password)
 	}
 	if port > 0 {
 		connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)
@@ -241,7 +256,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	}
 
 	if password == "" {
-		password = s.vars.Password()
+		password = s.Connect.Password
 	}
 
 	if user != "" {
@@ -268,9 +283,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	if user != "" {
 		s.vars.Set(SQLCMDUSER, user)
 		s.Connect.UseTrustedConnection = false
-		if password != "" {
-			s.vars.Set(SQLCMDPASSWORD, password)
-		}
+		s.Connect.Password = password
 	} else if s.vars.SQLCmdUser() == "" {
 		u, e := osuser.Current()
 		if e != nil {
@@ -315,6 +328,48 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 		s.batch.batchline = b + 1
 	}
 	return err
+}
+
+// resolveVariable returns the value of the named variable
+func (s *Sqlcmd) resolveVariable(v string) (string, bool) {
+	if val, ok := s.vars.Get(v); ok {
+		return val, ok
+	}
+
+	if !s.Connect.DisableEnvironmentVariables {
+		return os.LookupEnv(v)
+	}
+	return "", false
+}
+
+// getRunnableQuery converts the raw batch into an executable query by
+// replacing variable references with their resolved values
+// If variables are not used, returns the original string
+func (s *Sqlcmd) getRunnableQuery(q string) string {
+	if s.Connect.DisableVariableSubstitution || len(s.batch.varmap) == 0 {
+		return q
+	}
+	b := new(strings.Builder)
+	b.Grow(len(q))
+	keys := make([]int, 0, len(s.batch.varmap))
+	for k := range s.batch.varmap {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+	last := 0
+	for _, i := range keys {
+		b.WriteString(q[last:i])
+		v := s.batch.varmap[i]
+		if val, ok := s.resolveVariable(v); ok {
+			b.WriteString(val)
+		} else {
+			_, _ = fmt.Fprintf(s.GetError(), "'%s' scripting variable not defined.%s", v, SqlcmdEol)
+			b.WriteString(fmt.Sprintf("$(%s)", v))
+		}
+		last = i + len(v) + 3
+	}
+	b.WriteString(q[last:])
+	return b.String()
 }
 
 func setupCloseHandler(s *Sqlcmd) {

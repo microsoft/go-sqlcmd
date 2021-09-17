@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sqlcmd
 
 import (
+	"bytes"
 	"strings"
 	"testing"
 
@@ -32,6 +36,8 @@ func TestCommandParsing(t *testing.T) {
 		{"quit extra\n", "QUIT", []string{"extra"}},
 		{`:Out c:\folder\file`, "OUT", []string{`c:\folder\file`}},
 		{` :Error c:\folder\file`, "ERROR", []string{`c:\folder\file`}},
+		{`:Setvar A1 "some value" `, "SETVAR", []string{`A1 "some value" `}},
+		{` :Listvar`, "LISTVAR", []string{""}},
 	}
 
 	for _, test := range commands {
@@ -57,4 +63,45 @@ func TestCustomBatchSeparator(t *testing.T) {
 			assert.Equal(t, "5", strings.TrimSpace(args[0]), "go argument")
 		}
 	}
+}
+
+func TestVarCommands(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	err := setVarCommand(s, []string{"ABC 100"}, 1)
+	assert.NoError(t, err, "setVarCommand ABC 100")
+	err = setVarCommand(s, []string{"XYZ 200"}, 2)
+	assert.NoError(t, err, "setVarCommand XYZ 200")
+	err = listVarCommand(s, []string{""}, 3)
+	assert.NoError(t, err, "listVarCommand")
+	s.SetOutput(nil)
+	varmap := s.vars.All()
+	o := buf.buf.String()
+	t.Logf("Listvar output:\n'%s'", o)
+	output := strings.Split(o, SqlcmdEol)
+	for i, v := range builtinVariables {
+		line := strings.Split(output[i], " = ")
+		assert.Equalf(t, v, line[0], "unexpected variable printed at index %d", i)
+		val := strings.Trim(line[1], `"`)
+		assert.Equalf(t, varmap[v], val, "Unexpected value for variable %s", v)
+	}
+	assert.Equalf(t, `ABC = "100"`, output[len(output)-3], "Penultimate non-empty line should be ABC")
+	assert.Equalf(t, `XYZ = "200"`, output[len(output)-2], "Last non-empty line should be XYZ")
+	assert.Equalf(t, "", output[len(output)-1], "Last line should be empty")
+
+}
+
+// memoryBuffer has both Write and Close methods for use as io.WriteCloser
+type memoryBuffer struct {
+	buf *bytes.Buffer
+}
+
+func (b *memoryBuffer) Write(p []byte) (n int, err error) {
+	return b.buf.Write(p)
+}
+
+func (b *memoryBuffer) Close() error {
+	return nil
 }

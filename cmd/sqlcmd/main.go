@@ -31,7 +31,9 @@ type SQLCmdArguments struct {
 	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
 	Server string `short:"S" help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
 	// Disable syscommands with a warning
-	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+	DisableCmdAndWarn           bool              `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+	DisableVariableSubstitution bool              `short:"x" help:"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name)."`
+	Variables                   map[string]string `short:"v" help:"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits"`
 }
 
 // newArguments constructs a SQLCmdArguments instance with default values
@@ -54,10 +56,8 @@ func main() {
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	setVars(vars, &args)
 
-	exitCode, err := run(vars)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	// so far sqlcmd prints all the errors itself so ignore it
+	exitCode, _ := run(vars)
 	os.Exit(exitCode)
 }
 
@@ -85,6 +85,12 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			vars.Set(varname, val)
 		}
 	}
+
+	// Following sqlcmd tradition there's no validation of -v kvps
+	for v := range args.Variables {
+		vars.Set(v, args.Variables[v])
+	}
+
 }
 
 func run(vars *sqlcmd.Variables) (int, error) {
@@ -104,6 +110,9 @@ func run(vars *sqlcmd.Variables) (int, error) {
 	}
 
 	s := sqlcmd.New(line, wd, vars)
+	if !args.DisableCmdAndWarn {
+		s.Connect.Password = os.Getenv(sqlcmd.SQLCMDPASSWORD)
+	}
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {
@@ -115,6 +124,8 @@ func run(vars *sqlcmd.Variables) (int, error) {
 	}
 	s.Connect.UseTrustedConnection = args.UseTrustedConnection
 	s.Connect.TrustServerCertificate = args.TrustServerCertificate
+	s.Connect.DisableEnvironmentVariables = args.DisableCmdAndWarn
+	s.Connect.DisableVariableSubstitution = args.DisableVariableSubstitution
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
