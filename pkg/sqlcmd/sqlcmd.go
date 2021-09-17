@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"bufio"
 	"database/sql"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"io"
@@ -33,6 +34,7 @@ var (
 type ConnectSettings struct {
 	UseTrustedConnection   bool
 	TrustServerCertificate bool
+	AuthenticationMethod   string
 }
 
 // Sqlcmd is the core processor for text lines.
@@ -191,8 +193,8 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 		Scheme: "sqlserver",
 		Path:   instance,
 	}
-	useTrustedConnection := s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && !s.vars.UseAad())
-	if !useTrustedConnection {
+
+	if s.sqlAuthentication() {
 		connectionURL.User = url.UserPassword(s.vars.SQLCmdUser(), s.vars.Password())
 	}
 	if port > 0 {
@@ -240,15 +242,26 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		}
 	}
 
+	var connector driver.Connector
+	// To determine whether to use Sql auth/windows auth/aad auth, compare the current ConnectSettings with the new parameters
+	// If sqlcmd was started with sql auth or windows auth, :connect will not switch to AAD
+	// if sqlcmd was started with AAD auth, it will remain in some variant of AAD auth depending on the user/password combination
+	useAad := !s.sqlAuthentication() && !s.integratedAuthentication()
 	if password == "" {
 		password = s.vars.Password()
 	}
+	if !useAad {
+		if user != "" {
+			connectionURL.User = url.UserPassword(user, password)
+		}
 
-	if user != "" {
-		connectionURL.User = url.UserPassword(user, password)
+		connector, err = mssql.NewConnector(connectionURL.String())
+	} else {
+		if user == "" {
+			user = s.vars.SQLCmdUser()
+		}
+		connector, err = s.GetTokenBasedConnection(connectionURL.String(), user, password)
 	}
-
-	connector, err := mssql.NewConnector(connectionURL.String())
 	if err != nil {
 		return err
 	}
@@ -325,4 +338,13 @@ func setupCloseHandler(s *Sqlcmd) {
 		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 		os.Exit(0)
 	}()
+}
+
+func (s *Sqlcmd) integratedAuthentication() bool {
+	return s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && s.Connect.AuthenticationMethod == NotSpecified)
+}
+
+func (s *Sqlcmd) sqlAuthentication() bool {
+	return s.Connect.AuthenticationMethod == SqlPassword ||
+		(!s.Connect.UseTrustedConnection && s.Connect.AuthenticationMethod == NotSpecified && s.vars.SQLCmdUser() != "")
 }
