@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sqlcmd
 
 const minCapIncrease = 512
 
 // lineend is the slice to use when appending a line.
-var lineend = []rune{'\n'}
+var lineend = []rune(SqlcmdEol)
 
 // Batch provides the query text to run
 type Batch struct {
@@ -26,6 +29,10 @@ type Batch struct {
 	batchline int
 	// linecount is the total number of batch lines processed in the session
 	linecount uint
+	// varmap tracks the location of expandable variables for the entire batch
+	varmap map[int]string
+	// linevarmap tracks the location of expandable variables on the current line
+	linevarmap map[int]string
 	// cmd is the set of Commands available
 	cmd Commands
 }
@@ -55,7 +62,10 @@ func (b *Batch) Reset(r []rune) {
 	b.batchline = 1
 	if r != nil {
 		b.raw, b.rawlen = r, len(r)
+	} else {
+		b.rawlen = 0
 	}
+	b.varmap = make(map[int]string)
 }
 
 // Next processes the next chunk of input and sets the Batch state accordingly.
@@ -64,6 +74,8 @@ func (b *Batch) Reset(r []rune) {
 // Upon exit from Next, the caller can use the State method to determine if
 // it represents a runnable SQL batch text.
 func (b *Batch) Next() (*Command, []string, error) {
+	b.linevarmap = nil
+	var err error
 	var i int
 	if b.rawlen == 0 {
 		s, err := b.read()
@@ -78,13 +90,17 @@ func (b *Batch) Next() (*Command, []string, error) {
 	var args []string
 	var ok bool
 	var scannedCommand bool
+	b.linecount++
 parse:
 	for ; i < b.rawlen; i++ {
 		c, next := b.raw[i], grab(b.raw, i+1, b.rawlen)
 		switch {
 		// we're in a quoted string
 		case b.quote != 0:
-			i, ok = readString(b.raw, i, b.rawlen, b.quote)
+			i, ok, err = b.readString(b.raw, i, b.rawlen, b.quote, b.linecount)
+			if err != nil {
+				break parse
+			}
 			if ok {
 				b.quote = 0
 			}
@@ -104,6 +120,18 @@ parse:
 			i++
 		// continue processing quoted string or multiline comment
 		case b.quote != 0 || b.comment:
+
+		// Handle variable references
+		case c == '$' && next == '(':
+			vi, ok := readVariableReference(b.raw, i+2, b.rawlen)
+			if ok {
+				b.addVariableLocation(i, string(b.raw[i+2:vi]))
+				i = vi
+
+			} else {
+				err = syntaxError(b.linecount)
+				break parse
+			}
 		// Commands have to be alone on the line
 		case !scannedCommand && b.cmd != nil:
 			var cend int
@@ -116,26 +144,34 @@ parse:
 			}
 		}
 	}
-	i = min(i, b.rawlen)
-	empty := isEmptyLine(b.raw, 0, i)
-	appendLine := b.quote != 0 || b.comment || !empty
-	if !b.comment && command != nil && empty {
-		appendLine = false
-	}
-	if appendLine {
-		// skip leading space when empty
-		st := 0
-		if b.Length == 0 {
-			st, _ = findNonSpace(b.raw, 0, i)
+	if err == nil {
+		i = min(i, b.rawlen)
+		empty := isEmptyLine(b.raw, 0, i)
+		appendLine := b.quote != 0 || b.comment || !empty
+		if !b.comment && command != nil && empty {
+			appendLine = false
 		}
-		// log.Printf(">> appending: `%s`", string(r[st:i]))
-		b.append(b.raw[st:i], lineend)
-		b.batchline++
+		if appendLine {
+			// any variables on the line need to be added to the global map
+			inc := 0
+			if b.Length > 0 {
+				inc = len(lineend)
+			}
+			if b.linevarmap != nil {
+				for v := range b.linevarmap {
+					b.varmap[v+b.Length+inc] = b.linevarmap[v]
+				}
+			}
+			// log.Printf(">> appending: `%s`", string(r[st:i]))
+			b.append(b.raw[:i], lineend)
+			b.batchline++
+		}
+		b.raw = b.raw[i:]
+		b.rawlen = len(b.raw)
+	} else {
+		b.Reset(nil)
 	}
-	b.raw = b.raw[i:]
-	b.rawlen = len(b.raw)
-	b.linecount++
-	return command, args, nil
+	return command, args, err
 }
 
 // append appends r to b.Buffer separated by sep when b.Buffer is not already empty.
@@ -184,4 +220,48 @@ func (b *Batch) State() string {
 		return "-"
 	}
 	return "="
+}
+
+// readString seeks to the end of a string returning the position and whether
+// or not the string's end was found.
+//
+// If the string's terminator was not found, then the result will be the passed
+// end.
+// An error is returned if the string contains a malformed variable reference
+func (b *Batch) readString(r []rune, i, end int, quote rune, line uint) (int, bool, error) {
+	var prev, c, next rune
+	for ; i < end; i++ {
+		c, next = r[i], grab(r, i+1, end)
+		switch {
+		case c == '$' && next == '(':
+			vl, ok := readVariableReference(r, i+2, end)
+			if ok {
+				b.addVariableLocation(i, string(r[i+2:vl]))
+				i = vl
+
+			} else {
+				return i, false, syntaxError(line)
+			}
+		case quote == '\'' && c == '\\':
+			i++
+			prev = 0
+			continue
+		case quote == '\'' && c == '\'' && next == '\'':
+			i++
+			continue
+		case quote == '\'' && c == '\'' && prev != '\'',
+			quote == '"' && c == '"':
+			return i, true, nil
+		}
+		prev = c
+	}
+	return end, false, nil
+}
+
+// addVariableLocation is called for each variable on the current line
+func (b *Batch) addVariableLocation(i int, v string) {
+	if b.linevarmap == nil {
+		b.linevarmap = make(map[int]string)
+	}
+	b.linevarmap[i] = v
 }

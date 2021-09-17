@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sqlcmd
 
 import (
@@ -45,6 +48,14 @@ func ReadOnlyVariable(variable string) *VariableError {
 	}
 }
 
+// UndefinedVariable indicates the user tried to reference an undefined variable
+func UndefinedVariable(variable string) *VariableError {
+	return &VariableError{
+		Variable:      variable,
+		MessageFormat: "'%s' scripting variable not defined.",
+	}
+}
+
 // CommandError indicates syntax errors for specific sqlcmd commands
 type CommandError struct {
 	Command    string
@@ -66,4 +77,9 @@ func InvalidCommandError(command string, lineNumber uint) *CommandError {
 // InvalidFileError indicates a file could not be opened
 func InvalidFileError(err error, path string) error {
 	return errors.New(ErrorPrefix + " Error occurred while opening or operating on file " + path + " (Reason: " + err.Error() + ").")
+}
+
+// SyntaxError indicates a malformed sqlcmd statement
+func syntaxError(lineNumber uint) error {
+	return fmt.Errorf("%sSyntax error at line %d.", ErrorPrefix, lineNumber)
 }

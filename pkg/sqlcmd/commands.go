@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"sort"
 	"strings"
 	"syscall"
 )
@@ -53,6 +54,16 @@ func newCommands() Commands {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:R(?:[ \t]+(.*$)|$)`),
 			action: readFileCommand,
 			name:   "READFILE",
+		},
+		"SETVAR": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:SETVAR(?:[ \t]+(.*$)|$)`),
+			action: setVarCommand,
+			name:   "SETVAR",
+		},
+		"LISTVAR": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:LISTVAR(?:[ \t]+(.*$)|$)`),
+			action: listVarCommand,
+			name:   "LISTVAR",
 		},
 	}
 
@@ -106,13 +117,14 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 	if err != nil || n < 1 {
 		return InvalidCommandError("GO", line)
 	}
-
+	query := s.batch.String()
+	if query == "" {
+		return nil
+	}
+	query = s.getRunnableQuery(query)
 	// This loop will likely be refactored to a helper when we implement -Q and :EXIT(query)
 	for i := 0; i < n; i++ {
-		query := s.Query
-		if query == "" {
-			query = s.batch.String()
-		}
+
 		s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 		rows, qe := s.db.Query(query)
 		if qe != nil {
@@ -143,7 +155,6 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 		}
 		s.Format.EndBatch()
 	}
-	s.Query = ""
 	s.batch.Reset(nil)
 	return nil
 }
@@ -184,7 +195,55 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 
 func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 {
-		return InvalidCommandError(":r", line)
+		return InvalidCommandError(":R", line)
 	}
 	return s.IncludeFile(args[0], false)
+}
+
+// setVarCommand parses a variable setting and applies it to the current Sqlcmd variables
+func setVarCommand(s *Sqlcmd, args []string, line uint) error {
+	if args == nil || len(args) != 1 || args[0] == "" {
+		return InvalidCommandError(":SETVAR", line)
+	}
+
+	varname := args[0]
+	val := ""
+	// The prior incarnation of sqlcmd doesn't require a space between the variable name and its value
+	// in some very unexpected cases. This version will require the space.
+	sp := strings.IndexRune(args[0], ' ')
+	if sp > -1 {
+		val = strings.TrimSpace(varname[sp:])
+		varname = varname[:sp]
+	}
+	if err := s.vars.Setvar(varname, val); err != nil {
+		switch e := err.(type) {
+		case *VariableError:
+			return e
+		default:
+			return InvalidCommandError(":SETVAR", line)
+		}
+	}
+	return nil
+}
+
+// listVarCommand prints the set of Sqlcmd scripting variables.
+// Builtin values are printed first, followed by user-set values in sorted order.
+func listVarCommand(s *Sqlcmd, args []string, line uint) error {
+	if args != nil && strings.TrimSpace(args[0]) != "" {
+		return InvalidCommandError("LISTVAR", line)
+	}
+
+	vars := s.vars.All()
+	keys := make([]string, 0, len(vars))
+	for k := range vars {
+		if !contains(builtinVariables, k) {
+			keys = append(keys, k)
+		}
+	}
+	sort.Strings(keys)
+	keys = append(builtinVariables, keys...)
+	for _, k := range keys {
+		fmt.Fprintf(s.GetOutput(), `%s = "%s"%s`, k, vars[k], SqlcmdEol)
+	}
+	return nil
 }

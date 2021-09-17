@@ -7,12 +7,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode"
 )
 
 // Variables provides set and get of sqlcmd scripting variables
 type Variables map[string]string
-
-var variables Variables
 
 // Built-in scripting variables
 const (
@@ -35,12 +34,31 @@ const (
 	SQLCMDUSEAAD            = "SQLCMDUSEAAD"
 )
 
-// Variables that can only be set at startup
+// builtinVariables are the predefined SQLCMD variables. Their values are printed first by :listvar
+var builtinVariables = []string{
+	SQLCMDCOLSEP,
+	SQLCMDCOLWIDTH,
+	SQLCMDDBNAME,
+	SQLCMDEDITOR,
+	SQLCMDERRORLEVEL,
+	SQLCMDHEADERS,
+	SQLCMDINI,
+	SQLCMDLOGINTIMEOUT,
+	SQLCMDMAXFIXEDTYPEWIDTH,
+	SQLCMDMAXVARTYPEWIDTH,
+	SQLCMDPACKETSIZE,
+	SQLCMDSERVER,
+	SQLCMDSTATTIMEOUT,
+	SQLCMDUSEAAD,
+	SQLCMDUSER,
+	SQLCMDWORKSTATION,
+}
+
+// readonlyVariables are variables that can't be changed via :setvar
 var readOnlyVariables = []string{
 	SQLCMDDBNAME,
 	SQLCMDINI,
 	SQLCMDPACKETSIZE,
-	SQLCMDPASSWORD,
 	SQLCMDSERVER,
 	SQLCMDUSER,
 	SQLCMDWORKSTATION,
@@ -62,6 +80,14 @@ func (v Variables) checkReadOnly(key string) error {
 func (v Variables) Set(name, value string) {
 	key := strings.ToUpper(name)
 	v[key] = value
+}
+
+// Get returns the value of the named variable
+// To distinguish an empty value from an unset value use the bool return value
+func (v Variables) Get(name string) (string, bool) {
+	key := strings.ToUpper(name)
+	s, ok := v[key]
+	return s, ok
 }
 
 // Unset removes the value from the map
@@ -94,11 +120,6 @@ func (v Variables) SQLCmdDatabase() string {
 // UseAad returns whether the SQLCMDUSEAAD variable value is set to "true"
 func (v Variables) UseAad() bool {
 	return strings.EqualFold(v[SQLCMDUSEAAD], "true")
-}
-
-// Password returns the password used for connections as specified by SQLCMDPASSWORD variable
-func (v Variables) Password() string {
-	return v[SQLCMDPASSWORD]
 }
 
 // ColumnSeparator is the value of SQLCMDCOLSEP variable. It can have 0 or 1 characters
@@ -151,25 +172,38 @@ func mustValue(val string) int64 {
 	panic(err)
 }
 
+// defaultVariables defines variables that cannot be removed from the map, only reset
+// to their default values.
+var defaultVariables = Variables{
+	SQLCMDCOLSEP:            " ",
+	SQLCMDCOLWIDTH:          "0",
+	SQLCMDEDITOR:            "edit.com",
+	SQLCMDERRORLEVEL:        "0",
+	SQLCMDHEADERS:           "0",
+	SQLCMDLOGINTIMEOUT:      "30",
+	SQLCMDMAXFIXEDTYPEWIDTH: "0",
+	SQLCMDMAXVARTYPEWIDTH:   "256",
+	SQLCMDSTATTIMEOUT:       "0",
+}
+
 // InitializeVariables initializes variables with default values.
 // When fromEnvironment is true, then loads from the runtime environment
 func InitializeVariables(fromEnvironment bool) *Variables {
-	variables = Variables{
-		SQLCMDCOLSEP:            " ",
-		SQLCMDCOLWIDTH:          "0",
+	variables := Variables{
+		SQLCMDCOLSEP:            defaultVariables[SQLCMDCOLSEP],
+		SQLCMDCOLWIDTH:          defaultVariables[SQLCMDCOLWIDTH],
 		SQLCMDDBNAME:            "",
-		SQLCMDEDITOR:            "edit.com",
-		SQLCMDERRORLEVEL:        "0",
-		SQLCMDHEADERS:           "0",
+		SQLCMDEDITOR:            defaultVariables[SQLCMDEDITOR],
+		SQLCMDERRORLEVEL:        defaultVariables[SQLCMDERRORLEVEL],
+		SQLCMDHEADERS:           defaultVariables[SQLCMDHEADERS],
 		SQLCMDINI:               "",
-		SQLCMDLOGINTIMEOUT:      "30",
-		SQLCMDMAXFIXEDTYPEWIDTH: "0",
-		SQLCMDMAXVARTYPEWIDTH:   "256",
+		SQLCMDLOGINTIMEOUT:      defaultVariables[SQLCMDLOGINTIMEOUT],
+		SQLCMDMAXFIXEDTYPEWIDTH: defaultVariables[SQLCMDMAXFIXEDTYPEWIDTH],
+		SQLCMDMAXVARTYPEWIDTH:   defaultVariables[SQLCMDMAXVARTYPEWIDTH],
 		SQLCMDPACKETSIZE:        "4096",
 		SQLCMDSERVER:            "",
-		SQLCMDSTATTIMEOUT:       "0",
+		SQLCMDSTATTIMEOUT:       defaultVariables[SQLCMDSTATTIMEOUT],
 		SQLCMDUSER:              "",
-		SQLCMDPASSWORD:          "",
 		SQLCMDUSEAAD:            "",
 	}
 	hostname, _ := os.Hostname()
@@ -188,10 +222,28 @@ func InitializeVariables(fromEnvironment bool) *Variables {
 
 // Setvar implements the :Setvar command
 // TODO: Add validation functions for the variables.
-func Setvar(name, value string) error {
+func (variables *Variables) Setvar(name, value string) error {
 	err := ValidIdentifier(name)
 	if err == nil {
-		err = variables.checkReadOnly(name)
+		if err = variables.checkReadOnly(name); err != nil {
+			err = ReadOnlyVariable(name)
+		}
+	}
+	if err != nil {
+		return err
+	}
+	if value == "" {
+		if _, ok := variables.Get(name); !ok {
+			return UndefinedVariable(name)
+		}
+		if def, ok := defaultVariables.Get(name); ok {
+			value = def
+		} else {
+			variables.Unset(name)
+			return nil
+		}
+	} else {
+		value, err = ParseValue(value)
 	}
 	if err != nil {
 		return err
@@ -201,9 +253,57 @@ func Setvar(name, value string) error {
 }
 
 // ValidIdentifier determines if a given string can be used as a variable name
+// The native sqlcmd allowed some punctuation characters as part of a variable name
+// but this version will not.
 func ValidIdentifier(name string) error {
-	if strings.HasPrefix(name, "$(") || strings.ContainsAny(name, "'\"\t\n\r ") {
-		return InvalidCommandError(":setvar", 0)
+
+	first := true
+	for _, c := range name {
+		if !unicode.IsLetter(c) && (first || !unicode.IsDigit(c)) {
+			return fmt.Errorf("Invalid variable identifier %s", name)
+		}
+		first = false
 	}
 	return nil
+}
+
+// ParseValue returns the string to use as the variable value
+// If the string contains a space or a quote, it must be delimited by quotes and literal quotes
+// within the value must be escaped by another quote
+// "this has a quote "" in it" is valid
+// "this has a quote" in it" is not valid
+func ParseValue(val string) (string, error) {
+	quoted := val[0] == '"'
+	err := fmt.Errorf("Invalid variable value %s", val)
+	if !quoted {
+		if strings.ContainsAny(val, "\t\n\r ") {
+			return "", err
+		}
+		return val, nil
+	}
+	if len(val) == 1 || val[len(val)-1] != '"' {
+		return "", err
+	}
+
+	b := new(strings.Builder)
+	quoted = false
+	r := []rune(val)
+loop:
+	for i := 1; i < len(r)-1; i++ {
+		switch {
+		case quoted && r[i] == '"':
+			b.WriteRune('"')
+			quoted = false
+		case quoted && r[i] != '"':
+			break loop
+		case !quoted && r[i] == '"':
+			quoted = true
+		default:
+			b.WriteRune(r[i])
+		}
+	}
+	if quoted {
+		return "", err
+	}
+	return b.String(), nil
 }
