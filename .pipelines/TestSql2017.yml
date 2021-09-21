@@ -1,8 +1,8 @@
 variables:
   # AZURE_CLIENT_SECRET and SQLPASSWORD must be defined as secret variables in the pipeline. 
   # AZURE_TENANT_ID and AZURE_CLIENT_ID are not expected to be secret variables, just regular variables
-  AZURE_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
-  SQLPASSWORD: $(SQLPASSWORD)
+  AZURECLIENTSECRET: $(AZURE_CLIENT_SECRET)
+  PASSWORD: $(SQLPASSWORD)
 pool:
    vmImage: 'ubuntu-latest'
 
@@ -13,20 +13,20 @@ steps:
     displayName: 'Run SQL 2017 docker image'
     inputs:
       command: run
-      arguments: '-m 2GB -e ACCEPT_EULA=1 -d --name sql2017 -p:1433:1433 -e SA_PASSWORD=$(SQLPASSWORD) mcr.microsoft.com/mssql/server:2017-latest'
+      arguments: '-m 2GB -e ACCEPT_EULA=1 -d --name sql2017 -p:1433:1433 -e SA_PASSWORD=$(PASSWORD) mcr.microsoft.com/mssql/server:2017-latest'
 
   - template: include-runtests-linux.yml
     parameters:
-      RunName: SQL 2017
+      RunName: 'SQL 2017'
       SQLCMDUSER: sa
-      SQLPASSWORD: $(SQLPASSWORD)
+      SQLPASSWORD: $(PASSWORD)
       
   - template: include-runtests-linux.yml
     parameters:
-      RunName: SQL DB
+      RunName: 'SQL DB'
       # AZURESERVER must be defined as a variable in the pipeline
       SQLCMDSERVER: $(AZURESERVER)
-      AZURE_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+      AZURECLIENTSECRET: $(AZURECLIENTSECRET)
       
   - task: PublishCodeCoverageResults@1
     inputs:

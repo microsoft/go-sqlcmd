@@ -7,7 +7,7 @@ parameters:
 - name: SQLPASSWORD
   type: string
   default: ''
-- name: AZURE_CLIENT_SECRET
+- name: AZURECLIENTSECRET
   type: string
   default: ''
 - name: SQLCMDSERVER
@@ -19,7 +19,7 @@ parameters:
 steps:
   - script: |
       ~/go/bin/gotestsum --junitfile "${{ parameters.RunName }}.testresults.xml" -- ./... -coverprofile="${{ parameters.RunName }}.coverage.txt" -covermode count
-      ~/go/bin/gocov convert coverage.txt > "${{ parameters.RunName }}.coverage.json"
+      ~/go/bin/gocov convert "${{ parameters.RunName }}coverage.txt" > "${{ parameters.RunName }}.coverage.json"
       ~/go/bin/gocov-xml < "${{ parameters.RunName }}.coverage.json" > "${{ parameters.RunName }}.coverage.xml"
       mkdir -p coverage
     workingDirectory: '$(Build.SourcesDirectory)'
@@ -30,7 +30,7 @@ steps:
       SQLCMDPASSWORD: ${{ parameters.SQLPASSWORD }}
       AZURE_TENANT_ID: $(AZURE_TENANT_ID)
       AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
-      AZURE_CLIENT_SECRET: ${{ parameters.AZURE_CLIENT_SECRET }}
+      AZURE_CLIENT_SECRET: ${{ parameters.AZURECLIENTSECRET }}
       SQLCMDSERVER: ${{ parameters.SQLCMDSERVER }}
       SQLCMDDBNAME: ${{ parameters.SQLCMDDBNAME }}
     continueOnError: true
