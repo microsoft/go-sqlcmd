@@ -26,10 +26,8 @@ steps:
       RunName: SQL DB
       # AZURESERVER must be defined as a variable in the pipeline
       SQLCMDSERVER: $(AZURESERVER)
-      AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
       AZURE_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
-      AZURE_TENANT_ID: $(AZURE_TENANT_ID)
-
+      
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: Cobertura 
