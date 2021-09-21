@@ -19,7 +19,7 @@ parameters:
 steps:
   - script: |
       ~/go/bin/gotestsum --junitfile "${{ parameters.RunName }}.testresults.xml" -- ./... -coverprofile="${{ parameters.RunName }}.coverage.txt" -covermode count
-      ~/go/bin/gocov convert "${{ parameters.RunName }}coverage.txt" > "${{ parameters.RunName }}.coverage.json"
+      ~/go/bin/gocov convert "${{ parameters.RunName }}.coverage.txt" > "${{ parameters.RunName }}.coverage.json"
       ~/go/bin/gocov-xml < "${{ parameters.RunName }}.coverage.json" > "${{ parameters.RunName }}.coverage.xml"
       mkdir -p coverage
     workingDirectory: '$(Build.SourcesDirectory)'
