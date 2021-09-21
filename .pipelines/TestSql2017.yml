@@ -34,7 +34,7 @@ steps:
       reports: '"SQL 2017.coverage.xml";"SQL DB.coverage.xml"' # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
       targetdir: 'coverage' # REQUIRED # The directory where the generated report should be saved.
       reporttypes: 'HtmlInline_AzurePipelines;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
-      sourcedirs: '$(Build.SourcesDirectory) # Optional directories which contain the corresponding source code (separated by semicolon). The source directories are used if coverage report contains classes without path information.
+      sourcedirs: '$(Build.SourcesDirectory)' # Optional directories which contain the corresponding source code (separated by semicolon). The source directories are used if coverage report contains classes without path information.
       verbosity: 'Info' # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
       tag: '$(build.buildnumber)_#$(build.buildid)_$(Build.SourceBranchName)' # Optional tag or build version.
   - task: PublishCodeCoverageResults@1
