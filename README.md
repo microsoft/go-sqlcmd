@@ -19,6 +19,60 @@ We will be implementing as many command line switches and behaviors as possible 
 - `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 
+### Azure Active Directory Authentication
+
+This version of sqlcmd supports a broader range of AAD authentication models, based on the [azidentity package](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
+
+#### Command line
+
+To use AAD auth, you can use one of two command line switches
+
+`-G` is (mostly) compatible with its usage in the prior version of sqlcmd. If a user name and password are provided, it will authenticate using AAD Password authentication. If a user name is provided it will use AAD Interactive authentication which may display a web browser. If no user name or password is provided, it will use a DefaultAzureCredential which attempts to authenticate through a variety of mechanisms.
+
+`--authentication-method=` can be used to specify one of the following authentication types.
+
+`ActiveDirectoryDefault`
+
+- For an overview of the types of authentication this mode will use, see (<https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential>).
+- Choose this method if your database automation scripts are intended to run in both local development environments and in a production deployment in Azure. You'll be able to use a client secret or an Azure CLI login on your development environment and a managed identity or client secret on your production deployment without changing the script.
+- Setting environment variables AZURE_TENANT_ID, and AZURE_CLIENT_ID are necessary for DefaultAzureCredential to begin checking the environment configuration and look for one of the following additional environment variables in order to authenticate:
+
+  - Setting environment variable AZURE_CLIENT_SECRET configures the DefaultAzureCredential to choose ClientSecretCredential.
+  - Setting environment variable AZURE_CLIENT_CERTIFICATE_PATH configures the DefaultAzureCredential to choose ClientCertificateCredential if AZURE_CLIENT_SECRET is not set.
+  - Setting environment variable AZURE_USERNAME configures the DefaultAzureCredential to choose UsernamePasswordCredential if AZURE_CLIENT_SECRET and AZURE_CLIENT_CERTIFICATE_PATH are not set.
+
+`ActiveDirectoryIntegrated`
+
+This method is currently not implemented and will fall back to `ActiveDirectoryDefault`
+
+`ActiveDirectoryPassword`
+
+This method will authenticate using a user name and password. It will not work if MFA is required.
+You provide the user name and password using the usual command line switches or SQLCMD environment variables.
+Set `AZURE_TENANT_ID` environment variable to the tenant id of the server if not using the default tenant of the user.
+
+`ActiveDirectoryInteractive`
+
+This method will launch a web browser to authenticate the user.
+Set `AZURE_TENANT_ID` environment variable to the tenant id of the server if not using the default.
+
+`ActiveDirectoryManagedIdentity`
+
+Use this method when running sqlcmd on an Azure VM that has either a system-assigned or user-assigned managed identity. If using a user-assigned managed identity, set the user name to the ID of the managed identity. If using a system-assigned identity, leave user name empty.
+
+`ActiveDirectoryServicePrincipal`
+
+This method authenticates the provided user name as a service principal id and the password as the client secret for the service principal. Set `AZURE_TENANT_ID` environment variable to the tenant id of the service principal.
+
+### Environment variables for AAD auth
+
+Some settings for AAD auth do not have command line inputs, and some environment variables are consumed directly by the `azidentity` package used by `sqlcmd`.
+These environment variables can be set to configure some aspects of AAD auth and to bypass default behaviors. In addition to the variables listed above, the following are sqlcmd-specific and apply to multiple methods.
+
+`SQLCMDAZURERESOURCE` - defines the URL of the Azure SQL database resource in the Azure cloud where the database resides. By default, `sqlcmd` attempts to match the DNS suffix of the server name with one of the well known Azure cloud DNS suffixes. If no match is found it uses `https://database.windows.net`.
+
+`SQLCMDCLIENTID` - set this to the identifier of an application registered in your AAD which is authorized to authenticate to Azure SQL Database. Applies to `ActiveDirectoryInteractive` and `ActiveDirectoryPassword` methods.
+
 ### Packages
 
 #### sqlcmd executable

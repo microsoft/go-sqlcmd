@@ -1,0 +1,43 @@
+parameters:
+- name: RunName
+  type: string
+- name: SQLCMDUSER
+  type: string
+- name: SQLPASSWORD
+  type: string
+- name: AZURE_CLIENT_SECRET
+  type: string
+- name: SQLCMDSERVER
+  type: string
+  default: .
+- name: SQLCMDDBNAME
+  type: string
+
+steps:
+  - script: |
+      ~/go/bin/gotestsum --junitfile "${{ parameters.RunName }}.testresults.xml" -- ./... -coverprofile="${{ parameters.RunName }}.coverage.txt" -covermode count
+      ~/go/bin/gocov convert coverage.txt > "${{ parameters.RunName }}.coverage.json"
+      ~/go/bin/gocov-xml < "${{ parameters.RunName }}.coverage.json" > "${{ parameters.RunName }}.coverage.xml"
+      mkdir -p coverage
+    workingDirectory: '$(Build.SourcesDirectory)'
+    displayName: 'run tests'
+    env:
+      SQLPASSWORD: ${{ parameters.SQLPASSWORD }}
+      SQLCMDUSER: ${{ parameters.SQLCMDUSER }}
+      SQLCMDPASSWORD: ${{ parameters.SQLPASSWORD }}
+      AZURE_TENANT_ID: $(AZURE_TENANT_ID)
+      AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
+      AZURE_CLIENT_SECRET: ${{ parameters.AZURE_CLIENT_SECRET }}
+      SQLCMDSERVER: ${{ parameters.SQLCMDSERVER }}
+      SQLCMDDBNAME: ${{ parameters.SQLCMDDBNAME }}
+    continueOnError: true
+
+  - task: PublishTestResults@2
+    displayName: "Publish junit-style results"
+    inputs:
+      testResultsFiles: '"${{ parameters.RunName }}.coverage.xml"'
+      testResultsFormat: JUnit
+      searchFolder: '$(Build.SourcesDirectory)'
+      testRunTitle: '${{ parameters.RunName }} - $(Build.SourceBranchName)'
+    condition: always()
+    continueOnError: true

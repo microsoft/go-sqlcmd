@@ -47,6 +47,13 @@ type ConnectSettings struct {
 	Password string
 }
 
+func (c ConnectSettings) authenticationMethod() string {
+	if c.AuthenticationMethod == "" {
+		return NotSpecified
+	}
+	return c.AuthenticationMethod
+}
+
 // Sqlcmd is the core processor for text lines.
 //
 // It accumulates non-command lines in a buffer and  and sends command lines to the appropriate command runner.
@@ -283,6 +290,7 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 	db := sql.OpenDB(connector)
 	err = db.Ping()
 	if err != nil {
+		fmt.Fprintln(s.GetOutput(), err)
 		return err
 	}
 	// we got a good connection so we can update the Sqlcmd
@@ -398,10 +406,10 @@ func setupCloseHandler(s *Sqlcmd) {
 }
 
 func (s *Sqlcmd) integratedAuthentication() bool {
-	return s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && s.Connect.AuthenticationMethod == NotSpecified)
+	return s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && s.Connect.authenticationMethod() == NotSpecified)
 }
 
 func (s *Sqlcmd) sqlAuthentication() bool {
-	return s.Connect.AuthenticationMethod == SqlPassword ||
-		(!s.Connect.UseTrustedConnection && s.Connect.AuthenticationMethod == NotSpecified && s.vars.SQLCmdUser() != "")
+	return s.Connect.authenticationMethod() == SqlPassword ||
+		(!s.Connect.UseTrustedConnection && s.Connect.authenticationMethod() == NotSpecified && s.vars.SQLCmdUser() != "")
 }

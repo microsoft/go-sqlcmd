@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"strings"
 	"testing"
 
 	"github.com/google/uuid"
@@ -83,7 +84,12 @@ set will be to localhost using Windows auth.
 func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
-	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	if canTestAzureAuth() {
+		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+	} else {
+		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	}
+
 	err := s.ConnectDb("", "", "", false)
 	if assert.NoError(t, err, "ConnectDb should succeed") {
 		sqlcmduser := os.Getenv(SQLCMDUSER)
@@ -98,7 +104,11 @@ func TestSqlCmdConnectDb(t *testing.T) {
 func ConnectDb() (*sql.DB, error) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
-	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	if canTestAzureAuth() {
+		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+	} else {
+		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	}
 	err := s.ConnectDb("", "", "", false)
 	return s.db, err
 }
@@ -211,7 +221,11 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
-	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	if canTestAzureAuth() {
+		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+	} else {
+		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	}
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	file, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
@@ -219,4 +233,12 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	err = s.ConnectDb("", "", "", true)
 	assert.NoError(t, err, "s.ConnectDB")
 	return s, file
+}
+
+func canTestAzureAuth() bool {
+	tenant := os.Getenv("AZURE_TENANT_ID")
+	clientId := os.Getenv("AZURE_CLIENT_ID")
+	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
+	server := os.Getenv("SQLCMDSERVER")
+	return tenant != "" && clientId != "" && clientSecret != "" && strings.Contains(server, ".database.")
 }
