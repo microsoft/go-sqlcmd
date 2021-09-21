@@ -3,16 +3,19 @@ parameters:
   type: string
 - name: SQLCMDUSER
   type: string
+  default: ''
 - name: SQLPASSWORD
   type: string
+  default: ''
 - name: AZURE_CLIENT_SECRET
   type: string
+  default: ''
 - name: SQLCMDSERVER
   type: string
   default: .
 - name: SQLCMDDBNAME
   type: string
-
+  default: ''
 steps:
   - script: |
       ~/go/bin/gotestsum --junitfile "${{ parameters.RunName }}.testresults.xml" -- ./... -coverprofile="${{ parameters.RunName }}.coverage.txt" -covermode count

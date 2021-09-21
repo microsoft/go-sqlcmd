@@ -19,7 +19,7 @@ steps:
     parameters:
       RunName: SQL 2017
       SQLCMDUSER: sa
-      SQLCMDPASSWORD: $(SQLPASSWORD)
+      SQLPASSWORD: $(SQLPASSWORD)
       
   - template: include-runtests-linux.yml
     parameters:
