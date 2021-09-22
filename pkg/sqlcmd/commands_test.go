@@ -105,3 +105,30 @@ func (b *memoryBuffer) Write(p []byte) (n int, err error) {
 func (b *memoryBuffer) Close() error {
 	return nil
 }
+
+func TestResetCommand(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	s.batch.Reset([]rune("select 1"))
+	s.batch.Next()
+	assert.Equal(t, s.batch.batchline, int(2))
+	err := resetCommand(s, nil, 1)
+	assert.Equal(t, s.batch.batchline, int(1))
+	assert.Nil(t, err)
+}
+
+func TestListCommand(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	s.batch.Reset([]rune("select 1"))
+	s.batch.Next()
+	err := listCommand(s, nil, 1)
+	assert.NoError(t, err, "listVarCommand")
+	s.SetOutput(nil)
+	o := buf.buf.String()
+	assert.Equal(t, o, "select 1"+SqlcmdEol)
+}

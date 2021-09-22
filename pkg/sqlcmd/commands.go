@@ -65,6 +65,16 @@ func newCommands() Commands {
 			action: listVarCommand,
 			name:   "LISTVAR",
 		},
+		"RESET": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:RESET(?:[ \t]+(.*$)|$)`),
+			action: resetCommand,
+			name:   "RESET",
+		},
+		"LIST": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:LIST(?:[ \t]+(.*$)|$)`),
+			action: listCommand,
+			name:   "LIST",
+		},
 	}
 
 }
@@ -245,5 +255,23 @@ func listVarCommand(s *Sqlcmd, args []string, line uint) error {
 	for _, k := range keys {
 		fmt.Fprintf(s.GetOutput(), `%s = "%s"%s`, k, vars[k], SqlcmdEol)
 	}
+	return nil
+}
+
+// resetCommand resets the statement cache
+func resetCommand(s *Sqlcmd, args []string, line uint) error {
+	if s.batch != nil {
+		s.batch.Reset(nil)
+	}
+
+	return nil
+}
+
+// listCommand displays statements currently in  the statement cache
+func listCommand(s *Sqlcmd, args []string, line uint) error {
+	if s.batch != nil && s.batch.String() != "" {
+		s.GetOutput().Write([]byte(s.batch.String() + SqlcmdEol))
+	}
+
 	return nil
 }
