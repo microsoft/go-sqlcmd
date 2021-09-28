@@ -72,7 +72,6 @@ func (s *Sqlcmd) GetTokenBasedConnection(connstr string, user string, password s
 		cred, err = azidentity.NewDefaultAzureCredential(nil)
 	case ActiveDirectoryInteractive:
 		cred, err = azidentity.NewInteractiveBrowserCredential(&azidentity.InteractiveBrowserCredentialOptions{TenantID: t, ClientID: getSqlClientId()})
-		scope = "user_impersonation"
 	case ActiveDirectoryPassword:
 		cred, err = azidentity.NewUsernamePasswordCredential(t, getSqlClientId(), user, password, nil)
 	case ActiveDirectoryManagedIdentity:
