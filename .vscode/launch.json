@@ -24,7 +24,7 @@
             "request": "launch",
             "mode" : "auto",
             "program": "${workspaceFolder}/cmd/sqlcmd",
-            "args" : ["-Q", "\"select 100 as Count\""],
+            "args" : ["-Q", "EXIT(select 100 as Count)"],
         },
     ]
 }

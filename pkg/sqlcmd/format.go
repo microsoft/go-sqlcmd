@@ -28,8 +28,8 @@ type Formatter interface {
 	BeginResultSet([]*sql.ColumnType)
 	// EndResultSet is called after all rows in a result set have been processed
 	EndResultSet()
-	// AddRow is called for each row in a result set
-	AddRow(*sql.Rows)
+	// AddRow is called for each row in a result set. It returns the value of the first column
+	AddRow(*sql.Rows) string
 	// AddMessage is called for every information message returned by the server during the batch
 	AddMessage(string)
 	// AddError is called for each error encountered during batch execution
@@ -137,19 +137,20 @@ func (f *sqlCmdFormatterType) EndResultSet() {
 }
 
 // Writes the current row to the designated output writer
-func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) {
-
-	f.writepos = 0
+func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) string {
+	retval := ""
 	values, err := f.scanRow(row)
 	if err != nil {
 		f.mustWriteErr(err.Error())
-		return
+		return retval
 	}
 
 	// values are the full values, look at the displaywidth of each column and truncate accordingly
 	for i, v := range values {
 		if i > 0 {
 			f.writeOut(f.vars.ColumnSeparator())
+		} else {
+			retval = v
 		}
 		f.printColumnValue(v, i)
 	}
@@ -160,6 +161,8 @@ func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) {
 		f.printColumnHeadings()
 	}
 	f.writeOut(SqlcmdEol)
+	return retval
+
 }
 
 // Writes a non-error message to the designated message writer

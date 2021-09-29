@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"bytes"
 	"database/sql"
 	"fmt"
 	"os"
@@ -205,6 +206,32 @@ func TestGetRunnableQuery(t *testing.T) {
 		assert.Equalf(t, test.raw, r, `runnableQuery without variable subs for "%s"`, test.raw)
 	}
 
+}
+
+func TestExitInitialQuery(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.Query = "EXIT(SELECT '1200', 2100)"
+	err := s.Run(true, false)
+	if assert.NoError(t, err, "s.Run(once = true)") {
+		s.SetOutput(nil)
+		o := buf.buf.String()
+		assert.Equal(t, "1200 2100"+SqlcmdEol+SqlcmdEol, o, "Output")
+		assert.Equal(t, 1200, s.Exitcode, "ExitCode")
+	}
+
+}
+
+func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
+	v := InitializeVariables(true)
+	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
+	s := New(nil, "", v)
+	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	s.Format = NewSQLCmdDefaultFormatter(true)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	err := s.ConnectDb("", "", "", true)
+	assert.NoError(t, err, "s.ConnectDB")
+	return s, buf
 }
 
 func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {

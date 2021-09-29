@@ -98,11 +98,13 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 		var args []string
 		var err error
 		if s.Query != "" {
-			cmd = s.Cmd["GO"]
-			args = make([]string, 0)
 			s.batch.Reset([]rune(s.Query))
 			// batch.Next validates variable syntax
-			_, _, err = s.batch.Next()
+			cmd, args, err = s.batch.Next()
+			if cmd == nil {
+				cmd = s.Cmd["GO"]
+				args = make([]string, 0)
+			}
 			s.Query = ""
 		} else {
 			cmd, args, err = s.batch.Next()
@@ -380,4 +382,58 @@ func setupCloseHandler(s *Sqlcmd) {
 		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 		os.Exit(0)
 	}()
+}
+
+// runQuery runs the query and prints the results
+// The return value is based on the first cell of the last column of the last result set.
+// If it's numeric, it will be converted to int
+// -100 : Error encountered prior to selecting return value
+// -101: No rows found
+// -102: Conversion error occurred when selecting return value
+func (s *Sqlcmd) runQuery(query string) int {
+	retcode := -101
+	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
+	rows, qe := s.db.Query(query)
+	if qe != nil {
+		s.Format.AddError(qe)
+	}
+	var err error
+	var cols []*sql.ColumnType
+	results := true
+	for qe == nil && results {
+		cols, err = rows.ColumnTypes()
+		if err != nil {
+			retcode = -100
+			s.Format.AddError(err)
+		} else {
+			s.Format.BeginResultSet(cols)
+			active := rows.Next()
+			for active {
+				col1 := s.Format.AddRow(rows)
+				active = rows.Next()
+				if !active {
+					if col1 == "" {
+						retcode = 0
+					} else if _, cerr := fmt.Sscanf(col1, "%d", &retcode); cerr != nil {
+						retcode = -102
+					}
+				}
+			}
+
+			if retcode != -102 {
+				if err = rows.Err(); err != nil {
+					retcode = -100
+					s.Format.AddError(err)
+				}
+			}
+			s.Format.EndResultSet()
+		}
+		results = rows.NextResultSet()
+		if err = rows.Err(); err != nil {
+			retcode = -100
+			s.Format.AddError(err)
+		}
+	}
+	s.Format.EndBatch()
+	return retcode
 }
