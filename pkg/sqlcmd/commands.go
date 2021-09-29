@@ -269,9 +269,8 @@ func resetCommand(s *Sqlcmd, args []string, line uint) error {
 
 // listCommand displays statements currently in  the statement cache
 func listCommand(s *Sqlcmd, args []string, line uint) error {
-	writer := s.GetOutput()
-	if writer != nil && s.batch != nil && s.batch.String() != "" {
-		writer.Write([]byte(s.batch.String() + SqlcmdEol))
+	if s.batch != nil && s.batch.String() != "" {
+		fmt.Fprintf(s.GetOutput(), `%s%s`, []byte(s.batch.String()), SqlcmdEol)
 	}
 
 	return nil
