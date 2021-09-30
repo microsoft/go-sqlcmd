@@ -18,6 +18,7 @@ We will be implementing as many command line switches and behaviors as possible 
 
 - `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
+- All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The native sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 
 ### Azure Active Directory Authentication
 

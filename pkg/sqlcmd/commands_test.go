@@ -38,6 +38,9 @@ func TestCommandParsing(t *testing.T) {
 		{` :Error c:\folder\file`, "ERROR", []string{`c:\folder\file`}},
 		{`:Setvar A1 "some value" `, "SETVAR", []string{`A1 "some value" `}},
 		{` :Listvar`, "LISTVAR", []string{""}},
+		{`:EXIT (select 100 as count)`, "EXIT", []string{"(select 100 as count)"}},
+		{`:EXIT ( )`, "EXIT", []string{"( )"}},
+		{`EXIT `, "EXIT", []string{""}},
 	}
 
 	for _, test := range commands {
@@ -104,4 +107,47 @@ func (b *memoryBuffer) Write(p []byte) (n int, err error) {
 
 func (b *memoryBuffer) Close() error {
 	return nil
+}
+
+func TestResetCommand(t *testing.T) {
+	var err error
+
+	// setup a test sqlcmd
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+
+	// insert a test batch
+	s.batch.Reset([]rune("select 1"))
+	_, _, err = s.batch.Next()
+	assert.NoError(t, err, "Inserting test batch")
+	assert.Equal(t, s.batch.batchline, int(2), "Batch line updated after test batch insert")
+
+	// execute reset command and validate results
+	err = resetCommand(s, nil, 1)
+	assert.Equal(t, s.batch.batchline, int(1), "Batch line not reset properly")
+	assert.NoError(t, err, "Executing :reset command")
+}
+
+func TestListCommand(t *testing.T) {
+	var err error
+
+	// setup a test sqlcmd
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+
+	// insert test batch
+	s.batch.Reset([]rune("select 1"))
+	_, _, err = s.batch.Next()
+	assert.NoError(t, err, "Inserting test batch")
+
+	// execute list command and verify results
+	err = listCommand(s, nil, 1)
+	assert.NoError(t, err, "Executing :list command")
+	s.SetOutput(nil)
+	o := buf.buf.String()
+	assert.Equal(t, o, "select 1"+SqlcmdEol, ":list output not equal to batch")
 }
