@@ -30,6 +30,11 @@ type Commands map[string]*Command
 func newCommands() Commands {
 	// Commands is the set of Command implementations
 	return map[string]*Command{
+		"EXIT": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?EXIT(?:[ \t]*(\(?.*\)?$)|$)`),
+			action: exitCommand,
+			name:   "EXIT",
+		},
 		"QUIT": {
 			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:[ \t]+(.*$)|$)`),
 			action: quitCommand,
@@ -105,6 +110,35 @@ func (c Commands) SetBatchTerminator(terminator string) error {
 	return nil
 }
 
+// exitCommand has 3 modes.
+// With no (), it just exits without running any query
+// With () it runs whatever batch is in the buffer then exits
+// With any text between () it runs the text as a query then exits
+func exitCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 {
+		return ErrExitRequested
+	}
+	params := strings.TrimSpace(args[0])
+	if params == "" {
+		return ErrExitRequested
+	}
+	if !strings.HasPrefix(params, "(") || !strings.HasSuffix(params, ")") {
+		return InvalidCommandError("EXIT", line)
+	}
+	// First we run the current batch
+	query := s.batch.String()
+	if query != "" {
+		query = s.getRunnableQuery(query)
+		_ = s.runQuery(query)
+	}
+	query = strings.TrimSpace(params[1 : len(params)-1])
+	if query != "" {
+		query = s.getRunnableQuery(query)
+		s.Exitcode = s.runQuery(query)
+	}
+	return ErrExitRequested
+}
+
 // quitCommand immediately exits the program without running any more batches
 func quitCommand(s *Sqlcmd, args []string, line uint) error {
 	if args != nil && strings.TrimSpace(args[0]) != "" {
@@ -132,38 +166,8 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 		return nil
 	}
 	query = s.getRunnableQuery(query)
-	// This loop will likely be refactored to a helper when we implement -Q and :EXIT(query)
 	for i := 0; i < n; i++ {
-
-		s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
-		rows, qe := s.db.Query(query)
-		if qe != nil {
-			s.Format.AddError(qe)
-		}
-
-		results := true
-		for qe == nil && results {
-			cols, err := rows.ColumnTypes()
-			if err != nil {
-				s.Format.AddError(err)
-			} else {
-				s.Format.BeginResultSet(cols)
-				active := rows.Next()
-				for active {
-					s.Format.AddRow(rows)
-					active = rows.Next()
-				}
-				if err = rows.Err(); err != nil {
-					s.Format.AddError(err)
-				}
-				s.Format.EndResultSet()
-			}
-			results = rows.NextResultSet()
-			if err = rows.Err(); err != nil {
-				s.Format.AddError(err)
-			}
-		}
-		s.Format.EndBatch()
+		_ = s.runQuery(query)
 	}
 	s.batch.Reset(nil)
 	return nil
