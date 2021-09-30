@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"bufio"
 	"database/sql"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"io"
@@ -37,12 +38,20 @@ type ConnectSettings struct {
 	UseTrustedConnection bool
 	// TrustServerCertificate sets the TrustServerCertificate setting on the connection string
 	TrustServerCertificate bool
+	AuthenticationMethod   string
 	// DisableEnvironmentVariables determines if sqlcmd resolves scripting variables from the process environment
 	DisableEnvironmentVariables bool
 	// DisableVariableSubstitution determines if scripting variables should be evaluated
 	DisableVariableSubstitution bool
 	// Password is the password used with SQL authentication
 	Password string
+}
+
+func (c ConnectSettings) authenticationMethod() string {
+	if c.AuthenticationMethod == "" {
+		return NotSpecified
+	}
+	return c.AuthenticationMethod
 }
 
 // Sqlcmd is the core processor for text lines.
@@ -208,8 +217,8 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 		Scheme: "sqlserver",
 		Path:   instance,
 	}
-	useTrustedConnection := s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && !s.vars.UseAad())
-	if !useTrustedConnection {
+
+	if s.sqlAuthentication() {
 		connectionURL.User = url.UserPassword(s.vars.SQLCmdUser(), s.Connect.Password)
 	}
 	if port > 0 {
@@ -257,21 +266,33 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		}
 	}
 
+	var connector driver.Connector
+	// To determine whether to use Sql auth/windows auth/aad auth, compare the current ConnectSettings with the new parameters
+	// If sqlcmd was started with sql auth or windows auth, :connect will not switch to AAD
+	// if sqlcmd was started with AAD auth, it will remain in some variant of AAD auth depending on the user/password combination
+	useAad := !s.sqlAuthentication() && !s.integratedAuthentication()
 	if password == "" {
 		password = s.Connect.Password
 	}
+	if !useAad {
+		if user != "" {
+			connectionURL.User = url.UserPassword(user, password)
+		}
 
-	if user != "" {
-		connectionURL.User = url.UserPassword(user, password)
+		connector, err = mssql.NewConnector(connectionURL.String())
+	} else {
+		if user == "" {
+			user = s.vars.SQLCmdUser()
+		}
+		connector, err = s.GetTokenBasedConnection(connectionURL.String(), user, password)
 	}
-
-	connector, err := mssql.NewConnector(connectionURL.String())
 	if err != nil {
 		return err
 	}
 	db := sql.OpenDB(connector)
 	err = db.Ping()
 	if err != nil {
+		fmt.Fprintln(s.GetOutput(), err)
 		return err
 	}
 	// we got a good connection so we can update the Sqlcmd
@@ -291,7 +312,9 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		if e != nil {
 			panic("Unable to get user name")
 		}
-		s.Connect.UseTrustedConnection = true
+		if !useAad {
+			s.Connect.UseTrustedConnection = true
+		}
 		s.vars.Set(SQLCMDUSER, u.Username)
 	}
 
@@ -382,6 +405,15 @@ func setupCloseHandler(s *Sqlcmd) {
 		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 		os.Exit(0)
 	}()
+}
+
+func (s *Sqlcmd) integratedAuthentication() bool {
+	return s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && s.Connect.authenticationMethod() == NotSpecified)
+}
+
+func (s *Sqlcmd) sqlAuthentication() bool {
+	return s.Connect.authenticationMethod() == SqlPassword ||
+		(!s.Connect.UseTrustedConnection && s.Connect.authenticationMethod() == NotSpecified && s.vars.SQLCmdUser() != "")
 }
 
 // runQuery runs the query and prints the results

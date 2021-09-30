@@ -20,7 +20,7 @@ type SQLCmdArguments struct {
 	// Whether to trust the server certificate on an encrypted connection
 	TrustServerCertificate bool   `short:"C" help:"Implicitly trust the server certificate without validation."`
 	DatabaseName           string `short:"d" help:"This option sets the sqlcmd scripting variable SQLCMDDBNAME. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits."`
-	UseTrustedConnection   bool   `short:"E" xor:"uid" help:"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any any environment variables that define user name and password."`
+	UseTrustedConnection   bool   `short:"E" xor:"uid, auth" help:"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any any environment variables that define user name and password."`
 	UserName               string `short:"U" xor:"uid" help:"The login name or contained database user name.  For contained database users, you must provide the database name option"`
 	// Files from which to read query text
 	InputFile  []string `short:"i" xor:"input1, input2" type:"existingFile" help:"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with -Q/-q."`
@@ -31,7 +31,10 @@ type SQLCmdArguments struct {
 	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
 	Server string `short:"S" help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
 	// Disable syscommands with a warning
-	DisableCmdAndWarn           bool              `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
+	// AuthenticationMethod is new for go-sqlcmd
+	AuthenticationMethod        string            `xor:"auth"  help:"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword"`
+	UseAad                      bool              `short:"G" xor:"auth" help:"Tells sqlcmd to use Active Directory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used."`
 	DisableVariableSubstitution bool              `short:"x" help:"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name)."`
 	Variables                   map[string]string `short:"v" help:"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits"`
 }
@@ -51,6 +54,26 @@ func newArguments() SQLCmdArguments {
 
 var args SQLCmdArguments
 
+func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
+	if a.UseTrustedConnection {
+		return sqlcmd.NotSpecified
+	}
+	if a.UseAad {
+		switch {
+		case a.UserName == "":
+			return sqlcmd.ActiveDirectoryIntegrated
+		case hasPassword:
+			return sqlcmd.ActiveDirectoryPassword
+		default:
+			return sqlcmd.ActiveDirectoryInteractive
+		}
+	}
+	if a.AuthenticationMethod == "" {
+		return sqlcmd.NotSpecified
+	}
+	return a.AuthenticationMethod
+}
+
 func main() {
 	kong.Parse(&args)
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
@@ -64,9 +87,20 @@ func main() {
 // setVars initializes scripting variables from command line arguments
 func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 	varmap := map[string]func(*SQLCmdArguments) string{
-		sqlcmd.SQLCMDDBNAME:            func(a *SQLCmdArguments) string { return a.DatabaseName },
-		sqlcmd.SQLCMDLOGINTIMEOUT:      func(a *SQLCmdArguments) string { return "" },
-		sqlcmd.SQLCMDUSEAAD:            func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDDBNAME:       func(a *SQLCmdArguments) string { return a.DatabaseName },
+		sqlcmd.SQLCMDLOGINTIMEOUT: func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDUSEAAD: func(a *SQLCmdArguments) string {
+			if a.UseAad {
+				return "true"
+			}
+			switch a.AuthenticationMethod {
+			case sqlcmd.ActiveDirectoryIntegrated:
+			case sqlcmd.ActiveDirectoryInteractive:
+			case sqlcmd.ActiveDirectoryPassword:
+				return "true"
+			}
+			return ""
+		},
 		sqlcmd.SQLCMDWORKSTATION:       func(a *SQLCmdArguments) string { return "" },
 		sqlcmd.SQLCMDSERVER:            func(a *SQLCmdArguments) string { return a.Server },
 		sqlcmd.SQLCMDERRORLEVEL:        func(a *SQLCmdArguments) string { return "" },
@@ -124,6 +158,7 @@ func run(vars *sqlcmd.Variables) (int, error) {
 	}
 	s.Connect.UseTrustedConnection = args.UseTrustedConnection
 	s.Connect.TrustServerCertificate = args.TrustServerCertificate
+	s.Connect.AuthenticationMethod = args.authenticationMethod(s.Connect.Password != "")
 	s.Connect.DisableEnvironmentVariables = args.DisableCmdAndWarn
 	s.Connect.DisableVariableSubstitution = args.DisableVariableSubstitution
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)

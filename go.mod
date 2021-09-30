@@ -3,7 +3,9 @@ module github.com/microsoft/go-sqlcmd
 go 1.16
 
 require (
-	github.com/alecthomas/kong v0.2.17
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.11.0
+	github.com/alecthomas/kong v0.2.18-0.20210621093454-54558f65e86f
 	github.com/chzyer/logex v1.1.10 // indirect
 	github.com/chzyer/test v0.0.0-20210722231415-061457976a23 // indirect
 	github.com/denisenkom/go-mssqldb v0.10.0

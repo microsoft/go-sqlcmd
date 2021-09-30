@@ -105,6 +105,9 @@ func TestRunInputFiles(t *testing.T) {
 	args = newArguments()
 	args.InputFile = []string{"testdata/select100.sql", "testdata/select100.sql"}
 	args.OutputFile = o.Name()
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	setVars(vars, &args)
@@ -127,6 +130,9 @@ func TestQueryAndExit(t *testing.T) {
 	args.Query = "SELECT '$(VAR1) $(VAR2)'"
 	args.OutputFile = o.Name()
 	args.Variables = map[string]string{"var2": "val2"}
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	vars.Set("VAR1", "100")
@@ -139,4 +145,38 @@ func TestQueryAndExit(t *testing.T) {
 	if assert.NoError(t, err, "os.ReadFile") {
 		assert.Equal(t, "100 val2"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
 	}
+}
+
+func TestAzureAuth(t *testing.T) {
+
+	if !canTestAzureAuth() {
+		t.Skip("AZURE auth environment variables are not set or server name is not an Azure DB name")
+	}
+	o, err := os.CreateTemp("", "sqlcmdmain")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(o.Name())
+	defer o.Close()
+	args = newArguments()
+	args.Query = "SELECT 'AZURE'"
+	args.OutputFile = o.Name()
+	args.UseAad = true
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
+	setVars(vars, &args)
+
+	exitCode, err := run(vars)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	bytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		assert.Equal(t, "AZURE"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+	}
+}
+
+func canTestAzureAuth() bool {
+	tenant := os.Getenv("AZURE_TENANT_ID")
+	clientId := os.Getenv("AZURE_CLIENT_ID")
+	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
+	server := os.Getenv("SQLCMDSERVER")
+	return tenant != "" && clientId != "" && clientSecret != "" && strings.Contains(server, ".database.")
 }
