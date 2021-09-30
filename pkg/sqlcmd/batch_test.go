@@ -20,13 +20,16 @@ func TestBatchNextReset(t *testing.T) {
 	}{
 		{"", nil, nil, "="},
 		{"select 1", []string{"select 1"}, nil, "-"},
-		{"select $(x)\nquit", []string{"select $(x)"}, []string{"QUIT"}, "="},
+		{"select $(x)\nquit", []string{"select $(x)"}, []string{"QUIT"}, "-"},
 		{"select '$ (X' \nquite", []string{"select '$ (X' " + SqlcmdEol + "quite"}, nil, "-"},
-		{"select 1\nquit\nselect 2", []string{"select 1", "select 2"}, []string{"QUIT"}, "-"},
+		{":list\n:reset\n", nil, []string{"LIST", "RESET"}, "="},
+		{"select 1\n:list\nselect 2", []string{"select 1" + SqlcmdEol + "select 2"}, []string{"LIST"}, "-"},
 		{"select '1\n", []string{"select '1" + SqlcmdEol + ""}, nil, "'"},
 		{"select 1 /* comment\nGO", []string{"select 1 /* comment" + SqlcmdEol + "GO"}, nil, "*"},
-		{"select '1\n00' \n/* comm\nent*/\nGO 4", []string{"select '1" + SqlcmdEol + "00' " + SqlcmdEol + "/* comm" + SqlcmdEol + "ent*/"}, []string{"GO"}, "="},
-		{"$(x) $(y) 100\nquit", []string{"$(x) $(y) 100"}, []string{"QUIT"}, "="},
+		{"select '1\n00' \n/* comm\nent*/\nGO 4", []string{"select '1" + SqlcmdEol + "00' " + SqlcmdEol + "/* comm" + SqlcmdEol + "ent*/"}, []string{"GO"}, "-"},
+		{"$(x) $(y) 100\nquit", []string{"$(x) $(y) 100"}, []string{"QUIT"}, "-"},
+		{"select 1\n:list", []string{"select 1"}, []string{"LIST"}, "-"},
+		{"select 1\n:reset", []string{"select 1"}, []string{"RESET"}, "-"},
 	}
 	for _, test := range tests {
 		b := NewBatch(sp(test.s, "\n"), newCommands())
@@ -47,9 +50,7 @@ func TestBatchNextReset(t *testing.T) {
 			}
 			// resetting the buffer for every command purely for test purposes
 			if cmd != nil {
-				stmts = append(stmts, b.String())
 				cmds = append(cmds, cmd.name)
-				b.Reset(nil)
 			}
 		}
 		assert.Equal(t, test.stmts, stmts, "Statements for %s", test.s)
