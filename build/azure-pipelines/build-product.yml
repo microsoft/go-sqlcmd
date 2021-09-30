@@ -103,7 +103,7 @@ stages:
           rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindows_NT\Sqlcmd.exe'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows-x64.zip'
 
       - task: ArchiveFiles@2
         displayName: Tar Linux binary
@@ -112,7 +112,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-x64.tar.bz2'
 
       - task: ArchiveFiles@2
         displayName: Tar Darwin binary
@@ -121,7 +121,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-darwin.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-darwin-x64.tar.bz2'
 
       - task: PublishPipelineArtifact@1
         displayName: 'Publish release archives'
