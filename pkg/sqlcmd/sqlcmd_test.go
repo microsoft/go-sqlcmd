@@ -235,7 +235,11 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
-	s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	if canTestAzureAuth() {
+		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+	} else {
+		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
+	}
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
