@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBatchNextReset(t *testing.T) {
+func TestBatchNext(t *testing.T) {
 	tests := []struct {
 		s     string
 		stmts []string
@@ -30,6 +30,9 @@ func TestBatchNextReset(t *testing.T) {
 		{"$(x) $(y) 100\nquit", []string{"$(x) $(y) 100"}, []string{"QUIT"}, "-"},
 		{"select 1\n:list", []string{"select 1"}, []string{"LIST"}, "-"},
 		{"select 1\n:reset", []string{"select 1"}, []string{"RESET"}, "-"},
+		{"select 1\n:exit()", []string{"select 1"}, []string{"EXIT"}, "-"},
+		{"select 1\n:exit (select 10)", []string{"select 1"}, []string{"EXIT"}, "-"},
+		{"select 1\n:exit", []string{"select 1"}, []string{"EXIT"}, "-"},
 	}
 	for _, test := range tests {
 		b := NewBatch(sp(test.s, "\n"), newCommands())
@@ -48,7 +51,6 @@ func TestBatchNextReset(t *testing.T) {
 			case err != nil:
 				t.Fatalf("test %s did not expect error, got: %v", test.s, err)
 			}
-			// resetting the buffer for every command purely for test purposes
 			if cmd != nil {
 				cmds = append(cmds, cmd.name)
 			}
