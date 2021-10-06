@@ -62,6 +62,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-v", "x=y", "-v", `y=a space`}, func(args SQLCmdArguments) bool {
 			return args.Variables["x"] == "y" && args.Variables["y"] == "a space"
 		}},
+		{[]string{"-a", "550", "-l", "45", "-H", "mystation", "-K", "ReadOnly", "-N", "true"}, func(args SQLCmdArguments) bool {
+			return args.PacketSize == 550 && args.LoginTimeout == 45 && args.WorkstationName == "mystation" && args.ApplicationIntent == "ReadOnly" && args.EncryptConnection == "true"
+		}},
 	}
 
 	for _, test := range commands {
@@ -86,6 +89,8 @@ func TestInvalidCommandLine(t *testing.T) {
 
 	commands := []cmdLineTest{
 		{[]string{"-E", "-U", "someuser"}, "--use-trusted-connection and --user-name can't be used together"},
+		// the test prefix is a kong artifact https://github.com/alecthomas/kong/issues/221
+		{[]string{"-a", "100"}, "test: '-a 100': Packet size has to be a number between 512 and 32767."},
 	}
 
 	for _, test := range commands {

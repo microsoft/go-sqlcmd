@@ -45,6 +45,16 @@ type ConnectSettings struct {
 	DisableVariableSubstitution bool
 	// Password is the password used with SQL authentication
 	Password string
+	// Encrypt is the choice of encryption
+	Encrypt string
+	// PacketSize is the size of the packet for TDS communication
+	PacketSize int
+	// LoginTimeoutSeconds specifies the timeout for establishing a connection
+	LoginTimeoutSeconds int
+	// WorkstationName is the string to use to identify the host in server DMVs
+	WorkstationName string
+	// ApplicationIntent can only be empty or "ReadOnly"
+	ApplicationIntent string
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -232,6 +242,21 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 
 	if s.Connect.TrustServerCertificate {
 		query.Add("trustservercertificate", "true")
+	}
+	if s.Connect.ApplicationIntent != "" {
+		query.Add("applicationintent", s.Connect.ApplicationIntent)
+	}
+	if s.Connect.LoginTimeoutSeconds > 0 {
+		query.Add("connection timeout", fmt.Sprint(s.Connect.LoginTimeoutSeconds))
+	}
+	if s.Connect.PacketSize > 0 {
+		query.Add("packet size", fmt.Sprint(s.Connect.PacketSize))
+	}
+	if s.Connect.WorkstationName != "" {
+		query.Add("workstation id", s.Connect.WorkstationName)
+	}
+	if s.Connect.Encrypt != "" {
+		query.Add("encrypt", s.Connect.Encrypt)
 	}
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil

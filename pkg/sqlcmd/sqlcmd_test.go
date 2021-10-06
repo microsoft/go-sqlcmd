@@ -29,11 +29,18 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 
 		{nil, nil, "sqlserver://."},
 		{
-			&ConnectSettings{TrustServerCertificate: true},
+			&ConnectSettings{TrustServerCertificate: true, WorkstationName: "mystation"},
 			func(vars *Variables) {
 				vars.Set(SQLCMDDBNAME, "somedatabase")
 			},
-			"sqlserver://.?database=somedatabase&trustservercertificate=true",
+			"sqlserver://.?database=somedatabase&trustservercertificate=true&workstation+id=mystation",
+		},
+		{
+			&ConnectSettings{WorkstationName: "mystation", Encrypt: "false"},
+			func(vars *Variables) {
+				vars.Set(SQLCMDDBNAME, "somedatabase")
+			},
+			"sqlserver://.?database=somedatabase&encrypt=false&workstation+id=mystation",
 		},
 		{
 			&ConnectSettings{TrustServerCertificate: true, Password: pwd},
