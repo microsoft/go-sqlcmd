@@ -243,7 +243,7 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 	if s.Connect.TrustServerCertificate {
 		query.Add("trustservercertificate", "true")
 	}
-	if s.Connect.ApplicationIntent != "" {
+	if s.Connect.ApplicationIntent != "" && s.Connect.ApplicationIntent != "default" {
 		query.Add("applicationintent", s.Connect.ApplicationIntent)
 	}
 	if s.Connect.LoginTimeoutSeconds > 0 {
@@ -255,7 +255,7 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 	if s.Connect.WorkstationName != "" {
 		query.Add("workstation id", s.Connect.WorkstationName)
 	}
-	if s.Connect.Encrypt != "" {
+	if s.Connect.Encrypt != "" && s.Connect.Encrypt != "default" {
 		query.Add("encrypt", s.Connect.Encrypt)
 	}
 	connectionURL.RawQuery = query.Encode()

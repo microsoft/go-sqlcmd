@@ -18,7 +18,7 @@ We will be implementing as many command line switches and behaviors as possible 
 
 - `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - `-I` switch will be removed. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
-- `-N` now takes a string value that can be one of `true`, `false`, or `disable` to specify the encryption choice. 
+- `-N` now takes a string value that can be one of `true`, `false`, or `disable` to specify the encryption choice. (`default` is the same as omitting the parameter)
   - If `-N` and `-C` are not provided, sqlcmd will negotiate authentication with the server without validating the server certificate.
   - If `-N` is provided but `-C` is not, sqlcmd will require validation of the server certificate. Note that a `false` value for encryption could still lead to encryption of the login packet.
   - If both `-N` and `-C` are provided, sqlcmd will use their values for encryption negotiation.
