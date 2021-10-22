@@ -1,4 +1,4 @@
-# SQL Utilities - Go edition
+# Go-based SQL Utilities - Preview 
 
 This repo contains command line tools and go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.
 
@@ -8,7 +8,7 @@ The `sqlcmd` project aims to be a complete port of the native sqlcmd to the `go`
 
 ### Breaking changes
 
-We will be implementing as many command line switches and behaviors as possible over time. Several switches and behaviors are expected to change in this implementation.
+We will be implementing command line switches and behaviors over time. Several switches and behaviors are expected to change in this implementation.
 
 - `-P` switch will be removed. Passwords for SQL authentication can only be provided through these mechanisms:
 
