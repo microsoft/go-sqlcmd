@@ -37,6 +37,20 @@ type SQLCmdArguments struct {
 	UseAad                      bool              `short:"G" xor:"auth" help:"Tells sqlcmd to use Active Directory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used."`
 	DisableVariableSubstitution bool              `short:"x" help:"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name)."`
 	Variables                   map[string]string `short:"v" help:"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits"`
+	PacketSize                  int               `short:"a" help:"Requests a packet of a different size. This option sets the sqlcmd scripting variable SQLCMDPACKETSIZE. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between GO commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size."`
+	LoginTimeout                int               `short:"l" default:"-1" help:"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable SQLCMDLOGINTIMEOUT. The default value is 30. 0 means infinite."`
+	WorkstationName             string            `short:"H" help:"This option sets the sqlcmd scripting variable SQLCMDWORKSTATION. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions."`
+	ApplicationIntent           string            `short:"K" default:"default" enum:"default,ReadOnly" help:"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If -K is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group."`
+	EncryptConnection           string            `short:"N" default:"default" enum:"default,false,true,disable" help:"This switch is used by the client to request an encrypted connection."`
+}
+
+// Validate accounts for settings not described by Kong attributes
+func (a *SQLCmdArguments) Validate() error {
+	if a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767) {
+		return fmt.Errorf(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
+	}
+
+	return nil
 }
 
 // newArguments constructs a SQLCmdArguments instance with default values
@@ -87,8 +101,13 @@ func main() {
 // setVars initializes scripting variables from command line arguments
 func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 	varmap := map[string]func(*SQLCmdArguments) string{
-		sqlcmd.SQLCMDDBNAME:       func(a *SQLCmdArguments) string { return a.DatabaseName },
-		sqlcmd.SQLCMDLOGINTIMEOUT: func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDDBNAME: func(a *SQLCmdArguments) string { return a.DatabaseName },
+		sqlcmd.SQLCMDLOGINTIMEOUT: func(a *SQLCmdArguments) string {
+			if a.LoginTimeout > -1 {
+				return fmt.Sprint(a.LoginTimeout)
+			}
+			return ""
+		},
 		sqlcmd.SQLCMDUSEAAD: func(a *SQLCmdArguments) string {
 			if a.UseAad {
 				return "true"
@@ -101,10 +120,15 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			}
 			return ""
 		},
-		sqlcmd.SQLCMDWORKSTATION:       func(a *SQLCmdArguments) string { return "" },
-		sqlcmd.SQLCMDSERVER:            func(a *SQLCmdArguments) string { return a.Server },
-		sqlcmd.SQLCMDERRORLEVEL:        func(a *SQLCmdArguments) string { return "" },
-		sqlcmd.SQLCMDPACKETSIZE:        func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDWORKSTATION: func(a *SQLCmdArguments) string { return args.WorkstationName },
+		sqlcmd.SQLCMDSERVER:      func(a *SQLCmdArguments) string { return a.Server },
+		sqlcmd.SQLCMDERRORLEVEL:  func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDPACKETSIZE: func(a *SQLCmdArguments) string {
+			if args.PacketSize > 0 {
+				return fmt.Sprint(args.PacketSize)
+			}
+			return ""
+		},
 		sqlcmd.SQLCMDUSER:              func(a *SQLCmdArguments) string { return a.UserName },
 		sqlcmd.SQLCMDSTATTIMEOUT:       func(a *SQLCmdArguments) string { return "" },
 		sqlcmd.SQLCMDHEADERS:           func(a *SQLCmdArguments) string { return "" },
@@ -127,6 +151,22 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 
 }
 
+func setConnect(s *sqlcmd.Sqlcmd, args *SQLCmdArguments) {
+	if !args.DisableCmdAndWarn {
+		s.Connect.Password = os.Getenv(sqlcmd.SQLCMDPASSWORD)
+	}
+	s.Connect.UseTrustedConnection = args.UseTrustedConnection
+	s.Connect.TrustServerCertificate = args.TrustServerCertificate
+	s.Connect.AuthenticationMethod = args.authenticationMethod(s.Connect.Password != "")
+	s.Connect.DisableEnvironmentVariables = args.DisableCmdAndWarn
+	s.Connect.DisableVariableSubstitution = args.DisableVariableSubstitution
+	s.Connect.ApplicationIntent = args.ApplicationIntent
+	s.Connect.LoginTimeoutSeconds = args.LoginTimeout
+	s.Connect.Encrypt = args.EncryptConnection
+	s.Connect.PacketSize = args.PacketSize
+	s.Connect.WorkstationName = args.WorkstationName
+}
+
 func run(vars *sqlcmd.Variables) (int, error) {
 	wd, err := os.Getwd()
 	if err != nil {
@@ -144,9 +184,7 @@ func run(vars *sqlcmd.Variables) (int, error) {
 	}
 
 	s := sqlcmd.New(line, wd, vars)
-	if !args.DisableCmdAndWarn {
-		s.Connect.Password = os.Getenv(sqlcmd.SQLCMDPASSWORD)
-	}
+
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {
@@ -156,11 +194,8 @@ func run(vars *sqlcmd.Variables) (int, error) {
 	if err != nil {
 		return 1, err
 	}
-	s.Connect.UseTrustedConnection = args.UseTrustedConnection
-	s.Connect.TrustServerCertificate = args.TrustServerCertificate
-	s.Connect.AuthenticationMethod = args.authenticationMethod(s.Connect.Password != "")
-	s.Connect.DisableEnvironmentVariables = args.DisableCmdAndWarn
-	s.Connect.DisableVariableSubstitution = args.DisableVariableSubstitution
+
+	setConnect(s, &args)
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
