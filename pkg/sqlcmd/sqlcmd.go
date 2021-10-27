@@ -75,6 +75,11 @@ type Sqlcmd struct {
 	Cmd      Commands
 }
 
+func EnterNewPassword(l *readline.Instance) (string, error) {
+	pwchars, pwerr := l.ReadPassword("Password: ")
+	return string(pwchars), pwerr
+}
+
 // New creates a new Sqlcmd instance
 func New(l *readline.Instance, workingDirectory string, vars *Variables) *Sqlcmd {
 	s := &Sqlcmd{
@@ -239,8 +244,24 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 
 // ConnectDb opens a connection to the database with the given modifications to the connection
 func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw bool) error {
+
+	// read environment variables for any parameters that were not supplied
+	if user == "" {
+		user = s.vars.SQLCmdUser()
+	}
+	if password == "" {
+		password = s.Connect.Password
+	}
+
 	if user != "" && password == "" && !nopw {
-		return ErrNeedPassword
+		// user was specified and pw is required so propt user for it
+		// if SA is desired but no password specified, query for it
+		newpassword, prompterr := EnterNewPassword(s.lineIo)
+		if prompterr != nil {
+			return ErrNeedPassword
+		}
+
+		password = newpassword
 	}
 
 	connstr, err := s.ConnectionString()
