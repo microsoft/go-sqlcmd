@@ -96,7 +96,7 @@ func main() {
 
 	exitCode := 0
 	if args.Help {
-		c.PrintUsage(false)
+		_ = c.PrintUsage(false)
 	} else {
 		// so far sqlcmd prints all the errors itself so ignore it
 		exitCode, _ = run(vars)
