@@ -42,6 +42,7 @@ type SQLCmdArguments struct {
 	WorkstationName             string            `short:"H" help:"This option sets the sqlcmd scripting variable SQLCMDWORKSTATION. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions."`
 	ApplicationIntent           string            `short:"K" default:"default" enum:"default,ReadOnly" help:"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If -K is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group."`
 	EncryptConnection           string            `short:"N" default:"default" enum:"default,false,true,disable" help:"This switch is used by the client to request an encrypted connection."`
+	Help                      bool              `short:"?" help:"Show context-sensitive help."`
 }
 
 // Validate accounts for settings not described by Kong attributes
@@ -89,12 +90,18 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 }
 
 func main() {
-	kong.Parse(&args)
+	c := kong.Parse(&args)
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	setVars(vars, &args)
 
-	// so far sqlcmd prints all the errors itself so ignore it
-	exitCode, _ := run(vars)
+	exitCode := 0
+	if args.Help {
+		c.PrintUsage(false)
+	} else {
+		// so far sqlcmd prints all the errors itself so ignore it
+		exitCode, _ = run(vars)
+	}
+
 	os.Exit(exitCode)
 }
 
