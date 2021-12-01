@@ -14,14 +14,37 @@ stages:
         matrix:
           linux:
             imageName: 'ubuntu-latest'
+            artifact: LinuxAmd64
+            os:
+            arch:
           mac:
             imageName: 'macOS-latest'
+            artifact: DarwinAmd64
+            os:
+            arch:
           windows:
             imageName: 'windows-latest'
+            artifact: WindowsAmd64
+            os:
+            arch:
+          linuxArm:
+            imageName: 'ubuntu-latest'
+            artifact: LinuxArm64
+            os:
+            arch: arm64
+          windowsArm:
+            imageName: 'windows-latest'
+            artifact: WindowsArm
+            os:
+            arch: arm
       pool:
         vmImage: $(imageName)
       steps:
         - template: build-common.yml
+          parameters:
+            OS: $(os)
+            Arch: $(arch)
+            ArtifactName: $(artifact)
 
   - stage: CreatePackages
     displayName: Create packages to publish
@@ -48,8 +71,8 @@ stages:
         displayName: Sign Windows binary
         inputs:
           ConnectedServiceName: 'Code Signing'
-          FolderPath: '$(Pipeline.Workspace)\SqlcmdWindows_NT'
-          Pattern: '*.exe'
+          FolderPath: '$(Pipeline.Workspace)'
+          Pattern: 'sqlcmd.exe'
           signConfigType: 'inlineSignParams'
           SessionTimeout: '600'
           MaxConcurrency: '5'
@@ -98,17 +121,25 @@ stages:
               }
             ]
       - task: ArchiveFiles@2
-        displayName: Zip Windows binary
+        displayName: Zip Windows amd64 binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindows_NT\Sqlcmd.exe'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsAmd64\Sqlcmd.exe'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows-x64.zip'
 
       - task: ArchiveFiles@2
-        displayName: Tar Linux binary
+        displayName: Zip Windows arm binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinux'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows-arm.zip'
+  
+      - task: ArchiveFiles@2
+        displayName: Tar Linux amd64 binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinuxAmd64'
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
@@ -117,12 +148,21 @@ stages:
       - task: ArchiveFiles@2
         displayName: Tar Darwin binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdDarwin'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdDarwinAmd64'
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-darwin-x64.tar.bz2'
 
+      - task: ArchiveFiles@2
+        displayName: Tar Linux arm64 binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinuxArm64'
+          includeRootFolder: false
+          archiveType: 'tar'
+          tarCompression: 'bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-arm64.tar.bz2'
+  
       - task: PublishPipelineArtifact@1
         displayName: 'Publish release archives'
         inputs:
