@@ -71,8 +71,8 @@ stages:
         displayName: Sign Windows binary
         inputs:
           ConnectedServiceName: 'Code Signing'
-          FolderPath: '$(Pipeline.Workspace)\SqlcmdWindows_NT'
-          Pattern: '*.exe'
+          FolderPath: '$(Pipeline.Workspace)'
+          Pattern: '**\*.exe'
           signConfigType: 'inlineSignParams'
           SessionTimeout: '600'
           MaxConcurrency: '5'
