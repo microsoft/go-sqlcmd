@@ -72,7 +72,7 @@ stages:
         inputs:
           ConnectedServiceName: 'Code Signing'
           FolderPath: '$(Pipeline.Workspace)'
-          Pattern: '**\*.exe'
+          Pattern: 'sqlcmd.exe'
           signConfigType: 'inlineSignParams'
           SessionTimeout: '600'
           MaxConcurrency: '5'
