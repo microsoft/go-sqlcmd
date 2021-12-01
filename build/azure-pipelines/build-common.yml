@@ -20,8 +20,8 @@ steps:
     arguments: '-d'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
   env:
-      GOOS: ${{ OS }}
-      GOARCH: ${{ Arch }}
+      GOOS: ${{ parameters.OS }}
+      GOARCH: ${{ parameters.Arch }}
     
 - task: Go@0
   displayName: 'Go: build sqlcmd'
@@ -30,8 +30,8 @@ steps:
     arguments: '-o $(Build.BinariesDirectory)'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
   env:
-      GOOS: ${{ OS }}
-      GOARCH: ${{ Arch }}
+      GOOS: ${{ parameters.OS }}
+      GOARCH: ${{ parameters.Arch }}
 
 - task: CopyFiles@2
   inputs:
@@ -43,5 +43,5 @@ steps:
   displayName: 'Publish binary'
   inputs:
     targetPath: $(Build.ArtifactStagingDirectory)
-    artifactName: 'Sqlcmd${{ ArtifactName }}'
+    artifactName: 'Sqlcmd${{ parameters.ArtifactName }}'
 
