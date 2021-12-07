@@ -10,6 +10,8 @@ import (
 	"sort"
 	"strings"
 	"syscall"
+
+	mssql "github.com/denisenkom/go-mssqldb"
 )
 
 // Command defines a sqlcmd action which can be intermixed with the SQL batch
@@ -129,12 +131,12 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 	query := s.batch.String()
 	if query != "" {
 		query = s.getRunnableQuery(query)
-		_ = s.runQuery(query)
+		_, _ = s.runQuery(query)
 	}
 	query = strings.TrimSpace(params[1 : len(params)-1])
 	if query != "" {
 		query = s.getRunnableQuery(query)
-		s.Exitcode = s.runQuery(query)
+		s.Exitcode, _ = s.runQuery(query)
 	}
 	return ErrExitRequested
 }
@@ -167,7 +169,18 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 	query = s.getRunnableQuery(query)
 	for i := 0; i < n; i++ {
-		_ = s.runQuery(query)
+		_, queryError := s.runQuery(query)
+		if queryError != nil {
+			switch e := (queryError).(type) {
+			case mssql.Error:
+				if e.Class >= s.Connect.ErrorSeverityLevel {
+					s.Exitcode = int(e.Class)
+					if s.Connect.ExitOnError {
+						return ErrExitRequested
+					}
+				}
+			}
+		}
 	}
 	s.batch.Reset(nil)
 	return nil

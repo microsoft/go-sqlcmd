@@ -65,6 +65,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-a", "550", "-l", "45", "-H", "mystation", "-K", "ReadOnly", "-N", "true"}, func(args SQLCmdArguments) bool {
 			return args.PacketSize == 550 && args.LoginTimeout == 45 && args.WorkstationName == "mystation" && args.ApplicationIntent == "ReadOnly" && args.EncryptConnection == "true"
 		}},
+		{[]string{"-b", "-m", "15", "-V", "20"}, func(args SQLCmdArguments) bool {
+			return args.ExitOnError && args.ErrorLevel == 15 && args.ErrorSeverityLevel == 20
+		}},
 	}
 
 	for _, test := range commands {

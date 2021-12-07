@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"database/sql"
 	"fmt"
+	"io"
 	"os"
 	"os/user"
 	"strings"
@@ -235,10 +236,48 @@ func TestExitInitialQuery(t *testing.T) {
 		assert.Equal(t, "1200 2100"+SqlcmdEol+SqlcmdEol, o, "Output")
 		assert.Equal(t, 1200, s.Exitcode, "ExitCode")
 	}
+}
+
+func TestSqlCmdExitOnError(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.Connect.ExitOnError = true
+	err := runSqlCmd(t, s, []string{"select 1", "GO", ":setvar", "select 2", "GO"})
+	o := buf.buf.String()
+	assert.EqualError(t, err, "Sqlcmd: Error: Syntax error at line 3 near command ':SETVAR'.", "Run should return an error")
+	assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol, o, "Only first select should run")
+	assert.Equal(t, 1, s.Exitcode, "s.ExitCode for a syntax error")
+
+	s, buf = setupSqlCmdWithMemoryOutput(t)
+	s.Connect.ExitOnError = true
+	s.Connect.ErrorSeverityLevel = 15
+	s.vars.Set(SQLCMDERRORLEVEL, "14")
+	err = runSqlCmd(t, s, []string{"raiserror(N'13', 13, 1)", "GO", "raiserror(N'14', 14, 1)", "GO", "raiserror(N'15', 15, 1)", "GO", "SELECT 'nope'", "GO"})
+	o = buf.buf.String()
+	assert.NotContains(t, o, "Level 13", "Level 13 should be filtered from the output")
+	assert.NotContains(t, o, "nope", "Last select should not be run")
+	assert.Contains(t, o, "Level 14", "Level 14 should be in the output")
+	assert.Contains(t, o, "Level 15", "Level 15 should be in the output")
+	assert.Equal(t, 15, s.Exitcode, "s.ExitCode for a syntax error")
+	assert.NoError(t, err, "Run should not return an error for a SQL error")
 
 }
 
+func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
+	t.Helper()
+	i := 0
+	s.batch.read = func() (string, error) {
+		if i < len(lines) {
+			index := i
+			i++
+			return lines[index], nil
+		}
+		return "", io.EOF
+	}
+	return s.Run(false, false)
+}
+
 func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
+	t.Helper()
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
@@ -256,6 +295,7 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 }
 
 func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
+	t.Helper()
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)

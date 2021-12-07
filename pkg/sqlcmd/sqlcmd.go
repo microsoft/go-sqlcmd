@@ -55,6 +55,10 @@ type ConnectSettings struct {
 	WorkstationName string
 	// ApplicationIntent can only be empty or "ReadOnly"
 	ApplicationIntent string
+	// ExitOnError determines if sqlcmd stops processing batches when an error occurs
+	ExitOnError bool
+	// ErrorSeverityLevel determines the minimum SQL severity level to report on exit
+	ErrorSeverityLevel uint8
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -155,8 +159,16 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 			if err != nil {
 				fmt.Fprintln(stderr, err)
 				lastError = err
-				continue
 			}
+		}
+		if err != nil && s.Connect.ExitOnError {
+			// If the error were due to a SQL error, the GO command handler
+			// would have set ExitCode already
+			if s.Exitcode == 0 {
+				s.Exitcode = 1
+			}
+			lastError = err
+			break
 		}
 		if execute {
 			s.Query = s.batch.String()
@@ -447,14 +459,15 @@ func (s *Sqlcmd) sqlAuthentication() bool {
 // -100 : Error encountered prior to selecting return value
 // -101: No rows found
 // -102: Conversion error occurred when selecting return value
-func (s *Sqlcmd) runQuery(query string) int {
+// It also returns the actual error
+func (s *Sqlcmd) runQuery(query string) (int, error) {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	rows, qe := s.db.Query(query)
 	if qe != nil {
 		s.Format.AddError(qe)
 	}
-	var err error
+	err := qe
 	var cols []*sql.ColumnType
 	results := true
 	for qe == nil && results {
@@ -484,13 +497,26 @@ func (s *Sqlcmd) runQuery(query string) int {
 				}
 			}
 			s.Format.EndResultSet()
+			if err = rows.Err(); err != nil {
+				retcode = -100
+				s.Format.AddError(err)
+			}
 		}
-		results = rows.NextResultSet()
-		if err = rows.Err(); err != nil {
-			retcode = -100
-			s.Format.AddError(err)
+		if err == nil || !s.Connect.ExitOnError {
+			results = rows.NextResultSet()
+		} else {
+			switch e := (err).(type) {
+			case mssql.Error:
+				if e.Class >= s.Connect.ErrorSeverityLevel {
+					results = false
+				} else {
+					results = rows.NextResultSet()
+				}
+			default:
+				results = rows.NextResultSet()
+			}
 		}
 	}
 	s.Format.EndBatch()
-	return retcode
+	return retcode, err
 }

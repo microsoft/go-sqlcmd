@@ -42,6 +42,11 @@ type SQLCmdArguments struct {
 	WorkstationName             string            `short:"H" help:"This option sets the sqlcmd scripting variable SQLCMDWORKSTATION. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions."`
 	ApplicationIntent           string            `short:"K" default:"default" enum:"default,ReadOnly" help:"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If -K is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group."`
 	EncryptConnection           string            `short:"N" default:"default" enum:"default,false,true,disable" help:"This switch is used by the client to request an encrypted connection."`
+	// Begin error reporting parameters
+	ExitOnError        bool  `short:"b" help:"Specifies that sqlcmd exits and returns an ERRORLEVEL value when an error occurs."`
+	ErrorLevel         int   `short:"m" help:"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent."`
+	ErrorSeverityLevel uint8 `short:"V" help:"Controls the severity level used to set the ERRORLEVEL variable."`
+	// End error reporting parameters
 }
 
 // Validate accounts for settings not described by Kong attributes
@@ -122,7 +127,7 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 		},
 		sqlcmd.SQLCMDWORKSTATION: func(a *SQLCmdArguments) string { return args.WorkstationName },
 		sqlcmd.SQLCMDSERVER:      func(a *SQLCmdArguments) string { return a.Server },
-		sqlcmd.SQLCMDERRORLEVEL:  func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDERRORLEVEL:  func(a *SQLCmdArguments) string { return fmt.Sprint(a.ErrorLevel) },
 		sqlcmd.SQLCMDPACKETSIZE: func(a *SQLCmdArguments) string {
 			if args.PacketSize > 0 {
 				return fmt.Sprint(args.PacketSize)
@@ -165,6 +170,8 @@ func setConnect(s *sqlcmd.Sqlcmd, args *SQLCmdArguments) {
 	s.Connect.Encrypt = args.EncryptConnection
 	s.Connect.PacketSize = args.PacketSize
 	s.Connect.WorkstationName = args.WorkstationName
+	s.Connect.ExitOnError = args.ExitOnError
+	s.Connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 }
 
 func run(vars *sqlcmd.Variables) (int, error) {

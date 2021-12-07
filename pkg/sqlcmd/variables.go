@@ -163,6 +163,11 @@ func (v Variables) RowsBetweenHeaders() int64 {
 	return h
 }
 
+// ErrorLevel controls the minimum level of errors that are printed
+func (v Variables) ErrorLevel() int64 {
+	return mustValue(v[SQLCMDERRORLEVEL])
+}
+
 func mustValue(val string) int64 {
 	var n int64
 	_, err := fmt.Sscanf(val, "%d", &n)
