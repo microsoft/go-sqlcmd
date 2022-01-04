@@ -16,6 +16,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const oneRowAffected = "(1 row affected)"
+
 func TestConnectionStringFromSqlCmd(t *testing.T) {
 	type connectionStringTest struct {
 		settings         *ConnectSettings
@@ -159,7 +161,7 @@ func TestIncludeFileNoExecutions(t *testing.T) {
 			assert.Equal(t, "select 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile twobatchnoendinggo.sql false")
 			bytes, err := os.ReadFile(file.Name())
 			if assert.NoError(t, err, "os.ReadFile") {
-				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, string(bytes), "Incorrect output from Run")
 			}
 		}
 	}
@@ -177,7 +179,7 @@ func TestIncludeFileProcessAll(t *testing.T) {
 		assert.Equal(t, "", s.batch.String(), "s.batch.String() after IncludeFile twobatchwithgo.sql true")
 		bytes, err := os.ReadFile(file.Name())
 		if assert.NoError(t, err, "os.ReadFile") {
-			assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+			assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, string(bytes), "Incorrect output from Run")
 		}
 		file, err = os.CreateTemp("", "sqlcmdout")
 		defer os.Remove(file.Name())
@@ -189,7 +191,7 @@ func TestIncludeFileProcessAll(t *testing.T) {
 			assert.Equal(t, "", s.batch.String(), "s.batch.String() after IncludeFile twobatchnoendinggo.sql true")
 			bytes, err := os.ReadFile(file.Name())
 			if assert.NoError(t, err, "os.ReadFile") {
-				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol, string(bytes), "Incorrect output from Run")
+				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, string(bytes), "Incorrect output from Run")
 			}
 		}
 	}
@@ -232,7 +234,7 @@ func TestExitInitialQuery(t *testing.T) {
 	if assert.NoError(t, err, "s.Run(once = true)") {
 		s.SetOutput(nil)
 		o := buf.buf.String()
-		assert.Equal(t, "1200 2100"+SqlcmdEol+SqlcmdEol, o, "Output")
+		assert.Equal(t, "1200 2100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, o, "Output")
 		assert.Equal(t, 1200, s.Exitcode, "ExitCode")
 	}
 

@@ -13,6 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const oneRowAffected = "(1 row affected)"
+
 func newKong(t *testing.T, cli interface{}, options ...kong.Option) *kong.Kong {
 	t.Helper()
 	options = append([]kong.Option{
@@ -122,7 +124,7 @@ func TestRunInputFiles(t *testing.T) {
 	assert.Equal(t, 0, exitCode, "exitCode")
 	bytes, err := os.ReadFile(o.Name())
 	if assert.NoError(t, err, "os.ReadFile") {
-		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+"100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol+"100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
 	}
 }
 
@@ -148,7 +150,7 @@ func TestQueryAndExit(t *testing.T) {
 	assert.Equal(t, 0, exitCode, "exitCode")
 	bytes, err := os.ReadFile(o.Name())
 	if assert.NoError(t, err, "os.ReadFile") {
-		assert.Equal(t, "100 val2"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+		assert.Equal(t, "100 val2"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
 	}
 }
 
@@ -174,7 +176,7 @@ func TestAzureAuth(t *testing.T) {
 	assert.Equal(t, 0, exitCode, "exitCode")
 	bytes, err := os.ReadFile(o.Name())
 	if assert.NoError(t, err, "os.ReadFile") {
-		assert.Equal(t, "AZURE"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+		assert.Equal(t, "AZURE"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
 	}
 }
 
