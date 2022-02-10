@@ -175,6 +175,7 @@ func TestReadStringVarmap(t *testing.T) {
 	}
 	tests := []mapTest{
 		{`'var $(var1) var2 $(var2)'`, map[int]string{5: "var1", 18: "var2"}},
+		{`'var $(va_1) var2 $(va-2)'`, map[int]string{5: "va_1", 18: "va-2"}},
 	}
 	for _, test := range tests {
 		b := NewBatch(nil, newCommands())

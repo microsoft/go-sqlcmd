@@ -103,6 +103,7 @@ func TestValidIdentifier(t *testing.T) {
 		{"1A", false},
 		{"A1", true},
 		{"A+", false},
+		{"A-_b", true},
 	}
 	for _, tst := range tests {
 		err := ValidIdentifier(tst.raw)

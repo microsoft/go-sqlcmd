@@ -252,14 +252,14 @@ func (variables *Variables) Setvar(name, value string) error {
 	return nil
 }
 
+const validVariableRunes = "_-"
+
 // ValidIdentifier determines if a given string can be used as a variable name
-// The native sqlcmd allowed some punctuation characters as part of a variable name
-// but this version will not.
 func ValidIdentifier(name string) error {
 
 	first := true
 	for _, c := range name {
-		if !unicode.IsLetter(c) && (first || !unicode.IsDigit(c)) {
+		if !unicode.IsLetter(c) && (first || (!unicode.IsDigit(c) && !strings.ContainsRune(validVariableRunes, c))) {
 			return fmt.Errorf("Invalid variable identifier %s", name)
 		}
 		first = false
