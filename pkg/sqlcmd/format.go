@@ -166,7 +166,9 @@ func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) string {
 }
 
 // Writes a non-error message to the designated message writer
-func (f *sqlCmdFormatterType) AddMessage(string) {}
+func (f *sqlCmdFormatterType) AddMessage(msg string) {
+	f.mustWriteOut(msg + SqlcmdEol)
+}
 
 // Writes an error to the designated err Writer
 func (f *sqlCmdFormatterType) AddError(err error) {
@@ -273,7 +275,9 @@ func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) (col
 		} else {
 			columnDetails[i].displayWidth = length
 		}
-		switch c.DatabaseTypeName() {
+		typeName := c.DatabaseTypeName()
+
+		switch typeName {
 		// Types with 0 size from sql.ColumnType
 		case "BIT":
 			columnDetails[i].leftJustify = false

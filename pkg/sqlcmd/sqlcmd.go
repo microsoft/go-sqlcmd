@@ -5,6 +5,7 @@ package sqlcmd
 
 import (
 	"bufio"
+	"context"
 	"database/sql"
 	"database/sql/driver"
 	"errors"
@@ -20,6 +21,7 @@ import (
 
 	mssql "github.com/denisenkom/go-mssqldb"
 	"github.com/gohxs/readline"
+	"github.com/golang-sql/sqlexp"
 )
 
 var (
@@ -450,25 +452,54 @@ func (s *Sqlcmd) sqlAuthentication() bool {
 func (s *Sqlcmd) runQuery(query string) int {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
-	rows, qe := s.db.Query(query)
+	ctx := context.Background()
+	retmsg := &sqlexp.ReturnMessage{}
+	rows, qe := s.db.QueryContext(ctx, query, retmsg)
 	if qe != nil {
 		s.Format.AddError(qe)
 	}
 	var err error
 	var cols []*sql.ColumnType
 	results := true
+	first := true
 	for qe == nil && results {
-		cols, err = rows.ColumnTypes()
-		if err != nil {
-			retcode = -100
-			s.Format.AddError(err)
-		} else {
-			s.Format.BeginResultSet(cols)
-			active := rows.Next()
-			for active {
+		msg := retmsg.Message(ctx)
+		switch m := msg.(type) {
+		case sqlexp.MsgNotice:
+			s.Format.AddMessage(m.Message)
+		case sqlexp.MsgError:
+			s.Format.AddError(m.Error)
+		case sqlexp.MsgRowsAffected:
+			if m.Count == 1 {
+				s.Format.AddMessage("(1 row affected)")
+			} else {
+				s.Format.AddMessage(fmt.Sprintf("(%d rows affected)", m.Count))
+			}
+		case sqlexp.MsgNextResultSet:
+			results = rows.NextResultSet()
+			if err = rows.Err(); err != nil {
+				retcode = -100
+				s.Format.AddError(err)
+			}
+			if results {
+				first = true
+			}
+		case sqlexp.MsgNext:
+			inresult := rows.Next()
+			for inresult {
+				if first {
+					first = false
+					cols, err = rows.ColumnTypes()
+					if err != nil {
+						retcode = -100
+						s.Format.AddError(err)
+					} else {
+						s.Format.BeginResultSet(cols)
+					}
+				}
 				col1 := s.Format.AddRow(rows)
-				active = rows.Next()
-				if !active {
+				inresult = rows.Next()
+				if !inresult {
 					if col1 == "" {
 						retcode = 0
 					} else if _, cerr := fmt.Sscanf(col1, "%d", &retcode); cerr != nil {
@@ -476,7 +507,6 @@ func (s *Sqlcmd) runQuery(query string) int {
 					}
 				}
 			}
-
 			if retcode != -102 {
 				if err = rows.Err(); err != nil {
 					retcode = -100
@@ -484,11 +514,6 @@ func (s *Sqlcmd) runQuery(query string) int {
 				}
 			}
 			s.Format.EndResultSet()
-		}
-		results = rows.NextResultSet()
-		if err = rows.Err(); err != nil {
-			retcode = -100
-			s.Format.AddError(err)
 		}
 	}
 	s.Format.EndBatch()

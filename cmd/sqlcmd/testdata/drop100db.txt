@@ -1,0 +1,30 @@
+drop database db100
+go
+
+drop database db101
+go
+
+drop database db102
+go
+drop database db103
+go
+drop database db104
+go
+drop database db105
+go
+drop database db106
+go
+drop database db107
+go
+drop database db108
+go
+drop database db109
+go
+drop database db110
+go
+drop database db111
+go
+drop database db112
+go
+drop database db113
+go
