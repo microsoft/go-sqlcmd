@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"strings"
 	"unicode"
 )
 
@@ -63,7 +64,7 @@ func readVariableReference(r []rune, i int, end int) (int, bool) {
 		if r[i] == ')' {
 			return i, true
 		}
-		if (r[i] >= 'a' && r[i] <= 'z') || (r[i] >= 'A' && r[i] <= 'Z') || (r[i] >= '0' && r[i] <= '9') {
+		if (r[i] >= 'a' && r[i] <= 'z') || (r[i] >= 'A' && r[i] <= 'Z') || (r[i] >= '0' && r[i] <= '9') || strings.ContainsRune(validVariableRunes, r[i]) {
 			continue
 		}
 		break
