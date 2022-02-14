@@ -157,7 +157,7 @@ func TestQueryAndExit(t *testing.T) {
 func TestAzureAuth(t *testing.T) {
 
 	if !canTestAzureAuth() {
-		t.Skip("AZURE auth environment variables are not set or server name is not an Azure DB name")
+		t.Skip("Server name is not an Azure DB name")
 	}
 	o, err := os.CreateTemp("", "sqlcmdmain")
 	assert.NoError(t, err, "os.CreateTemp")
@@ -180,10 +180,9 @@ func TestAzureAuth(t *testing.T) {
 	}
 }
 
+// Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
 func canTestAzureAuth() bool {
-	tenant := os.Getenv("AZURE_TENANT_ID")
-	clientId := os.Getenv("AZURE_CLIENT_ID")
-	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
-	server := os.Getenv("SQLCMDSERVER")
-	return tenant != "" && clientId != "" && clientSecret != "" && strings.Contains(server, ".database.")
+	server := os.Getenv(sqlcmd.SQLCMDSERVER)
+	userName := os.Getenv(sqlcmd.SQLCMDUSER)
+	return strings.Contains(server, ".database.windows.net") && userName == ""
 }

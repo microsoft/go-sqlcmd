@@ -12,6 +12,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/denisenkom/go-mssqldb/azuread"
+
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
@@ -95,7 +97,7 @@ func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
 	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	} else {
 		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	}
@@ -115,7 +117,7 @@ func ConnectDb() (*sql.DB, error) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
 	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	} else {
 		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	}
@@ -241,11 +243,13 @@ func TestExitInitialQuery(t *testing.T) {
 }
 
 func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
+	t.Helper()
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+		t.Log("Using ActiveDirectoryDefault")
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	} else {
 		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	}
@@ -258,11 +262,13 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 }
 
 func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
+	t.Helper()
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+		t.Log("Using ActiveDirectoryDefault")
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	} else {
 		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	}
@@ -275,10 +281,9 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	return s, file
 }
 
+// Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
 func canTestAzureAuth() bool {
-	tenant := os.Getenv("AZURE_TENANT_ID")
-	clientId := os.Getenv("AZURE_CLIENT_ID")
-	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
-	server := os.Getenv("SQLCMDSERVER")
-	return tenant != "" && clientId != "" && clientSecret != "" && strings.Contains(server, ".database.")
+	server := os.Getenv(SQLCMDSERVER)
+	userName := os.Getenv(SQLCMDUSER)
+	return strings.Contains(server, ".database.windows.net") && userName == ""
 }

@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
+	"github.com/denisenkom/go-mssqldb/azuread"
 	"github.com/gohxs/readline"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 )
@@ -75,11 +76,11 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 	if a.UseAad {
 		switch {
 		case a.UserName == "":
-			return sqlcmd.ActiveDirectoryIntegrated
+			return azuread.ActiveDirectoryIntegrated
 		case hasPassword:
-			return sqlcmd.ActiveDirectoryPassword
+			return azuread.ActiveDirectoryPassword
 		default:
-			return sqlcmd.ActiveDirectoryInteractive
+			return azuread.ActiveDirectoryInteractive
 		}
 	}
 	if a.AuthenticationMethod == "" {
@@ -113,9 +114,9 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 				return "true"
 			}
 			switch a.AuthenticationMethod {
-			case sqlcmd.ActiveDirectoryIntegrated:
-			case sqlcmd.ActiveDirectoryInteractive:
-			case sqlcmd.ActiveDirectoryPassword:
+			case azuread.ActiveDirectoryIntegrated:
+			case azuread.ActiveDirectoryInteractive:
+			case azuread.ActiveDirectoryPassword:
 				return "true"
 			}
 			return ""
