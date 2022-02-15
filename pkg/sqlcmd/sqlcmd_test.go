@@ -155,12 +155,14 @@ func TestIncludeFileNoExecutions(t *testing.T) {
 		}
 		file, err = os.CreateTemp("", "sqlcmdout")
 		assert.NoError(t, err, "os.CreateTemp")
+		defer os.Remove(file.Name())
 		s.SetOutput(file)
 		// The second file has a go so it will execute all statements before it
 		err = s.IncludeFile(dataPath+"twobatchnoendinggo.sql", false)
 		if assert.NoError(t, err, "IncludeFile twobatchnoendinggo.sql false") {
 			assert.Equal(t, "-", s.batch.State(), "s.batch.State() after IncludeFile twobatchnoendinggo.sql false")
 			assert.Equal(t, "select 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile twobatchnoendinggo.sql false")
+			s.SetOutput(nil)
 			bytes, err := os.ReadFile(file.Name())
 			if assert.NoError(t, err, "os.ReadFile") {
 				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, string(bytes), "Incorrect output from Run")

@@ -42,5 +42,5 @@ steps:
       testResultsFormat: JUnit
       searchFolder: '$(Build.SourcesDirectory)'
       testRunTitle: '${{ parameters.RunName }} - $(Build.SourceBranchName)'
+      failTaskOnFailedTests: true
     condition: always()
-    continueOnError: true
