@@ -38,7 +38,7 @@ steps:
   - task: PublishTestResults@2
     displayName: "Publish junit-style results"
     inputs:
-      testResultsFiles: '${{ parameters.RunName }}.coverage.xml'
+      testResultsFiles: '${{ parameters.RunName }}.testresults.xml'
       testResultsFormat: JUnit
       searchFolder: '$(Build.SourcesDirectory)'
       testRunTitle: '${{ parameters.RunName }} - $(Build.SourceBranchName)'
