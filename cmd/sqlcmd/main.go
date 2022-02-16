@@ -174,7 +174,7 @@ func run(vars *sqlcmd.Variables) (int, error) {
 		return 1, err
 	}
 
-	iactive := args.InputFile == nil
+	iactive := args.InputFile == nil && args.Query == ""
 	var line *readline.Instance
 	if iactive {
 		line, err = readline.New(">")
@@ -215,7 +215,7 @@ func run(vars *sqlcmd.Variables) (int, error) {
 	if err != nil {
 		return 1, err
 	}
-	if iactive {
+	if iactive || s.Query != "" {
 		err = s.Run(once, false)
 	} else {
 		for f := range args.InputFile {
