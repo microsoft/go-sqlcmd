@@ -172,16 +172,21 @@ func (f *sqlCmdFormatterType) AddMessage(msg string) {
 
 // Writes an error to the designated err Writer
 func (f *sqlCmdFormatterType) AddError(err error) {
+	print := true
 	b := new(strings.Builder)
 	msg := err.Error()
 	switch e := (err).(type) {
 	case mssql.Error:
-		b.WriteString(fmt.Sprintf("Msg %d, Level %d, State %d, Server %s, Line %d%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
-		msg = strings.TrimPrefix(msg, "mssql: ")
+		if print = f.vars.ErrorLevel() <= 0 || e.Class >= uint8(f.vars.ErrorLevel()); print {
+			b.WriteString(fmt.Sprintf("Msg %d, Level %d, State %d, Server %s, Line %d%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
+			msg = strings.TrimPrefix(msg, "mssql: ")
+		}
 	}
-	b.WriteString(msg)
-	b.WriteString(SqlcmdEol)
-	f.mustWriteErr(fitToScreen(b, f.vars.ScreenWidth()).String())
+	if print {
+		b.WriteString(msg)
+		b.WriteString(SqlcmdEol)
+		f.mustWriteOut(fitToScreen(b, f.vars.ScreenWidth()).String())
+	}
 }
 
 // Prints column headings based on columnDetail, variables, and command line arguments

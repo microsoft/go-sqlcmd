@@ -129,12 +129,15 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 	query := s.batch.String()
 	if query != "" {
 		query = s.getRunnableQuery(query)
-		_ = s.runQuery(query)
+		if exitCode, err := s.runQuery(query); err != nil {
+			s.Exitcode = exitCode
+			return ErrExitRequested
+		}
 	}
 	query = strings.TrimSpace(params[1 : len(params)-1])
 	if query != "" {
 		query = s.getRunnableQuery(query)
-		s.Exitcode = s.runQuery(query)
+		s.Exitcode, _ = s.runQuery(query)
 	}
 	return ErrExitRequested
 }
@@ -167,7 +170,10 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 	query = s.getRunnableQuery(query)
 	for i := 0; i < n; i++ {
-		_ = s.runQuery(query)
+		if retcode, err := s.runQuery(query); err != nil {
+			s.Exitcode = retcode
+			return err
+		}
 	}
 	s.batch.Reset(nil)
 	return nil
