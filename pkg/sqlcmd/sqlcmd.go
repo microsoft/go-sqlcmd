@@ -20,6 +20,7 @@ import (
 	"syscall"
 
 	mssql "github.com/denisenkom/go-mssqldb"
+	"github.com/denisenkom/go-mssqldb/msdsn"
 	"github.com/gohxs/readline"
 	"github.com/golang-sql/sqlexp"
 )
@@ -57,6 +58,10 @@ type ConnectSettings struct {
 	WorkstationName string
 	// ApplicationIntent can only be empty or "ReadOnly"
 	ApplicationIntent string
+	// mssql driver log level
+	LogLevel           int
+	ExitOnError        bool
+	ErrorSeverityLevel uint8
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -96,6 +101,7 @@ func New(l *readline.Instance, workingDirectory string, vars *Variables) *Sqlcmd
 		Cmd:              newCommands(),
 	}
 	s.batch = NewBatch(s.scanNext, s.Cmd)
+	mssql.SetContextLogger(s)
 	return s
 }
 
@@ -157,8 +163,16 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 			if err != nil {
 				fmt.Fprintln(stderr, err)
 				lastError = err
-				continue
 			}
+		}
+		if err != nil && s.Connect.ExitOnError {
+			// If the error were due to a SQL error, the GO command handler
+			// would have set ExitCode already
+			if s.Exitcode == 0 {
+				s.Exitcode = 1
+			}
+			lastError = err
+			break
 		}
 		if execute {
 			s.Query = s.batch.String()
@@ -259,6 +273,9 @@ func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
 	}
 	if s.Connect.Encrypt != "" && s.Connect.Encrypt != "default" {
 		query.Add("encrypt", s.Connect.Encrypt)
+	}
+	if s.Connect.LogLevel > 0 {
+		query.Add("log", fmt.Sprint(s.Connect.LogLevel))
 	}
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil
@@ -449,7 +466,7 @@ func (s *Sqlcmd) sqlAuthentication() bool {
 // -100 : Error encountered prior to selecting return value
 // -101: No rows found
 // -102: Conversion error occurred when selecting return value
-func (s *Sqlcmd) runQuery(query string) int {
+func (s *Sqlcmd) runQuery(query string) (int, error) {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
@@ -469,6 +486,7 @@ func (s *Sqlcmd) runQuery(query string) int {
 			s.Format.AddMessage(m.Message)
 		case sqlexp.MsgError:
 			s.Format.AddError(m.Error)
+			qe = s.handleError(&retcode, m.Error)
 		case sqlexp.MsgRowsAffected:
 			if m.Count == 1 {
 				s.Format.AddMessage("(1 row affected)")
@@ -479,6 +497,7 @@ func (s *Sqlcmd) runQuery(query string) int {
 			results = rows.NextResultSet()
 			if err = rows.Err(); err != nil {
 				retcode = -100
+				qe = s.handleError(&retcode, err)
 				s.Format.AddError(err)
 			}
 			if results {
@@ -492,6 +511,7 @@ func (s *Sqlcmd) runQuery(query string) int {
 					cols, err = rows.ColumnTypes()
 					if err != nil {
 						retcode = -100
+						qe = s.handleError(&retcode, err)
 						s.Format.AddError(err)
 					} else {
 						s.Format.BeginResultSet(cols)
@@ -510,6 +530,7 @@ func (s *Sqlcmd) runQuery(query string) int {
 			if retcode != -102 {
 				if err = rows.Err(); err != nil {
 					retcode = -100
+					qe = s.handleError(&retcode, err)
 					s.Format.AddError(err)
 				}
 			}
@@ -517,5 +538,43 @@ func (s *Sqlcmd) runQuery(query string) int {
 		}
 	}
 	s.Format.EndBatch()
-	return retcode
+	return retcode, qe
+}
+
+// returns ErrExitRequested if the error is a SQL error and satisfies the connection's error handling configuration
+func (s *Sqlcmd) handleError(retcode *int, err error) error {
+	if err == nil {
+		return nil
+	}
+
+	var minSeverityToExit uint8 = 11
+	if s.Connect.ErrorSeverityLevel > 0 {
+		minSeverityToExit = s.Connect.ErrorSeverityLevel
+	}
+	var errSeverity uint8
+	switch sqlError := err.(type) {
+	case mssql.Error:
+		errSeverity = sqlError.Class
+	}
+
+	if s.Connect.ErrorSeverityLevel > 0 {
+		if errSeverity >= minSeverityToExit {
+			*retcode = int(errSeverity)
+			s.Exitcode = *retcode
+		}
+	} else if s.Connect.ExitOnError {
+		if errSeverity >= minSeverityToExit {
+			*retcode = 1
+		}
+	}
+	if s.Connect.ExitOnError && errSeverity >= minSeverityToExit {
+		return ErrExitRequested
+	}
+	return nil
+}
+
+// Log attempts to write driver traces to the current output. It ignores errors
+func (s Sqlcmd) Log(_ context.Context, _ msdsn.Log, msg string) {
+	_, _ = s.GetOutput().Write([]byte("DRIVER:" + msg))
+	_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
 }

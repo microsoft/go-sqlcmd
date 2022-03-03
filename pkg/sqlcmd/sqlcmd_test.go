@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"database/sql"
 	"fmt"
+	"io"
 	"os"
 	"os/user"
 	"strings"
@@ -242,6 +243,76 @@ func TestExitInitialQuery(t *testing.T) {
 		assert.Equal(t, 1200, s.Exitcode, "ExitCode")
 	}
 
+}
+
+func TestExitCodeSetOnError(t *testing.T) {
+	s, _ := setupSqlCmdWithMemoryOutput(t)
+	s.Connect.ErrorSeverityLevel = 12
+	retcode, err := s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
+	assert.NoError(t, err, "!ExitOnError 11")
+	assert.Equal(t, -101, retcode, "Raiserror below ErrorSeverityLevel")
+	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 14, 1)")
+	assert.NoError(t, err, "!ExitOnError 14")
+	assert.Equal(t, 14, retcode, "Raiserror above ErrorSeverityLevel")
+	s.Connect.ExitOnError = true
+	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
+	assert.NoError(t, err, "ExitOnError and Raiserror below ErrorSeverityLevel")
+	assert.Equal(t, -101, retcode, "Raiserror below ErrorSeverityLevel")
+	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 14, 1)")
+	assert.ErrorIs(t, err, ErrExitRequested, "ExitOnError and Raiserror above ErrorSeverityLevel")
+	assert.Equal(t, 14, retcode, "ExitOnError and Raiserror above ErrorSeverityLevel")
+	s.Connect.ErrorSeverityLevel = 0
+	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
+	assert.ErrorIs(t, err, ErrExitRequested, "ExitOnError and ErrorSeverityLevel = 0, Raiserror above 10")
+	assert.Equal(t, 1, retcode, "ExitOnError and ErrorSeverityLevel = 0, Raiserror above 10")
+	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 5, 1)")
+	assert.NoError(t, err, "ExitOnError and ErrorSeverityLevel = 0, Raiserror below 10")
+	assert.Equal(t, -101, retcode, "ExitOnError and ErrorSeverityLevel = 0, Raiserror below 10")
+}
+
+func TestSqlCmdExitOnError(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.Connect.ExitOnError = true
+	err := runSqlCmd(t, s, []string{"select 1", "GO", ":setvar", "select 2", "GO"})
+	o := buf.buf.String()
+	assert.EqualError(t, err, "Sqlcmd: Error: Syntax error at line 3 near command ':SETVAR'.", "Run should return an error")
+	assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, o, "Only first select should run")
+	assert.Equal(t, 1, s.Exitcode, "s.ExitCode for a syntax error")
+
+	s, buf = setupSqlCmdWithMemoryOutput(t)
+	s.Connect.ExitOnError = true
+	s.Connect.ErrorSeverityLevel = 15
+	s.vars.Set(SQLCMDERRORLEVEL, "14")
+	err = runSqlCmd(t, s, []string{"raiserror(N'13', 13, 1)", "GO", "raiserror(N'14', 14, 1)", "GO", "raiserror(N'15', 15, 1)", "GO", "SELECT 'nope'", "GO"})
+	o = buf.buf.String()
+	assert.NotContains(t, o, "Level 13", "Level 13 should be filtered from the output")
+	assert.NotContains(t, o, "nope", "Last select should not be run")
+	assert.Contains(t, o, "Level 14", "Level 14 should be in the output")
+	assert.Contains(t, o, "Level 15", "Level 15 should be in the output")
+	assert.Equal(t, 15, s.Exitcode, "s.ExitCode for a syntax error")
+	assert.NoError(t, err, "Run should not return an error for a SQL error")
+}
+
+func TestSqlCmdSetErrorLevel(t *testing.T) {
+	s, _ := setupSqlCmdWithMemoryOutput(t)
+	s.Connect.ErrorSeverityLevel = 15
+	err := runSqlCmd(t, s, []string{"select bad as bad", "GO", "select 1", "GO"})
+	assert.NoError(t, err, "runSqlCmd should have no error")
+	assert.Equal(t, 16, s.Exitcode, "Select error should be the exit code")
+}
+
+func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
+	t.Helper()
+	i := 0
+	s.batch.read = func() (string, error) {
+		if i < len(lines) {
+			index := i
+			i++
+			return lines[index], nil
+		}
+		return "", io.EOF
+	}
+	return s.Run(false, false)
 }
 
 func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
