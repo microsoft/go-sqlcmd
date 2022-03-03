@@ -13,6 +13,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/denisenkom/go-mssqldb/azuread"
+
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
@@ -96,7 +98,7 @@ func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
 	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	} else {
 		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	}
@@ -116,7 +118,7 @@ func ConnectDb() (*sql.DB, error) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
 	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	} else {
 		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	}
@@ -154,12 +156,14 @@ func TestIncludeFileNoExecutions(t *testing.T) {
 		}
 		file, err = os.CreateTemp("", "sqlcmdout")
 		assert.NoError(t, err, "os.CreateTemp")
+		defer os.Remove(file.Name())
 		s.SetOutput(file)
 		// The second file has a go so it will execute all statements before it
 		err = s.IncludeFile(dataPath+"twobatchnoendinggo.sql", false)
 		if assert.NoError(t, err, "IncludeFile twobatchnoendinggo.sql false") {
 			assert.Equal(t, "-", s.batch.State(), "s.batch.State() after IncludeFile twobatchnoendinggo.sql false")
 			assert.Equal(t, "select 'string' as title", s.batch.String(), "s.batch.String() after IncludeFile twobatchnoendinggo.sql false")
+			s.SetOutput(nil)
 			bytes, err := os.ReadFile(file.Name())
 			if assert.NoError(t, err, "os.ReadFile") {
 				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, string(bytes), "Incorrect output from Run")
@@ -312,11 +316,13 @@ func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
 }
 
 func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
+	t.Helper()
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+		t.Log("Using ActiveDirectoryDefault")
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	} else {
 		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	}
@@ -329,11 +335,13 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 }
 
 func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
+	t.Helper()
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = ActiveDirectoryDefault
+		t.Log("Using ActiveDirectoryDefault")
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	} else {
 		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
 	}
@@ -346,10 +354,9 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	return s, file
 }
 
+// Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
 func canTestAzureAuth() bool {
-	tenant := os.Getenv("AZURE_TENANT_ID")
-	clientId := os.Getenv("AZURE_CLIENT_ID")
-	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
-	server := os.Getenv("SQLCMDSERVER")
-	return tenant != "" && clientId != "" && clientSecret != "" && strings.Contains(server, ".database.")
+	server := os.Getenv(SQLCMDSERVER)
+	userName := os.Getenv(SQLCMDUSER)
+	return strings.Contains(server, ".database.windows.net") && userName == ""
 }

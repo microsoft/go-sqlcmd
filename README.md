@@ -12,9 +12,9 @@ We will be implementing command line switches and behaviors over time. Several s
 
 - `-P` switch will be removed. Passwords for SQL authentication can only be provided through these mechanisms:
 
-    -The `SQLCMDPASSWORD` environment variable
-    -The `:CONNECT` command
-    -When prompted, the user can type the password to complete a connection
+    - The `SQLCMDPASSWORD` environment variable
+    - The `:CONNECT` command
+    - When prompted, the user can type the password to complete a connection (pending [#50](https://github.com/microsoft/go-sqlcmd/issues/50))
 
 - `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - `-I` switch will be removed. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
@@ -28,7 +28,7 @@ We will be implementing command line switches and behaviors over time. Several s
 
 ### Azure Active Directory Authentication
 
-This version of sqlcmd supports a broader range of AAD authentication models, based on the [azidentity package](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
+This version of sqlcmd supports a broader range of AAD authentication models, based on the [azidentity package](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity). The implementation relies on an AAD Connector in the [driver](https://github.com/denisenkom/go-mssqldb).
 
 #### Command line
 
@@ -61,7 +61,6 @@ Set `AZURE_TENANT_ID` environment variable to the tenant id of the server if not
 `ActiveDirectoryInteractive`
 
 This method will launch a web browser to authenticate the user.
-Set `AZURE_TENANT_ID` environment variable to the tenant id of the server if not using the default.
 
 `ActiveDirectoryManagedIdentity`
 
@@ -69,14 +68,12 @@ Use this method when running sqlcmd on an Azure VM that has either a system-assi
 
 `ActiveDirectoryServicePrincipal`
 
-This method authenticates the provided user name as a service principal id and the password as the client secret for the service principal. Set `AZURE_TENANT_ID` environment variable to the tenant id of the service principal.
+This method authenticates the provided user name as a service principal id and the password as the client secret for the service principal. Provide a user name in the form `<service principal id>@<tenant id>`. Set `SQLCMDPASSWORD` variable to the client secret. If using a certificate instead of a client secret, set `AZURE_CLIENT_CERTIFICATE_PATH` environment variable to the path of the certificate file.
 
 ### Environment variables for AAD auth
 
 Some settings for AAD auth do not have command line inputs, and some environment variables are consumed directly by the `azidentity` package used by `sqlcmd`.
 These environment variables can be set to configure some aspects of AAD auth and to bypass default behaviors. In addition to the variables listed above, the following are sqlcmd-specific and apply to multiple methods.
-
-`SQLCMDAZURERESOURCE` - defines the URL of the Azure SQL database resource in the Azure cloud where the database resides. By default, `sqlcmd` attempts to match the DNS suffix of the server name with one of the well known Azure cloud DNS suffixes. If no match is found it uses `https://database.windows.net`.
 
 `SQLCMDCLIENTID` - set this to the identifier of an application registered in your AAD which is authorized to authenticate to Azure SQL Database. Applies to `ActiveDirectoryInteractive` and `ActiveDirectoryPassword` methods.
 
