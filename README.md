@@ -12,9 +12,9 @@ We will be implementing command line switches and behaviors over time. Several s
 
 - `-P` switch will be removed. Passwords for SQL authentication can only be provided through these mechanisms:
 
-    -The `SQLCMDPASSWORD` environment variable
-    -The `:CONNECT` command
-    -When prompted, the user can type the password to complete a connection
+    - The `SQLCMDPASSWORD` environment variable
+    - The `:CONNECT` command
+    - When prompted, the user can type the password to complete a connection (pending [#50](https://github.com/microsoft/go-sqlcmd/issues/50))
 
 - `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - `-I` switch will be removed. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
