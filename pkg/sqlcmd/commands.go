@@ -10,6 +10,8 @@ import (
 	"sort"
 	"strings"
 	"syscall"
+
+	"github.com/alecthomas/kong"
 )
 
 // Command defines a sqlcmd action which can be intermixed with the SQL batch
@@ -79,6 +81,11 @@ func newCommands() Commands {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:LIST(?:[ \t]+(.*$)|$)`),
 			action: listCommand,
 			name:   "LIST",
+		},
+		"CONNECT": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:CONNECT(?:[ \t]+(.*$)|$)`),
+			action: connectCommand,
+			name:   "CONNECT",
 		},
 	}
 
@@ -283,5 +290,41 @@ func listCommand(s *Sqlcmd, args []string, line uint) error {
 		fmt.Fprintf(s.GetOutput(), `%s%s`, []byte(s.batch.String()), SqlcmdEol)
 	}
 
+	return nil
+}
+
+type connectData struct {
+	Server               string `arg:""`
+	Database             string `short:"D"`
+	Username             string `short:"U"`
+	Password             string `short:"P"`
+	LoginTimeout         int    `short:"l"`
+	AuthenticationMethod string `short:"G"`
+}
+
+func connectCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 || strings.TrimSpace(args[0]) == "" {
+		return InvalidCommandError("CONNECT", line)
+	}
+	arguments := &connectData{}
+	parser, err := kong.New(arguments)
+	if err != nil {
+		return InvalidCommandError("CONNECT", line)
+	}
+	if _, err = parser.Parse(strings.Split(args[0], " ")); err != nil {
+		return InvalidCommandError("CONNECT", line)
+	}
+
+	connect := s.Connect
+	connect.UserName = arguments.Username
+	connect.Password = arguments.Password
+	connect.ServerName = arguments.Server
+	if arguments.LoginTimeout > 0 {
+		connect.LoginTimeoutSeconds = arguments.LoginTimeout
+	}
+	connect.AuthenticationMethod = arguments.AuthenticationMethod
+	// If no user name is provided we switch to integrated auth
+	_ = s.ConnectDb(&connect, s.lineIo == nil)
+	// ConnectDb prints connection errors already, and failure to connect is not fatal even with -b option
 	return nil
 }

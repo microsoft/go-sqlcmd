@@ -99,7 +99,7 @@ func main() {
 	setVars(vars, &args)
 
 	// so far sqlcmd prints all the errors itself so ignore it
-	exitCode, _ := run(vars)
+	exitCode, _ := run(vars, &args)
 	os.Exit(exitCode)
 }
 
@@ -156,43 +156,57 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 
 }
 
-func setConnect(s *sqlcmd.Sqlcmd, args *SQLCmdArguments) {
+func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sqlcmd.Variables) {
 	if !args.DisableCmdAndWarn {
-		s.Connect.Password = os.Getenv(sqlcmd.SQLCMDPASSWORD)
+		connect.Password = os.Getenv(sqlcmd.SQLCMDPASSWORD)
 	}
-	s.Connect.UseTrustedConnection = args.UseTrustedConnection
-	s.Connect.TrustServerCertificate = args.TrustServerCertificate
-	s.Connect.AuthenticationMethod = args.authenticationMethod(s.Connect.Password != "")
-	s.Connect.DisableEnvironmentVariables = args.DisableCmdAndWarn
-	s.Connect.DisableVariableSubstitution = args.DisableVariableSubstitution
-	s.Connect.ApplicationIntent = args.ApplicationIntent
-	s.Connect.LoginTimeoutSeconds = args.LoginTimeout
-	s.Connect.Encrypt = args.EncryptConnection
-	s.Connect.PacketSize = args.PacketSize
-	s.Connect.WorkstationName = args.WorkstationName
-	s.Connect.LogLevel = args.DriverLoggingLevel
-	s.Connect.ExitOnError = args.ExitOnError
-	s.Connect.ErrorSeverityLevel = args.ErrorSeverityLevel
+	connect.ServerName = args.Server
+	if connect.ServerName == "" {
+		connect.ServerName, _ = vars.Get(sqlcmd.SQLCMDSERVER)
+	}
+	connect.Database = args.DatabaseName
+	if connect.Database == "" {
+		connect.Database, _ = vars.Get(sqlcmd.SQLCMDDBNAME)
+	}
+	connect.UserName = args.UserName
+	if connect.UserName == "" {
+		connect.UserName, _ = vars.Get(sqlcmd.SQLCMDUSER)
+	}
+	connect.UseTrustedConnection = args.UseTrustedConnection
+	connect.TrustServerCertificate = args.TrustServerCertificate
+	connect.AuthenticationMethod = args.authenticationMethod(connect.Password != "")
+	connect.DisableEnvironmentVariables = args.DisableCmdAndWarn
+	connect.DisableVariableSubstitution = args.DisableVariableSubstitution
+	connect.ApplicationIntent = args.ApplicationIntent
+	connect.LoginTimeoutSeconds = args.LoginTimeout
+	connect.Encrypt = args.EncryptConnection
+	connect.PacketSize = args.PacketSize
+	connect.WorkstationName = args.WorkstationName
+	connect.LogLevel = args.DriverLoggingLevel
+	connect.ExitOnError = args.ExitOnError
+	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 }
 
-func run(vars *sqlcmd.Variables) (int, error) {
+func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
 	}
 
 	iactive := args.InputFile == nil && args.Query == ""
+	var console sqlcmd.Console = nil
 	var line *readline.Instance
 	if iactive {
 		line, err = readline.New(">")
 		if err != nil {
 			return 1, err
 		}
+		console = line
 		defer line.Close()
 	}
 
-	s := sqlcmd.New(line, wd, vars)
-
+	s := sqlcmd.New(console, wd, vars)
+	setConnect(&s.Connect, args, vars)
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {
@@ -203,7 +217,7 @@ func run(vars *sqlcmd.Variables) (int, error) {
 		return 1, err
 	}
 
-	setConnect(s, &args)
+	setConnect(&s.Connect, args, vars)
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
@@ -218,7 +232,8 @@ func run(vars *sqlcmd.Variables) (int, error) {
 		once = true
 		s.Query = args.Query
 	}
-	err = s.ConnectDb("", "", "", !iactive)
+	// connect using no overrides
+	err = s.ConnectDb(nil, !iactive)
 	if err != nil {
 		return 1, err
 	}

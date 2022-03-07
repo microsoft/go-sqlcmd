@@ -56,7 +56,7 @@ func TestCalcColumnDetails(t *testing.T) {
 		},
 	}
 
-	db, err := ConnectDb()
+	db, err := ConnectDb(t)
 	if assert.NoError(t, err, "ConnectDB failed") {
 		defer db.Close()
 		for _, test := range tests {

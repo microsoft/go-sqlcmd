@@ -5,6 +5,7 @@ package sqlcmd
 
 import (
 	"database/sql/driver"
+	"fmt"
 	"net/url"
 	"os"
 
@@ -24,28 +25,27 @@ func getSqlClientId() string {
 	return sqlClientId
 }
 
-func (s *Sqlcmd) GetTokenBasedConnection(connstr string, user string, password string) (driver.Connector, error) {
+func GetTokenBasedConnection(connstr string, authenticationMethod string) (driver.Connector, error) {
 
 	connectionUrl, err := url.Parse(connstr)
 	if err != nil {
 		return nil, err
 	}
 
-	if user != "" {
-		connectionUrl.User = url.UserPassword(user, password)
-	}
-
 	query := connectionUrl.Query()
-	query.Set("fedauth", s.Connect.authenticationMethod())
+	query.Set("fedauth", authenticationMethod)
 	query.Set("applicationclientid", getSqlClientId())
-
-	switch s.Connect.AuthenticationMethod {
-	case azuread.ActiveDirectoryServicePrincipal:
-	case azuread.ActiveDirectoryApplication:
+	switch authenticationMethod {
+	case azuread.ActiveDirectoryServicePrincipal, azuread.ActiveDirectoryApplication:
 		query.Set("clientcertpath", os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"))
 	case azuread.ActiveDirectoryInteractive:
+		loginTimeout := query.Get("connection timeout")
+		loginTimeoutSeconds := 0
+		if loginTimeout != "" {
+			_, _ = fmt.Sscanf(loginTimeout, "%d", &loginTimeoutSeconds)
+		}
 		// AAD interactive needs minutes at minimum
-		if s.Connect.LoginTimeoutSeconds < 120 {
+		if loginTimeoutSeconds > 0 && loginTimeoutSeconds < 120 {
 			query.Set("connection timeout", "120")
 		}
 	}

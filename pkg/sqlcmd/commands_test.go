@@ -5,6 +5,8 @@ package sqlcmd
 
 import (
 	"bytes"
+	"fmt"
+	"os"
 	"strings"
 	"testing"
 
@@ -41,6 +43,7 @@ func TestCommandParsing(t *testing.T) {
 		{`:EXIT (select 100 as count)`, "EXIT", []string{"(select 100 as count)"}},
 		{`:EXIT ( )`, "EXIT", []string{"( )"}},
 		{`EXIT `, "EXIT", []string{""}},
+		{`:Connect someserver -U someuser`, "CONNECT", []string{"someserver -U someuser"}},
 	}
 
 	for _, test := range commands {
@@ -150,4 +153,40 @@ func TestListCommand(t *testing.T) {
 	s.SetOutput(nil)
 	o := buf.buf.String()
 	assert.Equal(t, o, "select 1"+SqlcmdEol, ":list output not equal to batch")
+}
+
+func TestConnectCommand(t *testing.T) {
+	s, _ := setupSqlCmdWithMemoryOutput(t)
+	prompted := false
+	s.lineIo = &testConsole{
+		OnPasswordPrompt: func(prompt string) ([]byte, error) {
+			prompted = true
+			return []byte{}, nil
+		},
+	}
+	err := connectCommand(s, []string{"someserver -U someuser"}, 1)
+	assert.NoError(t, err, "connectCommand with valid arguments doesn't return an error on connect failure")
+	assert.True(t, prompted, "connectCommand with user name and no password should prompt for password")
+	assert.NotEqual(t, "someserver", s.Connect.ServerName, "On error, sqlCmd.Connect does not copy inputs")
+
+	err = connectCommand(s, []string{}, 2)
+	assert.EqualError(t, err, InvalidCommandError("CONNECT", 2).Error(), ":Connect with no arguments should return an error")
+	c := newConnect(t)
+
+	authenticationMethod := ""
+	if c.Password == "" {
+		c.UserName = os.Getenv("AZURE_CLIENT_ID") + "@" + os.Getenv("AZURE_TENANT_ID")
+		c.Password = os.Getenv("AZURE_CLIENT_SECRET")
+		authenticationMethod = "-G ActiveDirectoryServicePrincipal"
+		if c.Password == "" {
+			t.Log("Not trying :Connect with valid password due to no password being available")
+			return
+		}
+		err = connectCommand(s, []string{fmt.Sprintf("%s -U %s -P %s %s", c.ServerName, c.UserName, c.Password, authenticationMethod)}, 3)
+		assert.NoError(t, err, "connectCommand with valid parameters should not return an error")
+		// not using assert to avoid printing passwords in the log
+		if s.Connect.UserName != c.UserName || c.Password != s.Connect.Password {
+			t.Fatal("After connect, sqlCmd.Connect is not updated")
+		}
+	}
 }
