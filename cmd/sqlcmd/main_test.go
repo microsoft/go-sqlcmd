@@ -122,7 +122,7 @@ func TestRunInputFiles(t *testing.T) {
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	setVars(vars, &args)
 
-	exitCode, err := run(vars)
+	exitCode, err := run(vars, &args)
 	assert.NoError(t, err, "run")
 	assert.Equal(t, 0, exitCode, "exitCode")
 	bytes, err := os.ReadFile(o.Name())
@@ -148,7 +148,7 @@ func TestQueryAndExit(t *testing.T) {
 	vars.Set("VAR1", "100")
 	setVars(vars, &args)
 
-	exitCode, err := run(vars)
+	exitCode, err := run(vars, &args)
 	assert.NoError(t, err, "run")
 	assert.Equal(t, 0, exitCode, "exitCode")
 	bytes, err := os.ReadFile(o.Name())
@@ -173,8 +173,7 @@ func TestAzureAuth(t *testing.T) {
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	setVars(vars, &args)
-
-	exitCode, err := run(vars)
+	exitCode, err := run(vars, &args)
 	assert.NoError(t, err, "run")
 	assert.Equal(t, 0, exitCode, "exitCode")
 	bytes, err := os.ReadFile(o.Name())

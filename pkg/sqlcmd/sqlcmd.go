@@ -11,7 +11,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/url"
 	"os"
 	"os/signal"
 	osuser "os/user"
@@ -21,7 +20,6 @@ import (
 
 	mssql "github.com/denisenkom/go-mssqldb"
 	"github.com/denisenkom/go-mssqldb/msdsn"
-	"github.com/gohxs/readline"
 	"github.com/golang-sql/sqlexp"
 )
 
@@ -34,41 +32,14 @@ var (
 	ErrCtrlC = errors.New(WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
 )
 
-// ConnectSettings are the settings for connections that can't be
-// inferred from scripting variables
-type ConnectSettings struct {
-	// UseTrustedConnection indicates integrated auth is used when no user name is provided
-	UseTrustedConnection bool
-	// TrustServerCertificate sets the TrustServerCertificate setting on the connection string
-	TrustServerCertificate bool
-	AuthenticationMethod   string
-	// DisableEnvironmentVariables determines if sqlcmd resolves scripting variables from the process environment
-	DisableEnvironmentVariables bool
-	// DisableVariableSubstitution determines if scripting variables should be evaluated
-	DisableVariableSubstitution bool
-	// Password is the password used with SQL authentication
-	Password string
-	// Encrypt is the choice of encryption
-	Encrypt string
-	// PacketSize is the size of the packet for TDS communication
-	PacketSize int
-	// LoginTimeoutSeconds specifies the timeout for establishing a connection
-	LoginTimeoutSeconds int
-	// WorkstationName is the string to use to identify the host in server DMVs
-	WorkstationName string
-	// ApplicationIntent can only be empty or "ReadOnly"
-	ApplicationIntent string
-	// mssql driver log level
-	LogLevel           int
-	ExitOnError        bool
-	ErrorSeverityLevel uint8
-}
-
-func (c ConnectSettings) authenticationMethod() string {
-	if c.AuthenticationMethod == "" {
-		return NotSpecified
-	}
-	return c.AuthenticationMethod
+// Console defines methods used for console input and output
+type Console interface {
+	// Readline returns the next line of input.
+	Readline() (string, error)
+	// Readpassword displays the given prompt and returns a password
+	ReadPassword(prompt string) ([]byte, error)
+	// SetPrompt sets the prompt text shown to input the next line
+	SetPrompt(s string)
 }
 
 // Sqlcmd is the core processor for text lines.
@@ -77,7 +48,7 @@ func (c ConnectSettings) authenticationMethod() string {
 // When the batch delimiter is encountered it sends the current batch to the active connection and prints
 // the results to the output writer
 type Sqlcmd struct {
-	lineIo           *readline.Instance
+	lineIo           Console
 	workingDirectory string
 	db               *sql.DB
 	out              io.WriteCloser
@@ -93,7 +64,7 @@ type Sqlcmd struct {
 }
 
 // New creates a new Sqlcmd instance
-func New(l *readline.Instance, workingDirectory string, vars *Variables) *Sqlcmd {
+func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 	s := &Sqlcmd{
 		lineIo:           l,
 		workingDirectory: workingDirectory,
@@ -136,12 +107,8 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 		} else {
 			cmd, args, err = s.batch.Next()
 		}
-		switch {
-		case err == readline.ErrInterrupt:
-			// Ignore any error printing the ctrl-c notice since we are exiting
-			_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
-			return nil
-		case err != nil:
+
+		if err != nil {
 			if err == io.EOF {
 				if s.batch.Length == 0 {
 					return lastError
@@ -150,6 +117,9 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				if !execute {
 					return nil
 				}
+			} else if err.Error() == "Interrupt" {
+				// Ignore any error printing the ctrl-c notice since we are exiting
+				_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 			} else {
 				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
 			}
@@ -229,106 +199,33 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 	s.err = e
 }
 
-// ConnectionString returns the go-mssql connection string to use for queries
-func (s *Sqlcmd) ConnectionString() (connectionString string, err error) {
-	serverName, instance, port, err := s.vars.SQLCmdServer()
-	if serverName == "" {
-		serverName = "."
-	}
-	if err != nil {
-		return "", err
-	}
-	query := url.Values{}
-	connectionURL := &url.URL{
-		Scheme: "sqlserver",
-		Path:   instance,
-	}
-
-	if s.sqlAuthentication() {
-		connectionURL.User = url.UserPassword(s.vars.SQLCmdUser(), s.Connect.Password)
-	}
-	if port > 0 {
-		connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)
-	} else {
-		connectionURL.Host = serverName
-	}
-	if s.vars.SQLCmdDatabase() != "" {
-		query.Add("database", s.vars.SQLCmdDatabase())
-	}
-
-	if s.Connect.TrustServerCertificate {
-		query.Add("trustservercertificate", "true")
-	}
-	if s.Connect.ApplicationIntent != "" && s.Connect.ApplicationIntent != "default" {
-		query.Add("applicationintent", s.Connect.ApplicationIntent)
-	}
-	if s.Connect.LoginTimeoutSeconds > 0 {
-		query.Add("connection timeout", fmt.Sprint(s.Connect.LoginTimeoutSeconds))
-	}
-	if s.Connect.PacketSize > 0 {
-		query.Add("packet size", fmt.Sprint(s.Connect.PacketSize))
-	}
-	if s.Connect.WorkstationName != "" {
-		query.Add("workstation id", s.Connect.WorkstationName)
-	}
-	if s.Connect.Encrypt != "" && s.Connect.Encrypt != "default" {
-		query.Add("encrypt", s.Connect.Encrypt)
-	}
-	if s.Connect.LogLevel > 0 {
-		query.Add("log", fmt.Sprint(s.Connect.LogLevel))
-	}
-	connectionURL.RawQuery = query.Encode()
-	return connectionURL.String(), nil
-}
-
 // ConnectDb opens a connection to the database with the given modifications to the connection
-func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw bool) error {
-	if user != "" && password == "" && !nopw {
-		return ErrNeedPassword
-	}
-
-	connstr, err := s.ConnectionString()
-	if err != nil {
-		return err
-	}
-
-	connectionURL, err := url.Parse(connstr)
-	if err != nil {
-		return err
-	}
-
-	if server != "" {
-		serverName, instance, port, err := splitServer(server)
-		if err != nil {
-			return err
-		}
-		connectionURL.Path = instance
-		if port > 0 {
-			connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)
-		} else {
-			connectionURL.Host = serverName
-		}
+// nopw == true means don't prompt for a password if the auth type requires it
+// if connect is nil, ConnectDb uses the current connection. If non-nil and the connection succeeds,
+// s.Connect is replaced with the new value.
+func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
+	newConnection := connect != nil
+	if connect == nil {
+		connect = &s.Connect
 	}
 
 	var connector driver.Connector
-	// To determine whether to use Sql auth/windows auth/aad auth, compare the current ConnectSettings with the new parameters
-	// If sqlcmd was started with sql auth or windows auth, :connect will not switch to AAD
-	// if sqlcmd was started with AAD auth, it will remain in some variant of AAD auth depending on the user/password combination
-	useAad := !s.sqlAuthentication() && !s.integratedAuthentication()
-	if password == "" {
-		password = s.Connect.Password
+	useAad := !connect.sqlAuthentication() && !connect.integratedAuthentication()
+	if connect.requiresPassword() && !nopw && connect.Password == "" {
+		var err error
+		if connect.Password, err = s.promptPassword(); err != nil {
+			return err
+		}
 	}
-	if !useAad {
-		if user != "" {
-			connectionURL.User = url.UserPassword(user, password)
-		}
+	connstr, err := connect.ConnectionString()
+	if err != nil {
+		return err
+	}
 
-		connector, err = mssql.NewConnector(connectionURL.String())
+	if !useAad {
+		connector, err = mssql.NewConnector(connstr)
 	} else {
-		if user == "" {
-			user = s.vars.SQLCmdUser()
-		}
-		connector, err = s.GetTokenBasedConnection(connectionURL.String(), user, password)
+		connector, err = GetTokenBasedConnection(connstr, connect.authenticationMethod())
 	}
 	if err != nil {
 		return err
@@ -344,32 +241,40 @@ func (s *Sqlcmd) ConnectDb(server string, user string, password string, nopw boo
 		s.db.Close()
 	}
 	s.db = db
-	if server != "" {
-		s.vars.Set(SQLCMDSERVER, server)
-	}
-	if user != "" {
-		s.vars.Set(SQLCMDUSER, user)
-		s.Connect.UseTrustedConnection = false
-		s.Connect.Password = password
-	} else if s.vars.SQLCmdUser() == "" {
+	s.vars.Set(SQLCMDSERVER, connect.ServerName)
+	s.vars.Set(SQLCMDDBNAME, connect.Database)
+	if connect.UserName != "" {
+		s.vars.Set(SQLCMDUSER, connect.UserName)
+	} else {
 		u, e := osuser.Current()
 		if e != nil {
 			panic("Unable to get user name")
 		}
-		if !useAad {
-			s.Connect.UseTrustedConnection = true
-		}
 		s.vars.Set(SQLCMDUSER, u.Username)
 	}
-
+	if newConnection {
+		s.Connect = *connect
+	}
 	if s.batch != nil {
 		s.batch.batchline = 1
 	}
 	return nil
 }
 
-// IncludeFile opens the given file and processes its batches
-// When processAll is true text not followed by a go statement is run as a query
+func (s *Sqlcmd) promptPassword() (string, error) {
+	if s.lineIo == nil {
+		return "", nil
+	}
+	pwd, err := s.lineIo.ReadPassword("Password:")
+	if err != nil {
+		return "", err
+	}
+
+	return string(pwd), nil
+}
+
+// IncludeFile opens the given file and processes its batches.
+// When processAll is true, text not followed by a go statement is run as a query
 func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	f, err := os.Open(path)
 	if err != nil {
@@ -449,15 +354,6 @@ func setupCloseHandler(s *Sqlcmd) {
 		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 		os.Exit(0)
 	}()
-}
-
-func (s *Sqlcmd) integratedAuthentication() bool {
-	return s.Connect.UseTrustedConnection || (s.vars.SQLCmdUser() == "" && s.Connect.authenticationMethod() == NotSpecified)
-}
-
-func (s *Sqlcmd) sqlAuthentication() bool {
-	return s.Connect.authenticationMethod() == SqlPassword ||
-		(!s.Connect.UseTrustedConnection && s.Connect.authenticationMethod() == NotSpecified && s.vars.SQLCmdUser() != "")
 }
 
 // runQuery runs the query and prints the results

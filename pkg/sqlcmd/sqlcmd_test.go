@@ -24,7 +24,6 @@ const oneRowAffected = "(1 row affected)"
 func TestConnectionStringFromSqlCmd(t *testing.T) {
 	type connectionStringTest struct {
 		settings         *ConnectSettings
-		setup            func(*Variables)
 		connectionString string
 	}
 
@@ -32,59 +31,38 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 
 	commands := []connectionStringTest{
 
-		{nil, nil, "sqlserver://."},
+		{&ConnectSettings{}, "sqlserver://."},
 		{
-			&ConnectSettings{TrustServerCertificate: true, WorkstationName: "mystation"},
-			func(vars *Variables) {
-				vars.Set(SQLCMDDBNAME, "somedatabase")
-			},
+			&ConnectSettings{TrustServerCertificate: true, WorkstationName: "mystation", Database: "somedatabase"},
 			"sqlserver://.?database=somedatabase&trustservercertificate=true&workstation+id=mystation",
 		},
 		{
-			&ConnectSettings{WorkstationName: "mystation", Encrypt: "false"},
-			func(vars *Variables) {
-				vars.Set(SQLCMDDBNAME, "somedatabase")
-			},
+			&ConnectSettings{WorkstationName: "mystation", Encrypt: "false", Database: "somedatabase"},
 			"sqlserver://.?database=somedatabase&encrypt=false&workstation+id=mystation",
 		},
 		{
-			&ConnectSettings{TrustServerCertificate: true, Password: pwd},
-			func(vars *Variables) {
-				vars.Set(SQLCMDSERVER, `someserver/instance`)
-				vars.Set(SQLCMDDBNAME, "somedatabase")
-				vars.Set(SQLCMDUSER, "someuser")
-			},
+			&ConnectSettings{TrustServerCertificate: true, Password: pwd, ServerName: `someserver/instance`, Database: "somedatabase", UserName: "someuser"},
 			fmt.Sprintf("sqlserver://someuser:%s@someserver/instance?database=somedatabase&trustservercertificate=true", pwd),
 		},
 		{
-			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true, Password: pwd},
-			func(vars *Variables) {
-				vars.Set(SQLCMDSERVER, `tcp:someserver,1045`)
-				vars.Set(SQLCMDUSER, "someuser")
-			},
+			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true, Password: pwd, ServerName: `tcp:someserver,1045`, UserName: "someuser"},
 			"sqlserver://someserver:1045?trustservercertificate=true",
 		},
 		{
-			nil,
-			func(vars *Variables) {
-				vars.Set(SQLCMDSERVER, `tcp:someserver,1045`)
-			},
+			&ConnectSettings{ServerName: `tcp:someserver,1045`},
 			"sqlserver://someserver:1045",
+		},
+		{
+			&ConnectSettings{ServerName: "someserver", AuthenticationMethod: azuread.ActiveDirectoryServicePrincipal, UserName: "myapp@mytenant", Password: pwd},
+			fmt.Sprintf("sqlserver://myapp%%40mytenant:%s@someserver", pwd),
 		},
 	}
 
-	for _, test := range commands {
-		v := InitializeVariables(false)
-		if test.setup != nil {
-			test.setup(v)
-		}
-		s := &Sqlcmd{vars: v}
-		if test.settings != nil {
-			s.Connect = *test.settings
-		}
-		connectionString, err := s.ConnectionString()
-		if assert.NoError(t, err, "Unexpected error from %+v", s) {
-			assert.Equal(t, test.connectionString, connectionString, "Wrong connection string from: %+v", *s)
+	for i, test := range commands {
+
+		connectionString, err := test.settings.ConnectionString()
+		if assert.NoError(t, err, "Unexpected error from [%d] %+v", i, test.settings) {
+			assert.Equal(t, test.connectionString, connectionString, "Wrong connection string from [%d]: %+v", i, test.settings)
 		}
 	}
 }
@@ -97,13 +75,8 @@ set will be to localhost using Windows auth.
 func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
-	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
-	} else {
-		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
-	}
-
-	err := s.ConnectDb("", "", "", false)
+	s.Connect = newConnect(t)
+	err := s.ConnectDb(nil, false)
 	if assert.NoError(t, err, "ConnectDb should succeed") {
 		sqlcmduser := os.Getenv(SQLCMDUSER)
 		if sqlcmduser == "" {
@@ -114,15 +87,11 @@ func TestSqlCmdConnectDb(t *testing.T) {
 	}
 }
 
-func ConnectDb() (*sql.DB, error) {
+func ConnectDb(t testing.TB) (*sql.DB, error) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
-	if canTestAzureAuth() {
-		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
-	} else {
-		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
-	}
-	err := s.ConnectDb("", "", "", false)
+	s.Connect = newConnect(t)
+	err := s.ConnectDb(nil, false)
 	return s.db, err
 }
 
@@ -229,7 +198,6 @@ func TestGetRunnableQuery(t *testing.T) {
 		r = s.getRunnableQuery(test.raw)
 		assert.Equalf(t, test.raw, r, `runnableQuery without variable subs for "%s"`, test.raw)
 	}
-
 }
 
 func TestExitInitialQuery(t *testing.T) {
@@ -301,6 +269,91 @@ func TestSqlCmdSetErrorLevel(t *testing.T) {
 	assert.Equal(t, 16, s.Exitcode, "Select error should be the exit code")
 }
 
+type testConsole struct {
+	PromptText       string
+	OnPasswordPrompt func(prompt string) ([]byte, error)
+	OnReadLine       func() (string, error)
+}
+
+func (tc *testConsole) Readline() (string, error) {
+	return tc.OnReadLine()
+}
+
+func (tc *testConsole) ReadPassword(prompt string) ([]byte, error) {
+	return tc.OnPasswordPrompt(prompt)
+}
+
+func (tc *testConsole) SetPrompt(s string) {
+	tc.PromptText = s
+}
+
+func TestPromptForPasswordNegative(t *testing.T) {
+	prompted := false
+	console := &testConsole{
+		OnPasswordPrompt: func(prompt string) ([]byte, error) {
+			assert.Equal(t, "Password:", prompt, "Incorrect password prompt")
+			prompted = true
+			return []byte{}, nil
+		},
+		OnReadLine: func() (string, error) {
+			assert.Fail(t, "ReadLine should not be called")
+			return "", nil
+		},
+	}
+	v := InitializeVariables(true)
+	s := New(console, "", v)
+	s.Connect.UserName = "someuser"
+	err := s.ConnectDb(nil, false)
+	assert.True(t, prompted, "Password prompt not shown for SQL auth")
+	assert.Error(t, err, "ConnectDb")
+	prompted = false
+	s.Connect.AuthenticationMethod = azuread.ActiveDirectoryPassword
+	err = s.ConnectDb(nil, false)
+	assert.True(t, prompted, "Password prompt not shown for AD Password auth")
+	assert.Error(t, err, "ConnectDb")
+	prompted = false
+}
+
+func TestPromptForPasswordPositive(t *testing.T) {
+	prompted := false
+	c := newConnect(t)
+	if c.Password == "" {
+		// See if azure variables are set for activedirectoryserviceprincipal
+		c.UserName = os.Getenv("AZURE_CLIENT_ID") + "@" + os.Getenv("AZURE_TENANT_ID")
+		c.Password = os.Getenv("AZURE_CLIENT_SECRET")
+		c.AuthenticationMethod = azuread.ActiveDirectoryServicePrincipal
+		if c.Password == "" {
+			t.Skip("No password available")
+		}
+	}
+	password := c.Password
+	c.Password = ""
+	console := &testConsole{
+		OnPasswordPrompt: func(prompt string) ([]byte, error) {
+			assert.Equal(t, "Password:", prompt, "Incorrect password prompt")
+			prompted = true
+			return []byte(password), nil
+		},
+		OnReadLine: func() (string, error) {
+			assert.Fail(t, "ReadLine should not be called")
+			return "", nil
+		},
+	}
+	v := InitializeVariables(true)
+	s := New(console, "", v)
+	// attempt without password prompt
+	err := s.ConnectDb(&c, true)
+	assert.False(t, prompted, "ConnectDb with nopw=true should not prompt for password")
+	assert.Error(t, err, "ConnectDb with nopw==true and no password provided")
+	err = s.ConnectDb(&c, false)
+	assert.True(t, prompted, "ConnectDb with !nopw should prompt for password")
+	assert.NoError(t, err, "ConnectDb with !nopw and valid password returned from prompt")
+	if s.Connect.Password != password {
+		t.Fatal(t, err, "Password not stored in the connection")
+	}
+}
+
+// runSqlCmd uses lines as input for sqlcmd instead of relying on file or console input
 func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
 	t.Helper()
 	i := 0
@@ -320,16 +373,11 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
-	if canTestAzureAuth() {
-		t.Log("Using ActiveDirectoryDefault")
-		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
-	} else {
-		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
-	}
+	s.Connect = newConnect(t)
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
-	err := s.ConnectDb("", "", "", true)
+	err := s.ConnectDb(nil, true)
 	assert.NoError(t, err, "s.ConnectDB")
 	return s, buf
 }
@@ -339,17 +387,12 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	v := InitializeVariables(true)
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
-	if canTestAzureAuth() {
-		t.Log("Using ActiveDirectoryDefault")
-		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
-	} else {
-		s.Connect.Password = os.Getenv(SQLCMDPASSWORD)
-	}
+	s.Connect = newConnect(t)
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	file, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
 	s.SetOutput(file)
-	err = s.ConnectDb("", "", "", true)
+	err = s.ConnectDb(nil, true)
 	assert.NoError(t, err, "s.ConnectDB")
 	return s, file
 }
@@ -359,4 +402,19 @@ func canTestAzureAuth() bool {
 	server := os.Getenv(SQLCMDSERVER)
 	userName := os.Getenv(SQLCMDUSER)
 	return strings.Contains(server, ".database.windows.net") && userName == ""
+}
+
+func newConnect(t testing.TB) ConnectSettings {
+	t.Helper()
+	connect := ConnectSettings{
+		UserName:   os.Getenv(SQLCMDUSER),
+		Database:   os.Getenv(SQLCMDDBNAME),
+		ServerName: os.Getenv(SQLCMDSERVER),
+		Password:   os.Getenv(SQLCMDPASSWORD),
+	}
+	if canTestAzureAuth() {
+		t.Log("Using ActiveDirectoryDefault")
+		connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
+	}
+	return connect
 }
