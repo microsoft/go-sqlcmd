@@ -47,6 +47,7 @@ type SQLCmdArguments struct {
 	ExitOnError                 bool              `short:"b" help:"Specifies that sqlcmd exits and returns a DOS ERRORLEVEL value when an error occurs."`
 	ErrorSeverityLevel          uint8             `short:"V" help:"Controls the severity level that is used to set the ERRORLEVEL variable on exit."`
 	ErrorLevel                  int               `short:"m" help:"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent."`
+	Format                      string            `short:"F" help:"Specifies the formatting for results." default:"horiz" enum:"horiz,horizontal,vert,vertical"`
 }
 
 // Validate accounts for settings not described by Kong attributes
@@ -141,6 +142,7 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 		sqlcmd.SQLCMDCOLWIDTH:          func(a *SQLCmdArguments) string { return "" },
 		sqlcmd.SQLCMDMAXVARTYPEWIDTH:   func(a *SQLCmdArguments) string { return "" },
 		sqlcmd.SQLCMDMAXFIXEDTYPEWIDTH: func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDFORMAT:            func(a *SQLCmdArguments) string { return a.Format },
 	}
 	for varname, set := range varmap {
 		val := set(args)

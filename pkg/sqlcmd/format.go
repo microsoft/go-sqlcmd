@@ -11,6 +11,7 @@ import (
 	"time"
 
 	mssql "github.com/denisenkom/go-mssqldb"
+	"github.com/google/uuid"
 )
 
 const (
@@ -58,6 +59,8 @@ type columnDetail struct {
 }
 
 // The default formatter based on the native sqlcmd style
+// It supports both horizontal (default) and vertical layout for results.
+// Both vertical and horizontal layouts respect column widths set by SQLCMD variables.
 type sqlCmdFormatterType struct {
 	out                  io.Writer
 	err                  io.Writer
@@ -68,12 +71,15 @@ type sqlCmdFormatterType struct {
 	columnDetails        []columnDetail
 	rowcount             int
 	writepos             int64
+	format               string
+	maxColNameLen        int
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
 func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool) Formatter {
 	return &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
+		format:               "horizontal",
 	}
 }
 
@@ -115,6 +121,7 @@ func (f *sqlCmdFormatterType) BeginBatch(_ string, vars *Variables, out io.Write
 	f.err = err
 	f.vars = vars
 	f.colsep = vars.ColumnSeparator()
+	f.format = vars.Format()
 }
 
 func (f *sqlCmdFormatterType) EndBatch() {
@@ -125,8 +132,8 @@ func (f *sqlCmdFormatterType) EndBatch() {
 // base our numbers for most types on https://docs.microsoft.com/sql/odbc/reference/appendixes/column-size
 func (f *sqlCmdFormatterType) BeginResultSet(cols []*sql.ColumnType) {
 	f.rowcount = 0
-	f.columnDetails = calcColumnDetails(cols, f.vars.MaxFixedColumnWidth(), f.vars.MaxVarColumnWidth())
-	if f.vars.RowsBetweenHeaders() > -1 {
+	f.columnDetails, f.maxColNameLen = calcColumnDetails(cols, f.vars.MaxFixedColumnWidth(), f.vars.MaxVarColumnWidth())
+	if f.vars.RowsBetweenHeaders() > -1 && f.format == "horizontal" {
 		f.printColumnHeadings()
 	}
 }
@@ -144,25 +151,41 @@ func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) string {
 		f.mustWriteErr(err.Error())
 		return retval
 	}
-
-	// values are the full values, look at the displaywidth of each column and truncate accordingly
-	for i, v := range values {
-		if i > 0 {
-			f.writeOut(f.vars.ColumnSeparator())
-		} else {
-			retval = v
+	retval = values[0]
+	if f.format == "horizontal" {
+		// values are the full values, look at the displaywidth of each column and truncate accordingly
+		for i, v := range values {
+			if i > 0 {
+				f.writeOut(f.vars.ColumnSeparator())
+			}
+			f.printColumnValue(v, i)
 		}
-		f.printColumnValue(v, i)
-	}
-	f.rowcount++
-	gap := f.vars.RowsBetweenHeaders()
-	if gap > 0 && (int64(f.rowcount)%gap == 0) {
-		f.writeOut(SqlcmdEol)
-		f.printColumnHeadings()
+		f.rowcount++
+		gap := f.vars.RowsBetweenHeaders()
+		if gap > 0 && (int64(f.rowcount)%gap == 0) {
+			f.writeOut(SqlcmdEol)
+			f.printColumnHeadings()
+		}
+	} else {
+		f.addVerticalRow(values)
 	}
 	f.writeOut(SqlcmdEol)
 	return retval
 
+}
+
+func (f *sqlCmdFormatterType) addVerticalRow(values []string) {
+	for i, v := range values {
+		if f.vars.RowsBetweenHeaders() > -1 {
+			builder := new(strings.Builder)
+			name := f.columnDetails[i].col.Name()
+			builder.WriteString(name)
+			builder = padRight(builder, int64(f.maxColNameLen-len(name)+1), " ")
+			f.writeOut(builder.String())
+		}
+		f.printColumnValue(v, i)
+		f.writeOut(SqlcmdEol)
+	}
 }
 
 // Writes a non-error message to the designated message writer
@@ -266,12 +289,17 @@ func fitToScreen(s *strings.Builder, width int64) *strings.Builder {
 }
 
 // Given the array of driver-provided columnType values and the sqlcmd size limits,
-// return an array of columnDetail objects describing the output format for each column
-func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) (columnDetails []columnDetail) {
-	columnDetails = make([]columnDetail, len(cols))
+// Return an array of columnDetail objects describing the output format for each column.
+// Return the length of the longest column name.
+func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) ([]columnDetail, int) {
+	columnDetails := make([]columnDetail, len(cols))
+	maxNameLen := 0
 	for i, c := range cols {
 		length, _ := c.Length()
 		nameLen := int64(len([]rune(c.Name())))
+		if nameLen > int64(maxNameLen) {
+			maxNameLen = int(nameLen)
+		}
 		columnDetails[i].col = *c
 		columnDetails[i].leftJustify = true
 		columnDetails[i].zeroesAfterDecimal = false
@@ -381,7 +409,7 @@ func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) (col
 			columnDetails[i].displayWidth = 0
 		}
 	}
-	return columnDetails
+	return columnDetails, maxNameLen
 }
 
 // scanRow fetches the next row and converts each value to the appropriate string representation
@@ -403,6 +431,18 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 			case []byte:
 				if isBinaryDataType(&f.columnDetails[n].col) {
 					row[n] = decodeBinary(x)
+				} else if f.columnDetails[n].col.DatabaseTypeName() == "UNIQUEIDENTIFIER" {
+					// Unscramble the guid
+					// see https://github.com/denisenkom/go-mssqldb/issues/56
+					x[0], x[1], x[2], x[3] = x[3], x[2], x[1], x[0]
+					x[4], x[5] = x[5], x[4]
+					x[6], x[7] = x[7], x[6]
+					if guid, err := uuid.FromBytes(x); err == nil {
+						row[n] = guid.String()
+					} else {
+						// this should never happen
+						row[n] = uuid.New().String()
+					}
 				} else {
 					row[n] = string(x)
 				}
@@ -445,20 +485,22 @@ func (f *sqlCmdFormatterType) printColumnValue(val string, col int) {
 
 	s.WriteString(val)
 	r := []rune(val)
-	if !f.removeTrailingSpaces {
-		if f.vars.MaxVarColumnWidth() != 0 || !isLargeVariableType(&c.col) {
-			padding := c.displayWidth - min64(c.displayWidth, int64(len(r)))
-			if padding > 0 {
-				if c.leftJustify {
-					s = padRight(s, padding, " ")
-				} else {
-					s = padLeft(s, padding, " ")
+	if f.format == "horizontal" {
+		if !f.removeTrailingSpaces {
+			if f.vars.MaxVarColumnWidth() != 0 || !isLargeVariableType(&c.col) {
+				padding := c.displayWidth - min64(c.displayWidth, int64(len(r)))
+				if padding > 0 {
+					if c.leftJustify {
+						s = padRight(s, padding, " ")
+					} else {
+						s = padLeft(s, padding, " ")
+					}
 				}
 			}
 		}
-	}
 
-	r = []rune(s.String())
+		r = []rune(s.String())
+	}
 	if c.displayWidth > 0 && int64(len(r)) > c.displayWidth {
 		s.Reset()
 		s.WriteString(string(r[:c.displayWidth]))

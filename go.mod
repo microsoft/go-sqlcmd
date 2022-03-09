@@ -9,7 +9,7 @@ require (
 	github.com/denisenkom/go-mssqldb v0.12.0
 	github.com/gohxs/readline v0.0.0-20171011095936-a780388e6e7c
 	github.com/golang-sql/sqlexp v0.0.0-20170517235910-f1bb20e5a188
-	github.com/google/uuid v1.2.0
+	github.com/google/uuid v1.3.0
 	github.com/stretchr/testify v1.7.0
 )
 

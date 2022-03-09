@@ -43,6 +43,7 @@ func TestCalcColumnDetails(t *testing.T) {
 		variable int64
 		query    string
 		details  []columnDetail
+		max      int
 	}
 
 	tests := []colTest{
@@ -53,25 +54,27 @@ func TestCalcColumnDetails(t *testing.T) {
 				{leftJustify: false, displayWidth: 23},
 				{leftJustify: true, displayWidth: 6},
 			},
+			12,
 		},
 	}
 
 	db, err := ConnectDb(t)
 	if assert.NoError(t, err, "ConnectDB failed") {
 		defer db.Close()
-		for _, test := range tests {
+		for x, test := range tests {
 			rows, err := db.Query(test.query)
 			if assert.NoError(t, err, "Query failed: %s", test.query) {
 				defer rows.Close()
 				cols, err := rows.ColumnTypes()
 				if assert.NoError(t, err, "ColumnTypes failed:%s", test.query) {
-					actual := calcColumnDetails(cols, test.fixed, test.variable)
+					actual, max := calcColumnDetails(cols, test.fixed, test.variable)
 					for i, a := range actual {
 						if test.details[i].displayWidth != a.displayWidth ||
 							test.details[i].leftJustify != a.leftJustify ||
 							test.details[i].zeroesAfterDecimal != a.zeroesAfterDecimal {
-							assert.Failf(t, "", "Incorrect test details for column [%s] in query '%s':%+v", cols[i].Name(), test.query, a)
+							assert.Failf(t, "", "[%d] Incorrect test details for column [%s] in query '%s':%+v", x, cols[i].Name(), test.query, a)
 						}
+						assert.Equal(t, test.max, max, "[%d] Max column name length incorrect", x)
 					}
 				}
 			}
