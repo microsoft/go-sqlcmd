@@ -9,7 +9,7 @@ import (
 
 	"github.com/alecthomas/kong"
 	"github.com/denisenkom/go-mssqldb/azuread"
-	"github.com/gohxs/readline"
+	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 )
 
@@ -196,18 +196,12 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	iactive := args.InputFile == nil && args.Query == ""
-	var console sqlcmd.Console = nil
-	var line *readline.Instance
+	var line sqlcmd.Console = nil
 	if iactive {
-		line, err = readline.New(">")
-		if err != nil {
-			return 1, err
-		}
-		console = line
-		defer line.Close()
+		line = console.NewConsole("")
 	}
 
-	s := sqlcmd.New(console, wd, vars)
+	s := sqlcmd.New(line, wd, vars)
 	setConnect(&s.Connect, args, vars)
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
