@@ -202,6 +202,7 @@ func TestGetRunnableQuery(t *testing.T) {
 
 func TestExitInitialQuery(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
 	s.Query = "EXIT(SELECT '1200', 2100)"
 	err := s.Run(true, false)
 	if assert.NoError(t, err, "s.Run(once = true)") {
@@ -240,6 +241,7 @@ func TestExitCodeSetOnError(t *testing.T) {
 
 func TestSqlCmdExitOnError(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
 	s.Connect.ExitOnError = true
 	err := runSqlCmd(t, s, []string{"select 1", "GO", ":setvar", "select 2", "GO"})
 	o := buf.buf.String()
@@ -248,6 +250,7 @@ func TestSqlCmdExitOnError(t *testing.T) {
 	assert.Equal(t, 1, s.Exitcode, "s.ExitCode for a syntax error")
 
 	s, buf = setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
 	s.Connect.ExitOnError = true
 	s.Connect.ErrorSeverityLevel = 15
 	s.vars.Set(SQLCMDERRORLEVEL, "14")
@@ -351,6 +354,46 @@ func TestPromptForPasswordPositive(t *testing.T) {
 	if s.Connect.Password != password {
 		t.Fatal(t, err, "Password not stored in the connection")
 	}
+}
+
+func TestVerticalLayoutNoColumns(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.vars.Set(SQLCMDFORMAT, "vert")
+	_, err := s.runQuery("SELECT 100 as 'column1', 2000 as 'col2', 300")
+	assert.NoError(t, err, "runQuery failed")
+	assert.Equal(t,
+		"100"+SqlcmdEol+"2000"+SqlcmdEol+"300"+SqlcmdEol+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol,
+		buf.buf.String(), "Query without column headers")
+}
+
+func TestSelectGuidColumn(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	_, err := s.runQuery("select convert(uniqueidentifier, N'3ddba21e-ff0f-4d24-90b4-f355864d7865')")
+	assert.NoError(t, err, "runQuery failed")
+	assert.Equal(t, "3ddba21e-ff0f-4d24-90b4-f355864d7865"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, buf.buf.String(), "select a uniqueidentifier should work")
+}
+
+func TestSelectNullGuidColumn(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	_, err := s.runQuery("select convert(uniqueidentifier,null)")
+	assert.NoError(t, err, "runQuery failed")
+	assert.Equal(t, "NULL"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, buf.buf.String(), "select a null uniqueidentifier should work")
+}
+
+func TestVerticalLayoutWithColumns(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.vars.Set(SQLCMDFORMAT, "vert")
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
+	_, err := s.runQuery("SELECT 100 as 'column1', 2000 as 'col2', 300")
+	assert.NoError(t, err, "runQuery failed")
+	assert.Equal(t,
+		"column1 100"+SqlcmdEol+"col2    2000"+SqlcmdEol+"        300"+SqlcmdEol+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol,
+		buf.buf.String(), "Query without column headers")
+
 }
 
 // runSqlCmd uses lines as input for sqlcmd instead of relying on file or console input

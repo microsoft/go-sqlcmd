@@ -28,6 +28,7 @@ const (
 	SQLCMDCOLSEP            = "SQLCMDCOLSEP"
 	SQLCMDCOLWIDTH          = "SQLCMDCOLWIDTH"
 	SQLCMDERRORLEVEL        = "SQLCMDERRORLEVEL"
+	SQLCMDFORMAT            = "SQLCMDFORMAT"
 	SQLCMDMAXVARTYPEWIDTH   = "SQLCMDMAXVARTYPEWIDTH"
 	SQLCMDMAXFIXEDTYPEWIDTH = "SQLCMDMAXFIXEDTYPEWIDTH"
 	SQLCMDEDITOR            = "SQLCMDEDITOR"
@@ -41,6 +42,7 @@ var builtinVariables = []string{
 	SQLCMDDBNAME,
 	SQLCMDEDITOR,
 	SQLCMDERRORLEVEL,
+	SQLCMDFORMAT,
 	SQLCMDHEADERS,
 	SQLCMDINI,
 	SQLCMDLOGINTIMEOUT,
@@ -166,6 +168,15 @@ func (v Variables) RowsBetweenHeaders() int64 {
 // ErrorLevel controls the minimum level of errors that are printed
 func (v Variables) ErrorLevel() int64 {
 	return mustValue(v[SQLCMDERRORLEVEL])
+}
+
+// Format is the name of the results format
+func (v Variables) Format() string {
+	switch v[SQLCMDFORMAT] {
+	case "vert", "vertical":
+		return "vertical"
+	}
+	return "horizontal"
 }
 
 func mustValue(val string) int64 {

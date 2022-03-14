@@ -70,6 +70,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-b", "-m", "15", "-V", "20"}, func(args SQLCmdArguments) bool {
 			return args.ExitOnError && args.ErrorLevel == 15 && args.ErrorSeverityLevel == 20
 		}},
+		{[]string{"-F", "vert"}, func(args SQLCmdArguments) bool {
+			return args.Format == "vert"
+		}},
 	}
 
 	for _, test := range commands {
@@ -96,6 +99,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-E", "-U", "someuser"}, "--use-trusted-connection and --user-name can't be used together"},
 		// the test prefix is a kong artifact https://github.com/alecthomas/kong/issues/221
 		{[]string{"-a", "100"}, "test: '-a 100': Packet size has to be a number between 512 and 32767."},
+		{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
 	}
 
 	for _, test := range commands {
