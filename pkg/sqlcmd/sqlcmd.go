@@ -117,9 +117,6 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				if !execute {
 					return nil
 				}
-			} else if err.Error() == "Interrupt" {
-				// Ignore any error printing the ctrl-c notice since we are exiting
-				_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
 			} else {
 				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
 			}
