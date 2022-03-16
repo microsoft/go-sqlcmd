@@ -73,6 +73,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-F", "vert"}, func(args SQLCmdArguments) bool {
 			return args.Format == "vert"
 		}},
+		{[]string{"-r", "1"}, func(args SQLCmdArguments) bool {
+			return args.ErrorsToStderr == 1
+		}},
 	}
 
 	for _, test := range commands {
@@ -100,6 +103,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		// the test prefix is a kong artifact https://github.com/alecthomas/kong/issues/221
 		{[]string{"-a", "100"}, "test: '-a 100': Packet size has to be a number between 512 and 32767."},
 		{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
+		{[]string{"-r", "5"}, `--errors-to-stderr must be one of "-1","0","1" but got '\x05'`},
 	}
 
 	for _, test := range commands {

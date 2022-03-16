@@ -61,6 +61,8 @@ type Sqlcmd struct {
 	Format   Formatter
 	Query    string
 	Cmd      Commands
+	// PrintError allows the host to redirect errors away from the default output. Returns false if the error is not redirected by the host.
+	PrintError func(msg string, severity uint8) bool
 }
 
 // New creates a new Sqlcmd instance
@@ -73,6 +75,9 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 	}
 	s.batch = NewBatch(s.scanNext, s.Cmd)
 	mssql.SetContextLogger(s)
+	s.PrintError = func(msg string, severity uint8) bool {
+		return false
+	}
 	return s
 }
 
@@ -85,7 +90,7 @@ func (s *Sqlcmd) scanNext() (string, error) {
 // When processAll is true it executes any remaining batch content when reaching EOF
 func (s *Sqlcmd) Run(once bool, processAll bool) error {
 	setupCloseHandler(s)
-	stderr, iactive := s.GetError(), s.lineIo != nil
+	iactive := s.lineIo != nil
 	var lastError error
 	for {
 		var execute bool
@@ -128,7 +133,7 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				break
 			}
 			if err != nil {
-				fmt.Fprintln(stderr, err)
+				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
 				lastError = err
 			}
 		}
@@ -174,7 +179,7 @@ func (s *Sqlcmd) GetOutput() io.Writer {
 
 // SetOutput sets the io.WriteCloser to use for non-error output
 func (s *Sqlcmd) SetOutput(o io.WriteCloser) {
-	if s.out != nil {
+	if s.out != nil && s.out != os.Stderr && s.out != os.Stdout {
 		s.out.Close()
 	}
 	s.out = o
@@ -183,14 +188,14 @@ func (s *Sqlcmd) SetOutput(o io.WriteCloser) {
 // GetError returns the io.Writer to use for errors
 func (s *Sqlcmd) GetError() io.Writer {
 	if s.err == nil {
-		return os.Stderr
+		return s.GetOutput()
 	}
 	return s.err
 }
 
 // SetError sets the io.WriteCloser to use for errors
 func (s *Sqlcmd) SetError(e io.WriteCloser) {
-	if s.err != nil {
+	if s.err != nil && s.err != os.Stderr && s.err != os.Stdout {
 		s.err.Close()
 	}
 	s.err = e
@@ -376,9 +381,16 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		msg := retmsg.Message(ctx)
 		switch m := msg.(type) {
 		case sqlexp.MsgNotice:
-			s.Format.AddMessage(m.Message)
+			if !s.PrintError(m.Message, 10) {
+				s.Format.AddMessage(m.Message)
+			}
 		case sqlexp.MsgError:
-			s.Format.AddError(m.Error)
+			switch e := m.Error.(type) {
+			case mssql.Error:
+				if !s.PrintError(e.Message, e.Class) {
+					s.Format.AddError(m.Error)
+				}
+			}
 			qe = s.handleError(&retcode, m.Error)
 		case sqlexp.MsgRowsAffected:
 			if m.Count == 1 {

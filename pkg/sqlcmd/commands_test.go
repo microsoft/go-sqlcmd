@@ -190,3 +190,25 @@ func TestConnectCommand(t *testing.T) {
 		}
 	}
 }
+
+func TestErrorCommand(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	file, err := os.CreateTemp("", "sqlcmderr")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(file.Name())
+	fileName := file.Name()
+	_ = file.Close()
+	err = errorCommand(s, []string{""}, 1)
+	assert.EqualError(t, err, InvalidCommandError("OUT", 1).Error(), "errorCommand with empty file name")
+	err = errorCommand(s, []string{fileName}, 1)
+	assert.NoError(t, err, "errorCommand")
+	// Only some error kinds go to the error output
+	err = runSqlCmd(t, s, []string{"print N'message'", "RAISERROR(N'Error', 16, 1)", "SELECT 1", ":SETVAR 1", "GO"})
+	assert.NoError(t, err, "runSqlCmd")
+	s.SetError(nil)
+	errText, err := os.ReadFile(file.Name())
+	if assert.NoError(t, err, "ReadFile") {
+		assert.Equal(t, "Msg 50000, Level 16, State 1, Server DAVIDSHI-2019, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents")
+	}
+}

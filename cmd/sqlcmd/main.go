@@ -48,6 +48,7 @@ type SQLCmdArguments struct {
 	ErrorSeverityLevel          uint8             `short:"V" help:"Controls the severity level that is used to set the ERRORLEVEL variable on exit."`
 	ErrorLevel                  int               `short:"m" help:"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent."`
 	Format                      string            `short:"F" help:"Specifies the formatting for results." default:"horiz" enum:"horiz,horizontal,vert,vertical"`
+	ErrorsToStderr              int               `short:"r" help:"Redirects the error message output to the screen (stderr). A value of 0 means messages with severity >= 11 will b redirected. A value of 1 means all error message output including PRINT is redirected." enum:"-1,0,1" default:"-1"`
 }
 
 // Validate accounts for settings not described by Kong attributes
@@ -219,6 +220,20 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {
 			return 1, err
+		}
+	} else {
+		var stderrSeverity uint8 = 11
+		if args.ErrorsToStderr == 1 {
+			stderrSeverity = 0
+		}
+		if args.ErrorsToStderr >= 0 {
+			s.PrintError = func(msg string, severity uint8) bool {
+				if severity >= stderrSeverity {
+					_, _ = os.Stderr.Write([]byte(msg))
+					return true
+				}
+				return false
+			}
 		}
 	}
 	once := false
