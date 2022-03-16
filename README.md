@@ -15,7 +15,7 @@ We will be implementing command line switches and behaviors over time. Several s
     - The `SQLCMDPASSWORD` environment variable
     - The `:CONNECT` command
     - When prompted, the user can type the password to complete a connection (pending [#50](https://github.com/microsoft/go-sqlcmd/issues/50))
-
+- `-r` requires a 0 or 1 argument
 - `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - `-I` switch will be removed. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
 - `-N` now takes a string value that can be one of `true`, `false`, or `disable` to specify the encryption choice. (`default` is the same as omitting the parameter)
