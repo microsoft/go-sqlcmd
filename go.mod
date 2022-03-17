@@ -11,4 +11,4 @@ require (
 	github.com/stretchr/testify v1.7.0
 )
 
-replace github.com/denisenkom/go-mssqldb => github.com/shueybubbles/go-mssqldb v0.10.1-0.20220303143659-8896461e4ec7
+replace github.com/denisenkom/go-mssqldb => github.com/shueybubbles/go-mssqldb v0.10.1-0.20220317022252-fafb9d92e469
