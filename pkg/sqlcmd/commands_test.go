@@ -209,6 +209,6 @@ func TestErrorCommand(t *testing.T) {
 	s.SetError(nil)
 	errText, err := os.ReadFile(file.Name())
 	if assert.NoError(t, err, "ReadFile") {
-		assert.Equal(t, "Msg 50000, Level 16, State 1, Server DAVIDSHI-2019, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents")
+		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents")
 	}
 }
