@@ -208,7 +208,7 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 	if print {
 		b.WriteString(msg)
 		b.WriteString(SqlcmdEol)
-		f.mustWriteOut(fitToScreen(b, f.vars.ScreenWidth()).String())
+		f.mustWriteErr(fitToScreen(b, f.vars.ScreenWidth()).String())
 	}
 }
 

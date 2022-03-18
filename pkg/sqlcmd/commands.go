@@ -9,7 +9,6 @@ import (
 	"regexp"
 	"sort"
 	"strings"
-	"syscall"
 
 	"github.com/alecthomas/kong"
 )
@@ -188,11 +187,14 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 
 // outCommand changes the output writer to use a file
 func outCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 || args[0] == "" {
+		return InvalidCommandError("OUT", line)
+	}
 	switch {
 	case strings.EqualFold(args[0], "stdout"):
-		s.SetOutput(nil)
+		s.SetOutput(os.Stdout)
 	case strings.EqualFold(args[0], "stderr"):
-		s.SetOutput(os.NewFile(uintptr(syscall.Stderr), "/dev/stderr"))
+		s.SetOutput(os.Stderr)
 	default:
 		o, err := os.OpenFile(args[0], os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
@@ -205,11 +207,14 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 
 // errorCommand changes the error writer to use a file
 func errorCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 || args[0] == "" {
+		return InvalidCommandError("OUT", line)
+	}
 	switch {
 	case strings.EqualFold(args[0], "stderr"):
-		s.SetError(nil)
+		s.SetError(os.Stderr)
 	case strings.EqualFold(args[0], "stdout"):
-		s.SetError(os.NewFile(uintptr(syscall.Stderr), "/dev/stdout"))
+		s.SetError(os.Stdout)
 	default:
 		o, err := os.OpenFile(args[0], os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
