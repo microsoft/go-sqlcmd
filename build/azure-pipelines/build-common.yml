@@ -12,7 +12,7 @@ steps:
 - task: GoTool@0
   inputs:
     version: '1.16.5'
-    goBin: $(Build.BinariesDirectory)
+    goBin: $(Build.SourcesDirectory)
 
 - task: Go@0
   displayName: 'Go install go-winres'
@@ -22,12 +22,12 @@ steps:
     arguments: 'github.com/tc-hib/go-winres@latest'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
   env:
-      GOBIN: $(Build.BinariesDirectory)
+      GOBIN: $(Build.SourcesDirectory)
 
 - task: CmdLine@2
   displayName: 'generate version resource'
   inputs:
-    script: $(Build.BinariesDirectory)/go-winres make --file-version git-tag --product-version git-tag
+    script: $(Build.SourcesDirectory)/go-winres make --file-version git-tag --product-version git-tag
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
 
 - task: Go@0
@@ -39,7 +39,7 @@ steps:
   env:
       GOOS: ${{ parameters.OS }}
       GOARCH: ${{ parameters.Arch }}
-      GOBIN: $(Build.BinariesDirectory)
+      GOBIN: $(Build.SourcesDirectory)
 
 - task: Go@0
   displayName: 'Go: build sqlcmd'
@@ -50,8 +50,8 @@ steps:
   env:
       GOOS: ${{ parameters.OS }}
       GOARCH: ${{ parameters.Arch }}
-      GOBIN: $(Build.BinariesDirectory)
-      
+      GOBIN: $(Build.SourcesDirectory)
+
 - task: CopyFiles@2
   inputs:
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
