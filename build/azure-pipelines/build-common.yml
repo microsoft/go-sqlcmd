@@ -14,6 +14,21 @@ steps:
     version: '1.16.5'
 
 - task: Go@0
+  displayName: 'Go install go-winres'
+  inputs:
+    command: 'custom'
+    customCommand: 'install'
+    arguments: 'github.com/tc-hib/go-winres@latest'
+    workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
+
+- task: Go@0
+  displayName: 'Go generate'
+  inputs:
+    command: 'custom'
+    customCommand: 'generate'
+    workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
+
+- task: Go@0
   displayName: 'Go: get dependencies'
   inputs:
     command: 'get'
