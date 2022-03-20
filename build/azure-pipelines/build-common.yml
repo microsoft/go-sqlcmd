@@ -7,6 +7,7 @@ parameters:
   default: 
 - name: ArtifactName
   type: string
+# Currently GOBIN is only relevant for Windows to find winres
 - name: GOBIN
   type: string
   default: $(Build.SourcesDirectory)\bin
@@ -18,6 +19,8 @@ steps:
     GOBIN: ${{ parameters.GOBIN }}
 
 - script: echo '##vso[task.prependpath]${{ parameters.GOBIN }}'
+
+- script: echo 'path is %path% or $(PATH)'
 
 - task: Go@0
   displayName: 'Go install go-winres'
