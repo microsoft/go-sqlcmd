@@ -18,9 +18,9 @@ steps:
     version: '1.16.5'
     GOBIN: ${{ parameters.GOBIN }}
 
-- script: echo '##vso[task.prependpath]${{ parameters.GOBIN }}'
+- script: echo ##vso[task.prependpath]${{ parameters.GOBIN }}
 
-- script: echo 'path is %path% or $(PATH)'
+- script: echo path is %path% or $(PATH) > $(Build.ArtifactStagingDirectory)/path.txt
 
 - task: Go@0
   displayName: 'Go install go-winres'
