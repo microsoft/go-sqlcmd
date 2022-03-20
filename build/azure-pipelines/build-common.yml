@@ -7,20 +7,12 @@ parameters:
   default: 
 - name: ArtifactName
   type: string
-# Currently GOBIN is only relevant for Windows to find winres
-- name: GOBIN
-  type: string
-  default: $(Build.SourcesDirectory)\bin
 
 steps: 
 - task: GoTool@0
   inputs:
     version: '1.16.5'
-    GOBIN: ${{ parameters.GOBIN }}
-
-- script: echo ##vso[task.prependpath]${{ parameters.GOBIN }}
-
-- script: echo path is %path% or $(PATH) > $(Build.ArtifactStagingDirectory)/path.txt
+    goBin: $(Build.BinariesDirectory)
 
 - task: Go@0
   displayName: 'Go install go-winres'
@@ -30,16 +22,13 @@ steps:
     arguments: 'github.com/tc-hib/go-winres@latest'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
   env:
-      GOBIN: ${{ parameters.GOBIN }}
+      GOBIN: $(Build.BinariesDirectory)
 
-- task: Go@0
-  displayName: 'Go generate'
+- task: CmdLine@2
+  displayName: 'generate version resource'
   inputs:
-    command: 'custom'
-    customCommand: 'generate'
+    script: $(Build.BinariesDirectory)/go-winres make --file-version git-tag --product-version git-tag
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
-  env: 
-    GOBIN: ${{ parameters.GOBIN }}
 
 - task: Go@0
   displayName: 'Go: get dependencies'
@@ -50,7 +39,7 @@ steps:
   env:
       GOOS: ${{ parameters.OS }}
       GOARCH: ${{ parameters.Arch }}
-      GOBIN: ${{ parameters.GOBIN }}
+      GOBIN: $(Build.BinariesDirectory)
 
 - task: Go@0
   displayName: 'Go: build sqlcmd'
@@ -61,8 +50,8 @@ steps:
   env:
       GOOS: ${{ parameters.OS }}
       GOARCH: ${{ parameters.Arch }}
-      GOBIN: ${{ parameters.GOBIN }}
-
+      GOBIN: $(Build.BinariesDirectory)
+      
 - task: CopyFiles@2
   inputs:
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
