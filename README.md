@@ -101,7 +101,7 @@ pkg/sqlcmd is consumable by other hosts. Go docs for the package are forthcoming
 
 ## Building
 
-To add version data to your build using `go-winres`, add `GOPATH` to your `PATH` then use `go generate`
+To add version data to your build using `go-winres`, add `GOBIN` to your `PATH` then use `go generate`
 The version on the binary will match the version tag of the branch.
 
 ```sh

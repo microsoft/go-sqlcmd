@@ -8,6 +8,7 @@ parameters:
 - name: ArtifactName
   type: string
 
+
 variables:
   GOBIN: $(Build.SourcesDirectory)\bin
 
