@@ -8,10 +8,16 @@ parameters:
 - name: ArtifactName
   type: string
 
+variables:
+  GOPATH: $(Build.SourcesDirectory)\bin
+
 steps: 
 - task: GoTool@0
   inputs:
     version: '1.16.5'
+    goPath: $(GOPATH)
+
+- script: echo '##vso[task.prependpath]$(GOPATH)'
 
 - task: Go@0
   displayName: 'Go install go-winres'
@@ -20,6 +26,8 @@ steps:
     customCommand: 'install'
     arguments: 'github.com/tc-hib/go-winres@latest'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
+  env:
+      GOPATH: $(GOPATH)
 
 - task: Go@0
   displayName: 'Go generate'
@@ -27,6 +35,8 @@ steps:
     command: 'custom'
     customCommand: 'generate'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
+  env: 
+    GOPATH: $(GOPATH)
 
 - task: Go@0
   displayName: 'Go: get dependencies'
@@ -37,7 +47,8 @@ steps:
   env:
       GOOS: ${{ parameters.OS }}
       GOARCH: ${{ parameters.Arch }}
-    
+      GOPATH: $(GOPATH)
+
 - task: Go@0
   displayName: 'Go: build sqlcmd'
   inputs:
@@ -47,6 +58,7 @@ steps:
   env:
       GOOS: ${{ parameters.OS }}
       GOARCH: ${{ parameters.Arch }}
+      GOPATH: $(GOPATH)
 
 - task: CopyFiles@2
   inputs:
