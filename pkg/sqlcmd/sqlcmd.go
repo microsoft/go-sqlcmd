@@ -283,8 +283,13 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 		return err
 	}
 	defer f.Close()
+	info, _ := f.Stat()
+	var maxSize int
 	b := s.batch.batchline
 	scanner := bufio.NewScanner(f)
+	maxSize = int(info.Size())
+	buffer := make([]byte, 0, maxSize)
+	scanner.Buffer(buffer, maxSize)
 	curLine := s.batch.read
 	s.batch.read = func() (string, error) {
 		if !scanner.Scan() {
