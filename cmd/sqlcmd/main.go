@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-
+//go:generate go-winres make --file-version=git-tag --product-version=git-tag
 package main
 
 import (
