@@ -20,8 +20,8 @@ jobs:
         cd cmd/sqlcmd
         go get -d
         go build .
-        SQLCMDPASSWORD=$(date +%s|sha256sum|base64|head -c 32)
-        SQLCMDUSER=sa
+        export SQLCMDPASSWORD=$(date +%s|sha256sum|base64|head -c 32)
+        export SQLCMDUSER=sa
         docker run -m 2GB -e ACCEPT_EULA=1 -d --name sql2017 -p:1433:1433 -e SA_PASSWORD=$SQLCMDPASSWORD mcr.microsoft.com/mssql/server:2017-latest
         cd ../..
         go test -v ./...
