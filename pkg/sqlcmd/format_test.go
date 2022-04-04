@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"context"
 	"strings"
 	"testing"
 
@@ -62,7 +63,7 @@ func TestCalcColumnDetails(t *testing.T) {
 	if assert.NoError(t, err, "ConnectDB failed") {
 		defer db.Close()
 		for x, test := range tests {
-			rows, err := db.Query(test.query)
+			rows, err := db.QueryContext(context.Background(), test.query)
 			if assert.NoError(t, err, "Query failed: %s", test.query) {
 				defer rows.Close()
 				cols, err := rows.ColumnTypes()

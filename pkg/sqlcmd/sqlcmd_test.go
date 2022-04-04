@@ -87,7 +87,7 @@ func TestSqlCmdConnectDb(t *testing.T) {
 	}
 }
 
-func ConnectDb(t testing.TB) (*sql.DB, error) {
+func ConnectDb(t testing.TB) (*sql.Conn, error) {
 	v := InitializeVariables(true)
 	s := &Sqlcmd{vars: v}
 	s.Connect = newConnect(t)
@@ -405,6 +405,15 @@ func TestSqlCmdDefersToPrintError(t *testing.T) {
 	err := runSqlCmd(t, s, []string{"PRINT 'this has severity 10'", "RAISERROR (N'Testing!' , 11, 1)", "GO"})
 	if assert.NoError(t, err, "runSqlCmd failed") {
 		assert.Equal(t, "this has severity 10"+SqlcmdEol, buf.buf.String(), "Errors should be filtered by s.PrintError")
+	}
+}
+
+func TestSqlCmdMaintainsConnectionBetweenBatches(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	err := runSqlCmd(t, s, []string{"CREATE TABLE #tmp1 (col1 int)", "insert into #tmp1 values (1)", "GO", "select * from #tmp1", "drop table #tmp1", "GO"})
+	if assert.NoError(t, err, "runSqlCmd failed") {
+		assert.Equal(t, oneRowAffected+SqlcmdEol+"1"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, buf.buf.String(), "Sqlcmd uses the same connection for all queries")
 	}
 }
 
