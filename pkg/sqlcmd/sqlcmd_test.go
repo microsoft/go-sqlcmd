@@ -408,6 +408,16 @@ func TestSqlCmdDefersToPrintError(t *testing.T) {
 	}
 }
 
+func TestSqlCmdMaintainsConnectionBetweenBatches(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	err := runSqlCmd(t, s, []string{"CREATE TABLE #tmp1 (col1 int)", "insert into #tmp1 values (1)", "GO", "select * from #tmp1", "drop table #tmp1", "GO"})
+	if assert.NoError(t, err, "runSqlCmd failed") {
+		assert.Equal(t, "1"+SqlcmdEol+oneRowAffected+SqlcmdEol, buf.buf.String(), "Errors should be filtered by s.PrintError")
+	}
+
+}
+
 // runSqlCmd uses lines as input for sqlcmd instead of relying on file or console input
 func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
 	t.Helper()
