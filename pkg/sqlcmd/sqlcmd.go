@@ -50,7 +50,7 @@ type Console interface {
 type Sqlcmd struct {
 	lineIo           Console
 	workingDirectory string
-	db               *sql.DB
+	db               *sql.Conn
 	out              io.WriteCloser
 	err              io.WriteCloser
 	batch            *Batch
@@ -232,8 +232,7 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 	if err != nil {
 		return err
 	}
-	db := sql.OpenDB(connector)
-	err = db.Ping()
+	db, err := sql.OpenDB(connector).Conn(context.Background())
 	if err != nil {
 		fmt.Fprintln(s.GetOutput(), err)
 		return err
