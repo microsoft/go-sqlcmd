@@ -1,14 +1,8 @@
 # sqlcmd package pipeline
 
-trigger: 
-  tags:
-    include:
-      - v0.*
-
 pr: none
 
 variables:
-  VERSION: '0.0.1'
   Build.SourcesCliDirectory: '$(Build.SourcesDirectory)/'
 
 stages:
