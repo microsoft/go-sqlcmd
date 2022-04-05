@@ -27,7 +27,7 @@ steps:
     script: release/${{ parameters.OS }}/${{ parameters.Type }}/pipeline.sh
     workingDirectory: $(Build.SourcesCliDirectory)
   env:
-    CLI_VERSION: ($VERSION_TAG)
+    CLI_VERSION: $(VERSION_TAG)
     BUILD_OUTPUT: $(Pipeline.Workspace)
     BUILD_STAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
 - task: EsrpCodeSigning@1
