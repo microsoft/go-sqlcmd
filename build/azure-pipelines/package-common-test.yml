@@ -11,13 +11,13 @@ steps:
     buildType: 'current'
     targetPath: '$(Pipeline.Workspace)'
 - task: PowerShell@2
-    displayName: Set last tag to variable
-    inputs:
-      targetType: 'inline'
-      script: |
-        $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
-        Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
-        Write-Host($VERSION_TAG)
+  displayName: Set last tag to variable
+  inputs:
+    targetType: 'inline'
+    script: |
+      $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
+      Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
+      Write-Host($VERSION_TAG)
 - task: CmdLine@2
   displayName: 'Test ${{ parameters.OS }}/${{ parameters.Type }} distribution'
   inputs:
