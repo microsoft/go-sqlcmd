@@ -49,7 +49,7 @@ type SQLCmdArguments struct {
 	ErrorLevel                  int               `short:"m" help:"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent."`
 	Format                      string            `short:"F" help:"Specifies the formatting for results." default:"horiz" enum:"horiz,horizontal,vert,vertical"`
 	ErrorsToStderr              int               `short:"r" help:"Redirects the error message output to the screen (stderr). A value of 0 means messages with severity >= 11 will b redirected. A value of 1 means all error message output including PRINT is redirected." enum:"-1,0,1" default:"-1"`
-	Help                        bool              `short:"?" help:"show syntax summary"`
+	Help                        bool              `short:"?" help:"Show syntax summary."`
 	Headers                     int               `short:"h" help:"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed."`
 }
 
@@ -58,8 +58,9 @@ func (a *SQLCmdArguments) Validate() error {
 	if a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767) {
 		return fmt.Errorf(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
 	}
+	// Ignore 0 even though it's technically an invalid input
 	if a.Headers < -1 {
-		return fmt.Errorf(`'-h %d': header value must be either -1 or a value between -1 and 2147483647`, a.Headers)
+		return fmt.Errorf(`'-h %d': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
 	}
 	return nil
 }
