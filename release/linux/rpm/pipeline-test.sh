@@ -94,7 +94,7 @@ for i in ${!ZYPPER_DISTRO_BASE_IMAGE[@]}; do
 
     script="zypper --non-interactive install curl && \
             rpm -v --import https://packages.microsoft.com/keys/microsoft.asc && \
-            zypper --non-interactive install --allow-unsigned-rpm /mnt/artifacts/${rpmPkg} && \
+            zypper --non-interactive install /mnt/artifacts/${rpmPkg} && \
             sqlcmd --help"
 
     docker pull ${image}
