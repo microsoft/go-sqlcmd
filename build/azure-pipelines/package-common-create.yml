@@ -12,13 +12,22 @@ steps:
     project: 'ae14e11c-7eb2-46af-b588-471e6116d635'
     pipeline: 500
     runVersion: 'latest'
-    targetPath: '$(Pipeline.Workspace)'
+    targetPath: '$(Pipeline.Workspace)'      
+  - task: PowerShell@2
+    displayName: Set last tag to variable
+    inputs:
+      targetType: 'inline'
+      script: |
+        $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
+        Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
+        Write-Host($VERSION_TAG)
 - task: CmdLine@2
   displayName: 'Build ${{ parameters.OS }}/${{ parameters.Type }} distribution'
   inputs:
     script: release/${{ parameters.OS }}/${{ parameters.Type }}/pipeline.sh
     workingDirectory: $(Build.SourcesCliDirectory)
   env:
+    CLI_VERSION: ($VERSION_TAG)
     BUILD_OUTPUT: $(Pipeline.Workspace)
     BUILD_STAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
 - task: EsrpCodeSigning@1

@@ -15,7 +15,7 @@ stages:
   - stage: CreatePackages
     displayName: Create and Test Package Matrix
     jobs:
-    - job: CreateAndTestPackages
+    - job: Package
       strategy:
         matrix:
           rpm:
