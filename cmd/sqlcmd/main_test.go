@@ -19,6 +19,7 @@ func newKong(t *testing.T, cli interface{}, options ...kong.Option) *kong.Kong {
 	t.Helper()
 	options = append([]kong.Option{
 		kong.Name("test"),
+		kong.NoDefaultHelp(),
 		kong.Exit(func(int) {
 			t.Helper()
 			t.Fatalf("unexpected exit()")
@@ -76,6 +77,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-r", "1"}, func(args SQLCmdArguments) bool {
 			return args.ErrorsToStderr == 1
 		}},
+		{[]string{"-h", "2", "-?"}, func(args SQLCmdArguments) bool {
+			return args.Help && args.Headers == 2
+		}},
 	}
 
 	for _, test := range commands {
@@ -104,6 +108,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-a", "100"}, "test: '-a 100': Packet size has to be a number between 512 and 32767."},
 		{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
 		{[]string{"-r", "5"}, `--errors-to-stderr must be one of "-1","0","1" but got '\x05'`},
+		{[]string{"-h-4"}, "test: '-h -4': header value must be either -1 or a value between -1 and 2147483647"},
 	}
 
 	for _, test := range commands {
