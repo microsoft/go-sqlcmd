@@ -16,6 +16,7 @@ steps:
     targetType: 'inline'
     script: |
       $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
+      $VERSION_TAG = $VERSION_TAG.substring(1) # Trim initial 'v'
       Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
       Write-Host($VERSION_TAG)
 - task: CmdLine@2
