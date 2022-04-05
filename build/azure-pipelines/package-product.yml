@@ -27,3 +27,4 @@ stages:
           parameters:
             OS: $(os)
             Type: $(type)
+

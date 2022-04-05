@@ -55,4 +55,3 @@ steps:
   inputs:
     targetPath: $(Build.ArtifactStagingDirectory)
     artifactName: ${{ parameters.Type }}
-
