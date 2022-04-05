@@ -219,6 +219,7 @@ func (f *sqlCmdFormatterType) printColumnHeadings() {
 
 	var leftPad, rightPad int64
 	for i, c := range f.columnDetails {
+		rightPad = 0
 		nameLen := int64(len([]rune(c.col.Name())))
 		if f.removeTrailingSpaces {
 			if nameLen == 0 {
@@ -327,11 +328,11 @@ func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) ([]c
 		case "BIGINT":
 			columnDetails[i].leftJustify = false
 			columnDetails[i].displayWidth = max64(21, nameLen)
-		case "REAL":
+		case "REAL", "SMALLMONEY":
 			columnDetails[i].leftJustify = false
 			columnDetails[i].displayWidth = max64(14, nameLen)
 			columnDetails[i].zeroesAfterDecimal = true
-		case "FLOAT":
+		case "FLOAT", "MONEY":
 			columnDetails[i].leftJustify = false
 			columnDetails[i].displayWidth = max64(24, nameLen)
 			columnDetails[i].zeroesAfterDecimal = true
