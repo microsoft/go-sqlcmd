@@ -1,0 +1,35 @@
+# sqlcmd package pipeline
+
+trigger: 
+  tags:
+    include:
+      - v0.*
+
+pr: none
+
+variables:
+  VERSION: '0.0.1'
+  Build.SourcesCliDirectory: '$(Build.SourcesDirectory)/'
+
+stages:
+  - stage: CreatePackages
+    displayName: Create and Test Package Matrix
+    jobs:
+    - job: CreateAndTestPackages
+      strategy:
+        matrix:
+          rpm:
+            imageName: 'ubuntu-latest'
+            os: linux
+            type: rpm    
+      pool:
+        vmImage: $(imageName)
+      steps:
+        - template: package-common-create.yml
+          parameters:
+            OS: $(os)
+            Type: $(type)
+        - template: package-common-test.yml
+          parameters:
+            OS: $(os)
+            Type: $(type)

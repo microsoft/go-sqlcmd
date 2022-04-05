@@ -1,0 +1,48 @@
+parameters:
+- name: OS
+  type: string
+  default:
+- name: Type
+  type: string
+
+steps:
+- task: DownloadPipelineArtifact@2
+  inputs:
+    source: 'specific'
+    project: 'ae14e11c-7eb2-46af-b588-471e6116d635'
+    pipeline: 500
+    runVersion: 'latest'
+    targetPath: '$(Pipeline.Workspace)'
+- task: CmdLine@2
+  displayName: 'Build ${{ parameters.OS }}/${{ parameters.Type }} distribution'
+  inputs:
+    script: release/${{ parameters.OS }}/${{ parameters.Type }}/pipeline.sh
+    workingDirectory: $(Build.SourcesCliDirectory)
+  env:
+    BUILD_OUTPUT: $(Pipeline.Workspace)
+    BUILD_STAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
+- task: EsrpCodeSigning@1
+  inputs:
+    ConnectedServiceName: 'Code Signing'
+    FolderPath: $(Build.ArtifactStagingDirectory)
+    Pattern: '*.${{ parameters.Type }}'
+    signConfigType: 'inlineSignParams'
+    inlineOperation: |
+      [
+        {
+          "KeyCode" : "CP-450779-Pgp",
+          "OperationCode" : "LinuxSign",
+          "Parameters" : {},
+          "ToolName" : "sign",
+          "ToolVersion" : "1.0"
+        }
+      ]
+    SessionTimeout: '600'
+    MaxConcurrency: '50'
+    MaxRetryAttempts: '20'
+- task: PublishPipelineArtifact@0
+  displayName: 'Publish Artifact: ${{ parameters.Type }}'
+  inputs:
+    targetPath: $(Build.ArtifactStagingDirectory)
+    artifactName: ${{ parameters.Type }}
+
