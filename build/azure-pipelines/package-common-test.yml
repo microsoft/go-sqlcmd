@@ -6,10 +6,6 @@ parameters:
   type: string
 
 steps:
-- task: DownloadPipelineArtifact@2
-  inputs:
-    buildType: 'current'
-    targetPath: '$(Pipeline.Workspace)'
 - task: PowerShell@2
   displayName: Set last tag to variable
   inputs:

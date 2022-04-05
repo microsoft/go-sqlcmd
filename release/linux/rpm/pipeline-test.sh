@@ -29,8 +29,6 @@ set -exv
 
 : "${REPO_ROOT_DIR:=`cd $(dirname $0); cd ../../../; pwd`}"
 
-find .. -iname "*.*" -type f
-
 CLI_VERSION=${CLI_VERSION:=0.0.1}
 CLI_VERSION_REVISION=${CLI_VERSION_REVISION:=1}
 
@@ -43,7 +41,7 @@ ZYPPER_DISTRO_BASE_IMAGE=( opensuse/leap:latest )
 ZYPPER_DISTRO_SUFFIX=( el7 )
 
 echo "=========================================================="
-echo "__CLI_VERSION: ${CLI_VERSION}"
+echo "CLI_VERSION: ${CLI_VERSION}"
 echo "CLI_VERSION_REVISION: ${CLI_VERSION_REVISION}"
 echo "BUILD_ARTIFACTSTAGINGDIRECTORY: ${BUILD_ARTIFACTSTAGINGDIRECTORY}"
 echo "Distribution: ${YUM_DISTRO_BASE_IMAGE} ${ZYPPER_DISTRO_BASE_IMAGE}"
