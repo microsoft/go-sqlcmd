@@ -1,0 +1,57 @@
+parameters:
+- name: OS
+  type: string
+  default:
+- name: Type
+  type: string
+
+steps:
+- task: DownloadPipelineArtifact@2
+  inputs:
+    source: 'specific'
+    project: 'ae14e11c-7eb2-46af-b588-471e6116d635'
+    pipeline: 500
+    runVersion: 'latest'
+    targetPath: '$(Pipeline.Workspace)'      
+- task: PowerShell@2
+  displayName: Set last tag to variable
+  inputs:
+    targetType: 'inline'
+    script: |
+      $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
+      $VERSION_TAG = $VERSION_TAG.substring(1) # Trim initial 'v'
+      Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
+      Write-Host($VERSION_TAG)
+- task: CmdLine@2
+  displayName: 'Build ${{ parameters.OS }}/${{ parameters.Type }} distribution'
+  inputs:
+    script: release/${{ parameters.OS }}/${{ parameters.Type }}/pipeline.sh
+    workingDirectory: $(Build.SourcesCliDirectory)
+  env:
+    CLI_VERSION: $(VERSION_TAG)
+    BUILD_OUTPUT: $(Pipeline.Workspace)
+    BUILD_STAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
+- task: EsrpCodeSigning@1
+  inputs:
+    ConnectedServiceName: 'Code Signing'
+    FolderPath: $(Build.ArtifactStagingDirectory)
+    Pattern: '*.${{ parameters.Type }}'
+    signConfigType: 'inlineSignParams'
+    inlineOperation: |
+      [
+        {
+          "KeyCode" : "CP-450779-Pgp",
+          "OperationCode" : "LinuxSign",
+          "Parameters" : {},
+          "ToolName" : "sign",
+          "ToolVersion" : "1.0"
+        }
+      ]
+    SessionTimeout: '600'
+    MaxConcurrency: '50'
+    MaxRetryAttempts: '20'
+- task: PublishPipelineArtifact@0
+  displayName: 'Publish Artifact: ${{ parameters.Type }}'
+  inputs:
+    targetPath: $(Build.ArtifactStagingDirectory)
+    artifactName: ${{ parameters.Type }}
