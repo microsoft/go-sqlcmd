@@ -30,7 +30,7 @@ func splitServer(serverName string) (string, string, uint64, error) {
 		}
 		serverName = serverNameParts[0]
 	} else {
-		serverNameParts = strings.Split(serverName, "/")
+		serverNameParts = strings.Split(serverName, "\\")
 		if len(serverNameParts) > 2 {
 			return "", "", 0, &InvalidServerName
 		}
