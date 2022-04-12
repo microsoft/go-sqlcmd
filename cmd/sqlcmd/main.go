@@ -49,8 +49,10 @@ type SQLCmdArguments struct {
 	ErrorLevel                  int               `short:"m" help:"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent."`
 	Format                      string            `short:"F" help:"Specifies the formatting for results." default:"horiz" enum:"horiz,horizontal,vert,vertical"`
 	ErrorsToStderr              int               `short:"r" help:"Redirects the error message output to the screen (stderr). A value of 0 means messages with severity >= 11 will b redirected. A value of 1 means all error message output including PRINT is redirected." enum:"-1,0,1" default:"-1"`
-	Help                        bool              `short:"?" help:"Show syntax summary."`
 	Headers                     int               `short:"h" help:"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed."`
+	UnicodeOutputFile           bool              `short:"u" help:"Specifies that all output files are encoded with little-endian Unicode"`
+	// Keep Help at the end of the list
+	Help bool `short:"?" help:"Show syntax summary."`
 }
 
 // Validate accounts for settings not described by Kong attributes
@@ -212,6 +214,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s := sqlcmd.New(line, wd, vars)
+	s.UnicodeOutputFile = args.UnicodeOutputFile
 	setConnect(&s.Connect, args, vars)
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)

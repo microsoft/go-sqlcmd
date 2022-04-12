@@ -80,6 +80,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-h", "2", "-?"}, func(args SQLCmdArguments) bool {
 			return args.Help && args.Headers == 2
 		}},
+		{[]string{"-u"}, func(args SQLCmdArguments) bool {
+			return args.UnicodeOutputFile
+		}},
 	}
 
 	for _, test := range commands {
@@ -141,6 +144,33 @@ func TestRunInputFiles(t *testing.T) {
 	bytes, err := os.ReadFile(o.Name())
 	if assert.NoError(t, err, "os.ReadFile") {
 		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol+"100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+	}
+}
+
+func TestUnicodeOutput(t *testing.T) {
+	o, err := os.CreateTemp("", "sqlcmdmain")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(o.Name())
+	defer o.Close()
+	args = newArguments()
+	args.InputFile = []string{"testdata/selectutf8.txt"}
+	args.OutputFile = o.Name()
+	args.UnicodeOutputFile = true
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	bytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		expectedBytes, err := os.ReadFile(`testdata/unicodeout.txt`)
+		if assert.NoError(t, err, "Unable to open unicodeout.txt") {
+			assert.Equal(t, expectedBytes, bytes, "unicode output bytes should match testdata/unicodeoutput.txt")
+		}
 	}
 }
 

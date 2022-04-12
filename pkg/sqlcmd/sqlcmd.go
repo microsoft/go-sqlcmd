@@ -62,7 +62,8 @@ type Sqlcmd struct {
 	Query    string
 	Cmd      Commands
 	// PrintError allows the host to redirect errors away from the default output. Returns false if the error is not redirected by the host.
-	PrintError func(msg string, severity uint8) bool
+	PrintError        func(msg string, severity uint8) bool
+	UnicodeOutputFile bool
 }
 
 // New creates a new Sqlcmd instance
