@@ -4,6 +4,7 @@ package main
 
 import (
 	"os"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -167,9 +168,13 @@ func TestUnicodeOutput(t *testing.T) {
 	assert.Equal(t, 0, exitCode, "exitCode")
 	bytes, err := os.ReadFile(o.Name())
 	if assert.NoError(t, err, "os.ReadFile") {
-		expectedBytes, err := os.ReadFile(`testdata/unicodeout.txt`)
-		if assert.NoError(t, err, "Unable to open unicodeout.txt") {
-			assert.Equal(t, expectedBytes, bytes, "unicode output bytes should match testdata/unicodeoutput.txt")
+		outfile := `testdata/unicodeout_linux.txt`
+		if runtime.GOOS == "windows" {
+			outfile = `testdata/unicodeout.txt`
+		}
+		expectedBytes, err := os.ReadFile(outfile)
+		if assert.NoErrorf(t, err, "Unable to open %s", outfile) {
+			assert.Equalf(t, expectedBytes, bytes, "unicode output bytes should match %s", outfile)
 		}
 	}
 }
