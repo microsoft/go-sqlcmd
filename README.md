@@ -23,6 +23,7 @@ We will be implementing command line switches and behaviors over time. Several s
   - If `-N` is provided but `-C` is not, sqlcmd will require validation of the server certificate. Note that a `false` value for encryption could still lead to encryption of the login packet.
   - If both `-N` and `-C` are provided, sqlcmd will use their values for encryption negotiation.
   - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
+- `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 
