@@ -10,7 +10,7 @@
 # Instructions to be invoked under the build CI pipeline in AzureDevOps.
 #
 # Build and save the `sqlcmd` image into the bundle:
-# `docker-sqlcmd-${PACKAGE_VERSION}.tar`
+# `sqlcmd-docker-${PACKAGE_VERSION}.tar`
 #
 # Usage:
 #
@@ -28,9 +28,11 @@ fi
 chmod u+x ${REPO_ROOT_DIR}/sqlcmd
 
 PACKAGE_VERSION=${CLI_VERSION:=0.0.1}
+PACKAGE_VERSION_REVISION=${CLI_VERSION_REVISION:=1}
 
 echo "=========================================================="
 echo "PACKAGE_VERSION: ${PACKAGE_VERSION}"
+echo "PACKAGE_VERSION_REVISION: ${PACKAGE_VERSION_REVISION}"
 echo "IMAGE_NAME: ${IMAGE_NAME}"
 echo "Output location: ${DIST_DIR}"
 echo "=========================================================="
@@ -38,6 +40,7 @@ echo "=========================================================="
 docker build --no-cache \
              --build-arg BUILD_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`" \
              --build-arg PACKAGE_VERSION=${PACKAGE_VERSION} \
+             --build-arg PACKAGE_VERSION_REVISION=${PACKAGE_VERSION_REVISION} \
              --tag ${IMAGE_NAME}:latest \
              ${REPO_ROOT_DIR}
 
@@ -46,7 +49,7 @@ echo "Done - docker build"
 echo "=========================================================="
 
 mkdir -p ${DIST_DIR} || exit 1
-docker save -o "${DIST_DIR}/sqlcmd-docker-${PACKAGE_VERSION}.tar" ${IMAGE_NAME}:latest
+docker save -o "${DIST_DIR}/sqlcmd-docker-${PACKAGE_VERSION}-${PACKAGE_VERSION_REVISION}.tar" ${IMAGE_NAME}:latest
 
 echo "=========================================================="
 echo "Done - docker save"
