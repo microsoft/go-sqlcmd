@@ -1,5 +1,7 @@
 # sqlcmd package pipeline
 
+trigger: none
+
 pr: none
 
 variables:
@@ -20,6 +22,10 @@ stages:
             imageName: 'ubuntu-latest'
             os: linux
             type: deb
+          docker:
+            imageName: 'ubuntu-latest'
+            os: linux
+            type: docker
       pool:
         vmImage: $(imageName)
       steps:
