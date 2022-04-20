@@ -32,6 +32,7 @@ steps:
     BUILD_OUTPUT: $(Pipeline.Workspace)
     BUILD_STAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
 - task: EsrpCodeSigning@1
+  condition: ne(variables.Type, 'docker')
   inputs:
     ConnectedServiceName: 'Code Signing'
     FolderPath: $(Build.ArtifactStagingDirectory)

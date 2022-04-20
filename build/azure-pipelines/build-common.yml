@@ -51,6 +51,7 @@ steps:
       GOOS: ${{ parameters.OS }}
       GOARCH: ${{ parameters.Arch }}
       GOBIN: $(Build.SourcesDirectory)
+      CGO_ENABLED: 0 # Enables Docker image based off 'scratch'
 
 - task: CopyFiles@2
   inputs:
