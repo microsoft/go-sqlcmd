@@ -15,4 +15,3 @@ To test the packages:
 ./release/linux/rpm/pipeline-test.sh
 ```
 
-
