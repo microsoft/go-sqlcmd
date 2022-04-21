@@ -11,6 +11,8 @@ import (
 	"strings"
 
 	"github.com/alecthomas/kong"
+	"golang.org/x/text/encoding/unicode"
+	"golang.org/x/text/transform"
 )
 
 // Command defines a sqlcmd action which can be intermixed with the SQL batch
@@ -200,7 +202,15 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 		if err != nil {
 			return InvalidFileError(err, args[0])
 		}
-		s.SetOutput(o)
+		if s.UnicodeOutputFile {
+			// ODBC sqlcmd doesn't write a BOM but we will.
+			// Maybe the endian-ness should be configurable.
+			win16le := unicode.UTF16(unicode.LittleEndian, unicode.UseBOM)
+			encoder := transform.NewWriter(o, win16le.NewEncoder())
+			s.SetOutput(encoder)
+		} else {
+			s.SetOutput(o)
+		}
 	}
 	return nil
 }

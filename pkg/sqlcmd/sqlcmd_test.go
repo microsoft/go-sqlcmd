@@ -470,6 +470,9 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	assert.NoError(t, err, "os.CreateTemp")
 	s.SetOutput(file)
 	err = s.ConnectDb(nil, true)
+	if err != nil {
+		os.Remove(file.Name())
+	}
 	assert.NoError(t, err, "s.ConnectDB")
 	return s, file
 }

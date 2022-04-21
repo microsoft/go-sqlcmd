@@ -9,6 +9,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/peterh/liner v1.2.2
 	github.com/stretchr/testify v1.7.1
+	golang.org/x/text v0.3.6
 )
 
 replace github.com/denisenkom/go-mssqldb => github.com/microsoft/go-mssqldb v0.12.1-0.20220421181353-0db958cd919d
