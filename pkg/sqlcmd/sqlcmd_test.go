@@ -417,6 +417,19 @@ func TestSqlCmdMaintainsConnectionBetweenBatches(t *testing.T) {
 	}
 }
 
+func TestDateTimeFormats(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	err := s.IncludeFile(`testdata/selectdates.sql`, true)
+	if assert.NoError(t, err, "selectdates.sql") {
+		assert.Equal(t,
+			`2022-03-05 14:01:02.000 2021-01-02 11:06:02.2000 2021-05-05 00:00:00.000000 +00:00 2019-01-11 13:00:00 14:01:02.0000000 2011-02-03`+SqlcmdEol+SqlcmdEol,
+			buf.buf.String(),
+			"Unexpected date format output")
+
+	}
+}
+
 // runSqlCmd uses lines as input for sqlcmd instead of relying on file or console input
 func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
 	t.Helper()
