@@ -56,6 +56,8 @@ type columnDetail struct {
 	leftJustify        bool
 	zeroesAfterDecimal bool
 	col                sql.ColumnType
+	precision          int
+	scale              int
 }
 
 // The default formatter based on the native sqlcmd style
@@ -304,6 +306,11 @@ func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) ([]c
 		columnDetails[i].col = *c
 		columnDetails[i].leftJustify = true
 		columnDetails[i].zeroesAfterDecimal = false
+		p, s, ok := c.DecimalSize()
+		if ok {
+			columnDetails[i].precision = int(p)
+			columnDetails[i].scale = int(s)
+		}
 		if length == 0 {
 			columnDetails[i].displayWidth = defaultMaxDisplayWidth
 		} else {
@@ -359,6 +366,9 @@ func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) ([]c
 			columnDetails[i].leftJustify = false
 			columnDetails[i].displayWidth = max64(38, nameLen)
 			columnDetails[i].zeroesAfterDecimal = true
+		case "TIME":
+			columnDetails[i].leftJustify = false
+			columnDetails[i].displayWidth = max64(16, nameLen)
 		case "DATETIMEOFFSET":
 			columnDetails[i].leftJustify = false
 			columnDetails[i].displayWidth = max64(45, nameLen)
@@ -451,7 +461,26 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 				row[n] = x
 			case time.Time:
 				// Go lacks any way to get the user's preferred time format or even the system default
-				row[n] = x.String()
+				switch f.columnDetails[n].col.DatabaseTypeName() {
+				case "DATE":
+					row[n] = x.Format("2006-01-02")
+				case "DATETIME":
+					row[n] = x.Format(dateTimeFormatString(3, false))
+				case "DATETIME2":
+					row[n] = x.Format(dateTimeFormatString(f.columnDetails[n].scale, false))
+				case "SMALLDATETIME":
+					row[n] = x.Format(dateTimeFormatString(0, false))
+				case "DATETIMEOFFSET":
+					row[n] = x.Format(dateTimeFormatString(f.columnDetails[n].scale, true))
+				case "TIME":
+					format := "15:04:05"
+					if f.columnDetails[n].scale > 0 {
+						format = fmt.Sprintf("%s.%0*d", format, f.columnDetails[n].scale, 0)
+					}
+					row[n] = x.Format(format)
+				default:
+					row[n] = x.Format(time.RFC3339)
+				}
 			case fmt.Stringer:
 				row[n] = x.String()
 			// not sure why go-mssql reports bit as bool
@@ -470,6 +499,17 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 		}
 	}
 	return row, nil
+}
+
+func dateTimeFormatString(scale int, addOffset bool) string {
+	format := `2006-01-02 15:04:05`
+	if scale > 0 {
+		format = fmt.Sprintf("%s.%0*d", format, scale, 0)
+	}
+	if addOffset {
+		format += " -07:00"
+	}
+	return format
 }
 
 // Prints the final version of a cell based on formatting variables and command line parameters

@@ -12,4 +12,4 @@ require (
 	golang.org/x/text v0.3.6
 )
 
-replace github.com/denisenkom/go-mssqldb => github.com/shueybubbles/go-mssqldb v0.10.1-0.20220317022252-fafb9d92e469
+replace github.com/denisenkom/go-mssqldb => github.com/microsoft/go-mssqldb v0.12.1-0.20220421181353-0db958cd919d
