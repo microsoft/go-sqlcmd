@@ -21,6 +21,8 @@ import (
 	mssql "github.com/denisenkom/go-mssqldb"
 	"github.com/denisenkom/go-mssqldb/msdsn"
 	"github.com/golang-sql/sqlexp"
+	"golang.org/x/text/encoding/unicode"
+	"golang.org/x/text/transform"
 )
 
 var (
@@ -31,6 +33,8 @@ var (
 	// ErrCtrlC indicates execution was ended by ctrl-c or ctrl-break
 	ErrCtrlC = errors.New(WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
 )
+
+const maxLineBuffer = 2 * 1024 * 1024 // 2Mb
 
 // Console defines methods used for console input and output
 type Console interface {
@@ -284,7 +288,11 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	}
 	defer f.Close()
 	b := s.batch.batchline
-	scanner := bufio.NewScanner(f)
+	utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
+	unicodeReader := transform.NewReader(f, utf16bom)
+	scanner := bufio.NewScanner(unicodeReader)
+	buf := make([]byte, maxLineBuffer)
+	scanner.Buffer(buf, maxLineBuffer)
 	curLine := s.batch.read
 	s.batch.read = func() (string, error) {
 		if !scanner.Scan() {

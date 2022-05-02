@@ -179,6 +179,55 @@ func TestUnicodeOutput(t *testing.T) {
 	}
 }
 
+func TestUnicodeInput(t *testing.T) {
+	testfiles := []string{
+		`testdata/selectutf8.txt`,
+		`testdata/selectutf8_bom.txt`,
+		`testdata/selectunicode_BE.txt`,
+		`testdata/selectunicode_LE.txt`,
+	}
+
+	for _, test := range testfiles {
+		for _, unicodeOutput := range []bool{true, false} {
+			var outfile string
+			if unicodeOutput {
+				outfile = `testdata/unicodeout_linux.txt`
+				if runtime.GOOS == "windows" {
+					outfile = `testdata/unicodeout.txt`
+				}
+			} else {
+				outfile = `testdata/utf8out_linux.txt`
+				if runtime.GOOS == "windows" {
+					outfile = `testdata/utf8out.txt`
+				}
+			}
+			o, err := os.CreateTemp("", "sqlcmdmain")
+			assert.NoError(t, err, "os.CreateTemp")
+			defer os.Remove(o.Name())
+			defer o.Close()
+			args = newArguments()
+			args.InputFile = []string{test}
+			args.OutputFile = o.Name()
+			args.UnicodeOutputFile = unicodeOutput
+			if canTestAzureAuth() {
+				args.UseAad = true
+			}
+			vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+			setVars(vars, &args)
+			exitCode, err := run(vars, &args)
+			assert.NoError(t, err, "run")
+			assert.Equal(t, 0, exitCode, "exitCode")
+			bytes, err := os.ReadFile(o.Name())
+			if assert.NoError(t, err, "os.ReadFile") {
+				expectedBytes, err := os.ReadFile(outfile)
+				if assert.NoErrorf(t, err, "Unable to open %s", outfile) {
+					assert.Equalf(t, expectedBytes, bytes, "input file: <%s> output bytes should match <%s>", test, outfile)
+				}
+			}
+		}
+	}
+}
+
 func TestQueryAndExit(t *testing.T) {
 	o, err := os.CreateTemp("", "sqlcmdmain")
 	assert.NoError(t, err, "os.CreateTemp")

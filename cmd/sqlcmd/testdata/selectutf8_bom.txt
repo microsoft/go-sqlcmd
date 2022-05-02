@@ -1,0 +1,2 @@
+﻿select N'挨挨唉哀皑癌蔼矮' as SimplifiedChinese
+
