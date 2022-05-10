@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/denisenkom/go-mssqldb/azuread"
+	"github.com/microsoft/go-mssqldb/azuread"
 )
 
 const (

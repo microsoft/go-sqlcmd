@@ -13,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/denisenkom/go-mssqldb/azuread"
+	"github.com/microsoft/go-mssqldb/azuread"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

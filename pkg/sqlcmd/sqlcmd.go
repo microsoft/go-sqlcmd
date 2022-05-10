@@ -18,9 +18,9 @@ import (
 	"strings"
 	"syscall"
 
-	mssql "github.com/denisenkom/go-mssqldb"
-	"github.com/denisenkom/go-mssqldb/msdsn"
 	"github.com/golang-sql/sqlexp"
+	mssql "github.com/microsoft/go-mssqldb"
+	"github.com/microsoft/go-mssqldb/msdsn"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
