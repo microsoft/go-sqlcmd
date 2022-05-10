@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/alecthomas/kong"
-	"github.com/denisenkom/go-mssqldb/azuread"
+	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 )

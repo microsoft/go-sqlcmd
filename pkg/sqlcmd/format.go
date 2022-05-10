@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	mssql "github.com/denisenkom/go-mssqldb"
 	"github.com/google/uuid"
+	mssql "github.com/microsoft/go-mssqldb"
 )
 
 const (
