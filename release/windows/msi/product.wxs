@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?define ProductVersion="$(env.CLI_VERSION)" ?>
+
+  <?define ProductName = "Sqlcmd Tools" ?>
+  <?define ProductDescription = "Command-line tools for Microsoft SQL Server." ?>
+  <?define ProductAuthor = "Microsoft Corporation" ?>
+  <?define ProductResources = ".\resources\" ?>
+
+  <Product Id="*"
+           Name="$(var.ProductName)"
+           Language="1033"
+           Version="$(var.ProductVersion)"
+           Manufacturer="$(var.ProductAuthor)"
+           UpgradeCode="{DD3ED7F3-F9EF-40BE-B3B3-34FA21D924FA}">
+
+    <Package InstallerVersion="300"
+             Compressed="yes"
+             InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." Schedule="afterInstallExecute" />
+
+    <Media Id="1" Cabinet="sqlcmd.cab" EmbedCab="yes"  CompressionLevel="high" />
+
+    <Icon Id="SqlCmdIcon" SourceFile="$(var.ProductResources)sqlcmd.ico" />
+
+    <Property Id="ARPPRODUCTICON" Value="SqlCmdIcon" />
+    <Property Id="ARPHELPLINK" Value="https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/microsoft/go-sqlcmd" />
+    <Property Id="ARPURLUPDATEINFO" Value="https://github.com/microsoft/go-sqlcmd" />
+    <Property Id="ApplicationFolderName" Value="SqlCmd\Tools" />
+    <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+
+    <!-- User Interface -->
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProductResources)CLI_LICENSE.rtf"/>
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ProductResources)dialog.bmp" />
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ProductResources)banner.bmp" />
+
+    <UIRef Id="WixUI_Minimal"/>
+    <UIRef Id="WixUI_ErrorProgressText"/>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="SQLCMDFOLDER" Name="SqlCmd">
+          <Directory Id="SQLCMDTOOLSFOLDER" Name="Tools">
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="SQLCMDTOOLSFOLDER">
+      <Component Id="sqlcmd.exe" Guid="2988854C-D02C-4D48-866C-8EAEBA6BC54B">
+        <File Id="sqlcmd.exe" Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindowsAmd64\sqlcmd.exe" KeyPath="yes" Checksum="yes"/>
+        <Environment 
+          Id="PATH" 
+          Name="PATH" 
+          Value="[SQLCMDTOOLSFOLDER]" 
+          Permanent="yes" 
+          Part="last" 
+          Action="set" 
+          System="yes" />
+      </Component>
+    </DirectoryRef>
+    
+    <Feature Id="ProductFeature"
+             Title="SqlCmd Tools"
+             Level="1"
+             AllowAdvertise="no">
+      <ComponentRef Id="sqlcmd.exe" />
+    </Feature>
+
+  </Product>
+</Wix>
