@@ -4,7 +4,7 @@ This repo contains command line tools and go packages for working with Microsoft
 
 ## Sqlcmd
 
-The `sqlcmd` project aims to be a complete port of the native sqlcmd to the `go` language, utilizing the [go-mssqldb](https://github.com/denisenkom/go-mssqldb) driver. For full documentation of the tool, see https://docs.microsoft.com/sql/tools/sqlcmd-utility
+The `sqlcmd` project aims to be a complete port of the native sqlcmd to the `go` language, utilizing the [go-mssqldb](https://github.com/microsoft/go-mssqldb) driver. For full documentation of the tool and installation instructions, see https://docs.microsoft.com/sql/tools/gosqlcmd-utility
 
 ### Breaking changes
 
@@ -14,7 +14,7 @@ We will be implementing command line switches and behaviors over time. Several s
 
     - The `SQLCMDPASSWORD` environment variable
     - The `:CONNECT` command
-    - When prompted, the user can type the password to complete a connection (pending [#50](https://github.com/microsoft/go-sqlcmd/issues/50))
+    - When prompted, the user can type the password to complete a connection
 - `-r` requires a 0 or 1 argument
 - `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - `-I` switch will be removed. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
@@ -22,7 +22,7 @@ We will be implementing command line switches and behaviors over time. Several s
   - If `-N` and `-C` are not provided, sqlcmd will negotiate authentication with the server without validating the server certificate.
   - If `-N` is provided but `-C` is not, sqlcmd will require validation of the server certificate. Note that a `false` value for encryption could still lead to encryption of the login packet.
   - If both `-N` and `-C` are provided, sqlcmd will use their values for encryption negotiation.
-  - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
+  - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
@@ -35,7 +35,7 @@ We will be implementing command line switches and behaviors over time. Several s
 
 ### Azure Active Directory Authentication
 
-This version of sqlcmd supports a broader range of AAD authentication models, based on the [azidentity package](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity). The implementation relies on an AAD Connector in the [driver](https://github.com/denisenkom/go-mssqldb).
+This version of sqlcmd supports a broader range of AAD authentication models, based on the [azidentity package](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity). The implementation relies on an AAD Connector in the [driver](https://github.com/microsoft/go-mssqldb).
 
 #### Command line
 
@@ -151,7 +151,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
 trademarks or logos is subject to and must follow
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 
