@@ -17,15 +17,21 @@ if "%WIX_DOWNLOAD_URL%"=="" (
 
 :: Set up the output directory and temp. directories
 echo Cleaning previous build artifacts...
-set OUTPUT_DIR=%~dp0..\..\..\output\msi
+set OUTPUT_DIR=%~dp0..\..\..\..\output\msi
 if exist %OUTPUT_DIR% rmdir /s /q %OUTPUT_DIR%
 mkdir %OUTPUT_DIR%
 
-set ARTIFACTS_DIR=%~dp0..\..\..\output\msi\artifacts
+set ARTIFACTS_DIR=%~dp0..\..\..\..\output\msi\artifacts
 mkdir %ARTIFACTS_DIR%
 
 set WIX_DIR=%ARTIFACTS_DIR%\wix
-set REPO_ROOT=%~dp0..\..\..
+set REPO_ROOT=%~dp0..\..\..\..
+
+set PIPELINE_WORKSPACE=%ARTIFACTS_DIR%\workspace
+
+mkdir %PIPELINE_WORKSPACE%\SqlcmdWindowsAmd64
+
+copy /y %REPO_ROOT%\sqlcmd.exe %PIPELINE_WORKSPACE%\SqlcmdWindowsAmd64\sqlcmd.exe
 
 ::ensure wix is available
 if exist %WIX_DIR% (
@@ -45,6 +51,8 @@ if not exist %WIX_DIR% (
 
 if %errorlevel% neq 0 goto ERROR
 
+set PATH=%PATH%;%WIX_DIR%
+
 @echo off
 
 :: During pipeline we want to skip msbuild here and use the AzureDevOps Task instead
@@ -53,7 +61,7 @@ if "%1"=="--skip-msbuild" (
 ) else (
     echo Building MSI...
     cd %OUTPUT_DIR%
-    msbuild /t:rebuild /p:Configuration=Release %REPO_ROOT%\release\windows\msi\sqlcmd.wixproj
+    msbuild /t:rebuild /p:Configuration=Release %REPO_ROOT%\release\windows\msi\sqlcmd.wixproj -p:OutDir=%OUTPUT_DIR%\
     start %OUTPUT_DIR%
 )
 

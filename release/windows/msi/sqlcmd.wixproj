@@ -12,6 +12,10 @@
     <SQLCMD_UPGRADE_CODE Condition=" '$(SQLCMD_UPGRADE_CODE)' == '' ">B8C0DBFD-DCED-44D4-9660-206CDE2D91BC</SQLCMD_UPGRADE_CODE>
     <DefineSolutionProperties>false</DefineSolutionProperties>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WIX_DOWNLOAD_URL)' != '' ">$(WIX_DIR)\Wix.targets</WixTargetsPath>
+    <WixToolPath Condition=" '$(WIX_DOWNLOAD_URL)' != '' ">$(WIX_DIR)</WixToolPath>
+    <WixTasksPath Condition=" '$(WIX_DOWNLOAD_URL)' != '' ">$(WixToolPath)\wixtasks.dll</WixTasksPath>
+    <WixExtDir Condition=" '$(WIX_DOWNLOAD_URL)' != '' ">$(WixToolPath)</WixExtDir>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' OR '$(Configuration)|$(Platform)' == 'Debug|x64' ">
