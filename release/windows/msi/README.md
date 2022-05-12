@@ -13,7 +13,7 @@ This document provides instructions on creating the MSI.
 
 1. Set the `CLI_VERSION` environment variable
 2. Run `release\windows\msi\scripts\pipeline.cmd`
-3. The unsigned MSI will be in the `.\release\windows\out` folder
+3. The unsigned MSI will be in the `.\output\msi` folder
 
 > **Note:** For `building step 1.` above set both env-vars to the same version-tag for the immediate, this will consolidated in the future.
 
@@ -21,26 +21,21 @@ This document provides instructions on creating the MSI.
 
 > **Note:** Replace `{{HOST}}` and `{{CLI_VERSION}}` with the appropriate values.
 
-### Install SQLCMD TOOLS CLI on Windows
+### Install `Sqlcmd Tools` on Windows
 
-The MSI distributable is used for installing or updating the SQLCMD Tools CLI on Windows. 
+The MSI distributable is used for installing or updating the `Sqlcmd Tools` CLI on Windows. 
 
 [Download the MSI Installer](http://{{HOST}}/sqlcmd-{{CLI_VERSION}}.msi)
 
 When the installer asks if it can make changes to your computer, click the `Yes` box.
 
-### Update
-
-Once removed, [Install SQLCMD Tools CLI on Windows](#install-sqlcmd-on-windows)
-
 ### Uninstall
 
-You can uninstall the SQLCMD CLI from the Windows _Apps and Features_ list. To uninstall:
+You can uninstall the `SqlCmd Tools` from the Windows _Apps and Features_ list. To uninstall:
 
 | Platform      | Instructions                                           |
 | ------------- |--------------------------------------------------------|
 | Windows 10	| Start > Settings > Apps                                |
 | Windows 8     | Start > Control Panel > Programs > Uninstall a program |
 
-
-The program to uninstall is listed as **SQLCMD Tools CLI** . Select this application, then click the `Uninstall` button.
+The program to uninstall is listed as **Sqlcmd Tools** . Select this application, then click the `Uninstall` button.
