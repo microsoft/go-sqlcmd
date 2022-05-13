@@ -4,7 +4,7 @@ This repo contains command line tools and go packages for working with Microsoft
 
 ## Sqlcmd
 
-The `sqlcmd` project aims to be a complete port of the native sqlcmd to the `go` language, utilizing the [go-mssqldb](https://github.com/microsoft/go-mssqldb) driver. For full documentation of the tool and installation instructions, see https://docs.microsoft.com/sql/tools/gosqlcmd-utility
+The `sqlcmd` project aims to be a complete port of the native sqlcmd to the `go` language, utilizing the [go-mssqldb](https://github.com/microsoft/go-mssqldb) driver. For full documentation of the tool and installation instructions, see https://docs.microsoft.com/sql/tools/go-sqlcmd-utility
 
 ### Breaking changes
 
