@@ -6,6 +6,7 @@ pr: none
 
 variables:
   Build.SourcesCliDirectory: '$(Build.SourcesDirectory)/'
+  MSI_OUTPUT_DIR: '$(Build.SourcesCliDirectory)/output'
 
 stages:
   - stage: CreatePackages
@@ -26,6 +27,10 @@ stages:
             imageName: 'ubuntu-latest'
             os: linux
             type: docker
+          windows:
+            imageName: 'windows-2019'
+            os: windows
+            type: msi
       pool:
         vmImage: $(imageName)
       steps:

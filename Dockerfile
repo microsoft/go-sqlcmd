@@ -23,7 +23,6 @@ LABEL maintainer="Microsoft" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.docker.cmd="docker run -it microsoft/sqlcmd:$PACKAGE_VERSION"
 
-
 COPY ./sqlcmd /usr/bin/sqlcmd
 
 CMD ["sqlcmd"]

@@ -16,10 +16,21 @@ steps:
       Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
       Write-Host($VERSION_TAG)
 - task: CmdLine@2
-  displayName: 'Test ${{ parameters.OS }}/${{ parameters.Type }} distribution'
+  condition: ne(variables.OS, 'windows')
+  displayName: 'Test ${{ parameters.OS }}/${{ parameters.Type }} package'
   inputs:
     script: release/${{ parameters.OS }}/${{ parameters.Type }}/pipeline-test.sh
     workingDirectory: $(Build.SourcesCliDirectory)
   env:
     CLI_VERSION: $(VERSION_TAG)
     BUILD_STAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
+- task: PowerShell@2
+  condition: eq(variables.OS, 'windows')
+  displayName: 'Test ${{ parameters.OS }}/${{ parameters.Type }} package'
+  inputs:
+    targetType: 'filePath'
+    filePath: '$(Build.SourcesDirectory)\release\windows\msi\scripts\pipeline-test.ps1'
+    failOnStderr: true
+  env:
+    CLI_VERSION: $(VERSION_TAG)
+    
