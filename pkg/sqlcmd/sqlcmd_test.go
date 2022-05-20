@@ -237,6 +237,9 @@ func TestExitCodeSetOnError(t *testing.T) {
 	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 5, 1)")
 	assert.NoError(t, err, "ExitOnError and ErrorSeverityLevel = 0, Raiserror below 10")
 	assert.Equal(t, -101, retcode, "ExitOnError and ErrorSeverityLevel = 0, Raiserror below 10")
+	retcode, err = s.runQuery("RAISERROR (15001, 10, 127)")
+	assert.ErrorIs(t, err, ErrExitRequested, "RAISERROR with state 127")
+	assert.Equal(t, 15001, retcode, "RAISERROR (15001, 10, 127)")
 }
 
 func TestSqlCmdExitOnError(t *testing.T) {

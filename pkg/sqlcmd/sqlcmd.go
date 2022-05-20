@@ -389,8 +389,12 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		msg := retmsg.Message(ctx)
 		switch m := msg.(type) {
 		case sqlexp.MsgNotice:
-			if !s.PrintError(m.Message, 10) {
-				s.Format.AddMessage(m.Message)
+			if !s.PrintError(m.Message.String(), 10) {
+				s.Format.AddMessage(m.Message.String())
+				switch e := m.Message.(type) {
+				case mssql.Error:
+					qe = s.handleError(&retcode, e)
+				}
 			}
 		case sqlexp.MsgError:
 			switch e := m.Error.(type) {
@@ -465,11 +469,20 @@ func (s *Sqlcmd) handleError(retcode *int, err error) error {
 		minSeverityToExit = s.Connect.ErrorSeverityLevel
 	}
 	var errSeverity uint8
+	var errState uint8
+	var errNumber int32
 	switch sqlError := err.(type) {
 	case mssql.Error:
 		errSeverity = sqlError.Class
+		errState = sqlError.State
+		errNumber = sqlError.Number
 	}
 
+	// 127 is the magic exit code
+	if errState == 127 {
+		*retcode = int(errNumber)
+		return ErrExitRequested
+	}
 	if s.Connect.ErrorSeverityLevel > 0 {
 		if errSeverity >= minSeverityToExit {
 			*retcode = int(errSeverity)
