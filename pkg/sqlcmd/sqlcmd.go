@@ -44,6 +44,8 @@ type Console interface {
 	ReadPassword(prompt string) ([]byte, error)
 	// SetPrompt sets the prompt text shown to input the next line
 	SetPrompt(s string)
+	// Close clears any buffers and closes open file handles
+	Close()
 }
 
 // Sqlcmd is the core processor for text lines.

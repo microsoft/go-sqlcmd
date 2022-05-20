@@ -211,6 +211,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	var line sqlcmd.Console = nil
 	if iactive {
 		line = console.NewConsole("")
+		defer line.Close()
 	}
 
 	s := sqlcmd.New(line, wd, vars)
