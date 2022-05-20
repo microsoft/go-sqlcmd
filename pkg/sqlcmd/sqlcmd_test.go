@@ -293,6 +293,10 @@ func (tc *testConsole) SetPrompt(s string) {
 	tc.PromptText = s
 }
 
+func (tc *testConsole) Close() {
+
+}
+
 func TestPromptForPasswordNegative(t *testing.T) {
 	prompted := false
 	console := &testConsole{
