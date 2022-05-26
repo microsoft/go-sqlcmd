@@ -117,6 +117,7 @@ func TestReadString(t *testing.T) {
 		// double quoted string
 		{`"str\""`, 0, `"str\"`, true},
 		{` "str\"" `, 1, `"str\"`, true},
+		{`'str\'`, 0, `'str\'`, true},
 		{`''''`, 0, `''''`, true},
 		{` '''' `, 1, `''''`, true},
 		{`''''''`, 0, `''''''`, true},
