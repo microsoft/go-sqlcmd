@@ -107,7 +107,7 @@ The version on the binary will match the version tag of the branch.
 
 ```sh
 
-go install https://github.com/tc-hib/go-winres
+go install github.com/tc-hib/go-winres@latest
 cd cmd/sqlcmd
 go generate
 

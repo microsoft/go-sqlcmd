@@ -1,4 +1,9 @@
 {
+  "RT_GROUP_ICON": {
+    "APP": {
+      "0000" : "../../../release/windows/msi/resources/sqlcmd.ico"
+    }
+  },
   "RT_VERSION": {
     "#1": {
       "0000": {
