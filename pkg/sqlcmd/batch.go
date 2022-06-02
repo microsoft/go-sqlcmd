@@ -242,10 +242,6 @@ func (b *Batch) readString(r []rune, i, end int, quote rune, line uint) (int, bo
 			} else {
 				return i, false, syntaxError(line)
 			}
-		case quote == '\'' && c == '\\':
-			i++
-			prev = 0
-			continue
 		case quote == '\'' && c == '\'' && next == '\'':
 			i++
 			continue
