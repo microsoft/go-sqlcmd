@@ -1,1 +1,0 @@
-Must declare the scalar variable "@@version2".
