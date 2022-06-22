@@ -45,7 +45,7 @@ steps:
   displayName: 'Go: build sqlcmd'
   inputs:
     command: 'build'
-    arguments: '-o $(Build.BinariesDirectory)'
+    arguments: '-o $(Build.BinariesDirectory) -ldflags="-X main.version=$(Build.BuildNumber)"'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
   env:
       GOOS: ${{ parameters.OS }}
