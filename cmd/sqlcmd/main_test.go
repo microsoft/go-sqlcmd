@@ -254,6 +254,31 @@ func TestQueryAndExit(t *testing.T) {
 	}
 }
 
+func TestExitOnError(t *testing.T) {
+	args = newArguments()
+	args.InputFile = []string{"testdata/select100.sql"}
+	args.ErrorsToStderr = 0
+	args.ExitOnError = true
+
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+
+	args.InputFile = []string{"testdata/bad.sql"}
+
+	vars = sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	setVars(vars, &args)
+
+	exitCode, err = run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 1, exitCode, "exitCode")
+
+	t.Logf("Test Completed") // Needs some output to stdout to count as a test
+}
+
 func TestAzureAuth(t *testing.T) {
 
 	if !canTestAzureAuth() {
