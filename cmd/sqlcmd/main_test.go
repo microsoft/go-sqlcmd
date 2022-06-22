@@ -254,11 +254,17 @@ func TestQueryAndExit(t *testing.T) {
 	}
 }
 
+// Test to verify fix for issue: https://github.com/microsoft/go-sqlcmd/issues/98
+//   1. Verify when -b is passed in (ExitOnError), we don't always get an error (even when input is good)
+//   2, Verify when the input is actually bad, we do get an error
 func TestExitOnError(t *testing.T) {
 	args = newArguments()
 	args.InputFile = []string{"testdata/select100.sql"}
 	args.ErrorsToStderr = 0
 	args.ExitOnError = true
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
 
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	setVars(vars, &args)
