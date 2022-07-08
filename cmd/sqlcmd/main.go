@@ -266,6 +266,8 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	} else {
 		for f := range args.InputFile {
 			if err = s.IncludeFile(args.InputFile[f], true); err != nil {
+				s.Exitcode = 1
+				_, _ = os.Stderr.Write([]byte(err.Error()))
 				break
 			}
 		}

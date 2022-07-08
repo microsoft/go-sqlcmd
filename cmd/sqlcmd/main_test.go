@@ -310,6 +310,22 @@ func TestAzureAuth(t *testing.T) {
 	}
 }
 
+func TestMissingInputFile(t *testing.T) {
+	args = newArguments()
+	args.InputFile = []string{"testdata/missingFile.sql"}
+
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
+
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.Error(t, err, "run")
+	assert.Equal(t, 1, exitCode, "exitCode")
+}
+
 // Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
 func canTestAzureAuth() bool {
 	server := os.Getenv(sqlcmd.SQLCMDSERVER)
