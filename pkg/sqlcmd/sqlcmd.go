@@ -286,7 +286,7 @@ func (s *Sqlcmd) promptPassword() (string, error) {
 func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	f, err := os.Open(path)
 	if err != nil {
-		return err
+		return InvalidFileError(err, path)
 	}
 	defer f.Close()
 	b := s.batch.batchline
