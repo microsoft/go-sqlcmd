@@ -323,6 +323,7 @@ func TestMissingInputFile(t *testing.T) {
 
 	exitCode, err := run(vars, &args)
 	assert.Error(t, err, "run")
+	assert.Contains(t, err.Error(), "Error occurred while opening or operating on file", "Unexpected error: "+err.Error())
 	assert.Equal(t, 1, exitCode, "exitCode")
 }
 
