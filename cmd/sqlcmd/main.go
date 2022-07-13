@@ -242,7 +242,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		if args.ErrorsToStderr >= 0 {
 			s.PrintError = func(msg string, severity uint8) bool {
 				if severity >= stderrSeverity {
-					_, _ = os.Stderr.Write([]byte(msg))
+					_, _ = os.Stderr.Write([]byte(msg + sqlcmd.SqlcmdEol))
 					return true
 				}
 				return false
