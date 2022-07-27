@@ -168,4 +168,13 @@ stages:
         inputs:
           targetPath: $(Build.ArtifactStagingDirectory)
           artifactName: SqlcmdRelease
-
+      - task: GitHubRelease@1
+        inputs:
+          gitHubConnection: 'gosqlcmd_github'
+          repositoryName: '$(Build.Repository.Name)'
+          action: 'create'
+          target: '$(Build.SourceVersion)'
+          tagSource: 'gitTag'
+          tagPattern: 'v*.*.*'
+          changeLogCompareToRelease: 'lastFullRelease'
+          changeLogType: 'commitBased'
