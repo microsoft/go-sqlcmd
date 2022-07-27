@@ -177,6 +177,5 @@ stages:
           target: '$(Build.SourceVersion)'
           tagSource: 'userSpecifiedTag'
           tag: '$(VERSION_TAG)'
-          assets: '$(Build.ArtifactStagingDirectory)/*'
           changeLogCompareToRelease: 'lastFullRelease'
           changeLogType: 'commitBased'
