@@ -26,6 +26,7 @@ We will be implementing command line switches and behaviors over time. Several s
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
+- `-i` now requires multiple arguments for the switch to be separated by `,`.
 
 ### Miscellaneous enhancements
 
