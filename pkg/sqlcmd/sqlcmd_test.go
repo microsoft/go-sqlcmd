@@ -171,6 +171,20 @@ func TestIncludeFileProcessAll(t *testing.T) {
 	}
 }
 
+func TestIncludeFileWithVariables(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	dataPath := "testdata" + string(os.PathSeparator)
+	err := s.IncludeFile(dataPath+"variablesnogo.sql", true)
+	if assert.NoError(t, err, "IncludeFile variablesnogo.sql true") {
+		assert.Equal(t, "=", s.batch.State(), "s.batch.State() after IncludeFile variablesnogo.sql true")
+		assert.Equal(t, "", s.batch.String(), "s.batch.String() after IncludeFile variablesnogo.sql true")
+		s.SetOutput(nil)
+		o := buf.buf.String()
+		assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol, o)
+	}
+}
+
 func TestGetRunnableQuery(t *testing.T) {
 	v := InitializeVariables(false)
 	v.Set("var1", "v1")

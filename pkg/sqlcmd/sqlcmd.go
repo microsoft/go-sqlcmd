@@ -100,7 +100,6 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 	iactive := s.lineIo != nil
 	var lastError error
 	for {
-		var execute bool
 		if iactive {
 			s.lineIo.SetPrompt(s.Prompt())
 		}
@@ -125,10 +124,14 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				if s.batch.Length == 0 {
 					return lastError
 				}
-				execute = processAll
-				if !execute {
+
+				if !processAll {
 					return nil
 				}
+				// Run the GO and exit
+				cmd = s.Cmd["GO"]
+				args = make([]string, 0)
+				once = true
 			} else {
 				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
 			}
@@ -152,11 +155,6 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 			}
 			lastError = err
 			break
-		}
-		if execute {
-			s.Query = s.batch.String()
-			once = true
-			s.batch.Reset(nil)
 		}
 	}
 	return lastError
