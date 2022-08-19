@@ -109,6 +109,28 @@ func TestSqlCmdQueryAndExit(t *testing.T) {
 	}
 }
 
+func TestSqlCmdOutputAndError(t *testing.T) {
+	s, outfile, errfile := setupSqlcmdWithFileErrorOutput(t)
+	defer os.Remove(outfile.Name())
+	defer os.Remove(errfile.Name())
+	s.Query = "select $(X"
+	err := s.Run(true, false)
+	if assert.NoError(t, err, "s.Run(once = true)") {
+		bytes, err := os.ReadFile(errfile.Name())
+		if assert.NoError(t, err, "os.ReadFile") {
+			assert.Equal(t, "Sqlcmd: Error: Syntax error at line 1."+SqlcmdEol, string(bytes), "Incorrect output from Run")
+		}
+	}
+	s.Query = "select '1'"
+	err = s.Run(true, false)
+	if assert.NoError(t, err, "s.Run(once = true)") {
+		bytes, err := os.ReadFile(outfile.Name())
+		if assert.NoError(t, err, "os.ReadFile") {
+			assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol+"(1 row affected)"+SqlcmdEol, string(bytes), "Incorrect output from Run")
+		}
+	}
+}
+
 // Simulate :r command
 func TestIncludeFileNoExecutions(t *testing.T) {
 	s, file := setupSqlcmdWithFileOutput(t)
@@ -475,6 +497,7 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 	s.Format = NewSQLCmdDefaultFormatter(true)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
+	s.SetError(buf)
 	err := s.ConnectDb(nil, true)
 	assert.NoError(t, err, "s.ConnectDB")
 	return s, buf
@@ -490,12 +513,35 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	file, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
 	s.SetOutput(file)
+	s.SetError(file)
 	err = s.ConnectDb(nil, true)
 	if err != nil {
 		os.Remove(file.Name())
 	}
 	assert.NoError(t, err, "s.ConnectDB")
 	return s, file
+}
+
+func setupSqlcmdWithFileErrorOutput(t testing.TB) (*Sqlcmd, *os.File, *os.File) {
+	t.Helper()
+	v := InitializeVariables(true)
+	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
+	s := New(nil, "", v)
+	s.Connect = newConnect(t)
+	s.Format = NewSQLCmdDefaultFormatter(true)
+	outfile, err := os.CreateTemp("", "sqlcmdout")
+	assert.NoError(t, err, "os.CreateTemp")
+	errfile, err := os.CreateTemp("", "sqlcmderr")
+	assert.NoError(t, err, "os.CreateTemp")
+	s.SetOutput(outfile)
+	s.SetError(errfile)
+	err = s.ConnectDb(nil, true)
+	if err != nil {
+		os.Remove(outfile.Name())
+		os.Remove(errfile.Name())
+	}
+	assert.NoError(t, err, "s.ConnectDB")
+	return s, outfile, errfile
 }
 
 // Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set

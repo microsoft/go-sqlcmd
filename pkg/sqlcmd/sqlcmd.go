@@ -85,6 +85,8 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 	s.PrintError = func(msg string, severity uint8) bool {
 		return false
 	}
+	s.SetOutput(os.Stdout)
+	s.SetError(os.Stderr)
 	return s
 }
 
@@ -133,7 +135,11 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				args = make([]string, 0)
 				once = true
 			} else {
-				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
+				if iactive {
+					_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
+				} else {
+					_, _ = s.GetError().Write([]byte(err.Error() + SqlcmdEol))
+				}
 			}
 		}
 		if cmd != nil {
@@ -143,7 +149,11 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				break
 			}
 			if err != nil {
-				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
+				if iactive {
+					_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
+				} else {
+					_, _ = s.GetError().Write([]byte(err.Error() + SqlcmdEol))
+				}
 				lastError = err
 			}
 		}
