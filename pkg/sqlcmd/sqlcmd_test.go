@@ -217,7 +217,8 @@ func TestGetRunnableQuery(t *testing.T) {
 func TestExitInitialQuery(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()
-	s.Query = "EXIT(SELECT '1200', 2100)"
+	_ = s.vars.Setvar("var1", "1200")
+	s.Query = "EXIT(SELECT '$(var1)', 2100)"
 	err := s.Run(true, false)
 	if assert.NoError(t, err, "s.Run(once = true)") {
 		s.SetOutput(nil)
