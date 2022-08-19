@@ -208,8 +208,9 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	iactive := args.InputFile == nil && args.Query == ""
+	uactive := args.UserName != ""
 	var line sqlcmd.Console = nil
-	if iactive {
+	if iactive || uactive {
 		line = console.NewConsole("")
 		defer line.Close()
 	}
@@ -257,7 +258,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		s.Query = args.Query
 	}
 	// connect using no overrides
-	err = s.ConnectDb(nil, !iactive)
+	err = s.ConnectDb(nil, line == nil)
 	if err != nil {
 		return 1, err
 	}
