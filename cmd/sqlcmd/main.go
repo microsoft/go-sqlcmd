@@ -201,6 +201,10 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 }
 
+type allocConsole func(historyFile string) sqlcmd.Console
+
+var consoleAllocator allocConsole = console.NewConsole
+
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	wd, err := os.Getwd()
 	if err != nil {
@@ -211,7 +215,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	uactive := args.UserName != ""
 	var line sqlcmd.Console = nil
 	if iactive || uactive {
-		line = console.NewConsole("")
+		line = consoleAllocator("")
 		defer line.Close()
 	}
 

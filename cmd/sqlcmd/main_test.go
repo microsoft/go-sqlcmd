@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/alecthomas/kong"
+	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -325,6 +326,64 @@ func TestMissingInputFile(t *testing.T) {
 	assert.Error(t, err, "run")
 	assert.Contains(t, err.Error(), "Error occurred while opening or operating on file", "Unexpected error: "+err.Error())
 	assert.Equal(t, 1, exitCode, "exitCode")
+}
+
+func TestPasswordPrompt(t *testing.T) {
+	args = newArguments()
+	args.InputFile = []string{"testdata/select100.sql"}
+	vars := sqlcmd.InitializeVariables(true)
+	setVars(vars, &args)
+	prompted := false
+	consoleAllocator = func(historyFile string) sqlcmd.Console {
+		console := &testConsole{
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				assert.Equal(t, "Password:", prompt, "Incorrect password prompt")
+				prompted = true
+				return []byte{}, nil
+			},
+			OnReadLine: func() (string, error) {
+				assert.Fail(t, "ReadLine should not be called")
+				return "", nil
+			},
+		}
+		return console
+	}
+
+	exitCode, err := run(vars, &args)
+	assert.False(t, prompted, "Password prompt was not expected")
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+
+	args.UserName = "someuser"
+	os.Setenv("SQLCMDPASSWORD", "")
+	vars = sqlcmd.InitializeVariables(true)
+	setVars(vars, &args)
+	exitCode, err = run(vars, &args)
+	assert.True(t, prompted, "Password prompt not displayed for -U")
+	assert.Error(t, err, "run")
+	assert.Equal(t, 1, exitCode, "exitCode")
+	consoleAllocator = console.NewConsole
+}
+
+type testConsole struct {
+	PromptText       string
+	OnPasswordPrompt func(prompt string) ([]byte, error)
+	OnReadLine       func() (string, error)
+}
+
+func (tc *testConsole) Readline() (string, error) {
+	return tc.OnReadLine()
+}
+
+func (tc *testConsole) ReadPassword(prompt string) ([]byte, error) {
+	return tc.OnPasswordPrompt(prompt)
+}
+
+func (tc *testConsole) SetPrompt(s string) {
+	tc.PromptText = s
+}
+
+func (tc *testConsole) Close() {
 }
 
 // Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
