@@ -354,7 +354,7 @@ func TestPasswordPrompt(t *testing.T) {
 	assert.NoError(t, err, "run")
 	assert.Equal(t, 0, exitCode, "exitCode")
 
-	args.UserName = "someuser"
+	args.UserName = "invalidUser"
 	os.Setenv("SQLCMDPASSWORD", "")
 	vars = sqlcmd.InitializeVariables(true)
 	setVars(vars, &args)
