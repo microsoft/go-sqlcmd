@@ -329,10 +329,7 @@ func TestMissingInputFile(t *testing.T) {
 }
 
 func TestPasswordPrompt(t *testing.T) {
-	args = newArguments()
-	args.InputFile = []string{"testdata/select100.sql"}
-	vars := sqlcmd.InitializeVariables(true)
-	setVars(vars, &args)
+
 	prompted := false
 	consoleAllocator = func(historyFile string) sqlcmd.Console {
 		console := &testConsole{
@@ -349,14 +346,22 @@ func TestPasswordPrompt(t *testing.T) {
 		return console
 	}
 
+	args = newArguments()
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
+	args.InputFile = []string{"testdata/select100.sql"}
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	setVars(vars, &args)
+
 	exitCode, err := run(vars, &args)
 	assert.False(t, prompted, "Password prompt was not expected")
 	assert.NoError(t, err, "run")
 	assert.Equal(t, 0, exitCode, "exitCode")
 
-	args.UserName = "invalidUser"
+	args.UserName = "someuser"
 	os.Setenv("SQLCMDPASSWORD", "")
-	vars = sqlcmd.InitializeVariables(true)
+	vars = sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	setVars(vars, &args)
 	exitCode, err = run(vars, &args)
 	assert.True(t, prompted, "Password prompt not displayed for -U")
