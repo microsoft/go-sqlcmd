@@ -218,7 +218,7 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 
 	var connector driver.Connector
 	useAad := !connect.sqlAuthentication() && !connect.integratedAuthentication()
-	if connect.requiresPassword() && !nopw && connect.Password == "" {
+	if connect.RequiresPassword() && !nopw && connect.Password == "" {
 		var err error
 		if connect.Password, err = s.promptPassword(); err != nil {
 			return err

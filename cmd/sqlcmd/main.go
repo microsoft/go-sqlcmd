@@ -211,17 +211,17 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		return 1, err
 	}
 
-	iactive := args.InputFile == nil && args.Query == ""
-	uactive := args.UserName != ""
+	var connectConfig sqlcmd.ConnectSettings
+	setConnect(&connectConfig, args, vars)
 	var line sqlcmd.Console = nil
-	if iactive || uactive {
+	if connectConfig.RequiresPassword() {
 		line = consoleAllocator("")
 		defer line.Close()
 	}
 
 	s := sqlcmd.New(line, wd, vars)
 	s.UnicodeOutputFile = args.UnicodeOutputFile
-	setConnect(&s.Connect, args, vars)
+
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {
@@ -266,6 +266,9 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	if err != nil {
 		return 1, err
 	}
+
+	iactive := args.InputFile == nil && args.Query == ""
+
 	if iactive || s.Query != "" {
 		err = s.Run(once, false)
 	} else {
