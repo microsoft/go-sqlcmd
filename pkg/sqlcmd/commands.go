@@ -8,6 +8,7 @@ import (
 	"os"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/alecthomas/kong"
@@ -57,8 +58,7 @@ func newCommands() Commands {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:ERROR(?:[ \t]+(.*$)|$)`),
 			action: errorCommand,
 			name:   "ERROR",
-		},
-		"READFILE": {
+		}, "READFILE": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:R(?:[ \t]+(.*$)|$)`),
 			action: readFileCommand,
 			name:   "READFILE",
@@ -143,7 +143,13 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 		}
 	}
 	query = strings.TrimSpace(params[1 : len(params)-1])
-	if query != "" {
+	s.batch.Reset([]rune(query))
+	_, _, err := s.batch.Next()
+	if err != nil {
+		return err
+	}
+	query = s.batch.String()
+	if s.batch.String() != "" {
 		query = s.getRunnableQuery(query)
 		s.Exitcode, _ = s.runQuery(query)
 	}
@@ -239,7 +245,7 @@ func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 {
 		return InvalidCommandError(":R", line)
 	}
-	return s.IncludeFile(args[0], false)
+	return s.IncludeFile(resolveArgumentVariables(s, []rune(args[0])), false)
 }
 
 // setVarCommand parses a variable setting and applies it to the current Sqlcmd variables
@@ -313,12 +319,17 @@ type connectData struct {
 	Database             string `short:"D"`
 	Username             string `short:"U"`
 	Password             string `short:"P"`
-	LoginTimeout         int    `short:"l"`
+	LoginTimeout         string `short:"l"`
 	AuthenticationMethod string `short:"G"`
 }
 
 func connectCommand(s *Sqlcmd, args []string, line uint) error {
-	if len(args) == 0 || strings.TrimSpace(args[0]) == "" {
+
+	if len(args) == 0 {
+		return InvalidCommandError("CONNECT", line)
+	}
+	cmdLine := strings.TrimSpace(args[0])
+	if cmdLine == "" {
 		return InvalidCommandError("CONNECT", line)
 	}
 	arguments := &connectData{}
@@ -326,20 +337,73 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	if err != nil {
 		return InvalidCommandError("CONNECT", line)
 	}
-	if _, err = parser.Parse(strings.Split(args[0], " ")); err != nil {
+
+	// Fields removes extra whitespace.
+	// Note :connect doesn't support passwords with spaces
+	if _, err = parser.Parse(strings.Fields(cmdLine)); err != nil {
 		return InvalidCommandError("CONNECT", line)
 	}
 
 	connect := s.Connect
-	connect.UserName = arguments.Username
-	connect.Password = arguments.Password
-	connect.ServerName = arguments.Server
-	if arguments.LoginTimeout > 0 {
-		connect.LoginTimeoutSeconds = arguments.LoginTimeout
+	connect.UserName = resolveArgumentVariables(s, []rune(arguments.Username))
+	connect.Password = resolveArgumentVariables(s, []rune(arguments.Password))
+	connect.ServerName = resolveArgumentVariables(s, []rune(arguments.Server))
+	timeout := resolveArgumentVariables(s, []rune(arguments.LoginTimeout))
+	if timeout != "" {
+		if timeoutSeconds, err := strconv.ParseInt(timeout, 10, 32); err == nil {
+			if timeoutSeconds < 0 {
+				return InvalidCommandError("CONNECT", line)
+			}
+			connect.LoginTimeoutSeconds = int(timeoutSeconds)
+		}
 	}
 	connect.AuthenticationMethod = arguments.AuthenticationMethod
 	// If no user name is provided we switch to integrated auth
 	_ = s.ConnectDb(&connect, s.lineIo == nil)
 	// ConnectDb prints connection errors already, and failure to connect is not fatal even with -b option
 	return nil
+}
+
+func resolveArgumentVariables(s *Sqlcmd, arg []rune) string {
+	var b *strings.Builder
+	end := len(arg)
+	for i := 0; i < end; {
+		c, next := arg[i], grab(arg, i+1, end)
+		switch {
+		case c == '$' && next == '(':
+			vl, ok := readVariableReference(arg, i+2, end)
+			if ok {
+				varName := string(arg[i+2 : vl])
+				val, ok := s.resolveVariable(varName)
+				if ok {
+					if b == nil {
+						b = new(strings.Builder)
+						b.Grow(len(arg))
+						b.WriteString(string(arg[0:i]))
+					}
+					b.WriteString(val)
+				} else {
+					_, _ = s.GetError().Write([]byte(UndefinedVariable(varName).Error() + SqlcmdEol))
+					if b != nil {
+						b.WriteString(string(arg[i : vl+1]))
+					}
+				}
+				i += ((vl - i) + 1)
+			} else {
+				if b != nil {
+					b.WriteString("$(")
+				}
+				i += 2
+			}
+		default:
+			if b != nil {
+				b.WriteRune(c)
+			}
+			i++
+		}
+	}
+	if b == nil {
+		return string(arg)
+	}
+	return b.String()
 }
