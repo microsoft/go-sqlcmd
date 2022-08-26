@@ -5,7 +5,7 @@ import (
 )
 
 func sysCommand(arg string) *exec.Cmd {
-	cmd := exec.Command(comSpec(), comArgs(arg))
+	cmd := exec.Command(comSpec(), "-c", arg)
 	return cmd
 }
 
@@ -13,8 +13,4 @@ func sysCommand(arg string) *exec.Cmd {
 func comSpec() string {
 	// /bin/sh will be a link to the shell
 	return `/bin/sh`
-}
-
-func comArgs(args string) string {
-	return `-c "` + args + `"`
 }
