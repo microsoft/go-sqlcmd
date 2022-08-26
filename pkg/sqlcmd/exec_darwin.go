@@ -1,7 +1,6 @@
 package sqlcmd
 
 import (
-	"os"
 	"os/exec"
 )
 
