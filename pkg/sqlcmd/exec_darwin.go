@@ -16,5 +16,5 @@ func comSpec() string {
 }
 
 func comArgs(args string) string {
-	return args
+	return `-c "` + args + `"`
 }
