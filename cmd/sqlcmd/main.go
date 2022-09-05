@@ -201,9 +201,10 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 }
 
-type allocConsole func(historyFile string) sqlcmd.Console
-
-var consoleAllocator allocConsole = console.NewConsole
+func IsConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
+	iactive := args.InputFile == nil && args.Query == ""
+	return iactive || connect.RequiresPassword()
+}
 
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	wd, err := os.Getwd()
@@ -214,8 +215,8 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	var connectConfig sqlcmd.ConnectSettings
 	setConnect(&connectConfig, args, vars)
 	var line sqlcmd.Console = nil
-	if connectConfig.RequiresPassword() {
-		line = consoleAllocator("")
+	if IsConsoleInitializationRequired(&connectConfig, args) {
+		line = console.NewConsole("")
 		defer line.Close()
 	}
 
@@ -232,7 +233,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		return 1, err
 	}
 
-	setConnect(&s.Connect, args, vars)
+	s.Connect = &connectConfig
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
@@ -268,7 +269,6 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	iactive := args.InputFile == nil && args.Query == ""
-
 	if iactive || s.Query != "" {
 		err = s.Run(once, false)
 	} else {

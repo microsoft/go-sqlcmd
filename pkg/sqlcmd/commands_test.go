@@ -167,7 +167,7 @@ func TestConnectCommand(t *testing.T) {
 	err := connectCommand(s, []string{"someserver -U someuser"}, 1)
 	assert.NoError(t, err, "connectCommand with valid arguments doesn't return an error on connect failure")
 	assert.True(t, prompted, "connectCommand with user name and no password should prompt for password")
-	assert.NotEqual(t, "someserver", s.Connect.ServerName, "On error, sqlCmd.Connect does not copy inputs")
+	assert.Equal(t, "someserver", s.Connect.ServerName, "servername should match with the input parameter")
 
 	err = connectCommand(s, []string{}, 2)
 	assert.EqualError(t, err, InvalidCommandError("CONNECT", 2).Error(), ":Connect with no arguments should return an error")

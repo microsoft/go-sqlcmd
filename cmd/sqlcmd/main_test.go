@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/alecthomas/kong"
-	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -328,67 +327,25 @@ func TestMissingInputFile(t *testing.T) {
 	assert.Equal(t, 1, exitCode, "exitCode")
 }
 
-func TestPasswordPrompt(t *testing.T) {
+func TestConditionsForPasswordPrompt(t *testing.T) {
 
-	prompted := false
-	consoleAllocator = func(historyFile string) sqlcmd.Console {
-		console := &testConsole{
-			OnPasswordPrompt: func(prompt string) ([]byte, error) {
-				assert.Equal(t, "Password:", prompt, "Incorrect password prompt")
-				prompted = true
-				return []byte{}, nil
-			},
-			OnReadLine: func() (string, error) {
-				assert.Fail(t, "ReadLine should not be called")
-				return "", nil
-			},
-		}
-		return console
-	}
-
-	args = newArguments()
-	if canTestAzureAuth() {
-		args.UseAad = true
-	}
-	args.InputFile = []string{"testdata/select100.sql"}
+	args := newArguments()
+	args.InputFile = []string{"testdata/someFile.sql"}
+	args.DisableCmdAndWarn = true
 	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	setVars(vars, &args)
+	var connectConfig sqlcmd.ConnectSettings
+	setConnect(&connectConfig, &args, vars)
+	assert.Equal(t, false, IsConsoleInitializationRequired(&connectConfig, &args), "Console initialization was not required")
+	assert.Equal(t, false, connectConfig.RequiresPassword() && connectConfig.Password == "", "Expected value for password prompt condition did not match")
 
-	exitCode, err := run(vars, &args)
-	assert.False(t, prompted, "Password prompt was not expected")
-	assert.NoError(t, err, "run")
-	assert.Equal(t, 0, exitCode, "exitCode")
-
+	args.InputFile = []string{"testdata/someFile.sql"}
 	args.UserName = "someuser"
-	os.Setenv("SQLCMDPASSWORD", "")
 	vars = sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 	setVars(vars, &args)
-	exitCode, err = run(vars, &args)
-	assert.True(t, prompted, "Password prompt not displayed for -U")
-	assert.Error(t, err, "run")
-	assert.Equal(t, 1, exitCode, "exitCode")
-	consoleAllocator = console.NewConsole
-}
-
-type testConsole struct {
-	PromptText       string
-	OnPasswordPrompt func(prompt string) ([]byte, error)
-	OnReadLine       func() (string, error)
-}
-
-func (tc *testConsole) Readline() (string, error) {
-	return tc.OnReadLine()
-}
-
-func (tc *testConsole) ReadPassword(prompt string) ([]byte, error) {
-	return tc.OnPasswordPrompt(prompt)
-}
-
-func (tc *testConsole) SetPrompt(s string) {
-	tc.PromptText = s
-}
-
-func (tc *testConsole) Close() {
+	setConnect(&connectConfig, &args, vars)
+	assert.Equal(t, true, IsConsoleInitializationRequired(&connectConfig, &args), "Console initialization was not required")
+	assert.Equal(t, true, connectConfig.RequiresPassword() && connectConfig.Password == "", "Expected value for password prompt condition did not match")
 }
 
 // Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
