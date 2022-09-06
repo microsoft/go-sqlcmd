@@ -58,7 +58,7 @@ func readCommand(c Commands, r []rune, i, end int) (*Command, []string, int) {
 	return cmd, args, i
 }
 
-// readVariableReference returns the length of the variable reference or false if it's not a valid identifier
+// readVariableReference returns the index of the end of the variable reference or false if it's not a valid identifier
 func readVariableReference(r []rune, i int, end int) (int, bool) {
 	for ; i < end; i++ {
 		if r[i] == ')' {
