@@ -68,8 +68,9 @@ type Sqlcmd struct {
 	Query    string
 	Cmd      Commands
 	// PrintError allows the host to redirect errors away from the default output. Returns false if the error is not redirected by the host.
-	PrintError        func(msg string, severity uint8) bool
-	UnicodeOutputFile bool
+	PrintError           func(msg string, severity uint8) bool
+	UnicodeOutputFile    bool
+	IsInteractiveSession bool
 }
 
 // New creates a new Sqlcmd instance
@@ -91,6 +92,7 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 }
 
 func (s *Sqlcmd) scanNext() (string, error) {
+	s.IsInteractiveSession = true
 	return s.lineIo.Readline()
 }
 
@@ -135,7 +137,7 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				args = make([]string, 0)
 				once = true
 			} else {
-				if iactive {
+				if iactive && s.IsInteractiveSession {
 					_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
 				} else {
 					_, _ = s.GetError().Write([]byte(err.Error() + SqlcmdEol))
@@ -149,7 +151,7 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				break
 			}
 			if err != nil {
-				if iactive {
+				if iactive && s.IsInteractiveSession {
 					_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
 				} else {
 					_, _ = s.GetError().Write([]byte(err.Error() + SqlcmdEol))
