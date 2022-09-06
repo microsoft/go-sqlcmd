@@ -88,6 +88,11 @@ func newCommands() Commands {
 			action: connectCommand,
 			name:   "CONNECT",
 		},
+		"EXEC": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*?:?!!(?:[ \t]+(.*$)|$)`),
+			action: execCommand,
+			name:   "EXEC",
+		},
 	}
 
 }
@@ -172,6 +177,9 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 	if len(args) > 0 {
 		cnt := strings.TrimSpace(args[0])
 		if cnt != "" {
+			if cnt, err = resolveArgumentVariables(s, []rune(cnt), true); err != nil {
+				return err
+			}
 			_, err = fmt.Sscanf(cnt, "%d", &n)
 		}
 	}
@@ -245,7 +253,8 @@ func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 {
 		return InvalidCommandError(":R", line)
 	}
-	return s.IncludeFile(resolveArgumentVariables(s, []rune(args[0])), false)
+	fileName, _ := resolveArgumentVariables(s, []rune(args[0]), false)
+	return s.IncludeFile(fileName, false)
 }
 
 // setVarCommand parses a variable setting and applies it to the current Sqlcmd variables
@@ -345,10 +354,10 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 
 	connect := s.Connect
-	connect.UserName = resolveArgumentVariables(s, []rune(arguments.Username))
-	connect.Password = resolveArgumentVariables(s, []rune(arguments.Password))
-	connect.ServerName = resolveArgumentVariables(s, []rune(arguments.Server))
-	timeout := resolveArgumentVariables(s, []rune(arguments.LoginTimeout))
+	connect.UserName, _ = resolveArgumentVariables(s, []rune(arguments.Username), false)
+	connect.Password, _ = resolveArgumentVariables(s, []rune(arguments.Password), false)
+	connect.ServerName, _ = resolveArgumentVariables(s, []rune(arguments.Server), false)
+	timeout, _ := resolveArgumentVariables(s, []rune(arguments.LoginTimeout), false)
 	if timeout != "" {
 		if timeoutSeconds, err := strconv.ParseInt(timeout, 10, 32); err == nil {
 			if timeoutSeconds < 0 {
@@ -364,7 +373,26 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
-func resolveArgumentVariables(s *Sqlcmd, arg []rune) string {
+func execCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 {
+		return InvalidCommandError("EXEC", line)
+	}
+	cmdLine := strings.TrimSpace(args[0])
+	if cmdLine == "" {
+		return InvalidCommandError("EXEC", line)
+	}
+	if cmdLine, err := resolveArgumentVariables(s, []rune(cmdLine), true); err != nil {
+		return err
+	} else {
+		cmd := sysCommand(cmdLine)
+		cmd.Stderr = s.GetError()
+		cmd.Stdout = s.GetOutput()
+		_ = cmd.Run()
+	}
+	return nil
+}
+
+func resolveArgumentVariables(s *Sqlcmd, arg []rune, failOnUnresolved bool) (string, error) {
 	var b *strings.Builder
 	end := len(arg)
 	for i := 0; i < end; {
@@ -383,6 +411,9 @@ func resolveArgumentVariables(s *Sqlcmd, arg []rune) string {
 					}
 					b.WriteString(val)
 				} else {
+					if failOnUnresolved {
+						return "", UndefinedVariable(varName)
+					}
 					_, _ = s.GetError().Write([]byte(UndefinedVariable(varName).Error() + SqlcmdEol))
 					if b != nil {
 						b.WriteString(string(arg[i : vl+1]))
@@ -403,7 +434,7 @@ func resolveArgumentVariables(s *Sqlcmd, arg []rune) string {
 		}
 	}
 	if b == nil {
-		return string(arg)
+		return string(arg), nil
 	}
-	return b.String()
+	return b.String(), nil
 }
