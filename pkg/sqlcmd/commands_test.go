@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -44,6 +45,9 @@ func TestCommandParsing(t *testing.T) {
 		{`:EXIT ( )`, "EXIT", []string{"( )"}},
 		{`EXIT `, "EXIT", []string{""}},
 		{`:Connect someserver -U someuser`, "CONNECT", []string{"someserver -U someuser"}},
+		{`:r c:\$(var)\file.sql`, "READFILE", []string{`c:\$(var)\file.sql`}},
+		{`:!! notepad`, "EXEC", []string{"notepad"}},
+		{` !! dir c:\`, "EXEC", []string{`dir c:\`}},
 	}
 
 	for _, test := range commands {
@@ -156,7 +160,7 @@ func TestListCommand(t *testing.T) {
 }
 
 func TestConnectCommand(t *testing.T) {
-	s, _ := setupSqlCmdWithMemoryOutput(t)
+	s, buf := setupSqlCmdWithMemoryOutput(t)
 	prompted := false
 	s.lineIo = &testConsole{
 		OnPasswordPrompt: func(prompt string) ([]byte, error) {
@@ -174,19 +178,26 @@ func TestConnectCommand(t *testing.T) {
 	c := newConnect(t)
 
 	authenticationMethod := ""
-	if c.Password == "" {
-		c.UserName = os.Getenv("AZURE_CLIENT_ID") + "@" + os.Getenv("AZURE_TENANT_ID")
-		c.Password = os.Getenv("AZURE_CLIENT_SECRET")
-		authenticationMethod = "-G ActiveDirectoryServicePrincipal"
-		if c.Password == "" {
-			t.Log("Not trying :Connect with valid password due to no password being available")
-			return
-		}
-		err = connectCommand(s, []string{fmt.Sprintf("%s -U %s -P %s %s", c.ServerName, c.UserName, c.Password, authenticationMethod)}, 3)
-		assert.NoError(t, err, "connectCommand with valid parameters should not return an error")
+	password := ""
+	username := ""
+	if canTestAzureAuth() {
+		authenticationMethod = "-G " + azuread.ActiveDirectoryDefault
+	}
+	if c.Password != "" {
+		password = "-P " + c.Password
+	}
+	if c.UserName != "" {
+		username = "-U " + c.UserName
+	}
+	s.vars.Set("servername", c.ServerName)
+	s.vars.Set("to", "111")
+	buf.buf.Reset()
+	err = connectCommand(s, []string{fmt.Sprintf("$(servername) %s %s %s -l $(to)", username, password, authenticationMethod)}, 3)
+	if assert.NoError(t, err, "connectCommand with valid parameters should not return an error") {
 		// not using assert to avoid printing passwords in the log
-		if s.Connect.UserName != c.UserName || c.Password != s.Connect.Password {
-			t.Fatal("After connect, sqlCmd.Connect is not updated")
+		assert.NotContains(t, buf.buf.String(), "$(servername)", "ConnectDB should have succeeded")
+		if s.Connect.UserName != c.UserName || c.Password != s.Connect.Password || s.Connect.LoginTimeoutSeconds != 111 {
+			t.Fatalf("After connect, sqlCmd.Connect is not updated %+v", s.Connect)
 		}
 	}
 }
@@ -210,5 +221,49 @@ func TestErrorCommand(t *testing.T) {
 	errText, err := os.ReadFile(file.Name())
 	if assert.NoError(t, err, "ReadFile") {
 		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents")
+	}
+}
+
+func TestResolveArgumentVariables(t *testing.T) {
+	type argTest struct {
+		arg string
+		val string
+		err string
+	}
+
+	args := []argTest{
+		{"$(var1)", "var1val", ""},
+		{"$(var1", "$(var1", ""},
+		{`C:\folder\$(var1)\$(var2)\$(var1)\file.sql`, `C:\folder\var1val\$(var2)\var1val\file.sql`, "Sqlcmd: Error: 'var2' scripting variable not defined."},
+		{`C:\folder\$(var1\$(var2)\$(var1)\file.sql`, `C:\folder\$(var1\$(var2)\var1val\file.sql`, "Sqlcmd: Error: 'var2' scripting variable not defined."},
+	}
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	s.vars.Set("var1", "var1val")
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	defer buf.Close()
+	s.SetError(buf)
+	for _, test := range args {
+		actual, _ := resolveArgumentVariables(s, []rune(test.arg), false)
+		assert.Equal(t, test.val, actual, "Incorrect argument parsing of "+test.arg)
+		assert.Contains(t, buf.buf.String(), test.err, "Error output mismatch for "+test.arg)
+		buf.buf.Reset()
+	}
+	actual, err := resolveArgumentVariables(s, []rune("$(var1)$(var2)"), true)
+	if assert.ErrorContains(t, err, UndefinedVariable("var2").Error(), "fail on unresolved variable") {
+		assert.Empty(t, actual, "fail on unresolved variable")
+	}
+}
+
+func TestExecCommand(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	s.vars.Set("var1", "hello")
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	defer buf.Close()
+	s.SetOutput(buf)
+	err := execCommand(s, []string{`echo $(var1)`}, 1)
+	if assert.NoError(t, err, "execCommand with valid arguments") {
+		assert.Equal(t, buf.buf.String(), "hello"+SqlcmdEol, "echo output should be in sqlcmd output")
 	}
 }
