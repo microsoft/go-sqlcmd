@@ -201,7 +201,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 }
 
-func IsConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
+func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
 	iactive := args.InputFile == nil && args.Query == ""
 	return iactive || connect.RequiresPassword()
 }
@@ -215,7 +215,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	var connectConfig sqlcmd.ConnectSettings
 	setConnect(&connectConfig, args, vars)
 	var line sqlcmd.Console = nil
-	if IsConsoleInitializationRequired(&connectConfig, args) {
+	if isConsoleInitializationRequired(&connectConfig, args) {
 		line = console.NewConsole("")
 		defer line.Close()
 	}

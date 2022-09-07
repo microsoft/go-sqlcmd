@@ -330,7 +330,7 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 		return InvalidCommandError("CONNECT", line)
 	}
 
-	connect := s.Connect
+	connect := *s.Connect
 	connect.UserName = arguments.Username
 	connect.Password = arguments.Password
 	connect.ServerName = arguments.Server
@@ -339,7 +339,7 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 	connect.AuthenticationMethod = arguments.AuthenticationMethod
 	// If no user name is provided we switch to integrated auth
-	_ = s.ConnectDb(connect, s.lineIo == nil)
+	_ = s.ConnectDb(&connect, s.lineIo == nil)
 	// ConnectDb prints connection errors already, and failure to connect is not fatal even with -b option
 	return nil
 }

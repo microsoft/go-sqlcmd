@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/alecthomas/kong"
+	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -329,23 +330,50 @@ func TestMissingInputFile(t *testing.T) {
 
 func TestConditionsForPasswordPrompt(t *testing.T) {
 
-	args := newArguments()
-	args.InputFile = []string{"testdata/someFile.sql"}
-	args.DisableCmdAndWarn = true
-	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
-	setVars(vars, &args)
-	var connectConfig sqlcmd.ConnectSettings
-	setConnect(&connectConfig, &args, vars)
-	assert.Equal(t, false, IsConsoleInitializationRequired(&connectConfig, &args), "Console initialization was not required")
-	assert.Equal(t, false, connectConfig.RequiresPassword() && connectConfig.Password == "", "Expected value for password prompt condition did not match")
+	type test struct {
+		authenticationMethod string
+		inputFile            []string
+		username             string
+		pwd                  string
+		expectedResult       bool
+	}
+	tests := []test{
+		// Positive Testcases
+		{sqlcmd.SqlPassword, []string{""}, "someuser", "", true},
+		{sqlcmd.NotSpecified, []string{"testdata/someFile.sql"}, "someuser", "", true},
+		{azuread.ActiveDirectoryPassword, []string{""}, "someuser", "", true},
+		{azuread.ActiveDirectoryPassword, []string{"testdata/someFile.sql"}, "someuser", "", true},
+		{azuread.ActiveDirectoryServicePrincipal, []string{""}, "someuser", "", true},
+		{azuread.ActiveDirectoryServicePrincipal, []string{"testdata/someFile.sql"}, "someuser", "", true},
+		{azuread.ActiveDirectoryApplication, []string{""}, "someuser", "", true},
+		{azuread.ActiveDirectoryApplication, []string{"testdata/someFile.sql"}, "someuser", "", true},
 
-	args.InputFile = []string{"testdata/someFile.sql"}
-	args.UserName = "someuser"
-	vars = sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
-	setVars(vars, &args)
-	setConnect(&connectConfig, &args, vars)
-	assert.Equal(t, true, IsConsoleInitializationRequired(&connectConfig, &args), "Console initialization was not required")
-	assert.Equal(t, true, connectConfig.RequiresPassword() && connectConfig.Password == "", "Expected value for password prompt condition did not match")
+		//Negative Testcases
+		{sqlcmd.NotSpecified, []string{""}, "", "", false},
+		{sqlcmd.NotSpecified, []string{"testdata/someFile.sql"}, "", "", false},
+		{azuread.ActiveDirectoryDefault, []string{""}, "someuser", "", false},
+		{azuread.ActiveDirectoryDefault, []string{"testdata/someFile.sql"}, "someuser", "", false},
+		{azuread.ActiveDirectoryInteractive, []string{""}, "someuser", "", false},
+		{azuread.ActiveDirectoryInteractive, []string{"testdata/someFile.sql"}, "someuser", "", false},
+		{azuread.ActiveDirectoryManagedIdentity, []string{""}, "someuser", "", false},
+		{azuread.ActiveDirectoryManagedIdentity, []string{"testdata/someFile.sql"}, "someuser", "", false},
+	}
+
+	for _, testcase := range tests {
+		t.Log(testcase.authenticationMethod, testcase.inputFile, testcase.username, testcase.pwd, testcase.expectedResult)
+		args := newArguments()
+		args.DisableCmdAndWarn = true
+		args.InputFile = testcase.inputFile
+		args.UserName = testcase.username
+		vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+		setVars(vars, &args)
+		var connectConfig sqlcmd.ConnectSettings
+		setConnect(&connectConfig, &args, vars)
+		connectConfig.AuthenticationMethod = testcase.authenticationMethod
+		connectConfig.Password = testcase.pwd
+		assert.Equal(t, testcase.expectedResult, isConsoleInitializationRequired(&connectConfig, &args), "Unexpected test result encountered for console initialization")
+		assert.Equal(t, testcase.expectedResult, connectConfig.RequiresPassword() && connectConfig.Password == "", "Unexpected test result encountered for password prompt conditions")
+	}
 }
 
 // Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
