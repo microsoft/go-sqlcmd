@@ -62,7 +62,7 @@ type Sqlcmd struct {
 	batch            *Batch
 	// Exitcode is returned to the operating system when the process exits
 	Exitcode int
-	Connect  ConnectSettings
+	Connect  *ConnectSettings
 	vars     *Variables
 	Format   Formatter
 	Query    string
@@ -80,6 +80,7 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 		workingDirectory: workingDirectory,
 		vars:             vars,
 		Cmd:              newCommands(),
+		Connect:          &ConnectSettings{},
 	}
 	s.batch = NewBatch(s.scanNext, s.Cmd)
 	mssql.SetContextLogger(s)
@@ -225,12 +226,12 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 	newConnection := connect != nil
 	if connect == nil {
-		connect = &s.Connect
+		connect = s.Connect
 	}
 
 	var connector driver.Connector
 	useAad := !connect.sqlAuthentication() && !connect.integratedAuthentication()
-	if connect.requiresPassword() && !nopw && connect.Password == "" {
+	if connect.RequiresPassword() && !nopw && connect.Password == "" {
 		var err error
 		if connect.Password, err = s.promptPassword(); err != nil {
 			return err
@@ -271,7 +272,7 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 		s.vars.Set(SQLCMDUSER, u.Username)
 	}
 	if newConnection {
-		s.Connect = *connect
+		s.Connect = connect
 	}
 	if s.batch != nil {
 		s.batch.batchline = 1

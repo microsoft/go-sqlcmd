@@ -46,6 +46,8 @@ func TestCommandParsing(t *testing.T) {
 		{`EXIT `, "EXIT", []string{""}},
 		{`:Connect someserver -U someuser`, "CONNECT", []string{"someserver -U someuser"}},
 		{`:r c:\$(var)\file.sql`, "READFILE", []string{`c:\$(var)\file.sql`}},
+		{`:!! notepad`, "EXEC", []string{"notepad"}},
+		{` !! dir c:\`, "EXEC", []string{`dir c:\`}},
 	}
 
 	for _, test := range commands {
@@ -169,7 +171,7 @@ func TestConnectCommand(t *testing.T) {
 	err := connectCommand(s, []string{"someserver -U someuser"}, 1)
 	assert.NoError(t, err, "connectCommand with valid arguments doesn't return an error on connect failure")
 	assert.True(t, prompted, "connectCommand with user name and no password should prompt for password")
-	assert.NotEqual(t, "someserver", s.Connect.ServerName, "On error, sqlCmd.Connect does not copy inputs")
+	assert.NotEqual(t, "someserver", s.Connect.ServerName, "On connection failure, sqlCmd.Connect does not copy inputs")
 
 	err = connectCommand(s, []string{}, 2)
 	assert.EqualError(t, err, InvalidCommandError("CONNECT", 2).Error(), ":Connect with no arguments should return an error")
@@ -242,9 +244,26 @@ func TestResolveArgumentVariables(t *testing.T) {
 	defer buf.Close()
 	s.SetError(buf)
 	for _, test := range args {
-		actual := resolveArgumentVariables(s, []rune(test.arg))
+		actual, _ := resolveArgumentVariables(s, []rune(test.arg), false)
 		assert.Equal(t, test.val, actual, "Incorrect argument parsing of "+test.arg)
 		assert.Contains(t, buf.buf.String(), test.err, "Error output mismatch for "+test.arg)
 		buf.buf.Reset()
+	}
+	actual, err := resolveArgumentVariables(s, []rune("$(var1)$(var2)"), true)
+	if assert.ErrorContains(t, err, UndefinedVariable("var2").Error(), "fail on unresolved variable") {
+		assert.Empty(t, actual, "fail on unresolved variable")
+	}
+}
+
+func TestExecCommand(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	s.vars.Set("var1", "hello")
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	defer buf.Close()
+	s.SetOutput(buf)
+	err := execCommand(s, []string{`echo $(var1)`}, 1)
+	if assert.NoError(t, err, "execCommand with valid arguments") {
+		assert.Equal(t, buf.buf.String(), "hello"+SqlcmdEol, "echo output should be in sqlcmd output")
 	}
 }
