@@ -118,7 +118,7 @@ func TestSqlCmdOutputAndError(t *testing.T) {
 	if assert.NoError(t, err, "s.Run(once = true)") {
 		bytes, err := os.ReadFile(errfile.Name())
 		if assert.NoError(t, err, "os.ReadFile") {
-			assert.Equal(t, "Sqlcmd: Error: Syntax error at line 1."+SqlcmdEol, string(bytes), "Incorrect output from Run")
+			assert.Equal(t, "Sqlcmd: Error: Syntax error at line 1."+SqlcmdEol, string(bytes), "Expected syntax error not received for query execution")
 		}
 	}
 	s.Query = "select '1'"
@@ -126,7 +126,23 @@ func TestSqlCmdOutputAndError(t *testing.T) {
 	if assert.NoError(t, err, "s.Run(once = true)") {
 		bytes, err := os.ReadFile(outfile.Name())
 		if assert.NoError(t, err, "os.ReadFile") {
-			assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol+"(1 row affected)"+SqlcmdEol, string(bytes), "Incorrect output from Run")
+			assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol+"(1 row affected)"+SqlcmdEol, string(bytes), "Unexpected output for query execution")
+		}
+	}
+
+	s, outfile, errfile = setupSqlcmdWithFileErrorOutput(t)
+	defer os.Remove(outfile.Name())
+	defer os.Remove(errfile.Name())
+	dataPath := "testdata" + string(os.PathSeparator)
+	err = s.IncludeFile(dataPath+"teststdouterr.sql", false)
+	if assert.NoError(t, err, "IncludeFile teststdouterr.sql false") {
+		bytes, err := os.ReadFile(outfile.Name())
+		if assert.NoError(t, err, "os.ReadFile outfile") {
+			assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol+"(1 row affected)"+SqlcmdEol, string(bytes), "Unexpected output for sql file execution in outfile")
+		}
+		bytes, err = os.ReadFile(errfile.Name())
+		if assert.NoError(t, err, "os.ReadFile errfile") {
+			assert.Equal(t, "Sqlcmd: Error: Syntax error at line 1."+SqlcmdEol, string(bytes), "Expected syntax error not found in errfile")
 		}
 	}
 }
