@@ -1,7 +1,7 @@
 steps: 
   - task: GoTool@0
     inputs:
-      version: '1.16.5'
+      version: '1.18'
   - task: Go@0
     displayName: 'Go: get dependencies'
     inputs:

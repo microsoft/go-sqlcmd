@@ -23,7 +23,7 @@ type SQLCmdArguments struct {
 	// Whether to trust the server certificate on an encrypted connection
 	TrustServerCertificate bool   `short:"C" help:"Implicitly trust the server certificate without validation."`
 	DatabaseName           string `short:"d" help:"This option sets the sqlcmd scripting variable SQLCMDDBNAME. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits."`
-	UseTrustedConnection   bool   `short:"E" xor:"uid, auth" help:"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any any environment variables that define user name and password."`
+	UseTrustedConnection   bool   `short:"E" xor:"uid, auth" help:"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password."`
 	UserName               string `short:"U" xor:"uid" help:"The login name or contained database user name.  For contained database users, you must provide the database name option"`
 	// Files from which to read query text
 	InputFile  []string `short:"i" xor:"input1, input2" type:"existingFile" help:"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with -Q/-q."`
@@ -53,9 +53,7 @@ type SQLCmdArguments struct {
 	ErrorsToStderr              int               `short:"r" help:"Redirects the error message output to the screen (stderr). A value of 0 means messages with severity >= 11 will b redirected. A value of 1 means all error message output including PRINT is redirected." enum:"-1,0,1" default:"-1"`
 	Headers                     int               `short:"h" help:"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed."`
 	UnicodeOutputFile           bool              `short:"u" help:"Specifies that all output files are encoded with little-endian Unicode"`
-
-	Version bool `help:"Show the sqlcmd version information"`
-
+	Version                     bool              `help:"Show the sqlcmd version information"`
 	// Keep Help at the end of the list
 	Help bool `short:"?" help:"Show syntax summary."`
 }
@@ -108,14 +106,11 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 }
 
 func main() {
-
 	ctx := kong.Parse(&args, kong.NoDefaultHelp())
-
 	if args.Version {
 		ctx.Printf("v%v", version)
 		os.Exit(0)
 	}
-
 	if args.Help {
 		_ = ctx.PrintUsage(false)
 		os.Exit(0)
@@ -254,7 +249,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		if args.ErrorsToStderr >= 0 {
 			s.PrintError = func(msg string, severity uint8) bool {
 				if severity >= stderrSeverity {
-					_, _ = os.Stderr.Write([]byte(msg))
+					_, _ = os.Stderr.Write([]byte(msg + sqlcmd.SqlcmdEol))
 					return true
 				}
 				return false
@@ -278,6 +273,8 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	} else {
 		for f := range args.InputFile {
 			if err = s.IncludeFile(args.InputFile[f], true); err != nil {
+				_, _ = os.Stderr.Write([]byte(err.Error() + sqlcmd.SqlcmdEol))
+				s.Exitcode = 1
 				break
 			}
 		}

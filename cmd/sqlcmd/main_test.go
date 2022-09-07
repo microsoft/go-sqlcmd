@@ -257,6 +257,40 @@ func TestQueryAndExit(t *testing.T) {
 	}
 }
 
+<<<<<<< HEAD
+=======
+// Test to verify fix for issue: https://github.com/microsoft/go-sqlcmd/issues/98
+//   1. Verify when -b is passed in (ExitOnError), we don't always get an error (even when input is good)
+//   2, Verify when the input is actually bad, we do get an error
+func TestExitOnError(t *testing.T) {
+	args = newArguments()
+	args.InputFile = []string{"testdata/select100.sql"}
+	args.ErrorsToStderr = 0
+	args.ExitOnError = true
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
+
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+
+	args.InputFile = []string{"testdata/bad.sql"}
+
+	vars = sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	setVars(vars, &args)
+
+	exitCode, err = run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 1, exitCode, "exitCode")
+
+	t.Logf("Test Completed") // Needs some output to stdout to count as a test
+}
+
+>>>>>>> main
 func TestAzureAuth(t *testing.T) {
 
 	if !canTestAzureAuth() {
@@ -282,6 +316,26 @@ func TestAzureAuth(t *testing.T) {
 	}
 }
 
+<<<<<<< HEAD
+=======
+func TestMissingInputFile(t *testing.T) {
+	args = newArguments()
+	args.InputFile = []string{"testdata/missingFile.sql"}
+
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
+
+	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.Error(t, err, "run")
+	assert.Contains(t, err.Error(), "Error occurred while opening or operating on file", "Unexpected error: "+err.Error())
+	assert.Equal(t, 1, exitCode, "exitCode")
+}
+
+>>>>>>> main
 // Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
 func canTestAzureAuth() bool {
 	server := os.Getenv(sqlcmd.SQLCMDSERVER)
