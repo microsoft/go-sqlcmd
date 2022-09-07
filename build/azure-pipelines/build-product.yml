@@ -45,6 +45,7 @@ stages:
             OS: $(os)
             Arch: $(arch)
             ArtifactName: $(artifact)
+            VersionTag: $(VERSION_TAG)
 
   - stage: CreatePackages
     displayName: Create packages to publish
