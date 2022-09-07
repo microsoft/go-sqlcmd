@@ -7,17 +7,11 @@ parameters:
   default: 
 - name: ArtifactName
   type: string
+- name: VersionTag
+  type: string
+  default:  $(Build.BuildNumber)
 
 steps:
-- task: PowerShell@2
-  displayName: Set last tag to variable
-  inputs:
-    targetType: 'inline'
-    script: |
-      $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
-      Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
-      Write-Host($VERSION_TAG)
-
 - task: GoTool@0
   inputs:
     version: '1.18'
@@ -54,7 +48,7 @@ steps:
   displayName: 'Go: build sqlcmd'
   inputs:
     command: 'build'
-    arguments: '-o $(Build.BinariesDirectory) -ldflags="-X main.version=$(VERSION_TAG)"'
+    arguments: '-o $(Build.BinariesDirectory) -ldflags="-X main.version=${{ parameters.VersionTag }}"'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
   env:
       GOOS: ${{ parameters.OS }}
