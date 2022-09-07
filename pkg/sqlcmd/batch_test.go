@@ -154,7 +154,7 @@ func TestReadString(t *testing.T) {
 	}
 }
 
-func TestReadStringMalformVariable(t *testing.T) {
+func TestReadStringMalformedVariable(t *testing.T) {
 	tests := []string{
 		"'select $(x'",
 		"'  $((x'",
