@@ -353,7 +353,7 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 		return InvalidCommandError("CONNECT", line)
 	}
 
-	connect := s.Connect
+	connect := *s.Connect
 	connect.UserName, _ = resolveArgumentVariables(s, []rune(arguments.Username), false)
 	connect.Password, _ = resolveArgumentVariables(s, []rune(arguments.Password), false)
 	connect.ServerName, _ = resolveArgumentVariables(s, []rune(arguments.Server), false)

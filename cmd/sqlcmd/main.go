@@ -208,22 +208,28 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 }
 
+func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
+	iactive := args.InputFile == nil && args.Query == ""
+	return iactive || connect.RequiresPassword()
+}
+
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
 	}
 
-	iactive := args.InputFile == nil && args.Query == ""
+	var connectConfig sqlcmd.ConnectSettings
+	setConnect(&connectConfig, args, vars)
 	var line sqlcmd.Console = nil
-	if iactive {
+	if isConsoleInitializationRequired(&connectConfig, args) {
 		line = console.NewConsole("")
 		defer line.Close()
 	}
 
 	s := sqlcmd.New(line, wd, vars)
 	s.UnicodeOutputFile = args.UnicodeOutputFile
-	setConnect(&s.Connect, args, vars)
+
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {
@@ -234,7 +240,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		return 1, err
 	}
 
-	setConnect(&s.Connect, args, vars)
+	s.Connect = &connectConfig
 	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
@@ -264,10 +270,12 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		s.Query = args.Query
 	}
 	// connect using no overrides
-	err = s.ConnectDb(nil, !iactive)
+	err = s.ConnectDb(nil, line == nil)
 	if err != nil {
 		return 1, err
 	}
+
+	iactive := args.InputFile == nil && args.Query == ""
 	if iactive || s.Query != "" {
 		err = s.Run(once, false)
 	} else {
