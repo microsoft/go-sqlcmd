@@ -452,6 +452,16 @@ func TestDateTimeFormats(t *testing.T) {
 	}
 }
 
+func TestQueryServerPropertyReturnsColumnName(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "100")
+	defer buf.Close()
+	err := runSqlCmd(t, s, []string{"select SERVERPROPERTY('EngineEdition') AS DatabaseEngineEdition", "GO"})
+	if assert.NoError(t, err, "select should succeed") {
+		assert.Contains(t, buf.buf.String(), "DatabaseEngineEdition", "Column name missing from output")
+	}
+}
+
 // runSqlCmd uses lines as input for sqlcmd instead of relying on file or console input
 func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
 	t.Helper()

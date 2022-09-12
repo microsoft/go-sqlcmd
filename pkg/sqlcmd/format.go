@@ -402,8 +402,14 @@ func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) ([]c
 			} else {
 				columnDetails[i].displayWidth = variable
 			}
+		case "SQL_VARIANT":
+			if fixed > 0 {
+				columnDetails[i].displayWidth = min64(fixed, 8000)
+			} else {
+				columnDetails[i].displayWidth = 8000
+			}
 		// Fixed length types
-		case "CHAR", "NCHAR", "VARIANT":
+		case "CHAR", "NCHAR":
 			if fixed > 0 {
 				length = min64(fixed, length)
 			}
