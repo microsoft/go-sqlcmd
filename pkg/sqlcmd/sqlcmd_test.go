@@ -367,10 +367,10 @@ func TestPromptForPasswordPositive(t *testing.T) {
 	v := InitializeVariables(true)
 	s := New(console, "", v)
 	// attempt without password prompt
-	err := s.ConnectDb(&c, true)
+	err := s.ConnectDb(c, true)
 	assert.False(t, prompted, "ConnectDb with nopw=true should not prompt for password")
 	assert.Error(t, err, "ConnectDb with nopw==true and no password provided")
-	err = s.ConnectDb(&c, false)
+	err = s.ConnectDb(c, false)
 	assert.True(t, prompted, "ConnectDb with !nopw should prompt for password")
 	assert.NoError(t, err, "ConnectDb with !nopw and valid password returned from prompt")
 	if s.Connect.Password != password {
@@ -516,7 +516,7 @@ func canTestAzureAuth() bool {
 	return strings.Contains(server, ".database.windows.net") && userName == ""
 }
 
-func newConnect(t testing.TB) ConnectSettings {
+func newConnect(t testing.TB) *ConnectSettings {
 	t.Helper()
 	connect := ConnectSettings{
 		UserName:   os.Getenv(SQLCMDUSER),
@@ -528,5 +528,5 @@ func newConnect(t testing.TB) ConnectSettings {
 		t.Log("Using ActiveDirectoryDefault")
 		connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	}
-	return connect
+	return &connect
 }
