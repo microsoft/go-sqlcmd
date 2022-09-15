@@ -183,7 +183,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-s390x.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(versionTag)-linux-s390x.tar.bz2'
   
       - task: PublishPipelineArtifact@1
         displayName: 'Publish release archives'
