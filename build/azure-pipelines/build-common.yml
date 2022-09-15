@@ -7,8 +7,11 @@ parameters:
   default: 
 - name: ArtifactName
   type: string
+- name: VersionTag
+  type: string
+  default:  $(Build.BuildNumber)
 
-steps: 
+steps:
 - task: GoTool@0
   inputs:
     version: '1.18'
@@ -45,7 +48,7 @@ steps:
   displayName: 'Go: build sqlcmd'
   inputs:
     command: 'build'
-    arguments: '-o $(Build.BinariesDirectory)'
+    arguments: '-o $(Build.BinariesDirectory) -ldflags="-X main.version=${{ parameters.VersionTag }}"'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
   env:
       GOOS: ${{ parameters.OS }}
