@@ -5,9 +5,15 @@ trigger:
 
 pr: none
 
+parameters:
+  - name: PushToGithub
+    default: true
+    type: boolean
+    displayName: Push packages to github
+
 stages:
   - stage: Compile
-    displayName: Compile sqlcmd on all 3 platforms
+    displayName: Compile sqlcmd on all supported platforms
     jobs:
     - job: Sqlcmd
       strategy:
@@ -37,6 +43,11 @@ stages:
             artifact: WindowsArm
             os:
             arch: arm
+          linuxs390x:
+            imageName: 'ubuntu-latest'
+            artifact: LinuxS390x
+            os:
+            arch: s390x
       pool:
         vmImage: $(imageName)
       steps:
@@ -165,6 +176,15 @@ stages:
           tarCompression: 'bz2'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(versionTag)-linux-arm64.tar.bz2'
   
+      - task: ArchiveFiles@2
+        displayName: Tar Linux s390x binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinuxS390x'
+          includeRootFolder: false
+          archiveType: 'tar'
+          tarCompression: 'bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-s390x.tar.bz2'
+  
       - task: PublishPipelineArtifact@1
         displayName: 'Publish release archives'
         inputs:
@@ -172,6 +192,7 @@ stages:
           artifactName: SqlcmdRelease
           
       - task: GitHubRelease@1
+        condition: eq('${{ parameters.PushToGithub}}', 'true')
         inputs:
           gitHubConnection: 'gosqlcmd_github'
           repositoryName: '$(Build.Repository.Name)'
