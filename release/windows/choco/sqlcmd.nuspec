@@ -7,6 +7,7 @@
     <title>sqlcmd (Install)</title>
     <authors>Microsoft</authors>
     <projectUrl>https://docs.microsoft.com/en-us/sql/tools/go-sqlcmd-utility</projectUrl>
+    <iconUrl>https://github.com/microsoft/go-sqlcmd/blob/main/release/windows/msi/resources/go-sqlcmd_256.png</iconUrl>
     <copyright>Copyright (c) Microsoft Corporation</copyright>
     <licenseUrl>https://github.com/microsoft/go-sqlcmd/blob/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
