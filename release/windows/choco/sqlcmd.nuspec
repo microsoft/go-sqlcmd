@@ -5,9 +5,9 @@
     <id>sqlcmd</id>
     <version>0.8.1</version>
     <title>sqlcmd (Install)</title>
-    <authors>dpgswdist@microsoft.com</authors>
+    <authors>Microsoft</authors>
     <projectUrl>https://github.com/microsoft/go-sqlcmd</projectUrl>
-    <copyright>2022</copyright>
+    <copyright>Copyright (c) Microsoft Corporation</copyright>
     <licenseUrl>https://github.com/microsoft/go-sqlcmd/blob/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectSourceUrl>https://github.com/microsoft/go-sqlcmd</projectSourceUrl>
