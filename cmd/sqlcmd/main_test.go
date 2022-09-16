@@ -85,6 +85,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-u"}, func(args SQLCmdArguments) bool {
 			return args.UnicodeOutputFile
 		}},
+		{[]string{"--version"}, func(args SQLCmdArguments) bool {
+			return args.Version
+		}},
 	}
 
 	for _, test := range commands {

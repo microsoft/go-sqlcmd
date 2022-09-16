@@ -13,6 +13,8 @@ import (
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 )
 
+var version = "Local-build" // overridden in pipeline builds with: -ldflags="-X main.version=$(VersionTag)"
+
 // SQLCmdArguments defines the command line arguments for sqlcmd
 // The exhaustive list is at https://docs.microsoft.com/sql/tools/sqlcmd-utility?view=sql-server-ver15
 type SQLCmdArguments struct {
@@ -51,6 +53,7 @@ type SQLCmdArguments struct {
 	ErrorsToStderr              int               `short:"r" help:"Redirects the error message output to the screen (stderr). A value of 0 means messages with severity >= 11 will b redirected. A value of 1 means all error message output including PRINT is redirected." enum:"-1,0,1" default:"-1"`
 	Headers                     int               `short:"h" help:"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed."`
 	UnicodeOutputFile           bool              `short:"u" help:"Specifies that all output files are encoded with little-endian Unicode"`
+	Version                     bool              `help:"Show the sqlcmd version information"`
 	// Keep Help at the end of the list
 	Help bool `short:"?" help:"Show syntax summary."`
 }
@@ -104,6 +107,10 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 
 func main() {
 	ctx := kong.Parse(&args, kong.NoDefaultHelp())
+	if args.Version {
+		ctx.Printf("%v", version)
+		os.Exit(0)
+	}
 	if args.Help {
 		_ = ctx.PrintUsage(false)
 		os.Exit(0)

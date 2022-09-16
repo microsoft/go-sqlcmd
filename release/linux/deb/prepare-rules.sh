@@ -44,7 +44,7 @@ sqlcmd (${CLI_VERSION}-${CLI_VERSION_REVISION:=1}) stable; urgency=low
 
   * Debian package release.
 
- -- sqlcmd tools team <dpgswdist@microsoft.com@microsoft.com>  $(date -R)
+ -- sqlcmd tools team <dpgswdist@microsoft.com>  $(date -R)
 
 EOM
 

@@ -5,11 +5,17 @@ trigger:
 
 pr: none
 
+parameters:
+  - name: PushToGithub
+    default: true
+    type: boolean
+    displayName: Push packages to github
+
 stages:
   - stage: Compile
-    displayName: Compile sqlcmd on all 3 platforms
+    displayName: Compile sqlcmd on all supported platforms
     jobs:
-    - job: Compile_sqlcmd
+    - job: Sqlcmd
       strategy:
         matrix:
           linux:
@@ -37,14 +43,29 @@ stages:
             artifact: WindowsArm
             os:
             arch: arm
+          linuxs390x:
+            imageName: 'ubuntu-latest'
+            artifact: LinuxS390x
+            os:
+            arch: s390x
       pool:
         vmImage: $(imageName)
       steps:
+        - task: PowerShell@2
+          displayName: Set last tag to variable
+          name: getVersion
+          inputs:
+            targetType: 'inline'
+            script: |
+              $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
+              Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
+              Write-Host($VERSION_TAG)
         - template: build-common.yml
           parameters:
             OS: $(os)
             Arch: $(arch)
             ArtifactName: $(artifact)
+            VersionTag: $(VERSION_TAG)
 
   - stage: CreatePackages
     displayName: Create packages to publish
@@ -52,21 +73,13 @@ stages:
     - job: Sign_and_pack
       pool:
         vmImage: 'windows-latest'
+      variables:
+        versionTag: $[ stageDependencies.Compile.Sqlcmd.outputs['getVersion.VERSION_TAG'] ]
       steps:
-      - task: PowerShell@2
-        displayName: Set last tag to variable
-        inputs:
-          targetType: 'inline'
-          script: |
-            $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
-            Write-Host("##vso[task.setvariable variable=VERSION_TAG]$VERSION_TAG")
-            Write-Host($VERSION_TAG)
-
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
           targetPath: '$(Pipeline.Workspace)'
-      
       - task: EsrpCodeSigning@1
         displayName: Sign Windows binary
         inputs:
@@ -126,7 +139,7 @@ stages:
           rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsAmd64\Sqlcmd.exe'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows-x64.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(versionTag)-windows-x64.zip'
 
       - task: ArchiveFiles@2
         displayName: Zip Windows arm binary
@@ -134,7 +147,7 @@ stages:
           rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows-arm.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(versionTag)-windows-arm.zip'
   
       - task: ArchiveFiles@2
         displayName: Tar Linux amd64 binary
@@ -143,7 +156,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-x64.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(versionTag)-linux-x64.tar.bz2'
 
       - task: ArchiveFiles@2
         displayName: Tar Darwin binary
@@ -152,7 +165,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-darwin-x64.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(versionTag)-darwin-x64.tar.bz2'
 
       - task: ArchiveFiles@2
         displayName: Tar Linux arm64 binary
@@ -161,7 +174,16 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-arm64.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(versionTag)-linux-arm64.tar.bz2'
+  
+      - task: ArchiveFiles@2
+        displayName: Tar Linux s390x binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinuxS390x'
+          includeRootFolder: false
+          archiveType: 'tar'
+          tarCompression: 'bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(versionTag)-linux-s390x.tar.bz2'
   
       - task: PublishPipelineArtifact@1
         displayName: 'Publish release archives'
@@ -170,12 +192,13 @@ stages:
           artifactName: SqlcmdRelease
           
       - task: GitHubRelease@1
+        condition: eq('${{ parameters.PushToGithub}}', 'true')
         inputs:
           gitHubConnection: 'gosqlcmd_github'
           repositoryName: '$(Build.Repository.Name)'
           action: 'create'
           target: '$(Build.SourceVersion)'
           tagSource: 'userSpecifiedTag'
-          tag: '$(VERSION_TAG)'
+          tag: '$(versionTag)'
           changeLogCompareToRelease: 'lastFullRelease'
           changeLogType: 'commitBased'
