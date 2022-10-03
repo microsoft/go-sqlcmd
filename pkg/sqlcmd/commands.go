@@ -116,7 +116,7 @@ func (c Commands) matchCommand(line string) (*Command, []string) {
 }
 
 func warnDisabled(s *Sqlcmd, args []string, line uint) error {
-	s.GetError().Write([]byte(ErrCommandsDisabled.Error() + SqlcmdEol))
+	_, _ = s.GetError().Write([]byte(ErrCommandsDisabled.Error() + SqlcmdEol))
 	return nil
 }
 
