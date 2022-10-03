@@ -267,3 +267,23 @@ func TestExecCommand(t *testing.T) {
 		assert.Equal(t, buf.buf.String(), "hello"+SqlcmdEol, "echo output should be in sqlcmd output")
 	}
 }
+
+func TestDisableSysCommandBlocksExec(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.Cmd.DisableSysCommands(false)
+	c := []string{"set nocount on", ":!! echo hello", "select 100", "go"}
+	err := runSqlCmd(t, s, c)
+	if assert.NoError(t, err, ":!! with warning should not raise error") {
+		assert.Contains(t, buf.buf.String(), ErrCommandsDisabled.Error()+SqlcmdEol+"100"+SqlcmdEol)
+		assert.Equal(t, 0, s.Exitcode, "ExitCode after warning")
+	}
+	buf.buf.Reset()
+	s.Cmd.DisableSysCommands(true)
+	err = runSqlCmd(t, s, c)
+	if assert.NoError(t, err, ":!! with error should not return error") {
+		assert.Contains(t, buf.buf.String(), ErrCommandsDisabled.Error()+SqlcmdEol)
+		assert.NotContains(t, buf.buf.String(), "100", "query should not run when syscommand disabled")
+		assert.Equal(t, 1, s.Exitcode, "ExitCode after error")
+	}
+}

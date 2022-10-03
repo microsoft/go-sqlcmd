@@ -94,9 +94,17 @@ func newCommands() Commands {
 			name:   "EXEC",
 		},
 	}
-
 }
 
+// DisableSysCommands disables the ED and :!! commands.
+// When exitOnCall is true, running those commands will exit the process.
+func (c Commands) DisableSysCommands(exitOnCall bool) {
+	f := warnDisabled
+	if exitOnCall {
+		f = errorDisabled
+	}
+	c["EXEC"].action = f
+}
 func (c Commands) matchCommand(line string) (*Command, []string) {
 	for _, cmd := range c {
 		matchedCommand := cmd.regex.FindStringSubmatch(line)
@@ -105,6 +113,17 @@ func (c Commands) matchCommand(line string) (*Command, []string) {
 		}
 	}
 	return nil, nil
+}
+
+func warnDisabled(s *Sqlcmd, args []string, line uint) error {
+	s.GetError().Write([]byte(ErrCommandsDisabled.Error() + SqlcmdEol))
+	return nil
+}
+
+func errorDisabled(s *Sqlcmd, args []string, line uint) error {
+	_, _ = s.GetError().Write([]byte(ErrCommandsDisabled.Error() + SqlcmdEol))
+	s.Exitcode = 1
+	return ErrExitRequested
 }
 
 func batchTerminatorRegex(terminator string) string {

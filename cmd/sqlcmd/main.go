@@ -230,6 +230,10 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	s := sqlcmd.New(line, wd, vars)
 	s.UnicodeOutputFile = args.UnicodeOutputFile
 
+	if args.DisableCmdAndWarn {
+		s.Cmd.DisableSysCommands(false)
+	}
+
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {

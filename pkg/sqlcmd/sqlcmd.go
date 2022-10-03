@@ -32,6 +32,8 @@ var (
 	ErrNeedPassword = errors.New("need password")
 	// ErrCtrlC indicates execution was ended by ctrl-c or ctrl-break
 	ErrCtrlC = errors.New(WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
+	// ErrCommandsDisabled indicates system commands and startup script are disabled
+	ErrCommandsDisabled = errors.New(ErrorPrefix + "ED and !!<command> commands, startup script, and environment variables are disabled.")
 )
 
 const maxLineBuffer = 2 * 1024 * 1024 // 2Mb
