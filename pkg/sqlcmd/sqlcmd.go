@@ -213,12 +213,12 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 func (s *Sqlcmd) WriteError(stream io.Writer, err error) {
 	if strings.Contains(err.Error(), ErrorPrefix) {
 		if s.GetError() != os.Stdout {
-			s.GetError().Write([]byte(err.Error() + SqlcmdEol))
+			_, _ = s.GetError().Write([]byte(err.Error() + SqlcmdEol))
 		} else {
-			os.Stderr.Write([]byte(err.Error() + SqlcmdEol))
+			_, _ = os.Stderr.Write([]byte(err.Error() + SqlcmdEol))
 		}
 	} else {
-		stream.Write([]byte(err.Error() + SqlcmdEol))
+		_, _ = stream.Write([]byte(err.Error() + SqlcmdEol))
 	}
 }
 

@@ -569,18 +569,6 @@ func setupSqlcmdWithFileErrorOutput(t testing.TB) (*Sqlcmd, *os.File, *os.File) 
 	return s, outfile, errfile
 }
 
-func setupSqlcmd(t testing.TB) *Sqlcmd {
-	t.Helper()
-	v := InitializeVariables(true)
-	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
-	s := New(nil, "", v)
-	s.Connect = newConnect(t)
-	s.Format = NewSQLCmdDefaultFormatter(true)
-	err := s.ConnectDb(nil, true)
-	assert.NoError(t, err, "s.ConnectDB")
-	return s
-}
-
 // Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
 func canTestAzureAuth() bool {
 	server := os.Getenv(SQLCMDSERVER)
