@@ -4,6 +4,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -259,7 +260,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		if args.ErrorsToStderr >= 0 {
 			s.PrintError = func(msg string, severity uint8) bool {
 				if severity >= stderrSeverity {
-					_, _ = os.Stderr.Write([]byte(msg + sqlcmd.SqlcmdEol))
+					s.WriteError(os.Stderr, errors.New(msg+sqlcmd.SqlcmdEol))
 					return true
 				}
 				return false
@@ -285,7 +286,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	} else {
 		for f := range args.InputFile {
 			if err = s.IncludeFile(args.InputFile[f], true); err != nil {
-				_, _ = os.Stderr.Write([]byte(err.Error() + sqlcmd.SqlcmdEol))
+				s.WriteError(s.GetError(), err)
 				s.Exitcode = 1
 				break
 			}
