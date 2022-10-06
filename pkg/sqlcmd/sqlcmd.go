@@ -211,7 +211,7 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 
 // WriteError writes the error on specified stream
 func (s *Sqlcmd) WriteError(stream io.Writer, err error) {
-	if strings.Contains(err.Error(), ErrorPrefix) {
+	if strings.HasPrefix(err.Error(), ErrorPrefix) {
 		if s.GetError() != os.Stdout {
 			_, _ = s.GetError().Write([]byte(err.Error() + SqlcmdEol))
 		} else {
