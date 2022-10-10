@@ -287,3 +287,14 @@ func TestDisableSysCommandBlocksExec(t *testing.T) {
 		assert.Equal(t, 1, s.Exitcode, "ExitCode after error")
 	}
 }
+
+func TestEditCommand(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.vars.Set(SQLCMDEDITOR, "echo select 'test' > ")
+	c := []string{"set nocount on", "go", "select 100", ":ed", "go"}
+	err := runSqlCmd(t, s, c)
+	if assert.NoError(t, err, ":ed should not raise error") {
+		assert.Equal(t, "1> select 'test' " + SqlcmdEol + "test"+SqlcmdEol+SqlcmdEol, buf.buf.String(), "Incorrect output from query after :ed command")
+	}
+}

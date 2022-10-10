@@ -26,6 +26,8 @@ type Command struct {
 	action func(*Sqlcmd, []string, uint) error
 	// Name of the command
 	name string
+	// whether the command is a system command
+	isSystem bool
 }
 
 // Commands is the set of sqlcmd command implementations
@@ -89,9 +91,16 @@ func newCommands() Commands {
 			name:   "CONNECT",
 		},
 		"EXEC": {
-			regex:  regexp.MustCompile(`(?im)^[ \t]*?:?!!(?:[ \t]+(.*$)|$)`),
-			action: execCommand,
-			name:   "EXEC",
+			regex:    regexp.MustCompile(`(?im)^[ \t]*?:?!!(?:[ \t]+(.*$)|$)`),
+			action:   execCommand,
+			name:     "EXEC",
+			isSystem: true,
+		},
+		"EDIT": {
+			regex:    regexp.MustCompile(`(?im)^[\t ]*?:?ED(?:[ \t]+(.*$)|$)`),
+			action:   editCommand,
+			name:     "EDIT",
+			isSystem: true,
 		},
 	}
 }
@@ -103,8 +112,13 @@ func (c Commands) DisableSysCommands(exitOnCall bool) {
 	if exitOnCall {
 		f = errorDisabled
 	}
-	c["EXEC"].action = f
+	for _, cmd := range c {
+		if cmd.isSystem {
+			cmd.action = f
+		}
+	}
 }
+
 func (c Commands) matchCommand(line string) (*Command, []string) {
 	for _, cmd := range c {
 		matchedCommand := cmd.regex.FindStringSubmatch(line)
@@ -408,6 +422,40 @@ func execCommand(s *Sqlcmd, args []string, line uint) error {
 		cmd.Stdout = s.GetOutput()
 		_ = cmd.Run()
 	}
+	return nil
+}
+
+func editCommand(s *Sqlcmd, args []string, line uint) error {
+	if args != nil && strings.TrimSpace(args[0]) != "" {
+		return InvalidCommandError("ED", line)
+	}
+	file, err := os.CreateTemp("", "sq*.sql")
+	if err != nil {
+		return err
+	}
+	fileName := file.Name()
+	defer os.Remove(fileName)
+	text := s.batch.String()
+	if s.batch.State() == "-" {
+		text = fmt.Sprintf("%s%s", text, SqlcmdEol)
+	}
+	_, err = file.WriteString(text)
+	if err != nil {
+		return err
+	}
+	file.Close()
+	cmd := sysCommand(s.vars.TextEditor() + " " + `"` + fileName + `"`)
+	cmd.Stderr = s.GetError()
+	cmd.Stdout = s.GetOutput()
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+	wasEcho := s.echoFileLines
+	s.echoFileLines = true
+	s.batch.Reset(nil)
+	_ = s.IncludeFile(fileName, false)
+	s.echoFileLines = wasEcho
 	return nil
 }
 
