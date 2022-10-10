@@ -147,7 +147,7 @@ parse:
 	if err == nil {
 		i = min(i, b.rawlen)
 		empty := isEmptyLine(b.raw, 0, i)
-		appendLine := b.quote != 0 || b.comment || !empty
+		appendLine := true
 		if !b.comment && command != nil && empty {
 			appendLine = false
 		}
