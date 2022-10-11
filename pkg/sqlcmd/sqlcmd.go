@@ -137,7 +137,7 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				args = make([]string, 0)
 				once = true
 			} else {
-				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
+				s.WriteError(s.GetOutput(), err)
 			}
 		}
 		if cmd != nil {
@@ -147,7 +147,7 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				break
 			}
 			if err != nil {
-				_, _ = s.GetOutput().Write([]byte(err.Error() + SqlcmdEol))
+				s.WriteError(s.GetOutput(), err)
 				lastError = err
 			}
 		}
@@ -208,6 +208,19 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 		s.err.Close()
 	}
 	s.err = e
+}
+
+// WriteError writes the error on specified stream
+func (s *Sqlcmd) WriteError(stream io.Writer, err error) {
+	if strings.HasPrefix(err.Error(), ErrorPrefix) {
+		if s.GetError() != os.Stdout {
+			_, _ = s.GetError().Write([]byte(err.Error() + SqlcmdEol))
+		} else {
+			_, _ = os.Stderr.Write([]byte(err.Error() + SqlcmdEol))
+		}
+	} else {
+		_, _ = stream.Write([]byte(err.Error() + SqlcmdEol))
+	}
 }
 
 // ConnectDb opens a connection to the database with the given modifications to the connection
@@ -372,7 +385,7 @@ func setupCloseHandler(s *Sqlcmd) {
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		_, _ = s.GetOutput().Write([]byte(ErrCtrlC.Error() + SqlcmdEol))
+		s.WriteError(s.GetOutput(), ErrCtrlC)
 		os.Exit(0)
 	}()
 }

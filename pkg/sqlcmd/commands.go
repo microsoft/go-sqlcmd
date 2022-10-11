@@ -130,12 +130,12 @@ func (c Commands) matchCommand(line string) (*Command, []string) {
 }
 
 func warnDisabled(s *Sqlcmd, args []string, line uint) error {
-	_, _ = s.GetError().Write([]byte(ErrCommandsDisabled.Error() + SqlcmdEol))
+	s.WriteError(s.GetError(), ErrCommandsDisabled)
 	return nil
 }
 
 func errorDisabled(s *Sqlcmd, args []string, line uint) error {
-	_, _ = s.GetError().Write([]byte(ErrCommandsDisabled.Error() + SqlcmdEol))
+	s.WriteError(s.GetError(), ErrCommandsDisabled)
 	s.Exitcode = 1
 	return ErrExitRequested
 }
@@ -481,7 +481,7 @@ func resolveArgumentVariables(s *Sqlcmd, arg []rune, failOnUnresolved bool) (str
 					if failOnUnresolved {
 						return "", UndefinedVariable(varName)
 					}
-					_, _ = s.GetError().Write([]byte(UndefinedVariable(varName).Error() + SqlcmdEol))
+					s.WriteError(s.GetError(), UndefinedVariable(varName))
 					if b != nil {
 						b.WriteString(string(arg[i : vl+1]))
 					}
