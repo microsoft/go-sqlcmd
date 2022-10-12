@@ -88,6 +88,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"--version"}, func(args SQLCmdArguments) bool {
 			return args.Version
 		}},
+		{[]string{"-s", "|", "-w", "10", "-W"}, func(args SQLCmdArguments) bool {
+			return args.TrimSpaces && args.ColumnSeparator == "|" && *args.ScreenWidth == 10
+		}},
 	}
 
 	for _, test := range commands {
@@ -117,6 +120,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
 		{[]string{"-r", "5"}, `--errors-to-stderr must be one of "-1","0","1" but got '\x05'`},
 		{[]string{"-h-4"}, "test: '-h -4': header value must be either -1 or a value between 1 and 2147483647"},
+		{[]string{"-w", "6"}, "test: '-w 6': value must be greater than 8 and less than 65536."},
 	}
 
 	for _, test := range commands {
