@@ -179,6 +179,11 @@ func (v Variables) Format() string {
 	return "horizontal"
 }
 
+// StartupScriptFile is the path to the file that contains the startup script
+func (v Variables) StartupScriptFile() string {
+	return v[SQLCMDINI]
+}
+
 func mustValue(val string) int64 {
 	var n int64
 	_, err := fmt.Sscanf(val, "%d", &n)

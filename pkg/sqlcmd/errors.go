@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 // ErrorPrefix is the prefix for all sqlcmd-generated errors
@@ -53,6 +54,14 @@ func UndefinedVariable(variable string) *VariableError {
 	return &VariableError{
 		Variable:      variable,
 		MessageFormat: "'%s' scripting variable not defined.",
+	}
+}
+
+// InvalidVariableValue indicates the variable was set to an invalid value
+func InvalidVariableValue(variable string, value string) *VariableError {
+	return &VariableError{
+		Variable:      variable,
+		MessageFormat: "The environment variable: '%s' has invalid value: '" + strings.ReplaceAll(value, `%`, `%%`) + "'.",
 	}
 }
 
