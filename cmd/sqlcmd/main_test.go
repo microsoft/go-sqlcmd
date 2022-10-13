@@ -386,6 +386,7 @@ func TestStartupScript(t *testing.T) {
 	defer o.Close()
 	args = newArguments()
 	args.OutputFile = o.Name()
+	args.Query = "set nocount on"
 	vars := sqlcmd.InitializeVariables(true)
 	setVars(vars, &args)
 	vars.Set(sqlcmd.SQLCMDINI, "testdata/select100.sql")
