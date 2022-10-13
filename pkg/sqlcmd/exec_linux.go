@@ -14,3 +14,5 @@ func comSpec() string {
 	// /bin/sh will be a link to the shell
 	return `/bin/sh`
 }
+
+const defaultEditor = "vi"

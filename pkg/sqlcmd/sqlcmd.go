@@ -62,6 +62,7 @@ type Sqlcmd struct {
 	out              io.WriteCloser
 	err              io.WriteCloser
 	batch            *Batch
+	echoFileLines    bool
 	// Exitcode is returned to the operating system when the process exits
 	Exitcode int
 	Connect  *ConnectSettings
@@ -310,6 +311,7 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	buf := make([]byte, maxLineBuffer)
 	scanner.Buffer(buf, maxLineBuffer)
 	curLine := s.batch.read
+	echoFileLines := s.echoFileLines
 	s.batch.read = func() (string, error) {
 		if !scanner.Scan() {
 			err := scanner.Err()
@@ -318,14 +320,20 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 			}
 			return "", err
 		}
-		return scanner.Text(), nil
+		t := scanner.Text()
+		if echoFileLines {
+			_, _ = s.GetOutput().Write([]byte(s.Prompt() + t + SqlcmdEol))
+		}
+		return t, nil
 	}
 	err = s.Run(false, processAll)
 	s.batch.read = curLine
-	if s.batch.State() == "=" {
-		s.batch.batchline = 1
-	} else {
-		s.batch.batchline = b + 1
+	if !s.echoFileLines {
+		if s.batch.State() == "=" {
+			s.batch.batchline = 1
+		} else {
+			s.batch.batchline = b + 1
+		}
 	}
 	return err
 }

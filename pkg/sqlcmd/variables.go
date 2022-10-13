@@ -184,6 +184,11 @@ func (v Variables) StartupScriptFile() string {
 	return v[SQLCMDINI]
 }
 
+// TextEditor is the query editor application launched by the :ED command
+func (v Variables) TextEditor() string {
+	return v[SQLCMDEDITOR]
+}
+
 func mustValue(val string) int64 {
 	var n int64
 	_, err := fmt.Sscanf(val, "%d", &n)
@@ -198,7 +203,7 @@ func mustValue(val string) int64 {
 var defaultVariables = Variables{
 	SQLCMDCOLSEP:            " ",
 	SQLCMDCOLWIDTH:          "0",
-	SQLCMDEDITOR:            "edit.com",
+	SQLCMDEDITOR:            defaultEditor,
 	SQLCMDERRORLEVEL:        "0",
 	SQLCMDHEADERS:           "0",
 	SQLCMDLOGINTIMEOUT:      "30",

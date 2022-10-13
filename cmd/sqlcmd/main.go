@@ -55,6 +55,9 @@ type SQLCmdArguments struct {
 	Headers                     int               `short:"h" help:"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed."`
 	UnicodeOutputFile           bool              `short:"u" help:"Specifies that all output files are encoded with little-endian Unicode"`
 	Version                     bool              `help:"Show the sqlcmd version information"`
+	ColumnSeparator             string            `short:"s" help:"Specifies the column separator character. Sets the SQLCMDCOLSEP variable."`
+	ScreenWidth                 *int              `short:"w" help:"Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable."`
+	TrimSpaces                  bool              `short:"W" help:"Remove trailing spaces from a column."`
 	// Keep Help at the end of the list
 	Help bool `short:"?" help:"Show syntax summary."`
 }
@@ -67,6 +70,9 @@ func (a *SQLCmdArguments) Validate() error {
 	// Ignore 0 even though it's technically an invalid input
 	if a.Headers < -1 {
 		return fmt.Errorf(`'-h %d': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
+	}
+	if a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535) {
+		return fmt.Errorf(`'-w %d': value must be greater than 8 and less than 65536.`, *a.ScreenWidth)
 	}
 	return nil
 }
@@ -155,11 +161,21 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			}
 			return ""
 		},
-		sqlcmd.SQLCMDUSER:              func(a *SQLCmdArguments) string { return a.UserName },
-		sqlcmd.SQLCMDSTATTIMEOUT:       func(a *SQLCmdArguments) string { return "" },
-		sqlcmd.SQLCMDHEADERS:           func(a *SQLCmdArguments) string { return fmt.Sprint(a.Headers) },
-		sqlcmd.SQLCMDCOLSEP:            func(a *SQLCmdArguments) string { return "" },
-		sqlcmd.SQLCMDCOLWIDTH:          func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDUSER:        func(a *SQLCmdArguments) string { return a.UserName },
+		sqlcmd.SQLCMDSTATTIMEOUT: func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDHEADERS:     func(a *SQLCmdArguments) string { return fmt.Sprint(a.Headers) },
+		sqlcmd.SQLCMDCOLSEP: func(a *SQLCmdArguments) string {
+			if a.ColumnSeparator != "" {
+				return string(a.ColumnSeparator[0])
+			}
+			return ""
+		},
+		sqlcmd.SQLCMDCOLWIDTH: func(a *SQLCmdArguments) string {
+			if a.ScreenWidth != nil {
+				return fmt.Sprint(*a.ScreenWidth)
+			}
+			return ""
+		},
 		sqlcmd.SQLCMDMAXVARTYPEWIDTH:   func(a *SQLCmdArguments) string { return "" },
 		sqlcmd.SQLCMDMAXFIXEDTYPEWIDTH: func(a *SQLCmdArguments) string { return "" },
 		sqlcmd.SQLCMDFORMAT:            func(a *SQLCmdArguments) string { return a.Format },
@@ -246,7 +262,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s.Connect = &connectConfig
-	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
+	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(args.TrimSpaces)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {
