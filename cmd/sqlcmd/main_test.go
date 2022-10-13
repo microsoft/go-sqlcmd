@@ -387,6 +387,9 @@ func TestStartupScript(t *testing.T) {
 	args = newArguments()
 	args.OutputFile = o.Name()
 	args.Query = "set nocount on"
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
 	vars := sqlcmd.InitializeVariables(true)
 	setVars(vars, &args)
 	vars.Set(sqlcmd.SQLCMDINI, "testdata/select100.sql")
