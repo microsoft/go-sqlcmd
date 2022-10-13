@@ -23,3 +23,5 @@ func comSpec() string {
 func comArgs(args string) string {
 	return `/c ` + args
 }
+
+const defaultEditor = "notepad.exe"
