@@ -179,6 +179,11 @@ func (v Variables) Format() string {
 	return "horizontal"
 }
 
+// StartupScriptFile is the path to the file that contains the startup script
+func (v Variables) StartupScriptFile() string {
+	return v[SQLCMDINI]
+}
+
 // TextEditor is the query editor application launched by the :ED command
 func (v Variables) TextEditor() string {
 	return v[SQLCMDEDITOR]

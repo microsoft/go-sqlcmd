@@ -283,28 +283,43 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 			}
 		}
 	}
-	once := false
-	if args.InitialQuery != "" {
-		s.Query = args.InitialQuery
-	} else if args.Query != "" {
-		once = true
-		s.Query = args.Query
-	}
+
 	// connect using no overrides
 	err = s.ConnectDb(nil, line == nil)
 	if err != nil {
 		return 1, err
 	}
 
-	iactive := args.InputFile == nil && args.Query == ""
-	if iactive || s.Query != "" {
-		err = s.Run(once, false)
-	} else {
-		for f := range args.InputFile {
-			if err = s.IncludeFile(args.InputFile[f], true); err != nil {
-				s.WriteError(s.GetError(), err)
-				s.Exitcode = 1
-				break
+	script := vars.StartupScriptFile()
+	if !args.DisableCmdAndWarn && len(script) > 0 {
+		f, fileErr := os.Open(script)
+		if fileErr != nil {
+			s.WriteError(s.GetError(), sqlcmd.InvalidVariableValue(sqlcmd.SQLCMDINI, script))
+		} else {
+			_ = f.Close()
+			// IncludeFile won't return an error for a SQL error, but ExitCode will be non-zero if -b was passed on the commandline
+			err = s.IncludeFile(script, true)
+		}
+	}
+
+	if err == nil && s.Exitcode == 0 {
+		once := false
+		if args.InitialQuery != "" {
+			s.Query = args.InitialQuery
+		} else if args.Query != "" {
+			once = true
+			s.Query = args.Query
+		}
+		iactive := args.InputFile == nil && args.Query == ""
+		if iactive || s.Query != "" {
+			err = s.Run(once, false)
+		} else {
+			for f := range args.InputFile {
+				if err = s.IncludeFile(args.InputFile[f], true); err != nil {
+					s.WriteError(s.GetError(), err)
+					s.Exitcode = 1
+					break
+				}
 			}
 		}
 	}

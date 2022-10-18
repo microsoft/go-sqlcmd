@@ -383,6 +383,30 @@ func TestConditionsForPasswordPrompt(t *testing.T) {
 	}
 }
 
+func TestStartupScript(t *testing.T) {
+	o, err := os.CreateTemp("", "sqlcmdmain")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(o.Name())
+	defer o.Close()
+	args = newArguments()
+	args.OutputFile = o.Name()
+	args.Query = "set nocount on"
+	if canTestAzureAuth() {
+		args.UseAad = true
+	}
+	vars := sqlcmd.InitializeVariables(true)
+	setVars(vars, &args)
+	vars.Set(sqlcmd.SQLCMDINI, "testdata/select100.sql")
+	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	bytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+	}
+}
+
 // Assuming public Azure, use AAD when SQLCMDUSER environment variable is not set
 func canTestAzureAuth() bool {
 	server := os.Getenv(sqlcmd.SQLCMDSERVER)
