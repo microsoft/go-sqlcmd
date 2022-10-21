@@ -7,7 +7,7 @@ pr: none
 
 parameters:
   - name: PushToGithub
-    default: true
+    default: false
     type: boolean
     displayName: Push packages to github
 
@@ -74,7 +74,8 @@ stages:
       pool:
         vmImage: 'windows-latest'
       variables:
-        versionTag: $[ stageDependencies.Compile.Sqlcmd.outputs['getVersion.VERSION_TAG'] ]
+        - name: versionTag
+          value: $[ stageDependencies.Compile.Sqlcmd.outputs['getVersion.VERSION_TAG'] ]
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
