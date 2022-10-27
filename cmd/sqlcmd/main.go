@@ -58,6 +58,7 @@ type SQLCmdArguments struct {
 	ColumnSeparator             string            `short:"s" help:"Specifies the column separator character. Sets the SQLCMDCOLSEP variable."`
 	ScreenWidth                 *int              `short:"w" help:"Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable."`
 	TrimSpaces                  bool              `short:"W" help:"Remove trailing spaces from a column."`
+	MultiSubnetFailover         bool              `short:"M" help:"Provided for backward compatibility."`
 	// Keep Help at the end of the list
 	Help bool `short:"?" help:"Show syntax summary."`
 }
