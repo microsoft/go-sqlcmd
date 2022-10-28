@@ -91,7 +91,7 @@ func newCommands() Commands {
 			name:   "CONNECT",
 		},
 		"EXEC": {
-			regex:    regexp.MustCompile(`(?im)^[ \t]*?:?!!(?:[ \t]+(.*$)|$)`),
+			regex:    regexp.MustCompile(`(?im)^[ \t]*?:?!!(.*$)`),
 			action:   execCommand,
 			name:     "EXEC",
 			isSystem: true,
