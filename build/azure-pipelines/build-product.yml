@@ -58,7 +58,7 @@ stages:
             targetType: 'inline'
             script: |
               $VERSION_TAG = git describe --tags (git rev-list --tags --max-count=1)
-              Write-Host("##vso[task.setvariable variable=VERSION_TAG;isOutput=true]$VERSION_TAG")
+              Write-Host("##vso[task.setvariable variable=VERSION_TAG;isoutput=true]$VERSION_TAG")
               Write-Host($VERSION_TAG)
         - template: build-common.yml
           parameters:
@@ -74,7 +74,7 @@ stages:
       pool:
         vmImage: 'windows-latest'
       variables:
-        versionTag: $[ stageDependencies.Compile.Sqlcmd.outputs['Sqlcmd.getVersion.VERSION_TAG'] ]
+        versionTag: $[ stageDependencies.Compile.Sqlcmd.outputs['getVersion.VERSION_TAG'] ]
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
