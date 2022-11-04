@@ -58,6 +58,8 @@ type SQLCmdArguments struct {
 	ColumnSeparator             string            `short:"s" help:"Specifies the column separator character. Sets the SQLCMDCOLSEP variable."`
 	ScreenWidth                 *int              `short:"w" help:"Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable."`
 	TrimSpaces                  bool              `short:"W" help:"Remove trailing spaces from a column."`
+	MultiSubnetFailover         bool              `short:"M" help:"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster."`
+	Password                    string            `short:"P" help:"Obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt."`
 	// Keep Help at the end of the list
 	Help bool `short:"?" help:"Show syntax summary."`
 }
@@ -73,6 +75,9 @@ func (a *SQLCmdArguments) Validate() error {
 	}
 	if a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535) {
 		return fmt.Errorf(`'-w %d': value must be greater than 8 and less than 65536.`, *a.ScreenWidth)
+	}
+	if a.Password != "" {
+		return fmt.Errorf(`'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.`)
 	}
 	return nil
 }
