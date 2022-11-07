@@ -52,8 +52,6 @@ stages:
         vmImage: $(imageName)
       steps:
         - template: build-tag.yml
-        - script: |
-            echo $(VERSION_TAG)
         - template: build-common.yml
           parameters:
             OS: $(os)
