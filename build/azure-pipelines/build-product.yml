@@ -52,12 +52,14 @@ stages:
         vmImage: $(imageName)
       steps:
         - template: build-tag.yml
+        - script: |
+            echo $(getVersion.VERSION_TAG)
         - template: build-common.yml
           parameters:
             OS: $(os)
             Arch: $(arch)
             ArtifactName: $(artifact)
-            VersionTag: $(VERSION_TAG)
+            VersionTag: $(getVersion.VERSION_TAG)
 
   - stage: CreatePackages
     displayName: Create packages to publish
@@ -131,7 +133,7 @@ stages:
           rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsAmd64\Sqlcmd.exe'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows-x64.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-x64.zip'
 
       - task: ArchiveFiles@2
         displayName: Zip Windows arm binary
@@ -139,7 +141,7 @@ stages:
           rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-windows-arm.zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm.zip'
   
       - task: ArchiveFiles@2
         displayName: Tar Linux amd64 binary
@@ -148,7 +150,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-x64.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-linux-x64.tar.bz2'
 
       - task: ArchiveFiles@2
         displayName: Tar Darwin binary
@@ -157,7 +159,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-darwin-x64.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-darwin-x64.tar.bz2'
 
       - task: ArchiveFiles@2
         displayName: Tar Linux arm64 binary
@@ -166,7 +168,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-arm64.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-linux-arm64.tar.bz2'
   
       - task: ArchiveFiles@2
         displayName: Tar Linux s390x binary
@@ -175,7 +177,7 @@ stages:
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(VERSION_TAG)-linux-s390x.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-linux-s390x.tar.bz2'
   
       - task: PublishPipelineArtifact@1
         displayName: 'Publish release archives'
@@ -191,6 +193,6 @@ stages:
           action: 'create'
           target: '$(Build.SourceVersion)'
           tagSource: 'userSpecifiedTag'
-          tag: '$(VERSION_TAG)'
+          tag: '$(getVersion.VERSION_TAG)'
           changeLogCompareToRelease: 'lastFullRelease'
           changeLogType: 'commitBased'
