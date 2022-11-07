@@ -50,9 +50,10 @@ stages:
             arch: s390x
       pool:
         vmImage: $(imageName)
-      variables:
-        - template: build-tag.yml
       steps:
+        - template: build-tag.yml
+        - script: |
+            echo $(VERSION_TAG)
         - template: build-common.yml
           parameters:
             OS: $(os)
@@ -66,9 +67,8 @@ stages:
     - job: Sign_and_pack
       pool:
         vmImage: 'windows-latest'
-      variables:
-        - template: build-tag.yml
       steps:
+      - template: build-tag.yml
       - template: build-common.yml
       - task: DownloadPipelineArtifact@2
         inputs:
