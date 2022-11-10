@@ -7,7 +7,6 @@ parameters:
   default: 
 - name: ArtifactName
   type: string
-  default:
 - name: VersionTag
   type: string
   default:  $(Build.BuildNumber)
