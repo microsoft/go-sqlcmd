@@ -69,7 +69,6 @@ stages:
         vmImage: 'windows-latest'
       steps:
       - template: build-tag.yml
-      - template: build-common.yml
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
