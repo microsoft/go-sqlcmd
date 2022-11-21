@@ -90,7 +90,7 @@ func TestBatchNextErrOnInvalidVariable(t *testing.T) {
 		cmd, _, err := b.Next()
 		assert.Nil(t, cmd, "cmd for "+test)
 		assert.Equal(t, uint(1), b.linecount, "linecount should increment on a variable syntax error")
-		assert.EqualErrorf(t, err, "Sqlcmd: Error: Syntax error at line 1.", "expected err for %s", test)
+		assert.EqualErrorf(t, err, "Sqlcmd: Error: Syntax error at line 1", "expected err for %s", test)
 	}
 }
 
@@ -165,7 +165,7 @@ func TestReadStringMalformedVariable(t *testing.T) {
 		r := []rune(test)
 		_, ok, err := b.readString(r, 1, len(test), '\'', 10)
 		assert.Falsef(t, ok, "ok for %s", test)
-		assert.EqualErrorf(t, err, "Sqlcmd: Error: Syntax error at line 10.", "expected err for %s", test)
+		assert.EqualErrorf(t, err, "Sqlcmd: Error: Syntax error at line 10", "expected err for %s", test)
 	}
 }
 

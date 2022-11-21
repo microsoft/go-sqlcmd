@@ -15,6 +15,26 @@ const ErrorPrefix = "Sqlcmd: Error: "
 // WarningPrefix is the prefix for all sqlcmd-generated warnings
 const WarningPrefix = "Sqlcmd: Warning: "
 
+// Common Sqlcmd error messages
+const ErrCmdDisabled = "ED and !!<command> commands, startup script, and environment variables are disabled"
+
+type SqlcmdError interface {
+	error
+	IsSqlcmdErr() bool
+}
+
+type CommonSqlcmdErr struct {
+	message string
+}
+
+func (e *CommonSqlcmdErr) Error() string {
+	return e.message
+}
+
+func (e *CommonSqlcmdErr) IsSqlcmdErr() bool {
+	return true
+}
+
 // ArgumentError is related to command line switch validation not handled by kong
 type ArgumentError struct {
 	Parameter string
@@ -23,6 +43,10 @@ type ArgumentError struct {
 
 func (e *ArgumentError) Error() string {
 	return ErrorPrefix + e.Rule
+}
+
+func (e *ArgumentError) IsSqlcmdErr() bool {
+	return true
 }
 
 // InvalidServerName indicates the SQLCMDSERVER variable has an incorrect format
@@ -39,6 +63,10 @@ type VariableError struct {
 
 func (e *VariableError) Error() string {
 	return ErrorPrefix + fmt.Sprintf(e.MessageFormat, e.Variable)
+}
+
+func (e *VariableError) IsSqlcmdErr() bool {
+	return true
 }
 
 // ReadOnlyVariable indicates the user tried to set a value to a read-only variable
@@ -75,6 +103,10 @@ func (e *CommandError) Error() string {
 	return ErrorPrefix + fmt.Sprintf("Syntax error at line %d near command '%s'.", e.LineNumber, e.Command)
 }
 
+func (e *CommandError) IsSqlcmdErr() bool {
+	return true
+}
+
 // InvalidCommandError creates a SQLCmdCommandError
 func InvalidCommandError(command string, lineNumber uint) *CommandError {
 	return &CommandError{
@@ -83,12 +115,42 @@ func InvalidCommandError(command string, lineNumber uint) *CommandError {
 	}
 }
 
+type FileError struct {
+	err  error
+	path string
+}
+
+func (e *FileError) Error() string {
+	return e.err.Error()
+}
+
+func (e *FileError) IsSqlcmdErr() bool {
+	return true
+}
+
 // InvalidFileError indicates a file could not be opened
-func InvalidFileError(err error, path string) error {
-	return errors.New(ErrorPrefix + " Error occurred while opening or operating on file " + path + " (Reason: " + err.Error() + ").")
+func InvalidFileError(err error, filepath string) error {
+	return &FileError{
+		err:  errors.New(ErrorPrefix + " Error occurred while opening or operating on file " + filepath + " (Reason: " + err.Error() + ")."),
+		path: filepath,
+	}
+}
+
+type SyntaxError struct {
+	err error
+}
+
+func (e *SyntaxError) Error() string {
+	return e.err.Error()
+}
+
+func (e *SyntaxError) IsSqlcmdErr() bool {
+	return true
 }
 
 // SyntaxError indicates a malformed sqlcmd statement
-func syntaxError(lineNumber uint) error {
-	return fmt.Errorf("%sSyntax error at line %d.", ErrorPrefix, lineNumber)
+func syntaxError(lineNumber uint) SqlcmdError {
+	return &SyntaxError{
+		err: fmt.Errorf("%sSyntax error at line %d", ErrorPrefix, lineNumber),
+	}
 }
