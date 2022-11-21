@@ -4,6 +4,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
@@ -189,24 +190,24 @@ func TestUnicodeOutput(t *testing.T) {
 
 func TestUnicodeInput(t *testing.T) {
 	testfiles := []string{
-		`testdata/selectutf8.txt`,
-		`testdata/selectutf8_bom.txt`,
-		`testdata/selectunicode_BE.txt`,
-		`testdata/selectunicode_LE.txt`,
+		filepath.Join(`testdata`, `selectutf8.txt`),
+		filepath.Join(`testdata`, `selectutf8_bom.txt`),
+		filepath.Join(`testdata`, `selectunicode_BE.txt`),
+		filepath.Join(`testdata`, `selectunicode_LE.txt`),
 	}
 
 	for _, test := range testfiles {
 		for _, unicodeOutput := range []bool{true, false} {
 			var outfile string
 			if unicodeOutput {
-				outfile = `testdata/unicodeout_linux.txt`
+				outfile = filepath.Join(`testdata`, `unicodeout_linux.txt`)
 				if runtime.GOOS == "windows" {
-					outfile = `testdata/unicodeout.txt`
+					outfile = filepath.Join(`testdata`, `unicodeout.txt`)
 				}
 			} else {
 				outfile = `testdata/utf8out_linux.txt`
 				if runtime.GOOS == "windows" {
-					outfile = `testdata/utf8out.txt`
+					outfile = filepath.Join(`testdata`, `utf8out.txt`)
 				}
 			}
 			o, err := os.CreateTemp("", "sqlcmdmain")
@@ -226,10 +227,12 @@ func TestUnicodeInput(t *testing.T) {
 			assert.NoError(t, err, "run")
 			assert.Equal(t, 0, exitCode, "exitCode")
 			bytes, err := os.ReadFile(o.Name())
+			s := strings.ReplaceAll(string(bytes), sqlcmd.SqlcmdEol, "\n") // Normalize Eols for cross plat
 			if assert.NoError(t, err, "os.ReadFile") {
 				expectedBytes, err := os.ReadFile(outfile)
+				expectedS := strings.ReplaceAll(string(expectedBytes), sqlcmd.SqlcmdEol, "\n") // Normalize Eols for cross plat
 				if assert.NoErrorf(t, err, "Unable to open %s", outfile) {
-					assert.Equalf(t, expectedBytes, bytes, "input file: <%s> output bytes should match <%s>", test, outfile)
+					assert.Equalf(t, expectedS, s, "input file: <%s> output bytes should match <%s>", test, outfile)
 				}
 			}
 		}
@@ -263,8 +266,8 @@ func TestQueryAndExit(t *testing.T) {
 }
 
 // Test to verify fix for issue: https://github.com/microsoft/go-sqlcmd/issues/98
-//   1. Verify when -b is passed in (ExitOnError), we don't always get an error (even when input is good)
-//   2, Verify when the input is actually bad, we do get an error
+//  1. Verify when -b is passed in (ExitOnError), we don't always get an error (even when input is good)
+//     2, Verify when the input is actually bad, we do get an error
 func TestExitOnError(t *testing.T) {
 	args = newArguments()
 	args.InputFile = []string{"testdata/select100.sql"}
@@ -320,7 +323,7 @@ func TestAzureAuth(t *testing.T) {
 
 func TestMissingInputFile(t *testing.T) {
 	args = newArguments()
-	args.InputFile = []string{"testdata/missingFile.sql"}
+	args.InputFile = []string{filepath.Join("testdata", "missingFile.sql")}
 
 	if canTestAzureAuth() {
 		args.UseAad = true
