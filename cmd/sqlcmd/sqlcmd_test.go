@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
-package main
+package sqlcmd
 
 import (
 	"os"
