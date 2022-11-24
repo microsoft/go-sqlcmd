@@ -11,18 +11,6 @@ import (
 	"testing"
 )
 
-type args struct {
-	endpoint Endpoint
-	user     *User
-	console  sqlcmd.Console
-}
-
-type test struct {
-	name string
-	args args
-	want int
-}
-
 func TestConnect(t *testing.T) {
 	t.Skip() // BUG(stuartpa): Re-enable before merge
 	endpoint := Endpoint{
@@ -31,38 +19,51 @@ func TestConnect(t *testing.T) {
 			Port:    1433,
 		},
 		Name: "local-default-instance"}
-	tests := []test{
+	type args struct {
+		endpoint Endpoint
+		user     *User
+		console  sqlcmd.Console
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
 		{
 			name: "connectBasicPanic", args: args{
-				endpoint: endpoint,
-				user: &User{
-					Name:               "basicUser",
-					AuthenticationType: "basic",
-					BasicAuth: &BasicAuthDetails{
-						Username:          "foo",
-						PasswordEncrypted: true,
-						Password:          "bar",
-					},
+			endpoint: endpoint,
+			user: &User{
+				Name:               "basicUser",
+				AuthenticationType: "basic",
+				BasicAuth: &BasicAuthDetails{
+					Username:          "foo",
+					PasswordEncrypted: true,
+					Password:          "bar",
 				},
-				console: nil,
 			},
+			console: nil,
+		},
 			want: 0,
 		},
 		{
 			name: "invalidAuthTypePanic", args: args{
-				endpoint: endpoint,
-				user: &User{
-					Name:               "basicUser",
-					AuthenticationType: "badbad",
-				},
-				console: nil,
+			endpoint: endpoint,
+			user: &User{
+				Name:               "basicUser",
+				AuthenticationType: "badbad",
 			},
+			console: nil,
+		},
 			want: 0,
 		},
 	}
 
 	if runtime.GOOS == "windows" {
-		tests = append(tests, test{
+		tests = append(tests, struct {
+			name string
+			args args
+			want int
+		}{
 			name: "connectTrusted", args: args{endpoint: endpoint, user: nil, console: nil},
 			want: 0})
 	}
