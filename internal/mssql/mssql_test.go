@@ -11,6 +11,18 @@ import (
 	"testing"
 )
 
+type args struct {
+	endpoint Endpoint
+	user     *User
+	console  sqlcmd.Console
+}
+
+type test struct {
+	name string
+	args args
+	want int
+}
+
 func TestConnect(t *testing.T) {
 	t.Skip() // BUG(stuartpa): Re-enable before merge
 	endpoint := Endpoint{
@@ -19,17 +31,6 @@ func TestConnect(t *testing.T) {
 			Port:    1433,
 		},
 		Name: "local-default-instance"}
-
-	type args struct {
-		endpoint Endpoint
-		user     *User
-		console  sqlcmd.Console
-	}
-	type test struct {
-		name string
-		args args
-		want int
-	}
 	tests := []test{
 		{
 			name: "connectBasicPanic", args: args{

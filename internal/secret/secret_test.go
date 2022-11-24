@@ -4,6 +4,7 @@
 package secret
 
 import (
+	"github.com/microsoft/go-sqlcmd/internal/output"
 	"strings"
 	"testing"
 )
@@ -55,8 +56,10 @@ func TestEncryptAndDecrypt(t *testing.T) {
 			if tt.name != "emptyStringForDecryptPanic" {
 				cipherText := Encode(tt.args.plainText, tt.args.encrypt)
 				gotPlainText = Decode(cipherText, tt.args.encrypt)
+				output.Infof(gotPlainText)
 			} else {
 				gotPlainText = Decode(tt.args.plainText, tt.args.encrypt)
+				output.Infof(gotPlainText)
 			}
 
 			if gotPlainText = tt.args.plainText; gotPlainText != tt.wantPlainText {

@@ -9,8 +9,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var configFileSet bool
-
 func configureViper(configFile string) {
 	if configFile == "" {
 		panic("Must provide configFile")
