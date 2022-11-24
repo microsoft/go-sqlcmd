@@ -173,10 +173,10 @@ func (c *MssqlBase) Run() {
 		c.contextName = c.defaultContextName
 	}
 
-	c.installDockerImage(imageName, c.contextName)
+	c.installContainerImage(imageName, c.contextName)
 }
 
-func (c *MssqlBase) installDockerImage(imageName string, contextName string) {
+func (c *MssqlBase) installContainerImage(imageName string, contextName string) {
 	saPassword := c.generatePassword()
 
 	env := []string{
@@ -194,15 +194,15 @@ func (c *MssqlBase) installDockerImage(imageName string, contextName string) {
 			output.FatalfErrorWithHints(
 				err,
 				[]string{
-					"Is docker installed on this machine?  If not, download from: https://docs.docker.com/get-docker/",
-					"Is docker running. Try `docker ps` (list containers), does it return without error?",
-					fmt.Sprintf("If `docker ps` works, try `docker pull %s`", imageName)},
+					"Is a container runtime installed on this machine (e.g. Podman or Docker)?\n\tIf not, download desktop engine from:\n\t\thttps://podman-desktop.io/\n\t\tor\n\t\thttps://docs.docker.com/get-docker/",
+					"Is a container runtime running. Try `podman ps` or `docker ps` (list containers), does it return without error?",
+					fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with: `podman|docker pull %s`", imageName)},
 				"Unable to download image %s", imageName)
 		}
 	}
 
 	output.Infof("Starting %v", imageName)
-	containerId := controller.ContainerRun(imageName, env, port, []string{})
+	containerId := controller.ContainerRun(imageName, env, port, []string{}, false)
 	previousContextName := config.GetCurrentContextName()
 
 	userName := pal.UserName()
@@ -221,7 +221,7 @@ func (c *MssqlBase) installDockerImage(imageName string, contextName string) {
 	)
 
 	output.Infof(
-		"Created context '%s' in %s",
+		"Created context %q in %q, configuring user account...",
 		config.GetCurrentContextName(),
 		config.GetConfigFileUsed(),
 	)
@@ -230,9 +230,11 @@ func (c *MssqlBase) installDockerImage(imageName string, contextName string) {
 		containerId, c.errorLogEntryToWaitFor)
 
 	output.Infof(
-		"Disabling 'sa' account (and rotating 'sa' password). Creating user '%s'",
-		userName,
-	)
+		"Disabled %q account (also rotated %q password). Creating user %q",
+		"sa",
+		"sa",
+		userName)
+
 	endpoint, _ := config.GetCurrentContext()
 	c.sqlcmdPkg = mssql.Connect(
 		endpoint,

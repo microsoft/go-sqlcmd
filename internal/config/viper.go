@@ -9,21 +9,24 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+var configFileSet bool
+
 func configureViper(configFile string) {
 	if configFile == "" {
 		panic("Must provide configFile")
 	}
-
-	createEmptyFileIfNotExistsCallback(configFile)
 
 	viper.SetConfigType("yaml")
 	viper.SetEnvPrefix("SQLCMD")
 	viper.SetConfigFile(configFile)
 }
 
-func load() {
-	var err error
+func Load() {
+	if filename == "" {
+		panic("Must call config.SetFileName()")
+	}
 
+	var err error
 	err = viper.ReadInConfig()
 	checkErr(err)
 	err = viper.BindEnv("ACCEPT_EULA")
@@ -36,11 +39,14 @@ func load() {
 }
 
 func Save() {
+	if filename == "" {
+		panic("Must call config.SetFileName()")
+	}
+
 	b, err := yaml.Marshal(&config)
 	checkErr(err)
 	err = viper.ReadConfig(bytes.NewReader(b))
 	checkErr(err)
-	createEmptyFileIfNotExistsCallback(viper.ConfigFileUsed())
 	err = viper.WriteConfig()
 	checkErr(err)
 }

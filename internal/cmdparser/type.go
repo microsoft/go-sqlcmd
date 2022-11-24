@@ -13,8 +13,7 @@ type AlternativeForFlagInfo struct {
 type Cmd struct {
 	Options Options
 
-	command     cobra.Command
-	subCommands []Command
+	command cobra.Command
 }
 
 type ExampleInfo struct {

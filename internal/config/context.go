@@ -61,20 +61,14 @@ func FindUniqueContextName(name string, username string) (uniqueContextName stri
 			} else {
 				postfixNumber++
 			}
-
-			if postfixNumber == 5000 {
-				panic("Did not an available context name")
-			}
 		}
 	}
 
 	return
 }
 
-func GetCurrentContextName() (name string) {
-	name = config.CurrentContext
-
-	return
+func GetCurrentContextName() string {
+	return config.CurrentContext
 }
 
 func GetCurrentContextOrFatal() (currentContextName string) {
@@ -92,8 +86,6 @@ func SetCurrentContextName(name string) {
 		config.CurrentContext = name
 		Save()
 	}
-
-	return
 }
 
 func RemoveCurrentContext() {
@@ -131,8 +123,6 @@ func RemoveCurrentContext() {
 	} else {
 		config.CurrentContext = ""
 	}
-
-	return
 }
 
 func ContextExists(name string) (exists bool) {
@@ -179,7 +169,10 @@ func GetCurrentContext() (endpoint Endpoint, user *User) {
 	}
 
 	if !endPointFound {
-		panic(fmt.Sprintf("Context '%v' has no endpoint.  Every context must have an endpoint", currentContextName))
+		panic(fmt.Sprintf(
+			"Context '%v' has no endpoint.  Every context must have an endpoint",
+			currentContextName,
+		))
 	}
 
 	return

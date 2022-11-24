@@ -26,6 +26,4 @@ func (c *Mssql) DefineCommand(subCommands ...cmdparser.Command) {
 
 	c.Cmd.DefineCommand(subCommands...)
 	c.AddFlags(c.AddFlag, repo, "mssql")
-
-	return
 }

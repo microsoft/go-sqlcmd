@@ -80,7 +80,7 @@ func (c *Uninstall) run() {
 			var input string
 			if !c.yes {
 				output.Infof(
-					"Current context is '%s'. Do you want to continue? (Y/N)",
+					"Current context is %q. Do you want to continue? (Y/N)",
 					config.GetCurrentContextName(),
 				)
 				_, err := fmt.Scanln(&input)

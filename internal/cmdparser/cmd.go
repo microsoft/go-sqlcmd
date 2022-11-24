@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/spf13/cobra"
+	"os"
 	"strings"
 )
 
@@ -110,11 +111,21 @@ func (c *Cmd) DefineCommand(subCommands ...Command) {
 	c.addSubCommands(subCommands)
 }
 
+// CheckErr passes the error down to cobra.CheckErr (which is likely to call
+// os.Exit(1) if err != nil.  Although if running in the golang unit test framework
+// we do not want to have os.Exit() called, as this exits the unit test runner
+// process, and call panic instead so the call stack can be added to the unit test
+// output.
 func (c *Cmd) CheckErr(err error) {
-	if err != nil {
-		panic(err)
+	// If we are in a unit test driver, then panic, otherwise pass down to cobra.CheckErr
+	if strings.HasSuffix(os.Args[0], ".test") || // are we in go test?
+		(len(os.Args) > 1 && os.Args[1] == "-test.v") { // are we in goland unittest?
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		cobra.CheckErr(err)
 	}
-	//cobra.CheckErr(err)
 }
 
 func (c *Cmd) Command() *cobra.Command {

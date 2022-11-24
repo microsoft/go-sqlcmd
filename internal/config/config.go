@@ -5,15 +5,39 @@ package config
 
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/file"
+	"os"
+	"path/filepath"
 )
 
 var config Sqlconfig
+var filename string
+
+func SetFileName(name string) {
+	if name == "" {
+		panic("name is empty")
+	}
+
+	filename = name
+
+	file.CreateEmptyIfNotExists(filename)
+	configureViper(filename)
+}
+
+func DefaultFileName() (filename string) {
+	home, err := os.UserHomeDir()
+	checkErr(err)
+	filename = filepath.Join(home, ".sqlcmd", "sqlconfig")
+
+	return
+}
 
 func Clean() {
 	config.Users = nil
 	config.Contexts = nil
 	config.Endpoints = nil
 	config.CurrentContext = ""
+
 	Save()
 }
 

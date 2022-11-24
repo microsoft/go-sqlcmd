@@ -6,6 +6,8 @@ package config
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/output"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
+	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"reflect"
 	"strings"
 	"testing"
@@ -28,18 +30,18 @@ func TestConfig(t *testing.T) {
 						BasicAuth: &BasicAuthDetails{
 							Username:          "user",
 							PasswordEncrypted: false,
-							Password:          "weak",
+							Password:          secret.Encode("weak", false),
 						},
 					}}}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			config = tt.args.Config
+			SetFileName(pal.FilenameInUserHomeDotDirectory(
+				".sqlcmd", "sqlconfig-TestConfig"))
 			Clean()
 			IsEmpty()
 			GetConfigFileUsed()
-			GetRedactedConfig(false)
-			GetRedactedConfig(true)
 
 			AddEndpoint(Endpoint{
 				AssetDetails: &AssetDetails{
@@ -62,6 +64,14 @@ func TestConfig(t *testing.T) {
 				Name: "endpoint",
 			})
 
+			AddEndpoint(Endpoint{
+				EndpointDetails: EndpointDetails{
+					Address: "localhost",
+					Port:    1435,
+				},
+				Name: "endpoint",
+			})
+
 			EndpointsExists()
 			EndpointExists("endpoint")
 			GetEndpoint("endpoint")
@@ -69,6 +79,7 @@ func TestConfig(t *testing.T) {
 			OutputEndpoints(output.Struct, false)
 			FindFreePortForTds()
 			DeleteEndpoint("endpoint2")
+			DeleteEndpoint("endpoint3")
 
 			user := User{
 				Name:               "user",
@@ -76,10 +87,11 @@ func TestConfig(t *testing.T) {
 				BasicAuth: &BasicAuthDetails{
 					Username:          "username",
 					PasswordEncrypted: false,
-					Password:          "password",
+					Password:          secret.Encode("password", false),
 				},
 			}
 
+			AddUser(user)
 			AddUser(user)
 			AddUser(user)
 			UserExists("user")
@@ -87,30 +99,43 @@ func TestConfig(t *testing.T) {
 			UserNameExists("username")
 			OutputUsers(output.Struct, true)
 			OutputUsers(output.Struct, false)
-			DeleteUser("user")
-			DeleteUser("user2")
 
+			DeleteUser("user3")
+
+			GetRedactedConfig(true)
+			GetRedactedConfig(false)
+
+			addContext()
+			addContext()
 			addContext()
 			GetContext("context")
 			OutputContexts(output.Struct, true)
 			OutputContexts(output.Struct, false)
+			DeleteContext("context3")
+			DeleteContext("context2")
 			DeleteContext("context")
+
 			addContext()
 			addContext()
+
 			SetCurrentContextName("context")
-			GetContainerId()
 			GetCurrentContext()
+
+			CurrentContextEndpointHasContainer()
+			GetContainerId()
 			RemoveCurrentContext()
 			RemoveCurrentContext()
 			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", false)
 			RemoveCurrentContext()
 			DeleteEndpoint("endpoint")
+			DeleteContext("context")
+			DeleteUser("user2")
 		})
 	}
 }
 
 func addContext() {
-	user := "user1"
+	user := "user"
 	AddContext(Context{
 		ContextDetails: ContextDetails{
 			Endpoint: "endpoint",
@@ -280,4 +305,74 @@ func TestAddContextWithContainerPanic(t *testing.T) {
 			AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.encryptPassword)
 		})
 	}
+}
+
+func TestConfig_AddContextWithNoEndpoint(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+
+	user := "user1"
+	AddContext(Context{
+		ContextDetails: ContextDetails{
+			Endpoint: "badbad",
+			User:     &user,
+		},
+		Name: "context",
+	})
+}
+
+func TestConfig_GetCurrentContextWithNoContexts(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+	GetCurrentContext()
+}
+
+func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+
+	AddEndpoint(Endpoint{
+		AssetDetails: &AssetDetails{
+			ContainerDetails: &ContainerDetails{
+				Id:    strings.Repeat("9", 64),
+				Image: "www.image.url"},
+		},
+		EndpointDetails: EndpointDetails{
+			Address: "localhost",
+			Port:    1433,
+		},
+		Name: "endpoint",
+	})
+
+	user := "user1"
+	AddContext(Context{
+		ContextDetails: ContextDetails{
+			Endpoint: "endpoint",
+			User:     &user,
+		},
+		Name: "context",
+	})
+
+	DeleteEndpoint("endpoint")
+
+	SetCurrentContextName("context")
+	GetCurrentContext()
+}
+
+func TestConfig_DeleteContextThatDoesNotExist(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+	contextOrdinal("does-not-exist")
 }

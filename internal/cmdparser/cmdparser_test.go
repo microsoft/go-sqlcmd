@@ -149,3 +149,7 @@ func TestAbstractBase_DefineCommand(t *testing.T) {
 	c := Cmd{}
 	c.DefineCommand()
 }
+
+func TestInitialize(t *testing.T) {
+	Initialize(func() {})
+}

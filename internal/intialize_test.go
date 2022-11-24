@@ -4,17 +4,15 @@
 package internal
 
 import (
-	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"testing"
 )
 
 func TestInitialize(t *testing.T) {
 	type args struct {
-		errorHandler      func(error)
-		hintHandler       func([]string)
-		sqlconfigFilename string
-		outputType        string
-		loggingLevel      int
+		errorHandler func(error)
+		hintHandler  func([]string)
+		outputType   string
+		loggingLevel int
 	}
 	tests := []struct {
 		name string
@@ -26,23 +24,20 @@ func TestInitialize(t *testing.T) {
 					panic(err)
 				}
 			},
-			nil,
-			pal.FilenameInUserHomeDotDirectory(
-				".sqlcmd",
-				"sqlconfig-test"),
+			func(strings []string) {},
 			"yaml",
-			0,
+			2,
 		}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			Initialize(
-				tt.args.errorHandler,
-				tt.args.hintHandler,
-				tt.args.sqlconfigFilename,
-				tt.args.outputType,
-				tt.args.loggingLevel,
-			)
+			options := InitializeOptions{
+				ErrorHandler: tt.args.errorHandler,
+				HintHandler:  tt.args.hintHandler,
+				OutputType:   tt.args.outputType,
+				LoggingLevel: tt.args.loggingLevel,
+			}
+			Initialize(options)
 		})
 	}
 }

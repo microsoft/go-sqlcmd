@@ -92,9 +92,6 @@ func FindUniqueUserName(name string) (uniqueUserName string) {
 			} else {
 				postfixNumber++
 			}
-			if postfixNumber == 5000 {
-				panic("Did not find an available user name")
-			}
 		}
 	}
 

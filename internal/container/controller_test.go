@@ -57,12 +57,7 @@ func TestController_EnsureImage(t *testing.T) {
 			c := NewController()
 			err := c.EnsureImage(tt.args.image)
 			checkErr(err)
-			id := c.ContainerRun(
-				tt.args.image,
-				[]string{},
-				port,
-				[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-			)
+			id := c.ContainerRun(tt.args.image, []string{}, port, []string{"ash", "-c", "echo 'Hello World'; sleep 1"}, false)
 			c.ContainerWaitForLogEntry(id, "Hello World")
 			c.ContainerExists(id)
 			c.ContainerFiles(id, "*.mdf")
@@ -97,6 +92,34 @@ func TestController_ContainerRunFailure(t *testing.T) {
 		[]string{},
 		0,
 		[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+		false,
+	)
+}
+
+func TestController_ContainerRunFailureCleanup(t *testing.T) {
+	const registry = "docker.io"
+	const repo = "library/alpine"
+	const tag = "latest"
+
+	imageName := fmt.Sprintf(
+		"%s/%s:%s",
+		registry,
+		repo,
+		tag)
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+
+	c := NewController()
+	c.ContainerRun(
+		imageName,
+		[]string{},
+		0,
+		[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+		true,
 	)
 }
 
@@ -118,12 +141,7 @@ func TestController_ContainerStopNeg(t *testing.T) {
 	}()
 
 	c := NewController()
-	c.ContainerRun(
-		imageName,
-		[]string{},
-		0,
-		[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-	)
+	c.ContainerRun(imageName, []string{}, 0, []string{"ash", "-c", "echo 'Hello World'; sleep 1"}, false)
 }
 
 func TestController_ContainerStopNeg2(t *testing.T) {

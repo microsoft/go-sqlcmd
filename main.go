@@ -15,6 +15,8 @@ import (
 // TEMPORARY: While we have both the new cobra and old kong CLI
 // implementations, main decides which CLI framework to use
 func main() {
+	cmd.Initialize()
+
 	if isModernCliEnabled() && isFirstArgModernCliSubCommand() {
 		cmd.Execute()
 	} else {

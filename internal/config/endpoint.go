@@ -61,9 +61,6 @@ func FindUniqueEndpointName(name string) (uniqueEndpointName string) {
 			} else {
 				postfixNumber++
 			}
-			if postfixNumber == 5000 {
-				panic("Did not find an available endpoint name")
-			}
 		}
 	}
 

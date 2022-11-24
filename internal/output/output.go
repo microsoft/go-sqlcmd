@@ -195,7 +195,7 @@ func infofWithHints(hints []string, format string, a ...any) {
 func maskSecrets(text string) string {
 
 	// Mask password from T/SQL e.g. ALTER LOGIN [sa] WITH PASSWORD = N'foo';
-	r := regexp.MustCompile("(PASSWORD.*\\s?=.*\\s?N?')(.*)(')")
+	r := regexp.MustCompile(`(PASSWORD.*\s?=.*\s?N?')(.*)(')`)
 	text = r.ReplaceAllString(text, "$1********$3")
 	return text
 }

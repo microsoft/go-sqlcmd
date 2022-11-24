@@ -71,12 +71,10 @@ func FindFreePortForTds() (portNumber int) {
 			}
 		}
 
-		if foundFreePortNumber == true {
+		if foundFreePortNumber {
 			// Check this port is actually available on the local machine
 			if isLocalPortAvailableCallback(portNumber) {
 				break
-			} else {
-				foundFreePortNumber = false
 			}
 		}
 

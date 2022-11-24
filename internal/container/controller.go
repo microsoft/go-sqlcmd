@@ -14,7 +14,6 @@ import (
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/go-connections/nat"
 	"io"
-	"io/ioutil"
 	"strconv"
 	"strings"
 )
@@ -52,12 +51,7 @@ func (c *Controller) EnsureImage(image string) (err error) {
 	return
 }
 
-func (c *Controller) ContainerRun(
-	image string,
-	env []string,
-	port int,
-	command []string,
-) string {
+func (c *Controller) ContainerRun(image string, env []string, port int, command []string, unitTestFailure bool) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
 			nat.Port("1433/tcp"): []nat.PortBinding{
@@ -82,7 +76,7 @@ func (c *Controller) ContainerRun(
 		resp.ID,
 		types.ContainerStartOptions{},
 	)
-	if err != nil {
+	if err != nil || unitTestFailure {
 		// Remove the container, because we haven't persisted to config yet, so
 		// uninstall won't work yet
 		if resp.ID != "" {
@@ -172,12 +166,9 @@ func (c *Controller) ContainerFiles(id string, filespec string) (files []string)
 		outputDone <- err
 	}()
 
-	select {
-	case err := <-outputDone:
-		checkErr(err)
-		break
-	}
-	stdout, err := ioutil.ReadAll(&outBuf)
+	err = <-outputDone
+	checkErr(err)
+	stdout, err := io.ReadAll(&outBuf)
 	checkErr(err)
 
 	return strings.Split(string(stdout), "\n")

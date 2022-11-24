@@ -16,26 +16,33 @@ import (
 	"os"
 )
 
-type initInfo struct {
+type InitializeOptions struct {
 	ErrorHandler func(error)
-	TraceHandler func(string, ...any)
+	HintHandler  func([]string)
+	OutputType   string
+	LoggingLevel int
 }
 
-func Initialize(
-	errorHandler func(error),
-	hintHandler func([]string),
-	sqlconfigFilename string,
-	outputType string,
-	loggingLevel int,
-) {
-	info := initInfo{errorHandler, output.Tracef}
+func Initialize(options InitializeOptions) {
+	if options.ErrorHandler == nil {
+		panic("ErrorHandler is nil")
+	}
+	if options.HintHandler == nil {
+		panic("HintHandler is nil")
+	}
+	if options.OutputType == "" {
+		panic("OutputType is empty")
+	}
+	if options.LoggingLevel <= 0 || options.LoggingLevel > 4 {
+		panic("LoggingLevel must be between 1 and 4 ")
+	}
 
-	file.Initialize(info.ErrorHandler, info.TraceHandler)
-	mssql.Initialize(info.ErrorHandler, info.TraceHandler, secret.Decode)
-	output.Initialize(info.ErrorHandler, info.TraceHandler, hintHandler, os.Stdout, outputType, verbosity.Enum(loggingLevel))
-	config.Initialize(info.ErrorHandler, info.TraceHandler, secret.Encode, secret.Decode, net.IsLocalPortAvailable, file.CreateEmptyIfNotExists, sqlconfigFilename)
-	container.Initialize(info.ErrorHandler, info.TraceHandler)
-	secret.Initialize(info.ErrorHandler)
-	net.Initialize(info.ErrorHandler, info.TraceHandler)
-	pal.Initialize(info.ErrorHandler)
+	file.Initialize(options.ErrorHandler, output.Tracef)
+	mssql.Initialize(options.ErrorHandler, output.Tracef, secret.Decode)
+	output.Initialize(options.ErrorHandler, output.Tracef, options.HintHandler, os.Stdout, options.OutputType, verbosity.Enum(options.LoggingLevel))
+	config.Initialize(options.ErrorHandler, output.Tracef, secret.Encode, secret.Decode, net.IsLocalPortAvailable)
+	container.Initialize(options.ErrorHandler, output.Tracef)
+	secret.Initialize(options.ErrorHandler)
+	net.Initialize(options.ErrorHandler, output.Tracef)
+	pal.Initialize(options.ErrorHandler)
 }

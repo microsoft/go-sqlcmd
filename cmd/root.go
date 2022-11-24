@@ -5,7 +5,7 @@ package cmd
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
-	"github.com/microsoft/go-sqlcmd/internal/pal"
+	"github.com/microsoft/go-sqlcmd/internal/config"
 )
 
 type Root struct {
@@ -48,13 +48,9 @@ func (c *Root) addGlobalFlags() {
 		Usage:     "Whether to use integrated security",
 	})
 
-	configFilename = pal.FilenameInUserHomeDotDirectory(
-		".sqlcmd",
-		"sqlconfig")
-
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &configFilename,
-		DefaultString: configFilename,
+		DefaultString: config.DefaultFileName(),
 		Name:          "sqlconfig",
 		Usage:         "Configuration file",
 	})
@@ -72,6 +68,6 @@ func (c *Root) addGlobalFlags() {
 		DefaultInt: 2,
 		Name:       "verbosity",
 		Shorthand:  "v",
-		Usage:      "Log level, error = 0, warn = 1, info = 2, debug = 3, trace = 4",
+		Usage:      "Log level, error=0, warn=1, info=2, debug=3, trace=4",
 	})
 }
