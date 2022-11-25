@@ -33,7 +33,9 @@ var (
 	// ErrCtrlC indicates execution was ended by ctrl-c or ctrl-break
 	ErrCtrlC = errors.New(WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
 	// ErrCommandsDisabled indicates system commands and startup script are disabled
-	ErrCommandsDisabled = errors.New(ErrorPrefix + "ED and !!<command> commands, startup script, and environment variables are disabled.")
+	ErrCommandsDisabled = &CommonSqlcmdErr{
+		message: ErrCmdDisabled,
+	}
 )
 
 const maxLineBuffer = 2 * 1024 * 1024 // 2Mb
@@ -151,6 +153,10 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				lastError = err
 			}
 		}
+
+		if err == ErrCtrlC {
+			os.Exit(0)
+		}
 		if err != nil && err != io.EOF && (s.Connect.ExitOnError && !s.Connect.IgnoreError) {
 			// If the error were due to a SQL error, the GO command handler
 			// would have set ExitCode already
@@ -212,11 +218,11 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 
 // WriteError writes the error on specified stream
 func (s *Sqlcmd) WriteError(stream io.Writer, err error) {
-	if strings.HasPrefix(err.Error(), ErrorPrefix) {
+	if serr, ok := err.(SqlcmdError); ok {
 		if s.GetError() != os.Stdout {
-			_, _ = s.GetError().Write([]byte(err.Error() + SqlcmdEol))
+			_, _ = s.GetError().Write([]byte(serr.Error() + SqlcmdEol))
 		} else {
-			_, _ = os.Stderr.Write([]byte(err.Error() + SqlcmdEol))
+			_, _ = os.Stderr.Write([]byte(serr.Error() + SqlcmdEol))
 		}
 	} else {
 		_, _ = stream.Write([]byte(err.Error() + SqlcmdEol))

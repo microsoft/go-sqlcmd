@@ -46,8 +46,10 @@ func TestCommandParsing(t *testing.T) {
 		{`EXIT `, "EXIT", []string{""}},
 		{`:Connect someserver -U someuser`, "CONNECT", []string{"someserver -U someuser"}},
 		{`:r c:\$(var)\file.sql`, "READFILE", []string{`c:\$(var)\file.sql`}},
-		{`:!! notepad`, "EXEC", []string{"notepad"}},
-		{` !! dir c:\`, "EXEC", []string{`dir c:\`}},
+		{`:!! notepad`, "EXEC", []string{" notepad"}},
+		{`:!!notepad`, "EXEC", []string{"notepad"}},
+		{` !! dir c:\`, "EXEC", []string{` dir c:\`}},
+		{`!!dir c:\`, "EXEC", []string{`dir c:\`}},
 	}
 
 	for _, test := range commands {
