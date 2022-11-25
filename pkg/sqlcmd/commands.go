@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
@@ -530,7 +529,6 @@ func resolveArgumentVariables(s *Sqlcmd, arg []rune, failOnUnresolved bool) (str
 	}
 	return b.String(), nil
 }
-=======
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
@@ -1038,4 +1036,3 @@ func resolveArgumentVariables(s *Sqlcmd, arg []rune, failOnUnresolved bool) (str
 	}
 	return b.String(), nil
 }
->>>>>>> origin
