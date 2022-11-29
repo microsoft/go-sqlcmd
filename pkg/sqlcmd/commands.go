@@ -91,7 +91,7 @@ func newCommands() Commands {
 			name:   "CONNECT",
 		},
 		"EXEC": {
-			regex:    regexp.MustCompile(`(?im)^[ \t]*?:?!!(?:[ \t]+(.*$)|$)`),
+			regex:    regexp.MustCompile(`(?im)^[ \t]*?:?!!(.*$)`),
 			action:   execCommand,
 			name:     "EXEC",
 			isSystem: true,
@@ -288,22 +288,6 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
-func onerrorCommand(s *Sqlcmd, args []string, line uint) error {
-	if len(args) == 0 || args[0] == "" {
-		return InvalidCommandError("ON ERROR", line)
-	}
-	params := strings.TrimSpace(args[0])
-
-	if strings.EqualFold(strings.ToLower(params), "exit") {
-		s.Connect.ExitOnError = true
-	} else if strings.EqualFold(strings.ToLower(params), "ignore") {
-		s.Connect.IgnoreError = true
-	} else {
-		return InvalidCommandError("ON ERROR", line)
-	}
-	return nil
-}
-
 func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 {
 		return InvalidCommandError(":R", line)
@@ -478,6 +462,22 @@ func editCommand(s *Sqlcmd, args []string, line uint) error {
 	s.batch.Reset(nil)
 	_ = s.IncludeFile(fileName, false)
 	s.echoFileLines = wasEcho
+	return nil
+}
+
+func onerrorCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 || args[0] == "" {
+		return InvalidCommandError("ON ERROR", line)
+	}
+	params := strings.TrimSpace(args[0])
+
+	if strings.EqualFold(strings.ToLower(params), "exit") {
+		s.Connect.ExitOnError = true
+	} else if strings.EqualFold(strings.ToLower(params), "ignore") {
+		s.Connect.IgnoreError = true
+	} else {
+		return InvalidCommandError("ON ERROR", line)
+	}
 	return nil
 }
 
