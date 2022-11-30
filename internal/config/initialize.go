@@ -4,8 +4,8 @@
 package config
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/net"
-	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 )
 
@@ -20,9 +20,13 @@ func init() {
 		}
 	}
 
+	traceHandler := func(format string, a ...any) {
+		fmt.Printf(format, a...)
+	}
+
 	Initialize(
 		errorHandler,
-		output.Tracef,
+		traceHandler,
 		secret.Encode,
 		secret.Decode,
 		net.IsLocalPortAvailable)

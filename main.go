@@ -10,15 +10,17 @@ import (
 	"os"
 )
 
+var rootCmd *cmd.Root
+
 // main is the entrypoint function for sqlcmd.
 //
 // TEMPORARY: While we have both the new cobra and old kong CLI
 // implementations, main decides which CLI framework to use
 func main() {
-	cmd.Initialize()
+	rootCmd = cmd.NewRoot()
 
 	if isModernCliEnabled() && isFirstArgModernCliSubCommand() {
-		cmd.Execute()
+		rootCmd.Execute()
 	} else {
 		legacyCmd.Execute()
 	}
@@ -37,7 +39,7 @@ func isModernCliEnabled() (modernCliEnabled bool) {
 // we enable the new cobra based CLI by default
 func isFirstArgModernCliSubCommand() (isNewCliCommand bool) {
 	if len(os.Args) > 0 {
-		if cmd.IsValidSubCommand(os.Args[1]) {
+		if rootCmd.IsValidSubCommand(os.Args[1]) {
 			isNewCliCommand = true
 		}
 	}

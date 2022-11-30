@@ -15,8 +15,8 @@ type DeleteUser struct {
 	name string
 }
 
-func (c *DeleteUser) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *DeleteUser) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "delete-user",
 		Short: "Delete a user",
 		Examples: []cmdparser.ExampleInfo{
@@ -30,7 +30,7 @@ func (c *DeleteUser) DefineCommand(...cmdparser.Command) {
 
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagInfo{
 			Flag: "name", Value: &c.name},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -41,6 +41,8 @@ func (c *DeleteUser) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *DeleteUser) run() {
+	output := c.Output()
+
 	config.DeleteUser(c.name)
 	output.Infof("User '%v' deleted", c.name)
 }

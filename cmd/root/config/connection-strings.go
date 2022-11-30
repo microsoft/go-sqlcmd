@@ -16,8 +16,8 @@ type ConnectionStrings struct {
 	cmdparser.Cmd
 }
 
-func (c *ConnectionStrings) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *ConnectionStrings) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "connection-strings",
 		Short: "Display connections strings for the current context",
 		Examples: []cmdparser.ExampleInfo{
@@ -30,15 +30,17 @@ func (c *ConnectionStrings) DefineCommand(...cmdparser.Command) {
 		},
 		Run:     c.run,
 		Aliases: []string{"cs"},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 }
 
 func (c *ConnectionStrings) run() {
+	output := c.Output()
+
 	// connectionStringFormats borrowed from "portal.azure.com" "connection strings" pane
 	var connectionStringFormats = map[string]string{
-		"ADO.NET": "Server=tcp:%s,%d;Initial Catalog=%s;Persist Security Options=False;User ID=%s;Password=%s;MultipleActiveResultSets=False;Encode=True;TrustServerCertificate=False;Connection Timeout=30;",
+		"ADO.NET": "Server=tcp:%s,%d;Initial Catalog=%s;Persist Security options=False;User ID=%s;Password=%s;MultipleActiveResultSets=False;Encode=True;TrustServerCertificate=False;Connection Timeout=30;",
 		"JDBC":    "jdbc:sqlserver://%s:%d;database=%s;user=%s;password=%s;encrypt=true;trustServerCertificate=false;loginTimeout=30;",
 		"ODBC":    "Driver={ODBC Driver 13 for SQL Server};Server=tcp:%s,%d;Database=%s;Uid=%s;Pwd=%s;Encode=yes;TrustServerCertificate=no;Connection Timeout=30;",
 	}

@@ -5,6 +5,7 @@ package cmdparser
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/output"
 	"testing"
 )
 
@@ -12,8 +13,8 @@ type TopLevelCommand struct {
 	Cmd
 }
 
-func (c *TopLevelCommand) DefineCommand(subCommands ...Command) {
-	c.Options = Options{
+func (c *TopLevelCommand) DefineCommand(output output.Output, subCommands ...Command) {
+	c.options = Options{
 		Use:   "top-level",
 		Short: "Hello-World",
 		Examples: []ExampleInfo{
@@ -22,7 +23,7 @@ func (c *TopLevelCommand) DefineCommand(subCommands ...Command) {
 		},
 	}
 
-	c.Cmd.DefineCommand(subCommands...)
+	c.Cmd.DefineCommand(
 }
 
 type SubCommand1 struct {
@@ -31,8 +32,8 @@ type SubCommand1 struct {
 	name string
 }
 
-func (c *SubCommand1) DefineCommand(subCommands ...Command) {
-	c.Options = Options{
+func (c *SubCommand1) DefineCommand(output output.Output, subCommands ...Command) {
+	c.options = Options{
 		Use:   "sub-command1",
 		Short: "Sub Command 1",
 		FirstArgAlternativeForFlag: &AlternativeForFlagInfo{
@@ -41,7 +42,7 @@ func (c *SubCommand1) DefineCommand(subCommands ...Command) {
 		},
 		Run: func() { fmt.Println("Running: Sub Command 1") },
 	}
-	c.Cmd.DefineCommand(subCommands...)
+	c.Cmd.DefineCommand(
 	c.AddFlag(FlagOptions{
 		Name:   "name",
 		String: &c.name,
@@ -53,8 +54,8 @@ type SubCommand11 struct {
 	Cmd
 }
 
-func (c *SubCommand11) DefineCommand(...Command) {
-	c.Options = Options{
+func (c *SubCommand11) DefineCommand(output.Output, ...Command) {
+	c.options = Options{
 		Use:   "sub-command11",
 		Short: "Sub Command 11",
 		Run:   func() { fmt.Println("Running: Sub Command 11") },
@@ -66,8 +67,8 @@ type SubCommand2 struct {
 	Cmd
 }
 
-func (c *SubCommand2) DefineCommand(...Command) {
-	c.Options = Options{
+func (c *SubCommand2) DefineCommand(output.Output, ...Command) {
+	c.options = Options{
 		Use:     "sub-command2",
 		Short:   "Sub Command 2",
 		Aliases: []string{"sub-command2-alias"},

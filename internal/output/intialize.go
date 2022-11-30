@@ -4,8 +4,7 @@
 package output
 
 import (
-	"fmt"
-	. "github.com/microsoft/go-sqlcmd/internal/output/formatter"
+	"github.com/microsoft/go-sqlcmd/internal/output/formatter"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
 	"io"
 	"os"
@@ -19,14 +18,9 @@ func init() {
 			panic(err)
 		}
 	}
-	formatter = &Yaml{Base: Base{
-		StandardOutput:       standardWriteCloser,
-		ErrorHandlerCallback: errorHandler,
-	}}
 
 	Initialize(
 		errorHandler,
-		func(format string, a ...any) {},
 		func(hints []string) {},
 		os.Stdout,
 		"yaml",
@@ -36,34 +30,16 @@ func init() {
 
 func Initialize(
 	errorHandler func(err error),
-	traceHandler func(format string, a ...any),
 	hintHandler func(hints []string),
 	standardOutput io.WriteCloser,
 	serializationFormat string,
 	verbosity verbosity.Enum,
-) {
+) Output {
 	errorCallback = errorHandler
-	traceCallback = traceHandler
 	hintCallback = hintHandler
-	standardWriteCloser = standardOutput
-	loggingLevel = verbosity
+	f := formatter.NewFormatter(serializationFormat, standardOutput, errorHandler)
+	o := NewOutput(f, verbosity, standardOutput)
+	o.Tracef("Initializing output as '%v\n'", serializationFormat)
 
-	trace("Initializing output as '%v'", serializationFormat)
-
-	switch serializationFormat {
-	case "json":
-		formatter = &Json{Base: Base{
-			StandardOutput:       standardWriteCloser,
-			ErrorHandlerCallback: errorHandler}}
-	case "yaml":
-		formatter = &Yaml{Base: Base{
-			StandardOutput:       standardWriteCloser,
-			ErrorHandlerCallback: errorHandler}}
-	case "xml":
-		formatter = &Xml{Base: Base{
-			StandardOutput:       standardWriteCloser,
-			ErrorHandlerCallback: errorHandler}}
-	default:
-		panic(fmt.Sprintf("Format '%v' not supported", serializationFormat))
-	}
+	return o
 }

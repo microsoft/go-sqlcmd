@@ -6,14 +6,26 @@ package config
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/output"
+	"github.com/microsoft/go-sqlcmd/internal/output/formatter"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
 )
 
 func TestConfig(t *testing.T) {
+	o := output.NewOutput(
+		formatter.NewFormatter("yaml", os.Stdout, func(err error) {
+			if err != nil {
+				panic(err)
+			}
+		}),
+		4,
+		os.Stdout,
+	)
+
 	type args struct {
 		Config Sqlconfig
 	}
@@ -75,8 +87,8 @@ func TestConfig(t *testing.T) {
 			EndpointsExists()
 			EndpointExists("endpoint")
 			GetEndpoint("endpoint")
-			OutputEndpoints(output.Struct, true)
-			OutputEndpoints(output.Struct, false)
+			OutputEndpoints(o.Struct, true)
+			OutputEndpoints(o.Struct, false)
 			FindFreePortForTds()
 			DeleteEndpoint("endpoint2")
 			DeleteEndpoint("endpoint3")
@@ -97,8 +109,8 @@ func TestConfig(t *testing.T) {
 			UserExists("user")
 			GetUser("user")
 			UserNameExists("username")
-			OutputUsers(output.Struct, true)
-			OutputUsers(output.Struct, false)
+			OutputUsers(o.Struct, true)
+			OutputUsers(o.Struct, false)
 
 			DeleteUser("user3")
 
@@ -109,8 +121,8 @@ func TestConfig(t *testing.T) {
 			addContext()
 			addContext()
 			GetContext("context")
-			OutputContexts(output.Struct, true)
-			OutputContexts(output.Struct, false)
+			OutputContexts(o.Struct, true)
+			OutputContexts(o.Struct, false)
 			DeleteContext("context3")
 			DeleteContext("context2")
 			DeleteContext("context")

@@ -10,7 +10,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/mssql"
-	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
@@ -154,6 +153,8 @@ func (c *MssqlBase) AddFlags(
 }
 
 func (c *MssqlBase) Run() {
+	output := c.Output()
+
 	var imageName string
 
 	if !c.acceptEula && viper.GetString("ACCEPT_EULA") == "" {
@@ -177,6 +178,7 @@ func (c *MssqlBase) Run() {
 }
 
 func (c *MssqlBase) installContainerImage(imageName string, contextName string) {
+	output := c.Output()
 	saPassword := c.generatePassword()
 
 	env := []string{
@@ -276,6 +278,8 @@ func (c *MssqlBase) installContainerImage(imageName string, contextName string) 
 }
 
 func (c *MssqlBase) createNonSaUser(userName string, password string) {
+	output := c.Output()
+
 	defaultDatabase := "master"
 
 	if c.defaultDatabase != "" {

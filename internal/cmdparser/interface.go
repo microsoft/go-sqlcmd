@@ -3,14 +3,20 @@
 
 package cmdparser
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/microsoft/go-sqlcmd/internal/output"
+	"github.com/spf13/cobra"
+)
 
 type Command interface {
 	ArgsForUnitTesting(args []string)
 	CheckErr(error)
 	Command() *cobra.Command
-	DefineCommand(subCommands ...Command)
+	DefineCommand(output output.Output, subCommands ...Command)
 	Execute()
+	Output() output.Output
+	SetOptions(Options)
+	SetOutput(output.Output)
 
 	// IsSubCommand is TEMPORARY code that will be removed when the
 	// new cobra CLI is enabled by default.  It returns true if the command-line

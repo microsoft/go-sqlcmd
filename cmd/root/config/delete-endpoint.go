@@ -16,8 +16,8 @@ type DeleteEndpoint struct {
 	name string
 }
 
-func (c *DeleteEndpoint) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *DeleteEndpoint) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "delete-endpoint",
 		Short: "Delete an endpoint",
 		Examples: []cmdparser.ExampleInfo{
@@ -31,7 +31,7 @@ func (c *DeleteEndpoint) DefineCommand(...cmdparser.Command) {
 		Run: c.run,
 
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagInfo{Flag: "name", Value: &c.name},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -42,6 +42,8 @@ func (c *DeleteEndpoint) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *DeleteEndpoint) run() {
+	output := c.Output()
+
 	if c.name == "" {
 		output.Fatal("Endpoint name must be provided.  Provide endpoint name with --name flag")
 	}

@@ -36,7 +36,7 @@ func NewConsole(historyFile string) sqlcmd.Console {
 }
 
 // Close writes out the history data to disk and closes the console buffers
-func (c *console) Close() {
+func (c console) Close() {
 	if c.historyFile != "" {
 		if f, err := os.Create(c.historyFile); err == nil {
 			_, _ = c.impl.WriteHistory(f)
@@ -49,7 +49,7 @@ func (c *console) Close() {
 // Readline displays the current prompt and returns a line of text entered by the user.
 // It appends the returned line to the history buffer.
 // If the user presses Ctrl-C the error returned is sqlcmd.ErrCtrlC
-func (c *console) Readline() (string, error) {
+func (c console) Readline() (string, error) {
 	s, err := c.impl.Prompt(c.prompt)
 	if err == liner.ErrPromptAborted {
 		return "", sqlcmd.ErrCtrlC
@@ -60,7 +60,7 @@ func (c *console) Readline() (string, error) {
 
 // ReadPassword displays the given prompt and returns the password entered by the user.
 // If the user presses Ctrl-C the error returned is sqlcmd.ErrCtrlC
-func (c *console) ReadPassword(prompt string) ([]byte, error) {
+func (c console) ReadPassword(prompt string) ([]byte, error) {
 	b, err := c.impl.PasswordPrompt(prompt)
 	if err == liner.ErrPromptAborted {
 		return []byte{}, sqlcmd.ErrCtrlC
@@ -69,6 +69,6 @@ func (c *console) ReadPassword(prompt string) ([]byte, error) {
 }
 
 // SetPrompt sets the prompt text shown to input the next line
-func (c *console) SetPrompt(s string) {
+func (c console) SetPrompt(s string) {
 	c.prompt = s
 }

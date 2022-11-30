@@ -31,8 +31,8 @@ var systemDatabases = [...]string{
 	"/var/opt/mssql/data/master.mdf",
 }
 
-func (c *Uninstall) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *Uninstall) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "uninstall",
 		Short: "Uninstall/Delete the current context",
 		Examples: []cmdparser.ExampleInfo{
@@ -48,7 +48,7 @@ func (c *Uninstall) DefineCommand(...cmdparser.Command) {
 		},
 		Aliases: []string{"delete", "drop"},
 		Run:     c.run,
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -66,12 +66,14 @@ func (c *Uninstall) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *Uninstall) run() {
+	output := c.Output()
+
 	if config.GetCurrentContextName() == "" {
 		output.FatalfWithHintExamples([][]string{
 			{"To view available contexts", "sqlcmd config get-contexts"},
 		}, "No current context")
 	}
-	if currentContextEndPointExists() {
+	if c.currentContextEndPointExists() {
 		if config.CurrentContextEndpointHasContainer() {
 			controller := container.NewController()
 			id := config.GetContainerId()
@@ -92,7 +94,7 @@ func (c *Uninstall) run() {
 			}
 			if !c.force {
 				output.Infof("Verifying no user (non-system) database (.mdf) files")
-				userDatabaseSafetyCheck(controller, id)
+				c.userDatabaseSafetyCheck(controller, id)
 			}
 
 			output.Infof(
@@ -119,7 +121,8 @@ func (c *Uninstall) run() {
 	}
 }
 
-func userDatabaseSafetyCheck(controller *container.Controller, id string) {
+func (c *Uninstall) userDatabaseSafetyCheck(controller *container.Controller, id string) {
+	output := c.Output()
 	files := controller.ContainerFiles(id, "*.mdf")
 	for _, databaseFile := range files {
 		if strings.HasSuffix(databaseFile, ".mdf") {
@@ -143,7 +146,8 @@ func userDatabaseSafetyCheck(controller *container.Controller, id string) {
 	}
 }
 
-func currentContextEndPointExists() (exists bool) {
+func (c *Uninstall) currentContextEndPointExists() (exists bool) {
+	output := c.Output()
 	exists = true
 
 	if !config.EndpointsExists() {

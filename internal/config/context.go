@@ -7,16 +7,16 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
-	"github.com/microsoft/go-sqlcmd/internal/output"
 	"strconv"
 )
 
+// AddContext adds the context to the sqlconfig file.
+//
+// Before calling this method, verify the Endpoint exists and give the user
+// a descriptive error, (this function will panic, which should never be hit)
 func AddContext(context Context) {
 	if !EndpointExists(context.Endpoint) {
-		output.FatalfWithHintExamples([][]string{
-			{"Add the endpoint", fmt.Sprintf(
-				"sqlcmd config add-endpoint --name %v", context.Endpoint)},
-		}, "Endpoint '%v' does not exist", context.Endpoint)
+		panic("Endpoint doesn't exist")
 	}
 	context.Name = FindUniqueContextName(context.Name, *context.User)
 	config.Contexts = append(config.Contexts, context)

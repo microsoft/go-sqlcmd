@@ -19,8 +19,8 @@ type AddEndpoint struct {
 	port    int
 }
 
-func (c *AddEndpoint) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *AddEndpoint) DefineCommand(output output.Output, _ ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "add-endpoint",
 		Short: "Add an endpoint",
 		Examples: []cmdparser.ExampleInfo{
@@ -29,10 +29,9 @@ func (c *AddEndpoint) DefineCommand(...cmdparser.Command) {
 				Steps:       []string{"sqlcmd config add-endpoint --name my-endpoint --address localhost --port 1433"},
 			},
 		},
-		Run: c.run,
-	}
+		Run: c.run})
 
-	c.Cmd.DefineCommand()
+	c.Cmd.DefineCommand(output)
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.name,
@@ -57,6 +56,8 @@ func (c *AddEndpoint) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *AddEndpoint) run() {
+	output := c.Output()
+
 	if c.name == "containerId" {
 		panic("containerId")
 	}

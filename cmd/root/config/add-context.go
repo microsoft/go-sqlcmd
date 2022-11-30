@@ -19,8 +19,8 @@ type AddContext struct {
 	userName     string
 }
 
-func (c *AddContext) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *AddContext) DefineCommand(output output.Output, _ ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "add-context",
 		Short: "Add a context",
 		Examples: []cmdparser.ExampleInfo{
@@ -28,9 +28,9 @@ func (c *AddContext) DefineCommand(...cmdparser.Command) {
 				Description: "Add a default context",
 				Steps:       []string{"sqlcmd config add-context --name my-context"}},
 		},
-		Run: c.run}
+		Run: c.run})
 
-	c.Cmd.DefineCommand()
+	c.Cmd.DefineCommand(output)
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.name,
@@ -50,6 +50,7 @@ func (c *AddContext) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *AddContext) run() {
+	output := c.Output()
 	context := sqlconfig.Context{
 		ContextDetails: sqlconfig.ContextDetails{
 			Endpoint: c.endpointName,
@@ -74,6 +75,13 @@ func (c *AddContext) run() {
 				{"Add an endpoint", "sqlcmd install"}},
 				"User '%v' does not exist", c.userName)
 		}
+	}
+
+	if !config.EndpointExists(context.Endpoint) {
+		output.FatalfWithHintExamples([][]string{
+			{"Add the endpoint", fmt.Sprintf(
+				"sqlcmd config add-endpoint --name %v", context.Endpoint)},
+		}, "Endpoint '%v' does not exist", context.Endpoint)
 	}
 
 	config.AddContext(context)

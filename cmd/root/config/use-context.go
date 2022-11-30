@@ -15,8 +15,8 @@ type UseContext struct {
 	name string
 }
 
-func (c *UseContext) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *UseContext) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "use-context",
 		Short: "Display one or many users from the sqlconfig file",
 		Examples: []cmdparser.ExampleInfo{
@@ -29,7 +29,7 @@ func (c *UseContext) DefineCommand(...cmdparser.Command) {
 		Run:     c.run,
 
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagInfo{Flag: "name", Value: &c.name},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -40,6 +40,8 @@ func (c *UseContext) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *UseContext) run() {
+	output := c.Output()
+
 	if config.ContextExists(c.name) {
 		config.SetCurrentContextName(c.name)
 		output.InfofWithHints([]string{

@@ -21,8 +21,8 @@ type AddUser struct {
 	encryptPassword bool
 }
 
-func (c *AddUser) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *AddUser) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "add-user",
 		Short: "Add a user",
 		Examples: []cmdparser.ExampleInfo{
@@ -33,10 +33,9 @@ func (c *AddUser) DefineCommand(...cmdparser.Command) {
 					"sqlcmd config add-user --name my-user --name user1"},
 			},
 		},
-		Run: c.run,
-	}
+		Run: c.run})
 
-	c.Cmd.DefineCommand()
+	c.Cmd.DefineCommand(output)
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.name,
@@ -62,6 +61,8 @@ func (c *AddUser) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *AddUser) run() {
+	output := c.Output()
+
 	if c.authType != "basic" &&
 		c.authType != "other" {
 		output.FatalfWithHints([]string{"Authentication type must be 'basic' or 'other'"},

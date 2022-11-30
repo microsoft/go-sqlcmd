@@ -7,6 +7,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/mssql"
+	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 )
@@ -17,8 +18,8 @@ type Query struct {
 	text string
 }
 
-func (c *Query) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *Query) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "query",
 		Short: "Run a query against the current context",
 		Examples: []cmdparser.ExampleInfo{
@@ -32,7 +33,7 @@ func (c *Query) DefineCommand(...cmdparser.Command) {
 			Flag:  "text",
 			Value: &c.text,
 		},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 

@@ -16,8 +16,8 @@ type GetContexts struct {
 	detailed bool
 }
 
-func (c *GetContexts) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *GetContexts) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "get-contexts",
 		Short: "Display one or many contexts from the sqlconfig file",
 		Examples: []cmdparser.ExampleInfo{
@@ -37,7 +37,7 @@ func (c *GetContexts) DefineCommand(...cmdparser.Command) {
 		Run: c.run,
 
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagInfo{Flag: "name", Value: &c.name},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -53,6 +53,8 @@ func (c *GetContexts) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *GetContexts) run() {
+	output := c.Output()
+
 	if c.name != "" {
 		if config.ContextExists(c.name) {
 			context := config.GetContext(c.name)

@@ -80,29 +80,30 @@ func (c *Cmd) AddFlag(options FlagOptions) {
 	}
 }
 
-func (c *Cmd) ArgsForUnitTesting(args []string) {
+func (c Cmd) ArgsForUnitTesting(args []string) {
 	c.command.SetArgs(args)
 }
 
-func (c *Cmd) DefineCommand(subCommands ...Command) {
-	if c.Options.Use == "" {
+func (c *Cmd) DefineCommand(output output.Output, subCommands ...Command) {
+	if c.options.Use == "" {
 		panic("Must implement command definition")
 	}
 
-	if c.Options.Long == "" {
-		c.Options.Long = c.Options.Short
+	c.output = output
+	if c.options.Long == "" {
+		c.options.Long = c.options.Short
 	}
 
 	c.command = cobra.Command{
-		Use:     c.Options.Use,
-		Short:   c.Options.Short,
-		Long:    c.Options.Long,
-		Aliases: c.Options.Aliases,
+		Use:     c.options.Use,
+		Short:   c.options.Short,
+		Long:    c.options.Long,
+		Aliases: c.options.Aliases,
 		Example: c.generateExamples(),
 		Run:     c.run,
 	}
 
-	if c.Options.FirstArgAlternativeForFlag != nil {
+	if c.options.FirstArgAlternativeForFlag != nil {
 		c.command.Args = cobra.MaximumNArgs(1)
 	} else {
 		c.command.Args = cobra.MaximumNArgs(0)
@@ -137,6 +138,10 @@ func (c *Cmd) Execute() {
 	c.CheckErr(err)
 }
 
+func (c *Cmd) Output() output.Output {
+	return c.output
+}
+
 func (c *Cmd) IsSubCommand(command string) (valid bool) {
 
 	if command == "--help" {
@@ -162,6 +167,14 @@ func (c *Cmd) IsSubCommand(command string) (valid bool) {
 	return
 }
 
+func (c *Cmd) SetOptions(options Options) {
+	c.options = options
+}
+
+func (c *Cmd) SetOutput(output output.Output) {
+	c.output = output
+}
+
 func (c *Cmd) addSubCommands(commands []Command) {
 	for _, subCommand := range commands {
 		c.command.AddCommand(subCommand.Command())
@@ -171,7 +184,7 @@ func (c *Cmd) addSubCommands(commands []Command) {
 func (c *Cmd) generateExamples() string {
 	var sb strings.Builder
 
-	for _, e := range c.Options.Examples {
+	for _, e := range c.options.Examples {
 		sb.WriteString(fmt.Sprintf("# %v\n", e.Description))
 		for _, s := range e.Steps {
 			sb.WriteString(fmt.Sprintf("  %v\n", s))
@@ -182,27 +195,28 @@ func (c *Cmd) generateExamples() string {
 }
 
 func (c *Cmd) run(_ *cobra.Command, args []string) {
-	if c.Options.FirstArgAlternativeForFlag != nil {
+	if c.options.FirstArgAlternativeForFlag != nil {
 		if len(args) > 0 {
 			flag, err := c.command.PersistentFlags().GetString(
-				c.Options.FirstArgAlternativeForFlag.Flag)
+				c.options.FirstArgAlternativeForFlag.Flag)
 			c.CheckErr(err)
+
 			if flag != "" {
-				output.Fatal(
+				c.output.Fatal(
 					fmt.Sprintf(
 						"Both an argument and the --%v flag have been provided. "+
 							"Please provide either an argument or the --%v flag",
-						c.Options.FirstArgAlternativeForFlag.Flag,
-						c.Options.FirstArgAlternativeForFlag.Flag))
+						c.options.FirstArgAlternativeForFlag.Flag,
+						c.options.FirstArgAlternativeForFlag.Flag))
 			}
-			if c.Options.FirstArgAlternativeForFlag.Value == nil {
+			if c.options.FirstArgAlternativeForFlag.Value == nil {
 				panic("Must set Value")
 			}
-			*c.Options.FirstArgAlternativeForFlag.Value = args[0]
+			*c.options.FirstArgAlternativeForFlag.Value = args[0]
 		}
 	}
 
-	if c.Options.Run != nil {
-		c.Options.Run()
+	if c.options.Run != nil {
+		c.options.Run()
 	}
 }

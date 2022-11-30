@@ -13,8 +13,8 @@ type CurrentContext struct {
 	cmdparser.Cmd
 }
 
-func (c *CurrentContext) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *CurrentContext) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "current-context",
 		Short: "Display the current-context",
 		Examples: []cmdparser.ExampleInfo{
@@ -24,12 +24,13 @@ func (c *CurrentContext) DefineCommand(...cmdparser.Command) {
 					"sqlcmd config current-context"},
 			},
 		},
-		Run: c.run,
-	}
+		Run: c.run})
 
 	c.Cmd.DefineCommand()
 }
 
 func (c *CurrentContext) run() {
+	output := c.Output()
+
 	output.Infof("%v\n", config.GetCurrentContextName())
 }

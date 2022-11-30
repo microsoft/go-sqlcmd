@@ -16,8 +16,8 @@ type GetUsers struct {
 	detailed bool
 }
 
-func (c *GetUsers) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *GetUsers) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "get-users",
 		Short: "Display one or many users from the sqlconfig file",
 		Examples: []cmdparser.ExampleInfo{
@@ -37,7 +37,7 @@ func (c *GetUsers) DefineCommand(...cmdparser.Command) {
 		Run: c.run,
 
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagInfo{Flag: "name", Value: &c.name},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -53,6 +53,8 @@ func (c *GetUsers) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *GetUsers) run() {
+	output := c.Output()
+
 	if c.name != "" {
 		if config.UserExists(c.name) {
 			user := config.GetUser(c.name)

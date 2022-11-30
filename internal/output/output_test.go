@@ -5,7 +5,9 @@ package output
 
 import (
 	"errors"
+	"github.com/microsoft/go-sqlcmd/internal/output/formatter"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
+	"os"
 	"testing"
 )
 
@@ -27,18 +29,31 @@ func TestTracef(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			loggingLevel = tt.args.loggingLevel
-			Tracef(tt.args.format, tt.args.a...)
-			Debugf(tt.args.format, tt.args.a...)
-			Infof(tt.args.format, tt.args.a...)
-			Warnf(tt.args.format, tt.args.a...)
-			Errorf(tt.args.format, tt.args.a...)
-			Struct(tt.args.a)
+			loggingLevel := tt.args.loggingLevel
+			o := new(loggingLevel)
+			o.Tracef(tt.args.format, tt.args.a...)
+			o.Debugf(tt.args.format, tt.args.a...)
+			o.Infof(tt.args.format, tt.args.a...)
+			o.Warnf(tt.args.format, tt.args.a...)
+			o.Errorf(tt.args.format, tt.args.a...)
+			o.Struct(tt.args.a)
 
-			InfofWithHints([]string{}, tt.args.format, tt.args.a...)
-			InfofWithHintExamples([][]string{}, tt.args.format, tt.args.a...)
+			o.InfofWithHints([]string{}, tt.args.format, tt.args.a...)
+			o.InfofWithHintExamples([][]string{}, tt.args.format, tt.args.a...)
 		})
 	}
+}
+
+func new(loggingLevel verbosity.Enum) Output {
+	return NewOutput(
+		formatter.NewFormatter("yaml", os.Stdout, func(err error) {
+			if err != nil {
+				panic(err)
+			}
+		}),
+		loggingLevel,
+		os.Stdout,
+	)
 }
 
 func TestFatal(t *testing.T) {
@@ -60,7 +75,8 @@ func TestFatal(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			Fatal(tt.args.a...)
+			o := new(4)
+			o.Fatal(tt.args.a...)
 		})
 	}
 }
@@ -86,7 +102,8 @@ func TestFatalWithHints(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			FatalWithHints(tt.args.hints, tt.args.a...)
+			o := new(4)
+			o.FatalWithHints(tt.args.hints, tt.args.a...)
 		})
 	}
 }
@@ -113,7 +130,8 @@ func TestFatalfWithHintExamples(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			FatalfWithHintExamples(tt.args.hintExamples, tt.args.format, tt.args.a...)
+			o := new(4)
+			o.FatalfWithHintExamples(tt.args.hintExamples, tt.args.format, tt.args.a...)
 		})
 	}
 }
@@ -141,7 +159,8 @@ func TestFatalfErrorWithHints(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			FatalfErrorWithHints(tt.args.err, tt.args.hints, tt.args.format, tt.args.a...)
+			o := new(4)
+			o.FatalfErrorWithHints(tt.args.err, tt.args.hints, tt.args.format, tt.args.a...)
 		})
 	}
 }
@@ -168,7 +187,8 @@ func TestFatalfWithHints(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			FatalfWithHints(tt.args.hints, tt.args.format, tt.args.a...)
+			o := new(4)
+			o.FatalfWithHints(tt.args.hints, tt.args.format, tt.args.a...)
 		})
 	}
 }
@@ -193,7 +213,8 @@ func TestFatalf(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			Fatalf(tt.args.format, tt.args.a...)
+			o := new(4)
+			o.Fatalf(tt.args.format, tt.args.a...)
 		})
 	}
 }
@@ -217,7 +238,8 @@ func TestFatalErr(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			FatalErr(tt.args.err)
+			o := new(4)
+			o.FatalErr(tt.args.err)
 		})
 	}
 }
@@ -242,7 +264,8 @@ func TestPanicf(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			Panicf(tt.args.format, tt.args.a...)
+			o := new(4)
+			o.Panicf(tt.args.format, tt.args.a...)
 		})
 	}
 }
@@ -266,7 +289,8 @@ func TestPanic(t *testing.T) {
 					t.Errorf("The code did not panic")
 				}
 			}()
-			Panic(tt.args.a...)
+			o := new(4)
+			o.Panic(tt.args.a...)
 		})
 	}
 }
@@ -309,15 +333,8 @@ func TestInfofWithHintExamples(t *testing.T) {
 				}
 			}()
 
-			//BUG(stuartpa): Not thread safe
-			runningUnitTests = true
-			InfofWithHintExamples(tt.args.hintExamples, tt.args.format, tt.args.a...)
-			runningUnitTests = false
+			o := new(4)
+			o.InfofWithHintExamples(tt.args.hintExamples, tt.args.format, tt.args.a...)
 		})
 	}
-}
-
-func Test_ensureEol(t *testing.T) {
-	format := ensureEol("%s")
-	Infof(format, "hello-world")
 }

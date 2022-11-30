@@ -67,10 +67,11 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 	}
 }
 
-/* The following tests require a working SQL instance and rely on SqlCmd environment variables
+/*
+	The following tests require a working SQL instance and rely on SqlCmd environment variables
+
 to manage the initial connection string. The default connection when no environment variables are
 set will be to localhost using Windows auth.
-
 */
 func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
@@ -223,7 +224,7 @@ func TestExitInitialQuery(t *testing.T) {
 	if assert.NoError(t, err, "s.Run(once = true)") {
 		s.SetOutput(nil)
 		o := buf.buf.String()
-		assert.Equal(t, "1200 2100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, o, "Output")
+		assert.Equal(t, "1200 2100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, o, "output")
 		assert.Equal(t, 1200, s.Exitcode, "ExitCode")
 	}
 

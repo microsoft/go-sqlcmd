@@ -31,7 +31,7 @@ func NewController() (c *Controller) {
 	return
 }
 
-func (c *Controller) EnsureImage(image string) (err error) {
+func (c Controller) EnsureImage(image string) (err error) {
 	var reader io.ReadCloser
 
 	trace("Running ImagePull for image %s", image)
@@ -51,7 +51,7 @@ func (c *Controller) EnsureImage(image string) (err error) {
 	return
 }
 
-func (c *Controller) ContainerRun(image string, env []string, port int, command []string, unitTestFailure bool) string {
+func (c Controller) ContainerRun(image string, env []string, port int, command []string, unitTestFailure bool) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
 			nat.Port("1433/tcp"): []nat.PortBinding{
@@ -90,7 +90,7 @@ func (c *Controller) ContainerRun(image string, env []string, port int, command 
 }
 
 // ContainerWaitForLogEntry waits for text substring in containers logs
-func (c *Controller) ContainerWaitForLogEntry(id string, text string) {
+func (c Controller) ContainerWaitForLogEntry(id string, text string) {
 	options := types.ContainerLogsOptions{
 		ShowStdout: true,
 		ShowStderr: false,
@@ -119,7 +119,7 @@ func (c *Controller) ContainerWaitForLogEntry(id string, text string) {
 	}
 }
 
-func (c *Controller) ContainerStop(id string) (err error) {
+func (c Controller) ContainerStop(id string) (err error) {
 	if id == "" {
 		panic("Must pass in non-empty id")
 	}
@@ -128,7 +128,7 @@ func (c *Controller) ContainerStop(id string) (err error) {
 	return
 }
 
-func (c *Controller) ContainerFiles(id string, filespec string) (files []string) {
+func (c Controller) ContainerFiles(id string, filespec string) (files []string) {
 	if id == "" {
 		panic("Must pass in non-empty id")
 	}
@@ -174,7 +174,7 @@ func (c *Controller) ContainerFiles(id string, filespec string) (files []string)
 	return strings.Split(string(stdout), "\n")
 }
 
-func (c *Controller) ContainerExists(id string) (exists bool) {
+func (c Controller) ContainerExists(id string) (exists bool) {
 	f := filters.NewArgs()
 	f.Add(
 		"id", id,
@@ -195,7 +195,7 @@ func (c *Controller) ContainerExists(id string) (exists bool) {
 	return
 }
 
-func (c *Controller) ContainerRemove(id string) (err error) {
+func (c Controller) ContainerRemove(id string) (err error) {
 	if id == "" {
 		panic("Must pass in non-empty id")
 	}

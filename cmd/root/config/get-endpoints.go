@@ -16,8 +16,8 @@ type GetEndpoints struct {
 	detailed bool
 }
 
-func (c *GetEndpoints) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *GetEndpoints) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "get-endpoints",
 		Short: "Display one or many endpoints from the sqlconfig file",
 		Examples: []cmdparser.ExampleInfo{
@@ -33,7 +33,7 @@ func (c *GetEndpoints) DefineCommand(...cmdparser.Command) {
 		},
 		Run:                        c.run,
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagInfo{Flag: "name", Value: &c.name},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -49,6 +49,8 @@ func (c *GetEndpoints) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *GetEndpoints) run() {
+	output := c.Output()
+
 	if c.name != "" {
 		if config.EndpointExists(c.name) {
 			context := config.GetEndpoint(c.name)

@@ -14,7 +14,6 @@ import (
 func TestInitialize(t *testing.T) {
 	type args struct {
 		errorHandler   func(err error)
-		traceHandler   func(format string, a ...any)
 		hintHandler    func(hints []string)
 		standardOutput io.WriteCloser
 		errorOutput    io.WriteCloser
@@ -29,7 +28,6 @@ func TestInitialize(t *testing.T) {
 			name: "badFormatterPanic",
 			args: args{
 				errorHandler:   errorCallback,
-				traceHandler:   traceCallback,
 				hintHandler:    hintCallback,
 				standardOutput: os.Stdout,
 				errorOutput:    os.Stderr,
@@ -41,7 +39,6 @@ func TestInitialize(t *testing.T) {
 			name: "initWithXml",
 			args: args{
 				errorHandler:   errorCallback,
-				traceHandler:   traceCallback,
 				hintHandler:    hintCallback,
 				standardOutput: os.Stdout,
 				errorOutput:    os.Stderr,
@@ -53,7 +50,6 @@ func TestInitialize(t *testing.T) {
 			name: "initWithJson",
 			args: args{
 				errorHandler:   errorCallback,
-				traceHandler:   traceCallback,
 				hintHandler:    hintCallback,
 				standardOutput: os.Stdout,
 				errorOutput:    os.Stderr,
@@ -75,7 +71,6 @@ func TestInitialize(t *testing.T) {
 			}
 			Initialize(
 				tt.args.errorHandler,
-				tt.args.traceHandler,
 				tt.args.hintHandler,
 				tt.args.standardOutput,
 				tt.args.format,

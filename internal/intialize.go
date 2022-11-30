@@ -23,7 +23,7 @@ type InitializeOptions struct {
 	LoggingLevel int
 }
 
-func Initialize(options InitializeOptions) {
+func Initialize(options InitializeOptions) output.Output {
 	if options.ErrorHandler == nil {
 		panic("ErrorHandler is nil")
 	}
@@ -37,12 +37,15 @@ func Initialize(options InitializeOptions) {
 		panic("LoggingLevel must be between 1 and 4 ")
 	}
 
-	file.Initialize(options.ErrorHandler, output.Tracef)
-	mssql.Initialize(options.ErrorHandler, output.Tracef, secret.Decode)
-	output.Initialize(options.ErrorHandler, output.Tracef, options.HintHandler, os.Stdout, options.OutputType, verbosity.Enum(options.LoggingLevel))
-	config.Initialize(options.ErrorHandler, output.Tracef, secret.Encode, secret.Decode, net.IsLocalPortAvailable)
-	container.Initialize(options.ErrorHandler, output.Tracef)
+	o := output.Initialize(options.ErrorHandler, options.HintHandler, os.Stdout, options.OutputType, verbosity.Enum(options.LoggingLevel))
+
+	file.Initialize(options.ErrorHandler, o.Tracef)
+	mssql.Initialize(options.ErrorHandler, o.Tracef, secret.Decode)
+	config.Initialize(options.ErrorHandler, o.Tracef, secret.Encode, secret.Decode, net.IsLocalPortAvailable)
+	container.Initialize(options.ErrorHandler, o.Tracef)
 	secret.Initialize(options.ErrorHandler)
-	net.Initialize(options.ErrorHandler, output.Tracef)
+	net.Initialize(options.ErrorHandler, o.Tracef)
 	pal.Initialize(options.ErrorHandler)
+
+	return o
 }

@@ -16,8 +16,8 @@ type DeleteContext struct {
 	cascade bool
 }
 
-func (c *DeleteContext) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *DeleteContext) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "delete-context",
 		Short: "Delete a context",
 		Examples: []cmdparser.ExampleInfo{
@@ -31,7 +31,7 @@ func (c *DeleteContext) DefineCommand(...cmdparser.Command) {
 		Run: c.run,
 
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagInfo{Flag: "name", Value: &c.name},
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -48,6 +48,8 @@ func (c *DeleteContext) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *DeleteContext) run() {
+	output := c.Output()
+
 	if c.name == "" {
 		output.FatalWithHints([]string{"Use the --name flag to pass in a context name to delete"},
 			"A 'name' is required")

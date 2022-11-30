@@ -15,8 +15,8 @@ type View struct {
 	raw bool
 }
 
-func (c *View) DefineCommand(...cmdparser.Command) {
-	c.Cmd.Options = cmdparser.Options{
+func (c *View) DefineCommand(output.Output, ...cmdparser.Command) {
+	c.Cmd.SetOptions(cmdparser.Options{
 		Use:   "view",
 		Short: "Display merged sqlconfig settings or a specified sqlconfig file",
 		Examples: []cmdparser.ExampleInfo{
@@ -31,7 +31,7 @@ func (c *View) DefineCommand(...cmdparser.Command) {
 		},
 		Aliases: []string{"use", "change-context", "set-context"},
 		Run:     c.run,
-	}
+	})
 
 	c.Cmd.DefineCommand()
 
@@ -43,6 +43,8 @@ func (c *View) DefineCommand(...cmdparser.Command) {
 }
 
 func (c *View) run() {
+	output := c.Output()
+
 	contents := config.GetRedactedConfig(c.raw)
 	output.Struct(contents)
 }

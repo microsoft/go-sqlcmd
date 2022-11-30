@@ -7,8 +7,8 @@ import (
 
 func TestCmd_run(t *testing.T) {
 	s := ""
-	c := &Cmd{
-		Options: Options{
+	c := Cmd{
+		options: Options{
 			FirstArgAlternativeForFlag: &AlternativeForFlagInfo{
 				Flag:  "name",
 				Value: &s,

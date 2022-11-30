@@ -4,6 +4,7 @@
 package cmdparser
 
 import (
+	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/spf13/cobra"
 )
 
@@ -24,11 +25,16 @@ func Initialize(init func()) {
 // Example with sub-commands
 //
 //	topLevel := cmd.New[*MyCommand](MyCommand.subCommands)
-func New[T PtrAsReceiverWrapper[CommandPtr], CommandPtr any](subCommands ...Command) (cmd T) {
+func New[T PtrAsReceiverWrapper[CommandPtr], CommandPtr any](output output.Output, subCommands ...Command) (cmd T) {
 	cmd = new(CommandPtr)
-	cmd.DefineCommand(subCommands...)
+	cmd.DefineCommand(
 	return
 }
+
+//func New[T Command](subCommands ...Command) (cmd T) {
+//	cmd.DefineCommand(subCommands...)
+//	return cmd
+//}
 
 // PtrAsReceiverWrapper per golang design doc "an unfortunate necessary kludge":
 // https://go.googlesource.com/proposal/+/refs/heads/master/design/43651-type-parameters.md#pointer-method-example
