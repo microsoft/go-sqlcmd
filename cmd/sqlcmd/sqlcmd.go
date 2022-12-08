@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 //go:generate go-winres make --file-version=git-tag --product-version=git-tag
-package main
+package sqlcmd
 
 import (
 	"errors"
@@ -117,7 +117,7 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 	return a.AuthenticationMethod
 }
 
-func main() {
+func Execute() {
 	ctx := kong.Parse(&args, kong.NoDefaultHelp())
 	if args.Version {
 		ctx.Printf("%v", version)
