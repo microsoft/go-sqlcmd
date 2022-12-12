@@ -274,7 +274,8 @@ func (c *Cmd) run(_ *cobra.Command, args []string) {
 	if c.options.Run == nil {
 		// If command has no run, it has sub-commands only, then display help if no
 		// sub-command entered
-		c.command.Help()
+		err := c.command.Help()
+		c.CheckErr(err)
 	} else {
 		c.options.Run()
 	}
