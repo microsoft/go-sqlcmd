@@ -3,20 +3,17 @@
 
 package cmdparser
 
-import "github.com/spf13/cobra"
+import (
+	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
+	"github.com/spf13/cobra"
+)
 
-type AlternativeForFlagInfo struct {
-	Flag  string
-	Value *string
-}
-
+// Cmd is the main type used for defining and running command line programs.
+// It contains fields and methods for defining the command, setting its options,
+// and running the command.
 type Cmd struct {
-	Options Options
-
-	command cobra.Command
-}
-
-type ExampleInfo struct {
-	Description string
-	Steps       []string
+	dependencies dependency.Options
+	options      CommandOptions
+	command      cobra.Command
+	unitTesting  bool
 }

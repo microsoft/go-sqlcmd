@@ -1,10 +1,12 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package config
 
 import (
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"strings"
 	"testing"
-
-	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
 )
 
 // TestCurrentContextEndpointHasContainer verifies the function panics when
@@ -28,7 +30,7 @@ func TestGetContainerId(t *testing.T) {
 			t.Errorf("The code did not panic")
 		}
 	}()
-	GetContainerId()
+	ContainerId()
 }
 
 func TestGetContainerId2(t *testing.T) {
@@ -59,7 +61,7 @@ func TestGetContainerId2(t *testing.T) {
 	})
 
 	SetCurrentContextName("context")
-	GetContainerId()
+	ContainerId()
 }
 
 func TestGetContainerId3(t *testing.T) {
@@ -92,18 +94,5 @@ func TestGetContainerId3(t *testing.T) {
 	})
 
 	SetCurrentContextName("context")
-	GetContainerId()
-}
-
-func TestGetContainerId4(t *testing.T) {
-	Clean()
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
-
-	SetCurrentContextName("badbad")
-
-	GetContainerId()
+	ContainerId()
 }

@@ -4,7 +4,9 @@
 package mssql
 
 import (
-	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
+	"fmt"
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"runtime"
 	"strings"
@@ -12,7 +14,12 @@ import (
 )
 
 func TestConnect(t *testing.T) {
-	t.Skip() // BUG(stuartpa): Re-enable before merge
+	Initialize(func(err error) {
+		if err != nil {
+			panic(err)
+		}
+	}, func(format string, a ...any) { fmt.Printf(format, a...) }, secret.Decode)
+
 	endpoint := Endpoint{
 		EndpointDetails: EndpointDetails{
 			Address: "localhost",
@@ -31,29 +38,29 @@ func TestConnect(t *testing.T) {
 	}{
 		{
 			name: "connectBasicPanic", args: args{
-			endpoint: endpoint,
-			user: &User{
-				Name:               "basicUser",
-				AuthenticationType: "basic",
-				BasicAuth: &BasicAuthDetails{
-					Username:          "foo",
-					PasswordEncrypted: true,
-					Password:          "bar",
+				endpoint: endpoint,
+				user: &User{
+					Name:               "basicUser",
+					AuthenticationType: "basic",
+					BasicAuth: &BasicAuthDetails{
+						Username:          "foo",
+						PasswordEncrypted: true,
+						Password:          "bar",
+					},
 				},
+				console: nil,
 			},
-			console: nil,
-		},
 			want: 0,
 		},
 		{
 			name: "invalidAuthTypePanic", args: args{
-			endpoint: endpoint,
-			user: &User{
-				Name:               "basicUser",
-				AuthenticationType: "badbad",
+				endpoint: endpoint,
+				user: &User{
+					Name:               "basicUser",
+					AuthenticationType: "badbad",
+				},
+				console: nil,
 			},
-			console: nil,
-		},
 			want: 0,
 		},
 	}

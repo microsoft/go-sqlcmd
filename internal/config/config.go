@@ -4,15 +4,20 @@
 package config
 
 import (
-	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
-	"github.com/microsoft/go-sqlcmd/internal/file"
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/io/file"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"os"
 	"path/filepath"
+	"testing"
 )
 
 var config Sqlconfig
 var filename string
 
+// SetFileName sets the filename for the file that the application reads from and
+// writes to. The file is created if it does not already exist, and Viper is configured
+// to use the given filename.
 func SetFileName(name string) {
 	if name == "" {
 		panic("name is empty")
@@ -24,6 +29,15 @@ func SetFileName(name string) {
 	configureViper(filename)
 }
 
+func SetFileNameForTest(t *testing.T) {
+	SetFileName(pal.FilenameInUserHomeDotDirectory(
+		".sqlcmd", "sqlconfig-"+t.Name()))
+}
+
+// DefaultFileName returns the default filename for the file that the application
+// reads from and writes to. This is typically located in the user's home directory
+// under the ".sqlcmd" directory. If an error occurs while attempting to retrieve
+// the user's home directory, the function will return an empty string.
 func DefaultFileName() (filename string) {
 	home, err := os.UserHomeDir()
 	checkErr(err)
@@ -32,6 +46,10 @@ func DefaultFileName() (filename string) {
 	return
 }
 
+// Clean resets the application's configuration by setting the Users, Contexts,
+// and Endpoints fields to nil, the CurrentContext field to an empty string,
+// and saving the updated configuration. This effectively resets the configuration
+// to its initial state.
 func Clean() {
 	config.Users = nil
 	config.Contexts = nil
@@ -41,6 +59,11 @@ func Clean() {
 	Save()
 }
 
+// IsEmpty returns a boolean indicating whether the application's configuration
+// is empty. The configuration is considered empty if all of the following fields
+// are empty or zero-valued: Users, Contexts, Endpoints, and CurrentContext.
+// This function can be used to determine whether the configuration has been
+// initialized or reset.
 func IsEmpty() (isEmpty bool) {
 	if len(config.Users) == 0 &&
 		len(config.Contexts) == 0 &&
@@ -52,6 +75,13 @@ func IsEmpty() (isEmpty bool) {
 	return
 }
 
+// AddContextWithContainer adds a new context to the application's configuration
+// with the given parameters. The context is associated with a container
+// identified by its container ID. If any of the required parameters (i.e. containerId,
+// imageName, portNumber, username, password, contextName) are empty or
+// zero-valued, the function will panic. The function also ensures that the given
+// contextName and username are unique, and it encrypts the password if
+// requested. The updated configuration is saved to file.
 func AddContextWithContainer(
 	contextName string,
 	imageName string,
@@ -84,8 +114,6 @@ func AddContextWithContainer(
 	endPointName := FindUniqueEndpointName(contextName)
 	userName := username + "@" + contextName
 
-	config.ApiVersion = "v1"
-	config.Kind = "Config"
 	config.CurrentContext = contextName
 
 	config.Endpoints = append(config.Endpoints, Endpoint{
@@ -124,7 +152,12 @@ func AddContextWithContainer(
 	Save()
 }
 
-func GetRedactedConfig(raw bool) (c Sqlconfig) {
+// RedactedConfig function returns a Sqlconfig struct with the Users field
+// having their BasicAuth password field either replaced with the decrypted
+// password or the string "REDACTED", depending on the value of the raw
+// parameter. This allows the caller to either get the full password or a
+// redacted version, where the password is hidden.
+func RedactedConfig(raw bool) (c Sqlconfig) {
 	c = config
 	for i := range c.Users {
 		user := c.Users[i]

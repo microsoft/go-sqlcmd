@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package config
 
 import (
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"testing"
-
-	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
 )
 
 func TestAddUser(t *testing.T) {
@@ -19,12 +22,8 @@ func TestAddUser(t *testing.T) {
 	})
 }
 
-func TestAddUser2(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+func TestNegAddUser(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
 	AddUser(User{
 		Name:               "",
 		AuthenticationType: "basic",
@@ -34,4 +33,9 @@ func TestAddUser2(t *testing.T) {
 			Password:          "",
 		},
 	})
+}
+
+func TestNegAddUser2(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	GetUser("doesnotexist")
 }

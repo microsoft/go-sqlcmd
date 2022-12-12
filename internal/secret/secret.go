@@ -9,7 +9,9 @@ import (
 	"encoding/base64"
 )
 
-// Encode optionally encrypts the plainText and always base64 encodes it
+// Encode takes a plain text string and a boolean indicating whether or not to
+// encrypt the plain text using a password, and returns the resulting cipher text.
+// If the plain text is an empty string, this function will panic.
 func Encode(plainText string, encryptPassword bool) (cipherText string) {
 	if plainText == "" {
 		panic("Cannot encode/encrypt an empty string")
@@ -26,7 +28,9 @@ func Encode(plainText string, encryptPassword bool) (cipherText string) {
 	return
 }
 
-// Decode always base64 decodes the cipherText and optionally decrypts it
+// Decode takes a cipher text and a boolean indicating whether or not to decrypt
+// the cipher text using a password, and returns the resulting plain text.
+// If the cipher text is an empty string, this function will panic.
 func Decode(cipherText string, decryptPassword bool) (plainText string) {
 	if cipherText == "" {
 		panic("Cannot decode/decrypt an empty string")
