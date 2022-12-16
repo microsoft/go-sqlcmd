@@ -15,11 +15,11 @@ type GetTags struct {
 func (c *GetTags) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "get-tags",
-		Short: "Get tags available for mssql edge install",
+		Short: "Get tags available for Azure SQL Edge install",
 		Examples: []cmdparser.ExampleOptions{
 			{
 				Description: "List tags",
-				Steps:       []string{"sqlcmd install mssql-edge get-tags"},
+				Steps:       []string{"sqlcmd install azsql-edge get-tags"},
 			},
 		},
 		Aliases: []string{"gt", "lt"},

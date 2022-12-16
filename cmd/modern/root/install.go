@@ -25,7 +25,7 @@ func (c *Install) DefineCommand(...cmdparser.CommandOptions) {
 }
 
 // SubCommands sets up the sub-commands for `sqlcmd install` such as
-// `sqlcmd install mssql` and `sqlcmd install mssql-edge`
+// `sqlcmd install mssql` and `sqlcmd install azsql-edge`
 func (c *Install) SubCommands() []cmdparser.Command {
 	dependencies := c.Dependencies()
 

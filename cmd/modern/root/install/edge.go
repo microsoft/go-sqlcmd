@@ -10,7 +10,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 )
 
-// Edge implements the `sqlcmd install mssql-edge command and sub-commands
+// Edge implements the `sqlcmd install azsql-edge command and sub-commands
 type Edge struct {
 	cmdparser.Cmd
 	MssqlBase
@@ -20,11 +20,11 @@ func (c *Edge) DefineCommand(...cmdparser.CommandOptions) {
 	const repo = "azure-sql-edge"
 
 	options := cmdparser.CommandOptions{
-		Use:   "mssql-edge",
-		Short: "Install SQL Server Edge",
+		Use:   "azsql-edge",
+		Short: "Install Azure Sql Edge",
 		Examples: []cmdparser.ExampleOptions{{
-			Description: "Install SQL Server Edge in a container",
-			Steps:       []string{"sqlcmd install mssql-edge"}}},
+			Description: "Install Azure SQL Edge in a container",
+			Steps:       []string{"sqlcmd install azsql-edge"}}},
 		Run:         c.MssqlBase.Run,
 		SubCommands: c.SubCommands(),
 	}
