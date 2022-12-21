@@ -106,7 +106,6 @@ func newCommands() Commands {
 			regex:    regexp.MustCompile(`(?im)^[\t ]*?:?ONERROR(?:[ \t]+(.*$)|$)`),
 			action:   onerrorCommand,
 			name:     "ONERROR",
-			isSystem: true,
 		},
 	}
 }
