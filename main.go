@@ -5,9 +5,10 @@
 package main
 
 import (
+	"os"
+
 	"github.com/microsoft/go-sqlcmd/cmd"
 	legacyCmd "github.com/microsoft/go-sqlcmd/cmd/sqlcmd"
-	"os"
 )
 
 // main is the entrypoint function for sqlcmd.

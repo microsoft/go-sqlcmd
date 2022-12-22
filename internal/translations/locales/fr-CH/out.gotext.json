@@ -1,0 +1,20 @@
+{
+    "language": "fr-CH",
+    "messages": [
+        {
+            "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
+            "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
+            "translation": "'-a {PacketSize}': La taille du paquet doit être un nombre compris entre 512 et 32767.",
+            "placeholders": [
+                {
+                    "id": "PacketSize",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "a.PacketSize"
+                }
+            ]
+        }
+    ]
+}
