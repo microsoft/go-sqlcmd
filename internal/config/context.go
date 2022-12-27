@@ -6,23 +6,83 @@ package config
 import (
 	"errors"
 	"fmt"
-	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
-	"github.com/microsoft/go-sqlcmd/internal/output"
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"strconv"
 )
 
+// AddContext adds the context to the sqlconfig file.
+//
+// Before calling this method, verify the Endpoint exists and give the user
+// a descriptive error, (this function will panic, which should never be hit)
 func AddContext(context Context) {
 	if !EndpointExists(context.Endpoint) {
-		output.FatalfWithHintExamples([][]string{
-			{"Add the endpoint", fmt.Sprintf(
-				"sqlcmd config add-endpoint --name %v", context.Endpoint)},
-		}, "Endpoint '%v' does not exist", context.Endpoint)
+		panic("Endpoint doesn't exist")
 	}
 	context.Name = FindUniqueContextName(context.Name, *context.User)
 	config.Contexts = append(config.Contexts, context)
 	Save()
 }
 
+// CurrentContextName returns the name of the current context in the configuration.
+// The current context is the one that is currently active and used by the application.
+func CurrentContextName() string {
+	return config.CurrentContext
+}
+
+// ContextExists returns whether a context with the given name exists in the configuration.
+// This function iterates over the list of contexts in the configuration and returns
+// true if a context with the given name is found. Otherwise, the function returns false.
+func ContextExists(name string) (exists bool) {
+	for _, c := range config.Contexts {
+		if name == c.Name {
+			exists = true
+			break
+		}
+	}
+	return
+}
+
+// CurrentContext returns the current context's endpoint and user from the configuration.
+// The function iterates over the list of contexts and endpoints in the configuration and returns the endpoint and user for the current context.
+// If the current context does not have an endpoint, the function panics.
+func CurrentContext() (endpoint Endpoint, user *User) {
+	currentContextName := GetCurrentContextOrFatal()
+
+	endPointFound := false
+	for _, c := range config.Contexts {
+		if c.Name == currentContextName {
+			for _, e := range config.Endpoints {
+				if e.Name == c.Endpoint {
+					endpoint = e
+					endPointFound = true
+					break
+				}
+			}
+
+			for _, u := range config.Users {
+				if u.Name == *c.User {
+					user = &u
+					break
+				}
+			}
+		}
+	}
+
+	if !endPointFound {
+		panic(fmt.Sprintf(
+			"Context '%v' has no endpoint.  Every context must have an endpoint",
+			currentContextName,
+		))
+	}
+
+	return
+}
+
+// DeleteContext removes the context with the given name from the application's
+// configuration. If the context does not exist, the function does nothing. The
+// function also updates the CurrentContext field in the configuration to the
+// first remaining context, or an empty string if no contexts remain. The
+// updated configuration is saved to file.
 func DeleteContext(name string) {
 	if ContextExists(name) {
 		ordinal := contextOrdinal(name)
@@ -67,12 +127,14 @@ func FindUniqueContextName(name string, username string) (uniqueContextName stri
 	return
 }
 
-func GetCurrentContextName() string {
-	return config.CurrentContext
-}
-
+// GetCurrentContextOrFatal returns the name of the current context in the
+// configuration or panics if it is not set.
+// This function first calls the CurrentContextName function to retrieve the
+// current context's name, if the current context's name is empty, the function
+// panics with an error message indicating that a context must be set.
+// Otherwise, the current context's name is returned.
 func GetCurrentContextOrFatal() (currentContextName string) {
-	currentContextName = GetCurrentContextName()
+	currentContextName = CurrentContextName()
 	if currentContextName == "" {
 		checkErr(errors.New(
 			"no current context. To create a context use `sqlcmd install`, " +
@@ -81,13 +143,26 @@ func GetCurrentContextOrFatal() (currentContextName string) {
 	return
 }
 
+// SetCurrentContextName sets the current context in the configuration to the given name.
+// If a context with the given name does not exist, the function panics.
+// Otherwise, the CurrentContext field in the configuration object is updated
+// with the given name and the configuration is saved to the file.
 func SetCurrentContextName(name string) {
 	if ContextExists(name) {
 		config.CurrentContext = name
 		Save()
+	} else {
+		panic("Context must exist")
 	}
 }
 
+// RemoveCurrentContext removes the current context from the configuration.
+// This function iterates over the list of contexts, endpoints, and users in the
+// configuration and removes the current context, its endpoint, and its user.
+// If there are no remaining contexts in the configuration after removing the
+// current context, the CurrentContext field in the configuration object is set
+// to an empty string. Otherwise, the CurrentContext field is set to the name
+// of the first remaining context.
 func RemoveCurrentContext() {
 	currentContextName := config.CurrentContext
 
@@ -125,69 +200,22 @@ func RemoveCurrentContext() {
 	}
 }
 
-func ContextExists(name string) (exists bool) {
-	for _, c := range config.Contexts {
-		if name == c.Name {
-			exists = true
-			break
-		}
-	}
-	return
-}
-
-func contextOrdinal(name string) (ordinal int) {
-	for i, c := range config.Contexts {
-		if name == c.Name {
-			ordinal = i
-			return
-		}
-	}
-	panic("Context not found")
-}
-
-func GetCurrentContext() (endpoint Endpoint, user *User) {
-	currentContextName := GetCurrentContextOrFatal()
-
-	endPointFound := false
-	for _, c := range config.Contexts {
-		if c.Name == currentContextName {
-			for _, e := range config.Endpoints {
-				if e.Name == c.Endpoint {
-					endpoint = e
-					endPointFound = true
-					break
-				}
-			}
-
-			for _, u := range config.Users {
-				if u.Name == *c.User {
-					user = &u
-					break
-				}
-			}
-		}
-	}
-
-	if !endPointFound {
-		panic(fmt.Sprintf(
-			"Context '%v' has no endpoint.  Every context must have an endpoint",
-			currentContextName,
-		))
-	}
-
-	return
-}
-
+// GetContext retrieves a context from the configuration by its name.
+// If the context does not exist, the function panics.
+// If the context is not found, the function panics to indicate that the context must exist.
 func GetContext(name string) (context Context) {
 	for _, c := range config.Contexts {
 		if name == c.Name {
 			context = c
-			break
+			return
 		}
 	}
-	return
+	panic("Context does not exist")
 }
 
+// OutputContexts outputs the list of contexts in the configuration.
+// The output can be either detailed, which includes all information about each context, or a list of context names only.
+// This is controlled by the detailed flag, which is passed to the function.
 func OutputContexts(formatter func(interface{}) []byte, detailed bool) {
 	if detailed {
 		formatter(config.Contexts)
@@ -200,4 +228,14 @@ func OutputContexts(formatter func(interface{}) []byte, detailed bool) {
 
 		formatter(names)
 	}
+}
+
+func contextOrdinal(name string) (ordinal int) {
+	for i, c := range config.Contexts {
+		if name == c.Name {
+			ordinal = i
+			return
+		}
+	}
+	panic("Context not found")
 }

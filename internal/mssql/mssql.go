@@ -5,11 +5,15 @@ package mssql
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"os"
 )
 
+// Connect is used to connect to a SQL Server using the specified endpoint
+// and user details. The console parameter is used to output messages during
+// the connection process. The function returns a Sqlcmd instance that can
+// be used to run SQL commands on the server.
 func Connect(
 	endpoint sqlconfig.Endpoint,
 	user *sqlconfig.User,
@@ -46,6 +50,12 @@ func Connect(
 	return s
 }
 
+// Query is helper function that allows running a given SQL query on a
+// provided sqlcmd.Sqlcmd object. It takes the sqlcmd.Sqlcmd object and the
+// query text as inputs, and runs the query using the Run method of
+// the sqlcmd.Sqlcmd object. It sets the standard output and standard error
+// to be the same as the current process, and returns the error if any occurred
+// during the execution of the query.
 func Query(s *sqlcmd.Sqlcmd, text string) {
 	s.Query = text
 	s.SetOutput(os.Stdout)

@@ -1,138 +1,140 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-// Package output manages outputting text to the user.
+// Package Output provides a number of methods for logging and handling
+// errors, including Debugf, Errorf, Fatalf, FatalErr, Infof, Panic, Panicf,
+// Struct, Tracef, and Warnf. These methods allow the caller to specify the
+// desired verbosity level, add newlines to the end of the log message if
+// necessary, and handle errors and hints in a variety of ways.
 //
 // Trace("Something very low level.") - not localized
 // Debug("Useful debugging information.") - not localized
 // Info("Something noteworthy happened!") - localized
 // Warn("You should probably take a look at this.") - localized
 // Error("Something failed but I'm not quitting.") - localized
-// Fatal("Bye.") - localized
-//
-//	calls os.Exit(1) after logging
-//
-// Panic("I'm bailing.") - not localized
-//
-//	calls panic() after logging
+// Fatal("Bye.") - localized, calls os.Exit(1) after logging
+// Panic("I'm bailing.") - not localized, calls panic() after logging
 package output
 
 import (
 	"fmt"
-	. "github.com/microsoft/go-sqlcmd/internal/output/formatter"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
-	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/pkg/errors"
-	"io"
 	"regexp"
 	"strings"
 )
 
-var formatter Formatter
-var loggingLevel verbosity.Enum
-var runningUnitTests bool
-
-var standardWriteCloser io.WriteCloser
-
-func Debugf(format string, a ...any) {
-	if loggingLevel >= verbosity.Debug {
-		format = ensureEol(format)
-		printf("DEBUG: "+format, a...)
+func (o Output) Debugf(format string, a ...any) {
+	if o.loggingLevel >= verbosity.Debug {
+		format = o.ensureEol(format)
+		o.printf("DEBUG: "+format, a...)
 	}
 }
 
-func Errorf(format string, a ...any) {
-	if loggingLevel >= verbosity.Error {
-		format = ensureEol(format)
-		if loggingLevel >= verbosity.Debug {
+func (o Output) Errorf(format string, a ...any) {
+	if o.loggingLevel >= verbosity.Error {
+		format = o.ensureEol(format)
+		if o.loggingLevel >= verbosity.Debug {
 			format = "ERROR: " + format
 		}
-		printf(format, a...)
+		o.printf(format, a...)
 	}
 }
 
-func Fatal(a ...any) {
-	fatal([]string{}, a...)
+func (o Output) Fatal(a ...any) {
+	o.fatal([]string{}, a...)
+}
+func (o Output) FatalErr(err error) {
+	o.errorCallback(err)
 }
 
-func FatalErr(err error) {
-	checkErr(err)
+func (o Output) Fatalf(format string, a ...any) {
+	o.fatalf([]string{}, format, a...)
 }
 
-func Fatalf(format string, a ...any) {
-	fatalf([]string{}, format, a...)
+func (o Output) FatalfErrorWithHints(err error, hints []string, format string, a ...any) {
+	o.fatalf(hints, format, a...)
+	o.errorCallback(err)
 }
 
-func FatalfErrorWithHints(err error, hints []string, format string, a ...any) {
-	fatalf(hints, format, a...)
-	checkErr(err)
+func (o Output) FatalfWithHints(hints []string, format string, a ...any) {
+	o.fatalf(hints, format, a...)
 }
 
-func FatalfWithHints(hints []string, format string, a ...any) {
-	fatalf(hints, format, a...)
-}
-
-func FatalfWithHintExamples(hintExamples [][]string, format string, a ...any) {
+func (o Output) FatalfWithHintExamples(hintExamples [][]string, format string, a ...any) {
 	err := errors.New(fmt.Sprintf(format, a...))
-	displayHintExamples(hintExamples)
-	checkErr(err)
+	o.displayHintExamples(hintExamples)
+	o.errorCallback(err)
 }
 
-func FatalWithHints(hints []string, a ...any) {
-	fatal(hints, a...)
+func (o Output) FatalWithHints(hints []string, a ...any) {
+	o.fatal(hints, a...)
 }
 
-func Infof(format string, a ...any) {
-	infofWithHints([]string{}, format, a...)
+func (o Output) Infof(format string, a ...any) {
+	o.infofWithHints([]string{}, format, a...)
 }
 
-func InfofWithHints(hints []string, format string, a ...any) {
-	infofWithHints(hints, format, a...)
+func (o Output) InfofWithHints(hints []string, format string, a ...any) {
+	o.infofWithHints(hints, format, a...)
 }
 
-func InfofWithHintExamples(hintExamples [][]string, format string, a ...any) {
-	if loggingLevel >= verbosity.Info || runningUnitTests {
-		format = ensureEol(format)
-		if loggingLevel >= verbosity.Debug {
+// InfofWithHintExamples logs an info-level message with a given format and
+// arguments a. It also displays additional hints with example usage in the
+// output, using the displayHintExamples helper function. The message is
+// formatted using the ensureEol helper function to ensure that it ends with
+// a newline character. If the logging level is set to Debug, the message is prefixed
+// with "INFO: ". The displayHintExamples helper function formats the hints
+// for display and passes them to the hintCallback function for output.
+func (o Output) InfofWithHintExamples(hintExamples [][]string, format string, a ...any) {
+	if o.loggingLevel >= verbosity.Info {
+		format = o.ensureEol(format)
+		if o.loggingLevel >= verbosity.Debug {
 			format = "INFO:  " + format
 		}
-		printf(format, a...)
-		displayHintExamples(hintExamples)
+		o.printf(format, a...)
+		o.displayHintExamples(hintExamples)
 	}
 }
 
-func Panic(a ...any) {
+func (o Output) Panic(a ...any) {
 	panic(a)
 }
 
-func Panicf(format string, a ...any) {
+func (o Output) Panicf(format string, a ...any) {
 	panic(fmt.Sprintf(format, a...))
 }
 
-func Struct(in interface{}) (bytes []byte) {
-	bytes = formatter.Serialize(in)
+func (o Output) Struct(in interface{}) (bytes []byte) {
+	bytes = o.formatter.Serialize(in)
 
 	return
 }
 
-func Tracef(format string, a ...any) {
-	if loggingLevel >= verbosity.Trace {
-		format = ensureEol(format)
-		printf("TRACE: "+format, a...)
+func (o Output) Tracef(format string, a ...any) {
+	if o.loggingLevel >= verbosity.Trace {
+		format = o.ensureEol(format)
+		o.printf("TRACE: "+format, a...)
 	}
 }
 
-func Warnf(format string, a ...any) {
-	if loggingLevel >= verbosity.Warn {
-		format = ensureEol(format)
-		if loggingLevel >= verbosity.Debug {
+func (o Output) Warnf(format string, a ...any) {
+	if o.loggingLevel >= verbosity.Warn {
+		format = o.ensureEol(format)
+		if o.loggingLevel >= verbosity.Debug {
 			format = "WARN:  " + format
 		}
-		printf(format, a...)
+		o.printf(format, a...)
 	}
 }
 
-func displayHintExamples(hintExamples [][]string) {
+// displayHintExamples takes an array of hint examples and displays them in
+// a formatted way. It first calculates the maximum length of the description
+// in the hint examples, and then creates a string for each hint example with
+// the description padded to the maximum length, followed by the example.
+// Finally, it calls the hint callback function with the array of formatted hints.
+func (o Output) displayHintExamples(hintExamples [][]string) {
 	var hints []string
 
 	maxLengthHintText := 0
@@ -155,44 +157,62 @@ func displayHintExamples(hintExamples [][]string) {
 			hintExample[1],
 		))
 	}
-	displayHints(hints)
+	o.hintCallback(hints)
 }
 
-func ensureEol(format string) string {
-	if len(format) >= len(sqlcmd.SqlcmdEol) {
-		if !strings.HasSuffix(format, sqlcmd.SqlcmdEol) {
-			format = format + sqlcmd.SqlcmdEol
+// ensureEol ensures that the provided format string ends with a line break character.
+// It does this by checking if the format string already ends with a line break character,
+// and if not, it appends a line break character to the format string. If the format
+// string is shorter than the length of the line break character, it returns the line
+// break character on its own. This function is useful for ensuring that output to
+// the console will always be properly formatted and easy to read.
+func (o Output) ensureEol(format string) string {
+	if len(format) >= len(pal.LineBreak()) {
+		if !strings.HasSuffix(format, pal.LineBreak()) {
+			format = format + pal.LineBreak()
 		}
 	} else {
-		format = sqlcmd.SqlcmdEol
+		format = pal.LineBreak()
 	}
 	return format
 }
 
-func fatal(hints []string, a ...any) {
+func (o Output) fatal(hints []string, a ...any) {
 	err := errors.New(fmt.Sprintf("%v", a...))
-	displayHints(hints)
-	checkErr(err)
+	o.hintCallback(hints)
+	o.errorCallback(err)
 }
 
-func fatalf(hints []string, format string, a ...any) {
+func (o Output) fatalf(hints []string, format string, a ...any) {
 	err := errors.New(fmt.Sprintf(format, a...))
-	displayHints(hints)
-	checkErr(err)
+	o.hintCallback(hints)
+	o.errorCallback(err)
 }
 
-func infofWithHints(hints []string, format string, a ...any) {
-	if loggingLevel >= verbosity.Info {
-		format = ensureEol(format)
-		if loggingLevel >= verbosity.Debug {
+// infofWithHints is used to print out an "INFO" message with additional hints.
+// The format argument specifies the text to be printed, which can include placeholders
+// for dynamic values. The a argument is a variadic parameter containing the
+// values to be used to replace the placeholders in the format string. The hints
+// argument is a slice of strings representing additional hints to be printed along
+// with the message. The function checks if the logging level is set to at least
+// "Info" before printing the message. If the logging level is set to "Debug"
+// or higher, the string "INFO: " is prepended to the message before it is printed.
+// The function also calls the hintCallback function to print the hints, if any are provided.
+func (o Output) infofWithHints(hints []string, format string, a ...any) {
+	if o.loggingLevel >= verbosity.Info {
+		format = o.ensureEol(format)
+		if o.loggingLevel >= verbosity.Debug {
 			format = "INFO:  " + format
 		}
-		printf(format, a...)
-		displayHints(hints)
+		o.printf(format, a...)
+		o.hintCallback(hints)
 	}
 }
 
-func maskSecrets(text string) string {
+// maskSecrets takes a string as input and masks any password found in the
+// string using the PASSWORD.*\s?=.*\s?N?') regular expression. It
+// returns the resulting masked string.
+func (o Output) maskSecrets(text string) string {
 
 	// Mask password from T/SQL e.g. ALTER LOGIN [sa] WITH PASSWORD = N'foo';
 	r := regexp.MustCompile(`(PASSWORD.*\s?=.*\s?N?')(.*)(')`)
@@ -200,9 +220,9 @@ func maskSecrets(text string) string {
 	return text
 }
 
-func printf(format string, a ...any) {
+func (o Output) printf(format string, a ...any) {
 	text := fmt.Sprintf(format, a...)
-	text = maskSecrets(text)
-	_, err := standardWriteCloser.Write([]byte(text))
-	checkErr(err)
+	text = o.maskSecrets(text)
+	_, err := o.standardWriteCloser.Write([]byte(text))
+	o.errorCallback(err)
 }

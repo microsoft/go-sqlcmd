@@ -14,7 +14,7 @@ type Xml struct {
 func (f *Xml) Serialize(in interface{}) (bytes []byte) {
 	var err error
 
-	bytes, err = xml.MarshalIndent(in, "", "    ")
+	bytes, err = xml.MarshalIndent(in, "", "  ")
 	f.Base.CheckErr(err)
 	f.Base.Output(bytes)
 

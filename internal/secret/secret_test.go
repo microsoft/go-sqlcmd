@@ -4,67 +4,25 @@
 package secret
 
 import (
-	"github.com/microsoft/go-sqlcmd/internal/output"
-	"strings"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"testing"
 )
 
-func TestEncryptAndDecrypt(t *testing.T) {
-	type args struct {
-		plainText string
-		encrypt   bool
-	}
-	tests := []struct {
-		name          string
-		args          args
-		wantPlainText string
-	}{
-		{
-			name:          "noEncrypt",
-			args:          args{"plainText", false},
-			wantPlainText: "plainText",
-		},
-		{
-			name:          "encrypt",
-			args:          args{"plainText", true},
-			wantPlainText: "plainText",
-		},
-		{
-			name:          "emptyStringForEncryptPanic",
-			args:          args{"", true},
-			wantPlainText: "",
-		},
-		{
-			name:          "emptyStringForDecryptPanic",
-			args:          args{"", true},
-			wantPlainText: "",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
+func TestEncodeAndDecode(t *testing.T) {
+	notEncrypted := Encode("plainText", false)
+	encrypted := Encode("plainText", true)
+	Decode(notEncrypted, false)
+	Decode(encrypted, true)
+}
 
-			// If test name ends in 'Panic' expect a Panic
-			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() {
-					if r := recover(); r == nil {
-						t.Errorf("The code did not panic")
-					}
-				}()
-			}
+func TestNegEncode(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
 
-			var gotPlainText string
-			if tt.name != "emptyStringForDecryptPanic" {
-				cipherText := Encode(tt.args.plainText, tt.args.encrypt)
-				gotPlainText = Decode(cipherText, tt.args.encrypt)
-				output.Infof(gotPlainText)
-			} else {
-				gotPlainText = Decode(tt.args.plainText, tt.args.encrypt)
-				output.Infof(gotPlainText)
-			}
+	Encode("", true)
+}
 
-			if gotPlainText = tt.args.plainText; gotPlainText != tt.wantPlainText {
-				t.Errorf("Encode/Decode() = %v, want %v", gotPlainText, tt.wantPlainText)
-			}
-		})
-	}
+func TestNegDecode(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	Decode("", true)
 }

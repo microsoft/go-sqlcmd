@@ -16,6 +16,13 @@ const (
 	numberSet    = "0123456789"
 )
 
+// Generate generates a random password of a specified length. The password
+// will contain at least the specified number of special characters, 
+// numeric digits, and upper-case letters. The remaining characters in the
+// password will be selected from a combination of lower-case letters, special
+// characters, and numeric digits. The special characters are chosen from
+// the provided special character set. The generated password is returned
+// as a string.
 func Generate(passwordLength, minSpecialChar, minNum, minUpperCase int, specialCharSet string) string {
 	var password strings.Builder
 	allCharSet := lowerCharSet + upperCharSet + specialCharSet + numberSet
