@@ -11,6 +11,15 @@ import (
 	"testing"
 )
 
+// Test.go contains functions useful for creating compact unit tests for the
+// CLI application using this package, e.g. a unit test can be two lines of code:
+//
+// 	  cmdparser.TestSetup(t)
+//	  cmdparser.TestCmd[*GetEndpoints]()
+//
+// This is a complete unit test that runs the sqlcmd config get-endpoints command
+// line.
+
 // Setup internal packages for testing
 func TestSetup(t *testing.T) {
 	o := output.New(output.Options{})

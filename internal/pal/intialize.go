@@ -8,7 +8,7 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
-	}, "\n")
+	}, defaultLineBreak())
 }
 
 func Initialize(handler func(err error), endOfLine string) {

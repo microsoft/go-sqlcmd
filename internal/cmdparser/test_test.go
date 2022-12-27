@@ -3,9 +3,14 @@
 
 package cmdparser
 
+// Test_test.go contains functions to test the functions in test.go, so this file
+// tests the test functions.  This file shows end-to-end usage of how to create
+// the simplest command-line application and run it
+
 import (
 	"errors"
 	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -46,17 +51,19 @@ func TestTest2(t *testing.T) {
 }
 
 func TestNextTest(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
+		defer func() { test.CatchExpectedError(recover(), t) }()
 
-	TestSetup(t)
-	TestCmd[*TestCommand](" ", " ")
+		TestSetup(t)
+		TestCmd[*TestCommand](" ", " ")
+	})
 }
 
 func TestThrowError(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	TestSetup(t)
-	TestCmd[*TestCommand]("throw-error")
+	assert.Panics(t, func() {
+		TestSetup(t)
+		TestCmd[*TestCommand]("throw-error")
+	})
 }
 
 func TestTest3(t *testing.T) {
