@@ -9,7 +9,6 @@ package cmdparser
 
 import (
 	"errors"
-	"github.com/microsoft/go-sqlcmd/internal/test"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -48,15 +47,6 @@ func TestTest(t *testing.T) {
 func TestTest2(t *testing.T) {
 	TestSetup(t)
 	TestCmd[*TestCommand]("test-cmd")
-}
-
-func TestNextTest(t *testing.T) {
-	assert.Panics(t, func() {
-		defer func() { test.CatchExpectedError(recover(), t) }()
-
-		TestSetup(t)
-		TestCmd[*TestCommand](" ", " ")
-	})
 }
 
 func TestThrowError(t *testing.T) {

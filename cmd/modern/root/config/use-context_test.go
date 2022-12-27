@@ -5,7 +5,7 @@ package config
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -17,8 +17,9 @@ func TestUseContext(t *testing.T) {
 }
 
 func TestNegUseContext(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*UseContext]("does-not-exist")
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*UseContext]("does-not-exist")
+	})
 }

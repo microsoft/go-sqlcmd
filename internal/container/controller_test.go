@@ -5,7 +5,7 @@ package container
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -52,16 +52,17 @@ func TestController_ContainerRunFailure(t *testing.T) {
 		repo,
 		tag)
 
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	c := NewController()
-	c.ContainerRun(
-		imageName,
-		[]string{},
-		0,
-		[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-		false,
-	)
+		c := NewController()
+		c.ContainerRun(
+			imageName,
+			[]string{},
+			0,
+			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+			false,
+		)
+	})
 }
 
 func TestController_ContainerRunFailureCleanup(t *testing.T) {
@@ -75,20 +76,21 @@ func TestController_ContainerRunFailureCleanup(t *testing.T) {
 		repo,
 		tag)
 
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	c := NewController()
-	id := c.ContainerRun(
-		imageName,
-		[]string{},
-		0,
-		[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-		true,
-	)
-	err := c.ContainerStop(id)
-	checkErr(err)
-	err = c.ContainerRemove(id)
-	checkErr(err)
+		c := NewController()
+		id := c.ContainerRun(
+			imageName,
+			[]string{},
+			0,
+			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+			true,
+		)
+		err := c.ContainerStop(id)
+		checkErr(err)
+		err = c.ContainerRemove(id)
+		checkErr(err)
+	})
 }
 
 func TestController_ContainerStopNeg(t *testing.T) {
@@ -102,42 +104,47 @@ func TestController_ContainerStopNeg(t *testing.T) {
 		repo,
 		tag)
 
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	c := NewController()
-	id := c.ContainerRun(imageName, []string{}, 0, []string{"ash", "-c", "echo 'Hello World'; sleep 1"}, false)
-	err := c.ContainerStop(id)
-	checkErr(err)
-	err = c.ContainerRemove(id)
-	checkErr(err)
+		c := NewController()
+		id := c.ContainerRun(imageName, []string{}, 0, []string{"ash", "-c", "echo 'Hello World'; sleep 1"}, false)
+		err := c.ContainerStop(id)
+		checkErr(err)
+		err = c.ContainerRemove(id)
+		checkErr(err)
+	})
 }
 
 func TestController_ContainerStopNeg2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	c := NewController()
-	err := c.ContainerStop("")
-	checkErr(err)
+		c := NewController()
+		err := c.ContainerStop("")
+		checkErr(err)
+	})
 }
 
 func TestController_ContainerRemoveNeg(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	c := NewController()
-	err := c.ContainerRemove("")
-	checkErr(err)
+		c := NewController()
+		err := c.ContainerRemove("")
+		checkErr(err)
+	})
 }
 
 func TestController_ContainerFilesNeg(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	c := NewController()
-	c.ContainerFiles("", "")
+		c := NewController()
+		c.ContainerFiles("", "")
+	})
 }
 
 func TestController_ContainerFilesNeg2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	c := NewController()
-	c.ContainerFiles("id", "")
+		c := NewController()
+		c.ContainerFiles("id", "")
+	})
 }

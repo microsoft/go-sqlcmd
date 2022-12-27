@@ -5,7 +5,7 @@ package config
 
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -23,19 +23,21 @@ func TestAddUser(t *testing.T) {
 }
 
 func TestNegAddUser(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-	AddUser(User{
-		Name:               "",
-		AuthenticationType: "basic",
-		BasicAuth: &BasicAuthDetails{
-			Username:          "",
-			PasswordEncrypted: false,
-			Password:          "",
-		},
+	assert.Panics(t, func() {
+		AddUser(User{
+			Name:               "",
+			AuthenticationType: "basic",
+			BasicAuth: &BasicAuthDetails{
+				Username:          "",
+				PasswordEncrypted: false,
+				Password:          "",
+			},
+		})
 	})
 }
 
 func TestNegAddUser2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-	GetUser("doesnotexist")
+	assert.Panics(t, func() {
+		GetUser("doesnotexist")
+	})
 }

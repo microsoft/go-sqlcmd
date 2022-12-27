@@ -8,7 +8,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
-	"github.com/microsoft/go-sqlcmd/internal/test"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -31,15 +30,17 @@ func TestInstallMssql(t *testing.T) {
 }
 
 func TestNegInstallMssql(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*Mssql]()
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*Mssql]()
+	})
 }
 
 func TestNegInstallMssql2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*Mssql]("--accept-eula --repo does/not/exist")
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*Mssql]("--accept-eula --repo does/not/exist")
+	})
 }

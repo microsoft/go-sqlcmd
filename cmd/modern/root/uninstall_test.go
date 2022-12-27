@@ -8,7 +8,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/install/edge"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/install/mssql"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -34,8 +34,9 @@ func TestUninstallWithUserDbPresent(t *testing.T) {
 // uninstall
 func TestNegUninstallNoInstanceToUninstall(t *testing.T) {
 	t.Skip("stuartpa: Not passing on Linux, not sure why right now")
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*Uninstall]("--yes")
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*Uninstall]("--yes")
+	})
 }

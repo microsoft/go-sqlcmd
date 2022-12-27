@@ -5,7 +5,7 @@ package config
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -18,15 +18,17 @@ func TestDeleteContext(t *testing.T) {
 }
 
 func TestNegDeleteContext(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*DeleteContext]()
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*DeleteContext]()
+	})
 }
 
 func TestNegDeleteContext2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*DeleteContext]("--name does-not-exist")
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*DeleteContext]("--name does-not-exist")
+	})
 }
