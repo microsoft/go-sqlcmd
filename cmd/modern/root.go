@@ -17,6 +17,7 @@ type Root struct {
 	configFilename string
 	loggingLevel   int
 	outputType     string
+	inputType      string
 }
 
 // DefineCommand defines the top-level sqlcmd sub-commands.
@@ -112,5 +113,13 @@ func (c *Root) addGlobalFlags() {
 		Name:       "verbosity",
 		Shorthand:  "v",
 		Usage:      "Log level, error=0, warn=1, info=2, debug=3, trace=4",
+	})
+
+	c.AddFlag(cmdparser.FlagOptions{
+		String:        &c.inputType,
+		DefaultString: "yaml",
+		Name:          "InputFile",
+		Shorthand:     "i",
+		Usage:         "output type (yaml, json or xml)",
 	})
 }
