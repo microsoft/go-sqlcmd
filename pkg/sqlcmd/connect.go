@@ -42,6 +42,8 @@ type ConnectSettings struct {
 	LogLevel int
 	// ExitOnError specifies whether to exit the app on an error
 	ExitOnError bool
+	// ignore error
+	IgnoreError bool
 	// ErrorSeverityLevel sets the minimum SQL severity level to treat as an error
 	ErrorSeverityLevel uint8
 	// Database is the name of the database for the connection
