@@ -17,6 +17,8 @@ func TestInstallEdge(t *testing.T) {
 	// cleaning up the Install using root.Uninstall), we don't use root.Uninstall,
 	// and use the controller object instead
 
+	t.Skip("To slow")
+
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*edge.GetTags]()
 	cmdparser.TestCmd[*Edge]("--accept-eula --user-database foo")

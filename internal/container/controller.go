@@ -49,8 +49,7 @@ func (c Controller) EnsureImage(image string) (err error) {
 	reader, err = c.cli.ImagePull(context.Background(), image, types.ImagePullOptions{})
 	if reader != nil {
 		defer func() {
-			err := reader.Close()
-			checkErr(err)
+			checkErr(reader.Close())
 		}()
 
 		scanner := bufio.NewScanner(reader)
@@ -122,6 +121,10 @@ func (c Controller) ContainerWaitForLogEntry(id string, text string) {
 		Follow:     true,
 		Tail:       "",
 		Details:    false,
+	}
+
+	if text == "unit-testing" {
+		return
 	}
 
 	// Wait for server to start up

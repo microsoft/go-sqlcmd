@@ -54,7 +54,8 @@ func TestCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...strin
 
 func testCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...string) error {
 	c := New[T](dependency.Options{
-		Output: output.New(output.Options{LoggingLevel: verbosity.Trace}),
+		Output: output.New(output.Options{
+			LoggingLevel: verbosity.Trace}),
 	})
 	c.DefineCommand()
 	if len(args) > 1 {

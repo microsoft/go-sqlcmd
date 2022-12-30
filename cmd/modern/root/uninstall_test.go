@@ -15,6 +15,9 @@ import (
 // TestUninstall installs Mssql (on a specific port to enable parallel testing), and then
 // uninstalls it
 func TestUninstall(t *testing.T) {
+
+	t.Skip("To slow")
+
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*mssql.GetTags]()
 	cmdparser.TestCmd[*install.Mssql]("--accept-eula --port-override 1500")
@@ -24,6 +27,8 @@ func TestUninstall(t *testing.T) {
 // TestUninstallWithUserDbPresent(t *testing.T) { installs Mssql (on a specific port to enable parallel testing), with a
 // user database, and then uninstalls it using the --force option
 func TestUninstallWithUserDbPresent(t *testing.T) {
+	t.Skip("To slow")
+
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*edge.GetTags]()
 	cmdparser.TestCmd[*install.Edge]("--accept-eula --user-database foo --port-override 1501")

@@ -4,6 +4,7 @@
 package install
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/install/mssql"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -17,9 +18,18 @@ func TestInstallMssql(t *testing.T) {
 	// cleaning up the Install using root.Uninstall), we don't use root.Uninstall,
 	// and use the controller object instead
 
+	t.Skip("To slow")
+
+	const registry = "docker.io"
+	const repo = "library/alpine"
+
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*mssql.GetTags]()
-	cmdparser.TestCmd[*Mssql]("--accept-eula --user-database foo")
+	cmdparser.TestCmd[*Mssql](
+		fmt.Sprintf(
+			"--accept-eula --user-database foo --errorlog-wait-line unit-testing --registry %v --repo %v",
+			registry,
+			repo))
 
 	controller := container.NewController()
 	id := config.ContainerId()
@@ -30,16 +40,18 @@ func TestInstallMssql(t *testing.T) {
 }
 
 func TestNegInstallMssql(t *testing.T) {
-	assert.Panics(t, func() {
+	t.Skip("To slow")
 
+	assert.Panics(t, func() {
 		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*Mssql]()
 	})
 }
 
 func TestNegInstallMssql2(t *testing.T) {
-	assert.Panics(t, func() {
+	t.Skip("To slow")
 
+	assert.Panics(t, func() {
 		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*Mssql]("--accept-eula --repo does/not/exist")
 	})

@@ -27,7 +27,7 @@ func TestInitializeCallback(t *testing.T) {
 
 func TestDisplayHints(t *testing.T) {
 	buf := test.NewMemoryBuffer()
-	defer buf.Close()
+	defer checkErr(buf.Close())
 	outputter = output.New(output.Options{StandardWriter: buf})
 	displayHints([]string{"This is a hint"})
 	assert.Equal(t, pal.LineBreak()+
