@@ -240,6 +240,13 @@ func TestOnErrorCommand(t *testing.T) {
 	err = runSqlCmd(t, s, []string{":ONERROR exit", "printtgit N'message'", "SELECT @@versionn", "GO"})
 	assert.NoError(t, err, "runSqlCmd")
 	assert.Equal(t, 1, s.Exitcode, "ExitCode")
+	// -b sets ExitOnError true
+	s.Connect.ExitOnError = true
+	err = runSqlCmd(t, s, []string{":ONERROR ignore", "printtgit N'message'", "SELECT @@versionn", "GO"})
+	assert.Equal(t, false, s.Connect.ExitOnError, "ExitOnError")
+	assert.NoError(t, err, "runSqlCmd")
+	err = runSqlCmd(t, s, []string{":ONERROR exit", "printtgit N'message'", "SELECT @@versionn", "GO"})
+	assert.Equal(t, true, s.Connect.ExitOnError, "ExitOnError")
 }
 func TestResolveArgumentVariables(t *testing.T) {
 	type argTest struct {
