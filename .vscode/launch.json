@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
     
 
         {
@@ -32,8 +33,8 @@
             "type" : "go",
             "request": "launch",
             "mode" : "auto",
-            "program": "${workspaceFolder}/cmd/sqlcmd",
-            "args" : ["-i", "testdata\\select100.sql"],
+            "program": "${workspaceFolder}",
+            "args" : ["-S", "np:davidshi-2019"],
         },
     ]
 }

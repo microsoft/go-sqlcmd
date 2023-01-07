@@ -9,37 +9,47 @@ import (
 )
 
 // splitServer extracts connection parameters from a server name input
-func splitServer(serverName string) (string, string, uint64, error) {
-	instance := ""
-	port := uint64(0)
+func splitServer(serverName string) (string, instance string, port uint64, protocol string, err error) {
+	instance = ""
+	port = uint64(0)
+	protocol = ""
+	err = nil
+	// We don't just look for : due to possible IPv6 address
 	if strings.HasPrefix(serverName, "tcp:") {
 		if len(serverName) == 4 {
-			return "", "", 0, &InvalidServerName
+			return "", "", 0, "", &InvalidServerName
 		}
 		serverName = serverName[4:]
+		protocol = "tcp"
+	} else if strings.HasPrefix(serverName, "np:") {
+		if len(serverName) == 3 {
+			return "", "", 0, "", &InvalidServerName
+		}
+		serverName = serverName[3:]
+		protocol = "np"
 	}
 	serverNameParts := strings.Split(serverName, ",")
 	if len(serverNameParts) > 2 {
-		return "", "", 0, &InvalidServerName
+		return "", "", 0, "", &InvalidServerName
 	}
 	if len(serverNameParts) == 2 {
 		var err error
 		port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
 		if err != nil {
-			return "", "", 0, &InvalidServerName
+			return "", "", 0, "", &InvalidServerName
 		}
 		serverName = serverNameParts[0]
 	} else {
 		serverNameParts = strings.Split(serverName, "\\")
 		if len(serverNameParts) > 2 {
-			return "", "", 0, &InvalidServerName
+			return "", "", 0, "", &InvalidServerName
 		}
 		if len(serverNameParts) == 2 {
 			instance = serverNameParts[1]
 			serverName = serverNameParts[0]
 		}
 	}
-	return serverName, instance, port, nil
+	return serverName, instance, port, protocol, err
 }
 
 // padRight appends c instances of s to builder

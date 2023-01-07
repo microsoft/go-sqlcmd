@@ -77,7 +77,7 @@ func (connect ConnectSettings) RequiresPassword() bool {
 
 // ConnectionString returns the go-mssql connection string to use for queries
 func (connect ConnectSettings) ConnectionString() (connectionString string, err error) {
-	serverName, instance, port, err := splitServer(connect.ServerName)
+	serverName, instance, port, protocol, err := splitServer(connect.ServerName)
 	if serverName == "" {
 		serverName = "."
 	}
@@ -125,6 +125,9 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if connect.LogLevel > 0 {
 		query.Add("log", fmt.Sprint(connect.LogLevel))
+	}
+	if protocol != "" {
+		query.Add("protocol", protocol)
 	}
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil
