@@ -22,6 +22,11 @@ type Controller struct {
 	cli *client.Client
 }
 
+// NewController creates a new Controller struct, which is used to interact
+// with a container runtime engine (e.g. Docker or Podman etc.). It initializes
+// engine client by calling client.NewClientWithOpts(client.FromEnv) and
+// setting the cli field of the Controller struct to the result.
+// The Controller struct is then returned.
 func NewController() (c *Controller) {
 	var err error
 	c = new(Controller)
@@ -31,7 +36,13 @@ func NewController() (c *Controller) {
 	return
 }
 
-func (c *Controller) EnsureImage(image string) (err error) {
+// EnsureImage creates a new instance of the Controller struct and initializes
+// the container engine client by calling client.NewClientWithOpts() with
+// the client.FromEnv option. It returns the Controller instance and an error
+// if one occurred while creating the client. The Controller struct has a
+// method EnsureImage() which pulls an image with the given name from
+// a registry and logs the output to the console.
+func (c Controller) EnsureImage(image string) (err error) {
 	var reader io.ReadCloser
 
 	trace("Running ImagePull for image %s", image)
@@ -51,7 +62,10 @@ func (c *Controller) EnsureImage(image string) (err error) {
 	return
 }
 
-func (c *Controller) ContainerRun(image string, env []string, port int, command []string, unitTestFailure bool) string {
+// ContainerRun creates a new container using the provided image and env values
+// and binds it to the specified port number. It then starts the container and returns
+// the ID of the container.
+func (c Controller) ContainerRun(image string, env []string, port int, command []string, unitTestFailure bool) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
 			nat.Port("1433/tcp"): []nat.PortBinding{
@@ -89,8 +103,16 @@ func (c *Controller) ContainerRun(image string, env []string, port int, command 
 	return resp.ID
 }
 
-// ContainerWaitForLogEntry waits for text substring in containers logs
-func (c *Controller) ContainerWaitForLogEntry(id string, text string) {
+// ContainerWaitForLogEntry is used to wait for a specific string to be written
+// to the logs of a container with the given ID. The function takes in the ID
+// of the container and the string to look for in the logs. It creates a reader
+// to stream the logs from the container, and scans the logs line by line until
+// it finds the specified string. Once the string is found, the function breaks
+// out of the loop and returns.
+//
+// This function is useful for waiting until a specific event has occurred in the
+// container (e.g. a server has started up) before continuing with other operations.
+func (c Controller) ContainerWaitForLogEntry(id string, text string) {
 	options := types.ContainerLogsOptions{
 		ShowStdout: true,
 		ShowStderr: false,
@@ -119,7 +141,9 @@ func (c *Controller) ContainerWaitForLogEntry(id string, text string) {
 	}
 }
 
-func (c *Controller) ContainerStop(id string) (err error) {
+// ContainerStop stops the container with the given ID. The function returns
+// an error if there is an issue stopping the container.
+func (c Controller) ContainerStop(id string) (err error) {
 	if id == "" {
 		panic("Must pass in non-empty id")
 	}
@@ -128,7 +152,12 @@ func (c *Controller) ContainerStop(id string) (err error) {
 	return
 }
 
-func (c *Controller) ContainerFiles(id string, filespec string) (files []string) {
+// ContainerFiles returns a list of files matching a specified pattern within
+// a given container. It takes an id argument, which specifies the ID of the
+// container to search, and a filespec argument, which is a string pattern used
+// to match files within the container. The function returns a []string slice
+// containing the names of all files that match the specified pattern.
+func (c Controller) ContainerFiles(id string, filespec string) (files []string) {
 	if id == "" {
 		panic("Must pass in non-empty id")
 	}
@@ -174,7 +203,11 @@ func (c *Controller) ContainerFiles(id string, filespec string) (files []string)
 	return strings.Split(string(stdout), "\n")
 }
 
-func (c *Controller) ContainerExists(id string) (exists bool) {
+// ContainerExists checks if a container with the given ID exists in the system.
+// It does this by using the container runtime API to list all containers and
+// filtering by the given ID. If a container with the given ID is found, it
+// returns true; otherwise, it returns false.
+func (c Controller) ContainerExists(id string) (exists bool) {
 	f := filters.NewArgs()
 	f.Add(
 		"id", id,
@@ -195,7 +228,11 @@ func (c *Controller) ContainerExists(id string) (exists bool) {
 	return
 }
 
-func (c *Controller) ContainerRemove(id string) (err error) {
+// ContainerRemove removes the container with the specified ID using the
+// container runtime API. The function takes the ID of the container to be
+// removed as an input argument, and returns an error if one occurs during
+// the removal process.
+func (c Controller) ContainerRemove(id string) (err error) {
 	if id == "" {
 		panic("Must pass in non-empty id")
 	}

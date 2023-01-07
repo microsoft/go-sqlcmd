@@ -190,8 +190,6 @@ func TestUnicodeOutput(t *testing.T) {
 }
 
 func TestUnicodeInput(t *testing.T) {
-	// BUG(stuartpa): This test has to be fixed before merging
-
 	t.Skip()
 	testfiles := []string{
 		filepath.Join(`testdata`, `selectutf8.txt`),

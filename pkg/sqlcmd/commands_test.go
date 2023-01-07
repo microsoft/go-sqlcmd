@@ -226,6 +226,21 @@ func TestErrorCommand(t *testing.T) {
 	}
 }
 
+func TestOnErrorCommand(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.SetOutput(buf)
+	err := onerrorCommand(s, []string{""}, 1)
+	assert.EqualError(t, err, InvalidCommandError("ON ERROR", 1).Error(), "onerrorCommand with empty content")
+	err = runSqlCmd(t, s, []string{":ONERROR ignore", "printtgit N'message'", "SELECT @@versionn", "GO"})
+	assert.NoError(t, err, "runSqlCmd")
+	o := buf.buf.String()
+	assert.Equal(t, 0, s.Exitcode, "ExitCode")
+	assert.Contains(t, o, "Must declare the scalar variable \"@@versionn\"", "output not equal to expected")
+	err = runSqlCmd(t, s, []string{":ONERROR exit", "printtgit N'message'", "SELECT @@versionn", "GO"})
+	assert.NoError(t, err, "runSqlCmd")
+	assert.Equal(t, 1, s.Exitcode, "ExitCode")
+}
 func TestResolveArgumentVariables(t *testing.T) {
 	type argTest struct {
 		arg string

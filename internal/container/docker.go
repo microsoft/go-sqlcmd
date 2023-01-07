@@ -10,6 +10,10 @@ import (
 	"net/http"
 )
 
+// ListTags lists all tags for a container image located at a given
+// path in the container registry. It takes the path to the image and the
+// URL of the registry as input and returns a slice of strings containing
+// the tags.
 func ListTags(path string, baseURL string) []string {
 	ctx := context.Background()
 	repo, err := reference.WithName(path)

@@ -102,6 +102,11 @@ func newCommands() Commands {
 			name:     "EDIT",
 			isSystem: true,
 		},
+		"ONERROR": {
+			regex:    regexp.MustCompile(`(?im)^[\t ]*?:?ONERROR(?:[ \t]+(.*$)|$)`),
+			action:   onerrorCommand,
+			name:     "ONERROR",
+		},
 	}
 }
 
@@ -456,6 +461,22 @@ func editCommand(s *Sqlcmd, args []string, line uint) error {
 	s.batch.Reset(nil)
 	_ = s.IncludeFile(fileName, false)
 	s.echoFileLines = wasEcho
+	return nil
+}
+
+func onerrorCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 || args[0] == "" {
+		return InvalidCommandError("ON ERROR", line)
+	}
+	params := strings.TrimSpace(args[0])
+
+	if strings.EqualFold(strings.ToLower(params), "exit") {
+		s.Connect.ExitOnError = true
+	} else if strings.EqualFold(strings.ToLower(params), "ignore") {
+		s.Connect.IgnoreError = true
+	} else {
+		return InvalidCommandError("ON ERROR", line)
+	}
 	return nil
 }
 

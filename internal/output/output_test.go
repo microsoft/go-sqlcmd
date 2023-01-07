@@ -6,273 +6,101 @@ package output
 import (
 	"errors"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"testing"
 )
 
 func TestTracef(t *testing.T) {
-	type args struct {
-		loggingLevel verbosity.Enum
-		format       string
-		a            []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			loggingLevel: verbosity.Trace,
-			format:       "%v",
-			a:            []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			loggingLevel = tt.args.loggingLevel
-			Tracef(tt.args.format, tt.args.a...)
-			Debugf(tt.args.format, tt.args.a...)
-			Infof(tt.args.format, tt.args.a...)
-			Warnf(tt.args.format, tt.args.a...)
-			Errorf(tt.args.format, tt.args.a...)
-			Struct(tt.args.a)
+	format := "%v"
+	args := []string{"sample text"}
 
-			InfofWithHints([]string{}, tt.args.format, tt.args.a...)
-			InfofWithHintExamples([][]string{}, tt.args.format, tt.args.a...)
-		})
-	}
+	loggingLevel := verbosity.Trace
+	o := New(Options{LoggingLevel: loggingLevel, HintHandler: func(hints []string) {
+
+	}, ErrorHandler: func(err error) {
+
+	}})
+	o.Tracef(format, args)
+	o.Debugf(format, args)
+	o.Infof(format, args)
+	o.Warnf(format, args)
+	o.Errorf(format, args)
+	o.Struct(args)
+
+	o.InfofWithHints([]string{}, format, args)
+	o.InfofWithHintExamples([][]string{}, format, args)
 }
 
 func TestFatal(t *testing.T) {
-	type args struct {
-		a []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			a: []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			Fatal(tt.args.a...)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	o := New(Options{LoggingLevel: 4})
+	o.Fatal("sample trace")
 }
 
 func TestFatalWithHints(t *testing.T) {
-	type args struct {
-		hints []string
-		a     []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			hints: []string{"This is a hint"},
-			a:     []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			FatalWithHints(tt.args.hints, tt.args.a...)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	o := New(Options{LoggingLevel: 4})
+	o.FatalWithHints([]string{"This is a hint"}, "expected error")
 }
 
 func TestFatalfWithHintExamples(t *testing.T) {
-	type args struct {
-		hintExamples [][]string
-		format       string
-		a            []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			hintExamples: [][]string{{"This is a hint", "With a sample"}},
-			a:            []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			FatalfWithHintExamples(tt.args.hintExamples, tt.args.format, tt.args.a...)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	hintExamples := [][]string{{"This is a hint", ""}}
+	o := New(Options{LoggingLevel: verbosity.Trace})
+	o.FatalfWithHintExamples(
+		hintExamples,
+		"%v",
+		"this is an error",
+	)
 }
 
 func TestFatalfErrorWithHints(t *testing.T) {
-	type args struct {
-		err    error
-		hints  []string
-		format string
-		a      []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			hints: []string{"This is a hint"},
-			a:     []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			FatalfErrorWithHints(tt.args.err, tt.args.hints, tt.args.format, tt.args.a...)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	o := New(Options{LoggingLevel: 4})
+	o.FatalfErrorWithHints(
+		errors.New("error to check"),
+		[]string{"This is a hint to avoid the error"},
+		"%v",
+		"This the error message",
+	)
 }
 
 func TestFatalfWithHints(t *testing.T) {
-	type args struct {
-		hints  []string
-		format string
-		a      []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			hints: []string{"This is a hint"},
-			a:     []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			FatalfWithHints(tt.args.hints, tt.args.format, tt.args.a...)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	o := New(Options{LoggingLevel: 4})
+	o.FatalfWithHints(
+		[]string{"This is a hint to the user to avoid the error"},
+		"%v",
+		"this is the reason for the fatal error",
+	)
 }
 
 func TestFatalf(t *testing.T) {
-	type args struct {
-		format string
-		a      []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			a: []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			Fatalf(tt.args.format, tt.args.a...)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	o := New(Options{LoggingLevel: 4})
+	o.Fatalf("%v", "message to give user on exit")
 }
 
 func TestFatalErr(t *testing.T) {
-	type args struct {
-		err error
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			errors.New("an error"),
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			FatalErr(tt.args.err)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	o := New(Options{LoggingLevel: 4})
+	o.FatalErr(errors.New("will exist if error is not nil"))
 }
 
 func TestPanicf(t *testing.T) {
-	type args struct {
-		format string
-		a      []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			a: []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			Panicf(tt.args.format, tt.args.a...)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	o := New(Options{LoggingLevel: 4})
+	o.Panicf("%v", "this is the reason for the panic")
 }
 
 func TestPanic(t *testing.T) {
-	type args struct {
-		a []any
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			a: []any{"sample trace"},
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-			Panic(tt.args.a...)
-		})
-	}
+	defer func() { test.CatchExpectedError(recover(), t) }()
+	o := New(Options{LoggingLevel: 4})
+	o.Panic("reason for the panic")
 }
 
 func TestInfofWithHintExamples(t *testing.T) {
-	t.Skip() // BUG(stuartpa): CrossPlatScripts build is failing on this test!?  (presume this is an issue with static state, move to an object)
 	type args struct {
 		hintExamples [][]string
 		format       string
@@ -303,21 +131,9 @@ func TestInfofWithHintExamples(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-
-			//BUG(stuartpa): Not thread safe
-			runningUnitTests = true
-			InfofWithHintExamples(tt.args.hintExamples, tt.args.format, tt.args.a...)
-			runningUnitTests = false
+			defer func() { test.CatchExpectedError(recover(), t) }()
+			o := New(Options{LoggingLevel: 4})
+			o.InfofWithHintExamples(tt.args.hintExamples, tt.args.format, tt.args.a...)
 		})
 	}
-}
-
-func Test_ensureEol(t *testing.T) {
-	format := ensureEol("%s")
-	Infof(format, "hello-world")
 }

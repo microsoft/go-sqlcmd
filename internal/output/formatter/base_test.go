@@ -4,6 +4,7 @@
 package formatter
 
 import (
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"strings"
 	"testing"
 )
@@ -34,11 +35,7 @@ func TestBase_CheckErr(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() {
-					if r := recover(); r == nil {
-						t.Errorf("The code did not panic")
-					}
-				}()
+				defer func() { test.CatchExpectedError(recover(), t) }()
 			}
 
 			f.CheckErr(tt.args.err)

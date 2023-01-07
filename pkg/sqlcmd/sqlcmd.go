@@ -154,10 +154,11 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 				lastError = err
 			}
 		}
+
 		if err == ErrCtrlC {
 			os.Exit(0)
 		}
-		if err != nil && err != io.EOF && s.Connect.ExitOnError {
+		if err != nil && err != io.EOF && (s.Connect.ExitOnError && !s.Connect.IgnoreError) {
 			// If the error were due to a SQL error, the GO command handler
 			// would have set ExitCode already
 			if s.Exitcode == 0 {

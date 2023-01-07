@@ -8,9 +8,10 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
-	})
+	}, "\n")
 }
 
-func Initialize(handler func(err error)) {
+func Initialize(handler func(err error), endOfLine string) {
 	errorCallback = handler
+	lineBreak = endOfLine
 }

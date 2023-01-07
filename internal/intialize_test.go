@@ -4,40 +4,77 @@
 package internal
 
 import (
+	"github.com/microsoft/go-sqlcmd/internal/output"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"testing"
 )
 
 func TestInitialize(t *testing.T) {
-	type args struct {
-		errorHandler func(error)
-		hintHandler  func([]string)
-		outputType   string
-		loggingLevel int
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{"default", args{
-			func(err error) {
-				if err != nil {
-					panic(err)
-				}
-			},
-			func(strings []string) {},
-			"yaml",
-			2,
-		}},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			options := InitializeOptions{
-				ErrorHandler: tt.args.errorHandler,
-				HintHandler:  tt.args.hintHandler,
-				OutputType:   tt.args.outputType,
-				LoggingLevel: tt.args.loggingLevel,
+	output := output.New(output.Options{HintHandler: func(hints []string) {
+
+	}, ErrorHandler: func(err error) {
+
+	}})
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {
+			if err != nil {
+				panic(err)
 			}
-			Initialize(options)
-		})
+		},
+		HintHandler:  func(strings []string) {},
+		TraceHandler: output.Tracef,
+		LineBreak:    "\n",
 	}
+	Initialize(options)
+}
+
+func TestNegInitialize(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	options := InitializeOptions{
+		ErrorHandler: nil,
+	}
+	Initialize(options)
+}
+
+func TestNegInitialize2(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {},
+	}
+	Initialize(options)
+}
+
+func TestNegInitialize3(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {},
+		TraceHandler: func(format string, a ...any) {},
+	}
+	Initialize(options)
+}
+
+func TestNegInitialize4(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {},
+		TraceHandler: func(format string, a ...any) {},
+		HintHandler:  func(strings []string) {},
+	}
+	Initialize(options)
+}
+
+func TestNegInitialize5(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {},
+		TraceHandler: func(format string, a ...any) {},
+		HintHandler:  func(strings []string) {},
+		LineBreak:    "",
+	}
+	Initialize(options)
 }
