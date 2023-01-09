@@ -103,9 +103,9 @@ func newCommands() Commands {
 			isSystem: true,
 		},
 		"ONERROR": {
-			regex:    regexp.MustCompile(`(?im)^[\t ]*?:?ONERROR(?:[ \t]+(.*$)|$)`),
-			action:   onerrorCommand,
-			name:     "ONERROR",
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?ONERROR(?:[ \t]+(.*$)|$)`),
+			action: onerrorCommand,
+			name:   "ONERROR",
 		},
 	}
 }
@@ -474,6 +474,7 @@ func onerrorCommand(s *Sqlcmd, args []string, line uint) error {
 		s.Connect.ExitOnError = true
 	} else if strings.EqualFold(strings.ToLower(params), "ignore") {
 		s.Connect.IgnoreError = true
+		s.Connect.ExitOnError = false
 	} else {
 		return InvalidCommandError("ON ERROR", line)
 	}
