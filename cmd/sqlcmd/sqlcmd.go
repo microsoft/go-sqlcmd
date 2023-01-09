@@ -18,7 +18,6 @@ import (
 )
 
 var version = "Local-build" // overridden in pipeline builds with: -ldflags="-X main.version=$(VersionTag)"
-var translator localizer.Localizer
 
 // SQLCmdArguments defines the command line arguments for sqlcmd
 // The exhaustive list is at https://docs.microsoft.com/sql/tools/sqlcmd-utility?view=sql-server-ver15
@@ -72,7 +71,7 @@ type SQLCmdArguments struct {
 func (a *SQLCmdArguments) Validate() error {
 	if a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767) {
 		// return fmt.Errorf(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
-		return fmt.Errorf(translator.Translate(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize))
+		return fmt.Errorf(localizer.Translate(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize))
 	}
 	// Ignore 0 even though it's technically an invalid input
 	if a.Headers < -1 {
@@ -122,15 +121,9 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 	return a.AuthenticationMethod
 }
 
-func initLocale() {
-	localeName := os.Getenv("SQLCMD_LOCALE")
-	translator = localizer.Get(localeName)
-
-}
-
 func Execute() {
 
-	initLocale()
+	localizer.InitLocale()
 	ctx := kong.Parse(&args, kong.NoDefaultHelp())
 	if args.Version {
 		ctx.Printf("%v", version)
