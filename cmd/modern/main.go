@@ -49,7 +49,7 @@ func main() {
 // isFirstArgModernCliSubCommand is TEMPORARY code, to be removed when
 // we remove the Kong based CLI
 func isFirstArgModernCliSubCommand() (isNewCliCommand bool) {
-	if len(os.Args) > 0 {
+	if len(os.Args) > 1 {
 		if rootCmd.IsValidSubCommand(os.Args[1]) {
 			isNewCliCommand = true
 		}
