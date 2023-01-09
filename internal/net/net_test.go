@@ -7,25 +7,27 @@ import (
 	"testing"
 )
 
+// TestIsLocalPortAvailable verified the function for both available and unavailable
+// code (this function expects a local SQL Server instance listening on port 1433
 func TestIsLocalPortAvailable(t *testing.T) {
-	t.Skip() // BUG(stuartpa): Re-enable before merge, fix to work on any machine
-	type args struct {
-		port int
-	}
-	tests := []struct {
-		name              string
-		args              args
-		wantPortAvailable bool
-	}{
-		{name: "expectedToNotBeAvailable", args: args{port: 51027}, wantPortAvailable: false},
-		{name: "expectedToBeAvailable", args: args{port: 9999}, wantPortAvailable: true},
+	var testedPortAvailable bool
+	var testedNotPortAvailable bool
+
+	for i := 1432; i <= 1434; i++ {
+		isPortAvailable := IsLocalPortAvailable(i)
+		if isPortAvailable {
+			testedPortAvailable = true
+			t.Logf("Port %d is available", i)
+		} else {
+			testedNotPortAvailable = true
+			t.Logf("Port %d is not available", i)
+		}
+		if testedPortAvailable && testedNotPortAvailable {
+			return
+		}
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if gotPortAvailable := IsLocalPortAvailable(tt.args.port); gotPortAvailable != tt.wantPortAvailable {
-				t.Errorf("IsLocalPortAvailable() = %v, want %v", gotPortAvailable, tt.wantPortAvailable)
-			}
-		})
-	}
+	t.Log("Didn't find both an available port and unavailable port")
+	t.Fail()
+
 }

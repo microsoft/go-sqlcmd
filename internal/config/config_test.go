@@ -4,16 +4,21 @@
 package config
 
 import (
-	. "github.com/microsoft/go-sqlcmd/cmd/sqlconfig"
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"reflect"
 	"strings"
 	"testing"
 )
 
 func TestConfig(t *testing.T) {
+	o := output.New(output.Options{LoggingLevel: 4, ErrorHandler: errorCallback, HintHandler: func(hints []string) {
+
+	}})
+
 	type args struct {
 		Config Sqlconfig
 	}
@@ -75,8 +80,8 @@ func TestConfig(t *testing.T) {
 			EndpointsExists()
 			EndpointExists("endpoint")
 			GetEndpoint("endpoint")
-			OutputEndpoints(output.Struct, true)
-			OutputEndpoints(output.Struct, false)
+			OutputEndpoints(o.Struct, true)
+			OutputEndpoints(o.Struct, false)
 			FindFreePortForTds()
 			DeleteEndpoint("endpoint2")
 			DeleteEndpoint("endpoint3")
@@ -94,23 +99,23 @@ func TestConfig(t *testing.T) {
 			AddUser(user)
 			AddUser(user)
 			AddUser(user)
-			UserExists("user")
+			UserNameExists("user")
 			GetUser("user")
 			UserNameExists("username")
-			OutputUsers(output.Struct, true)
-			OutputUsers(output.Struct, false)
+			OutputUsers(o.Struct, true)
+			OutputUsers(o.Struct, false)
 
 			DeleteUser("user3")
 
-			GetRedactedConfig(true)
-			GetRedactedConfig(false)
+			RedactedConfig(true)
+			RedactedConfig(false)
 
 			addContext()
 			addContext()
 			addContext()
 			GetContext("context")
-			OutputContexts(output.Struct, true)
-			OutputContexts(output.Struct, false)
+			OutputContexts(o.Struct, true)
+			OutputContexts(o.Struct, false)
 			DeleteContext("context3")
 			DeleteContext("context2")
 			DeleteContext("context")
@@ -119,10 +124,10 @@ func TestConfig(t *testing.T) {
 			addContext()
 
 			SetCurrentContextName("context")
-			GetCurrentContext()
+			CurrentContext()
 
 			CurrentContextEndpointHasContainer()
-			GetContainerId()
+			ContainerId()
 			RemoveCurrentContext()
 			RemoveCurrentContext()
 			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", false)
@@ -223,8 +228,8 @@ func TestUserExists(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotExists := UserExists(tt.args.name); gotExists != tt.wantExists {
-				t.Errorf("UserExists() = %v, want %v", gotExists, tt.wantExists)
+			if gotExists := UserNameExists(tt.args.name); gotExists != tt.wantExists {
+				t.Errorf("UserNameExists() = %v, want %v", gotExists, tt.wantExists)
 			}
 		})
 	}
@@ -295,24 +300,14 @@ func TestAddContextWithContainerPanic(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
-			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("The code did not panic")
-				}
-			}()
-
+			defer func() { test.CatchExpectedError(recover(), t) }()
 			AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.encryptPassword)
 		})
 	}
 }
 
 func TestConfig_AddContextWithNoEndpoint(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+	defer func() { test.CatchExpectedError(recover(), t) }()
 
 	user := "user1"
 	AddContext(Context{
@@ -325,20 +320,13 @@ func TestConfig_AddContextWithNoEndpoint(t *testing.T) {
 }
 
 func TestConfig_GetCurrentContextWithNoContexts(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
-	GetCurrentContext()
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	CurrentContext()
 }
 
 func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+	defer func() { test.CatchExpectedError(recover(), t) }()
 
 	AddEndpoint(Endpoint{
 		AssetDetails: &AssetDetails{
@@ -365,14 +353,37 @@ func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
 	DeleteEndpoint("endpoint")
 
 	SetCurrentContextName("context")
-	GetCurrentContext()
+	CurrentContext()
 }
 
 func TestConfig_DeleteContextThatDoesNotExist(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
 	contextOrdinal("does-not-exist")
+}
+
+func TestNegConfig_SetFileName(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	SetFileName("")
+}
+
+func TestNegConfig_SetCurrentContextName(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	SetCurrentContextName("does not exist")
+}
+
+func TestNegConfig_SetFileNameForTest(t *testing.T) {
+	SetFileNameForTest(t)
+}
+
+func TestNegConfig_DefaultFileName(t *testing.T) {
+	DefaultFileName()
+}
+
+func TestNegConfig_GetContext(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	GetContext("doesnotexist")
 }

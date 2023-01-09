@@ -11,6 +11,8 @@ import (
 	"strings"
 )
 
+var lineBreak string
+
 // FilenameInUserHomeDotDirectory returns the full path and filename
 // to the filename in the dotDirectory (e.g. .sqlcmd) in the user's home directory
 // e.g. c:\users\username
@@ -39,4 +41,12 @@ func CmdLineWithEnvVars(vars []string, cmd string) string {
 	sb.WriteString(cmd)
 
 	return sb.String()
+}
+
+func LineBreak() string {
+	if lineBreak == "" {
+		panic("Initialize has not been called")
+	}
+
+	return lineBreak
 }

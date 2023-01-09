@@ -6,11 +6,23 @@ package pal
 import (
 	"errors"
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"testing"
 )
 
 func TestFilenameInUserHomeDotDirectory(t *testing.T) {
 	FilenameInUserHomeDotDirectory(".foo", "bar")
+}
+
+func TestLineBreak(t *testing.T) {
+	LineBreak()
+}
+
+func TestNegLineBreak(t *testing.T) {
+	defer func() { test.CatchExpectedError(recover(), t) }()
+
+	lineBreak = ""
+	LineBreak()
 }
 
 func TestCheckErr(t *testing.T) {
