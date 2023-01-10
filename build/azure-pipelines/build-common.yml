@@ -10,6 +10,10 @@ parameters:
 - name: VersionTag
   type: string
   default:  $(Build.BuildNumber)
+- name: BinaryName
+  type: string
+  default:
+
 
 steps:
 - task: GoTool@0
@@ -48,7 +52,7 @@ steps:
   displayName: 'Go: build sqlcmd'
   inputs:
     command: 'build'
-    arguments: '-o sqlcmd.exe $(Build.BinariesDirectory) -ldflags="-X main.version=${{ parameters.VersionTag }}"'
+    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }} -ldflags="-X main.version=${{ parameters.VersionTag }}"'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/modern'
   env:
       GOOS: ${{ parameters.OS }}

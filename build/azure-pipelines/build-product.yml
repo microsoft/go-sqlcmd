@@ -23,31 +23,37 @@ stages:
             artifact: LinuxAmd64
             os:
             arch:
+            binaryName: 'sqlcmd'
           mac:
             imageName: 'macOS-latest'
             artifact: DarwinAmd64
             os:
             arch:
+            binaryName: 'sqlcmd'
           windows:
             imageName: 'windows-latest'
             artifact: WindowsAmd64
             os:
             arch:
+            binaryName: 'sqlcmd.exe'
           linuxArm:
             imageName: 'ubuntu-latest'
             artifact: LinuxArm64
             os:
             arch: arm64
+            binaryName: 'sqlcmd'
           windowsArm:
             imageName: 'windows-latest'
             artifact: WindowsArm
             os:
             arch: arm
+            binaryName: 'sqlcmd.exe'
           linuxs390x:
             imageName: 'ubuntu-latest'
             artifact: LinuxS390x
             os:
             arch: s390x
+            binaryName: 'sqlcmd'
       pool:
         vmImage: $(imageName)
       steps:
@@ -60,6 +66,7 @@ stages:
             Arch: $(arch)
             ArtifactName: $(artifact)
             VersionTag: $(getVersion.VERSION_TAG)
+            BinaryName: $(binaryName)
 
   - stage: CreatePackages
     displayName: Create packages to publish
