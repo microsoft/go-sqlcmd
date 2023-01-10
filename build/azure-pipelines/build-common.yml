@@ -12,8 +12,6 @@ parameters:
   default:  $(Build.BuildNumber)
 - name: BinaryName
   type: string
-  default:
-
 
 steps:
 - task: GoTool@0

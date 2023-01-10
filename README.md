@@ -89,7 +89,7 @@ These environment variables can be set to configure some aspects of AAD auth and
 
 #### sqlcmd executable
 
-Build [sqlcmd](cmd/sqlcmd)
+Build [sqlcmd](cmd/modern)
 
 ```sh
 ./build/build.sh
