@@ -14,6 +14,7 @@ import (
 	"testing"
 
 	"github.com/microsoft/go-mssqldb/azuread"
+	"github.com/microsoft/go-mssqldb/msdsn"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -183,6 +184,12 @@ func TestIncludeFileWithVariables(t *testing.T) {
 		o := buf.buf.String()
 		assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol, o)
 	}
+}
+
+func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
+	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
+	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[1].Protocol(), "np should be second protocol")
+	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[2].Protocol(), "tcp should be third protocol")
 }
 
 func TestGetRunnableQuery(t *testing.T) {
