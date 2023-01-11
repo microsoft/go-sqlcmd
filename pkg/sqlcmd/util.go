@@ -6,6 +6,8 @@ package sqlcmd
 import (
 	"strconv"
 	"strings"
+
+	"github.com/microsoft/go-mssqldb/msdsn"
 )
 
 // splitServer extracts connection parameters from a server name input
@@ -15,18 +17,16 @@ func splitServer(serverName string) (string, instance string, port uint64, proto
 	protocol = ""
 	err = nil
 	// We don't just look for : due to possible IPv6 address
-	if strings.HasPrefix(serverName, "tcp:") {
-		if len(serverName) == 4 {
-			return "", "", 0, "", &InvalidServerName
+	for _, p := range msdsn.ProtocolParsers {
+		prefix := p.Protocol() + ":"
+		if strings.HasPrefix(serverName, prefix) {
+			if len(serverName) == len(prefix) {
+				serverName = "."
+			} else {
+				serverName = serverName[4:]
+			}
+			protocol = p.Protocol()
 		}
-		serverName = serverName[4:]
-		protocol = "tcp"
-	} else if strings.HasPrefix(serverName, "np:") {
-		if len(serverName) == 3 {
-			return "", "", 0, "", &InvalidServerName
-		}
-		serverName = serverName[3:]
-		protocol = "np"
 	}
 	serverNameParts := strings.Split(serverName, ",")
 	if len(serverNameParts) > 2 {
