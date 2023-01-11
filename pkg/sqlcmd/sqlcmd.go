@@ -538,8 +538,10 @@ func (s Sqlcmd) Log(_ context.Context, _ msdsn.Log, msg string) {
 }
 
 func init() {
-	// reorder the protocol parsers to lpc->np->tcp
-	var tcp = msdsn.ProtocolParsers[0]
-	msdsn.ProtocolParsers[0] = msdsn.ProtocolParsers[2]
-	msdsn.ProtocolParsers[2] = tcp
+	if len(msdsn.ProtocolParsers) == 3 {
+		// reorder the protocol parsers to lpc->np->tcp
+		var tcp = msdsn.ProtocolParsers[0]
+		msdsn.ProtocolParsers[0] = msdsn.ProtocolParsers[2]
+		msdsn.ProtocolParsers[2] = tcp
+	}
 }

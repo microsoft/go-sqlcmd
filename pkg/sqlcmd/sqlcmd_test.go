@@ -10,6 +10,7 @@ import (
 	"io"
 	"os"
 	"os/user"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -47,11 +48,11 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 		},
 		{
 			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true, Password: pwd, ServerName: `tcp:someserver,1045`, UserName: "someuser"},
-			"sqlserver://someserver:1045?trustservercertificate=true",
+			"sqlserver://someserver:1045?protocol=tcp&trustservercertificate=true",
 		},
 		{
 			&ConnectSettings{ServerName: `tcp:someserver,1045`},
-			"sqlserver://someserver:1045",
+			"sqlserver://someserver:1045?protocol=tcp",
 		},
 		{
 			&ConnectSettings{ServerName: "someserver", AuthenticationMethod: azuread.ActiveDirectoryServicePrincipal, UserName: "myapp@mytenant", Password: pwd},
@@ -184,12 +185,6 @@ func TestIncludeFileWithVariables(t *testing.T) {
 		o := buf.buf.String()
 		assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol, o)
 	}
-}
-
-func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
-	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
-	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[1].Protocol(), "np should be second protocol")
-	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[2].Protocol(), "tcp should be third protocol")
 }
 
 func TestGetRunnableQuery(t *testing.T) {
@@ -596,4 +591,13 @@ func newConnect(t testing.TB) *ConnectSettings {
 		connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	}
 	return &connect
+}
+
+func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
+	if runtime.GOOS != "windows" {
+		t.Skip()
+	}
+	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
+	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[1].Protocol(), "np should be second protocol")
+	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[2].Protocol(), "tcp should be third protocol")
 }

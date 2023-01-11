@@ -23,7 +23,7 @@ func splitServer(serverName string) (string, instance string, port uint64, proto
 			if len(serverName) == len(prefix) {
 				serverName = "."
 			} else {
-				serverName = serverName[4:]
+				serverName = serverName[len(prefix):]
 			}
 			protocol = p.Protocol()
 		}
