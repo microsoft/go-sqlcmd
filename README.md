@@ -89,12 +89,14 @@ These environment variables can be set to configure some aspects of AAD auth and
 
 #### sqlcmd executable
 
-Build [sqlcmd](cmd/sqlcmd)
+Build [sqlcmd](cmd/modern)
 
 ```sh
-
-go build ./cmd/sqlcmd
-
+./build/build.sh
+```
+or
+```
+.\build\build.cmd
 ```
 
 #### sqlcmd package
@@ -109,7 +111,7 @@ The version on the binary will match the version tag of the branch.
 ```sh
 
 go install github.com/tc-hib/go-winres@latest
-cd cmd/sqlcmd
+cd cmd/modern
 go generate
 
 ```
