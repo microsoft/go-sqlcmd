@@ -81,6 +81,7 @@ stages:
           buildType: 'current'
           targetPath: '$(Pipeline.Workspace)'
       - task: EsrpCodeSigning@2
+        displayName: Sign Windows binary
         inputs:
           ConnectedServiceName: 'Code Signing'
           FolderPath: '$(Pipeline.Workspace)'
@@ -89,7 +90,7 @@ stages:
           inlineOperation: |
             [
               {
-                "keyCode": "CP-230072",
+                "keyCode": "CP-230012",
                 "operationSetCode": "SigntoolSign",
                 "parameters": [
                   {
