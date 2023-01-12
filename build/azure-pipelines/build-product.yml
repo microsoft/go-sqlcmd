@@ -80,10 +80,6 @@ stages:
         inputs:
           buildType: 'current'
           targetPath: '$(Pipeline.Workspace)'
-      - task: UseDotNet@2
-        inputs:
-          packageType: 'sdk'
-          version: '2.1.x'      
       - task: EsrpCodeSigning@1
         displayName: Sign Windows binary
         inputs:
