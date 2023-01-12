@@ -80,59 +80,46 @@ stages:
         inputs:
           buildType: 'current'
           targetPath: '$(Pipeline.Workspace)'
-      - task: EsrpCodeSigning@1
-        displayName: Sign Windows binary
+      - task: EsrpCodeSigning@2
         inputs:
           ConnectedServiceName: 'Code Signing'
           FolderPath: '$(Pipeline.Workspace)'
           Pattern: 'sqlcmd.exe'
           signConfigType: 'inlineSignParams'
-          SessionTimeout: '600'
-          MaxConcurrency: '5'
-          MaxRetryAttempts: '5'
           inlineOperation: |
             [
               {
-                "keyCode": "CP-230012",
+                "keyCode": "CP-230072",
                 "operationSetCode": "SigntoolSign",
                 "parameters": [
-                {
-                  "parameterName": "OpusName",
-                  "parameterValue": "go-sqlcmd"
-                },
-                {
-                  "parameterName": "OpusInfo",
-                  "parameterValue": "https://github.com/microsoft/go-sqlcmd"
-                },
-                {
-                  "parameterName": "PageHash",
-                  "parameterValue": "/NPH"
-                },
-                {
-                  "parameterName": "FileDigest",
-                  "parameterValue": "/fd sha256"
-                },
-                {
-                  "parameterName": "TimeStamp",
-                  "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
-                }
+                  {
+                    "parameterName": "OpusName",
+                    "parameterValue": "go-sqlcmd"
+                  },
+                  {
+                    "parameterName": "OpusInfo",
+                    "parameterValue": "https://github.com/microsoft/go-sqlcmd"
+                  },
+                  {
+                    "parameterName": "PageHash",
+                    "parameterValue": "/NPH"
+                  },
+                  {
+                    "parameterName": "FileDigest",
+                    "parameterValue": "/fd sha256"
+                  },
+                  {
+                    "parameterName": "TimeStamp",
+                    "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+                  }
                 ],
-                "toolName": "signtool.exe",
-                "toolVersion": "6.2.9304.0"
-              },
-              {
-                "keyCode": "CP-230012",
-                "operationSetCode": "SigntoolVerify",
-                "parameters": [
-                {
-                  "parameterName": "VerifyAll",
-                  "parameterValue": "/all"
-                }
-                    ],
                 "toolName": "signtool.exe",
                 "toolVersion": "6.2.9304.0"
               }
             ]
+          SessionTimeout: '60'
+          MaxConcurrency: '50'
+          MaxRetryAttempts: '5'
       - task: ArchiveFiles@2
         displayName: Zip Windows amd64 binary
         inputs:
