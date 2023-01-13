@@ -232,22 +232,22 @@ func TestOnErrorCommand(t *testing.T) {
 	s.SetOutput(buf)
 	err := onerrorCommand(s, []string{""}, 1)
 	assert.EqualError(t, err, InvalidCommandError("ON ERROR", 1).Error(), "onerrorCommand with empty content")
-	err = runSqlCmd(t, s, []string{":ONERROR ignore", "printtgit N'message'", "SELECT @@versionn", "GO"})
+	err = runSqlCmd(t, s, []string{":on error ignore", "printtgit N'message'", "SELECT @@versionn", "GO"})
 	assert.NoError(t, err, "runSqlCmd")
 	o := buf.buf.String()
 	assert.Equal(t, 0, s.Exitcode, "ExitCode")
 	assert.Contains(t, o, "Must declare the scalar variable \"@@versionn\"", "output not equal to expected")
-	err = runSqlCmd(t, s, []string{":ONERROR exit", "printtgit N'message'", "SELECT @@versionn", "GO"})
+	err = runSqlCmd(t, s, []string{":on error exit", "printtgit N'message'", "SELECT @@versionn", "GO"})
 	assert.NoError(t, err, "runSqlCmd")
 	assert.Equal(t, 1, s.Exitcode, "ExitCode")
 	// -b sets ExitOnError true
 	s.Connect.ExitOnError = true
-	err = runSqlCmd(t, s, []string{":ONERROR ignore", "printtgit N'message'", "SELECT @@versionn", "GO"})
+	err = runSqlCmd(t, s, []string{":ON ERROR ignore", "printtgit N'message'", "SELECT @@versionn", "GO"})
 	// when ignore is set along with -b command , ignore takes precedence and resets ExitOnError
 	assert.Equal(t, false, s.Connect.ExitOnError, "ExitOnError")
 	assert.NoError(t, err, "runSqlCmd")
 	// checking ExitonError with  Exit option
-	err = runSqlCmd(t, s, []string{":ONERROR exit", "printtgit N'message'", "SELECT @@versionn", "GO"})
+	err = runSqlCmd(t, s, []string{":ON ERROR exit", "printtgit N'message'", "SELECT @@versionn", "GO"})
 	assert.Equal(t, true, s.Connect.ExitOnError, "ExitOnError")
 	assert.NoError(t, err, "runSqlCmd")
 }
