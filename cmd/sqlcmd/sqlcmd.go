@@ -120,7 +120,6 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 }
 
 func Execute(version string) {
-	localizer.InitLocale()
 	ctx := kong.Parse(&args, kong.NoDefaultHelp())
 	if args.Version {
 		ctx.Printf("%v", version)

@@ -55,7 +55,7 @@ func Get(id string) Localizer {
 
 }
 
-func InitLocale() {
+func init() {
 	localeName := os.Getenv("SQLCMD_LANG")
 	Translator = Get(localeName)
 }
