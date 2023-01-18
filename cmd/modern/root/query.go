@@ -63,11 +63,12 @@ func (c *Query) run() {
 		line = console.NewConsole("")
 		defer line.Close()
 	}
-	s := mssql.Connect(endpoint, user, line)
+	sql := mssql.New(false)
+	s := sql.Connect(endpoint, user, line)
 	if c.text == "" {
 		err := s.Run(false, false)
 		c.CheckErr(err)
 	} else {
-		mssql.Query(s, c.text)
+		sql.Query(s, c.text)
 	}
 }

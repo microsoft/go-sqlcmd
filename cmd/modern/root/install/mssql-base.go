@@ -268,7 +268,15 @@ func (c *MssqlBase) installContainerImage(imageName string, contextName string) 
 		userName)
 
 	endpoint, _ := config.CurrentContext()
-	c.sqlcmdPkg = mssql.Connect(
+
+	var sql mssql.MssqlInterface
+	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
+		sql = mssql.New(true)
+	} else {
+		sql = mssql.New(false)
+	}
+
+	c.sqlcmdPkg = sql.Connect(
 		endpoint,
 		&sqlconfig.User{
 			AuthenticationType: "basic",
@@ -308,7 +316,14 @@ func (c *MssqlBase) installContainerImage(imageName string, contextName string) 
 }
 
 func (c *MssqlBase) query(commandText string) {
-	mssql.Query(c.sqlcmdPkg, commandText)
+	var sql mssql.MssqlInterface
+	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
+		sql = mssql.New(true)
+	} else {
+		sql = mssql.New(false)
+	}
+
+	sql.Query(c.sqlcmdPkg, commandText)
 }
 
 // createNonSaUser creates a user (non-sa) and assigns the sysadmin role

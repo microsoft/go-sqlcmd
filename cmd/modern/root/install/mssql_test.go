@@ -14,20 +14,18 @@ import (
 )
 
 func TestInstallMssql(t *testing.T) {
-	// DEVNOTE: To prevent "import cycle not allowed" golang compile time error (due to
-	// cleaning up the Install using root.Uninstall), we don't use root.Uninstall,
+	// DEVNOTE: To prevent "import cycle not allowed" golang compile time error (due
+	// to cleaning up the Install using root.Uninstall), we don't use root.Uninstall,
 	// and use the controller object instead
 
-	t.Skip("To slow")
-
 	const registry = "docker.io"
-	const repo = "library/alpine"
+	const repo = "library/hello-world"
 
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*mssql.GetTags]()
 	cmdparser.TestCmd[*Mssql](
 		fmt.Sprintf(
-			"--accept-eula --user-database foo --errorlog-wait-line unit-testing --registry %v --repo %v",
+			`--accept-eula --user-database foo --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
 			registry,
 			repo))
 
@@ -40,8 +38,6 @@ func TestInstallMssql(t *testing.T) {
 }
 
 func TestNegInstallMssql(t *testing.T) {
-	t.Skip("To slow")
-
 	assert.Panics(t, func() {
 		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*Mssql]()
@@ -49,8 +45,6 @@ func TestNegInstallMssql(t *testing.T) {
 }
 
 func TestNegInstallMssql2(t *testing.T) {
-	t.Skip("To slow")
-
 	assert.Panics(t, func() {
 		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*Mssql]("--accept-eula --repo does/not/exist")

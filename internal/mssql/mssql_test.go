@@ -86,8 +86,9 @@ func TestConnect(t *testing.T) {
 				}()
 			}
 
-			s := Connect(tt.args.endpoint, tt.args.user, tt.args.console)
-			Query(s, "SELECT @@version")
+			mssql := New(false)
+			s := mssql.Connect(tt.args.endpoint, tt.args.user, tt.args.console)
+			mssql.Query(s, "SELECT @@version")
 		})
 	}
 }
