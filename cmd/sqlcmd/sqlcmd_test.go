@@ -299,7 +299,6 @@ func TestExitOnError(t *testing.T) {
 }
 
 func TestAzureAuth(t *testing.T) {
-
 	if !canTestAzureAuth() {
 		t.Skip("Server name is not an Azure DB name")
 	}
