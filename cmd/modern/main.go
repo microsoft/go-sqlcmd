@@ -6,6 +6,9 @@
 // command-line interface (CLI) should be used based on if the first argument provided
 // by the user is a valid sub-command for the new CLI, if so it executes the
 // new cobra CLI; otherwise, it falls back to the old kong-based CLI.
+
+//go:generate go-winres make --file-version=git-tag --product-version=git-tag
+
 package main
 
 import (
@@ -25,6 +28,7 @@ import (
 
 var rootCmd *Root
 var outputter *output.Output
+var version = "local-build" // overridden in pipeline builds with: -ldflags="-X main.version=$(VersionTag)"
 
 // main is the entry point for the sqlcmd command line interface.
 // It parses command line options and initializes the command parser.
@@ -42,14 +46,14 @@ func main() {
 		cmdparser.Initialize(initializeCallback)
 		rootCmd.Execute()
 	} else {
-		legacyCmd.Execute()
+		legacyCmd.Execute(version)
 	}
 }
 
 // isFirstArgModernCliSubCommand is TEMPORARY code, to be removed when
 // we remove the Kong based CLI
 func isFirstArgModernCliSubCommand() (isNewCliCommand bool) {
-	if len(os.Args) > 0 {
+	if len(os.Args) > 1 {
 		if rootCmd.IsValidSubCommand(os.Args[1]) {
 			isNewCliCommand = true
 		}
