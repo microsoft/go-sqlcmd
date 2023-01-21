@@ -6,4 +6,10 @@ echo "Starting SQL Server in background"
 # wait for SQL Server to start up.
 sleep 30s
 
-sqlcmd -i /app/myscript.sql -U SA
+echo "running script with SQLCMD legacy"
+
+/opt/mssql-tools/bin/sqlcmd -i /app/myscript.sql -U SA
+
+echo "running script with SQLCMD GO"
+
+sqlcmd-go -i /app/myscript.sql -U SA

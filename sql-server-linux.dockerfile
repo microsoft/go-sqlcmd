@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/mssql/server:2017-latest
 RUN wget -q https://github.com/microsoft/go-sqlcmd/releases/download/v0.11.0/sqlcmd-v0.11.0-linux-arm64.tar.bz2 && \
     tar -xvjf sqlcmd-v0.11.0-linux-arm64.tar.bz2 && \
     chmod +x ./sqlcmd && \
-    mv ./sqlcmd /usr/bin/sqlcmd && \
+    mv ./sqlcmd /usr/bin/sqlcmd-go && \
     rm sqlcmd-v0.11.0-linux-arm64.tar.bz2
 
 ENV ACCEPT_EULA=Y
