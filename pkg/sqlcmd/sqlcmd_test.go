@@ -67,10 +67,11 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 	}
 }
 
-/* The following tests require a working SQL instance and rely on SqlCmd environment variables
+/*
+	The following tests require a working SQL instance and rely on SqlCmd environment variables
+
 to manage the initial connection string. The default connection when no environment variables are
 set will be to localhost using Windows auth.
-
 */
 func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
@@ -185,6 +186,19 @@ func TestIncludeFileWithVariables(t *testing.T) {
 	}
 }
 
+func TestIncludeFileMultilineString(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	dataPath := "testdata" + string(os.PathSeparator)
+	err := s.IncludeFile(dataPath+"blanks.sql", true)
+	if assert.NoError(t, err, "IncludeFile blanks.sql true") {
+		assert.Equal(t, "=", s.batch.State(), "s.batch.State() after IncludeFile blanks.sql true")
+		assert.Equal(t, "", s.batch.String(), "s.batch.String() after IncludeFile blanks.sql true")
+		s.SetOutput(nil)
+		o := buf.buf.String()
+		assert.Equal(t, "line 1"+SqlcmdEol+SqlcmdEol+SqlcmdEol+SqlcmdEol+"line2"+SqlcmdEol+SqlcmdEol, o)
+	}
+}
 func TestGetRunnableQuery(t *testing.T) {
 	v := InitializeVariables(false)
 	v.Set("var1", "v1")

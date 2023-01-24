@@ -145,25 +145,24 @@ parse:
 		}
 	}
 	if err == nil {
-		i = min(i, b.rawlen)
-		empty := isEmptyLine(b.raw, 0, i)
-		appendLine := true
-		if !b.comment && command != nil && empty {
-			appendLine = false
-		}
-		if appendLine {
-			// any variables on the line need to be added to the global map
-			inc := 0
-			if b.Length > 0 {
-				inc = len(lineend)
-			}
-			if b.linevarmap != nil {
-				for v := range b.linevarmap {
-					b.varmap[v+b.Length+inc] = b.linevarmap[v]
+		if command == nil {
+			i = min(i, b.rawlen)
+			empty := i == 0
+			appendLine := !empty || b.comment || b.quote != 0
+			if appendLine {
+				// any variables on the line need to be added to the global map
+				inc := 0
+				if b.Length > 0 {
+					inc = len(lineend)
 				}
+				if b.linevarmap != nil {
+					for v := range b.linevarmap {
+						b.varmap[v+b.Length+inc] = b.linevarmap[v]
+					}
+				}
+				// log.Printf(">> appending: `%s`", string(r[st:i]))
+				b.append(b.raw[:i], lineend)
 			}
-			// log.Printf(">> appending: `%s`", string(r[st:i]))
-			b.append(b.raw[:i], lineend)
 			b.batchline++
 		}
 		b.raw = b.raw[i:]
