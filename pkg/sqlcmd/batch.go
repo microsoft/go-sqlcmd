@@ -109,7 +109,7 @@ parse:
 			i, ok = readMultilineComment(b.raw, i, b.rawlen)
 			b.comment = !ok
 		// start of a string
-		case c == '\'' || c == '"':
+		case c == '\'' || c == '"' || c == '[':
 			b.quote = c
 		// inline sql comment, skip to end of line
 		case c == '-' && next == '-':
@@ -241,11 +241,13 @@ func (b *Batch) readString(r []rune, i, end int, quote rune, line uint) (int, bo
 			} else {
 				return i, false, syntaxError(line)
 			}
-		case quote == '\'' && c == '\'' && next == '\'':
+		case quote == '\'' && c == '\'' && next == '\'',
+			quote == '[' && c == ']' && next == ']':
 			i++
 			continue
 		case quote == '\'' && c == '\'' && prev != '\'',
-			quote == '"' && c == '"':
+			quote == '"' && c == '"',
+			quote == '[' && c == ']':
 			return i, true, nil
 		}
 		prev = c
