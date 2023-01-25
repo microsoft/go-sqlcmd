@@ -69,10 +69,11 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 	}
 }
 
-/* The following tests require a working SQL instance and rely on SqlCmd environment variables
+/*
+	The following tests require a working SQL instance and rely on SqlCmd environment variables
+
 to manage the initial connection string. The default connection when no environment variables are
 set will be to localhost using Windows auth.
-
 */
 func TestSqlCmdConnectDb(t *testing.T) {
 	v := InitializeVariables(true)
@@ -329,16 +330,20 @@ func TestPromptForPasswordNegative(t *testing.T) {
 	}
 	v := InitializeVariables(true)
 	s := New(console, "", v)
+	c := newConnect(t)
 	s.Connect.UserName = "someuser"
+	s.Connect.ServerName = c.ServerName
 	err := s.ConnectDb(nil, false)
 	assert.True(t, prompted, "Password prompt not shown for SQL auth")
 	assert.Error(t, err, "ConnectDb")
 	prompted = false
-	s.Connect.AuthenticationMethod = azuread.ActiveDirectoryPassword
-	err = s.ConnectDb(nil, false)
-	assert.True(t, prompted, "Password prompt not shown for AD Password auth")
-	assert.Error(t, err, "ConnectDb")
-	prompted = false
+	if canTestAzureAuth() {
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryPassword
+		err = s.ConnectDb(nil, false)
+		assert.True(t, prompted, "Password prompt not shown for AD Password auth")
+		assert.Error(t, err, "ConnectDb")
+		prompted = false
+	}
 }
 
 func TestPromptForPasswordPositive(t *testing.T) {

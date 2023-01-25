@@ -10,7 +10,7 @@ require (
 	github.com/docker/go-connections v0.4.0
 	github.com/golang-sql/sqlexp v0.1.0
 	github.com/google/uuid v1.3.0
-	github.com/microsoft/go-mssqldb v0.19.0
+	github.com/microsoft/go-mssqldb v0.20.0
 	github.com/peterh/liner v1.2.2
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.6.1
