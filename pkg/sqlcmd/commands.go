@@ -37,7 +37,7 @@ func newCommands() Commands {
 	// Commands is the set of Command implementations
 	return map[string]*Command{
 		"EXIT": {
-			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?EXIT(?:[ \t]*(\(?.*\)?$)|$)`),
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?EXIT([\( \t]+.*\)*$|$)`),
 			action: exitCommand,
 			name:   "EXIT",
 		},
