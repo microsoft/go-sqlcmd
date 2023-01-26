@@ -37,7 +37,7 @@ func newCommands() Commands {
 	// Commands is the set of Command implementations
 	return map[string]*Command{
 		"EXIT": {
-			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?EXIT(?:[ \t]*(\(?.*\)?$)|$)`),
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?EXIT([\( \t]+.*\)*$|$)`),
 			action: exitCommand,
 			name:   "EXIT",
 		},
@@ -186,15 +186,17 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 		}
 	}
 	query = strings.TrimSpace(params[1 : len(params)-1])
-	s.batch.Reset([]rune(query))
-	_, _, err := s.batch.Next()
-	if err != nil {
-		return err
-	}
-	query = s.batch.String()
-	if s.batch.String() != "" {
-		query = s.getRunnableQuery(query)
-		s.Exitcode, _ = s.runQuery(query)
+	if len(query) > 0 {
+		s.batch.Reset([]rune(query))
+		_, _, err := s.batch.Next()
+		if err != nil {
+			return err
+		}
+		query = s.batch.String()
+		if s.batch.String() != "" {
+			query = s.getRunnableQuery(query)
+			s.Exitcode, _ = s.runQuery(query)
+		}
 	}
 	return ErrExitRequested
 }

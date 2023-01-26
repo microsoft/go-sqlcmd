@@ -33,6 +33,10 @@ func TestBatchNext(t *testing.T) {
 		{"select 1\n:exit()", []string{"select 1"}, []string{"EXIT"}, "-"},
 		{"select 1\n:exit (select 10)", []string{"select 1"}, []string{"EXIT"}, "-"},
 		{"select 1\n:exit", []string{"select 1"}, []string{"EXIT"}, "-"},
+		{"select [a'b] = 'c'", []string{"select [a'b] = 'c'"}, nil, "-"},
+		{"select [bracket", []string{"select [bracket"}, nil, "["},
+		{"select [bracket]]a]", []string{"select [bracket]]a]"}, nil, "-"},
+		{"exit_1", []string{"exit_1"}, nil, "-"},
 	}
 	for _, test := range tests {
 		b := NewBatch(sp(test.s, "\n"), newCommands())
