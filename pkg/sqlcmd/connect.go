@@ -130,11 +130,9 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	if connect.LogLevel > 0 {
 		query.Add("log", fmt.Sprint(connect.LogLevel))
 	}
-	appName := "sqlcmd"
 	if connect.ApplicationName != "" {
-		appName = connect.ApplicationName
+		query.Add(`app name`, connect.ApplicationName)
 	}
-	query.Add(`app name`, appName)
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil
 }
