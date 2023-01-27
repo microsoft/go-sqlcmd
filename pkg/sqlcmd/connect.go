@@ -48,6 +48,8 @@ type ConnectSettings struct {
 	ErrorSeverityLevel uint8
 	// Database is the name of the database for the connection
 	Database string
+	// ApplicationName is the name of the application to be included in the connection string
+	ApplicationName string
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -130,6 +132,9 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if protocol != "" {
 		query.Add("protocol", protocol)
+	}
+	if connect.ApplicationName != "" {
+		query.Add(`app name`, connect.ApplicationName)
 	}
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil

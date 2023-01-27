@@ -64,6 +64,12 @@ steps:
     SourceFolder: '$(Build.BinariesDirectory)'
     Contents: '**'
 
+- task: CopyFiles@2
+  inputs:
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: 'NOTICE.md'
+
 - task: PublishPipelineArtifact@1
   displayName: 'Publish binary'
   inputs:

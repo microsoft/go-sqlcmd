@@ -5,9 +5,10 @@ package mssql
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
-	"os"
 )
 
 // Connect is used to connect to a SQL Server using the specified endpoint
@@ -27,6 +28,7 @@ func Connect(
 			"%s,%d",
 			endpoint.EndpointDetails.Address,
 			endpoint.EndpointDetails.Port),
+		ApplicationName: "sqlcmd",
 	}
 
 	if user == nil {
