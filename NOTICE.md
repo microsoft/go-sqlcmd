@@ -6,8 +6,8 @@ This repository incorporates material as listed below or described in the code.
 ## github.com/Azure/azure-sdk-for-go/sdk/azcore
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azcore
-* Version: v1.0.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.0.0/sdk/azcore/LICENSE.txt)
+* Version: v1.1.2
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.1.2/sdk/azcore/LICENSE.txt)
 
 ```
 MIT License
@@ -37,8 +37,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azidentity
-* Version: v1.0.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.0.0/sdk/azidentity/LICENSE.txt)
+* Version: v1.1.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.1.0/sdk/azidentity/LICENSE.txt)
 
 ```
 MIT License
@@ -99,8 +99,8 @@ SOFTWARE
 ## github.com/AzureAD/microsoft-authentication-library-for-go/apps
 
 * Name: github.com/AzureAD/microsoft-authentication-library-for-go/apps
-* Version: v0.4.0
-* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v0.4.0/LICENSE)
+* Version: v0.5.1
+* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v0.5.1/LICENSE)
 
 ```
     MIT License
@@ -4617,11 +4617,11 @@ THE SOFTWARE.
 
 ```
 
-## golang.org/x/crypto/pkcs12
+## golang.org/x/crypto
 
-* Name: golang.org/x/crypto/pkcs12
-* Version: v0.0.0-20220525230936-793ad666bf5e
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/793ad666:LICENSE)
+* Name: golang.org/x/crypto
+* Version: v0.0.0-20220622213112-05595931fe9d
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/05595931:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.

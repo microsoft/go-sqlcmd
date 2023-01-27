@@ -16,22 +16,6 @@ func grab(r []rune, i, end int) rune {
 	return 0
 }
 
-// findNonSpace finds first non space rune in r, returning end if not found.
-func findNonSpace(r []rune, i, end int) (int, bool) {
-	for ; i < end; i++ {
-		if !isSpaceOrControl(r[i]) {
-			return i, true
-		}
-	}
-	return i, false
-}
-
-// isEmptyLine returns true when r is empty or composed of only whitespace.
-func isEmptyLine(r []rune, i, end int) bool {
-	_, ok := findNonSpace(r, i, end)
-	return !ok
-}
-
 // readMultilineComment finds the end of a multiline comment (ie, '*/').
 func readMultilineComment(r []rune, i, end int) (int, bool) {
 	i++
@@ -92,10 +76,4 @@ func min64(a, b int64) int64 {
 		return a
 	}
 	return b
-}
-
-// isSpaceOrControl is a special test for either a space or a control (ie, \b)
-// characters.
-func isSpaceOrControl(r rune) bool {
-	return unicode.IsSpace(r) || unicode.IsControl(r)
 }
