@@ -27,6 +27,9 @@ import (
 	"golang.org/x/text/transform"
 )
 
+// Note: The order of includes above matters for namedpipe and sharedmemory.
+// init() swaps shared memory protocol with tcp so it gets priority when dialing.
+
 var (
 	// ErrExitRequested tells the hosting application to exit immediately
 	ErrExitRequested = errors.New("exit")
@@ -540,6 +543,7 @@ func (s Sqlcmd) Log(_ context.Context, _ msdsn.Log, msg string) {
 func init() {
 	if len(msdsn.ProtocolParsers) == 3 {
 		// reorder the protocol parsers to lpc->np->tcp
+		// ODBC follows this same order.
 		var tcp = msdsn.ProtocolParsers[0]
 		msdsn.ProtocolParsers[0] = msdsn.ProtocolParsers[2]
 		msdsn.ProtocolParsers[2] = tcp
