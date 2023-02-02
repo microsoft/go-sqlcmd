@@ -201,6 +201,7 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 }
 
 func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sqlcmd.Variables) {
+	connect.ApplicationName = "sqlcmd"
 	if !args.DisableCmdAndWarn {
 		connect.Password = os.Getenv(sqlcmd.SQLCMDPASSWORD)
 	}

@@ -109,7 +109,7 @@ parse:
 			i, ok = readMultilineComment(b.raw, i, b.rawlen)
 			b.comment = !ok
 		// start of a string
-		case c == '\'' || c == '"':
+		case c == '\'' || c == '"' || c == '[':
 			b.quote = c
 		// inline sql comment, skip to end of line
 		case c == '-' && next == '-':
@@ -145,25 +145,24 @@ parse:
 		}
 	}
 	if err == nil {
-		i = min(i, b.rawlen)
-		empty := isEmptyLine(b.raw, 0, i)
-		appendLine := true
-		if !b.comment && command != nil && empty {
-			appendLine = false
-		}
-		if appendLine {
-			// any variables on the line need to be added to the global map
-			inc := 0
-			if b.Length > 0 {
-				inc = len(lineend)
-			}
-			if b.linevarmap != nil {
-				for v := range b.linevarmap {
-					b.varmap[v+b.Length+inc] = b.linevarmap[v]
+		if command == nil {
+			i = min(i, b.rawlen)
+			empty := i == 0
+			appendLine := !empty || b.comment || b.quote != 0
+			if appendLine {
+				// any variables on the line need to be added to the global map
+				inc := 0
+				if b.Length > 0 {
+					inc = len(lineend)
 				}
+				if b.linevarmap != nil {
+					for v := range b.linevarmap {
+						b.varmap[v+b.Length+inc] = b.linevarmap[v]
+					}
+				}
+				// log.Printf(">> appending: `%s`", string(r[st:i]))
+				b.append(b.raw[:i], lineend)
 			}
-			// log.Printf(">> appending: `%s`", string(r[st:i]))
-			b.append(b.raw[:i], lineend)
 			b.batchline++
 		}
 		b.raw = b.raw[i:]
@@ -242,11 +241,13 @@ func (b *Batch) readString(r []rune, i, end int, quote rune, line uint) (int, bo
 			} else {
 				return i, false, syntaxError(line)
 			}
-		case quote == '\'' && c == '\'' && next == '\'':
+		case quote == '\'' && c == '\'' && next == '\'',
+			quote == '[' && c == ']' && next == ']':
 			i++
 			continue
 		case quote == '\'' && c == '\'' && prev != '\'',
-			quote == '"' && c == '"':
+			quote == '"' && c == '"',
+			quote == '[' && c == ']':
 			return i, true, nil
 		}
 		prev = c

@@ -285,7 +285,7 @@ func ValidIdentifier(name string) error {
 
 	first := true
 	for _, c := range name {
-		if !unicode.IsLetter(c) && (first || (!unicode.IsDigit(c) && !strings.ContainsRune(validVariableRunes, c))) {
+		if !unicode.IsLetter(c) && c != '_' && (first || (!unicode.IsDigit(c) && !strings.ContainsRune(validVariableRunes, c))) {
 			return fmt.Errorf("Invalid variable identifier %s", name)
 		}
 		first = false
