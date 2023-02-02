@@ -40,29 +40,69 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"'-a %d': Packet size has to be a number between 512 and 32767.": 0,
+	"%sSyntax error at line %d":            11,
+	"'%s' scripting variable not defined.": 9,
+	"'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.": 3,
+	"'-a %d': Packet size has to be a number between 512 and 32767.":                                                                       0,
+	"'-h %d': header value must be either -1 or a value between 1 and 2147483647":                                                          1,
+	"'-w %d': value must be greater than 8 and less than 65536.":                                                                           2,
+	"ED and !!<command> commands, startup script, and environment variables are disabled":                                                  6,
+	"Invalid variable value %s": 15,
+	"Sqlcmd: Warning: The last operation was terminated because the user pressed CTRL+C": 14,
+	"Syntax error at line %d near command '%s'.":                                         10,
+	"The scripting variable: '%s' is read-only":                                          8,
+	"exit":                          12,
+	"invalid batch terminator '%s'": 4,
+	"need password":                 13,
+	"no current context. To create a context use `sqlcmd install`, e.g. `sqlcmd install mssql`": 5,
+	"server must be of the form [tcp]:server[[/instance]|[,port]]":                              7,
 }
 
-var de_DEIndex = []uint32{ // 2 elements
-	0x00000000, 0x00000044,
-} // Size: 32 bytes
+var de_DEIndex = []uint32{ // 17 elements
+	0x00000000, 0x00000044, 0x00000044, 0x00000044,
+	0x00000044, 0x00000044, 0x00000044, 0x00000044,
+	0x00000044, 0x00000044, 0x00000044, 0x00000044,
+	0x00000044, 0x00000044, 0x00000044, 0x00000044,
+	0x00000044,
+} // Size: 92 bytes
 
 const de_DEData string = "" + // Size: 68 bytes
 	"\x02'-a %[1]d': Paketgröße muss eine Zahl zwischen 512 und 32767 sein"
 
-var en_USIndex = []uint32{ // 2 elements
-	0x00000000, 0x00000042,
-} // Size: 32 bytes
+var en_USIndex = []uint32{ // 17 elements
+	0x00000000, 0x00000042, 0x00000091, 0x000000cf,
+	0x00000154, 0x00000175, 0x000001cf, 0x00000223,
+	0x00000260, 0x0000028d, 0x000002b5, 0x000002e6,
+	0x00000306, 0x0000030b, 0x00000319, 0x0000036c,
+	0x00000389,
+} // Size: 92 bytes
 
-const en_USData string = "" + // Size: 66 bytes
-	"\x02'-a %[1]d': Packet size has to be a number between 512 and 32767."
+const en_USData string = "" + // Size: 905 bytes
+	"\x02'-a %[1]d': Packet size has to be a number between 512 and 32767." +
+	"\x02'-h %[1]d': header value must be either -1 or a value between 1 and " +
+	"2147483647\x02'-w %[1]d': value must be greater than 8 and less than 655" +
+	"36.\x02'-P' is obsolete. The initial passwords must be set using the SQL" +
+	"CMDPASSWORD environment variable or entered at the password prompt.\x02i" +
+	"nvalid batch terminator '%[1]s'\x02no current context. To create a conte" +
+	"xt use `sqlcmd install`, e.g. `sqlcmd install mssql`\x02ED and !!<comman" +
+	"d> commands, startup script, and environment variables are disabled\x02s" +
+	"erver must be of the form [tcp]:server[[/instance]|[,port]]\x02The scrip" +
+	"ting variable: '%[1]s' is read-only\x02'%[1]s' scripting variable not de" +
+	"fined.\x02Syntax error at line %[1]d near command '%[2]s'.\x02%[1]sSynta" +
+	"x error at line %[2]d\x02exit\x02need password\x02Sqlcmd: Warning: The l" +
+	"ast operation was terminated because the user pressed CTRL+C\x02Invalid " +
+	"variable value %[1]s"
 
-var fr_CHIndex = []uint32{ // 2 elements
-	0x00000000, 0x00000051,
-} // Size: 32 bytes
+var fr_CHIndex = []uint32{ // 17 elements
+	0x00000000, 0x00000051, 0x00000051, 0x00000051,
+	0x00000051, 0x00000051, 0x00000051, 0x00000051,
+	0x00000051, 0x00000051, 0x00000051, 0x00000051,
+	0x00000051, 0x00000051, 0x00000051, 0x00000051,
+	0x00000051,
+} // Size: 92 bytes
 
 const fr_CHData string = "" + // Size: 81 bytes
 	"\x02'-a %[1]d': La taille du paquet doit être un nombre compris entre 51" +
 	"2 et 32767."
 
-	// Total table size 311 bytes (0KiB); checksum: F4BC218E
+	// Total table size 1330 bytes (1KiB); checksum: 1E6F5CEA

@@ -8,7 +8,6 @@ import (
 	"context"
 	"database/sql"
 	"database/sql/driver"
-	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -21,17 +20,18 @@ import (
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-mssqldb/msdsn"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
 
 var (
 	// ErrExitRequested tells the hosting application to exit immediately
-	ErrExitRequested = errors.New("exit")
+	ErrExitRequested = localizer.NewError("exit")
 	// ErrNeedPassword indicates the user should provide a password to enable the connection
-	ErrNeedPassword = errors.New("need password")
+	ErrNeedPassword = localizer.NewError("need password")
 	// ErrCtrlC indicates execution was ended by ctrl-c or ctrl-break
-	ErrCtrlC = errors.New(WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
+	ErrCtrlC = localizer.NewError(WarningPrefix + "The last operation was terminated because the user pressed CTRL+C")
 	// ErrCommandsDisabled indicates system commands and startup script are disabled
 	ErrCommandsDisabled = &CommonSqlcmdErr{
 		message: ErrCmdDisabled,

@@ -5,6 +5,8 @@ import (
 	// is run. It's really important that we do this here so that the
 	// default message catalog is updated to use our translations
 	// *before* we initialize the message.Printer instances below.
+	"errors"
+	"fmt"
 	"os"
 
 	_ "github.com/microsoft/go-sqlcmd/internal/translations"
@@ -60,10 +62,15 @@ func init() {
 	Translator = Get(localeName)
 }
 
-// We also add a Translate() method to the Localizer type. This acts
-// as a wrapper around the unexported message.Printer's Sprintf()
-// function and returns the appropriate translation for the given
-// message and arguments.
-func Translate(key message.Reference, args ...interface{}) string {
+func Errorf(format string, a ...any) error {
+	errMsg := Translator.printer.Sprintf(format, a...)
+	return fmt.Errorf(errMsg)
+}
+
+func Sprintf(key message.Reference, args ...interface{}) string {
 	return Translator.printer.Sprintf(key, args...)
+}
+
+func NewError(err string) error {
+	return errors.New(Sprintf(err))
 }

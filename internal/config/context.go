@@ -4,10 +4,11 @@
 package config
 
 import (
-	"errors"
 	"fmt"
-	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"strconv"
+
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // AddContext adds the context to the sqlconfig file.
@@ -136,7 +137,7 @@ func FindUniqueContextName(name string, username string) (uniqueContextName stri
 func GetCurrentContextOrFatal() (currentContextName string) {
 	currentContextName = CurrentContextName()
 	if currentContextName == "" {
-		checkErr(errors.New(
+		checkErr(localizer.NewError(
 			"no current context. To create a context use `sqlcmd install`, " +
 				"e.g. `sqlcmd install mssql`"))
 	}

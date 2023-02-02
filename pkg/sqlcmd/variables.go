@@ -8,6 +8,8 @@ import (
 	"os"
 	"strings"
 	"unicode"
+
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // Variables provides set and get of sqlcmd scripting variables
@@ -300,7 +302,7 @@ func ValidIdentifier(name string) error {
 // "this has a quote" in it" is not valid
 func ParseValue(val string) (string, error) {
 	quoted := val[0] == '"'
-	err := fmt.Errorf("Invalid variable value %s", val)
+	err := localizer.Errorf("Invalid variable value %s", val)
 	if !quoted {
 		if strings.ContainsAny(val, "\t\n\r ") {
 			return "", err
