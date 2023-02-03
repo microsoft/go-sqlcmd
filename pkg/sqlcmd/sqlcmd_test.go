@@ -58,6 +58,10 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			&ConnectSettings{ServerName: "someserver", AuthenticationMethod: azuread.ActiveDirectoryServicePrincipal, UserName: "myapp@mytenant", Password: pwd},
 			fmt.Sprintf("sqlserver://myapp%%40mytenant:%s@someserver", pwd),
 		},
+		{
+			&ConnectSettings{ServerName: `\\someserver\pipe\sql\query`},
+			"sqlserver://someserver?pipe=sql%5Cquery&protocol=np",
+		},
 	}
 
 	for i, test := range commands {

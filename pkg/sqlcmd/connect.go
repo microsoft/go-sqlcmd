@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"fmt"
 	"net/url"
+	"strings"
 
 	"github.com/microsoft/go-mssqldb/azuread"
 )
@@ -99,6 +100,16 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if (connect.authenticationMethod() == azuread.ActiveDirectoryMSI || connect.authenticationMethod() == azuread.ActiveDirectoryManagedIdentity) && connect.UserName != "" {
 		connectionURL.User = url.UserPassword(connect.UserName, connect.Password)
+	}
+
+	if strings.HasPrefix(serverName, `\\`) {
+		// passing a pipe name of the format \\server\pipe\<pipename>
+		pipeParts := strings.SplitN(string(serverName[2:]), `\`, 3)
+		if len(pipeParts) != 3 {
+			return "", &InvalidServerName
+		}
+		serverName = pipeParts[0]
+		query.Add("pipe", pipeParts[2])
 	}
 	if port > 0 {
 		connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)

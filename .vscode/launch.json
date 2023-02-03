@@ -26,7 +26,7 @@
             "request": "launch",
             "mode" : "auto",
             "program": "${workspaceFolder}/cmd/modern",
-            "args" : ["-Q", "EXIT(select network_protocol from sys.dm_exec_sessions)", "-S", "lpc:."],
+            "args" : ["-Q", "EXIT(select net_transport from sys.dm_exec_connections)"],
         },
         {
             "name" : "Run file query",

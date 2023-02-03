@@ -28,25 +28,32 @@ func splitServer(serverName string) (string, instance string, port uint64, proto
 			protocol = p.Protocol()
 		}
 	}
-	serverNameParts := strings.Split(serverName, ",")
-	if len(serverNameParts) > 2 {
-		return "", "", 0, "", &InvalidServerName
-	}
-	if len(serverNameParts) == 2 {
-		var err error
-		port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
-		if err != nil {
+	if strings.HasPrefix(serverName, `\\`) {
+		if protocol != "np" && protocol != "" || len(serverName) == 2 {
 			return "", "", 0, "", &InvalidServerName
 		}
-		serverName = serverNameParts[0]
+		protocol = "np"
 	} else {
-		serverNameParts = strings.Split(serverName, "\\")
+		serverNameParts := strings.Split(serverName, ",")
 		if len(serverNameParts) > 2 {
 			return "", "", 0, "", &InvalidServerName
 		}
 		if len(serverNameParts) == 2 {
-			instance = serverNameParts[1]
+			var err error
+			port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
+			if err != nil {
+				return "", "", 0, "", &InvalidServerName
+			}
 			serverName = serverNameParts[0]
+		} else {
+			serverNameParts = strings.Split(serverName, "\\")
+			if len(serverNameParts) > 2 {
+				return "", "", 0, "", &InvalidServerName
+			}
+			if len(serverNameParts) == 2 {
+				instance = serverNameParts[1]
+				serverName = serverNameParts[0]
+			}
 		}
 	}
 	return serverName, instance, port, protocol, err

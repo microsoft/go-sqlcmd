@@ -291,6 +291,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	// connect using no overrides
 	err = s.ConnectDb(nil, line == nil)
 	if err != nil {
+		s.WriteError(s.GetError(), err)
 		return 1, err
 	}
 
