@@ -5,18 +5,19 @@ package sqlcmd
 
 import (
 	"errors"
-	"fmt"
 	"strings"
+
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // ErrorPrefix is the prefix for all sqlcmd-generated errors
-const ErrorPrefix = "Sqlcmd: Error: "
+var ErrorPrefix string = localizer.Sprintf("Sqlcmd: Error: ")
 
 // WarningPrefix is the prefix for all sqlcmd-generated warnings
-const WarningPrefix = "Sqlcmd: Warning: "
+var WarningPrefix string = localizer.Sprintf("Sqlcmd: Warning: ")
 
 // Common Sqlcmd error messages
-const ErrCmdDisabled = "ED and !!<command> commands, startup script, and environment variables are disabled"
+var ErrCmdDisabled string = localizer.Sprintf("ED and !!<command> commands, startup script, and enviroment variables are disabled")
 
 type SqlcmdError interface {
 	error
@@ -62,7 +63,7 @@ type VariableError struct {
 }
 
 func (e *VariableError) Error() string {
-	return ErrorPrefix + fmt.Sprintf(e.MessageFormat, e.Variable)
+	return ErrorPrefix + e.MessageFormat
 }
 
 func (e *VariableError) IsSqlcmdErr() bool {
@@ -73,7 +74,7 @@ func (e *VariableError) IsSqlcmdErr() bool {
 func ReadOnlyVariable(variable string) *VariableError {
 	return &VariableError{
 		Variable:      variable,
-		MessageFormat: "The scripting variable: '%s' is read-only",
+		MessageFormat: localizer.Sprintf("The scripting variable: '%s' is read-only", variable),
 	}
 }
 
@@ -81,15 +82,16 @@ func ReadOnlyVariable(variable string) *VariableError {
 func UndefinedVariable(variable string) *VariableError {
 	return &VariableError{
 		Variable:      variable,
-		MessageFormat: "'%s' scripting variable not defined.",
+		MessageFormat: localizer.Sprintf("'%s' scripting variable not defined.", variable),
 	}
 }
 
 // InvalidVariableValue indicates the variable was set to an invalid value
 func InvalidVariableValue(variable string, value string) *VariableError {
+	envVal := strings.ReplaceAll(value, `%`, `%%`)
 	return &VariableError{
 		Variable:      variable,
-		MessageFormat: "The environment variable: '%s' has invalid value: '" + strings.ReplaceAll(value, `%`, `%%`) + "'.",
+		MessageFormat: localizer.Sprintf("The environment variable: '%s' has invalid value: '%s'.", variable, envVal),
 	}
 }
 
@@ -100,7 +102,7 @@ type CommandError struct {
 }
 
 func (e *CommandError) Error() string {
-	return ErrorPrefix + fmt.Sprintf("Syntax error at line %d near command '%s'.", e.LineNumber, e.Command)
+	return ErrorPrefix + localizer.Sprintf("Syntax error at line %d near command '%s'.", e.LineNumber, e.Command)
 }
 
 func (e *CommandError) IsSqlcmdErr() bool {
@@ -131,7 +133,7 @@ func (e *FileError) IsSqlcmdErr() bool {
 // InvalidFileError indicates a file could not be opened
 func InvalidFileError(err error, filepath string) error {
 	return &FileError{
-		err:  errors.New(ErrorPrefix + " Error occurred while opening or operating on file " + filepath + " (Reason: " + err.Error() + ")."),
+		err:  errors.New(localizer.Sprintf("%s Error occurred while opening or operating on file %s (Reason: %s).", ErrorPrefix, filepath, err.Error())),
 		path: filepath,
 	}
 }
@@ -151,6 +153,6 @@ func (e *SyntaxError) IsSqlcmdErr() bool {
 // SyntaxError indicates a malformed sqlcmd statement
 func syntaxError(lineNumber uint) SqlcmdError {
 	return &SyntaxError{
-		err: fmt.Errorf("%sSyntax error at line %d", ErrorPrefix, lineNumber),
+		err: localizer.Errorf("%sSyntax error at line %d", ErrorPrefix, lineNumber),
 	}
 }
