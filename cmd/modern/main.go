@@ -95,7 +95,7 @@ func initializeCallback() {
 // nil.  Pass (inject) checkErr into all dependencies (internal helpers etc.) as an
 // errorHandler.
 //
-// To aid debugging issues, if the logging level is > 2 (e.g. -v 3 or -v 4), we
+// To aid debugging issues, if the logging level is > 2 (e.g. --verbosity 3 or --verbosity 4), we
 // panic which outputs a stacktrace.
 func checkErr(err error) {
 	if rootCmd.loggingLevel > 2 {

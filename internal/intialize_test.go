@@ -5,7 +5,7 @@ package internal
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/output"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -29,52 +29,57 @@ func TestInitialize(t *testing.T) {
 }
 
 func TestNegInitialize(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	options := InitializeOptions{
-		ErrorHandler: nil,
-	}
-	Initialize(options)
+		options := InitializeOptions{
+			ErrorHandler: nil,
+		}
+		Initialize(options)
+	})
 }
 
 func TestNegInitialize2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	options := InitializeOptions{
-		ErrorHandler: func(err error) {},
-	}
-	Initialize(options)
+		options := InitializeOptions{
+			ErrorHandler: func(err error) {},
+		}
+		Initialize(options)
+	})
 }
 
 func TestNegInitialize3(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	options := InitializeOptions{
-		ErrorHandler: func(err error) {},
-		TraceHandler: func(format string, a ...any) {},
-	}
-	Initialize(options)
+		options := InitializeOptions{
+			ErrorHandler: func(err error) {},
+			TraceHandler: func(format string, a ...any) {},
+		}
+		Initialize(options)
+	})
 }
 
 func TestNegInitialize4(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	options := InitializeOptions{
-		ErrorHandler: func(err error) {},
-		TraceHandler: func(format string, a ...any) {},
-		HintHandler:  func(strings []string) {},
-	}
-	Initialize(options)
+		options := InitializeOptions{
+			ErrorHandler: func(err error) {},
+			TraceHandler: func(format string, a ...any) {},
+			HintHandler:  func(strings []string) {},
+		}
+		Initialize(options)
+	})
 }
 
 func TestNegInitialize5(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	options := InitializeOptions{
-		ErrorHandler: func(err error) {},
-		TraceHandler: func(format string, a ...any) {},
-		HintHandler:  func(strings []string) {},
-		LineBreak:    "",
-	}
-	Initialize(options)
+		options := InitializeOptions{
+			ErrorHandler: func(err error) {},
+			TraceHandler: func(format string, a ...any) {},
+			HintHandler:  func(strings []string) {},
+			LineBreak:    "",
+		}
+		Initialize(options)
+	})
 }

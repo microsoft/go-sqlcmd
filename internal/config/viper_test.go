@@ -4,14 +4,15 @@
 package config
 
 import (
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func Test_configureViper(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	configureViper("")
+		configureViper("")
+	})
 }
 
 func Test_Load(t *testing.T) {
@@ -21,13 +22,15 @@ func Test_Load(t *testing.T) {
 }
 
 func TestNeg_Load(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-	filename = ""
-	Load()
+	assert.Panics(t, func() {
+		filename = ""
+		Load()
+	})
 }
 
 func TestNeg_Save(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-	filename = ""
-	Save()
+	assert.Panics(t, func() {
+		filename = ""
+		Save()
+	})
 }

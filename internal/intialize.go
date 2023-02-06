@@ -6,6 +6,7 @@ package internal
 import (
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/http"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/mssql"
 	"github.com/microsoft/go-sqlcmd/internal/net"
@@ -43,5 +44,6 @@ func Initialize(options InitializeOptions) {
 	container.Initialize(options.ErrorHandler, options.TraceHandler)
 	secret.Initialize(options.ErrorHandler)
 	net.Initialize(options.ErrorHandler, options.TraceHandler)
+	http.Initialize(options.ErrorHandler, options.TraceHandler)
 	pal.Initialize(options.ErrorHandler, options.LineBreak)
 }

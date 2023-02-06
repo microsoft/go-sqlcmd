@@ -54,8 +54,9 @@ func (o Output) Fatalf(format string, a ...any) {
 }
 
 func (o Output) FatalfErrorWithHints(err error, hints []string, format string, a ...any) {
-	o.fatalf(hints, format, a...)
-	o.errorCallback(err)
+	o.hintCallback(hints)
+	s := fmt.Sprintf(format, a...)
+	o.errorCallback(fmt.Errorf(s+": %w", err))
 }
 
 func (o Output) FatalfWithHints(hints []string, format string, a ...any) {

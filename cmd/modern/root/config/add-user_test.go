@@ -5,7 +5,7 @@ package config
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
@@ -17,33 +17,35 @@ func TestAddUser(t *testing.T) {
 }
 
 func TestNegAddUser(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*AddUser]("--username user1 --auth-type bad-bad")
+	assert.Panics(t, func() {
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*AddUser]("--username user1 --auth-type bad-bad")
+	})
 }
 
 func TestNegAddUser2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*AddUser]("--username user1 --auth-type other --encrypt-password")
+	assert.Panics(t, func() {
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*AddUser]("--username user1 --auth-type other --encrypt-password")
+	})
 }
 
 func TestNegAddUser3(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	os.Setenv("SQLCMD_PASSWORD", "")
+		os.Setenv("SQLCMD_PASSWORD", "")
 
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*AddUser]("--username user1")
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*AddUser]("--username user1")
+	})
 }
 
 func TestNegAddUser4(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	os.Setenv("SQLCMD_PASSWORD", "whatever")
+		os.Setenv("SQLCMD_PASSWORD", "whatever")
 
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*AddUser]()
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*AddUser]()
+	})
 }

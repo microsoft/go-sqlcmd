@@ -4,6 +4,7 @@
 package folder
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
@@ -38,6 +39,17 @@ func TestMkdirAll(t *testing.T) {
 
 			MkdirAll(tt.args.folder)
 		})
+	}
+}
+
+func TestGetwd(t *testing.T) {
+	// Test 1: Check that the function returns the correct path
+	wd, err := os.Getwd()
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+	if got := Getwd(); got != wd {
+		t.Errorf("Getwd() = %q, want %q", got, wd)
 	}
 }
 

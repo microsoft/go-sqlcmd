@@ -4,23 +4,30 @@
 package install
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/install/mssql"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
-	"github.com/microsoft/go-sqlcmd/internal/test"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestInstallMssql(t *testing.T) {
-	// DEVNOTE: To prevent "import cycle not allowed" golang compile time error (due to
-	// cleaning up the Install using root.Uninstall), we don't use root.Uninstall,
+	// DEVNOTE: To prevent "import cycle not allowed" golang compile time error (due
+	// to cleaning up the Install using root.Uninstall), we don't use root.Uninstall,
 	// and use the controller object instead
+
+	const registry = "docker.io"
+	const repo = "library/hello-world"
 
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*mssql.GetTags]()
-	cmdparser.TestCmd[*Mssql]("--accept-eula --user-database foo")
+	cmdparser.TestCmd[*Mssql](
+		fmt.Sprintf(
+			`--accept-eula --user-database foo --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
+			registry,
+			repo))
 
 	controller := container.NewController()
 	id := config.ContainerId()
@@ -31,15 +38,15 @@ func TestInstallMssql(t *testing.T) {
 }
 
 func TestNegInstallMssql(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*Mssql]()
+	assert.Panics(t, func() {
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*Mssql]()
+	})
 }
 
 func TestNegInstallMssql2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*Mssql]("--accept-eula --repo does/not/exist")
+	assert.Panics(t, func() {
+		cmdparser.TestSetup(t)
+		cmdparser.TestCmd[*Mssql]("--accept-eula --repo does/not/exist")
+	})
 }

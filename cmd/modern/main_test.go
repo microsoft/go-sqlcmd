@@ -27,7 +27,7 @@ func TestInitializeCallback(t *testing.T) {
 
 func TestDisplayHints(t *testing.T) {
 	buf := test.NewMemoryBuffer()
-	defer buf.Close()
+	defer checkErr(buf.Close())
 	outputter = output.New(output.Options{StandardWriter: buf})
 	displayHints([]string{"This is a hint"})
 	assert.Equal(t, pal.LineBreak()+
@@ -37,10 +37,10 @@ func TestDisplayHints(t *testing.T) {
 }
 
 func TestCheckErr(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	rootCmd = cmdparser.New[*Root](dependency.Options{})
-	rootCmd.loggingLevel = 4
-	checkErr(nil)
-	checkErr(errors.New("test error"))
+	assert.Panics(t, func() {
+		rootCmd = cmdparser.New[*Root](dependency.Options{})
+		rootCmd.loggingLevel = 4
+		checkErr(nil)
+		checkErr(errors.New("test error"))
+	})
 }

@@ -9,6 +9,6 @@ func (c *MssqlBase) encryptPasswordFlag(addFlag func(cmdparser.FlagOptions)) {
 	addFlag(cmdparser.FlagOptions{
 		Bool:  &c.encryptPassword,
 		Name:  "encrypt-password",
-		Usage: "Encode the generated password in the sqlconfig file",
+		Usage: "Encrypt the generated password in the sqlconfig file (using DPAPI)",
 	})
 }

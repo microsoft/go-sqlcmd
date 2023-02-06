@@ -17,6 +17,10 @@ func cliCommandSeparator() string {
 	return `; `
 }
 
+func defaultLineBreak() string {
+	return "\r\n"
+}
+
 func username() string {
 	return os.Getenv("USER")
 }

@@ -6,6 +6,7 @@ package file_test
 import (
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/io/folder"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"strings"
@@ -99,4 +100,46 @@ func cleanup(folderName string, filename string) {
 	if file.Exists(filename) {
 		file.Remove(filename)
 	}
+}
+
+func TestCloseFile(t *testing.T) {
+	f := file.OpenFile("test.txt")
+	file.CloseFile(f)
+}
+
+func TestGetContents(t *testing.T) {
+	f := file.OpenFile("test.txt")
+	defer file.CloseFile(f)
+	file.WriteString(f, "test contents")
+	contents := file.GetContents("test.txt")
+	if contents != "test contents" {
+		t.Errorf("Expected contents to be 'test contents', but got '%s'", contents)
+	}
+}
+
+func TestGetContentsBadFileName(t *testing.T) {
+	assert.Panics(t, func() {
+		file.GetContents("badbad.txt")
+	})
+}
+
+func TestOpenFile(t *testing.T) {
+	f := file.OpenFile("test.txt")
+	_, err := os.Stat("test.txt")
+	if err != nil {
+		t.Error("Expected file to be created, but it does not exist")
+	}
+	file.CloseFile(f)
+	file.Remove("test.txt")
+}
+
+func TestWriteString(t *testing.T) {
+	f := file.OpenFile("test.txt")
+	file.WriteString(f, "test contents")
+	contents := file.GetContents("test.txt")
+	if contents != "test contents" {
+		t.Errorf("Expected contents to be 'test contents', but got '%s'", contents)
+	}
+	file.CloseFile(f)
+	file.Remove("test.txt")
 }

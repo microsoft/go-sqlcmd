@@ -160,7 +160,7 @@ func (c *Cmd) Execute() {
 // set, the function initializes a new instance and returns it.
 func (c *Cmd) Output() *output.Output {
 	if c.dependencies.Output == nil {
-		panic("output.New has not been called yet")
+		panic("output.New has not been called yet (call SetCrossCuttingConcerns first?)")
 	}
 	return c.dependencies.Output
 }
@@ -235,10 +235,16 @@ func (c *Cmd) addSubCommands(commands []Command) {
 func (c *Cmd) generateExamples() string {
 	var sb strings.Builder
 
-	for _, e := range c.options.Examples {
+	for i, e := range c.options.Examples {
 		sb.WriteString(fmt.Sprintf("# %v%v", e.Description, pal.LineBreak()))
-		for _, s := range e.Steps {
-			sb.WriteString(fmt.Sprintf("  %v%v", s, pal.LineBreak()))
+		for ii, s := range e.Steps {
+			sb.WriteString(fmt.Sprintf("  - %v", s))
+			if ii != len(e.Steps)-1 {
+				sb.WriteString(pal.LineBreak())
+			}
+		}
+		if i != len(c.options.Examples)-1 {
+			sb.WriteString(pal.LineBreak())
 		}
 	}
 

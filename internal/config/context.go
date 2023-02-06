@@ -18,7 +18,11 @@ func AddContext(context Context) {
 	if !EndpointExists(context.Endpoint) {
 		panic("Endpoint doesn't exist")
 	}
-	context.Name = FindUniqueContextName(context.Name, *context.User)
+	username := ""
+	if context.User != nil {
+		username = *context.User
+	}
+	context.Name = FindUniqueContextName(context.Name, username)
 	config.Contexts = append(config.Contexts, context)
 	Save()
 }
@@ -137,8 +141,8 @@ func GetCurrentContextOrFatal() (currentContextName string) {
 	currentContextName = CurrentContextName()
 	if currentContextName == "" {
 		checkErr(errors.New(
-			"no current context. To create a context use `sqlcmd install`, " +
-				"e.g. `sqlcmd install mssql`"))
+			"no current context. To create a context use `sqlcmd create`, " +
+				"e.g. `sqlcmd create mssql`"))
 	}
 	return
 }

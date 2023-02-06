@@ -14,6 +14,7 @@ import (
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/go-connections/nat"
 	"io"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -49,8 +50,7 @@ func (c Controller) EnsureImage(image string) (err error) {
 	reader, err = c.cli.ImagePull(context.Background(), image, types.ImagePullOptions{})
 	if reader != nil {
 		defer func() {
-			err := reader.Close()
-			checkErr(err)
+			checkErr(reader.Close())
 		}()
 
 		scanner := bufio.NewScanner(reader)
@@ -65,7 +65,15 @@ func (c Controller) EnsureImage(image string) (err error) {
 // ContainerRun creates a new container using the provided image and env values
 // and binds it to the specified port number. It then starts the container and returns
 // the ID of the container.
-func (c Controller) ContainerRun(image string, env []string, port int, command []string, unitTestFailure bool) string {
+func (c Controller) ContainerRun(
+	image string,
+	env []string,
+	port int,
+	name string,
+	hostname string,
+	command []string,
+	unitTestFailure bool,
+) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
 			nat.Port("1433/tcp"): []nat.PortBinding{
@@ -78,10 +86,12 @@ func (c Controller) ContainerRun(image string, env []string, port int, command [
 	}
 
 	resp, err := c.cli.ContainerCreate(context.Background(), &container.Config{
-		Tty:   true,
-		Image: image,
-		Cmd:   command,
-		Env:   env,
+		Tty:        true,
+		Image:      image,
+		Cmd:        command,
+		Env:        env,
+		Hostname:   hostname,
+		Domainname: name,
 	}, hostConfig, nil, nil, "")
 	checkErr(err)
 
@@ -152,6 +162,17 @@ func (c Controller) ContainerStop(id string) (err error) {
 	return
 }
 
+// ContainerStart starts the container with the given ID. The function returns
+// an error if there is an issue starting the container.
+func (c Controller) ContainerStart(id string) (err error) {
+	if id == "" {
+		panic("Must pass in non-empty id")
+	}
+
+	err = c.cli.ContainerStart(context.Background(), id, types.ContainerStartOptions{})
+	return
+}
+
 // ContainerFiles returns a list of files matching a specified pattern within
 // a given container. It takes an id argument, which specifies the ID of the
 // container to search, and a filespec argument, which is a string pattern used
@@ -201,6 +222,84 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	checkErr(err)
 
 	return strings.Split(string(stdout), "\n")
+}
+
+func (c Controller) DownloadFile(id string, src string, dest string) {
+	if id == "" {
+		panic("Must pass in non-empty id")
+	}
+	if src == "" {
+		panic("Must pass in non-empty src")
+	}
+	if dest == "" {
+		panic("Must pass in non-empty dest")
+	}
+
+	cmd := []string{"mkdir", "/var/opt/mssql/backup"}
+	c.runCmdInContainer(id, cmd)
+
+	_, file := filepath.Split(src)
+
+	// Wget the .bak file from the http src, and place it in /var/opt/mssql/backup
+	cmd = []string{
+		"wget",
+		"-O",
+		"/var/opt/mssql/backup/" + file, // not using filepath.Join here, this is in the *nix container. always /
+		src,
+	}
+
+	c.runCmdInContainer(id, cmd)
+}
+
+func (c Controller) runCmdInContainer(id string, cmd []string) []byte {
+	response, err := c.cli.ContainerExecCreate(
+		context.Background(),
+		id,
+		types.ExecConfig{
+			AttachStderr: false,
+			AttachStdout: true,
+			Cmd:          cmd,
+		},
+	)
+	checkErr(err)
+
+	r, err := c.cli.ContainerExecAttach(
+		context.Background(),
+		response.ID,
+		types.ExecStartCheck{},
+	)
+	checkErr(err)
+	defer r.Close()
+
+	// read the output
+	var outBuf, errBuf bytes.Buffer
+	outputDone := make(chan error)
+
+	go func() {
+		// StdCopy de-multiplexes the stream into two buffers
+		_, err = stdcopy.StdCopy(&outBuf, &errBuf, r.Reader)
+		outputDone <- err
+	}()
+
+	err = <-outputDone
+	checkErr(err)
+	stdout, err := io.ReadAll(&outBuf)
+	checkErr(err)
+	return stdout
+}
+
+// ContainerRunning returns true if the container with the given ID is running.
+// It returns false if the container is not running or if there is an issue
+// getting the container's status.
+func (c Controller) ContainerRunning(id string) (running bool) {
+	if id == "" {
+		panic("Must pass in non-empty id")
+	}
+
+	resp, err := c.cli.ContainerInspect(context.Background(), id)
+	checkErr(err)
+	running = resp.State.Running
+	return
 }
 
 // ContainerExists checks if a container with the given ID exists in the system.
