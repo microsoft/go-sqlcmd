@@ -33,7 +33,7 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 
 	commandOptions := cmdparser.CommandOptions{
 		Use:         "sqlcmd",
-		Short:       "sqlcmd: command-line interface for the #SQLFamily",
+		Short:       "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
 		SubCommands: c.SubCommands(),
 		Examples:    examples,
 	}

@@ -86,6 +86,7 @@ func (c *AddContext) run() {
 	config.SetCurrentContextName(context.Name)
 	output.InfofWithHintExamples([][]string{
 		{"To start interactive query session", "sqlcmd query"},
+		{"To start interactive query session", "sqlcmd query"},
 		{"To run a query", "sqlcmd query \"SELECT @@version\""},
 	}, "Current Context '%v'", context.Name)
 }
