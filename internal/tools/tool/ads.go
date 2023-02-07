@@ -1,14 +1,9 @@
 package tool
 
 import (
-	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
-	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"regexp"
-	"strings"
 )
 
 type Ads struct {
@@ -64,65 +59,6 @@ More information can be found here:
 		}})
 }
 
-// Run for ADS deals with the special case of launching from WSL, which
-// requires staging the files from WSL to Windows %temp%
 func (t *Ads) Run(args []string) (int, error, string, string) {
-	if file.Exists(filepath.Join("/", "proc", "version")) {
-		version := file.GetContents(filepath.Join("/", "proc", "version"))
-		reWsl, _ := regexp.Compile(".*microsoft-standard.*")
-
-		// Are we in WSL?
-		if reWsl.MatchString(version) {
-			// Get the Windows %TEMP% dir as a WSL path:
-			//   1. Use cmd.exe to get the Windows %TEMP%, and prefix it with /mnt  (i.e. /mnt/C:\Users\username\AppData\Local\Temp)
-			//   2. Replace \\ with / (i.e. /mnt/C:/Users/username/AppData/Local/Temp)
-			//   3. Finally, replace the : with '' (i.e. /mnt/C/Users/username/AppData/Local/Temp)
-			//   4. Convert the path to lower (because that is what wsl needs)
-
-			out, err := exec.Command("cmd.exe", "/c echo %temp%").Output()
-			if err != nil {
-				panic(err)
-			}
-
-			// Make it Linux style
-			// TODO: Why on earth do I have to remove the last 3 chars!!
-			linuxPath := strings.ReplaceAll(string(out)[:len(string(out))-3], "\\", "/")
-			linuxPath = strings.ReplaceAll(linuxPath, "C:", "/mnt/C")
-			linuxPath = strings.ToLower(linuxPath)
-			fmt.Println(linuxPath)
-
-			currentFolder := filepath.Base(folder.Getwd())
-
-			src := args[0]
-			dest := filepath.Join(linuxPath, currentFolder)
-
-			folder.MkdirAll(dest)
-
-			// Copy the book/testresults from Linux (WSL) to Windows %temp%
-			fmt.Printf("NOTE: Staging files from WSL ('%v') to Windows ('%v').\n", src, dest)
-
-			// /mnt/c/Windows/System32/cmd.exe
-			f := file.OpenFile(filepath.Join(dest, "run.cmd"))
-			file.WriteString(
-				f,
-				t.ExeName()+` & exit`,
-			)
-			file.CloseFile(f)
-
-			cmd := exec.Command(
-				"cmd.exe",
-				`/c start %temp%\`+currentFolder+`\run.cmd`,
-			)
-
-			out, err = cmd.Output()
-
-			return cmd.ProcessState.ExitCode(), err, string(out), ""
-
-		} else {
-			panic("This is not Windows, nor is it WSL, can't open ADS")
-		}
-
-	} else {
-		return t.Base.Run(args)
-	}
+	return t.Base.Run(args)
 }

@@ -1,7 +1,6 @@
 package tool
 
 import (
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"os"
 	"testing"
@@ -71,25 +70,4 @@ func (m *MockFolder) Getwd() string {
 
 func (m *MockFolder) MkdirAll(path string) {
 	m.Called(path)
-}
-
-func TestRun_WSL(t *testing.T) {
-	versionContents := "microsoft-standard\n"
-	file := new(MockFile)
-	file.On("Exists", "/proc/version").Return(true)
-	file.On("GetContents", "/proc/version").Return(versionContents)
-	file.On("OpenFile", mock.Anything).Return(&os.File{})
-	folder := new(MockFolder)
-	folder.On("Getwd").Return("/user/folder")
-
-	args := []string{"src"}
-	ads := Ads{}
-	ads.Init()
-	ads.IsInstalled()
-	exitCode, err, output, output2 := ads.Run(args)
-
-	assert.Equal(t, 0, exitCode)
-	assert.Nil(t, err)
-	assert.NotEmpty(t, output)
-	assert.Empty(t, output2)
 }

@@ -180,7 +180,8 @@ func TestController_ContainerStartNeg(t *testing.T) {
 	assert.Panics(t, func() {
 
 		c := NewController()
-		c.ContainerStart("")
+		err := c.ContainerStart("")
+		checkErr(err)
 	})
 }
 
