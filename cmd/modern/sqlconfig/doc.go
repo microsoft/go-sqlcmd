@@ -28,23 +28,23 @@ An example of the sqlconfig file looks like this:
 	- asset:
 		- container:
 			id: 0e698e65e19d9c
-			image: mcr.microsoft.com/mssql/server:2022-latest
+			image: mcr.microsoft.com/sql/server:2022-latest
 	  endpoint:
 		address: localhost
 		port: 1435
-	  name: mssql
+	  name: sql
 	contexts:
 	- context:
-		endpoint: mssql
-		user: your-alias@mssql
-	  name: mssql
-	currentcontext: mssql
+		endpoint: sql
+		user: your-alias@sql
+	  name: sql
+	currentcontext: sql
 	kind: Config
 	users:
 	- user:
 		username: your-alias
 		password: REDACTED
-	  name: your-alias@mssql
+	  name: your-alias@sql
 
 # Security
 

@@ -69,7 +69,7 @@ func (c *Start) run() {
 			id, c.errorLogEntryToWaitFor)
 	} else {
 		output.FatalfWithHintExamples([][]string{
-			{"Create new context with a mssql container ", "sqlcmd create mssql"},
+			{"Create new context with a sql container ", "sqlcmd create mssql"},
 		}, "Current context does not have a container")
 	}
 }

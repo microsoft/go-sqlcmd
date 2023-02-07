@@ -54,7 +54,6 @@ func (c *Ads) run() {
 	if user != nil && user.AuthenticationType == "basic" {
 		c.persistCredentialForAds(hostname, endpoint, user)
 		c.launchAds(hostname, endpoint.EndpointDetails.Port, user.BasicAuth.Username)
-		c.cleanupCredentialForAds()
 	} else {
 		c.launchAds(hostname, endpoint.EndpointDetails.Port, "")
 	}

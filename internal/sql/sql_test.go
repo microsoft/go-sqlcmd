@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-package mssql
+package sql
 
 import (
 	"fmt"
@@ -87,8 +87,8 @@ func TestConnect(t *testing.T) {
 			}
 
 			mssql := New(false)
-			s := mssql.Connect(tt.args.endpoint, tt.args.user, tt.args.console)
-			mssql.Query(s, "SELECT @@version")
+			mssql.Connect(tt.args.endpoint, tt.args.user, false)
+			mssql.Query("SELECT @@version")
 		})
 	}
 }

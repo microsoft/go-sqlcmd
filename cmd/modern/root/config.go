@@ -18,7 +18,7 @@ type Config struct {
 func (c *Config) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:         "config",
-		Short:       `Modify sqlconfig files using subcommands like "sqlcmd config use-context mssql"`,
+		Short:       `Modify sqlconfig files using subcommands like "sqlcmd config use-context sql"`,
 		SubCommands: c.SubCommands(),
 	}
 	c.Cmd.DefineCommand(options)

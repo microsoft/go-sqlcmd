@@ -235,16 +235,16 @@ func (c Controller) DownloadFile(id string, src string, dest string) {
 		panic("Must pass in non-empty dest")
 	}
 
-	cmd := []string{"mkdir", "/var/opt/mssql/backup"}
+	cmd := []string{"mkdir", "/var/opt/sql/backup"}
 	c.runCmdInContainer(id, cmd)
 
 	_, file := filepath.Split(src)
 
-	// Wget the .bak file from the http src, and place it in /var/opt/mssql/backup
+	// Wget the .bak file from the http src, and place it in /var/opt/sql/backup
 	cmd = []string{
 		"wget",
 		"-O",
-		"/var/opt/mssql/backup/" + file, // not using filepath.Join here, this is in the *nix container. always /
+		"/var/opt/sql/backup/" + file, // not using filepath.Join here, this is in the *nix container. always /
 		src,
 	}
 

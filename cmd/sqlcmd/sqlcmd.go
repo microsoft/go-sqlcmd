@@ -45,7 +45,7 @@ type SQLCmdArguments struct {
 	WorkstationName             string            `short:"H" help:"This option sets the sqlcmd scripting variable SQLCMDWORKSTATION. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions."`
 	ApplicationIntent           string            `short:"K" default:"default" enum:"default,ReadOnly" help:"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If -K is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group."`
 	EncryptConnection           string            `short:"N" default:"default" enum:"default,false,true,disable" help:"This switch is used by the client to request an encrypted connection."`
-	DriverLoggingLevel          int               `help:"Level of mssql driver messages to print."`
+	DriverLoggingLevel          int               `help:"Level of sql driver messages to print."`
 	ExitOnError                 bool              `short:"b" help:"Specifies that sqlcmd exits and returns a DOS ERRORLEVEL value when an error occurs."`
 	ErrorSeverityLevel          uint8             `short:"V" help:"Controls the severity level that is used to set the ERRORLEVEL variable on exit."`
 	ErrorLevel                  int               `short:"m" help:"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent."`

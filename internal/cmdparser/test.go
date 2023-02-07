@@ -61,31 +61,26 @@ func testCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...strin
 	if len(args) > 1 {
 		panic("Only provide one string of args, they will be split on space/quoted values (with spaces)")
 	} else if len(args) == 1 {
-
-		// This code uses a regular expression that matches either a quoted string
-		// or a non-whitespace sequence of characters. The regexp.FindAllStringSubmatch
-		// function then extracts all the matches from the input string and returns
-		// them as a slice of string slices, where each inner slice contains the matched
-		// string and any capture groups. In this case, the capture group is the
-		// quoted string itself, which is what we want to extract.
-		//
-		// The code then iterates through the slice of string slices and appends the
-		// quoted string or the non-quoted string to the fields slice, depending on
-		// which type of match was found.
-		re := regexp.MustCompile(`"([^"]+)"|([^\s]+)`)
-		matches := re.FindAllStringSubmatch(args[0], -1)
-		var fields []string
-		for _, field := range matches {
-			if field[1] != "" {
-				fields = append(fields, field[1])
-			} else {
-				fields = append(fields, field[2])
-			}
-		}
-		c.SetArgsForUnitTesting(fields)
+		c.SetArgsForUnitTesting(splitStringIntoArgsSlice(args[0]))
 	} else {
 		c.SetArgsForUnitTesting([]string{})
 	}
 	err := c.Command().Execute()
 	return err
+}
+
+// splitStringIntoArgsSlice uses a regular expression that matches either a
+// quoted string or a non-whitespace sequence of characters. All the matches
+// from the input string are extracted and returned a slice of strings
+func splitStringIntoArgsSlice(argsAsString string) (args []string) {
+	re := regexp.MustCompile(`"([^"]+)"|([^\s]+)`)
+	matches := re.FindAllStringSubmatch(argsAsString, -1)
+	for _, field := range matches {
+		if field[1] != "" {
+			args = append(args, field[1]) // quoted string
+		} else {
+			args = append(args, field[2]) // non-whitespace sequence
+		}
+	}
+	return args
 }

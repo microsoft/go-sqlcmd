@@ -27,7 +27,7 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	examples := []cmdparser.ExampleOptions{{
 		Description: "Install/Create, Query, Uninstall SQL Server",
 		Steps: []string{
-			"sqlcmd create mssql --attach-db https://aka.ms/AdventureWorksLT.bak",
+			"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak",
 			"sqlcmd open ads",
 			`sqlcmd query "SELECT @version"`,
 			"sqlcmd delete"}}}

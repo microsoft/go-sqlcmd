@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-package mssql
+package sql
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"os"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
@@ -15,14 +16,20 @@ import (
 // and user details. The console parameter is used to output messages during
 // the connection process. The function returns a Sqlcmd instance that can
 // be used to run SQL commands on the server.
-func (m *MssqlType) Connect(
+func (m *SqlType) Connect(
 	endpoint sqlconfig.Endpoint,
 	user *sqlconfig.User,
-	console sqlcmd.Console,
-) *sqlcmd.Sqlcmd {
+	interactive bool,
+) {
 	v := sqlcmd.InitializeVariables(true)
-	s := sqlcmd.New(console, "", v)
-	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
+	if interactive {
+		m.console = console.NewConsole("")
+		defer m.console.Close()
+	} else {
+		m.console = nil
+	}
+	m.sqlcmd = sqlcmd.New(m.console, "", v)
+	m.sqlcmd.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
 	connect := sqlcmd.ConnectSettings{
 		ServerName: fmt.Sprintf(
 			"%s,%d",
@@ -47,9 +54,8 @@ func (m *MssqlType) Connect(
 	}
 
 	trace("Connecting to server %v", connect.ServerName)
-	err := s.ConnectDb(&connect, true)
+	err := m.sqlcmd.ConnectDb(&connect, true)
 	checkErr(err)
-	return s
 }
 
 // Query is helper function that allows running a given SQL query on a
@@ -58,10 +64,15 @@ func (m *MssqlType) Connect(
 // the sqlcmd.Sqlcmd object. It sets the standard output and standard error
 // to be the same as the current process, and returns the error if any occurred
 // during the execution of the query.
-func (m *MssqlType) Query(s *sqlcmd.Sqlcmd, text string) {
-	s.Query = text
-	s.SetOutput(os.Stdout)
-	s.SetError(os.Stderr)
-	err := s.Run(true, false)
-	checkErr(err)
+func (m *SqlType) Query(text string) {
+	if m.console == nil {
+		m.sqlcmd.Query = text
+		m.sqlcmd.SetOutput(os.Stdout)
+		m.sqlcmd.SetError(os.Stderr)
+		err := m.sqlcmd.Run(true, false)
+		checkErr(err)
+	} else {
+		err := m.sqlcmd.Run(false, true)
+		checkErr(err)
+	}
 }

@@ -10,11 +10,10 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/http"
-	"github.com/microsoft/go-sqlcmd/internal/mssql"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
-	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
+	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"github.com/spf13/viper"
 	"net/url"
 	"path/filepath"
@@ -52,9 +51,9 @@ type MssqlBase struct {
 
 	attachDatabaseUrl string
 
-	sqlcmdPkg *sqlcmd.Sqlcmd
-
 	unitTesting bool
+
+	sql sql.Sql
 }
 
 func (c *MssqlBase) AddFlags(
@@ -190,8 +189,8 @@ func (c *MssqlBase) AddFlags(
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.attachDatabaseUrl,
 		DefaultString: "",
-		Name:          "attach-db",
-		Usage:         "Download (into container) and attach database backup (.bak) from a URL",
+		Name:          "using",
+		Usage:         "Download (into container) and attach database (.bak) from URL",
 	})
 }
 
@@ -285,7 +284,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	userName := pal.UserName()
 	password := c.generatePassword()
 
-	// Save the config now, so user can uninstall/delete, even if mssql in the container
+	// Save the config now, so user can uninstall/delete, even if sql in the container
 	// fails to start
 	config.AddContextWithContainer(
 		contextName,
@@ -315,14 +314,13 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	endpoint, _ := config.CurrentContext()
 
 	// Connect to the instance as `sa` so we can create a new user
-	var sql mssql.MssqlInterface
 	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
-		sql = mssql.New(true)
+		c.sql = sql.New(true)
 	} else {
-		sql = mssql.New(false)
+		c.sql = sql.New(false)
 	}
 
-	c.sqlcmdPkg = sql.Connect(
+	c.sql.Connect(
 		endpoint,
 		&sqlconfig.User{
 			AuthenticationType: "basic",
@@ -332,9 +330,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				Password:          secret.Encode(saPassword, c.encryptPassword),
 			},
 			Name: "sa",
-		},
-		nil,
-	)
+		}, false)
 
 	// Download and restore DB if asked
 	defaultDbAlreadyCreated := false
@@ -373,14 +369,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 }
 
 func (c *MssqlBase) query(commandText string) {
-	var sql mssql.MssqlInterface
-	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
-		sql = mssql.New(true)
-	} else {
-		sql = mssql.New(false)
-	}
-
-	sql.Query(c.sqlcmdPkg, commandText)
+	c.sql.Query(commandText)
 }
 
 // createNonSaUser creates a user (non-sa) and assigns the sysadmin role
@@ -447,7 +436,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	controller.DownloadFile(
 		containerId,
 		c.attachDatabaseUrl,
-		"/var/opt/mssql/backup",
+		"/var/opt/sql/backup",
 	)
 
 	// Restore database from file
@@ -486,9 +475,9 @@ DECLARE @fileListTable TABLE (
 )
 
 INSERT INTO @fileListTable
-EXEC('RESTORE FILELISTONLY FROM DISK = ''/var/opt/mssql/backup/%s''')
-SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''/var/opt/mssql/backup/%s'' WITH '
-SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
+EXEC('RESTORE FILELISTONLY FROM DISK = ''/var/opt/sql/backup/%s''')
+SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''/var/opt/sql/backup/%s'' WITH '
+SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/sql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
 FROM @fileListTable
 WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
@@ -510,10 +499,10 @@ func (c *MssqlBase) downloadImage(imageName string, output *output.Output, contr
 		output.FatalfErrorWithHints(
 			err,
 			[]string{
-				"Is a container runtime installed on this machine (e.g. Podman or Docker)?" + sqlcmd.SqlcmdEol +
-					"\tIf not, download desktop engine from:" + sqlcmd.SqlcmdEol +
-					"\t\thttps://podman-desktop.io/" + sqlcmd.SqlcmdEol +
-					"\t\tor" + sqlcmd.SqlcmdEol +
+				"Is a container runtime installed on this machine (e.g. Podman or Docker)?" + pal.LineBreak() +
+					"\tIf not, download desktop engine from:" + pal.LineBreak() +
+					"\t\thttps://podman-desktop.io/" + pal.LineBreak() +
+					"\t\tor" + pal.LineBreak() +
 					"\t\thttps://docs.docker.com/get-docker/",
 				"Is a container runtime running. Try `podman ps` or `docker ps` (list containers), does it return without error?",
 				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with: `podman|docker pull %s`", imageName)},

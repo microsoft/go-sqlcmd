@@ -38,7 +38,7 @@ type ConnectSettings struct {
 	WorkstationName string
 	// ApplicationIntent can only be empty or "ReadOnly"
 	ApplicationIntent string
-	// LogLevel is the mssql driver log level
+	// LogLevel is the sql driver log level
 	LogLevel int
 	// ExitOnError specifies whether to exit the app on an error
 	ExitOnError bool
@@ -79,7 +79,7 @@ func (connect ConnectSettings) RequiresPassword() bool {
 	return requiresPassword
 }
 
-// ConnectionString returns the go-mssql connection string to use for queries
+// ConnectionString returns the go-sql connection string to use for queries
 func (connect ConnectSettings) ConnectionString() (connectionString string, err error) {
 	serverName, instance, port, err := splitServer(connect.ServerName)
 	if serverName == "" {

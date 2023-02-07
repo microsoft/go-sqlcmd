@@ -42,12 +42,6 @@ func (c *Ads) persistCredentialForAds(
 	c.writeCredential()
 }
 
-// cleanupCredentialForAds removes the stored credential for the current Ads instance
-func (c *Ads) cleanupCredentialForAds() {
-	err := credman.DeleteCredential(&c.credential, credman.CredTypeGeneric)
-	c.CheckErr(err)
-}
-
 // adsKey returns the credential target name for the given instance, database,
 // authentication type, and user.
 func (c *Ads) adsKey(instance, database, authType, user string) string {

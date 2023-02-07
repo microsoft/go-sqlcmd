@@ -27,8 +27,8 @@ func (t *Ads) Init() {
 	//   System non-Insiders install
 	searchLocations := []string{
 		filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Data Studio - Insiders\\azuredatastudio-insiders.exe"),
-		filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Data Studio\\azuredatastudio.exe"),
 		filepath.Join(programFiles, "Azure Data Studio - Insiders\\azuredatastudio-insiders.exe"),
+		filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Data Studio\\azuredatastudio.exe"),
 		filepath.Join(programFiles, "Azure Data Studio\\azuredatastudio.exe"),
 	}
 

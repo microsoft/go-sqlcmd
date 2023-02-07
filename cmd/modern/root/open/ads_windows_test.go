@@ -53,22 +53,6 @@ func TestPersistCredentialForAds(t *testing.T) {
 	)
 }
 
-func TestCleanupCredentialForAds(t *testing.T) {
-	ads := Ads{}
-	ads.SetCrossCuttingConcerns(dependency.Options{
-		EndOfLine: "",
-		Output:    output.New(output.Options{}),
-	})
-
-	ads.credential = credman.Credential{
-		TargetName: "TestTargetName",
-		Persist:    credman.PersistSession,
-	}
-
-	ads.writeCredential()
-	ads.cleanupCredentialForAds()
-}
-
 func TestRemovePreviousCredential(t *testing.T) {
 	ads := Ads{}
 	ads.SetCrossCuttingConcerns(dependency.Options{

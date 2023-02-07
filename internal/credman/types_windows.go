@@ -24,7 +24,6 @@ type Credential struct {
 
 // CredentialPersistence describes one of three persistence modes of a credential.
 // A detailed description of the available modes can be found on
-// Docs: https://docs.microsoft.com/en-us/windows/desktop/api/wincred/ns-wincred-_credentialw
 type CredentialPersistence uint32
 
 const (
@@ -45,7 +44,6 @@ type proc interface {
 	Call(a ...uintptr) (r1, r2 uintptr, lastErr error)
 }
 
-// https://docs.microsoft.com/en-us/windows/desktop/api/wincred/ns-wincred-_credentialw
 type CREDENTIAL struct {
 	Flags              uint32
 	Type               uint32

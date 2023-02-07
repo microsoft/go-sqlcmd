@@ -54,7 +54,7 @@ type Console interface {
 
 // Sqlcmd is the core processor for text lines.
 //
-// It accumulates non-command lines in a buffer and  and sends command lines to the appropriate command runner.
+// It accumulates non-command lines in a buffer and sends command lines to the appropriate command runner.
 // When the batch delimiter is encountered it sends the current batch to the active connection and prints
 // the results to the output writer
 type Sqlcmd struct {
