@@ -204,7 +204,7 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 	case mssql.Error:
 		if print = f.vars.ErrorLevel() <= 0 || e.Class >= uint8(f.vars.ErrorLevel()); print {
 			b.WriteString(fmt.Sprintf("Msg %d, Level %d, State %d, Server %s, Line %d%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
-			msg = strings.TrimPrefix(msg, "sql: ")
+			msg = strings.TrimPrefix(msg, "mssql: ")
 		}
 	}
 	if print {
@@ -489,7 +489,7 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 				}
 			case fmt.Stringer:
 				row[n] = x.String()
-			// not sure why go-sql reports bit as bool
+			// not sure why go-mssql reports bit as bool
 			case bool:
 				if x {
 					row[n] = "1"

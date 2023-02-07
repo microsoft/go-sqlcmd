@@ -10,7 +10,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 )
 
-// Mssql implements the `sqlcmd install sql` command and sub-commands
+// Mssql implements the `sqlcmd install mssql` command and sub-commands
 type Mssql struct {
 	cmdparser.Cmd
 	MssqlBase

@@ -15,7 +15,7 @@ type GetTags struct {
 func (c *GetTags) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "get-tags",
-		Short: "Get tags available for sql install",
+		Short: "Get tags available for mssql install",
 		Examples: []cmdparser.ExampleOptions{
 			{
 				Description: "List tags",

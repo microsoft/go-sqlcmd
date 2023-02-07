@@ -284,7 +284,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	userName := pal.UserName()
 	password := c.generatePassword()
 
-	// Save the config now, so user can uninstall/delete, even if sql in the container
+	// Save the config now, so user can uninstall/delete, even if mssql in the container
 	// fails to start
 	config.AddContextWithContainer(
 		contextName,

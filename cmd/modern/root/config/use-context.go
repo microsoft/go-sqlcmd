@@ -20,8 +20,8 @@ func (c *UseContext) DefineCommand(...cmdparser.CommandOptions) {
 		Use:   "use-context",
 		Short: "Set the current context",
 		Examples: []cmdparser.ExampleOptions{{
-			Description: "Set the sql context (endpoint/user) to be the current context",
-			Steps:       []string{"sqlcmd config use-context sql"}}},
+			Description: "Set the mssql context (endpoint/user) to be the current context",
+			Steps:       []string{"sqlcmd config use-context mssql"}}},
 		Aliases: []string{"use", "change-context", "set-context"},
 		Run:     c.run,
 

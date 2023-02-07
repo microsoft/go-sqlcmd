@@ -7,7 +7,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
-	//"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 )
 
 // Query defines the `sqlcmd query` command

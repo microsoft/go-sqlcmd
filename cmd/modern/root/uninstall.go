@@ -24,12 +24,12 @@ type Uninstall struct {
 // systemDatabases are the list of non-user databases, used to do a safety check
 // when doing a delete/drop/uninstall
 var systemDatabases = [...]string{
-	"/var/opt/sql/data/msdbdata.mdf",
-	"/var/opt/sql/data/tempdb.mdf",
-	"/var/opt/sql/data/model.mdf",
-	"/var/opt/sql/data/model_msdbdata.mdf",
-	"/var/opt/sql/data/model_replicatedmaster.mdf",
-	"/var/opt/sql/data/master.mdf",
+	"/var/opt/mssql/data/msdbdata.mdf",
+	"/var/opt/mssql/data/tempdb.mdf",
+	"/var/opt/mssql/data/model.mdf",
+	"/var/opt/mssql/data/model_msdbdata.mdf",
+	"/var/opt/mssql/data/model_replicatedmaster.mdf",
+	"/var/opt/mssql/data/master.mdf",
 }
 
 func (c *Uninstall) DefineCommand(...cmdparser.CommandOptions) {
