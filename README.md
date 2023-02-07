@@ -34,6 +34,28 @@ We will be implementing command line switches and behaviors over time. Several s
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `-F vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
 
+```
+
+1> select session_id, client_interface_name, program_name from sys.dm_exec_sessions where session_id=@@spid
+2> go
+session_id            58
+client_interface_name go-mssqldb
+program_name          sqlcmd
+
+```
+- Sqlcmd now supports shared memory and named pipe transport. Use the appropriate protocol prefix on the server name to force a protocol
+  * `lpc` for shared memory, only for a localhost.                           `sqlcmd -S lpc:.`
+  * `np` for named pipes. Or use the UNC named pipe path as the server name: `sqlcmd -S \\myserver\pipe\sql\query`
+  * `tcp` for tcp                                                            `sqlcmd -S tcp:myserver,1234`
+  If no protocol is specified, sqlcmd will attempt to dial in this order: lpc->np->tcp. If dialing a remote host, `lpc` will be skipped.
+
+```
+1> select net_transport from sys.dm_exec_connections where session_id=@@spid
+2> go
+net_transport Named pipe
+
+```
+
 ### Azure Active Directory Authentication
 
 This version of sqlcmd supports a broader range of AAD authentication models, based on the [azidentity package](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity). The implementation relies on an AAD Connector in the [driver](https://github.com/microsoft/go-mssqldb).
@@ -105,18 +127,13 @@ pkg/sqlcmd is consumable by other hosts. Go docs for the package are forthcoming
 
 ## Building
 
-To add version data to your build using `go-winres`, add `GOBIN` to your `PATH` then use `go generate`
-The version on the binary will match the version tag of the branch.
 
 ```sh
 
-go install github.com/tc-hib/go-winres@latest
-cd cmd/modern
-go generate
+build/build
 
 ```
 
-Scripts to build the binaries and package them for release will be added in a build folder off the root. We will also add Azure Devops pipeline yml files there to initiate builds and releases. Until then just use `go build ./cmd/sqlcmd` to create a sqlcmd binary.
 
 ## Testing
 

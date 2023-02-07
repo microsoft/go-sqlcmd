@@ -52,7 +52,7 @@ func (e *ArgumentError) IsSqlcmdErr() bool {
 // InvalidServerName indicates the SQLCMDSERVER variable has an incorrect format
 var InvalidServerName = ArgumentError{
 	Parameter: "server",
-	Rule:      "server must be of the form [tcp]:server[[/instance]|[,port]]",
+	Rule:      "server must be of the form [[np]|[lpc][tcp]]:server[[/instance]|[,port]]",
 }
 
 // VariableError is an error about scripting variables
