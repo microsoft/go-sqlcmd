@@ -24,16 +24,18 @@
             "type" : "go",
             "request": "launch",
             "mode" : "auto",
-            "program": "${workspaceFolder}/cmd/sqlcmd",
-            "args" : ["-Q", "EXIT(select 100 as Count)"],
+            "program": "${workspaceFolder}/cmd/modern",
+            "args":["testCommand","GO"]
+            // "args" : ["select @@version","GO"],
+            // "args":["-i","..\\sqlcmd\\testdata\\select100.sql"]            
         },
         {
             "name" : "Run file query",
             "type" : "go",
             "request": "launch",
             "mode" : "auto",
-            "program": "${workspaceFolder}/cmd/sqlcmd",
-            "args" : ["-i", "testdata\\select100.sql"],
+            "program": "${workspaceFolder}",
+            "args" : ["-i", "EXIT(select 100 as Count)", "-b"],
         },
     ]
 }
