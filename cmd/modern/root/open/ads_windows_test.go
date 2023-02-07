@@ -1,12 +1,12 @@
 package open
 
 import (
-	"github.com/alecthomas/assert/v2"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/credman"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 

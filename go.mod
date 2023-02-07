@@ -3,7 +3,6 @@ module github.com/microsoft/go-sqlcmd
 go 1.18
 
 require (
-	github.com/alecthomas/assert/v2 v2.1.0
 	github.com/alecthomas/kong v0.6.2-0.20220922001058-c62bf25854a0
 	github.com/billgraziano/dpapi v0.4.0
 	github.com/docker/distribution v2.8.1+incompatible
@@ -29,7 +28,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.0.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.5.1 // indirect
 	github.com/Microsoft/go-winio v0.6.0 // indirect
-	github.com/alecthomas/repr v0.1.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
@@ -42,7 +40,6 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/hexops/gotextdiff v1.0.3 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
