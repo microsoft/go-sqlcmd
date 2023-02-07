@@ -10,7 +10,7 @@ import (
 )
 
 func TestInitialize(t *testing.T) {
-	output := output.New(output.Options{HintHandler: func(hints []string) {
+	o := output.New(output.Options{HintHandler: func(hints []string) {
 
 	}, ErrorHandler: func(err error) {
 
@@ -22,7 +22,7 @@ func TestInitialize(t *testing.T) {
 			}
 		},
 		HintHandler:  func(strings []string) {},
-		TraceHandler: output.Tracef,
+		TraceHandler: o.Tracef,
 		LineBreak:    "\n",
 	}
 	Initialize(options)

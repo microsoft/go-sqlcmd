@@ -3,9 +3,9 @@ package tool
 import (
 	"bytes"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"os/exec"
 	"runtime"
+	"strings"
 )
 
 type Base struct {
@@ -15,7 +15,7 @@ type Base struct {
 	lookPathError     error
 	exeName           string
 	exeFullPath       string
-	toolYaml          ToolDescription
+	toolDescription   Description
 }
 
 func (t *Base) Init() {
@@ -42,8 +42,8 @@ func (t *Base) SetExeName(exeName string) {
 	t.exeName = exeName
 }
 
-func (t *Base) SetToolYaml(toolYaml ToolDescription) {
-	t.toolYaml = toolYaml
+func (t *Base) SetToolDescription(toolYaml Description) {
+	t.toolDescription = toolYaml
 }
 
 func (t *Base) Where() string {
@@ -70,33 +70,32 @@ func (t *Base) IsInstalled() bool {
 	return t.installed
 }
 
-func (t *Base) HowToInstall() {
+func (t *Base) HowToInstall() string {
 	var text string
 	switch runtime.GOOS {
 	case "windows":
-		text = t.toolYaml.InstallText.Windows
+		text = t.toolDescription.InstallText.Windows
 	case "darwin":
-		text = t.toolYaml.InstallText.Mac
+		text = t.toolDescription.InstallText.Mac
 	case "linux":
-		text = t.toolYaml.InstallText.Linux
+		text = t.toolDescription.InstallText.Linux
 	default:
 		panic(fmt.Sprintf("Not a supported platform (%v)", runtime.GOOS))
 	}
 
-	fmt.Printf("\n\n")
-	fmt.Printf("WARNING: '%v' is not installed on this machine.\n\n", t.name)
-	fmt.Printf("%v\n\n", t.toolYaml.Purpose)
-	fmt.Printf("To install '%v'...\n\n%v\n", t.name, text)
+	var sb strings.Builder
+
+	sb.WriteString("\n\n")
+	sb.WriteString(fmt.Sprintf("WARNING: %q is not installed on this machine.\n\n", t.name))
+	sb.WriteString(fmt.Sprintf("%v\n\n", t.toolDescription.Purpose))
+	sb.WriteString(fmt.Sprintf("To install '%v'...\n\n%v\n", t.name, text))
+
+	return sb.String()
 }
 
-func (t *Base) Run(args []string) (int, error, string, string) {
+func (t *Base) Run(args []string) (int, error) {
 	if !t.isInstalledCalled {
 		panic("Call IsInstalled before Run")
-	}
-
-	if !t.installed {
-		log.Fatal(fmt.Sprintf("The '%v' tool is not found on this machine. "+
-			"Please install it. (%v)", t.Name(), t.lookPathError))
 	}
 
 	// args requires the .exeFullPath to be arg[0], so prepend it
@@ -112,5 +111,5 @@ func (t *Base) Run(args []string) (int, error, string, string) {
 
 	err := cmd.Run()
 
-	return cmd.ProcessState.ExitCode(), err, stdout.String(), stderr.String()
+	return cmd.ProcessState.ExitCode(), err
 }

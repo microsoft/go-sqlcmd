@@ -27,7 +27,7 @@ func (t *Ads) Init() {
 		filepath.Join(programFiles, "Azure Data Studio\\azuredatastudio.exe"),
 	}
 
-	t.Base.SetExeName("azuredatastudio-insiders")
+	t.Base.SetExeName("azuredatastudio")
 	for _, location := range searchLocations {
 		if file.Exists(location) {
 			t.Base.SetExeName(location)
@@ -35,9 +35,9 @@ func (t *Ads) Init() {
 		}
 	}
 
-	t.Base.SetToolYaml(ToolDescription{
+	t.Base.SetToolDescription(Description{
 		t.Name(),
-		"Azure Data Studio provides a User Interface for working with SQL Server, Azure SQL Database, and Azure SQL Data Warehouse.",
+		"Azure Data Studio provides a user interface for working with SQL Server and Azure SQL Database.",
 		InstallText{
 			Windows: `Download the latest 'User Installer' .msi from:
 
@@ -59,6 +59,6 @@ More information can be found here:
 		}})
 }
 
-func (t *Ads) Run(args []string) (int, error, string, string) {
+func (t *Ads) Run(args []string) (int, error) {
 	return t.Base.Run(args)
 }

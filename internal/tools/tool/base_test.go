@@ -73,7 +73,7 @@ func TestHowToInstall(t *testing.T) {
 	t.Run("windows", func(t *testing.T) {
 		b := &Base{
 			name: "test",
-			toolYaml: ToolDescription{
+			toolDescription: Description{
 				Purpose: "test purpose",
 				InstallText: InstallText{
 					Windows: "windows install",

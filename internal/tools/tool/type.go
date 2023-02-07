@@ -1,6 +1,6 @@
 package tool
 
-type ToolDescription struct {
+type Description struct {
 	Name string
 
 	// Purpose describes what this tool does

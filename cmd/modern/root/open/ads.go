@@ -70,12 +70,8 @@ func (c *Ads) ensureContainerIsRunning(endpoint sqlconfig.Endpoint) {
 }
 
 // launchAds launches the Azure Data Studio using the specified server and username.
-//
-// The function takes in three arguments:
-// - localhost: a string representing the hostname of the server.
-// - port: an integer representing the port number to be used.
-// - username: a string representing the username to be used.
 func (c *Ads) launchAds(localhost string, port int, username string) {
+	output := c.Output()
 	args := []string{
 		"-r",
 		fmt.Sprintf(
@@ -88,7 +84,12 @@ func (c *Ads) launchAds(localhost string, port int, username string) {
 	if username != "" {
 		args = append(args, fmt.Sprintf("--user=%s", username))
 	}
+
 	tool := tools.NewTool("ads")
-	_, err, _, _ := tool.Run(args)
-	c.CheckErr(err)
+	if !tool.IsInstalled() {
+		output.Fatalf(tool.HowToInstall())
+	} else {
+		_, err := tool.Run(args)
+		c.CheckErr(err)
+	}
 }

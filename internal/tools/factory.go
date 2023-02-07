@@ -24,11 +24,7 @@ func NewTool(toolName string) (tool tool.Tool) {
 	}
 
 	if tool == nil {
-		panic(fmt.Sprintf("Tool '%v' is not a supported tool", toolName))
-	}
-
-	if !tool.IsInstalled() {
-		tool.HowToInstall()
+		panic(fmt.Sprintf("Tool %q is not a supported tool", toolName))
 	}
 
 	return tool
