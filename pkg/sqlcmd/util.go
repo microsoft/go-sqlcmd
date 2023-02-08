@@ -6,40 +6,57 @@ package sqlcmd
 import (
 	"strconv"
 	"strings"
+
+	"github.com/microsoft/go-mssqldb/msdsn"
 )
 
 // splitServer extracts connection parameters from a server name input
-func splitServer(serverName string) (string, string, uint64, error) {
-	instance := ""
-	port := uint64(0)
-	if strings.HasPrefix(serverName, "tcp:") {
-		if len(serverName) == 4 {
-			return "", "", 0, &InvalidServerName
+func splitServer(serverName string) (string, instance string, port uint64, protocol string, err error) {
+	instance = ""
+	port = uint64(0)
+	protocol = ""
+	err = nil
+	// We don't just look for : due to possible IPv6 address
+	for _, p := range msdsn.ProtocolParsers {
+		prefix := p.Protocol() + ":"
+		if strings.HasPrefix(serverName, prefix) {
+			if len(serverName) == len(prefix) {
+				serverName = "."
+			} else {
+				serverName = serverName[len(prefix):]
+			}
+			protocol = p.Protocol()
 		}
-		serverName = serverName[4:]
 	}
-	serverNameParts := strings.Split(serverName, ",")
-	if len(serverNameParts) > 2 {
-		return "", "", 0, &InvalidServerName
-	}
-	if len(serverNameParts) == 2 {
-		var err error
-		port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
-		if err != nil {
-			return "", "", 0, &InvalidServerName
+	if strings.HasPrefix(serverName, `\\`) {
+		if protocol != "np" && protocol != "" || len(serverName) == 2 {
+			return "", "", 0, "", &InvalidServerName
 		}
-		serverName = serverNameParts[0]
+		protocol = "np"
 	} else {
-		serverNameParts = strings.Split(serverName, "\\")
+		serverNameParts := strings.Split(serverName, ",")
 		if len(serverNameParts) > 2 {
-			return "", "", 0, &InvalidServerName
+			return "", "", 0, "", &InvalidServerName
 		}
 		if len(serverNameParts) == 2 {
-			instance = serverNameParts[1]
+			var err error
+			port, err = strconv.ParseUint(serverNameParts[1], 10, 16)
+			if err != nil {
+				return "", "", 0, "", &InvalidServerName
+			}
 			serverName = serverNameParts[0]
+		} else {
+			serverNameParts = strings.Split(serverName, "\\")
+			if len(serverNameParts) > 2 {
+				return "", "", 0, "", &InvalidServerName
+			}
+			if len(serverNameParts) == 2 {
+				instance = serverNameParts[1]
+				serverName = serverNameParts[0]
+			}
 		}
 	}
-	return serverName, instance, port, nil
+	return serverName, instance, port, protocol, err
 }
 
 // padRight appends c instances of s to builder

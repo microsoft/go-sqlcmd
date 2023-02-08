@@ -33,7 +33,7 @@ type SQLCmdArguments struct {
 	InitialQuery string `short:"q" xor:"input1" help:"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed."`
 	// Query to run then exit
 	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
-	Server string `short:"S" help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
+	Server string `short:"S" help:"[[tcp:]|[lpc:]|[np:]]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
 	// Disable syscommands with a warning
 	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
 	// AuthenticationMethod is new for go-sqlcmd
@@ -292,6 +292,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	// connect using no overrides
 	err = s.ConnectDb(nil, line == nil)
 	if err != nil {
+		s.WriteError(s.GetError(), err)
 		return 1, err
 	}
 
