@@ -19,7 +19,7 @@
         {
             "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
             "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-            "translation": "",
+            "translation": "'-h {Headers}': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください",
             "placeholders": [
                 {
                     "id": "Headers",
@@ -34,7 +34,7 @@
         {
             "id": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
             "message": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "translation": "",
+            "translation": "'-w {ScreenWidth}': 値には 8 より大きく 65536 より小さい値を指定する必要があります。",
             "placeholders": [
                 {
                     "id": "ScreenWidth",
@@ -54,7 +54,7 @@
         {
             "id": "invalid batch terminator '{BatchTerminator}'",
             "message": "invalid batch terminator '{BatchTerminator}'",
-            "translation": "",
+            "translation": "バッチ ターミネータ '{BatchTerminator}' は無効です",
             "placeholders": [
                 {
                     "id": "BatchTerminator",
@@ -69,22 +69,22 @@
         {
             "id": "Sqlcmd: Error:",
             "message": "Sqlcmd: Error:",
-            "translation": ""
+            "translation": "Sqlcmd: エラー:"
         },
         {
             "id": "Sqlcmd: Warning:",
             "message": "Sqlcmd: Warning:",
-            "translation": ""
+            "translation": "Sqlcmd: 警告:"
         },
         {
             "id": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
             "message": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "translation": ""
+            "translation": "ED コマンド、!!\u003ccommand\u003e コマンド、スタートアップ スクリプト、および環境変数が無効です。"
         },
         {
             "id": "The scripting variable: '{Variable}' is read-only",
             "message": "The scripting variable: '{Variable}' is read-only",
-            "translation": "",
+            "translation": "エラー: スクリプト変数 '{Variable}' は読み取り専用です",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -99,7 +99,7 @@
         {
             "id": "'{Variable}' scripting variable not defined.",
             "message": "'{Variable}' scripting variable not defined.",
-            "translation": "",
+            "translation": "'{Variable}' スクリプト変数が定義されていません。",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -114,7 +114,7 @@
         {
             "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
             "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-            "translation": "",
+            "translation": "環境変数 '{Variable}' には無効な値 '{EnvVal}' があります。",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -137,7 +137,7 @@
         {
             "id": "Syntax error at line {LineNumber} near command '{Command}'.",
             "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-            "translation": "",
+            "translation": "行 {LineNumber} のコマンド '{Command}' 付近に構文エラーがあります。",
             "placeholders": [
                 {
                     "id": "LineNumber",
@@ -160,7 +160,7 @@
         {
             "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
             "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-            "translation": "",
+            "translation": "{ErrorPrefix} ファイル {Filepath} を開くときか、このファイルの処理中にエラーが発生しました (理由: {Error})。",
             "placeholders": [
                 {
                     "id": "ErrorPrefix",
@@ -191,7 +191,7 @@
         {
             "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
             "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-            "translation": "",
+            "translation": "{ErrorPrefix}行 {LineNumber} に構文エラーがあります。",
             "placeholders": [
                 {
                     "id": "ErrorPrefix",

@@ -19,7 +19,7 @@
         {
             "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
             "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-            "translation": "",
+            "translation": "'-h {Headers}': o valor do cabeçalho deve ser -1 ou um valor entre 1 e 2147483647",
             "placeholders": [
                 {
                     "id": "Headers",
@@ -34,7 +34,7 @@
         {
             "id": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
             "message": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "translation": "",
+            "translation": "'-w {ScreenWidth}': o valor deve ser maior que 8 e menor que 65536.",
             "placeholders": [
                 {
                     "id": "ScreenWidth",
@@ -54,7 +54,7 @@
         {
             "id": "invalid batch terminator '{BatchTerminator}'",
             "message": "invalid batch terminator '{BatchTerminator}'",
-            "translation": "",
+            "translation": "terminador de lote inválido '{BatchTerminator}'",
             "placeholders": [
                 {
                     "id": "BatchTerminator",
@@ -69,22 +69,22 @@
         {
             "id": "Sqlcmd: Error:",
             "message": "Sqlcmd: Error:",
-            "translation": ""
+            "translation": "Sqlcmd: erro:"
         },
         {
             "id": "Sqlcmd: Warning:",
             "message": "Sqlcmd: Warning:",
-            "translation": ""
+            "translation": "Sqlcmd: aviso:"
         },
         {
             "id": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
             "message": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "translation": ""
+            "translation": "os comandos ED e !!\u003ccomando\u003e, o script de inicialização e as variáveis de ambiente estão desabilitados."
         },
         {
             "id": "The scripting variable: '{Variable}' is read-only",
             "message": "The scripting variable: '{Variable}' is read-only",
-            "translation": "",
+            "translation": "a variável de script: '{Variable}' é somente leitura.",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -99,7 +99,7 @@
         {
             "id": "'{Variable}' scripting variable not defined.",
             "message": "'{Variable}' scripting variable not defined.",
-            "translation": "",
+            "translation": "Variável de script '{Variable}' não definida.",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -114,7 +114,7 @@
         {
             "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
             "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-            "translation": "",
+            "translation": "a variável de ambiente: '{Variable}' possui valor inválido: '{EnvVal}'.",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -137,7 +137,7 @@
         {
             "id": "Syntax error at line {LineNumber} near command '{Command}'.",
             "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-            "translation": "",
+            "translation": "erro de sintaxe na linha {LineNumber} próximo ao comando '{Command}'.",
             "placeholders": [
                 {
                     "id": "LineNumber",
@@ -160,7 +160,7 @@
         {
             "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
             "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-            "translation": "",
+            "translation": "{ErrorPrefix} ocorreu um erro ao abrir ou operar no arquivo {Filepath} (Motivo: {Error}).",
             "placeholders": [
                 {
                     "id": "ErrorPrefix",
@@ -191,7 +191,7 @@
         {
             "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
             "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-            "translation": "",
+            "translation": "{ErrorPrefix}erro de sintaxe na linha {LineNumber}",
             "placeholders": [
                 {
                     "id": "ErrorPrefix",

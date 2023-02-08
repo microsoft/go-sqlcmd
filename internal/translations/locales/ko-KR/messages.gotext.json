@@ -19,7 +19,7 @@
         {
             "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
             "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-            "translation": "",
+            "translation": "'-h {Headers}': 헤더 값은 -1이거나 -1에서 2147483647 사이의 값이어야 합니다",
             "placeholders": [
                 {
                     "id": "Headers",
@@ -34,7 +34,7 @@
         {
             "id": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
             "message": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "translation": "",
+            "translation": "'-w {ScreenWidth}': 값은 8보다 크고 65536보다 작아야 합니다.",
             "placeholders": [
                 {
                     "id": "ScreenWidth",
@@ -54,7 +54,7 @@
         {
             "id": "invalid batch terminator '{BatchTerminator}'",
             "message": "invalid batch terminator '{BatchTerminator}'",
-            "translation": "",
+            "translation": "잘못된 일괄 처리 종결자 ''{BatchTerminator}''",
             "placeholders": [
                 {
                     "id": "BatchTerminator",
@@ -69,22 +69,22 @@
         {
             "id": "Sqlcmd: Error:",
             "message": "Sqlcmd: Error:",
-            "translation": ""
+            "translation": "Sqlcmd: 오류:"
         },
         {
             "id": "Sqlcmd: Warning:",
             "message": "Sqlcmd: Warning:",
-            "translation": ""
+            "translation": "Sqlcmd: 경고:"
         },
         {
             "id": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
             "message": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "translation": ""
+            "translation": "ED 및 !!\u003c명령\u003e 명령, 시작 스크립트 및 환경 변수는 사용할 수 없습니다."
         },
         {
             "id": "The scripting variable: '{Variable}' is read-only",
             "message": "The scripting variable: '{Variable}' is read-only",
-            "translation": "",
+            "translation": "스크립팅 변수 '{Variable}'은(는) 읽기 전용입니다",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -99,7 +99,7 @@
         {
             "id": "'{Variable}' scripting variable not defined.",
             "message": "'{Variable}' scripting variable not defined.",
-            "translation": "",
+            "translation": "'{Variable}' 스크립팅 변수가 정의되지 않았습니다.",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -114,7 +114,7 @@
         {
             "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
             "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-            "translation": "",
+            "translation": "환경 변수 '{Variable}'에 잘못된 값이 있습니다: '{EnvVal}'.",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -137,7 +137,7 @@
         {
             "id": "Syntax error at line {LineNumber} near command '{Command}'.",
             "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-            "translation": "",
+            "translation": "명령 '{Command}' 근처의 줄 {LineNumber}에서 구문 오류가 발생했습니다.",
             "placeholders": [
                 {
                     "id": "LineNumber",
@@ -160,7 +160,7 @@
         {
             "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
             "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-            "translation": "",
+            "translation": "{ErrorPrefix} 파일 {Filepath}을(를) 열거나 해당 작업을 수행하는 중 오류가 발생했습니다(원인: {Error}).",
             "placeholders": [
                 {
                     "id": "ErrorPrefix",
@@ -191,7 +191,7 @@
         {
             "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
             "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-            "translation": "",
+            "translation": "{ErrorPrefix}줄 {LineNumber}에서 구문 오류가 발생했습니다",
             "placeholders": [
                 {
                     "id": "ErrorPrefix",

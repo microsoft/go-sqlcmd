@@ -19,7 +19,7 @@
         {
             "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
             "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-            "translation": "",
+            "translation": "'-h {Headers}': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值",
             "placeholders": [
                 {
                     "id": "Headers",
@@ -34,7 +34,7 @@
         {
             "id": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
             "message": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "translation": "",
+            "translation": "'-w {ScreenWidth}': 值必須大於 8 且小於 65536。",
             "placeholders": [
                 {
                     "id": "ScreenWidth",
@@ -54,7 +54,7 @@
         {
             "id": "invalid batch terminator '{BatchTerminator}'",
             "message": "invalid batch terminator '{BatchTerminator}'",
-            "translation": "",
+            "translation": "批次結束字元 '{BatchTerminator}' 無效",
             "placeholders": [
                 {
                     "id": "BatchTerminator",
@@ -69,22 +69,22 @@
         {
             "id": "Sqlcmd: Error:",
             "message": "Sqlcmd: Error:",
-            "translation": ""
+            "translation": "Sqlcmd: 錯誤:"
         },
         {
             "id": "Sqlcmd: Warning:",
             "message": "Sqlcmd: Warning:",
-            "translation": ""
+            "translation": "Sqlcmd: 警告:"
         },
         {
             "id": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
             "message": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "translation": ""
+            "translation": "已停用 ED 和 !!\u003ccommand\u003e 命令、啟動指令碼和環境變數。"
         },
         {
             "id": "The scripting variable: '{Variable}' is read-only",
             "message": "The scripting variable: '{Variable}' is read-only",
-            "translation": "",
+            "translation": "指令碼變數: '{Variable}' 為唯讀",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -99,7 +99,7 @@
         {
             "id": "'{Variable}' scripting variable not defined.",
             "message": "'{Variable}' scripting variable not defined.",
-            "translation": "",
+            "translation": "未定義 '{Variable}' 指令碼變數。",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -114,7 +114,7 @@
         {
             "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
             "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-            "translation": "",
+            "translation": "環境變數: '{Variable}' 有無效值: '{EnvVal}'。",
             "placeholders": [
                 {
                     "id": "Variable",
@@ -137,7 +137,7 @@
         {
             "id": "Syntax error at line {LineNumber} near command '{Command}'.",
             "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-            "translation": "",
+            "translation": "第 {LineNumber} 行接近命令 '{Command}' 之處有語法錯誤。",
             "placeholders": [
                 {
                     "id": "LineNumber",
@@ -160,7 +160,7 @@
         {
             "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
             "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-            "translation": "",
+            "translation": "{ErrorPrefix} 開啟或操作檔案 {Filepath} 時發生錯誤 (原因: {Error})。",
             "placeholders": [
                 {
                     "id": "ErrorPrefix",
@@ -191,7 +191,7 @@
         {
             "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
             "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-            "translation": "",
+            "translation": "{ErrorPrefix}第 {LineNumber} 行有語法錯誤。",
             "placeholders": [
                 {
                     "id": "ErrorPrefix",
