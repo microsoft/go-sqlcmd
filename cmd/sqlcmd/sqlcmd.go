@@ -71,7 +71,7 @@ func (a *SQLCmdArguments) Validate() error {
 	}
 	// Ignore 0 even though it's technically an invalid input
 	if a.Headers < -1 {
-		return localizer.Errorf(localizer.Sprintf(`'-h %d': header value must be either -1 or a value between 1 and 2147483647`, a.Headers))
+		return localizer.Errorf(`'-h %d': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
 	}
 	if a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535) {
 		return localizer.Errorf(`'-w %d': value must be greater than 8 and less than 65536.`, *a.ScreenWidth)
