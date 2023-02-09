@@ -17,7 +17,7 @@ var ErrorPrefix string = localizer.Sprintf("Sqlcmd: Error: ")
 var WarningPrefix string = localizer.Sprintf("Sqlcmd: Warning: ")
 
 // Common Sqlcmd error messages
-var ErrCmdDisabled string = localizer.Sprintf("ED and !!<command> commands, startup script, and enviroment variables are disabled")
+var ErrCmdDisabled string = localizer.Sprintf("ED and !!<command> commands, startup script, and environment variables are disabled")
 
 type SqlcmdError interface {
 	error

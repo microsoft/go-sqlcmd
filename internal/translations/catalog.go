@@ -55,7 +55,7 @@ var messageKeyToIndex = map[string]int{
 	"'-a %d': Packet size has to be a number between 512 and 32767.":                                                                       12,
 	"'-h %d': header value must be either -1 or a value between 1 and 2147483647":                                                          0,
 	"'-w %d': value must be greater than 8 and less than 65536.":                                                                           1,
-	"ED and !!<command> commands, startup script, and enviroment variables are disabled":                                                   5,
+	"ED and !!<command> commands, startup script, and environment variables are disabled":                                                  5,
 	"Invalid variable identifier %s":                          14,
 	"Invalid variable value %s":                               15,
 	"Sqlcmd: Error: ":                                         3,
@@ -89,140 +89,140 @@ const de_DEData string = "" + // Size: 670 bytes
 
 var en_USIndex = []uint32{ // 17 elements
 	0x00000000, 0x0000004f, 0x0000008d, 0x000000ae,
-	0x000000c2, 0x000000d8, 0x0000012b, 0x00000158,
-	0x00000180, 0x000001be, 0x000001ef, 0x0000023e,
-	0x0000025e, 0x000002a0, 0x00000325, 0x00000347,
-	0x00000364,
+	0x000000c2, 0x000000d8, 0x0000012c, 0x00000159,
+	0x00000181, 0x000001bf, 0x000001f0, 0x0000023f,
+	0x0000025f, 0x000002a1, 0x00000326, 0x00000348,
+	0x00000365,
 } // Size: 92 bytes
 
-const en_USData string = "" + // Size: 868 bytes
+const en_USData string = "" + // Size: 869 bytes
 	"\x02'-h %[1]d': header value must be either -1 or a value between 1 and " +
 	"2147483647\x02'-w %[1]d': value must be greater than 8 and less than 655" +
 	"36.\x02invalid batch terminator '%[1]s'\x04\x00\x01 \x0f\x02Sqlcmd: Erro" +
 	"r:\x04\x00\x01 \x11\x02Sqlcmd: Warning:\x02ED and !!<command> commands, " +
-	"startup script, and enviroment variables are disabled\x02The scripting v" +
-	"ariable: '%[1]s' is read-only\x02'%[1]s' scripting variable not defined." +
-	"\x02The environment variable: '%[1]s' has invalid value: '%[2]s'.\x02Syn" +
-	"tax error at line %[1]d near command '%[2]s'.\x02%[1]s Error occurred wh" +
-	"ile opening or operating on file %[2]s (Reason: %[3]s).\x02%[1]sSyntax e" +
-	"rror at line %[2]d\x02'-a %[1]d': Packet size has to be a number between" +
-	" 512 and 32767.\x02'-P' is obsolete. The initial passwords must be set u" +
-	"sing the SQLCMDPASSWORD environment variable or entered at the password " +
-	"prompt.\x02Invalid variable identifier %[1]s\x02Invalid variable value %" +
-	"[1]s"
+	"startup script, and environment variables are disabled\x02The scripting " +
+	"variable: '%[1]s' is read-only\x02'%[1]s' scripting variable not defined" +
+	".\x02The environment variable: '%[1]s' has invalid value: '%[2]s'.\x02Sy" +
+	"ntax error at line %[1]d near command '%[2]s'.\x02%[1]s Error occurred w" +
+	"hile opening or operating on file %[2]s (Reason: %[3]s).\x02%[1]sSyntax " +
+	"error at line %[2]d\x02'-a %[1]d': Packet size has to be a number betwee" +
+	"n 512 and 32767.\x02'-P' is obsolete. The initial passwords must be set " +
+	"using the SQLCMDPASSWORD environment variable or entered at the password" +
+	" prompt.\x02Invalid variable identifier %[1]s\x02Invalid variable value " +
+	"%[1]s"
 
 var es_ESIndex = []uint32{ // 17 elements
 	0x00000000, 0x00000050, 0x0000008d, 0x000000b3,
-	0x000000c7, 0x000000e1, 0x00000146, 0x00000177,
-	0x000001a5, 0x000001e8, 0x00000228, 0x00000270,
-	0x0000029a, 0x0000029a, 0x0000029a, 0x0000029a,
-	0x0000029a,
+	0x000000c7, 0x000000e1, 0x00000145, 0x00000176,
+	0x000001a4, 0x000001e7, 0x00000227, 0x0000026f,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299,
 } // Size: 92 bytes
 
-const es_ESData string = "" + // Size: 666 bytes
+const es_ESData string = "" + // Size: 665 bytes
 	"\x02'-h %[1]d': el valor de encabezado debe ser -1 o un valor entre -1 y" +
 	" 2147483647\x02'-w %[1]d': el valor debe estar comprendido entre 8 y 655" +
 	"36.\x02terminador de lote no válido '%[1]s'\x04\x00\x01 \x0f\x02Sqlcmd: " +
 	"error:\x04\x00\x01 \x15\x02Sqlcmd: advertencia:\x02los comandos ED y !!<" +
 	"comando>, el script de inicio y las variables de entorno están deshabili" +
-	"tados.\x02la variable de script '%[1]s' es de solo lectura\x02No se defi" +
-	"nió la variable de script '%[1]s'.\x02la variable de entorno '%[1]s' tie" +
-	"ne un valor no válido: '%[2]s'.\x02error de sintaxis en la línea %[1]d c" +
-	"erca del comando '%[2]s'.\x02%[1]s no se pudo abrir o actuar sobre el ar" +
-	"chivo %[2]s (motivo: %[3]s).\x02%[1]serror de sintaxis en la línea %[2]d"
+	"tados\x02la variable de script '%[1]s' es de solo lectura\x02No se defin" +
+	"ió la variable de script '%[1]s'.\x02la variable de entorno '%[1]s' tien" +
+	"e un valor no válido: '%[2]s'.\x02error de sintaxis en la línea %[1]d ce" +
+	"rca del comando '%[2]s'.\x02%[1]s no se pudo abrir o actuar sobre el arc" +
+	"hivo %[2]s (motivo: %[3]s).\x02%[1]serror de sintaxis en la línea %[2]d"
 
 var fr_FRIndex = []uint32{ // 17 elements
 	0x00000000, 0x00000060, 0x000000ad, 0x000000d7,
-	0x000000f0, 0x0000010f, 0x00000188, 0x000001c1,
-	0x000001f9, 0x00000254, 0x000002a0, 0x0000030c,
-	0x00000330, 0x00000330, 0x00000330, 0x00000330,
-	0x00000330,
+	0x000000f0, 0x0000010f, 0x00000187, 0x000001c0,
+	0x000001f8, 0x00000253, 0x0000029f, 0x0000030b,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f,
 } // Size: 92 bytes
 
-const fr_FRData string = "" + // Size: 816 bytes
+const fr_FRData string = "" + // Size: 815 bytes
 	"\x02'-h %[1]d': la valeur d'en-tête doit être\u00a0-1 ou une valeur comp" +
 	"rise entre\u00a0-1 et\u00a02147483647\x02'-w %[1]d': la valeur doit être" +
 	" supérieure à 8 et inférieure à 65\u00a0536.\x02terminateur de lot non v" +
 	"alide « %[1]s »\x04\x00\x01 \x14\x02Sqlcmd\u00a0: erreur\u00a0:\x04\x00" +
 	"\x01 \x1a\x02Sqlcmd\u00a0: avertissement\u00a0\x02les commandes ED et !!" +
 	"<commande>, ainsi que le script de démarrage et les variables d'environn" +
-	"ement sont désactivées.\x02la variable de script «\u00a0%[1]s\u00a0» est" +
-	" en lecture seule\x02La variable de script «\u00a0%[1]s\u00a0» n'est pas" +
-	" définie.\x02la variable d'environnement «\u00a0%[1]s\u00a0» comporte un" +
-	"e valeur non valide\u00a0: «\u00a0%[2]s\u00a0».\x02erreur de syntaxe à l" +
-	"a ligne %[1]d à côté de la commande «\u00a0%[2]s\u00a0».\x02%[1]s une er" +
-	"reur s'est produite lors de l'ouverture ou de l'utilisation du fichier %" +
-	"[2]s (Raison\u00a0: %[3]s).\x02erreur de syntaxe à la ligne %[2]d"
+	"ement sont désactivées\x02la variable de script «\u00a0%[1]s\u00a0» est " +
+	"en lecture seule\x02La variable de script «\u00a0%[1]s\u00a0» n'est pas " +
+	"définie.\x02la variable d'environnement «\u00a0%[1]s\u00a0» comporte une" +
+	" valeur non valide\u00a0: «\u00a0%[2]s\u00a0».\x02erreur de syntaxe à la" +
+	" ligne %[1]d à côté de la commande «\u00a0%[2]s\u00a0».\x02%[1]s une err" +
+	"eur s'est produite lors de l'ouverture ou de l'utilisation du fichier %[" +
+	"2]s (Raison\u00a0: %[3]s).\x02erreur de syntaxe à la ligne %[2]d"
 
 var it_ITIndex = []uint32{ // 17 elements
 	0x00000000, 0x0000005e, 0x000000a1, 0x000000c9,
-	0x000000de, 0x000000f3, 0x00000150, 0x00000185,
-	0x000001b2, 0x000001f5, 0x0000023c, 0x00000289,
-	0x000002b1, 0x000002b1, 0x000002b1, 0x000002b1,
-	0x000002b1,
+	0x000000de, 0x000000f3, 0x0000014f, 0x00000184,
+	0x000001b1, 0x000001f4, 0x0000023b, 0x00000288,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0,
 } // Size: 92 bytes
 
-const it_ITData string = "" + // Size: 689 bytes
+const it_ITData string = "" + // Size: 688 bytes
 	"\x02'-h %[1]d': il valore di intestazione deve essere -1 o un valore com" +
 	"preso tra -1 e 2147483647\x02'-w %[1]d': il valore deve essere maggiore " +
 	"di 8 e minore di 65536.\x02terminatore di batch non valido '%[1]s'\x04" +
 	"\x00\x01 \x10\x02Sqlcmd: errore:\x04\x00\x01 \x10\x02Sqlcmd: avviso:\x02" +
 	"i comandi ED e !!<command>, lo script di avvio e le variabili di ambient" +
-	"e sono disabilitati.\x02la variabile di scripting '%[1]s' è di sola lett" +
-	"ura\x02Variabile di scripting '%[1]s' non definita.\x02la variabile di a" +
-	"mbiente '%[1]s' ha un valore non valido: '%[2]s'.\x02errore di sintassi " +
-	"alla riga %[1]d in prossimità del comando '%[2]s'.\x02%[1]s errore duran" +
-	"te l'apertura o l'utilizzo del file %[2]s (motivo: %[3]s).\x02%[1]serror" +
-	"e di sintassi alla riga %[2]d"
+	"e sono disabilitati\x02la variabile di scripting '%[1]s' è di sola lettu" +
+	"ra\x02Variabile di scripting '%[1]s' non definita.\x02la variabile di am" +
+	"biente '%[1]s' ha un valore non valido: '%[2]s'.\x02errore di sintassi a" +
+	"lla riga %[1]d in prossimità del comando '%[2]s'.\x02%[1]s errore durant" +
+	"e l'apertura o l'utilizzo del file %[2]s (motivo: %[3]s).\x02%[1]serrore" +
+	" di sintassi alla riga %[2]d"
 
 var ja_JPIndex = []uint32{ // 17 elements
 	0x00000000, 0x00000069, 0x000000d1, 0x00000106,
-	0x0000011e, 0x00000133, 0x000001b0, 0x000001f5,
-	0x00000234, 0x00000277, 0x000002c4, 0x00000345,
-	0x00000379, 0x00000379, 0x00000379, 0x00000379,
-	0x00000379,
+	0x0000011e, 0x00000133, 0x000001ad, 0x000001f2,
+	0x00000231, 0x00000274, 0x000002c1, 0x00000342,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376,
 } // Size: 92 bytes
 
-const ja_JPData string = "" + // Size: 889 bytes
+const ja_JPData string = "" + // Size: 886 bytes
 	"\x02'-h %[1]d': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください\x02'-w %[1]" +
 	"d': 値には 8 より大きく 65536 より小さい値を指定する必要があります。\x02バッチ ターミネータ '%[1]s' は無効です" +
 	"\x04\x00\x01 \x13\x02Sqlcmd: エラー:\x04\x00\x01 \x10\x02Sqlcmd: 警告:\x02ED " +
-	"コマンド、!!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です。\x02エラー: スクリプト変数 '%[1" +
-	"]s' は読み取り専用です\x02'%[1]s' スクリプト変数が定義されていません。\x02環境変数 '%[1]s' には無効な値 '%[2]" +
-	"s' があります。\x02行 %[1]d のコマンド '%[2]s' 付近に構文エラーがあります。\x02%[1]s ファイル %[2]s を開" +
-	"くときか、このファイルの処理中にエラーが発生しました (理由: %[3]s)。\x02%[1]s行 %[2]d に構文エラーがあります。"
+	"コマンド、!!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です\x02エラー: スクリプト変数 '%[1]" +
+	"s' は読み取り専用です\x02'%[1]s' スクリプト変数が定義されていません。\x02環境変数 '%[1]s' には無効な値 '%[2]s" +
+	"' があります。\x02行 %[1]d のコマンド '%[2]s' 付近に構文エラーがあります。\x02%[1]s ファイル %[2]s を開く" +
+	"ときか、このファイルの処理中にエラーが発生しました (理由: %[3]s)。\x02%[1]s行 %[2]d に構文エラーがあります。"
 
 var ko_KRIndex = []uint32{ // 17 elements
 	0x00000000, 0x0000005b, 0x0000009e, 0x000000ca,
-	0x000000df, 0x000000f4, 0x00000153, 0x0000018e,
-	0x000001cb, 0x0000020c, 0x0000025a, 0x000002ce,
-	0x00000307, 0x00000307, 0x00000307, 0x00000307,
-	0x00000307,
+	0x000000df, 0x000000f4, 0x00000152, 0x0000018d,
+	0x000001ca, 0x0000020b, 0x00000259, 0x000002cd,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306,
 } // Size: 92 bytes
 
-const ko_KRData string = "" + // Size: 775 bytes
+const ko_KRData string = "" + // Size: 774 bytes
 	"\x02'-h %[1]d': 헤더 값은 -1이거나 -1에서 2147483647 사이의 값이어야 합니다\x02'-w %[1]d': " +
 	"값은 8보다 크고 65536보다 작아야 합니다.\x02잘못된 일괄 처리 종결자 ''%[1]s''\x04\x00\x01 \x10" +
 	"\x02Sqlcmd: 오류:\x04\x00\x01 \x10\x02Sqlcmd: 경고:\x02ED 및 !!<명령> 명령, 시작 스크" +
-	"립트 및 환경 변수는 사용할 수 없습니다.\x02스크립팅 변수 '%[1]s'은(는) 읽기 전용입니다\x02'%[1]s' 스크립" +
-	"팅 변수가 정의되지 않았습니다.\x02환경 변수 '%[1]s'에 잘못된 값이 있습니다: '%[2]s'.\x02명령 '%[2]s" +
-	"' 근처의 줄 %[1]d에서 구문 오류가 발생했습니다.\x02%[1]s 파일 %[2]s을(를) 열거나 해당 작업을 수행하는 중 오" +
-	"류가 발생했습니다(원인: %[3]s).\x02%[1]s줄 %[2]d에서 구문 오류가 발생했습니다"
+	"립트 및 환경 변수는 사용할 수 없습니다\x02스크립팅 변수 '%[1]s'은(는) 읽기 전용입니다\x02'%[1]s' 스크립팅" +
+	" 변수가 정의되지 않았습니다.\x02환경 변수 '%[1]s'에 잘못된 값이 있습니다: '%[2]s'.\x02명령 '%[2]s' 근" +
+	"처의 줄 %[1]d에서 구문 오류가 발생했습니다.\x02%[1]s 파일 %[2]s을(를) 열거나 해당 작업을 수행하는 중 오류" +
+	"가 발생했습니다(원인: %[3]s).\x02%[1]s줄 %[2]d에서 구문 오류가 발생했습니다"
 
 var pt_BRIndex = []uint32{ // 17 elements
 	0x00000000, 0x0000004f, 0x0000008b, 0x000000b0,
-	0x000000c3, 0x000000d7, 0x00000143, 0x00000176,
-	0x000001a1, 0x000001e3, 0x0000021f, 0x0000026a,
-	0x0000028e, 0x0000028e, 0x0000028e, 0x0000028e,
-	0x0000028e,
+	0x000000c3, 0x000000d7, 0x00000142, 0x00000175,
+	0x000001a0, 0x000001e2, 0x0000021e, 0x00000269,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d,
 } // Size: 92 bytes
 
-const pt_BRData string = "" + // Size: 654 bytes
+const pt_BRData string = "" + // Size: 653 bytes
 	"\x02'-h %[1]d': o valor do cabeçalho deve ser -1 ou um valor entre 1 e 2" +
 	"147483647\x02'-w %[1]d': o valor deve ser maior que 8 e menor que 65536." +
 	"\x02terminador de lote inválido '%[1]s'\x04\x00\x01 \x0e\x02Sqlcmd: erro" +
 	":\x04\x00\x01 \x0f\x02Sqlcmd: aviso:\x02os comandos ED e !!<comando>, o " +
-	"script de inicialização e as variáveis de ambiente estão desabilitados." +
+	"script de inicialização e as variáveis de ambiente estão desabilitados" +
 	"\x02a variável de script: '%[1]s' é somente leitura.\x02Variável de scri" +
 	"pt '%[1]s' não definida.\x02a variável de ambiente: '%[1]s' possui valor" +
 	" inválido: '%[2]s'.\x02erro de sintaxe na linha %[1]d próximo ao comando" +
@@ -231,54 +231,54 @@ const pt_BRData string = "" + // Size: 654 bytes
 
 var ru_RUIndex = []uint32{ // 17 elements
 	0x00000000, 0x0000007f, 0x000000d8, 0x00000120,
-	0x0000013c, 0x0000015b, 0x000001dc, 0x0000023b,
-	0x00000282, 0x000002ea, 0x0000035e, 0x000003cd,
-	0x00000412, 0x00000412, 0x00000412, 0x00000412,
-	0x00000412,
+	0x0000013c, 0x0000015b, 0x000001db, 0x0000023a,
+	0x00000281, 0x000002e9, 0x0000035d, 0x000003cc,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411,
 } // Size: 92 bytes
 
-const ru_RUData string = "" + // Size: 1042 bytes
+const ru_RUData string = "" + // Size: 1041 bytes
 	"\x02'-h %[1]d': значением заголовка может быть или -1, или число между -" +
 	"1 и 2147483647\x02'-w %[1]d': значение должно быть больше 8 и меньше 655" +
 	"36.\x02недопустимый признак конца пакета '%[1]s'\x04\x00\x01 \x17\x02Sql" +
 	"cmd: ошибка -\x04\x00\x01 \x1a\x02Sqlcmd: внимание!\x02ED, а также коман" +
-	"ды !!<command>, скрипт запуска и переменные среды отключены.\x02перемен" +
-	"ная скрипта: '%[1]s' доступна только для чтения\x02Переменная скрипта '" +
-	"%[1]s' не определена.\x02переменная среды: '%[1]s' имеет недопустимое зн" +
-	"ачение: '%[2]s'.\x02синтаксическая ошибка в строке %[1]d при выполнении" +
-	" команды '%[2]s'.\x02%[1]s ошибка при открытии или обработке файла %[2]s" +
+	"ды !!<command>, скрипт запуска и переменные среды отключены\x02переменн" +
+	"ая скрипта: '%[1]s' доступна только для чтения\x02Переменная скрипта '%" +
+	"[1]s' не определена.\x02переменная среды: '%[1]s' имеет недопустимое зна" +
+	"чение: '%[2]s'.\x02синтаксическая ошибка в строке %[1]d при выполнении " +
+	"команды '%[2]s'.\x02%[1]s ошибка при открытии или обработке файла %[2]s" +
 	" (причина: %[3]s).\x02%[1]sсинтаксическая ошибка в строке %[2]d"
 
 var zh_CNIndex = []uint32{ // 17 elements
 	0x00000000, 0x0000004d, 0x0000007e, 0x000000a1,
-	0x000000b6, 0x000000cb, 0x0000010e, 0x00000131,
-	0x00000151, 0x00000179, 0x000001b2, 0x000001fc,
-	0x00000221, 0x00000221, 0x00000221, 0x00000221,
-	0x00000221,
+	0x000000b6, 0x000000cb, 0x0000010b, 0x0000012e,
+	0x0000014e, 0x00000176, 0x000001af, 0x000001f9,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e,
 } // Size: 92 bytes
 
-const zh_CNData string = "" + // Size: 545 bytes
+const zh_CNData string = "" + // Size: 542 bytes
 	"\x02'-h %[1]d': 标头值必须是 -1 或是介于 1 和 2147483647 之间的值\x02'-w %[1]d': 值必须大于 " +
 	"8 且小于 65536。\x02无效的批处理终止符'%[1]s'\x04\x00\x01 \x10\x02Sqlcmd: 错误:\x04\x00" +
-	"\x01 \x10\x02Sqlcmd: 警告:\x02ED 和 !!<命令> 命令、启动脚本和环境变量被禁用。\x02脚本变量'%[1]s'是" +
-	"只读的。\x02未定义'%[1]s'脚本变量。\x02环境变量'%[1]s'的值无效:'%[2]s'\x02命令'%[2]s'附近的第 %[" +
-	"1]d 行存在语法错误。\x02%[1]s 打开文件 %[2]s 或对其执行操作时出错(原因: %[3]s)。\x02%[1]s第 %[2]d " +
-	"行存在语法错误"
+	"\x01 \x10\x02Sqlcmd: 警告:\x02ED 和 !!<命令> 命令、启动脚本和环境变量被禁用\x02脚本变量'%[1]s'是只" +
+	"读的。\x02未定义'%[1]s'脚本变量。\x02环境变量'%[1]s'的值无效:'%[2]s'\x02命令'%[2]s'附近的第 %[1" +
+	"]d 行存在语法错误。\x02%[1]s 打开文件 %[2]s 或对其执行操作时出错(原因: %[3]s)。\x02%[1]s第 %[2]d 行" +
+	"存在语法错误"
 
 var zh_TWIndex = []uint32{ // 17 elements
 	0x00000000, 0x0000004b, 0x0000007c, 0x0000009e,
-	0x000000b3, 0x000000c8, 0x00000110, 0x00000133,
-	0x00000158, 0x00000187, 0x000001c2, 0x00000207,
-	0x0000022c, 0x0000022c, 0x0000022c, 0x0000022c,
-	0x0000022c,
+	0x000000b3, 0x000000c8, 0x0000010d, 0x00000130,
+	0x00000155, 0x00000184, 0x000001bf, 0x00000204,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229,
 } // Size: 92 bytes
 
-const zh_TWData string = "" + // Size: 556 bytes
+const zh_TWData string = "" + // Size: 553 bytes
 	"\x02'-h %[1]d': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值\x02'-w %[1]d': 值必須大於 " +
 	"8 且小於 65536。\x02批次結束字元 '%[1]s' 無效\x04\x00\x01 \x10\x02Sqlcmd: 錯誤:\x04" +
-	"\x00\x01 \x10\x02Sqlcmd: 警告:\x02已停用 ED 和 !!<command> 命令、啟動指令碼和環境變數。\x02指" +
-	"令碼變數: '%[1]s' 為唯讀\x02未定義 '%[1]s' 指令碼變數。\x02環境變數: '%[1]s' 有無效值: '%[2]s'" +
-	"。\x02第 %[1]d 行接近命令 '%[2]s' 之處有語法錯誤。\x02%[1]s 開啟或操作檔案 %[2]s 時發生錯誤 (原因: " +
-	"%[3]s)。\x02%[1]s第 %[2]d 行有語法錯誤。"
+	"\x00\x01 \x10\x02Sqlcmd: 警告:\x02已停用 ED 和 !!<command> 命令、啟動指令碼和環境變數\x02指令" +
+	"碼變數: '%[1]s' 為唯讀\x02未定義 '%[1]s' 指令碼變數。\x02環境變數: '%[1]s' 有無效值: '%[2]s'。" +
+	"\x02第 %[1]d 行接近命令 '%[2]s' 之處有語法錯誤。\x02%[1]s 開啟或操作檔案 %[2]s 時發生錯誤 (原因: %[3" +
+	"]s)。\x02%[1]s第 %[2]d 行有語法錯誤。"
 
-	// Total table size 9182 bytes (8KiB); checksum: D258CE96
+	// Total table size 9168 bytes (8KiB); checksum: EBB4F85F

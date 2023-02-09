@@ -77,8 +77,8 @@
             "translation": "Sqlcmd: Warnung:"
         },
         {
-            "id": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "message": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
+            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
             "translation": "Die Befehle ED und !!\u003ccommand\u003e, Startskript und Umgebungsvariablen sind deaktiviert"
         },
         {

@@ -77,9 +77,9 @@
             "translation": "Sqlcmd: 경고:"
         },
         {
-            "id": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "message": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "translation": "ED 및 !!\u003c명령\u003e 명령, 시작 스크립트 및 환경 변수는 사용할 수 없습니다."
+            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "translation": "ED 및 !!\u003c명령\u003e 명령, 시작 스크립트 및 환경 변수는 사용할 수 없습니다"
         },
         {
             "id": "The scripting variable: '{Variable}' is read-only",

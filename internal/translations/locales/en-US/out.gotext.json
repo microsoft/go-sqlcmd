@@ -91,9 +91,9 @@
             "fuzzy": true
         },
         {
-            "id": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "message": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
-            "translation": "ED and !!\u003ccommand\u003e commands, startup script, and enviroment variables are disabled",
+            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "translation": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
