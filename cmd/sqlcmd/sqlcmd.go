@@ -147,74 +147,15 @@ func Execute(version string) {
 		},
 	}
 
-	//var version string
-
-	rootCmd.PersistentFlags().BoolVarP(&args.Version, "version", "v", false, "Print version information and exit")
+	var inputfiles []string
+	rootCmd.Flags().StringArrayVarP(&args.InputFile, "i", "i", inputfiles, "input file")
+	rootCmd.PersistentFlags().BoolVarP(&args.Version, "Version", "", false, "Print version information and exit")
 	rootCmd.PersistentFlags().BoolVarP(&args.Help, "help", "h", false, "Print this help message and exit")
 	rootCmd.PersistentFlags().BoolVarP(&args.DisableCmdAndWarn, "disable-cmd-and-warn", "", false, "Description of DisableCmdAndWarn")
-
-	//var vars sqlcmd.Variables
 
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
-
-	/*
-		// Cobra tryout #1 : Trying adding flags with sample cobra command . It is getting stuck in run function.
-			var cmd = &cobra.Command{
-				Short: "hello",
-				Run: func(cmd *cobra.Command, argss []string) {
-					fmt.Printf("in Run Function")
-					vars := sqlcmd.InitializeVariables(false)
-					setVars(vars, &args)
-
-					// so far sqlcmd prints all the errors itself so ignore it
-					exitCode, _ := run(vars, &args)
-					os.Exit(exitCode)
-				},
-			}
-			//cmd.Flags().AddFlag()
-			var flagp = cmd.Flags().BoolP("Version", "v", false, "help:Show the sqlcmd version information")
-			var flagpp = cmd.Flags().StringP("i", "i", args.Variables["i"], "This is my custom message for input file")
-
-			// cmd.Flags().AddFlag();
-			// cmd.Flags().AddFlag(flagpp)
-
-			fmt.Print("value of flag", *flagp)
-			fmt.Print("value of flag", *flagpp)
-			fmt.Print("value of flagpp", args.Variables["i"])
-			fmt.Printf("before execute Function")
-			cmd.SetHelpCommand(cmd)
-			err := cmd.Execute()
-			if err != nil {
-				os.Exit(0)
-			}
-			fmt.Printf("after execute Function")
-
-	*/
-
-	/*
-		// Old Legacy code with Kong implementation
-		fmt.Printf("before kong execute Function")
-		ctx := kong.Parse(&args, kong.NoDefaultHelp())
-		if args.Version {
-			ctx.Printf("%v", version)
-			os.Exit(0)
-		}
-		if args.Help {
-			_ = ctx.PrintUsage(false)
-			os.Exit(0)
-		}
-		vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
-		setVars(vars, &args)
-
-		// // so far sqlcmd prints all the errors itself so ignore it
-		exitCode, _ := run(vars, &args)
-		fmt.Printf("after exit exitCode")
-		fmt.Println(exitCode)
-		os.Exit(exitCode)
-		fmt.Printf("after execute Function")
-	*/
 }
 
 // setVars initializes scripting variables from command line arguments
