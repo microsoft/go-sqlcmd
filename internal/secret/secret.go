@@ -51,7 +51,7 @@ func Decode(cipherText string, decryptPassword bool) (plainText string) {
 }
 
 // DecodeAsUtf16 takes a cipher text and a boolean indicating whether to decrypt
-// and returns the resulting plain text as a byte array in UTF-16LE format which
+// and returns the resulting plain text as a byte array in UTF-16 format which
 // is required when passing the secret to applications written using managed
 // code (C#), such as Azure Data Studio.
 func DecodeAsUtf16(cipherText string, decryptPassword bool) []byte {
@@ -59,10 +59,7 @@ func DecodeAsUtf16(cipherText string, decryptPassword bool) []byte {
 	secret := Decode(cipherText, decryptPassword)
 	runes := utf16.Encode([]rune(secret))
 
-	const BOM = '\ufffe' //LE BOM
 	var b [2]byte
-	b[0] = BOM >> 8
-	b[1] = BOM & 255
 	for _, r := range runes {
 		b[1] = byte(r >> 8)
 		b[0] = byte(r & 255)

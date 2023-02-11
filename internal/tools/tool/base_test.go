@@ -2,7 +2,6 @@ package tool
 
 import (
 	"github.com/stretchr/testify/assert"
-	"os"
 	"testing"
 )
 
@@ -38,18 +37,6 @@ func TestIsInstalled(t *testing.T) {
 	base := Base{}
 	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 	base.IsInstalled()
-
-	// Test when exeName is set, but LookPath returns an error
-	base = Base{exeName: "test_exe"}
-	base.isInstalledCalled = true
-	base.lookPathError = os.ErrNotExist
-	assert.True(t, base.IsInstalled())
-
-	// Test when exeName is set, and LookPath returns no error
-	base = Base{exeName: "test_exe"}
-	base.isInstalledCalled = true
-	base.lookPathError = nil
-	assert.False(t, base.IsInstalled())
 }
 
 func TestHowToInstall(t *testing.T) {

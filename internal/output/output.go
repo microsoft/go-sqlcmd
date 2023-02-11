@@ -82,12 +82,8 @@ func (o Output) InfofWithHints(hints []string, format string, a ...any) {
 }
 
 // InfofWithHintExamples logs an info-level message with a given format and
-// arguments a. It also displays additional hints with example usage in the
-// output, using the displayHintExamples helper function. The message is
-// formatted using the ensureEol helper function to ensure that it ends with
-// a newline character. If the logging level is set to Debug, the message is prefixed
-// with "INFO: ". The displayHintExamples helper function formats the hints
-// for display and passes them to the hintCallback function for output.
+// arguments. It also displays additional hints with example usage in the
+// output.
 func (o Output) InfofWithHintExamples(hintExamples [][]string, format string, a ...any) {
 	if o.loggingLevel >= verbosity.Info {
 		format = o.ensureEol(format)

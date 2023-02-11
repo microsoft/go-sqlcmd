@@ -9,13 +9,12 @@ import (
 )
 
 type Base struct {
-	name              string
-	isInstalledCalled bool
-	installed         bool
-	lookPathError     error
-	exeName           string
-	exeFullPath       string
-	description       Description
+	name          string
+	installed     *bool
+	lookPathError error
+	exeName       string
+	exeFullPath   string
+	description   Description
 }
 
 func (t *Base) Init() {
@@ -51,8 +50,8 @@ func (t *Base) Where() string {
 }
 
 func (t *Base) IsInstalled() bool {
-	if t.isInstalledCalled {
-		return t.installed
+	if t.installed != nil {
+		return *t.installed
 	}
 
 	if t.exeName == "" {
@@ -62,12 +61,11 @@ func (t *Base) IsInstalled() bool {
 	t.exeFullPath, t.lookPathError = exec.LookPath(t.exeName)
 
 	if t.lookPathError == nil {
-		t.installed = true
+		t.installed = new(bool)
+		*t.installed = true
 	}
 
-	t.isInstalledCalled = true
-
-	return t.installed
+	return *t.installed
 }
 
 func (t *Base) HowToInstall() string {
@@ -94,7 +92,7 @@ func (t *Base) HowToInstall() string {
 }
 
 func (t *Base) Run(args []string) (int, error) {
-	if !t.isInstalledCalled {
+	if t.installed == nil {
 		panic("Call IsInstalled before Run")
 	}
 
