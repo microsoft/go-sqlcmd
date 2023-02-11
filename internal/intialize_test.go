@@ -11,10 +11,7 @@ import (
 
 func TestInitialize(t *testing.T) {
 	o := output.New(output.Options{HintHandler: func(hints []string) {
-
-	}, ErrorHandler: func(err error) {
-
-	}})
+	}, ErrorHandler: func(err error) {}})
 	options := InitializeOptions{
 		ErrorHandler: func(err error) {
 			if err != nil {
@@ -30,7 +27,6 @@ func TestInitialize(t *testing.T) {
 
 func TestNegInitialize(t *testing.T) {
 	assert.Panics(t, func() {
-
 		options := InitializeOptions{
 			ErrorHandler: nil,
 		}
@@ -40,7 +36,6 @@ func TestNegInitialize(t *testing.T) {
 
 func TestNegInitialize2(t *testing.T) {
 	assert.Panics(t, func() {
-
 		options := InitializeOptions{
 			ErrorHandler: func(err error) {},
 		}
@@ -50,7 +45,6 @@ func TestNegInitialize2(t *testing.T) {
 
 func TestNegInitialize3(t *testing.T) {
 	assert.Panics(t, func() {
-
 		options := InitializeOptions{
 			ErrorHandler: func(err error) {},
 			TraceHandler: func(format string, a ...any) {},
@@ -61,7 +55,6 @@ func TestNegInitialize3(t *testing.T) {
 
 func TestNegInitialize4(t *testing.T) {
 	assert.Panics(t, func() {
-
 		options := InitializeOptions{
 			ErrorHandler: func(err error) {},
 			TraceHandler: func(format string, a ...any) {},
@@ -73,7 +66,6 @@ func TestNegInitialize4(t *testing.T) {
 
 func TestNegInitialize5(t *testing.T) {
 	assert.Panics(t, func() {
-
 		options := InitializeOptions{
 			ErrorHandler: func(err error) {},
 			TraceHandler: func(format string, a ...any) {},

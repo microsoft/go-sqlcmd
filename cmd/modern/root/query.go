@@ -56,11 +56,11 @@ func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 func (c *Query) run() {
 	endpoint, user := config.CurrentContext()
 
-	s := sql.New(false)
+	s := sql.New(sql.SqlOptions{})
 	if c.text == "" {
-		s.Connect(endpoint, user, true)
+		s.Connect(endpoint, user, sql.ConnectOptions{Interactive: true})
 	} else {
-		s.Connect(endpoint, user, false)
+		s.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
 	}
 
 	s.Query(c.text)

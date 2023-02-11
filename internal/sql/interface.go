@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sql
 
 import (
@@ -5,6 +8,10 @@ import (
 )
 
 type Sql interface {
-	Connect(endpoint Endpoint, user *User, interactive bool)
+	Connect(endpoint Endpoint, user *User, options ConnectOptions)
 	Query(text string)
+}
+
+type ConnectOptions struct {
+	Interactive bool
 }

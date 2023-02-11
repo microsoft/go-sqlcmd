@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 // Package credman provides functions for interacting with the Windows Credential
 // Manager API, which allows to read, write, and delete saved credentials on
 // the local machine.

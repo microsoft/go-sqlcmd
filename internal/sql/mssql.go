@@ -16,13 +16,13 @@ import (
 // and user details. The console parameter is used to output messages during
 // the connection process. The function returns a Sqlcmd instance that can
 // be used to run SQL commands on the server.
-func (m *SqlType) Connect(
+func (m *mssql) Connect(
 	endpoint sqlconfig.Endpoint,
 	user *sqlconfig.User,
-	interactive bool,
+	options ConnectOptions,
 ) {
 	v := sqlcmd.InitializeVariables(true)
-	if interactive {
+	if options.Interactive {
 		m.console = console.NewConsole("")
 		defer m.console.Close()
 	} else {
@@ -64,7 +64,7 @@ func (m *SqlType) Connect(
 // the sqlcmd.Sqlcmd object. It sets the standard output and standard error
 // to be the same as the current process, and returns the error if any occurred
 // during the execution of the query.
-func (m *SqlType) Query(text string) {
+func (m *mssql) Query(text string) {
 	if m.console == nil {
 		m.sqlcmd.Query = text
 		m.sqlcmd.SetOutput(os.Stdout)

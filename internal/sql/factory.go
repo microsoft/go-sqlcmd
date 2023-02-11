@@ -1,9 +1,16 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sql
 
-func New(unitTesting bool) Sql {
-	if unitTesting {
-		return &SqlMock{}
+type SqlOptions struct {
+	UnitTesting bool
+}
+
+func New(options SqlOptions) Sql {
+	if options.UnitTesting {
+		return &mock{}
 	} else {
-		return &SqlType{}
+		return &mssql{}
 	}
 }

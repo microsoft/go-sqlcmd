@@ -83,8 +83,8 @@ func TestConnect(t *testing.T) {
 				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 			}
 
-			mssql := New(false)
-			mssql.Connect(tt.args.endpoint, tt.args.user, false)
+			mssql := New(SqlOptions{})
+			mssql.Connect(tt.args.endpoint, tt.args.user, ConnectOptions{})
 			mssql.Query("SELECT @@version")
 		})
 	}

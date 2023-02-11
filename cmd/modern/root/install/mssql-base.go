@@ -314,10 +314,13 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	endpoint, _ := config.CurrentContext()
 
 	// Connect to the instance as `sa` so we can create a new user
+	//
+	// For Unit Testing we use the Docker Hello World container, which
+	// starts much faster than the SQL Server container!
 	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
-		c.sql = sql.New(true)
+		c.sql = sql.New(sql.SqlOptions{UnitTesting: true})
 	} else {
-		c.sql = sql.New(false)
+		c.sql = sql.New(sql.SqlOptions{})
 	}
 
 	c.sql.Connect(
@@ -330,7 +333,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				Password:          secret.Encode(saPassword, c.encryptPassword),
 			},
 			Name: "sa",
-		}, false)
+		}, sql.ConnectOptions{Interactive: false})
 
 	// Download and restore DB if asked
 	defaultDbAlreadyCreated := false
@@ -492,7 +495,11 @@ EXEC(@sql)`
 	return
 }
 
-func (c *MssqlBase) downloadImage(imageName string, output *output.Output, controller *container.Controller) {
+func (c *MssqlBase) downloadImage(
+	imageName string,
+	output *output.Output,
+	controller *container.Controller,
+) {
 	output.Infof("Downloading %v", imageName)
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {

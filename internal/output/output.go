@@ -4,7 +4,7 @@
 // Package Output provides a number of methods for logging and handling
 // errors, including Debugf, Errorf, Fatalf, FatalErr, Infof, Panic, Panicf,
 // Struct, Tracef, and Warnf. These methods allow the caller to specify the
-// desired verbosity level, add newlines to the end of the log message if
+// desired verbosity level, adds a newline to the end of the log message if
 // necessary, and handle errors and hints in a variety of ways.
 //
 // Trace("Something very low level.") - not localized

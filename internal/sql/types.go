@@ -1,13 +1,16 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package sql
 
 import "github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 
-type SqlType struct {
+// mssql implements for SQL Server
+type mssql struct {
 	sqlcmd  *sqlcmd.Sqlcmd
 	console sqlcmd.Console
 }
 
-type SqlMock struct{}
-
-type SqlOptions struct {
-}
+// mock impoements for unit testing which uses a Hello World container (no
+// SQL)
+type mock struct{}

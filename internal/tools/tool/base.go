@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package tool
 
 import (
@@ -84,7 +87,7 @@ func (t *Base) HowToInstall() string {
 	var sb strings.Builder
 
 	sb.WriteString("\n\n")
-	sb.WriteString(fmt.Sprintf("WARNING: %q is not installed on this machine.\n\n", t.name))
+	sb.WriteString(fmt.Sprintf("%q is not installed on this machine.\n\n", t.name))
 	sb.WriteString(fmt.Sprintf("%v\n\n", t.description.Purpose))
 	sb.WriteString(fmt.Sprintf("To install '%v'...\n\n%v\n", t.name, text))
 
