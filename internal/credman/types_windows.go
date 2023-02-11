@@ -23,7 +23,9 @@ type Credential struct {
 }
 
 // CredentialPersistence describes one of three persistence modes of a credential.
-// A detailed description of the available modes can be found on
+// A detailed description of the available modes can be found on:
+//
+//	https://learn.microsoft.com/en-us/windows/win32/api/wincred/ns-wincred-credentiala
 type CredentialPersistence uint32
 
 const (

@@ -48,11 +48,7 @@ func TestCreateEmptyIfNotExists(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() {
-					if r := recover(); r == nil {
-						t.Errorf("The code did not panic")
-					}
-				}()
+				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 			}
 
 			file.CreateEmptyIfNotExists(tt.args.filename)
@@ -78,16 +74,9 @@ func TestExists(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() {
-					if r := recover(); r == nil {
-						t.Errorf("The code did not panic")
-					}
-				}()
+				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 			}
-
-			if gotExists := file.Exists(tt.args.filename); gotExists != tt.wantExists {
-				t.Errorf("Exists() = %v, want %v", gotExists, tt.wantExists)
-			}
+			assert.Equal(t, file.Exists(tt.args.filename), tt.wantExists)
 		})
 	}
 }
@@ -111,10 +100,7 @@ func TestGetContents(t *testing.T) {
 	f := file.OpenFile("test.txt")
 	defer file.CloseFile(f)
 	file.WriteString(f, "test contents")
-	contents := file.GetContents("test.txt")
-	if contents != "test contents" {
-		t.Errorf("Expected contents to be 'test contents', but got '%s'", contents)
-	}
+	assert.Equal(t, file.GetContents("test.txt"), "test contents")
 }
 
 func TestGetContentsBadFileName(t *testing.T) {
@@ -126,9 +112,7 @@ func TestGetContentsBadFileName(t *testing.T) {
 func TestOpenFile(t *testing.T) {
 	f := file.OpenFile("test.txt")
 	_, err := os.Stat("test.txt")
-	if err != nil {
-		t.Error("Expected file to be created, but it does not exist")
-	}
+	assert.NoErrorf(t, err, "Expected file to be created, but it does not exist")
 	file.CloseFile(f)
 	file.Remove("test.txt")
 }
@@ -136,10 +120,7 @@ func TestOpenFile(t *testing.T) {
 func TestWriteString(t *testing.T) {
 	f := file.OpenFile("test.txt")
 	file.WriteString(f, "test contents")
-	contents := file.GetContents("test.txt")
-	if contents != "test contents" {
-		t.Errorf("Expected contents to be 'test contents', but got '%s'", contents)
-	}
+	assert.Equal(t, file.GetContents("test.txt"), "test contents")
 	file.CloseFile(f)
 	file.Remove("test.txt")
 }

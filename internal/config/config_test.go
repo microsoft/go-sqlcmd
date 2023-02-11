@@ -176,9 +176,8 @@ func TestFindUniqueUserName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotUniqueUserName := FindUniqueUserName(tt.args.name); gotUniqueUserName != tt.wantUniqueUserName {
-				t.Errorf("FindUniqueUserName() = %v, want %v", gotUniqueUserName, tt.wantUniqueUserName)
-			}
+			gotUniqueUserName := FindUniqueUserName(tt.args.name)
+			assert.Equal(t, gotUniqueUserName, tt.wantUniqueUserName, "FindUniqueUserName() = %v, want %v", gotUniqueUserName, tt.wantUniqueUserName)
 		})
 	}
 }
@@ -194,9 +193,8 @@ func TestGetUser(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotUser := GetUser(tt.args.name); !reflect.DeepEqual(gotUser, tt.wantUser) {
-				t.Errorf("GetUser() = %v, want %v", gotUser, tt.wantUser)
-			}
+			gotUser := GetUser(tt.args.name)
+			assert.Truef(t, reflect.DeepEqual(gotUser, tt.wantUser), "GetUser() = %v, want %v", gotUser, tt.wantUser)
 		})
 	}
 }
@@ -228,9 +226,8 @@ func TestUserExists(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotExists := UserNameExists(tt.args.name); gotExists != tt.wantExists {
-				t.Errorf("UserNameExists() = %v, want %v", gotExists, tt.wantExists)
-			}
+			gotExists := UserNameExists(tt.args.name)
+			assert.Equal(t, gotExists, tt.wantExists, "UserNameExists() = %v, want %v", gotExists, tt.wantExists)
 		})
 	}
 }
@@ -246,9 +243,8 @@ func TestUserNameExists(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotExists := UserNameExists(tt.args.name); gotExists != tt.wantExists {
-				t.Errorf("UserNameExists() = %v, want %v", gotExists, tt.wantExists)
-			}
+			gotExists := UserNameExists(tt.args.name)
+			assert.Equal(t, gotExists, tt.wantExists, "UserNameExists() = %v, want %v", gotExists, tt.wantExists)
 		})
 	}
 }
@@ -264,9 +260,8 @@ func Test_userOrdinal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotOrdinal := userOrdinal(tt.args.name); gotOrdinal != tt.wantOrdinal {
-				t.Errorf("userOrdinal() = %v, want %v", gotOrdinal, tt.wantOrdinal)
-			}
+			gotOrdinal := userOrdinal(tt.args.name)
+			assert.Equal(t, gotOrdinal, tt.wantOrdinal, "userOrdinal() = %v, want %v", gotOrdinal, tt.wantOrdinal)
 		})
 	}
 }

@@ -8,3 +8,6 @@ type SqlType struct {
 }
 
 type SqlMock struct{}
+
+type SqlOptions struct {
+}

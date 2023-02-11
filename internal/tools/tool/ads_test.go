@@ -1,31 +1,17 @@
 package tool
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestAds_Init(t *testing.T) {
-	ads := &Ads{}
+	ads := &AzureDataStudio{}
 	ads.Init()
-
-	if ads.Name() != "ads" {
-		t.Errorf("ads.Init() = %v, want %v", ads.Name(), "ads")
-	}
-
-	// check Description
-	if ads.toolDescription.Name != "ads" {
-		t.Errorf("ads.Description().Name = %v, want %v", ads.toolDescription.Name, "ads")
-	}
-	if len(ads.toolDescription.Purpose) == 0 {
-		t.Errorf("ads.Description().Description is empty")
-	}
-	if len(ads.toolDescription.InstallText.Windows) == 0 {
-		t.Errorf("ads.Description().InstallText.Windows is empty")
-	}
-	if len(ads.toolDescription.InstallText.Linux) == 0 {
-		t.Errorf("ads.Description().InstallText.Linux is empty")
-	}
-	if len(ads.toolDescription.InstallText.Mac) == 0 {
-		t.Errorf("ads.Description().InstallText.Mac is empty")
-	}
+	assert.Equal(t, ads.Name(), "ads", "ads.Init() = %v, want %v", ads.Name(), "ads")
+	assert.Equal(t, ads.description.Name, "ads", "ads.Description().Name = %v, want %v", ads.description.Name, "ads")
+	assert.NotEqual(t, len(ads.description.Purpose), 0, "ads.Description().Description is empty")
+	assert.NotEqual(t, len(ads.description.InstallText.Windows), 0, "ads.Description().InstallText.Windows is empty")
+	assert.NotEqual(t, len(ads.description.InstallText.Linux), 0, "ads.Description().InstallText.Linux is empty")
+	assert.NotEqual(t, len(ads.description.InstallText.Mac), 0, "ads.Description().InstallText.Mac is empty")
 }

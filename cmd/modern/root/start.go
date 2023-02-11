@@ -11,8 +11,6 @@ import (
 
 type Start struct {
 	cmdparser.Cmd
-
-	errorLogEntryToWaitFor string
 }
 
 func (c *Start) DefineCommand(...cmdparser.CommandOptions) {
@@ -28,12 +26,6 @@ func (c *Start) DefineCommand(...cmdparser.CommandOptions) {
 	}
 
 	c.Cmd.DefineCommand(options)
-	c.AddFlag(cmdparser.FlagOptions{
-		String:        &c.errorLogEntryToWaitFor,
-		DefaultString: "Recovery is complete",
-		Name:          "errorlog-wait-line",
-		Usage:         "Line in errorlog to wait for before exiting this process",
-	})
 }
 
 func (c *Start) run() {
@@ -56,17 +48,6 @@ func (c *Start) run() {
 		)
 		err := controller.ContainerStart(id)
 		c.CheckErr(err)
-
-		// BUG(stuartpa): Even if we block here for the final entry in the errorlog
-		// "Recovery Complete", a sqlcmd query will still fail for a few seconds
-		// with:
-		//  sqlcmd query "SELECT @@version"
-		//  EOF
-		//  Error: EOF
-		// I'm not sure what else to block here for before returning to ensure
-		// a `sqlcmd query` will work
-		controller.ContainerWaitForLogEntry(
-			id, c.errorLogEntryToWaitFor)
 	} else {
 		output.FatalfWithHintExamples([][]string{
 			{"Create new context with a sql container ", "sqlcmd create mssql"},

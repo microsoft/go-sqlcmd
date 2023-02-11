@@ -56,9 +56,7 @@ func Exists(filename string) (exists bool) {
 
 func GetContents(filename string) string {
 	b, err := ioutil.ReadFile(filename)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 
 	return string(b)
 }

@@ -5,6 +5,9 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 )
 
+// Type Ads is used to implement the "open ads" which launches Azure
+// Data Studio and establishes a connection to the SQL Server for the current
+// context
 type Ads struct {
 	cmdparser.Cmd
 }

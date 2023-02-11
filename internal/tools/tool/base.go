@@ -15,7 +15,7 @@ type Base struct {
 	lookPathError     error
 	exeName           string
 	exeFullPath       string
-	toolDescription   Description
+	description       Description
 }
 
 func (t *Base) Init() {
@@ -42,8 +42,8 @@ func (t *Base) SetExeName(exeName string) {
 	t.exeName = exeName
 }
 
-func (t *Base) SetToolDescription(toolYaml Description) {
-	t.toolDescription = toolYaml
+func (t *Base) SetToolDescription(description Description) {
+	t.description = description
 }
 
 func (t *Base) Where() string {
@@ -74,11 +74,11 @@ func (t *Base) HowToInstall() string {
 	var text string
 	switch runtime.GOOS {
 	case "windows":
-		text = t.toolDescription.InstallText.Windows
+		text = t.description.InstallText.Windows
 	case "darwin":
-		text = t.toolDescription.InstallText.Mac
+		text = t.description.InstallText.Mac
 	case "linux":
-		text = t.toolDescription.InstallText.Linux
+		text = t.description.InstallText.Linux
 	default:
 		panic(fmt.Sprintf("Not a supported platform (%v)", runtime.GOOS))
 	}
@@ -87,7 +87,7 @@ func (t *Base) HowToInstall() string {
 
 	sb.WriteString("\n\n")
 	sb.WriteString(fmt.Sprintf("WARNING: %q is not installed on this machine.\n\n", t.name))
-	sb.WriteString(fmt.Sprintf("%v\n\n", t.toolDescription.Purpose))
+	sb.WriteString(fmt.Sprintf("%v\n\n", t.description.Purpose))
 	sb.WriteString(fmt.Sprintf("To install '%v'...\n\n%v\n", t.name, text))
 
 	return sb.String()

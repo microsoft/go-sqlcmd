@@ -10,6 +10,8 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"runtime"
+	"strings"
 )
 
 // Ads implements the `sqlcmd open ads` command. It opens
@@ -70,19 +72,27 @@ func (c *Ads) ensureContainerIsRunning(endpoint sqlconfig.Endpoint) {
 }
 
 // launchAds launches the Azure Data Studio using the specified server and username.
-func (c *Ads) launchAds(localhost string, port int, username string) {
+func (c *Ads) launchAds(host string, port int, username string) {
 	output := c.Output()
 	args := []string{
 		"-r",
 		fmt.Sprintf(
 			"--server=%s", fmt.Sprintf(
 				"%s,%d",
-				localhost,
+				host,
 				port)),
 	}
 
 	if username != "" {
-		args = append(args, fmt.Sprintf("--user=%s", username))
+
+		// Here's a fun SQL Server behavior  - it allows you to create database
+		// and login names that include the " character. SSMS escapes those
+		// with \" when invoking ADS on the command line, we do the same here
+		args = append(args, fmt.Sprintf("--user=%s", strings.Replace(username, `"`, `\"`, -1)))
+	} else {
+		if runtime.GOOS == "windows" {
+			args = append(args, "--integrated")
+		}
 	}
 
 	tool := tools.NewTool("ads")

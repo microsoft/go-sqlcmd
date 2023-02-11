@@ -32,14 +32,8 @@ func TestPersistCredentialForAds(t *testing.T) {
 
 	// Test if the correct target name is generated
 	expectedTargetName := "Microsoft.SqlTools|itemtype:Profile|id:providerName:MSSQL|applicationName:azdata|authenticationType:SqlLogin|database:|server:localhost,1433|user:testuser"
-	if ads.credential.TargetName != expectedTargetName {
-		t.Errorf("Expected target name to be %s, got %s", expectedTargetName, ads.credential.TargetName)
-	}
-
-	// Test if the correct username is set
-	if ads.credential.UserName != user.BasicAuth.Username {
-		t.Errorf("Expected username to be %s, got %s", user.BasicAuth.Username, ads.credential.UserName)
-	}
+	assert.Equal(t, ads.credential.TargetName, expectedTargetName, "Expected target name to be %s, got %s", expectedTargetName, ads.credential.TargetName)
+	assert.Equal(t, ads.credential.UserName, user.BasicAuth.Username, "Expected username to be %s, got %s", user.BasicAuth.Username, ads.credential.UserName)
 
 	// Test if the password is decoded correctly
 	decodedPassword := secret.DecodeAsUtf16(user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted)

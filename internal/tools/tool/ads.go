@@ -6,11 +6,11 @@ import (
 	"path/filepath"
 )
 
-type Ads struct {
+type AzureDataStudio struct {
 	Base
 }
 
-func (t *Ads) Init() {
+func (t *AzureDataStudio) Init() {
 	t.Base.SetName("ads")
 	userProfile := os.Getenv("USERPROFILE")
 	programFiles := os.Getenv("ProgramFiles")
@@ -59,6 +59,6 @@ More information can be found here:
 		}})
 }
 
-func (t *Ads) Run(args []string) (int, error) {
+func (t *AzureDataStudio) Run(args []string) (int, error) {
 	return t.Base.Run(args)
 }

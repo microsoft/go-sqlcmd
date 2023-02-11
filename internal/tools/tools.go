@@ -5,5 +5,5 @@ import (
 )
 
 var tools = []tool.Tool{
-	&tool.Ads{},
+	&tool.AzureDataStudio{},
 }
