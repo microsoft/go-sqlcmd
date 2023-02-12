@@ -513,8 +513,6 @@ EXEC(@sql)`
 		userName,
 		fileNameWithNoExt)
 	c.query(alterDefaultDb)
-
-	return
 }
 
 func (c *MssqlBase) downloadImage(
