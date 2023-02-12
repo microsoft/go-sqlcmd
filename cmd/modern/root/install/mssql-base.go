@@ -182,8 +182,8 @@ func (c *MssqlBase) AddFlags(
 	addFlag(cmdparser.FlagOptions{
 		Int:        &c.port,
 		DefaultInt: 0,
-		Name:       "port-override",
-		Usage:      "Port override (next available port from 1433 upwards used by default)",
+		Name:       "port",
+		Usage:      "Port (next available port from 1433 upwards used by default)",
 	})
 
 	addFlag(cmdparser.FlagOptions{
@@ -328,16 +328,16 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Interactive: false})
 
+	c.createNonSaUser(userName, password)
+
 	// Download and restore DB if asked
-	defaultDbAlreadyCreated := false
 	if c.usingDatabaseUrl != "" {
-		defaultDbAlreadyCreated = c.downloadAndRestoreDb(
+		c.downloadAndRestoreDb(
 			controller,
 			containerId,
+			userName,
 		)
 	}
-
-	c.createNonSaUser(userName, password, defaultDbAlreadyCreated)
 
 	hints := [][]string{
 		{"Open in Azure Data Studio", "sqlcmd open ads"},
@@ -402,7 +402,6 @@ func (c *MssqlBase) query(commandText string) {
 func (c *MssqlBase) createNonSaUser(
 	userName string,
 	password string,
-	defaultDbAlreadyCreated bool,
 ) {
 	output := c.Cmd.Output()
 
@@ -411,11 +410,9 @@ func (c *MssqlBase) createNonSaUser(
 	if c.defaultDatabase != "" {
 		defaultDatabase = c.defaultDatabase
 
-		if !defaultDbAlreadyCreated {
-			// Create the default database, if it isn't a downloaded database
-			output.Infof("Creating default database [%s]", defaultDatabase)
-			c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
-		}
+		// Create the default database, if it isn't a downloaded database
+		output.Infof("Creating default database [%s]", defaultDatabase)
+		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
 	const createLogin = `CREATE LOGIN [%s]
@@ -445,7 +442,8 @@ CHECK_POLICY=OFF`
 func (c *MssqlBase) downloadAndRestoreDb(
 	controller *container.Controller,
 	containerId string,
-) (defaultDatabaseAlreadyCreated bool) {
+	userName string,
+) {
 	output := c.Cmd.Output()
 
 	u, err := url.Parse(c.usingDatabaseUrl)
@@ -456,7 +454,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	// Download file from URL into container
 	output.Infof("Downloading %s from %s", file, u.Hostname())
 
-	temporaryFolder := "/tmp"
+	temporaryFolder := "/var/opt/mssql/backup"
 
 	controller.DownloadFile(
 		containerId,
@@ -502,7 +500,7 @@ DECLARE @fileListTable TABLE (
 INSERT INTO @fileListTable
 EXEC('RESTORE FILELISTONLY FROM DISK = ''%s/%s''')
 SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''%s/%s'' WITH '
-SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/sql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
+SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
 FROM @fileListTable
 WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
@@ -510,10 +508,12 @@ EXEC(@sql)`
 
 	c.query(fmt.Sprintf(text, temporaryFolder, file, fileNameWithNoExt, temporaryFolder, file))
 
-	if c.defaultDatabase == "" {
-		c.defaultDatabase = fileNameWithNoExt
-		defaultDatabaseAlreadyCreated = true
-	}
+	alterDefaultDb := fmt.Sprintf(
+		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
+		userName,
+		fileNameWithNoExt)
+	c.query(alterDefaultDb)
+
 	return
 }
 
@@ -571,8 +571,5 @@ func (c *MssqlBase) validateDbName(s string) bool {
 			return false
 		}
 	}
-	if strings.ContainsAny(s, "'\"`'") {
-		return false
-	}
-	return true
+	return !strings.ContainsAny(s, "'\"`'")
 }

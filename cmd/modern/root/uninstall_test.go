@@ -21,7 +21,7 @@ func TestUninstallWithUserDbPresent(t *testing.T) {
 	cmdparser.TestCmd[*edge.GetTags]()
 	cmdparser.TestCmd[*install.Edge](
 		fmt.Sprintf(
-			`--accept-eula --port-override 1500 --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
+			`--accept-eula --port 1500 --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
 			registry,
 			repo))
 	cmdparser.TestCmd[*Stop]()
