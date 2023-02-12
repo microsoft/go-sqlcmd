@@ -33,7 +33,7 @@ func TestDisplayHints(t *testing.T) {
 	assert.Equal(t, pal.LineBreak()+
 		"HINT:"+
 		pal.LineBreak()+
-		"  1. This is a hint"+pal.LineBreak(), buf.String())
+		"  1. This is a hint"+pal.LineBreak()+pal.LineBreak(), buf.String())
 }
 
 func TestCheckErr(t *testing.T) {

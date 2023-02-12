@@ -5,7 +5,7 @@ package pal
 
 import "os"
 
-func envVarCommand() string {
+func CreateEnvVarKeyword() string {
 	return "export"
 }
 

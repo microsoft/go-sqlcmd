@@ -69,6 +69,7 @@ func (m *mssql) Query(text string) {
 		m.sqlcmd.Query = text
 		m.sqlcmd.SetOutput(os.Stdout)
 		m.sqlcmd.SetError(os.Stderr)
+		trace("Running query: %v", text)
 		err := m.sqlcmd.Run(true, false)
 		checkErr(err)
 	} else {

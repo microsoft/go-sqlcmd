@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"fmt"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
@@ -224,19 +225,24 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	return strings.Split(string(stdout), "\n")
 }
 
-func (c Controller) DownloadFile(id string, src string, dest string) {
+func (c Controller) DownloadFile(id string, src string, destFolder string) {
 	if id == "" {
 		panic("Must pass in non-empty id")
 	}
 	if src == "" {
 		panic("Must pass in non-empty src")
 	}
-	if dest == "" {
-		panic("Must pass in non-empty dest")
+	if destFolder == "" {
+		panic("Must pass in non-empty destFolder")
 	}
 
-	cmd := []string{"mkdir", "/var/opt/sql/backup"}
-	c.runCmdInContainer(id, cmd)
+	cmd := []string{"mkdir", "--parents", destFolder}
+	_, stderr := c.runCmdInContainer(id, cmd)
+	if len(stderr) > 0 {
+		trace("Debugging info, running `du /var/opt`:")
+		c.runCmdInContainer(id, []string{"du", "/var/opt"})
+		checkErr(fmt.Errorf("Error creating backup directory: %s", stderr))
+	}
 
 	_, file := filepath.Split(src)
 
@@ -244,19 +250,21 @@ func (c Controller) DownloadFile(id string, src string, dest string) {
 	cmd = []string{
 		"wget",
 		"-O",
-		"/var/opt/sql/backup/" + file, // not using filepath.Join here, this is in the *nix container. always /
+		destFolder + "/" + file, // not using filepath.Join here, this is in the *nix container. always /
 		src,
 	}
 
 	c.runCmdInContainer(id, cmd)
 }
 
-func (c Controller) runCmdInContainer(id string, cmd []string) []byte {
+func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) {
+	trace("Running command in container: " + strings.Join(cmd, " "))
+
 	response, err := c.cli.ContainerExecCreate(
 		context.Background(),
 		id,
 		types.ExecConfig{
-			AttachStderr: false,
+			AttachStderr: true,
 			AttachStdout: true,
 			Cmd:          cmd,
 		},
@@ -285,7 +293,13 @@ func (c Controller) runCmdInContainer(id string, cmd []string) []byte {
 	checkErr(err)
 	stdout, err := io.ReadAll(&outBuf)
 	checkErr(err)
-	return stdout
+	stderr, err := io.ReadAll(&errBuf)
+	checkErr(err)
+
+	trace("Stdout: " + string(stdout))
+	trace("Stderr: " + string(stderr))
+
+	return stdout, stderr
 }
 
 // ContainerRunning returns true if the container with the given ID is running.

@@ -49,7 +49,7 @@ type MssqlBase struct {
 
 	port int
 
-	attachDatabaseUrl string
+	usingDatabaseUrl string
 
 	unitTesting bool
 
@@ -187,7 +187,7 @@ func (c *MssqlBase) AddFlags(
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.attachDatabaseUrl,
+		String:        &c.usingDatabaseUrl,
 		DefaultString: "",
 		Name:          "using",
 		Usage:         "Download (into container) and attach database (.bak) from URL",
@@ -210,7 +210,7 @@ func (c *MssqlBase) Run() {
 	if !c.acceptEula && viper.GetString("ACCEPT_EULA") == "" {
 		output.FatalWithHints(
 			[]string{"Either, add the --accept-eula flag to the command-line",
-				"Or, set the environment variable SQLCMD_ACCEPT_EULA=YES "},
+				fmt.Sprintf("Or, set the environment variable i.e. %s SQLCMD_ACCEPT_EULA=YES ", pal.CreateEnvVarKeyword())},
 			"EULA not accepted")
 	}
 
@@ -247,20 +247,15 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.port = config.FindFreePortForTds()
 	}
 
-	if c.attachDatabaseUrl != "" {
+	// Do an early exit if url doesn't exist
+	if c.usingDatabaseUrl != "" {
+		c.validateUsingUrlExists()
+	}
 
-		// At the moment we only support attaching .bak files, but we should
-		// support .bacpacs and .mdfs in the future
-		if _, file := filepath.Split(c.attachDatabaseUrl); filepath.Ext(file) != ".bak" {
-			output.FatalfWithHints(
-				[]string{
-					"File must be a .bak file",
-				},
-				"Invalid file type")
+	if c.defaultDatabase != "" {
+		if !c.validateDbName(c.defaultDatabase) {
+			output.Fatalf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase)
 		}
-
-		// Verify the url actually exists, and early exit if it doesn't
-		urlExists(c.attachDatabaseUrl, output)
 	}
 
 	controller := container.NewController()
@@ -320,24 +315,22 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
 		c.sql = sql.New(sql.SqlOptions{UnitTesting: true})
 	} else {
-		c.sql = sql.New(sql.SqlOptions{})
+		c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
 	}
 
-	c.sql.Connect(
-		endpoint,
-		&sqlconfig.User{
-			AuthenticationType: "basic",
-			BasicAuth: &sqlconfig.BasicAuthDetails{
-				Username:          "sa",
-				PasswordEncrypted: c.encryptPassword,
-				Password:          secret.Encode(saPassword, c.encryptPassword),
-			},
-			Name: "sa",
-		}, sql.ConnectOptions{Interactive: false})
+	saUser := &sqlconfig.User{
+		AuthenticationType: "basic",
+		BasicAuth: &sqlconfig.BasicAuthDetails{
+			Username:          "sa",
+			PasswordEncrypted: c.encryptPassword,
+			Password:          secret.Encode(saPassword, c.encryptPassword)},
+		Name: "sa"}
+
+	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Interactive: false})
 
 	// Download and restore DB if asked
 	defaultDbAlreadyCreated := false
-	if c.attachDatabaseUrl != "" {
+	if c.usingDatabaseUrl != "" {
 		defaultDbAlreadyCreated = c.downloadAndRestoreDb(
 			controller,
 			containerId,
@@ -369,6 +362,33 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		"Now ready for client connections on port %d",
 		c.port,
 	)
+}
+
+func (c *MssqlBase) validateUsingUrlExists() {
+	output := c.Cmd.Output()
+	u, err := url.Parse(c.usingDatabaseUrl)
+	c.CheckErr(err)
+
+	if u.Scheme != "http" && u.Scheme != "https" {
+		output.FatalfWithHints(
+			[]string{
+				"--using URL must be http or https",
+			},
+			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
+	}
+
+	// At the moment we only support attaching .bak files, but we should
+	// support .bacpacs and .mdfs in the future
+	if _, file := filepath.Split(c.usingDatabaseUrl); filepath.Ext(file) != ".bak" {
+		output.FatalfWithHints(
+			[]string{
+				"--using file URL must be a .bak file",
+			},
+			"Invalid --using file type")
+	}
+
+	// Verify the url actually exists, and early exit if it doesn't
+	urlExists(c.usingDatabaseUrl, output)
 }
 
 func (c *MssqlBase) query(commandText string) {
@@ -428,18 +448,20 @@ func (c *MssqlBase) downloadAndRestoreDb(
 ) (defaultDatabaseAlreadyCreated bool) {
 	output := c.Cmd.Output()
 
-	u, err := url.Parse(c.attachDatabaseUrl)
+	u, err := url.Parse(c.usingDatabaseUrl)
 	c.CheckErr(err)
-	_, file := filepath.Split(c.attachDatabaseUrl)
+	_, file := filepath.Split(c.usingDatabaseUrl)
 	fileNameWithNoExt := strings.TrimSuffix(file, filepath.Ext(file))
 
 	// Download file from URL into container
 	output.Infof("Downloading %s from %s", file, u.Hostname())
 
+	temporaryFolder := "/tmp"
+
 	controller.DownloadFile(
 		containerId,
-		c.attachDatabaseUrl,
-		"/var/opt/sql/backup",
+		c.usingDatabaseUrl,
+		temporaryFolder,
 	)
 
 	// Restore database from file
@@ -478,15 +500,15 @@ DECLARE @fileListTable TABLE (
 )
 
 INSERT INTO @fileListTable
-EXEC('RESTORE FILELISTONLY FROM DISK = ''/var/opt/sql/backup/%s''')
-SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''/var/opt/sql/backup/%s'' WITH '
+EXEC('RESTORE FILELISTONLY FROM DISK = ''%s/%s''')
+SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''%s/%s'' WITH '
 SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/sql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
 FROM @fileListTable
 WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
 EXEC(@sql)`
 
-	c.query(fmt.Sprintf(text, file, fileNameWithNoExt, file))
+	c.query(fmt.Sprintf(text, temporaryFolder, file, fileNameWithNoExt, temporaryFolder, file))
 
 	if c.defaultDatabase == "" {
 		c.defaultDatabase = fileNameWithNoExt
@@ -535,4 +557,22 @@ func (c *MssqlBase) generatePassword() (password string) {
 		c.passwordSpecialCharSet)
 
 	return
+}
+
+// validateDbName checks if the database name is something that is likely
+// to work seamlessly through all tools, connection strings etc.
+//
+// TODO: Right now this is any ASCII char except for quotes,
+// but this needs to be opened up for Kanji characters etc. with a full test suite
+// to ensure the database name is valid in all the places it is passed to.
+func (c *MssqlBase) validateDbName(s string) bool {
+	for _, b := range []byte(s) {
+		if b > 127 {
+			return false
+		}
+	}
+	if strings.ContainsAny(s, "'\"`'") {
+		return false
+	}
+	return true
 }

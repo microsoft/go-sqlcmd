@@ -96,7 +96,7 @@ func (c *Ads) launchAds(host string, port int, username string) {
 	}
 
 	tool := tools.NewTool("ads")
-	if tool.IsInstalled() {
+	if !tool.IsInstalled() {
 		output.Fatalf(tool.HowToInstall())
 	} else {
 		_, err := tool.Run(args)

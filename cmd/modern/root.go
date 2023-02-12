@@ -87,13 +87,16 @@ func (c *Root) addGlobalFlags() {
 		Usage:         "Configuration file",
 	})
 
+	/* BUG:(stuartpa) - At the moment this is a top level flag, but it doesn't
+	work with all sub-commands (e.g. query), so removing for now.
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.outputType,
-		DefaultString: "yaml",
+		DefaultString: "json",
 		Name:          "output",
 		Shorthand:     "o",
 		Usage:         "output type (yaml, json or xml)",
 	})
+	*/
 
 	c.AddFlag(cmdparser.FlagOptions{
 		Int:        (*int)(&c.loggingLevel),
