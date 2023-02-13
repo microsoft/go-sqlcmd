@@ -5,13 +5,14 @@ package open
 
 import (
 	"fmt"
+	"runtime"
+	"strings"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
-	"runtime"
-	"strings"
 )
 
 // Ads implements the `sqlcmd open ads` command. It opens
@@ -99,6 +100,7 @@ func (c *Ads) launchAds(host string, port int, username string) {
 	if !tool.IsInstalled() {
 		output.Fatalf(tool.HowToInstall())
 	} else {
+		output.Infof("Press Ctrl+C to exit this process...")
 		_, err := tool.Run(args)
 		c.CheckErr(err)
 	}
