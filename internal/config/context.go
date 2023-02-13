@@ -6,15 +6,17 @@ package config
 import (
 	"errors"
 	"fmt"
-	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"strconv"
+
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 )
 
-// AddContext adds the context to the sqlconfig file.
+// AddContext adds the context to the sqlconfig file, and returns the context
+// name, which maybe uniquified, if the passed in name already exists.
 //
 // Before calling this method, verify the Endpoint exists and give the user
 // a descriptive error, (this function will panic, which should never be hit)
-func AddContext(context Context) {
+func AddContext(context Context) string {
 	if !EndpointExists(context.Endpoint) {
 		panic("Endpoint doesn't exist")
 	}
@@ -25,6 +27,8 @@ func AddContext(context Context) {
 	context.Name = FindUniqueContextName(context.Name, username)
 	config.Contexts = append(config.Contexts, context)
 	Save()
+
+	return context.Name
 }
 
 // CurrentContextName returns the name of the current context in the configuration.

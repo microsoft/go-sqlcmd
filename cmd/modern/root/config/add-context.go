@@ -5,6 +5,7 @@ package config
 
 import (
 	"fmt"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -82,7 +83,7 @@ func (c *AddContext) run() {
 		}
 	}
 
-	config.AddContext(context)
+	context.Name = config.AddContext(context)
 	config.SetCurrentContextName(context.Name)
 	output.InfofWithHintExamples([][]string{
 		{"Open in Azure Data Studio", "sqlcmd open ads"},
