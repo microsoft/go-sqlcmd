@@ -143,13 +143,13 @@ stages:
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-x64.zip'
 
-      - task: ArchiveFiles@2
-        displayName: Zip Windows arm binary
-        inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
-          includeRootFolder: false
-          archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm.zip'
+      #- task: ArchiveFiles@2
+      #  displayName: Zip Windows arm binary
+      #  inputs:
+      #    rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
+      #    includeRootFolder: false
+      #    archiveType: 'zip'
+      #    archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm.zip'
   
       - task: ArchiveFiles@2
         displayName: Tar Linux amd64 binary
