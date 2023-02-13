@@ -18,5 +18,3 @@ type GlobalOptions struct {
 	Encrypt                string
 	DriverLogLevel         int
 }
-
-var globalOptions = &GlobalOptions{}
