@@ -42,12 +42,14 @@ stages:
             os:
             arch: arm64
             binaryName: 'sqlcmd'
-          windowsArm:
-            imageName: 'windows-latest'
-            artifact: WindowsArm
-            os:
-            arch: arm
-            binaryName: 'sqlcmd.exe'
+          # BUG: https://github.com/microsoft/go-sqlcmd/issues/224
+          # Windows ARM build failing in named pipes code
+          #windowsArm:
+          #  imageName: 'windows-latest'
+          #  artifact: WindowsArm
+          #  os:
+          #  arch: arm
+          #  binaryName: 'sqlcmd.exe'
           linuxs390x:
             imageName: 'ubuntu-latest'
             artifact: LinuxS390x
