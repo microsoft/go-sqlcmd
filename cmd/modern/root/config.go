@@ -21,6 +21,7 @@ func (c *Config) DefineCommand(...cmdparser.CommandOptions) {
 		Short:       `Modify sqlconfig files using subcommands like "sqlcmd config use-context mssql"`,
 		SubCommands: c.SubCommands(),
 	}
+
 	c.Cmd.DefineCommand(options)
 }
 

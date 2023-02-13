@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -190,9 +190,10 @@ func Test(t *testing.T) {
 }
 
 func Test2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	topLevel := New[*TopLevelCommand](dependency.Options{})
-	topLevel.SetArgsForUnitTesting([]string{})
-	topLevel.CheckErr(errors.New("foo"))
+		topLevel := New[*TopLevelCommand](dependency.Options{})
+		topLevel.SetArgsForUnitTesting([]string{})
+		topLevel.CheckErr(errors.New("foo"))
+	})
 }

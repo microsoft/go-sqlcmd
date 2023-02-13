@@ -6,7 +6,7 @@ package pal
 import (
 	"errors"
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -19,20 +19,16 @@ func TestLineBreak(t *testing.T) {
 }
 
 func TestNegLineBreak(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	lineBreak = ""
-	LineBreak()
+	assert.Panics(t, func() {
+		lineBreak = ""
+		LineBreak()
+	})
 }
 
 func TestCheckErr(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
-
-	checkErr(errors.New("test"))
+	assert.Panics(t, func() {
+		checkErr(errors.New("test"))
+	})
 }
 
 func TestUserName(t *testing.T) {

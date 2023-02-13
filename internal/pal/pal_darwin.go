@@ -5,7 +5,7 @@ package pal
 
 import "os"
 
-func envVarCommand() string {
+func CreateEnvVarKeyword() string {
 	return "export"
 }
 
@@ -15,6 +15,10 @@ func cliQuoteIdentifier() string {
 
 func cliCommandSeparator() string {
 	return `; `
+}
+
+func defaultLineBreak() string {
+	return "\r\n"
 }
 
 func username() string {

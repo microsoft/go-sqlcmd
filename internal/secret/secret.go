@@ -6,7 +6,9 @@
 package secret
 
 import (
+	"bytes"
 	"encoding/base64"
+	"unicode/utf16"
 )
 
 // Encode takes a plain text string and a boolean indicating whether or not to
@@ -28,7 +30,7 @@ func Encode(plainText string, encryptPassword bool) (cipherText string) {
 	return
 }
 
-// Decode takes a cipher text and a boolean indicating whether or not to decrypt
+// Decode takes a cipher text and a boolean indicating whether to decrypt
 // the cipher text using a password, and returns the resulting plain text.
 // If the cipher text is an empty string, this function will panic.
 func Decode(cipherText string, decryptPassword bool) (plainText string) {
@@ -46,4 +48,23 @@ func Decode(cipherText string, decryptPassword bool) (plainText string) {
 	}
 
 	return
+}
+
+// DecodeAsUtf16 takes a cipher text and a boolean indicating whether to decrypt
+// and returns the resulting plain text as a byte array in UTF-16 format which
+// is required when passing the secret to applications written using managed
+// code (C#), such as Azure Data Studio.
+func DecodeAsUtf16(cipherText string, decryptPassword bool) []byte {
+	var buf bytes.Buffer
+	secret := Decode(cipherText, decryptPassword)
+	runes := utf16.Encode([]rune(secret))
+
+	var b [2]byte
+	for _, r := range runes {
+		b[1] = byte(r >> 8)
+		b[0] = byte(r & 255)
+		buf.Write(b[:])
+	}
+
+	return buf.Bytes()
 }

@@ -4,7 +4,7 @@
 // Package Output provides a number of methods for logging and handling
 // errors, including Debugf, Errorf, Fatalf, FatalErr, Infof, Panic, Panicf,
 // Struct, Tracef, and Warnf. These methods allow the caller to specify the
-// desired verbosity level, add newlines to the end of the log message if
+// desired verbosity level, adds a newline to the end of the log message if
 // necessary, and handle errors and hints in a variety of ways.
 //
 // Trace("Something very low level.") - not localized
@@ -54,8 +54,9 @@ func (o Output) Fatalf(format string, a ...any) {
 }
 
 func (o Output) FatalfErrorWithHints(err error, hints []string, format string, a ...any) {
-	o.fatalf(hints, format, a...)
-	o.errorCallback(err)
+	o.hintCallback(hints)
+	s := fmt.Sprintf(format, a...)
+	o.errorCallback(fmt.Errorf(s+": %w", err))
 }
 
 func (o Output) FatalfWithHints(hints []string, format string, a ...any) {
@@ -81,12 +82,8 @@ func (o Output) InfofWithHints(hints []string, format string, a ...any) {
 }
 
 // InfofWithHintExamples logs an info-level message with a given format and
-// arguments a. It also displays additional hints with example usage in the
-// output, using the displayHintExamples helper function. The message is
-// formatted using the ensureEol helper function to ensure that it ends with
-// a newline character. If the logging level is set to Debug, the message is prefixed
-// with "INFO: ". The displayHintExamples helper function formats the hints
-// for display and passes them to the hintCallback function for output.
+// arguments. It also displays additional hints with example usage in the
+// output.
 func (o Output) InfofWithHintExamples(hintExamples [][]string, format string, a ...any) {
 	if o.loggingLevel >= verbosity.Info {
 		format = o.ensureEol(format)
