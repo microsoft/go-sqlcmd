@@ -17,6 +17,7 @@ import (
 	"github.com/spf13/viper"
 	"net/url"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -292,10 +293,9 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	)
 
 	output.Infof(
-		"Created context %q in %q, configuring user account...",
+		"Created context %q in \"%s\", configuring user account...",
 		config.CurrentContextName(),
-		config.GetConfigFileUsed(),
-	)
+		config.GetConfigFileUsed())
 
 	controller.ContainerWaitForLogEntry(
 		containerId, c.errorLogEntryToWaitFor)
@@ -339,10 +339,15 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		)
 	}
 
-	hints := [][]string{
-		{"Open in Azure Data Studio", "sqlcmd open ads"},
-		{"Run a query", "sqlcmd query \"SELECT @@version\""},
-		{"Start interactive session", "sqlcmd query"}}
+	hints := [][]string{}
+
+	// TODO: sqlcmd open ads only support on Windows right now, add Mac support
+	if runtime.GOOS == "windows" {
+		hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
+	}
+
+	hints = append(hints, []string{"Run a query", "sqlcmd query \"SELECT @@version\""})
+	hints = append(hints, []string{"Start interactive session", "sqlcmd query"})
 
 	if previousContextName != "" {
 		hints = append(

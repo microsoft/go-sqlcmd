@@ -24,13 +24,19 @@ type Root struct {
 // It sets the cli name, description, and subcommands, and adds global flags.
 // It also provides usage examples for sqlcmd.
 func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
+	// Example usage steps
+	steps := []string{"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak"}
+
+	if runtime.GOOS == "windows" {
+		steps = append(steps, "sqlcmd open ads")
+	}
+
+	steps = append(steps, `sqlcmd query "SELECT @version"`)
+	steps = append(steps, "sqlcmd delete")
+
 	examples := []cmdparser.ExampleOptions{{
 		Description: "Install/Create, Query, Uninstall SQL Server",
-		Steps: []string{
-			"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak",
-			"sqlcmd open ads",
-			`sqlcmd query "SELECT @version"`,
-			"sqlcmd delete"}}}
+		Steps:       steps}}
 
 	commandOptions := cmdparser.CommandOptions{
 		Use:         "sqlcmd",
