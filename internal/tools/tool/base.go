@@ -61,14 +61,18 @@ func (t *Base) IsInstalled() bool {
 		panic("exeName is empty")
 	}
 
+	t.installed = new(bool)
+
 	t.exeFullPath, t.lookPathError = exec.LookPath(t.exeName)
 
 	if t.lookPathError == nil {
-		t.installed = new(bool)
 		*t.installed = true
+	} else {
+		*t.installed = false
 	}
 
 	return *t.installed
+
 }
 
 func (t *Base) HowToInstall() string {
