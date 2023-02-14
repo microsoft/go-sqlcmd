@@ -50,10 +50,16 @@ stages:
             binaryName: 'sqlcmd'
           windowsArm:
            imageName: 'windows-latest'
-           artifact: WindowsArm64
+           artifact: WindowsArm
            os:
-           arch: arm64
+           arch: arm
            binaryName: 'sqlcmd.exe'
+          windowsArm64:
+            imageName: 'windows-latest'
+            artifact: WindowsArm64
+            os:
+            arch: arm64
+            binaryName: 'sqlcmd.exe' 
           linuxs390x:
             imageName: 'ubuntu-latest'
             artifact: LinuxS390x
@@ -146,6 +152,14 @@ stages:
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-x64.zip'
+
+      - task: ArchiveFiles@2
+        displayName: Zip Windows arm binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm.zip'
 
       - task: ArchiveFiles@2
         displayName: Zip Windows arm64 binary

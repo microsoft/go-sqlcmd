@@ -5,3 +5,4 @@ linux,arm64,sqlcmd
 linux,s390x,sqlcmd
 windows,arm64,sqlcmd.exe
 windows,amd64,sqlcmd.exe
+windows,arm,sqlcmd.exe
