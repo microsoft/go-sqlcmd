@@ -18,19 +18,19 @@ import (
 var Translator *message.Printer
 
 var supportedLanguages = map[string]string{
-	"de-de":      "de-DE",
-	"fr-fr":      "fr-FR",
-	"en-us":      "en-US",
-	"zh-hans-cn": "zh-CN",
-	"zh-cn":      "zh-CN",
-	"zh-hant-cn": "zh-TW",
-	"zh-tw":      "zh-TW",
-	"it-it":      "it-IT",
-	"ja-jp":      "ja-JP",
-	"ko-kr":      "ko-KR",
-	"pt-br":      "pt-BR",
-	"ru-ru":      "ru-RU",
-	"es-es":      "es-ES",
+	"de-de":   "de-DE",
+	"fr-fr":   "fr-FR",
+	"en-us":   "en-US",
+	"zh-hans": "zh-CN",
+	"zh-cn":   "zh-CN",
+	"zh-hant": "zh-TW",
+	"zh-tw":   "zh-TW",
+	"it-it":   "it-IT",
+	"ja-jp":   "ja-JP",
+	"ko-kr":   "ko-KR",
+	"pt-br":   "pt-BR",
+	"ru-ru":   "ru-RU",
+	"es-es":   "es-ES",
 }
 
 // init() initializes the language automatically
