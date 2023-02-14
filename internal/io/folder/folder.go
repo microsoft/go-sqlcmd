@@ -7,6 +7,13 @@ import (
 	"os"
 )
 
+// Getwd returns the current working directory
+func Getwd() string {
+	path, err := os.Getwd()
+	checkErr(err)
+	return path
+}
+
 // MkdirAll creates a directory with the given name if it does not already exist.
 func MkdirAll(folder string) {
 	if folder == "" {

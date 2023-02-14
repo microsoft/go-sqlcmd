@@ -19,7 +19,7 @@ func (c *GetTags) DefineCommand(...cmdparser.CommandOptions) {
 		Examples: []cmdparser.ExampleOptions{
 			{
 				Description: "List tags",
-				Steps:       []string{"sqlcmd install mssql get-tags"},
+				Steps:       []string{"sqlcmd create mssql get-tags"},
 			},
 		},
 		Aliases: []string{"gt", "lt"},

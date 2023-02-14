@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-package mssql
+package sql
 
 var decryptCallback func(cipherText string, decrypt bool) (secret string)
 

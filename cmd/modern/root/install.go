@@ -15,9 +15,9 @@ type Install struct {
 
 func (c *Install) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
-		Use:         "install",
-		Short:       "Install/Create #SQLFamily and Tools",
-		Aliases:     []string{"create"},
+		Use:         "create",
+		Short:       "Install/Create SQL Server, Azure SQL, and Tools",
+		Aliases:     []string{"install"},
 		SubCommands: c.SubCommands(),
 	}
 

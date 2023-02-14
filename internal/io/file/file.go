@@ -5,9 +5,15 @@ package file
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/io/folder"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 )
+
+func CloseFile(f *os.File) {
+	err := f.Close()
+	checkErr(err)
+}
 
 // CreateEmptyIfNotExists creates an empty file with the given filename if it
 // does not already exist. If the parent directory of the file does not exist, the
@@ -48,9 +54,27 @@ func Exists(filename string) (exists bool) {
 	return
 }
 
+func GetContents(filename string) string {
+	b, err := ioutil.ReadFile(filename)
+	checkErr(err)
+
+	return string(b)
+}
+
+func OpenFile(filename string) *os.File {
+	f, err := os.Create(filename)
+	checkErr(err)
+	return f
+}
+
 // Remove is used to remove a file with the specified filename. The function
 // takes in the name of the file as an argument and deletes it from the file system.
 func Remove(filename string) {
 	err := os.Remove(filename)
+	checkErr(err)
+}
+
+func WriteString(f *os.File, s string) {
+	_, err := f.WriteString(s)
 	checkErr(err)
 }

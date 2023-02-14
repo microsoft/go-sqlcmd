@@ -5,6 +5,7 @@ package config
 
 import (
 	"fmt"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -67,7 +68,7 @@ func (c *AddContext) run() {
 	if c.endpointName == "" || !config.EndpointExists(c.endpointName) {
 		output.FatalfWithHintExamples([][]string{
 			{"View existing endpoints to choose from", "sqlcmd config get-endpoints"},
-			{"Add a new local endpoint", "sqlcmd install"},
+			{"Add a new local endpoint", "sqlcmd create"},
 			{"Add an already existing endpoint", "sqlcmd config add-endpoint --address localhost --port 1433"}},
 			"Endpoint required to add context.  Endpoint '%v' does not exist.  Use --endpoint flag", c.endpointName)
 	}
@@ -77,14 +78,15 @@ func (c *AddContext) run() {
 			output.FatalfWithHintExamples([][]string{
 				{"View list of users", "sqlcmd config get-users"},
 				{"Add the user", fmt.Sprintf("sqlcmd config add-user --name %v", c.userName)},
-				{"Add an endpoint", "sqlcmd install"}},
+				{"Add an endpoint", "sqlcmd create"}},
 				"User '%v' does not exist", c.userName)
 		}
 	}
 
-	config.AddContext(context)
+	context.Name = config.AddContext(context)
 	config.SetCurrentContextName(context.Name)
 	output.InfofWithHintExamples([][]string{
+		{"Open in Azure Data Studio", "sqlcmd open ads"},
 		{"To start interactive query session", "sqlcmd query"},
 		{"To run a query", "sqlcmd query \"SELECT @@version\""},
 	}, "Current Context '%v'", context.Name)

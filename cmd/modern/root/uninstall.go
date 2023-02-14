@@ -34,20 +34,20 @@ var systemDatabases = [...]string{
 
 func (c *Uninstall) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
-		Use:   "uninstall",
+		Use:   "delete",
 		Short: "Uninstall/Delete the current context",
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Uninstall/Delete the current context (includes the endpoint and user)",
-				Steps:       []string{`sqlcmd uninstall`}},
+				Description: "Uninstall/Delete the current context",
+				Steps:       []string{`sqlcmd delete`}},
 			{
 				Description: "Uninstall/Delete the current context, no user prompt",
-				Steps:       []string{`sqlcmd uninstall --yes`}},
+				Steps:       []string{`sqlcmd delete --yes`}},
 			{
 				Description: "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
-				Steps:       []string{`sqlcmd uninstall --yes --force`}},
+				Steps:       []string{`sqlcmd delete --yes --force`}},
 		},
-		Aliases: []string{"delete", "drop"},
+		Aliases: []string{"uninstall", "drop", "remove"},
 		Run:     c.run,
 	}
 
@@ -77,7 +77,10 @@ func (c *Uninstall) run() {
 
 	if config.CurrentContextName() == "" {
 		output.FatalfWithHintExamples([][]string{
-			{"To view available contexts", "sqlcmd config get-contexts"},
+			{"View available contexts", "sqlcmd config get-contexts"},
+			{"Create context", "sqlcmd create --help"},
+			{"Create context with SQL Server container", "sqlcmd create mssql"},
+			{"Add a context manually", "sqlcmd config add-context"},
 		}, "No current context")
 	}
 	if c.currentContextEndPointExists() {
@@ -101,6 +104,12 @@ func (c *Uninstall) run() {
 			}
 			if !c.force {
 				output.Infof("Verifying no user (non-system) database (.mdf) files")
+				if !controller.ContainerRunning(id) {
+					output.FatalfWithHintExamples([][]string{
+						{"To start the container", "sqlcmd start"},
+						{"To override the check, use --force", "sqlcmd delete --force"},
+					}, "Container is not running, unable to verify that user database files do not exist")
+				}
 				c.userDatabaseSafetyCheck(controller, id)
 			}
 

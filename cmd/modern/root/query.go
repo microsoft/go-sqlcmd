@@ -6,9 +6,7 @@ package root
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
-	"github.com/microsoft/go-sqlcmd/internal/mssql"
-	"github.com/microsoft/go-sqlcmd/pkg/console"
-	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
+	"github.com/microsoft/go-sqlcmd/internal/sql"
 )
 
 // Query defines the `sqlcmd query` command
@@ -58,16 +56,12 @@ func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 func (c *Query) run() {
 	endpoint, user := config.CurrentContext()
 
-	var line sqlcmd.Console = nil
+	s := sql.New(sql.SqlOptions{})
 	if c.text == "" {
-		line = console.NewConsole("")
-		defer line.Close()
-	}
-	s := mssql.Connect(endpoint, user, line)
-	if c.text == "" {
-		err := s.Run(false, false)
-		c.CheckErr(err)
+		s.Connect(endpoint, user, sql.ConnectOptions{Interactive: true})
 	} else {
-		mssql.Query(s, c.text)
+		s.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
 	}
+
+	s.Query(c.text)
 }
