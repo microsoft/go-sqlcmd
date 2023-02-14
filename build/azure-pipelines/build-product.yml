@@ -148,7 +148,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Zip Windows amd64 binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsAmd64\Sqlcmd.exe'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsAmd64'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-x64.zip'
@@ -156,7 +156,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Zip Windows arm binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm.zip'
@@ -164,7 +164,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Zip Windows arm64 binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm64\Sqlcmd.exe'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm64'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm64.zip'
