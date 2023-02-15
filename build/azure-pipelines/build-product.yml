@@ -30,6 +30,12 @@ stages:
             os:
             arch:
             binaryName: 'sqlcmd'
+          macArm:
+            imageName: 'macOS-latest'
+            artifact: DarwinArm64
+            os:
+            arch: arm64
+            binaryName: 'sqlcmd'
           windows:
             imageName: 'windows-latest'
             artifact: WindowsAmd64
@@ -42,14 +48,18 @@ stages:
             os:
             arch: arm64
             binaryName: 'sqlcmd'
-          # BUG: https://github.com/microsoft/go-sqlcmd/issues/224
-          # Windows ARM build failing in named pipes code
-          #windowsArm:
-          #  imageName: 'windows-latest'
-          #  artifact: WindowsArm
-          #  os:
-          #  arch: arm
-          #  binaryName: 'sqlcmd.exe'
+          windowsArm:
+           imageName: 'windows-latest'
+           artifact: WindowsArm
+           os:
+           arch: arm
+           binaryName: 'sqlcmd.exe'
+          windowsArm64:
+            imageName: 'windows-latest'
+            artifact: WindowsArm64
+            os:
+            arch: arm64
+            binaryName: 'sqlcmd.exe' 
           linuxs390x:
             imageName: 'ubuntu-latest'
             artifact: LinuxS390x
@@ -138,18 +148,26 @@ stages:
       - task: ArchiveFiles@2
         displayName: Zip Windows amd64 binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsAmd64\Sqlcmd.exe'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsAmd64'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-x64.zip'
 
-      #- task: ArchiveFiles@2
-      #  displayName: Zip Windows arm binary
-      #  inputs:
-      #    rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
-      #    includeRootFolder: false
-      #    archiveType: 'zip'
-      #    archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm.zip'
+      - task: ArchiveFiles@2
+        displayName: Zip Windows arm binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm.zip'
+
+      - task: ArchiveFiles@2
+        displayName: Zip Windows arm64 binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm64'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm64.zip'
   
       - task: ArchiveFiles@2
         displayName: Tar Linux amd64 binary
@@ -168,6 +186,15 @@ stages:
           archiveType: 'tar'
           tarCompression: 'bz2'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-darwin-x64.tar.bz2'
+
+      - task: ArchiveFiles@2
+        displayName: Tar Darwin Arm binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdDarwinArm64'
+          includeRootFolder: false
+          archiveType: 'tar'
+          tarCompression: 'bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-darwin-arm64.tar.bz2'
 
       - task: ArchiveFiles@2
         displayName: Tar Linux arm64 binary

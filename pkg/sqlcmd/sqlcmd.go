@@ -21,8 +21,6 @@ import (
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-mssqldb/msdsn"
-	_ "github.com/microsoft/go-mssqldb/namedpipe"
-	_ "github.com/microsoft/go-mssqldb/sharedmemory"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -538,14 +536,4 @@ func (s *Sqlcmd) handleError(retcode *int, err error) error {
 func (s Sqlcmd) Log(_ context.Context, _ msdsn.Log, msg string) {
 	_, _ = s.GetOutput().Write([]byte("DRIVER:" + msg))
 	_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
-}
-
-func init() {
-	if len(msdsn.ProtocolParsers) == 3 {
-		// reorder the protocol parsers to lpc->np->tcp
-		// ODBC follows this same order.
-		var tcp = msdsn.ProtocolParsers[0]
-		msdsn.ProtocolParsers[0] = msdsn.ProtocolParsers[2]
-		msdsn.ProtocolParsers[2] = tcp
-	}
 }
