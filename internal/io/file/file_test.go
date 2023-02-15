@@ -6,6 +6,7 @@ package file_test
 import (
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/io/folder"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"strings"
@@ -47,11 +48,7 @@ func TestCreateEmptyIfNotExists(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() {
-					if r := recover(); r == nil {
-						t.Errorf("The code did not panic")
-					}
-				}()
+				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 			}
 
 			file.CreateEmptyIfNotExists(tt.args.filename)
@@ -77,16 +74,9 @@ func TestExists(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() {
-					if r := recover(); r == nil {
-						t.Errorf("The code did not panic")
-					}
-				}()
+				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 			}
-
-			if gotExists := file.Exists(tt.args.filename); gotExists != tt.wantExists {
-				t.Errorf("Exists() = %v, want %v", gotExists, tt.wantExists)
-			}
+			assert.Equal(t, file.Exists(tt.args.filename), tt.wantExists)
 		})
 	}
 }
@@ -99,4 +89,38 @@ func cleanup(folderName string, filename string) {
 	if file.Exists(filename) {
 		file.Remove(filename)
 	}
+}
+
+func TestCloseFile(t *testing.T) {
+	f := file.OpenFile("test.txt")
+	file.CloseFile(f)
+}
+
+func TestGetContents(t *testing.T) {
+	f := file.OpenFile("test.txt")
+	defer file.CloseFile(f)
+	file.WriteString(f, "test contents")
+	assert.Equal(t, file.GetContents("test.txt"), "test contents")
+}
+
+func TestGetContentsBadFileName(t *testing.T) {
+	assert.Panics(t, func() {
+		file.GetContents("badbad.txt")
+	})
+}
+
+func TestOpenFile(t *testing.T) {
+	f := file.OpenFile("test.txt")
+	_, err := os.Stat("test.txt")
+	assert.NoErrorf(t, err, "Expected file to be created, but it does not exist")
+	file.CloseFile(f)
+	file.Remove("test.txt")
+}
+
+func TestWriteString(t *testing.T) {
+	f := file.OpenFile("test.txt")
+	file.WriteString(f, "test contents")
+	assert.Equal(t, file.GetContents("test.txt"), "test contents")
+	file.CloseFile(f)
+	file.Remove("test.txt")
 }

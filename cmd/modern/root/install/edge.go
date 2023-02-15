@@ -23,8 +23,8 @@ func (c *Edge) DefineCommand(...cmdparser.CommandOptions) {
 		Use:   "azsql-edge",
 		Short: "Install Azure Sql Edge",
 		Examples: []cmdparser.ExampleOptions{{
-			Description: "Install Azure SQL Edge in a container",
-			Steps:       []string{"sqlcmd install azsql-edge"}}},
+			Description: "Install/Create Azure SQL Edge in a container",
+			Steps:       []string{"sqlcmd create azsql-edge"}}},
 		Run:         c.MssqlBase.Run,
 		SubCommands: c.SubCommands(),
 	}

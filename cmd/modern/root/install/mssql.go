@@ -10,7 +10,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 )
 
-// Mssql implements the `sqlcmd install mssql command and sub-commands
+// Mssql implements the `sqlcmd install mssql` command and sub-commands
 type Mssql struct {
 	cmdparser.Cmd
 	MssqlBase
@@ -21,10 +21,21 @@ func (c *Mssql) DefineCommand(...cmdparser.CommandOptions) {
 
 	options := cmdparser.CommandOptions{
 		Use:   "mssql",
-		Short: "Install SQL Server",
-		Examples: []cmdparser.ExampleOptions{{
-			Description: "Install SQL Server in a container",
-			Steps:       []string{"sqlcmd install mssql"}}},
+		Short: "Install/Create SQL Server in a container",
+		Examples: []cmdparser.ExampleOptions{
+			{
+				Description: "Install/Create SQL Server in a container",
+				Steps:       []string{"sqlcmd create mssql"}},
+			{
+				Description: "Create SQL Server, download and attach AdventureWorks sample database",
+				Steps:       []string{"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak"}},
+			{
+				Description: "Create SQL Server with an empty user database",
+				Steps:       []string{"sqlcmd create mssql --user-database db1"}},
+			{
+				Description: "Install/Create SQL Server with full logging",
+				Steps:       []string{"sqlcmd create mssql --verbosity 4"}},
+		},
 		Run:         c.MssqlBase.Run,
 		SubCommands: c.SubCommands(),
 	}

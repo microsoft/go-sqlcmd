@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/output"
-	"github.com/microsoft/go-sqlcmd/internal/test"
 	"github.com/spf13/cobra"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -16,10 +16,18 @@ func TestCmd_run(t *testing.T) {
 	s := ""
 	c := Cmd{
 		options: CommandOptions{
+			Use: "test",
 			FirstArgAlternativeForFlag: &AlternativeForFlagOptions{
 				Flag:  "name",
 				Value: &s,
 			},
+			Examples: []ExampleOptions{{
+				Description: "This is an example",
+				Steps:       []string{"Step 1", "Step 2"},
+			}, {
+				Description: "This is a 2nd example",
+				Steps:       []string{"Step 1", "Step 2"},
+			}},
 		},
 		dependencies: dependency.Options{Output: output.New(output.Options{ErrorHandler: func(err error) {}, HintHandler: func(hints []string) {}})},
 		command:      cobra.Command{},
@@ -29,6 +37,7 @@ func TestCmd_run(t *testing.T) {
 		Usage:  "name",
 		String: &s,
 	})
+	c.DefineCommand()
 	c.run(nil, []string{"name-value"})
 }
 
@@ -52,34 +61,33 @@ func TestNegCmd_run(t *testing.T) {
 }
 
 func TestNegCmdProvideBothFlagAndCmd(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	TestSetup(t)
-	s := ""
-	c := Cmd{
-		options: CommandOptions{
-			Use: "foo",
-			FirstArgAlternativeForFlag: &AlternativeForFlagOptions{
-				Flag:  "name",
-				Value: &s,
+		TestSetup(t)
+		s := ""
+		c := Cmd{
+			options: CommandOptions{
+				Use: "foo",
+				FirstArgAlternativeForFlag: &AlternativeForFlagOptions{
+					Flag:  "name",
+					Value: &s,
+				},
+				Run: func() { fmt.Println("Running command") },
 			},
-			Run: func() { fmt.Println("Running command") },
-		},
-		dependencies: dependency.Options{Output: output.New(output.Options{})},
-	}
-	c.DefineCommand()
-	c.AddFlag(FlagOptions{
-		Name:   "name",
-		Usage:  "name",
-		String: &s,
+			dependencies: dependency.Options{Output: output.New(output.Options{})},
+		}
+		c.DefineCommand()
+		c.AddFlag(FlagOptions{
+			Name:   "name",
+			Usage:  "name",
+			String: &s,
+		})
+		c.SetArgsForUnitTesting([]string{"name-value", "--name", "another-value"})
+		c.Execute()
 	})
-	c.SetArgsForUnitTesting([]string{"name-value", "--name", "another-value"})
-	c.Execute()
 }
 
 func TestNegCmdAlternativeValueNotSet(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	s := ""
 	c := Cmd{
 		options: CommandOptions{
@@ -91,6 +99,10 @@ func TestNegCmdAlternativeValueNotSet(t *testing.T) {
 			Run: func() {},
 		},
 	}
+	c.SetCrossCuttingConcerns(dependency.Options{
+		EndOfLine: "",
+		Output:    output.New(output.Options{}),
+	})
 	c.DefineCommand()
 	c.AddFlag(FlagOptions{
 		Name:   "name",
@@ -98,51 +110,80 @@ func TestNegCmdAlternativeValueNotSet(t *testing.T) {
 		String: &s,
 	})
 	c.SetArgsForUnitTesting([]string{"name-value"})
-	c.Execute()
+	assert.Panics(t, func() {
+		c.Execute()
+	})
+}
+
+func TestNegNilOutput(t *testing.T) {
+	c := Cmd{
+		options: CommandOptions{
+			Use: "foo",
+			Run: func() {},
+		},
+	}
+	assert.Panics(t, func() {
+		c.DefineCommand()
+	})
 }
 
 func TestNegAddFlag(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	TestSetup(t)
 
-	c := Cmd{options: CommandOptions{
-		Use: "foo"}}
-	c.AddFlag(FlagOptions{
-		Name:  "",
-		Usage: "name",
+	assert.Panics(t, func() {
+
+		c := Cmd{options: CommandOptions{
+			Use: "foo"}}
+		c.AddFlag(FlagOptions{
+			Name:  "",
+			Usage: "name",
+		})
 	})
 }
 
 func TestNegAddFlag2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	TestSetup(t)
 
-	c := Cmd{options: CommandOptions{
-		Use: "foo"}}
-	c.AddFlag(FlagOptions{Name: "name", Usage: ""})
+	assert.Panics(t, func() {
+
+		c := Cmd{options: CommandOptions{
+			Use: "foo"}}
+		c.AddFlag(FlagOptions{Name: "name", Usage: ""})
+	})
 }
 
 func TestNegAddFlag3(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	TestSetup(t)
 
-	s := "'"
-	b := false
-	c := Cmd{options: CommandOptions{Use: "foo"}}
-	c.AddFlag(FlagOptions{Name: "name", Usage: "usage", String: &s, Bool: &b})
+	assert.Panics(t, func() {
+
+		s := "'"
+		b := false
+		c := Cmd{options: CommandOptions{Use: "foo"}}
+		c.AddFlag(FlagOptions{Name: "name", Usage: "usage", String: &s, Bool: &b})
+	})
 }
 
 func TestNegAddFlag4(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	TestSetup(t)
 
-	b := false
-	i := 0
-	c := Cmd{options: CommandOptions{Use: "foo"}}
-	c.AddFlag(FlagOptions{Name: "name", Usage: "usage", Bool: &b, Int: &i})
+	assert.Panics(t, func() {
+
+		b := false
+		i := 0
+		c := Cmd{options: CommandOptions{Use: "foo"}}
+		c.AddFlag(FlagOptions{Name: "name", Usage: "usage", Bool: &b, Int: &i})
+	})
 }
 
 func TestNegDefineCommandNoCommandOptions(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	TestSetup(t)
 
-	c := Cmd{options: CommandOptions{}}
-	c.DefineCommand()
+	assert.Panics(t, func() {
+
+		c := Cmd{options: CommandOptions{}}
+		c.DefineCommand()
+	})
 }
 
 // TestCmd_CheckErrInNotTestingMode covers the code that is not used
@@ -150,6 +191,8 @@ func TestNegDefineCommandNoCommandOptions(t *testing.T) {
 // so this test runs in NotTesting mode, and then doesn't pass in an error,
 // so the code is covered, but os.Exist isn't called
 func TestCmd_CheckErrInNotTestingMode(t *testing.T) {
+	TestSetup(t)
+
 	c := Cmd{
 		dependencies: dependency.Options{
 			EndOfLine: "",
@@ -164,15 +207,21 @@ func TestCmd_CheckErrInNotTestingMode(t *testing.T) {
 }
 
 func TestNegOutputNewHasNotBeenCalled(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	TestSetup(t)
 
-	c := Cmd{}
-	c.Output()
+	assert.Panics(t, func() {
+
+		c := Cmd{}
+		c.Output()
+	})
 }
 
 func TestNegOutputNewHasNotBeenCalled2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	TestSetup(t)
 
-	c := Cmd{}
-	c.SetCrossCuttingConcerns(dependency.Options{})
+	assert.Panics(t, func() {
+
+		c := Cmd{}
+		c.SetCrossCuttingConcerns(dependency.Options{})
+	})
 }
