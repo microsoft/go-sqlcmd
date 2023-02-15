@@ -26,7 +26,9 @@ func (c *AddContext) DefineCommand(...cmdparser.CommandOptions) {
 		Examples: []cmdparser.ExampleOptions{
 			{
 				Description: "Add a default context",
-				Steps:       []string{"sqlcmd config add-context --name my-context"}},
+				Steps: []string{
+					"sqlcmd config add-endpoint --name localhost-1433",
+					"sqlcmd config add-context --name my-context --endpoint localhost-1433"}},
 		},
 		Run: c.run}
 

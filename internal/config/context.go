@@ -18,7 +18,16 @@ func AddContext(context Context) {
 	if !EndpointExists(context.Endpoint) {
 		panic("Endpoint doesn't exist")
 	}
+<<<<<<< Updated upstream
 	context.Name = FindUniqueContextName(context.Name, *context.User)
+=======
+	username := ""
+	if context.User != nil && *context.User != "" {
+		username = *context.User
+	}
+
+	context.Name = FindUniqueContextName(context.Name, username)
+>>>>>>> Stashed changes
 	config.Contexts = append(config.Contexts, context)
 	Save()
 }
