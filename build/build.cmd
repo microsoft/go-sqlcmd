@@ -13,4 +13,9 @@ go-licenses report github.com/microsoft/go-sqlcmd/cmd/modern --template build\NO
 copy %~dp0NOTICE.header + %~dp0notice.txt %~dp0..\NOTICE.md
 del %~dp0notice.txt
 
+REM Generates all versions of sqlcmd in platform-specific folder
+setlocal
+
+for /F "tokens=1-3 delims=," %%i in (%~dp0arch.txt) do set GOOS=%%i&set GOARCH=%%j&go build -o %~dp0..\%%i-%%j\%%k -ldflags="-X main.version=%sqlcmdVersion%" %~dp0..\cmd\modern
+
 
