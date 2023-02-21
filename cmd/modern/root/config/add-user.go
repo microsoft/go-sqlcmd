@@ -4,7 +4,9 @@
 package config
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"os"
 
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -30,8 +32,10 @@ func (c *AddUser) DefineCommand(...cmdparser.CommandOptions) {
 			{
 				Description: "Add a user",
 				Steps: []string{
-					`SET SQLCMD_PASSWORD="AComp!exPa$$w0rd"`,
-					"sqlcmd config add-user --name my-user --name user1"},
+					fmt.Sprintf(`%s SQLCMD_PASSWORD=<password>`, pal.CreateEnvVarKeyword()),
+					"sqlcmd config add-user --name my-user --username user1",
+					fmt.Sprintf(`%s SQLCMD_PASSWORD=`, pal.CreateEnvVarKeyword()),
+				},
 			},
 		},
 		Run: c.run}

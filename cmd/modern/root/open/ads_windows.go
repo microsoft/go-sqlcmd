@@ -77,6 +77,13 @@ func (c *Ads) removePreviousCredential() {
 
 // writeCredential stores the current instance's credential in the Windows Credential Manager
 func (c *Ads) writeCredential() {
+	output := c.Output()
+
 	err := credman.WriteCredential(&c.credential, credman.CredTypeGeneric)
-	c.CheckErr(err)
+	if err != nil {
+		output.FatalfErrorWithHints(
+			err,
+			[]string{"A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager"},
+			"Failed to write credential to Windows Credential Manager")
+	}
 }

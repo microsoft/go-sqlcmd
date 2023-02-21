@@ -26,8 +26,10 @@ func (c *AddContext) DefineCommand(...cmdparser.CommandOptions) {
 		Short: "Add a context",
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Add a default context",
-				Steps:       []string{"sqlcmd config add-context --name my-context"}},
+				Description: "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
+				Steps: []string{
+					"sqlcmd config add-endpoint --name localhost-1433",
+					"sqlcmd config add-context --name mssql --endpoint localhost-1433"}},
 		},
 		Run: c.run}
 
@@ -42,12 +44,12 @@ func (c *AddContext) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.endpointName,
 		Name:   "endpoint",
-		Usage:  "Name of endpoint this context will use, use `sqlcmd config get-endpoints` to see list"})
+		Usage:  "Name of endpoint this context will use"})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.userName,
 		Name:   "user",
-		Usage:  "Name of user this context will use, use `sqlcmd config get-users` to see list"})
+		Usage:  "Name of user this context will use"})
 }
 
 // run adds a context to the configuration and sets it as the current context. The

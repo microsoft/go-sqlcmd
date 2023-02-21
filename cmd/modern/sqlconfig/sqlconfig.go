@@ -31,7 +31,7 @@ type Endpoint struct {
 
 type ContextDetails struct {
 	Endpoint string  `mapstructure:"endpoint"`
-	User     *string `mapstructure:"user,omitempty"`
+	User     *string `mapstructure:"user,omitempty" yaml:"user,omitempty"`
 }
 
 type Context struct {

@@ -4,8 +4,10 @@
 package root
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/config"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 )
 
 // Config defines the `sqlcmd config` sub-commands
@@ -20,6 +22,17 @@ func (c *Config) DefineCommand(...cmdparser.CommandOptions) {
 		Use:         "config",
 		Short:       `Modify sqlconfig files using subcommands like "sqlcmd config use-context mssql"`,
 		SubCommands: c.SubCommands(),
+		Examples: []cmdparser.ExampleOptions{
+			{
+				Description: "Add context for existing endpoint and user",
+				Steps: []string{
+					fmt.Sprintf("%s SQLCMD_PASSWORD=<password>", pal.CreateEnvVarKeyword()),
+					"sqlcmd config add-user --name sa1434 --username sa",
+					fmt.Sprintf("%s SQLCMD_PASSWORD=", pal.CreateEnvVarKeyword()),
+					"sqlcmd config add-endpoint --name ep1434 --address localhost --port 1434",
+					"sqlcmd config add-context --name mssql1434 --user sa1434 --endpoint ep1434"},
+			},
+		},
 	}
 
 	c.Cmd.DefineCommand(options)

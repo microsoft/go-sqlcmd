@@ -25,6 +25,14 @@ func AddContext(context Context) string {
 		username = *context.User
 	}
 	context.Name = FindUniqueContextName(context.Name, username)
+
+	// The command line parser sets user by default to "", in the case there
+	// is no user (therefore Windows Authentication), we omit the
+	// user from the sqlconfig file yaml by setting it to nil here.
+	if context.User != nil && *context.User == "" {
+		context.User = nil
+	}
+
 	config.Contexts = append(config.Contexts, context)
 	Save()
 

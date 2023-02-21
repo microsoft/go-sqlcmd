@@ -5,7 +5,6 @@ package root
 
 import (
 	"fmt"
-	"path/filepath"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -158,7 +157,7 @@ func (c *Uninstall) userDatabaseSafetyCheck(controller *container.Controller, id
 				output.FatalfWithHints([]string{
 					fmt.Sprintf(
 						"If the database is mounted, run `sqlcmd query \"use master; DROP DATABASE [%s]\"`",
-						strings.TrimSuffix(filepath.Base(databaseFile), ".mdf")),
+						"<database_name>"),
 					"Pass in the flag --force to override this safety check for user (non-system) databases"},
 					"Unable to continue, a user (non-system) database (%s) is present", databaseFile)
 			}
