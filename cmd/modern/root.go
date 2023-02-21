@@ -89,6 +89,10 @@ func (c *Root) IsValidSubCommand(command string) bool {
 }
 
 func (c *Root) addGlobalFlags() {
+
+	// BUG:(stuartpa) - This is a temporary flag until we have migrated
+	// the kong impl to cobra.  sqlcmd -? will show the kong help (all the back-compat
+	// flags), sqlcmd --? will show the kong "did you mean one of" help.
 	var unused bool
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:      &unused,
