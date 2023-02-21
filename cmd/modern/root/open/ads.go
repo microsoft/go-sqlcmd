@@ -38,12 +38,12 @@ func (c *Ads) DefineCommand(...cmdparser.CommandOptions) {
 func (c *Ads) run() {
 	endpoint, user := config.CurrentContext()
 
+	hostname := endpoint.EndpointDetails.Address
+
 	// If the context has a local container, ensure it is running, otherwise bail out
 	if endpoint.AssetDetails != nil && endpoint.AssetDetails.ContainerDetails != nil {
 		c.ensureContainerIsRunning(endpoint)
 	}
-
-	hostname := endpoint.EndpointDetails.Address
 
 	// If the hostname is localhost, ADS will not connect to the container
 	// because it will try to connect to the host machine. To work around
@@ -75,6 +75,7 @@ func (c *Ads) ensureContainerIsRunning(endpoint sqlconfig.Endpoint) {
 // launchAds launches the Azure Data Studio using the specified server and username.
 func (c *Ads) launchAds(host string, port int, username string) {
 	output := c.Output()
+
 	args := []string{
 		"-r",
 		fmt.Sprintf(

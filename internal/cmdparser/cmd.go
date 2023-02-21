@@ -238,7 +238,7 @@ func (c *Cmd) generateExamples() string {
 	for i, e := range c.options.Examples {
 		sb.WriteString(fmt.Sprintf("# %v%v", e.Description, pal.LineBreak()))
 		for ii, s := range e.Steps {
-			sb.WriteString(fmt.Sprintf("  - %v", s))
+			sb.WriteString(fmt.Sprintf("  %v", s))
 			if ii != len(e.Steps)-1 {
 				sb.WriteString(pal.LineBreak())
 			}

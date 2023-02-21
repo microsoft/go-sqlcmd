@@ -25,8 +25,12 @@ func AddContext(context Context) string {
 	if context.User != nil && *context.User != "" {
 		username = *context.User
 	}
-
 	context.Name = FindUniqueContextName(context.Name, username)
+
+	if context.User != nil && *context.User == "" {
+		context.User = nil
+	}
+
 	config.Contexts = append(config.Contexts, context)
 	Save()
 

@@ -25,7 +25,7 @@ type Root struct {
 // It also provides usage examples for sqlcmd.
 func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	// Example usage steps
-	steps := []string{"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak"}
+	steps := []string{"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak"}
 
 	if runtime.GOOS == "windows" {
 		steps = append(steps, "sqlcmd open ads")
@@ -39,8 +39,11 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 		Steps:       steps}}
 
 	commandOptions := cmdparser.CommandOptions{
-		Use:         "sqlcmd",
-		Short:       "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+		Use: "sqlcmd",
+		Short: `sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools
+
+Feedback:
+  https://github.com/microsoft/go-sqlcmd/issues/new`,
 		SubCommands: c.SubCommands(),
 		Examples:    examples,
 	}
@@ -86,6 +89,14 @@ func (c *Root) IsValidSubCommand(command string) bool {
 }
 
 func (c *Root) addGlobalFlags() {
+	var unused bool
+	c.AddFlag(cmdparser.FlagOptions{
+		Bool:      &unused,
+		Name:      "?",
+		Shorthand: "?",
+		Usage:     "help for backwards compatibility flags (-S, -U, -E etc.)",
+	})
+
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.configFilename,
 		DefaultString: config.DefaultFileName(),

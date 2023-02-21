@@ -61,7 +61,7 @@ type SQLCmdArguments struct {
 	MultiSubnetFailover         bool              `short:"M" help:"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster."`
 	Password                    string            `short:"P" help:"Obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt."`
 	// Keep Help at the end of the list
-	Help bool `short:"?" help:"Show syntax summary."`
+	Help bool `short:"?" help:"-? shows this syntax summary, --help shows modern sqlcmd sub-command help"`
 }
 
 // Validate accounts for settings not described by Kong attributes

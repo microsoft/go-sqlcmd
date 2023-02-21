@@ -2,10 +2,10 @@ package open
 
 import (
 	"fmt"
-	"github.com/99designs/keyring"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/credman"
+	"github.com/microsoft/go-sqlcmd/internal/secret"
 )
 
 // Type Ads is used to implement the "open ads" which launches Azure
@@ -33,7 +33,7 @@ func (c *Ads) persistCredentialForAds(
 
 	// Store the SQL password in the Windows Credential Manager with the
 	// generated target name
-	/*c.credential = credman.Credential{
+	c.credential = credman.Credential{
 		TargetName: targetName,
 		CredentialBlob: secret.DecodeAsUtf16(
 			user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted),
@@ -43,15 +43,6 @@ func (c *Ads) persistCredentialForAds(
 
 	c.removePreviousCredential()
 	c.writeCredential()
-	*/
-	ring, _ := keyring.Open(keyring.Config{
-		ServiceName: "example",
-	})
-
-	_ = ring.Set(keyring.Item{
-		Key:  "foo",
-		Data: []byte("secret-bar"),
-	})
 }
 
 // adsKey returns the credential target name for the given instance, database,
@@ -86,6 +77,13 @@ func (c *Ads) removePreviousCredential() {
 
 // writeCredential stores the current instance's credential in the Windows Credential Manager
 func (c *Ads) writeCredential() {
+	output := c.Output()
+
 	err := credman.WriteCredential(&c.credential, credman.CredTypeGeneric)
-	c.CheckErr(err)
+	if err != nil {
+		output.FatalfErrorWithHints(
+			err,
+			[]string{"A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager"},
+			"Failed to write credential to Windows Credential Manager")
+	}
 }
