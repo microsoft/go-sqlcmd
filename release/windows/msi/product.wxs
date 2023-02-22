@@ -62,7 +62,7 @@
               Permanent="yes"
               Part="first"
               Action="set"
-              System="no" />
+              System="yes" />
           </Component>
         </Directory>
       </Directory>
