@@ -18,8 +18,7 @@
 
     <Package InstallerVersion="300"
              Compressed="yes"
-             InstallScope="perUser"
-             InstallPrivileges="limited" />
+             InstallScope="perUser" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." Schedule="afterInstallExecute" />
 
