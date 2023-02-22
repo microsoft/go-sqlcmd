@@ -18,7 +18,7 @@
 
     <Package InstallerVersion="300"
              Compressed="yes"
-             InstallScope="perUser" />
+             InstallScope="perMachine" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." Schedule="afterInstallExecute" />
 
@@ -40,7 +40,7 @@
     <UIRef Id="WixUI_ErrorProgressText"/>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="LocalAppDataFolder" Name="AppData">
+      <Directory Id="ProgramFiles64Folder">
         <Directory Id="SqlcmdDirectory" Name="$(var.AppName)">
           <Component Id="sqlcmd.exe" Guid="2988854C-D02C-4D48-866C-8EAEBA6BC54B">
             <CreateFolder />
