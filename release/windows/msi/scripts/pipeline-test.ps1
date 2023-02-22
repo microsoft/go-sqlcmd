@@ -38,8 +38,8 @@ Get-Content .\install-logs.txt
 
 Write-Output "Done installing msi, checking PATH setup..."
 Write-Output "$env:path"
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path", "User")
 Write-Output "$env:path"
 
-$sqlcmd = $env:ProgramFiles + "\SqlCmd\Tools\sqlcmd"
+$sqlcmd = $env:LocalAppData + "\SqlCmd\Sqlcmd.exe"
 & $sqlcmd --help
