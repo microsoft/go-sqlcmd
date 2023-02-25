@@ -631,8 +631,8 @@ func newConnect(t testing.TB) *ConnectSettings {
 }
 
 func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
-	if runtime.GOOS != "windows" && runtime.GOARCH != "amd64" {
-		t.Skip()
+	if runtime.GOOS != "windows" || runtime.GOARCH != "amd64" {
+		t.Skip("Only valid on Windows amd64")
 	}
 	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
 	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[1].Protocol(), "tcp should be second protocol")
