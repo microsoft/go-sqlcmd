@@ -4,10 +4,11 @@
 package main
 
 import (
+	"runtime"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
-	"runtime"
 )
 
 // Root type implements the very top-level command for sqlcmd (which contains
@@ -31,7 +32,7 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 		steps = append(steps, "sqlcmd open ads")
 	}
 
-	steps = append(steps, `sqlcmd query "SELECT @version"`)
+	steps = append(steps, `sqlcmd query "SELECT @@version"`)
 	steps = append(steps, "sqlcmd delete")
 
 	examples := []cmdparser.ExampleOptions{{
