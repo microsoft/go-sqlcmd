@@ -51,16 +51,23 @@ func main() {
 }
 
 // initializeEnvVars intializes SQLCMDSERVER, SQLCMDUSER and SQLCMDPASSWORD
-// if the currentContext is set. This env variables do not have any effect
-// if user provides this info via backward compatibility syntax
+// if the currentContext is set and if these env vars are not already set.
+// In terms of precedence, command line switches/flags take higher precedence
+// than env variables and env variables take higher precedence over config
+// file info.
 func initializeEnvVars() {
 	initializeCallback()
 	if config.CurrentContextName() != "" {
 		server, username, password := config.GetCurrentContextInfo()
-		os.Setenv("SQLCMDSERVER", server)
-		os.Setenv("SQLCMDUSER", username)
-		os.Setenv("SQLCMDPASSWORD", password)
-		outputter.Infof("%vUsing current-context: %s", sqlcmd.SqlcmdEol, config.CurrentContextName())
+		if os.Getenv("SQLCMDSERVER") == "" {
+			os.Setenv("SQLCMDSERVER", server)
+		}
+		if os.Getenv("SQLCMDUSER") == "" {
+			os.Setenv("SQLCMDUSER", username)
+		}
+		if os.Getenv("SQLCMDPASSWORD") == "" {
+			os.Setenv("SQLCMDPASSWORD", password)
+		}
 	}
 }
 
