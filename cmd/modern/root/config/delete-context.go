@@ -64,7 +64,7 @@ func (c *DeleteContext) run() {
 
 		if c.cascade {
 			config.DeleteEndpoint(context.Endpoint)
-			if *context.ContextDetails.User != "" {
+			if context.ContextDetails.User != nil && *context.ContextDetails.User != "" {
 				config.DeleteUser(*context.ContextDetails.User)
 			}
 		}

@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"fmt"
 	"net/url"
+	"strings"
 
 	"github.com/microsoft/go-mssqldb/azuread"
 )
@@ -81,7 +82,7 @@ func (connect ConnectSettings) RequiresPassword() bool {
 
 // ConnectionString returns the go-mssql connection string to use for queries
 func (connect ConnectSettings) ConnectionString() (connectionString string, err error) {
-	serverName, instance, port, err := splitServer(connect.ServerName)
+	serverName, instance, port, protocol, err := splitServer(connect.ServerName)
 	if serverName == "" {
 		serverName = "."
 	}
@@ -99,6 +100,16 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if (connect.authenticationMethod() == azuread.ActiveDirectoryMSI || connect.authenticationMethod() == azuread.ActiveDirectoryManagedIdentity) && connect.UserName != "" {
 		connectionURL.User = url.UserPassword(connect.UserName, connect.Password)
+	}
+
+	if strings.HasPrefix(serverName, `\\`) {
+		// passing a pipe name of the format \\server\pipe\<pipename>
+		pipeParts := strings.SplitN(string(serverName[2:]), `\`, 3)
+		if len(pipeParts) != 3 {
+			return "", &InvalidServerName
+		}
+		serverName = pipeParts[0]
+		query.Add("pipe", pipeParts[2])
 	}
 	if port > 0 {
 		connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)
@@ -129,6 +140,9 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if connect.LogLevel > 0 {
 		query.Add("log", fmt.Sprint(connect.LogLevel))
+	}
+	if protocol != "" {
+		query.Add("protocol", protocol)
 	}
 	if connect.ApplicationName != "" {
 		query.Add(`app name`, connect.ApplicationName)

@@ -6,21 +6,37 @@ package config
 import (
 	"errors"
 	"fmt"
-	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"strconv"
+
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 )
 
-// AddContext adds the context to the sqlconfig file.
+// AddContext adds the context to the sqlconfig file, and returns the context
+// name, which maybe uniquified, if the passed in name already exists.
 //
 // Before calling this method, verify the Endpoint exists and give the user
 // a descriptive error, (this function will panic, which should never be hit)
-func AddContext(context Context) {
+func AddContext(context Context) string {
 	if !EndpointExists(context.Endpoint) {
 		panic("Endpoint doesn't exist")
 	}
-	context.Name = FindUniqueContextName(context.Name, *context.User)
+	username := ""
+	if context.User != nil {
+		username = *context.User
+	}
+	context.Name = FindUniqueContextName(context.Name, username)
+
+	// The command line parser sets user by default to "", in the case there
+	// is no user (therefore Windows Authentication), we omit the
+	// user from the sqlconfig file yaml by setting it to nil here.
+	if context.User != nil && *context.User == "" {
+		context.User = nil
+	}
+
 	config.Contexts = append(config.Contexts, context)
 	Save()
+
+	return context.Name
 }
 
 // CurrentContextName returns the name of the current context in the configuration.
@@ -137,8 +153,8 @@ func GetCurrentContextOrFatal() (currentContextName string) {
 	currentContextName = CurrentContextName()
 	if currentContextName == "" {
 		checkErr(errors.New(
-			"no current context. To create a context use `sqlcmd install`, " +
-				"e.g. `sqlcmd install mssql`"))
+			"no current context. To create a context use `sqlcmd create`, " +
+				"e.g. `sqlcmd create mssql`"))
 	}
 	return
 }

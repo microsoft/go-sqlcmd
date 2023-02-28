@@ -7,10 +7,11 @@ package sqlcmd
 import (
 	"errors"
 	"fmt"
+	"github.com/alecthomas/kong"
 	"os"
 
-	"github.com/alecthomas/kong"
 	"github.com/microsoft/go-mssqldb/azuread"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 )
@@ -32,7 +33,7 @@ type SQLCmdArguments struct {
 	InitialQuery string `short:"q" xor:"input1" help:"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed."`
 	// Query to run then exit
 	Query  string `short:"Q" xor:"input2" help:"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed."`
-	Server string `short:"S" help:"[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
+	Server string `short:"S" help:"[[tcp:]|[lpc:]|[np:]]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER."`
 	// Disable syscommands with a warning
 	DisableCmdAndWarn bool `short:"X" xor:"syscmd" help:"Disables commands that might compromise system security. Sqlcmd issues a warning and continues."`
 	// AuthenticationMethod is new for go-sqlcmd
@@ -60,23 +61,23 @@ type SQLCmdArguments struct {
 	MultiSubnetFailover         bool              `short:"M" help:"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster."`
 	Password                    string            `short:"P" help:"Obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt."`
 	// Keep Help at the end of the list
-	Help bool `short:"?" help:"Show syntax summary."`
+	Help bool `short:"?" help:"-? shows this syntax summary, --help shows modern sqlcmd sub-command help"`
 }
 
 // Validate accounts for settings not described by Kong attributes
 func (a *SQLCmdArguments) Validate() error {
 	if a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767) {
-		return fmt.Errorf(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
+		return localizer.Errorf(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
 	}
 	// Ignore 0 even though it's technically an invalid input
 	if a.Headers < -1 {
-		return fmt.Errorf(`'-h %d': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
+		return localizer.Errorf(`'-h %d': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
 	}
 	if a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535) {
-		return fmt.Errorf(`'-w %d': value must be greater than 8 and less than 65536.`, *a.ScreenWidth)
+		return localizer.Errorf(`'-w %d': value must be greater than 8 and less than 65536.`, *a.ScreenWidth)
 	}
 	if a.Password != "" {
-		return fmt.Errorf(`'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.`)
+		return localizer.Errorf(`'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.`)
 	}
 	return nil
 }
@@ -258,7 +259,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {
-			err = fmt.Errorf("invalid batch terminator '%s'", args.BatchTerminator)
+			err = localizer.Errorf("invalid batch terminator '%s'", args.BatchTerminator)
 		}
 	}
 	if err != nil {
@@ -291,6 +292,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	// connect using no overrides
 	err = s.ConnectDb(nil, line == nil)
 	if err != nil {
+		s.WriteError(s.GetError(), err)
 		return 1, err
 	}
 

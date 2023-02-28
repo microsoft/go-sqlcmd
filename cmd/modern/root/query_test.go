@@ -9,12 +9,15 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/stretchr/testify/assert"
 	"os"
+	"runtime"
 	"testing"
 )
 
 // TestQuery runs a sanity test of `sqlcmd query` using the local instance on 1433
 func TestQuery(t *testing.T) {
-	t.Skip("stuartpa: This is failing in the pipeline (Login failed for user 'sa'.)")
+	if runtime.GOOS != "windows" {
+		t.Skip("stuartpa: This is failing in the pipeline (Login failed for user 'sa'.)")
+	}
 	cmdparser.TestSetup(t)
 
 	// if SQLCMDSERVER != "" add an endpoint using the --address

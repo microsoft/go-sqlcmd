@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-package mssql
+package sql
 
 import (
 	"fmt"
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
+	"github.com/stretchr/testify/assert"
 	"runtime"
 	"strings"
 	"testing"
@@ -79,15 +80,12 @@ func TestConnect(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() {
-					if r := recover(); r == nil {
-						t.Errorf("The code did not panic")
-					}
-				}()
+				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 			}
 
-			s := Connect(tt.args.endpoint, tt.args.user, tt.args.console)
-			Query(s, "SELECT @@version")
+			mssql := New(SqlOptions{})
+			mssql.Connect(tt.args.endpoint, tt.args.user, ConnectOptions{})
+			mssql.Query("SELECT @@version")
 		})
 	}
 }

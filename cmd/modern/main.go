@@ -41,7 +41,6 @@ func main() {
 			ErrorHandler:   checkErr,
 			HintHandler:    displayHints})}
 	rootCmd = cmdparser.New[*Root](dependencies)
-
 	if isFirstArgModernCliSubCommand() {
 		cmdparser.Initialize(initializeCallback)
 		rootCmd.Execute()
@@ -75,11 +74,6 @@ func initializeCallback() {
 			OutputType:     rootCmd.outputType,
 			LoggingLevel:   verbosity.Level(rootCmd.loggingLevel),
 		})
-	rootCmd.SetCrossCuttingConcerns(
-		dependency.Options{
-			EndOfLine: sqlcmd.SqlcmdEol,
-			Output:    outputter,
-		})
 	internal.Initialize(
 		internal.InitializeOptions{
 			ErrorHandler: checkErr,
@@ -95,7 +89,7 @@ func initializeCallback() {
 // nil.  Pass (inject) checkErr into all dependencies (internal helpers etc.) as an
 // errorHandler.
 //
-// To aid debugging issues, if the logging level is > 2 (e.g. -v 3 or -v 4), we
+// To aid debugging issues, if the logging level is > 2 (e.g. --verbosity 3 or --verbosity 4), we
 // panic which outputs a stacktrace.
 func checkErr(err error) {
 	if rootCmd.loggingLevel > 2 {
@@ -115,5 +109,6 @@ func displayHints(hints []string) {
 		for i, hint := range hints {
 			outputter.Infof("  %d. %v", i+1, hint)
 		}
+		outputter.Infof("")
 	}
 }

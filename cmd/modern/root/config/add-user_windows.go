@@ -9,6 +9,6 @@ func (c *AddUser) encryptPasswordFlag() {
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:  &c.encryptPassword,
 		Name:  "encrypt-password",
-		Usage: "Encode the password",
+		Usage: "Encrypt the password",
 	})
 }

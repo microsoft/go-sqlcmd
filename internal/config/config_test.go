@@ -8,7 +8,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"reflect"
 	"strings"
 	"testing"
@@ -176,9 +176,8 @@ func TestFindUniqueUserName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotUniqueUserName := FindUniqueUserName(tt.args.name); gotUniqueUserName != tt.wantUniqueUserName {
-				t.Errorf("FindUniqueUserName() = %v, want %v", gotUniqueUserName, tt.wantUniqueUserName)
-			}
+			gotUniqueUserName := FindUniqueUserName(tt.args.name)
+			assert.Equal(t, gotUniqueUserName, tt.wantUniqueUserName, "FindUniqueUserName() = %v, want %v", gotUniqueUserName, tt.wantUniqueUserName)
 		})
 	}
 }
@@ -194,9 +193,8 @@ func TestGetUser(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotUser := GetUser(tt.args.name); !reflect.DeepEqual(gotUser, tt.wantUser) {
-				t.Errorf("GetUser() = %v, want %v", gotUser, tt.wantUser)
-			}
+			gotUser := GetUser(tt.args.name)
+			assert.Truef(t, reflect.DeepEqual(gotUser, tt.wantUser), "GetUser() = %v, want %v", gotUser, tt.wantUser)
 		})
 	}
 }
@@ -228,9 +226,8 @@ func TestUserExists(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotExists := UserNameExists(tt.args.name); gotExists != tt.wantExists {
-				t.Errorf("UserNameExists() = %v, want %v", gotExists, tt.wantExists)
-			}
+			gotExists := UserNameExists(tt.args.name)
+			assert.Equal(t, gotExists, tt.wantExists, "UserNameExists() = %v, want %v", gotExists, tt.wantExists)
 		})
 	}
 }
@@ -246,9 +243,8 @@ func TestUserNameExists(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotExists := UserNameExists(tt.args.name); gotExists != tt.wantExists {
-				t.Errorf("UserNameExists() = %v, want %v", gotExists, tt.wantExists)
-			}
+			gotExists := UserNameExists(tt.args.name)
+			assert.Equal(t, gotExists, tt.wantExists, "UserNameExists() = %v, want %v", gotExists, tt.wantExists)
 		})
 	}
 }
@@ -264,9 +260,8 @@ func Test_userOrdinal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotOrdinal := userOrdinal(tt.args.name); gotOrdinal != tt.wantOrdinal {
-				t.Errorf("userOrdinal() = %v, want %v", gotOrdinal, tt.wantOrdinal)
-			}
+			gotOrdinal := userOrdinal(tt.args.name)
+			assert.Equal(t, gotOrdinal, tt.wantOrdinal, "userOrdinal() = %v, want %v", gotOrdinal, tt.wantOrdinal)
 		})
 	}
 }
@@ -300,78 +295,85 @@ func TestAddContextWithContainerPanic(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			defer func() { test.CatchExpectedError(recover(), t) }()
-			AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.encryptPassword)
+			assert.Panics(t, func() {
+				AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.encryptPassword)
+			})
 		})
 	}
 }
 
 func TestConfig_AddContextWithNoEndpoint(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	user := "user1"
-	AddContext(Context{
-		ContextDetails: ContextDetails{
-			Endpoint: "badbad",
-			User:     &user,
-		},
-		Name: "context",
+		user := "user1"
+		AddContext(Context{
+			ContextDetails: ContextDetails{
+				Endpoint: "badbad",
+				User:     &user,
+			},
+			Name: "context",
+		})
 	})
 }
 
 func TestConfig_GetCurrentContextWithNoContexts(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	CurrentContext()
+		CurrentContext()
+	})
 }
 
 func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	AddEndpoint(Endpoint{
-		AssetDetails: &AssetDetails{
-			ContainerDetails: &ContainerDetails{
-				Id:    strings.Repeat("9", 64),
-				Image: "www.image.url"},
-		},
-		EndpointDetails: EndpointDetails{
-			Address: "localhost",
-			Port:    1433,
-		},
-		Name: "endpoint",
+		AddEndpoint(Endpoint{
+			AssetDetails: &AssetDetails{
+				ContainerDetails: &ContainerDetails{
+					Id:    strings.Repeat("9", 64),
+					Image: "www.image.url"},
+			},
+			EndpointDetails: EndpointDetails{
+				Address: "localhost",
+				Port:    1433,
+			},
+			Name: "endpoint",
+		})
+
+		user := "user1"
+		AddContext(Context{
+			ContextDetails: ContextDetails{
+				Endpoint: "endpoint",
+				User:     &user,
+			},
+			Name: "context",
+		})
+
+		DeleteEndpoint("endpoint")
+
+		SetCurrentContextName("context")
+		CurrentContext()
 	})
-
-	user := "user1"
-	AddContext(Context{
-		ContextDetails: ContextDetails{
-			Endpoint: "endpoint",
-			User:     &user,
-		},
-		Name: "context",
-	})
-
-	DeleteEndpoint("endpoint")
-
-	SetCurrentContextName("context")
-	CurrentContext()
 }
 
 func TestConfig_DeleteContextThatDoesNotExist(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	contextOrdinal("does-not-exist")
+		contextOrdinal("does-not-exist")
+	})
 }
 
 func TestNegConfig_SetFileName(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	SetFileName("")
+		SetFileName("")
+	})
 }
 
 func TestNegConfig_SetCurrentContextName(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	SetCurrentContextName("does not exist")
+		SetCurrentContextName("does not exist")
+	})
 }
 
 func TestNegConfig_SetFileNameForTest(t *testing.T) {
@@ -383,7 +385,8 @@ func TestNegConfig_DefaultFileName(t *testing.T) {
 }
 
 func TestNegConfig_GetContext(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	GetContext("doesnotexist")
+		GetContext("doesnotexist")
+	})
 }

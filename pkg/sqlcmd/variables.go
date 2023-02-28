@@ -8,6 +8,8 @@ import (
 	"os"
 	"strings"
 	"unicode"
+
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // Variables provides set and get of sqlcmd scripting variables
@@ -109,7 +111,7 @@ func (v Variables) SQLCmdUser() string {
 }
 
 // SQLCmdServer returns the server connection parameters derived from the SQLCMDSERVER variable value
-func (v Variables) SQLCmdServer() (serverName string, instance string, port uint64, err error) {
+func (v Variables) SQLCmdServer() (serverName string, instance string, port uint64, protocol string, err error) {
 	serverName = v[SQLCMDSERVER]
 	return splitServer(serverName)
 }
@@ -286,7 +288,7 @@ func ValidIdentifier(name string) error {
 	first := true
 	for _, c := range name {
 		if !unicode.IsLetter(c) && c != '_' && (first || (!unicode.IsDigit(c) && !strings.ContainsRune(validVariableRunes, c))) {
-			return fmt.Errorf("Invalid variable identifier %s", name)
+			return localizer.Errorf("Invalid variable identifier %s", name)
 		}
 		first = false
 	}
@@ -300,7 +302,7 @@ func ValidIdentifier(name string) error {
 // "this has a quote" in it" is not valid
 func ParseValue(val string) (string, error) {
 	quoted := val[0] == '"'
-	err := fmt.Errorf("Invalid variable value %s", val)
+	err := localizer.Errorf("Invalid variable value %s", val)
 	if !quoted {
 		if strings.ContainsAny(val, "\t\n\r ") {
 			return "", err

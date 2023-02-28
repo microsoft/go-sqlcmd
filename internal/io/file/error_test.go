@@ -5,14 +5,11 @@ package file
 
 import (
 	"errors"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func Test_checkErr(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 	checkErr(errors.New("verify error handler"))
 }

@@ -4,7 +4,7 @@
 package secret
 
 import (
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -16,13 +16,20 @@ func TestEncodeAndDecode(t *testing.T) {
 }
 
 func TestNegEncode(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	Encode("", true)
+		Encode("", true)
+	})
 }
 
 func TestNegDecode(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
 
-	Decode("", true)
+		Decode("", true)
+	})
+}
+
+func TestDecodeAsUtf16(t *testing.T) {
+	cipherText := Encode("plainText", true)
+	DecodeAsUtf16(cipherText, true)
 }

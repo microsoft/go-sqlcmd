@@ -19,7 +19,7 @@ func (c *GetTags) DefineCommand(...cmdparser.CommandOptions) {
 		Examples: []cmdparser.ExampleOptions{
 			{
 				Description: "List tags",
-				Steps:       []string{"sqlcmd install azsql-edge get-tags"},
+				Steps:       []string{"sqlcmd create azsql-edge get-tags"},
 			},
 		},
 		Aliases: []string{"gt", "lt"},

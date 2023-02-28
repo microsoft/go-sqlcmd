@@ -5,6 +5,7 @@ package config
 
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
 )
@@ -14,33 +15,21 @@ import (
 func TestCurrentContextEndpointHasContainer(t *testing.T) {
 	Clean()
 
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 	CurrentContextEndpointHasContainer()
 }
 
 func TestGetContainerId(t *testing.T) {
 	Clean()
 
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 	ContainerId()
 }
 
 func TestGetContainerId2(t *testing.T) {
 	Clean()
 
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 
 	AddEndpoint(Endpoint{
 		AssetDetails: &AssetDetails{},
@@ -66,11 +55,7 @@ func TestGetContainerId2(t *testing.T) {
 
 func TestGetContainerId3(t *testing.T) {
 	Clean()
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
+	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 
 	AddEndpoint(Endpoint{
 		AssetDetails: &AssetDetails{

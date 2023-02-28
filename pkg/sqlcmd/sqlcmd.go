@@ -25,6 +25,9 @@ import (
 	"golang.org/x/text/transform"
 )
 
+// Note: The order of includes above matters for namedpipe and sharedmemory.
+// init() swaps shared memory protocol with tcp so it gets priority when dialing.
+
 var (
 	// ErrExitRequested tells the hosting application to exit immediately
 	ErrExitRequested = errors.New("exit")
@@ -54,7 +57,7 @@ type Console interface {
 
 // Sqlcmd is the core processor for text lines.
 //
-// It accumulates non-command lines in a buffer and  and sends command lines to the appropriate command runner.
+// It accumulates non-command lines in a buffer and sends command lines to the appropriate command runner.
 // When the batch delimiter is encountered it sends the current batch to the active connection and prints
 // the results to the output writer
 type Sqlcmd struct {
