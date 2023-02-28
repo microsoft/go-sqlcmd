@@ -127,7 +127,7 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 		query.Add("applicationintent", connect.ApplicationIntent)
 	}
 	if connect.LoginTimeoutSeconds > 0 {
-		query.Add("connection timeout", fmt.Sprint(connect.LoginTimeoutSeconds))
+		query.Add("dial timeout", fmt.Sprint(connect.LoginTimeoutSeconds))
 	}
 	if connect.PacketSize > 0 {
 		query.Add("packet size", fmt.Sprint(connect.PacketSize))
