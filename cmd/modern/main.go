@@ -41,11 +41,25 @@ func main() {
 			ErrorHandler:   checkErr,
 			HintHandler:    displayHints})}
 	rootCmd = cmdparser.New[*Root](dependencies)
+	initializeEnvVars()
 	if isFirstArgModernCliSubCommand() {
 		cmdparser.Initialize(initializeCallback)
 		rootCmd.Execute()
 	} else {
 		legacyCmd.Execute(version)
+	}
+}
+
+// initializeEnvVars intializes SQLCMDSERVER, SQLCMDUSER and SQLCMDPASSWORD
+// if the currentContext is set. This env variables do not have any effect
+// if user provides this info via backward compatibility syntax
+func initializeEnvVars() {
+	initializeCallback()
+	if config.CurrentContextName() != "" && config.IsCurrentContextValid() {
+		server, username, password := config.GetCurrentContextInfo()
+		os.Setenv("SQLCMDSERVER", server)
+		os.Setenv("SQLCMDUSER", username)
+		os.Setenv("SQLCMDPASSWORD", password)
 	}
 }
 
