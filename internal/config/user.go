@@ -5,8 +5,9 @@ package config
 
 import (
 	"fmt"
-	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"strconv"
+
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 )
 
 // AddUser adds a new user to the configuration.
@@ -122,4 +123,10 @@ func userOrdinal(name string) (ordinal int) {
 		}
 	}
 	return
+}
+
+// UserExists checks if the current context has a 'user', e.g. a context used
+// for trusted authentication will not have a user.
+func UserExists(context Context) bool {
+	return context.ContextDetails.User != nil && *context.ContextDetails.User != ""
 }

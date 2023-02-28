@@ -75,10 +75,12 @@ func CurrentContext() (endpoint Endpoint, user *User) {
 				}
 			}
 
-			for _, u := range config.Users {
-				if u.Name == *c.User {
-					user = &u
-					break
+			if UserExists(c) {
+				for _, u := range config.Users {
+					if u.Name == *c.User {
+						user = &u
+						break
+					}
 				}
 			}
 		}
@@ -99,40 +101,16 @@ func CurrentContext() (endpoint Endpoint, user *User) {
 func GetCurrentContextInfo() (server string, username string, password string) {
 	endpoint, user := CurrentContext()
 	server = fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port)
-	username = user.BasicAuth.Username
-	if user.AuthenticationType == "basic" {
-		password = decryptCallback(
-			user.BasicAuth.Password,
-			user.BasicAuth.PasswordEncrypted,
-		)
-	}
-	return
-}
-
-// isCurrentContextValid returns true if it has valid information associated
-// such as endpoint and user.
-func IsCurrentContextValid() (isValid bool) {
-	currentContextName := CurrentContextName()
-	endPointFound := false
-	userFound := false
-	for _, c := range config.Contexts {
-		if c.Name == currentContextName {
-			for _, e := range config.Endpoints {
-				if e.Name == c.Endpoint {
-					endPointFound = true
-					break
-				}
-			}
-
-			for _, u := range config.Users {
-				if u.Name == *c.User && u.Name != "" {
-					userFound = true
-					break
-				}
-			}
+	if user != nil {
+		username = user.BasicAuth.Username
+		if user.AuthenticationType == "basic" {
+			password = decryptCallback(
+				user.BasicAuth.Password,
+				user.BasicAuth.PasswordEncrypted,
+			)
 		}
 	}
-	return endPointFound && userFound
+	return
 }
 
 // DeleteContext removes the context with the given name from the application's
