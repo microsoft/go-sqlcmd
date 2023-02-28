@@ -60,6 +60,7 @@ func initializeEnvVars() {
 		os.Setenv("SQLCMDSERVER", server)
 		os.Setenv("SQLCMDUSER", username)
 		os.Setenv("SQLCMDPASSWORD", password)
+		outputter.Infof("%vUsing current-context: %s", sqlcmd.SqlcmdEol, config.CurrentContextName())
 	}
 }
 
