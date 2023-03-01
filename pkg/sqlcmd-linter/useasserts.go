@@ -12,12 +12,12 @@ var AssertAnalyzer = &analysis.Analyzer{
 	Name:     "assertlint",
 	Doc:      "Require use of asserts instead of fmt.Error functions in tests",
 	Requires: []*analysis.Analyzer{inspect.Analyzer},
-	Run:      run,
+	Run:      runAsserts,
 }
 
 var blockedTestingMethods = []string{"Error", "ErrorF", "Fail", "FailNow", "Fatal", "Fatalf"}
 
-func run(pass *analysis.Pass) (interface{}, error) {
+func runAsserts(pass *analysis.Pass) (interface{}, error) {
 	// pass.ResultOf[inspect.Analyzer] will be set if we've added inspect.Analyzer to Requires.
 	// Analyze code and make an AST from the file:
 	inspectorInstance := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)

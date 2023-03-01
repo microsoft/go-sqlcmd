@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	multichecker.Main(sqlcmdlinter.AssertAnalyzer)
+	multichecker.Main(sqlcmdlinter.AssertAnalyzer, sqlcmdlinter.ImportsAnalyzer)
 }
