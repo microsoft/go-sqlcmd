@@ -39,7 +39,7 @@ func runImports(pass *analysis.Pass) (interface{}, error) {
 
 		f := n.(*ast.File)
 		fileName := pass.Fset.Position(f.Package).Filename
-		isInternal := strings.Contains(fileName, `internal\`)
+		isInternal := strings.Contains(fileName, `internal\`) || strings.Contains(fileName, `internal/`)
 		for _, s := range f.Imports {
 			if s.Path.Kind == token.STRING {
 				pkg := s.Path.Value
