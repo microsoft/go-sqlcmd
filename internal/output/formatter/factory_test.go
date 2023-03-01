@@ -25,10 +25,7 @@ func TestFormatter(t *testing.T) {
 
 func TestNegFormatterBadFormat(t *testing.T) {
 	assert.Panics(t, func() {
-
-		s := "serialize this"
-		f := New(Options{SerializationFormat: "badbad"})
-		f.Serialize(s)
+		New(Options{SerializationFormat: "badbad"})
 	})
 }
 

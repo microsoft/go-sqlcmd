@@ -26,7 +26,7 @@
     <Icon Id="SqlCmdIcon" SourceFile="$(var.ProductResources)sqlcmd.ico" />
 
     <Property Id="ARPPRODUCTICON" Value="SqlCmdIcon" />
-    <Property Id="ARPHELPLINK" Value="https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility" />
+    <Property Id="ARPHELPLINK" Value="https://docs.microsoft.com/sql/tools/sqlcmd-utility" />
     <Property Id="ARPURLINFOABOUT" Value="https://github.com/microsoft/go-sqlcmd" />
     <Property Id="ARPURLUPDATEINFO" Value="https://github.com/microsoft/go-sqlcmd" />
     <Property Id="ApplicationFolderName" Value="SqlCmd\Tools" />

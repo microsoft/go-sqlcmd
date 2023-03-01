@@ -213,7 +213,7 @@ func RemoveCurrentContext() {
 			}
 
 			for ui, u := range config.Users {
-				if u.Name == *c.User {
+				if c.User != nil && u.Name == *c.User {
 					config.Users = append(
 						config.Users[:ui],
 						config.Users[ui+1:]...)

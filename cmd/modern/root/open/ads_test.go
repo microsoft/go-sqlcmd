@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package open
 
 import (
@@ -29,6 +32,5 @@ func TestAds(t *testing.T) {
 	})
 	config.SetCurrentContextName("context")
 
-	// TODO: Need to test this without launching the ADS UI itself
-	// cmdparser.TestCmd[*Ads]()
+	cmdparser.TestCmd[*Ads]()
 }

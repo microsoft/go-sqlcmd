@@ -30,11 +30,19 @@ func (c *AddUser) DefineCommand(...cmdparser.CommandOptions) {
 		Short: "Add a user",
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Add a user",
+				Description: "Add a user (using the SQLCMD_PASSWORD environment variable)",
 				Steps: []string{
-					fmt.Sprintf(`%s SQLCMD_PASSWORD=<password>`, pal.CreateEnvVarKeyword()),
+					fmt.Sprintf(`%s SQLCMD_PASSWORD=<placeholderpassword>`, pal.CreateEnvVarKeyword()),
 					"sqlcmd config add-user --name my-user --username user1",
 					fmt.Sprintf(`%s SQLCMD_PASSWORD=`, pal.CreateEnvVarKeyword()),
+				},
+			},
+			{
+				Description: "Add a user (using the SQLCMDPASSWORD environment variable)",
+				Steps: []string{
+					fmt.Sprintf(`%s SQLCMDPASSWORD=<placeholderpassword>`, pal.CreateEnvVarKeyword()),
+					"sqlcmd config add-user --name my-user --username user1",
+					fmt.Sprintf(`%s SQLCMDPASSWORD=`, pal.CreateEnvVarKeyword()),
 				},
 			},
 		},
@@ -59,7 +67,7 @@ func (c *AddUser) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.username,
 		Name:   "username",
-		Usage:  "The username (provide password in SQLCMD_PASSWORD environment variable)",
+		Usage:  "The username (provide password in SQLCMD_PASSWORD or SQLCMDPASSWORD environment variable)",
 	})
 
 	c.encryptPasswordFlag()
@@ -95,24 +103,35 @@ func (c *AddUser) run() {
 	}
 
 	if c.authType == "basic" {
-		if os.Getenv("SQLCMD_PASSWORD") == "" {
+		if os.Getenv("SQLCMD_PASSWORD") == "" && os.Getenv("SQLCMDPASSWORD") == "" {
 			output.FatalWithHints([]string{
-				"Provide password in the SQLCMD_PASSWORD environment variable"},
+				"Provide password in the SQLCMD_PASSWORD (or SQLCMDPASSWORD) environment variable"},
 				"Authentication Type 'basic' requires a password")
 		}
 
 		if c.username == "" {
 			output.FatalfWithHintExamples([][]string{
 				{"Provide a username with the --username flag",
-					"sqlcmd config add-user --username stuartpa"},
+					"sqlcmd config add-user --username sa"},
 			},
-				"Username not provider")
+				"Username not provided")
 		}
 
+		if os.Getenv("SQLCMD_PASSWORD") != "" &&
+			os.Getenv("SQLCMDPASSWORD") != "" {
+			output.FatalWithHints([]string{
+				"Unset one of the environment variables SQLCMD_PASSWORD or SQLCMDPASSWORD"},
+				"Both environment variables SQLCMD_PASSWORD and SQLCMDPASSWORD are set. ")
+		}
+
+		password := os.Getenv("SQLCMD_PASSWORD")
+		if password == "" {
+			password = os.Getenv("SQLCMDPASSWORD")
+		}
 		user.BasicAuth = &sqlconfig.BasicAuthDetails{
 			Username:          c.username,
 			PasswordEncrypted: c.encryptPassword,
-			Password:          secret.Encode(os.Getenv("SQLCMD_PASSWORD"), c.encryptPassword),
+			Password:          secret.Encode(password, c.encryptPassword),
 		}
 	}
 
