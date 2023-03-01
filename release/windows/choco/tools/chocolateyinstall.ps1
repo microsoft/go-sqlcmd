@@ -2,7 +2,7 @@
 
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $url        = '{{DownloadUrl}}'
-$url64      = 'https://download.microsoft.com/download/d/4/4/d4403a51-2ab7-4ea8-b850-d2710c5e1323/sqlcmd_0.8.1-1.msi'
+$url64      = 'https://github.com/microsoft/go-sqlcmd/releases/download/v0.15.0/sqlcmd_0.15.0-1.msi'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -10,12 +10,8 @@ $packageArgs = @{
   fileType      = 'MSI'
   url           = $url
   url64bit      = $url64
-
   softwareName  = 'sqlcmd*'
-
-  checksum      = '{{Checksum}}'
-  checksumType  = '{{ChecksumType}}'
-  checksum64    = '03587762932D5A66ACFE15D306FE14645D53BC61162B4DA0D9AF29B4A8A1550D'
+  checksum64    = '3425f48d4933eeb9c5ecf89afa5d30c8829892c4d3bbd58c9eeeb3200ed925f2'
   checksumType64= 'sha256'
 
   silentArgs    = "/qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`""
