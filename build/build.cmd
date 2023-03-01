@@ -7,6 +7,7 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
 )
 setlocal
 SET     RED=%ESC%[1;31m
+echo %RED%
 REM run the custom sqlcmd linter for code style enforcement
 REM using for/do instead of running it directly so the status code isn't checked by the shell.
 REM Once we are prepared to block the build with the linter we will move this step into a pipeline
