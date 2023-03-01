@@ -199,7 +199,7 @@ func TestConnectCommand(t *testing.T) {
 		// not using assert to avoid printing passwords in the log
 		assert.NotContains(t, buf.buf.String(), "$(servername)", "ConnectDB should have succeeded")
 		if s.Connect.UserName != c.UserName || c.Password != s.Connect.Password || s.Connect.LoginTimeoutSeconds != 111 {
-			t.Fatalf("After connect, sqlCmd.Connect is not updated %+v", s.Connect)
+			assert.Fail(t, fmt.Sprintf("After connect, sqlCmd.Connect is not updated %+v", s.Connect))
 		}
 	}
 }
