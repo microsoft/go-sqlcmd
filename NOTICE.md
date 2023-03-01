@@ -249,6 +249,38 @@ SOFTWARE.
 
 ```
 
+## github.com/cespare/xxhash/v2
+
+* Name: github.com/cespare/xxhash/v2
+* Version: v2.1.1
+* License: [MIT](https://github.com/cespare/xxhash/blob/v2.1.1/LICENSE.txt)
+
+```
+Copyright (c) 2016 Caleb Spare
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+```
+
 ## github.com/docker/distribution
 
 * Name: github.com/docker/distribution
@@ -1612,9 +1644,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ```
 
-## github.com/golang/protobuf/proto
+## github.com/golang/protobuf
 
-* Name: github.com/golang/protobuf/proto
+* Name: github.com/golang/protobuf
 * Version: v1.5.2
 * License: [BSD-3-Clause](https://github.com/golang/protobuf/blob/v1.5.2/LICENSE)
 
@@ -3352,8 +3384,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## github.com/prometheus/client_golang/prometheus
 
 * Name: github.com/prometheus/client_golang/prometheus
-* Version: v1.1.0
-* License: [Apache-2.0](https://github.com/prometheus/client_golang/blob/v1.1.0/LICENSE)
+* Version: v1.11.1
+* License: [Apache-2.0](https://github.com/prometheus/client_golang/blob/v1.11.1/LICENSE)
 
 ```
                                  Apache License
@@ -3563,8 +3595,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## github.com/prometheus/client_model/go
 
 * Name: github.com/prometheus/client_model/go
-* Version: v0.0.0-20190812154241-14fe0d1b01d4
-* License: [Apache-2.0](https://github.com/prometheus/client_model/blob/14fe0d1b01d4/LICENSE)
+* Version: v0.2.0
+* License: [Apache-2.0](https://github.com/prometheus/client_model/blob/v0.2.0/LICENSE)
 
 ```
                                  Apache License
@@ -3774,8 +3806,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## github.com/prometheus/common
 
 * Name: github.com/prometheus/common
-* Version: v0.6.0
-* License: [Apache-2.0](https://github.com/prometheus/common/blob/v0.6.0/LICENSE)
+* Version: v0.26.0
+* License: [Apache-2.0](https://github.com/prometheus/common/blob/v0.26.0/LICENSE)
 
 ```
                                  Apache License
@@ -3985,8 +4017,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
 
 * Name: github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
-* Version: v0.6.0
-* License: [BSD-3-Clause](https://github.com/prometheus/common/blob/v0.6.0/internal\bitbucket.org\ww\goautoneg\README.txt)
+* Version: v0.26.0
+* License: [BSD-3-Clause](https://github.com/prometheus/common/blob/v0.26.0/internal\bitbucket.org\ww\goautoneg\README.txt)
 
 ```
 PACKAGE
@@ -4657,8 +4689,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/net
 
 * Name: golang.org/x/net
-* Version: v0.0.0-20221014081412-f15817d10f9b
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/f15817d1:LICENSE)
+* Version: v0.7.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.7.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4694,8 +4726,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/sys
 
 * Name: golang.org/x/sys
-* Version: v0.0.0-20220908164124-27713097b956
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/27713097:LICENSE)
+* Version: v0.5.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.5.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4731,8 +4763,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/text
 
 * Name: golang.org/x/text
-* Version: v0.4.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.4.0:LICENSE)
+* Version: v0.7.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.7.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
