@@ -50,7 +50,19 @@ steps:
   displayName: 'Go: build sqlcmd'
   inputs:
     command: 'build'
-    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }} -ldflags="-X main.version=${{ parameters.VersionTag }}"'
+    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }} -ldflags="-s -w -X main.version=${{ parameters.VersionTag }}"'
+    workingDirectory: '$(Build.SourcesDirectory)/cmd/modern'
+  env:
+      GOOS: ${{ parameters.OS }}
+      GOARCH: ${{ parameters.Arch }}
+      GOBIN: $(Build.SourcesDirectory)
+      CGO_ENABLED: 0 # Enables Docker image based off 'scratch'
+
+- task: Go@0
+  displayName: 'Go: build sqlcmd with debug symbols'
+  inputs:
+    command: 'build'
+    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }}_debug -ldflags="-X main.version=${{ parameters.VersionTag }}"'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/modern'
   env:
       GOOS: ${{ parameters.OS }}

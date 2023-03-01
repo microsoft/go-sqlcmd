@@ -5,8 +5,9 @@ package config
 
 import (
 	"fmt"
-	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"strconv"
+
+	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 )
 
 // AddUser adds a new user to the configuration.
