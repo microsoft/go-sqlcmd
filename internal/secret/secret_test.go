@@ -17,14 +17,12 @@ func TestEncodeAndDecode(t *testing.T) {
 
 func TestNegEncode(t *testing.T) {
 	assert.Panics(t, func() {
-
 		Encode("", true)
 	})
 }
 
 func TestNegDecode(t *testing.T) {
 	assert.Panics(t, func() {
-
 		Decode("", true)
 	})
 }

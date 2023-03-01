@@ -111,6 +111,12 @@ func UserNameExists(name string) (exists bool) {
 	return
 }
 
+// UserExists checks if the current context has a 'user', e.g. a context used
+// for trusted authentication will not have a user.
+func UserExists(context Context) bool {
+	return context.ContextDetails.User != nil && *context.ContextDetails.User != ""
+}
+
 // userOrdinal returns the index of a user in the list of users in the configuration object.
 // If the user does not exist, the function returns -1.
 // This function iterates over the list of users and returns the index of the user with the given name.

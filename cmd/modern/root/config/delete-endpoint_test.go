@@ -16,17 +16,15 @@ func TestDeleteEndpoint(t *testing.T) {
 }
 
 func TestNegDeleteEndpoint(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*DeleteEndpoint]()
 	})
 }
 
 func TestNegDeleteEndpoint2(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*DeleteEndpoint]("--name does-not-exist")
 	})
 }

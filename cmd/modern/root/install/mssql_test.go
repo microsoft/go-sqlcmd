@@ -38,15 +38,50 @@ func TestInstallMssql(t *testing.T) {
 }
 
 func TestNegInstallMssql(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*Mssql]()
 	})
 }
 
 func TestNegInstallMssql2(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*Mssql]("--accept-eula --repo does/not/exist")
+	})
+}
+
+func TestNegInstallMssql3(t *testing.T) {
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*Mssql]("--accept-eula --using https://does/not/exist.bak")
+	})
+}
+
+func TestNegInstallMssql4(t *testing.T) {
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*Mssql]("--accept-eula --user-database bad'name")
+	})
+}
+
+func TestNegInstallMssql5(t *testing.T) {
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*Mssql]("--accept-eula --using https://not/bak/file")
+	})
+}
+
+func TestNegInstallMssql6(t *testing.T) {
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*Mssql]("--accept-eula --using file://not/http")
+	})
+}
+
+func TestNegInstallMssql7(t *testing.T) {
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*Mssql]("--accept-eula --using https://aka.ms/AdventureWorksLT")
 	})
 }

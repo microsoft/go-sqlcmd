@@ -17,9 +17,8 @@ func TestUseContext(t *testing.T) {
 }
 
 func TestNegUseContext(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*UseContext]("does-not-exist")
 	})
 }

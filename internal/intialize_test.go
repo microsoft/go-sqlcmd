@@ -26,52 +26,52 @@ func TestInitialize(t *testing.T) {
 }
 
 func TestNegInitialize(t *testing.T) {
+	options := InitializeOptions{
+		ErrorHandler: nil,
+	}
 	assert.Panics(t, func() {
-		options := InitializeOptions{
-			ErrorHandler: nil,
-		}
 		Initialize(options)
 	})
 }
 
 func TestNegInitialize2(t *testing.T) {
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {},
+	}
 	assert.Panics(t, func() {
-		options := InitializeOptions{
-			ErrorHandler: func(err error) {},
-		}
 		Initialize(options)
 	})
 }
 
 func TestNegInitialize3(t *testing.T) {
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {},
+		TraceHandler: func(format string, a ...any) {},
+	}
 	assert.Panics(t, func() {
-		options := InitializeOptions{
-			ErrorHandler: func(err error) {},
-			TraceHandler: func(format string, a ...any) {},
-		}
 		Initialize(options)
 	})
 }
 
 func TestNegInitialize4(t *testing.T) {
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {},
+		TraceHandler: func(format string, a ...any) {},
+		HintHandler:  func(strings []string) {},
+	}
 	assert.Panics(t, func() {
-		options := InitializeOptions{
-			ErrorHandler: func(err error) {},
-			TraceHandler: func(format string, a ...any) {},
-			HintHandler:  func(strings []string) {},
-		}
 		Initialize(options)
 	})
 }
 
 func TestNegInitialize5(t *testing.T) {
+	options := InitializeOptions{
+		ErrorHandler: func(err error) {},
+		TraceHandler: func(format string, a ...any) {},
+		HintHandler:  func(strings []string) {},
+		LineBreak:    "",
+	}
 	assert.Panics(t, func() {
-		options := InitializeOptions{
-			ErrorHandler: func(err error) {},
-			TraceHandler: func(format string, a ...any) {},
-			HintHandler:  func(strings []string) {},
-			LineBreak:    "",
-		}
 		Initialize(options)
 	})
 }

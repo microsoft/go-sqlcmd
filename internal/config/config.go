@@ -123,7 +123,7 @@ func AddContextWithContainer(
 				Image: imageName},
 		},
 		EndpointDetails: EndpointDetails{
-			Address: "localhost",
+			Address: "127.0.0.1",
 			Port:    portNumber,
 		},
 		Name: endPointName,

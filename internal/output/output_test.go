@@ -33,23 +33,23 @@ func TestTracef(t *testing.T) {
 }
 
 func TestFatal(t *testing.T) {
+	o := New(Options{LoggingLevel: 4})
 	assert.Panics(t, func() {
-		o := New(Options{LoggingLevel: 4})
 		o.Fatal("sample trace")
 	})
 }
 
 func TestFatalWithHints(t *testing.T) {
+	o := New(Options{LoggingLevel: 4})
 	assert.Panics(t, func() {
-		o := New(Options{LoggingLevel: 4})
 		o.FatalWithHints([]string{"This is a hint"}, "expected error")
 	})
 }
 
 func TestFatalfWithHintExamples(t *testing.T) {
+	hintExamples := [][]string{{"This is a hint", ""}}
+	o := New(Options{LoggingLevel: verbosity.Trace})
 	assert.Panics(t, func() {
-		hintExamples := [][]string{{"This is a hint", ""}}
-		o := New(Options{LoggingLevel: verbosity.Trace})
 		o.FatalfWithHintExamples(
 			hintExamples,
 			"%v",
@@ -59,8 +59,8 @@ func TestFatalfWithHintExamples(t *testing.T) {
 }
 
 func TestFatalfErrorWithHints(t *testing.T) {
+	o := New(Options{LoggingLevel: 4})
 	assert.Panics(t, func() {
-		o := New(Options{LoggingLevel: 4})
 		o.FatalfErrorWithHints(
 			errors.New("error to check"),
 			[]string{"This is a hint to avoid the error"},
@@ -71,8 +71,8 @@ func TestFatalfErrorWithHints(t *testing.T) {
 }
 
 func TestFatalfWithHints(t *testing.T) {
+	o := New(Options{LoggingLevel: 4})
 	assert.Panics(t, func() {
-		o := New(Options{LoggingLevel: 4})
 		o.FatalfWithHints(
 			[]string{"This is a hint to the user to avoid the error"},
 			"%v",
@@ -82,29 +82,29 @@ func TestFatalfWithHints(t *testing.T) {
 }
 
 func TestFatalf(t *testing.T) {
+	o := New(Options{LoggingLevel: 4})
 	assert.Panics(t, func() {
-		o := New(Options{LoggingLevel: 4})
 		o.Fatalf("%v", "message to give user on exit")
 	})
 }
 
 func TestFatalErr(t *testing.T) {
+	o := New(Options{LoggingLevel: 4})
 	assert.Panics(t, func() {
-		o := New(Options{LoggingLevel: 4})
 		o.FatalErr(errors.New("will exist if error is not nil"))
 	})
 }
 
 func TestPanicf(t *testing.T) {
+	o := New(Options{LoggingLevel: 4})
 	assert.Panics(t, func() {
-		o := New(Options{LoggingLevel: 4})
 		o.Panicf("%v", "this is the reason for the panic")
 	})
 }
 
 func TestPanic(t *testing.T) {
+	o := New(Options{LoggingLevel: 4})
 	assert.Panics(t, func() {
-		o := New(Options{LoggingLevel: 4})
 		o.Panic("reason for the panic")
 	})
 }
@@ -144,8 +144,8 @@ func TestInfofWithHintExamples(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			o := New(Options{LoggingLevel: 4})
 			assert.Panics(t, func() {
-				o := New(Options{LoggingLevel: 4})
 				o.InfofWithHintExamples(tt.args.hintExamples, tt.args.format, tt.args.a...)
 			})
 		})

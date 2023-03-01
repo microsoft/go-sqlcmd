@@ -9,6 +9,6 @@ import (
 )
 
 func TestEndpointExists(t *testing.T) {
-	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
-	EndpointExists("")
+	assert.Panics(t, func() { EndpointExists("") })
+
 }

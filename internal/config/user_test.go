@@ -10,12 +10,30 @@ import (
 )
 
 func TestAddUser(t *testing.T) {
-	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
-	AddUser(User{
-		Name:               "",
-		AuthenticationType: "basic",
-		BasicAuth:          nil,
+	assert.Panics(t, func() {
+		AddUser(User{
+			Name:               "",
+			AuthenticationType: "basic",
+			BasicAuth:          nil,
+		})
 	})
+}
+
+func TestUserExists2(t *testing.T) {
+	context := Context{
+		ContextDetails: ContextDetails{},
+		Name:           "context",
+	}
+	assert.False(t, UserExists(context))
+}
+
+func TestUserExists3(t *testing.T) {
+	user := "user"
+	context := Context{
+		ContextDetails: ContextDetails{User: &user},
+		Name:           "context",
+	}
+	assert.True(t, UserExists(context))
 }
 
 func TestNegAddUser(t *testing.T) {

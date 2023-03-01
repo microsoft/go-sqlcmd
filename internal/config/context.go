@@ -76,7 +76,7 @@ func CurrentContext() (endpoint Endpoint, user *User) {
 			}
 
 			for _, u := range config.Users {
-				if u.Name == *c.User {
+				if c.User != nil && u.Name == *c.User {
 					user = &u
 					break
 				}
@@ -194,7 +194,7 @@ func RemoveCurrentContext() {
 			}
 
 			for ui, u := range config.Users {
-				if u.Name == *c.User {
+				if c.User != nil && u.Name == *c.User {
 					config.Users = append(
 						config.Users[:ui],
 						config.Users[ui+1:]...)

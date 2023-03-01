@@ -18,9 +18,8 @@ func TestGetEndpoints(t *testing.T) {
 }
 
 func TestNegGetEndpoints(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*GetEndpoints]("does-not-exist")
 	})
 }
