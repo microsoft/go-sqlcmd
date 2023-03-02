@@ -4,7 +4,11 @@ import (
 	"io"
 	"os"
 
+	"github.com/alecthomas/chroma/v2"
+	"github.com/alecthomas/chroma/v2/formatters"
+	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/quick"
+	"github.com/alecthomas/chroma/v2/styles"
 )
 
 // TextType defines a category of text that can be colorized
@@ -27,10 +31,18 @@ const (
 	TextTypeWarning
 )
 
+var typeMap map[TextType]chroma.TokenType = map[TextType]chroma.TokenType{
+	TextTypeCell:      chroma.StringOther,
+	TextTypeHeader:    chroma.GenericHeading,
+	TextTypeSeparator: chroma.StringDelimiter,
+	TextTypeError:     chroma.GenericError,
+	TextTypeWarning:   chroma.GenericEmph,
+}
+
 // Colorizer has methods to write colorized text to a stream and to add color to HTML content
 type Colorizer interface {
 	// Write prints s to w using the current color scheme. If w is not a terminal or if it is redirected, no color codes are printed
-	Write(w io.Writer, s string, scheme string, t TextType)
+	Write(w io.Writer, s string, scheme string, t TextType) error
 }
 
 type chromaColorizer struct {
@@ -41,8 +53,9 @@ func New(forceColor bool) Colorizer {
 	return &chromaColorizer{forceColor: forceColor}
 }
 
-func (c *chromaColorizer) Write(w io.Writer, s string, scheme string, t TextType) {
-	colorize := scheme != ""
+func (c *chromaColorizer) Write(w io.Writer, s string, scheme string, t TextType) (err error) {
+	style := styles.Get(scheme)
+	colorize := scheme != "" && style != nil
 	// only colorize if w is a terminal and it's not redirected, or if forceColor is set
 	if colorize && !c.forceColor {
 		if f, ok := w.(*os.File); ok {
@@ -56,15 +69,25 @@ func (c *chromaColorizer) Write(w io.Writer, s string, scheme string, t TextType
 			colorize = false
 		}
 	}
-	if !colorize {
+	// We use this lexer simply for token iteration
+	lexer := lexers.Get("plaintext")
+	formatter := formatters.Get("terminal256")
+	if !colorize || lexer == nil || formatter == nil {
 		t = TextTypeNormal
 	}
 	switch t {
 	case TextTypeNormal:
-		_, _ = w.Write([]byte(s))
+		_, err = w.Write([]byte(s))
 	case TextTypeTSql:
-		if err := quick.Highlight(w, s, "transact-sql", "terminal256", scheme); err != nil {
-			_, _ = w.Write([]byte(s))
+		if err = quick.Highlight(w, s, "transact-sql", "terminal256", scheme); err != nil {
+			_, err = w.Write([]byte(s))
+		}
+	default:
+		tokens := chroma.Literator(chroma.Token{
+			Type: typeMap[t], Value: s})
+		if err := formatter.Format(w, style, tokens); err != nil {
+			_, err = w.Write([]byte(s))
 		}
 	}
+	return
 }
