@@ -62,13 +62,20 @@ func initializeEnvVars() {
 		if os.Getenv("SQLCMDSERVER") == "" {
 			os.Setenv("SQLCMDSERVER", server)
 		}
-		if os.Getenv("SQLCMDUSER") == "" {
-			os.Setenv("SQLCMDUSER", username)
+
+		// Username and password should come together, either from the environment
+		// variables set by the user before the sqlcmd process started, or from the sqlconfig
+		// for the current context, but if just the environment variable SQLCMDPASSWORD
+		// is set before the process starts we do not use it, if the user and password is set in sqlconfig.
+		if username != "" && password != "" { // If not trusted auth
+			if os.Getenv("SQLCMDUSER") == "" {
+				os.Setenv("SQLCMDUSER", username)
+				os.Setenv("SQLCMDPASSWORD", password)
+			}
 		}
-		if os.Getenv("SQLCMDPASSWORD") == "" {
-			os.Setenv("SQLCMDPASSWORD", password)
-		}
+
 	}
+
 }
 
 // isFirstArgModernCliSubCommand is TEMPORARY code, to be removed when
