@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/microsoft/go-mssqldb/azuread"
+	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -159,6 +160,28 @@ func TestListCommand(t *testing.T) {
 	s.SetOutput(nil)
 	o := buf.buf.String()
 	assert.Equal(t, o, "select 1"+SqlcmdEol, ":list output not equal to batch")
+}
+
+func TestListCommandUsesColorizer(t *testing.T) {
+	vars := InitializeVariables(false)
+	vars.Set(SQLCMDCOLORSCHEME, "emacs")
+	s := New(nil, "", vars)
+	// force colorizer on
+	s.colorizer = color.New(true)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+
+	// insert test batch
+	s.batch.Reset([]rune("select top (1) name from sys.tables"))
+	_, _, err := s.batch.Next()
+	assert.NoError(t, err, "Inserting test batch")
+
+	// execute list command and verify results
+	err = listCommand(s, nil, 1)
+	assert.NoError(t, err, "Executing :list command")
+	s.SetOutput(nil)
+	o := buf.buf.String()
+	assert.Equal(t, "\x1b[1m\x1b[38;5;129mselect\x1b[0m\x1b[38;5;250m \x1b[0m\x1b[1m\x1b[38;5;129mtop\x1b[0m\x1b[38;5;250m \x1b[0m(\x1b[38;5;241m1\x1b[0m)\x1b[38;5;250m \x1b[0mname\x1b[38;5;250m \x1b[0m\x1b[1m\x1b[38;5;129mfrom\x1b[0m\x1b[38;5;250m \x1b[0msys.tables"+SqlcmdEol, o, ":list output not equal to batch")
 }
 
 func TestConnectCommand(t *testing.T) {

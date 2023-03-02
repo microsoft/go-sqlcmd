@@ -12,8 +12,8 @@ func TestWrite(t *testing.T) {
 		s string
 		t TextType
 	}
-	colorizer := New("emacs")
-	noncolorizer := New("")
+	colorizer := New(true)
+	noncolorizer := New(false)
 
 	tests := []struct {
 		name  string
@@ -35,11 +35,11 @@ func TestWrite(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			w := &bytes.Buffer{}
-			colorizer.Write(w, tt.args.s, tt.args.t)
+			colorizer.Write(w, tt.args.s, "emacs", tt.args.t)
 			gotW := w.String()
 			assert.Equalf(t, tt.wantW, gotW, "colorizer.Write(%+v)", tt.args)
 			w.Reset()
-			noncolorizer.Write(w, tt.args.s, tt.args.t)
+			noncolorizer.Write(w, tt.args.s, "emacs", tt.args.t)
 			assert.Equalf(t, tt.args.s, w.String(), "noncolorizer.Write should write unmodified string")
 
 		})

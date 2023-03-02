@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/alecthomas/kong"
+	"github.com/microsoft/go-sqlcmd/internal/color"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -356,10 +357,13 @@ func resetCommand(s *Sqlcmd, args []string, line uint) error {
 
 // listCommand displays statements currently in  the statement cache
 func listCommand(s *Sqlcmd, args []string, line uint) error {
-	if s.batch != nil && s.batch.String() != "" {
-		fmt.Fprintf(s.GetOutput(), `%s%s`, []byte(s.batch.String()), SqlcmdEol)
+	if s.batch == nil || s.batch.String() == "" {
+		return nil
 	}
 
+	output := s.GetOutput()
+	s.colorizer.Write(output, s.batch.String(), s.vars.ColorScheme(), color.TextTypeTSql)
+	output.Write([]byte(SqlcmdEol))
 	return nil
 }
 
