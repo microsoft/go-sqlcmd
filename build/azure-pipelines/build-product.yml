@@ -97,7 +97,7 @@ stages:
         inputs:
           ConnectedServiceName: 'Code Signing'
           FolderPath: '$(Pipeline.Workspace)'
-          Pattern: 'sqlcmd.exe'
+          Pattern: 'sqlcmd*.exe'
           signConfigType: 'inlineSignParams'
           inlineOperation: |
             [
