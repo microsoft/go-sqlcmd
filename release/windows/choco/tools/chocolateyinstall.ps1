@@ -11,7 +11,7 @@ $packageArgs = @{
   url           = $url
   url64bit      = $url64
   softwareName  = 'sqlcmd*'
-  checksum64    = '3425f48d4933eeb9c5ecf89afa5d30c8829892c4d3bbd58c9eeeb3200ed925f2'
+  checksum64    = '425f48d4933eeb9c5ecf89afa5d30c8829892c4d3bbd58c9eeeb3200ed925f2'
   checksumType64= 'sha256'
 
   silentArgs    = "/qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`""
