@@ -73,7 +73,7 @@ stages:
             os:
             arch: s390x
             binaryName: 'sqlcmd'
-            binaryExt: '.exe'
+            binaryExt: ''
       pool:
         vmImage: $(imageName)
       steps:
