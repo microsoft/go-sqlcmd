@@ -7,7 +7,6 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"fmt"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
@@ -236,13 +235,8 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		panic("Must pass in non-empty destFolder")
 	}
 
-	cmd := []string{"mkdir", "--parents", destFolder}
-	_, stderr := c.runCmdInContainer(id, cmd)
-	if len(stderr) > 0 {
-		trace("Debugging info, running `du /var/opt`:")
-		c.runCmdInContainer(id, []string{"du", "/var/opt"})
-		checkErr(fmt.Errorf("Error creating backup directory: %s", stderr))
-	}
+	cmd := []string{"mkdir", destFolder}
+	c.runCmdInContainer(id, cmd)
 
 	_, file := filepath.Split(src)
 

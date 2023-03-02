@@ -16,16 +16,16 @@ func TestAddContext(t *testing.T) {
 }
 
 func TestNegAddContext(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*AddContext]("--endpoint does-not-exist")
 	})
 }
 
 func TestNegAddContext2(t *testing.T) {
+	cmdparser.TestSetup(t)
+	cmdparser.TestCmd[*AddEndpoint]()
 	assert.Panics(t, func() {
-		cmdparser.TestSetup(t)
-		cmdparser.TestCmd[*AddEndpoint]()
 		cmdparser.TestCmd[*AddContext]("--endpoint endpoint --user does-not-exist")
 	})
 }

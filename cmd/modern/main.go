@@ -45,7 +45,29 @@ func main() {
 		cmdparser.Initialize(initializeCallback)
 		rootCmd.Execute()
 	} else {
+		initializeEnvVars()
 		legacyCmd.Execute(version)
+	}
+}
+
+// initializeEnvVars intializes SQLCMDSERVER, SQLCMDUSER and SQLCMDPASSWORD
+// if the currentContext is set and if these env vars are not already set.
+// In terms of precedence, command line switches/flags take higher precedence
+// than env variables and env variables take higher precedence over config
+// file info.
+func initializeEnvVars() {
+	initializeCallback()
+	if config.CurrentContextName() != "" {
+		server, username, password := config.GetCurrentContextInfo()
+		if os.Getenv("SQLCMDSERVER") == "" {
+			os.Setenv("SQLCMDSERVER", server)
+		}
+		if os.Getenv("SQLCMDUSER") == "" {
+			os.Setenv("SQLCMDUSER", username)
+		}
+		if os.Getenv("SQLCMDPASSWORD") == "" {
+			os.Setenv("SQLCMDPASSWORD", password)
+		}
 	}
 }
 

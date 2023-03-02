@@ -43,22 +43,13 @@ func (c *Ads) run() {
 		c.ensureContainerIsRunning(endpoint)
 	}
 
-	hostname := endpoint.EndpointDetails.Address
-
-	// If the hostname is localhost, ADS will not connect to the container
-	// because it will try to connect to the host machine. To work around
-	// BUG(stuartpa): I think this might be a bug in ADS?
-	if hostname == "localhost" {
-		hostname = "127.0.0.1"
-	}
-
 	// If basic auth is used, we need to persist the password in the OS in a way
 	// that ADS can access it.  The method used is OS specific.
 	if user != nil && user.AuthenticationType == "basic" {
-		c.persistCredentialForAds(hostname, endpoint, user)
-		c.launchAds(hostname, endpoint.EndpointDetails.Port, user.BasicAuth.Username)
+		c.persistCredentialForAds(endpoint.EndpointDetails.Address, endpoint, user)
+		c.launchAds(endpoint.EndpointDetails.Address, endpoint.EndpointDetails.Port, user.BasicAuth.Username)
 	} else {
-		c.launchAds(hostname, endpoint.EndpointDetails.Port, "")
+		c.launchAds(endpoint.EndpointDetails.Address, endpoint.EndpointDetails.Port, "")
 	}
 }
 
@@ -99,9 +90,10 @@ func (c *Ads) launchAds(host string, port int, username string) {
 	tool := tools.NewTool("ads")
 	if !tool.IsInstalled() {
 		output.Fatalf(tool.HowToInstall())
-	} else {
-		output.Infof("Press Ctrl+C to exit this process...")
-		_, err := tool.Run(args)
-		c.CheckErr(err)
 	}
+
+	c.displayPreLaunchInfo()
+
+	_, err := tool.Run(args)
+	c.CheckErr(err)
 }

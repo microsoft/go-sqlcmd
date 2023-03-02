@@ -39,8 +39,8 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			"sqlserver://.?database=somedatabase&trustservercertificate=true&workstation+id=mystation",
 		},
 		{
-			&ConnectSettings{WorkstationName: "mystation", Encrypt: "false", Database: "somedatabase"},
-			"sqlserver://.?database=somedatabase&encrypt=false&workstation+id=mystation",
+			&ConnectSettings{WorkstationName: "mystation", Encrypt: "false", Database: "somedatabase", LoginTimeoutSeconds: 50},
+			"sqlserver://.?database=somedatabase&dial+timeout=50&encrypt=false&workstation+id=mystation",
 		},
 		{
 			&ConnectSettings{TrustServerCertificate: true, Password: pwd, ServerName: `someserver\instance`, Database: "somedatabase", UserName: "someuser"},
@@ -631,10 +631,11 @@ func newConnect(t testing.TB) *ConnectSettings {
 }
 
 func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
-	if runtime.GOOS != "windows" {
-		t.Skip()
+	if runtime.GOOS != "windows" || runtime.GOARCH != "amd64" {
+		t.Skip("Only valid on Windows amd64")
 	}
 	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
-	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[1].Protocol(), "np should be second protocol")
-	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[2].Protocol(), "tcp should be third protocol")
+	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[1].Protocol(), "tcp should be second protocol")
+	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[2].Protocol(), "np should be third protocol")
+
 }

@@ -48,10 +48,12 @@ func TestCreateEmptyIfNotExists(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
+				assert.Panics(t, func() {
+					file.CreateEmptyIfNotExists(tt.args.filename)
+				})
+			} else {
+				file.CreateEmptyIfNotExists(tt.args.filename)
 			}
-
-			file.CreateEmptyIfNotExists(tt.args.filename)
 		})
 	}
 }
@@ -74,9 +76,12 @@ func TestExists(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
+				assert.Panics(t, func() {
+					assert.Equal(t, file.Exists(tt.args.filename), tt.wantExists)
+				})
+			} else {
+				assert.Equal(t, file.Exists(tt.args.filename), tt.wantExists)
 			}
-			assert.Equal(t, file.Exists(tt.args.filename), tt.wantExists)
 		})
 	}
 }
