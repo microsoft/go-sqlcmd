@@ -6,8 +6,8 @@ package output
 import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/output/formatter"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"os"
-	"strings"
 )
 
 // New initializes a new Output instance with the specified options. If options
@@ -23,7 +23,7 @@ func New(options Options) *Output {
 		options.StandardWriter = os.Stdout
 	}
 	if options.ErrorHandler == nil {
-		if isRunningInTestExecutor(options) {
+		if test.IsRunningInTestExecutor() && !options.unitTesting {
 			options.ErrorHandler = func(err error) {
 				if err != nil {
 					panic(err)
@@ -35,7 +35,7 @@ func New(options Options) *Output {
 
 	}
 	if options.HintHandler == nil {
-		if isRunningInTestExecutor(options) {
+		if test.IsRunningInTestExecutor() && !options.unitTesting {
 			options.HintHandler = func(hints []string) {
 				fmt.Println(hints)
 			}
@@ -56,16 +56,5 @@ func New(options Options) *Output {
 		standardWriteCloser: options.StandardWriter,
 		errorCallback:       options.ErrorHandler,
 		hintCallback:        options.HintHandler,
-	}
-}
-
-func isRunningInTestExecutor(options Options) bool {
-	if (strings.HasSuffix(os.Args[0], ".test") || // are we in go test on *nix?
-		strings.HasSuffix(os.Args[0], ".test.exe") || // are we in go test on windows?
-		(len(os.Args) > 1 && os.Args[1] == "-test.v")) && // are we in goland unittest?
-		!options.unitTesting {
-		return true
-	} else {
-		return false
 	}
 }

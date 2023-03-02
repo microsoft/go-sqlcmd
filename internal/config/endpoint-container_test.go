@@ -5,6 +5,7 @@ package config
 
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
@@ -13,28 +14,30 @@ import (
 // TestCurrentContextEndpointHasContainer verifies the function panics when
 // no current context
 func TestCurrentContextEndpointHasContainer(t *testing.T) {
+	SetFileName(pal.FilenameInUserHomeDotDirectory(
+		".sqlcmd", "sqlconfig-TestCurrentContextEndpointHasContainer"))
 	Clean()
 
-	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
-	CurrentContextEndpointHasContainer()
+	assert.Panics(t, func() { CurrentContextEndpointHasContainer() })
 }
 
 func TestGetContainerId(t *testing.T) {
+	SetFileName(pal.FilenameInUserHomeDotDirectory(
+		".sqlcmd", "sqlconfig-TestGetContainerId"))
 	Clean()
 
-	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
-	ContainerId()
+	assert.Panics(t, func() { ContainerId() })
 }
 
 func TestGetContainerId2(t *testing.T) {
+	SetFileName(pal.FilenameInUserHomeDotDirectory(
+		".sqlcmd", "sqlconfig-TestGetContainerId2"))
 	Clean()
-
-	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 
 	AddEndpoint(Endpoint{
 		AssetDetails: &AssetDetails{},
 		EndpointDetails: EndpointDetails{
-			Address: "localhost",
+			Address: "127.0.0.1",
 			Port:    1433,
 		},
 		Name: "endpoint",
@@ -50,12 +53,13 @@ func TestGetContainerId2(t *testing.T) {
 	})
 
 	SetCurrentContextName("context")
-	ContainerId()
+	assert.Panics(t, func() { ContainerId() })
 }
 
 func TestGetContainerId3(t *testing.T) {
+	SetFileName(pal.FilenameInUserHomeDotDirectory(
+		".sqlcmd", "sqlconfig-TestGetContainerId3"))
 	Clean()
-	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
 
 	AddEndpoint(Endpoint{
 		AssetDetails: &AssetDetails{
@@ -63,7 +67,7 @@ func TestGetContainerId3(t *testing.T) {
 				Id:    strings.Repeat("9", 32),
 				Image: "www.image.url"}},
 		EndpointDetails: EndpointDetails{
-			Address: "localhost",
+			Address: "127.0.0.1",
 			Port:    1433,
 		},
 		Name: "endpoint",
@@ -79,5 +83,36 @@ func TestGetContainerId3(t *testing.T) {
 	})
 
 	SetCurrentContextName("context")
-	ContainerId()
+
+	assert.Panics(t, func() { ContainerId() })
+}
+
+func TestGetContainerId4(t *testing.T) {
+	SetFileName(pal.FilenameInUserHomeDotDirectory(
+		".sqlcmd", "sqlconfig-TestGetContainerId4"))
+	Clean()
+	AddEndpoint(Endpoint{
+		AssetDetails: &AssetDetails{
+			ContainerDetails: &ContainerDetails{
+				Id:    strings.Repeat("9", 32),
+				Image: "www.image.url"}},
+		EndpointDetails: EndpointDetails{
+			Address: "127.0.0.1",
+			Port:    1433,
+		},
+		Name: "endpoint",
+	})
+
+	user := "user"
+	AddContext(Context{
+		ContextDetails: ContextDetails{
+			Endpoint: "endpoint",
+			User:     &user,
+		},
+		Name: "context",
+	})
+
+	SetCurrentContextName("context")
+	config.CurrentContext = "badbad"
+	assert.Panics(t, func() { ContainerId() })
 }

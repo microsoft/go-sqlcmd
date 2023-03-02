@@ -45,8 +45,37 @@ func main() {
 		cmdparser.Initialize(initializeCallback)
 		rootCmd.Execute()
 	} else {
+		initializeEnvVars()
 		legacyCmd.Execute(version)
 	}
+}
+
+// initializeEnvVars intializes SQLCMDSERVER, SQLCMDUSER and SQLCMDPASSWORD
+// if the currentContext is set and if these env vars are not already set.
+// In terms of precedence, command line switches/flags take higher precedence
+// than env variables and env variables take higher precedence over config
+// file info.
+func initializeEnvVars() {
+	initializeCallback()
+	if config.CurrentContextName() != "" {
+		server, username, password := config.GetCurrentContextInfo()
+		if os.Getenv("SQLCMDSERVER") == "" {
+			os.Setenv("SQLCMDSERVER", server)
+		}
+
+		// Username and password should come together, either from the environment
+		// variables set by the user before the sqlcmd process started, or from the sqlconfig
+		// for the current context, but if just the environment variable SQLCMDPASSWORD
+		// is set before the process starts we do not use it, if the user and password is set in sqlconfig.
+		if username != "" && password != "" { // If not trusted auth
+			if os.Getenv("SQLCMDUSER") == "" {
+				os.Setenv("SQLCMDUSER", username)
+				os.Setenv("SQLCMDPASSWORD", password)
+			}
+		}
+
+	}
+
 }
 
 // isFirstArgModernCliSubCommand is TEMPORARY code, to be removed when

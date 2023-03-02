@@ -189,11 +189,11 @@ func Test(t *testing.T) {
 	topLevel.CheckErr(nil)
 }
 
-func Test2(t *testing.T) {
-	assert.Panics(t, func() {
+func TestCheckErr(t *testing.T) {
+	topLevel := New[*TopLevelCommand](dependency.Options{})
+	topLevel.SetArgsForUnitTesting([]string{})
 
-		topLevel := New[*TopLevelCommand](dependency.Options{})
-		topLevel.SetArgsForUnitTesting([]string{})
+	assert.Panics(t, func() {
 		topLevel.CheckErr(errors.New("foo"))
 	})
 }

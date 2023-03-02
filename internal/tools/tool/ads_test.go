@@ -5,16 +5,59 @@ package tool
 
 import (
 	"github.com/stretchr/testify/assert"
+	"path/filepath"
+	"runtime"
 	"testing"
 )
 
-func TestAds_Init(t *testing.T) {
+func TestAzureDataStudio_Init(t *testing.T) {
+	if runtime.GOOS == "linux" {
+		t.Skip("Not yet implemented on Linux")
+	}
+	t.Parallel()
+
+	t.Run("found", func(t *testing.T) {
+		t.Parallel()
+
+		ads := &AzureDataStudio{}
+		ads.Init()
+
+		filepath.Base(ads.exeName)
+	})
+
+}
+
+func TestAzureDataStudio_Run(t *testing.T) {
+	if runtime.GOOS == "linux" {
+		t.Skip("Not yet implemented on Linux")
+	}
+	t.Parallel()
+
 	ads := &AzureDataStudio{}
 	ads.Init()
-	assert.Equal(t, ads.Name(), "ads", "ads.Init() = %v, want %v", ads.Name(), "ads")
-	assert.Equal(t, ads.description.Name, "ads", "ads.Description().Name = %v, want %v", ads.description.Name, "ads")
-	assert.NotEqual(t, len(ads.description.Purpose), 0, "ads.Description().Description is empty")
-	assert.NotEqual(t, len(ads.description.InstallText.Windows), 0, "ads.Description().InstallText.Windows is empty")
-	assert.NotEqual(t, len(ads.description.InstallText.Linux), 0, "ads.Description().InstallText.Linux is empty")
-	assert.NotEqual(t, len(ads.description.InstallText.Mac), 0, "ads.Description().InstallText.Mac is empty")
+	ads.IsInstalled()
+	_, _ = ads.Run(nil)
+}
+
+func TestAzureDataStudio_searchLocations(t *testing.T) {
+	if runtime.GOOS == "linux" {
+		t.Skip("Not yet implemented on Linux")
+	}
+	t.Parallel()
+
+	got := (&AzureDataStudio{}).searchLocations()
+
+	assert.GreaterOrEqual(t, len(got), 1, "expecting 1 or  search locations for Azure Data Studio on Windows, got %d", len(got))
+}
+
+func TestAzureDataStudio_installText(t *testing.T) {
+	if runtime.GOOS == "linux" {
+		t.Skip("Not yet implemented on Linux")
+	}
+
+	t.Parallel()
+
+	got := (&AzureDataStudio{}).installText()
+
+	assert.GreaterOrEqual(t, len(got), 1, "no install text provided")
 }

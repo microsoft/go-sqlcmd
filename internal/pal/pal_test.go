@@ -19,8 +19,8 @@ func TestLineBreak(t *testing.T) {
 }
 
 func TestNegLineBreak(t *testing.T) {
+	lineBreak = ""
 	assert.Panics(t, func() {
-		lineBreak = ""
 		LineBreak()
 	})
 }

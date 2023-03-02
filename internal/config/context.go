@@ -75,10 +75,12 @@ func CurrentContext() (endpoint Endpoint, user *User) {
 				}
 			}
 
-			for _, u := range config.Users {
-				if u.Name == *c.User {
-					user = &u
-					break
+			if UserExists(c) {
+				for _, u := range config.Users {
+					if u.Name == *c.User {
+						user = &u
+						break
+					}
 				}
 			}
 		}
@@ -91,6 +93,23 @@ func CurrentContext() (endpoint Endpoint, user *User) {
 		))
 	}
 
+	return
+}
+
+// GetCurrentContextInfo returns endpoint and basic auth info
+// associated with current context
+func GetCurrentContextInfo() (server string, username string, password string) {
+	endpoint, user := CurrentContext()
+	server = fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port)
+	if user != nil {
+		username = user.BasicAuth.Username
+		if user.AuthenticationType == "basic" {
+			password = decryptCallback(
+				user.BasicAuth.Password,
+				user.BasicAuth.PasswordEncrypted,
+			)
+		}
+	}
 	return
 }
 
@@ -194,7 +213,7 @@ func RemoveCurrentContext() {
 			}
 
 			for ui, u := range config.Users {
-				if u.Name == *c.User {
+				if c.User != nil && u.Name == *c.User {
 					config.Users = append(
 						config.Users[:ui],
 						config.Users[ui+1:]...)
