@@ -41,7 +41,7 @@ steps:
     msbuildArgs: '/p:Configuration=Release'
   env:
     CLI_VERSION: $(VERSION_TAG)
-- task: EsrpCodeSigning@1
+- task: EsrpCodeSigning@2
   condition: eq(variables.OS, 'windows')
   inputs:
     ConnectedServiceName: 'Code Signing'
@@ -111,7 +111,7 @@ steps:
     sourceFolder: $(Build.SourcesDirectory)/release/windows/msi/bin/Release
     contents: '?(*.msi|*.md)'
     TargetFolder: $(Build.ArtifactStagingDirectory)
-- task: EsrpCodeSigning@1
+- task: EsrpCodeSigning@2
   condition: and(eq(variables.OS, 'linux'), ne(variables.Type, 'docker'))
   inputs:
     ConnectedServiceName: 'Code Signing'
