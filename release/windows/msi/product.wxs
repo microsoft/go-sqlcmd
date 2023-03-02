@@ -4,6 +4,7 @@
   <?define ProductVersion="$(env.CLI_VERSION)" ?>
 
   <?define ProductName = "Sqlcmd Tools" ?>
+  <?define AppName = "SqlCmd" ?>
   <?define ProductDescription = "Command-line tools for Microsoft SQL Server." ?>
   <?define ProductAuthor = "Microsoft Corporation" ?>
   <?define ProductResources = ".\resources\" ?>
@@ -29,8 +30,6 @@
     <Property Id="ARPHELPLINK" Value="https://docs.microsoft.com/sql/tools/sqlcmd-utility" />
     <Property Id="ARPURLINFOABOUT" Value="https://github.com/microsoft/go-sqlcmd" />
     <Property Id="ARPURLUPDATEINFO" Value="https://github.com/microsoft/go-sqlcmd" />
-    <Property Id="ApplicationFolderName" Value="SqlCmd\Tools" />
-    <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
 
     <!-- User Interface -->
     <WixVariable Id="WixUILicenseRtf" Value="$(var.ProductResources)CLI_LICENSE.rtf"/>
@@ -42,27 +41,31 @@
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder">
-        <Directory Id="SQLCMDFOLDER" Name="SqlCmd">
-          <Directory Id="SQLCMDTOOLSFOLDER" Name="Tools">
-          </Directory>
+        <Directory Id="SqlcmdDirectory" Name="$(var.AppName)">
+          <Component Id="sqlcmd.exe" Guid="2988854C-D02C-4D48-866C-8EAEBA6BC54B">
+            <CreateFolder />
+            <RemoveFolder Id="RemoveSqlCmdDirectory" On="uninstall" />
+            <RegistryKey Root="HKCU" Key="Software\Microsoft\SqlCmd">
+              <RegistryValue Name="MainExe" Value="1" KeyPath="yes" Type="integer" />
+            </RegistryKey>
+            <File
+              Id="sqlcmd.exe"
+              Name="sqlcmd.exe"
+              Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindowsAmd64\sqlcmd.exe"
+              DiskId="1"
+              Checksum="yes"/>
+            <Environment
+              Id="PATH"
+              Name="PATH"
+              Value="[SqlcmdDirectory]"
+              Permanent="yes"
+              Part="first"
+              Action="set"
+              System="yes" />
+          </Component>
         </Directory>
       </Directory>
     </Directory>
-
-    <DirectoryRef Id="SQLCMDTOOLSFOLDER">
-      <Component Id="sqlcmd.exe" Guid="2988854C-D02C-4D48-866C-8EAEBA6BC54B">
-        <File Id="sqlcmd.exe" Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindowsAmd64\sqlcmd.exe" KeyPath="yes" Checksum="yes"/>
-        <Environment 
-          Id="PATH" 
-          Name="PATH" 
-          Value="[SQLCMDTOOLSFOLDER]" 
-          Permanent="yes" 
-          Part="last" 
-          Action="set" 
-          System="yes" />
-      </Component>
-    </DirectoryRef>
-    
     <Feature Id="ProductFeature"
              Title="SqlCmd Tools"
              Level="1"
