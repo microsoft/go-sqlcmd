@@ -10,6 +10,7 @@ import (
 )
 
 func Test_checkErr(t *testing.T) {
-	defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
-	checkErr(errors.New("verify error handler"))
+	assert.Panics(t, func() {
+		checkErr(errors.New("verify error handler"))
+	})
 }

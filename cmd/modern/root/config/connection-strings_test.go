@@ -11,6 +11,8 @@ import (
 	"testing"
 )
 
+// TestConnectionStrings tests that the `sqlcmd config connection-strings` command
+// works as expected
 func TestConnectionStrings(t *testing.T) {
 	cmdparser.TestSetup(t)
 
@@ -27,10 +29,24 @@ func TestConnectionStrings(t *testing.T) {
 	}
 	internal.Initialize(options)
 
-	os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+	if os.Getenv("SQLCMDPASSWORD") == "" &&
+		os.Getenv("SQLCMD_PASSWORD") == "" {
+		os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+	}
 
 	cmdparser.TestCmd[*AddEndpoint]()
 	cmdparser.TestCmd[*AddUser]("--username user")
 	cmdparser.TestCmd[*AddContext]("--endpoint endpoint --user user")
+	cmdparser.TestCmd[*ConnectionStrings]()
+
+	// Add endpoint with no user
+	cmdparser.TestCmd[*AddContext]("--endpoint endpoint")
+	cmdparser.TestCmd[*ConnectionStrings]()
+
+	// Add endpoint to Azure SQL (connection strings won't Trust server cert)
+	cmdparser.TestCmd[*AddEndpoint]("--address server.database.windows.net")
+	cmdparser.TestCmd[*AddUser]("--username user")
+	cmdparser.TestCmd[*AddContext]("--endpoint endpoint2 --user user")
+
 	cmdparser.TestCmd[*ConnectionStrings]()
 }

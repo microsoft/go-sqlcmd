@@ -37,10 +37,10 @@ func TestDisplayHints(t *testing.T) {
 }
 
 func TestCheckErr(t *testing.T) {
+	rootCmd = cmdparser.New[*Root](dependency.Options{})
+	rootCmd.loggingLevel = 4
+	checkErr(nil)
 	assert.Panics(t, func() {
-		rootCmd = cmdparser.New[*Root](dependency.Options{})
-		rootCmd.loggingLevel = 4
-		checkErr(nil)
 		checkErr(errors.New("test error"))
 	})
 }

@@ -4,10 +4,11 @@
 package main
 
 import (
+	"runtime"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
-	"runtime"
 )
 
 // Root type implements the very top-level command for sqlcmd (which contains
@@ -27,16 +28,19 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	// Example usage steps
 	steps := []string{"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak"}
 
-	if runtime.GOOS == "windows" {
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 		steps = append(steps, "sqlcmd open ads")
 	}
 
-	steps = append(steps, `sqlcmd query "SELECT @version"`)
+	steps = append(steps, `sqlcmd query "SELECT @@version"`)
 	steps = append(steps, "sqlcmd delete")
 
-	examples := []cmdparser.ExampleOptions{{
-		Description: "Install/Create, Query, Uninstall SQL Server",
-		Steps:       steps}}
+	examples := []cmdparser.ExampleOptions{
+		{Description: "Install/Create, Query, Uninstall SQL Server",
+			Steps: steps},
+		{Description: "View configuration information and connection strings",
+			Steps: []string{"sqlcmd config view", "sqlcmd config cs"}},
+	}
 
 	commandOptions := cmdparser.CommandOptions{
 		Use: "sqlcmd",
@@ -66,8 +70,8 @@ func (c *Root) SubCommands() []cmdparser.Command {
 		cmdparser.New[*root.Uninstall](dependencies),
 	}
 
-	// BUG:(stuartpa) - Add Mac / Linux support
-	if runtime.GOOS == "windows" {
+	// BUG(stuartpa): - Add Linux support
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 		subCommands = append(subCommands, cmdparser.New[*root.Open](dependencies))
 	}
 
@@ -90,7 +94,7 @@ func (c *Root) IsValidSubCommand(command string) bool {
 
 func (c *Root) addGlobalFlags() {
 
-	// BUG:(stuartpa) - This is a temporary flag until we have migrated
+	// BUG(stuartpa): - This is a temporary flag until we have migrated
 	// the kong impl to cobra.  sqlcmd -? will show the kong help (all the back-compat
 	// flags), sqlcmd --? will show the kong "did you mean one of" help.
 	var unused bool
@@ -101,14 +105,23 @@ func (c *Root) addGlobalFlags() {
 		Usage:     "help for backwards compatibility flags (-S, -U, -E etc.)",
 	})
 
+	// BUG(stuartpa): - This is a temporary flag until we have migrated
+	// the kong impl to cobra.  The implementation of --version is coming from
+	// kong, but we need to add it to the list of flags so that it shows up in the --help
+	c.AddFlag(cmdparser.FlagOptions{
+		Bool:  &unused,
+		Name:  "version",
+		Usage: "print version of sqlcmd",
+	})
+
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.configFilename,
 		DefaultString: config.DefaultFileName(),
 		Name:          "sqlconfig",
-		Usage:         "Configuration file",
+		Usage:         "configuration file",
 	})
 
-	/* BUG:(stuartpa) - At the moment this is a top level flag, but it doesn't
+	/* BUG(stuartpa): - At the moment this is a top level flag, but it doesn't
 	work with all sub-commands (e.g. query), so removing for now.
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.outputType,
@@ -123,6 +136,6 @@ func (c *Root) addGlobalFlags() {
 		Int:        (*int)(&c.loggingLevel),
 		DefaultInt: 2,
 		Name:       "verbosity",
-		Usage:      "Log level, error=0, warn=1, info=2, debug=3, trace=4",
+		Usage:      "log level, error=0, warn=1, info=2, debug=3, trace=4",
 	})
 }

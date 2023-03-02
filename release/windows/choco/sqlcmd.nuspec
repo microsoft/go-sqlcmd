@@ -6,14 +6,14 @@
     <version>0.8.1</version>
     <title>sqlcmd (Install)</title>
     <authors>Microsoft</authors>
-    <projectUrl>https://docs.microsoft.com/en-us/sql/tools/go-sqlcmd-utility</projectUrl>
+    <projectUrl>https://docs.microsoft.com/sql/tools/go-sqlcmd-utility</projectUrl>
     <iconUrl>https://github.com/microsoft/go-sqlcmd/blob/main/release/windows/msi/resources/go-sqlcmd_256.png</iconUrl>
     <copyright>Copyright (c) Microsoft Corporation</copyright>
     <licenseUrl>https://github.com/microsoft/go-sqlcmd/blob/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectSourceUrl>https://github.com/microsoft/go-sqlcmd</projectSourceUrl>
     <packageSourceUrl>https://github.com/microsoft/go-sqlcmd/tree/main/release/windows/choco</packageSourceUrl>
-    <docsUrl>https://docs.microsoft.com/en-us/sql/tools/go-sqlcmd-utility</docsUrl>
+    <docsUrl>https://docs.microsoft.com/sql/tools/go-sqlcmd-utility</docsUrl>
     <bugTrackerUrl>https://github.com/microsoft/go-sqlcmd/issues</bugTrackerUrl>
     <tags>sqlcmd mssql sqlserver</tags>
     <summary>sqlcmd CLI for Microsoft SQL Server and Azure SQL</summary>

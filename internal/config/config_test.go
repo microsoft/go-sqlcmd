@@ -55,7 +55,7 @@ func TestConfig(t *testing.T) {
 						Image: "www.image.url"},
 				},
 				EndpointDetails: EndpointDetails{
-					Address: "localhost",
+					Address: "127.0.0.1",
 					Port:    1433,
 				},
 				Name: "endpoint",
@@ -63,7 +63,7 @@ func TestConfig(t *testing.T) {
 
 			AddEndpoint(Endpoint{
 				EndpointDetails: EndpointDetails{
-					Address: "localhost",
+					Address: "127.0.0.1",
 					Port:    1434,
 				},
 				Name: "endpoint",
@@ -71,7 +71,7 @@ func TestConfig(t *testing.T) {
 
 			AddEndpoint(Endpoint{
 				EndpointDetails: EndpointDetails{
-					Address: "localhost",
+					Address: "127.0.0.1",
 					Port:    1435,
 				},
 				Name: "endpoint",
@@ -135,6 +135,7 @@ func TestConfig(t *testing.T) {
 			DeleteEndpoint("endpoint")
 			DeleteContext("context")
 			DeleteUser("user2")
+
 		})
 	}
 }
@@ -148,6 +149,32 @@ func addContext() {
 		},
 		Name: "context",
 	})
+}
+
+func TestAddContextWithEmptyUser(t *testing.T) {
+	SetFileName(pal.FilenameInUserHomeDotDirectory(
+		".sqlcmd", "sqlconfig-TestAddContextWithEmptyUser"))
+	Clean()
+
+	AddEndpoint(Endpoint{
+		EndpointDetails: EndpointDetails{
+			Address: "127.0.0.1",
+			Port:    1434,
+		},
+		Name: "endpoint",
+	})
+
+	user := ""
+	AddContext(Context{
+		ContextDetails: ContextDetails{
+			Endpoint: "endpoint",
+			User:     &user,
+		},
+		Name: "context",
+	})
+
+	context := GetContext("context")
+	assert.Nil(t, context.User)
 }
 
 func TestDeleteUser(t *testing.T) {
@@ -303,9 +330,8 @@ func TestAddContextWithContainerPanic(t *testing.T) {
 }
 
 func TestConfig_AddContextWithNoEndpoint(t *testing.T) {
+	user := "user1"
 	assert.Panics(t, func() {
-
-		user := "user1"
 		AddContext(Context{
 			ContextDetails: ContextDetails{
 				Endpoint: "badbad",
@@ -318,60 +344,55 @@ func TestConfig_AddContextWithNoEndpoint(t *testing.T) {
 
 func TestConfig_GetCurrentContextWithNoContexts(t *testing.T) {
 	assert.Panics(t, func() {
-
 		CurrentContext()
 	})
 }
 
 func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
+	AddEndpoint(Endpoint{
+		AssetDetails: &AssetDetails{
+			ContainerDetails: &ContainerDetails{
+				Id:    strings.Repeat("9", 64),
+				Image: "www.image.url"},
+		},
+		EndpointDetails: EndpointDetails{
+			Address: "127.0.0.1",
+			Port:    1433,
+		},
+		Name: "endpoint",
+	})
+
+	user := "user1"
+	AddContext(Context{
+		ContextDetails: ContextDetails{
+			Endpoint: "endpoint",
+			User:     &user,
+		},
+		Name: "context",
+	})
+
+	DeleteEndpoint("endpoint")
+
+	SetCurrentContextName("context")
 	assert.Panics(t, func() {
-
-		AddEndpoint(Endpoint{
-			AssetDetails: &AssetDetails{
-				ContainerDetails: &ContainerDetails{
-					Id:    strings.Repeat("9", 64),
-					Image: "www.image.url"},
-			},
-			EndpointDetails: EndpointDetails{
-				Address: "localhost",
-				Port:    1433,
-			},
-			Name: "endpoint",
-		})
-
-		user := "user1"
-		AddContext(Context{
-			ContextDetails: ContextDetails{
-				Endpoint: "endpoint",
-				User:     &user,
-			},
-			Name: "context",
-		})
-
-		DeleteEndpoint("endpoint")
-
-		SetCurrentContextName("context")
 		CurrentContext()
 	})
 }
 
 func TestConfig_DeleteContextThatDoesNotExist(t *testing.T) {
 	assert.Panics(t, func() {
-
 		contextOrdinal("does-not-exist")
 	})
 }
 
 func TestNegConfig_SetFileName(t *testing.T) {
 	assert.Panics(t, func() {
-
 		SetFileName("")
 	})
 }
 
 func TestNegConfig_SetCurrentContextName(t *testing.T) {
 	assert.Panics(t, func() {
-
 		SetCurrentContextName("does not exist")
 	})
 }
@@ -386,7 +407,6 @@ func TestNegConfig_DefaultFileName(t *testing.T) {
 
 func TestNegConfig_GetContext(t *testing.T) {
 	assert.Panics(t, func() {
-
 		GetContext("doesnotexist")
 	})
 }

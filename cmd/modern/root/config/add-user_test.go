@@ -10,42 +10,57 @@ import (
 	"testing"
 )
 
+// TestAddUser tests that the `sqlcmd config add-user` command
+// works as expected
 func TestAddUser(t *testing.T) {
-	os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+
+	// SQLCMDPASSWORD is already set in the build pipelines, so don't
+	// overwrite it here.
+	if os.Getenv("SQLCMDPASSWORD") == "" {
+		os.Setenv("SQLCMDPASSWORD", "it's-a-secret")
+	}
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*AddUser]("--username user1")
 }
 
+// TestNegAddUser tests that the `sqlcmd config add-user` command
+// fails when the auth-type is invalid
 func TestNegAddUser(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*AddUser]("--username user1 --auth-type bad-bad")
 	})
 }
 
+// TestNegAddUser2 tests that the `sqlcmd config add-user` command
+// fails when the auth-type is not basic and --encrypt-password is set
 func TestNegAddUser2(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*AddUser]("--username user1 --auth-type other --encrypt-password")
 	})
 }
 
+// TestNegAddUser3 tests that the `sqlcmd config add-user` command
+// fails when the SQLCMD_PASSWORD environment variable is not set
 func TestNegAddUser3(t *testing.T) {
+	if os.Getenv("SQLCMDPASSWORD") != "" {
+		os.Setenv("SQLCMDPASSWORD", "")
+	}
+
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-
-		os.Setenv("SQLCMD_PASSWORD", "")
-
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*AddUser]("--username user1")
 	})
 }
 
+// TestNegAddUser4 tests that the `sqlcmd config add-user` command
+// when username is not set
 func TestNegAddUser4(t *testing.T) {
+	os.Setenv("SQLCMD_PASSWORD", "whatever")
+
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-
-		os.Setenv("SQLCMD_PASSWORD", "whatever")
-
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*AddUser]()
 	})
 }

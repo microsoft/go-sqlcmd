@@ -27,7 +27,6 @@ func TestNegtactory(t *testing.T) {
 
 func TestNegFactory2(t *testing.T) {
 	assert.Panics(t, func() {
-
 		New(Options{unitTesting: true,
 			HintHandler:  nil,
 			ErrorHandler: func(err error) {}})

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package open
 
 import (
@@ -15,6 +18,14 @@ type Ads struct {
 	cmdparser.Cmd
 
 	credential credman.Credential
+}
+
+// On Windows, the process blocks until the user exits ADS, let user know they can
+// Ctrl+C here.
+func (c *Ads) displayPreLaunchInfo() {
+	output := c.Output()
+
+	output.Infof("Press Ctrl+C to exit this process...")
 }
 
 // persistCredentialForAds stores a SQL password in the Windows Credential Manager
