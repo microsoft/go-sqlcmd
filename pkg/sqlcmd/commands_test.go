@@ -191,7 +191,8 @@ func TestListColorPrintsStyleSamples(t *testing.T) {
 	s.colorizer = color.New(true)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
-	runSqlCmd(t, s, []string{":list color"})
+	err := runSqlCmd(t, s, []string{":list color"})
+	assert.NoError(t, err, ":list color returned error")
 	s.SetOutput(nil)
 	o := buf.buf.String()[:600]
 	assert.Containsf(t, o, "algol_nu: \x1b[1mselect\x1b[0m \x1b[3m\x1b[38;2;102;102;102m'literal'\x1b[0m \x1b[1mas\x1b[0m literal, 100 \x1b[1mas\x1b[0m number \x1b[1mfrom\x1b[0m [sys].[tables]", "expected entry not found for algol_nu %s", o)

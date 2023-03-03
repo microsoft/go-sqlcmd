@@ -145,6 +145,7 @@ func TestFormatterColorizer(t *testing.T) {
 	defer buf.Close()
 	s.vars.Set(SQLCMDCOLORSCHEME, "emacs")
 	s.Format.(*sqlCmdFormatterType).colorizer = color.New(true)
-	runSqlCmd(t, s, []string{"select 'name' as name", "GO"})
+	err := runSqlCmd(t, s, []string{"select 'name' as name", "GO"})
+	assert.NoError(t, err, "runSqlCmd returned error")
 	assert.Equal(t, "\x1b[38;2;0;128;0mname\x1b[0m"+SqlcmdEol+SqlcmdEol+"\x1b[3m(1 row affected)"+SqlcmdEol+"\x1b[0m", buf.buf.String())
 }
