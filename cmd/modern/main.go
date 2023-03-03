@@ -16,10 +16,12 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
+	"path"
 
 	"os"
 
@@ -56,6 +58,25 @@ func main() {
 // than env variables and env variables take higher precedence over config
 // file info.
 func initializeEnvVars() {
+	home, err := os.UserHomeDir()
+
+	// Special case, some shells don't have any home dir env var set, see:
+	//   https://github.com/microsoft/go-sqlcmd/issues/279
+	//  in this case, we early exit here and don't initialize anything, there is nothing
+	//  else we can do
+	if err != nil {
+		return
+	}
+
+	// The only place we can check for the existence of the sqlconfig file is in the
+	// default location, because this code path is only used for the legacy kong CLI,
+	// if the sqlconfig file doesn't exist at the default location we just return so
+	// because the initializeCallback() function below will create the sqlconfig file,
+	// which legacy sqlcmd users might not want.
+	if !file.Exists(path.Join(home, ".sqlcmd", "sqlconfig")) {
+		return
+	}
+
 	initializeCallback()
 	if config.CurrentContextName() != "" {
 		server, username, password := config.GetCurrentContextInfo()

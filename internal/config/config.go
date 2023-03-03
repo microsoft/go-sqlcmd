@@ -6,6 +6,7 @@ package config
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
+	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"os"
 	"path/filepath"
@@ -40,7 +41,14 @@ func SetFileNameForTest(t *testing.T) {
 // the user's home directory, the function will return an empty string.
 func DefaultFileName() (filename string) {
 	home, err := os.UserHomeDir()
-	checkErr(err)
+	if err != nil {
+		trace(
+			"Error getting user's home directory: %v, will use current directory %q as default",
+			err,
+			folder.Getwd(),
+		)
+		home = "."
+	}
 	filename = filepath.Join(home, ".sqlcmd", "sqlconfig")
 
 	return
