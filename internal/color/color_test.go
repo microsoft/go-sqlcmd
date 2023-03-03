@@ -14,7 +14,6 @@ func TestWrite(t *testing.T) {
 	}
 	colorizer := New(true)
 	noncolorizer := New(false)
-
 	tests := []struct {
 		name  string
 		args  args
@@ -65,7 +64,8 @@ func TestWrite(t *testing.T) {
 			gotW := w.String()
 			assert.Equalf(t, tt.wantW, gotW, "colorizer.Write(%+v)", tt.args)
 			w.Reset()
-			noncolorizer.Write(w, tt.args.s, "emacs", tt.args.t)
+			err = noncolorizer.Write(w, tt.args.s, "emacs", tt.args.t)
+			assert.NoErrorf(t, err, "nonColorizer.Write returned an error %+v", tt.args)
 			assert.Equalf(t, tt.args.s, w.String(), "noncolorizer.Write should write unmodified string")
 
 		})

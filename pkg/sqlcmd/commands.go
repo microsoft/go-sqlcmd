@@ -370,9 +370,9 @@ func listCommand(s *Sqlcmd, args []string, line uint) (err error) {
 	if cmd == "color" {
 		// ignoring errors since it's not critical output
 		for _, style := range s.colorizer.Styles() {
-			output.Write([]byte(style + ": "))
-			s.colorizer.Write(output, "select 'literal' as literal, 100 as number from [sys].[tables]", style, color.TextTypeTSql)
-			output.Write([]byte(SqlcmdEol))
+			_, _ = output.Write([]byte(style + ": "))
+			_ = s.colorizer.Write(output, "select 'literal' as literal, 100 as number from [sys].[tables]", style, color.TextTypeTSql)
+			_, _ = output.Write([]byte(SqlcmdEol))
 		}
 		return
 	}
