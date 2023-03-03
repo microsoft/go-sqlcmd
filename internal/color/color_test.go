@@ -28,27 +28,27 @@ func TestWrite(t *testing.T) {
 		{
 			name:  "TSQL",
 			args:  args{s: "select top (1) name from sys.tables", t: TextTypeTSql},
-			wantW: "\x1b[1m\x1b[38;5;129mselect\x1b[0m\x1b[38;5;250m \x1b[0m\x1b[1m\x1b[38;5;129mtop\x1b[0m\x1b[38;5;250m \x1b[0m(\x1b[38;5;241m1\x1b[0m)\x1b[38;5;250m \x1b[0mname\x1b[38;5;250m \x1b[0m\x1b[1m\x1b[38;5;129mfrom\x1b[0m\x1b[38;5;250m \x1b[0msys.tables",
+			wantW: "\x1b[1m\x1b[38;2;170;34;255mselect\x1b[0m\x1b[38;2;187;187;187m \x1b[0m\x1b[1m\x1b[38;2;170;34;255mtop\x1b[0m\x1b[38;2;187;187;187m \x1b[0m(\x1b[38;2;102;102;102m1\x1b[0m)\x1b[38;2;187;187;187m \x1b[0mname\x1b[38;2;187;187;187m \x1b[0m\x1b[1m\x1b[38;2;170;34;255mfrom\x1b[0m\x1b[38;2;187;187;187m \x1b[0msys.tables",
 		},
 		{
 			name:  "Header",
 			args:  args{s: "header", t: TextTypeHeader},
-			wantW: "\x1b[1m\x1b[38;5;4mheader\x1b[0m",
+			wantW: "\x1b[1m\x1b[38;2;0;0;128mheader\x1b[0m",
 		},
 		{
 			name:  "Cell",
 			args:  args{s: "cell", t: TextTypeCell},
-			wantW: "\x1b[38;5;2mcell\x1b[0m",
+			wantW: "\x1b[38;2;0;128;0mcell\x1b[0m",
 		},
 		{
 			name:  "Separator",
 			args:  args{s: "sep", t: TextTypeSeparator},
-			wantW: "\x1b[38;5;131msep\x1b[0m",
+			wantW: "\x1b[38;2;187;68;68msep\x1b[0m",
 		},
 		{
 			name:  "Error",
 			args:  args{s: "error", t: TextTypeError},
-			wantW: "\x1b[38;5;196merror\x1b[0m",
+			wantW: "\x1b[38;2;255;0;0merror\x1b[0m",
 		},
 		{
 			name:  "Warning",
@@ -70,4 +70,10 @@ func TestWrite(t *testing.T) {
 
 		})
 	}
+}
+
+func TestStyles(t *testing.T) {
+	c := New(false)
+	s := c.Styles()
+	assert.Contains(t, s, "emacs", "emacs style not found")
 }

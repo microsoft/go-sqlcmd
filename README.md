@@ -30,6 +30,7 @@ We will be implementing command line switches and behaviors over time. Several s
 
 ### Miscellaneous enhancements
 
+- Console output coloring (see below)
 - `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` user name parameter.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `-F vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
@@ -106,6 +107,17 @@ Some settings for AAD auth do not have command line inputs, and some environment
 These environment variables can be set to configure some aspects of AAD auth and to bypass default behaviors. In addition to the variables listed above, the following are sqlcmd-specific and apply to multiple methods.
 
 `SQLCMDCLIENTID` - set this to the identifier of an application registered in your AAD which is authorized to authenticate to Azure SQL Database. Applies to `ActiveDirectoryInteractive` and `ActiveDirectoryPassword` methods.
+
+## Console colors
+
+Sqlcmd now supports syntax coloring the output of `:list` and the results of TSQL queries when output to the terminal.
+To enable coloring use the `SQLCMDCOLORSCHEME` variable, which can be set as an environment variable or by using `:setvar`. The valid values are the names of styles supported by the [chroma styles](https://github.com/alecthomas/chroma/tree/master/styles) project. 
+
+To see a list of available styles along with colored syntax samples, use this command in interactive mode:
+
+```
+:list color
+```
 
 ### Packages
 

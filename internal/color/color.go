@@ -3,6 +3,7 @@ package color
 import (
 	"io"
 	"os"
+	"sort"
 
 	"github.com/alecthomas/chroma/v2"
 	"github.com/alecthomas/chroma/v2/formatters"
@@ -39,10 +40,12 @@ var typeMap map[TextType]chroma.TokenType = map[TextType]chroma.TokenType{
 	TextTypeWarning:   chroma.GenericEmph,
 }
 
-// Colorizer has methods to write colorized text to a stream and to add color to HTML content
+// Colorizer has methods to write colorized text to a stream
 type Colorizer interface {
 	// Write prints s to w using the current color scheme. If w is not a terminal or if it is redirected, no color codes are printed
 	Write(w io.Writer, s string, scheme string, t TextType) error
+	// Styles returns the array of available style names
+	Styles() []string
 }
 
 type chromaColorizer struct {
@@ -71,7 +74,7 @@ func (c *chromaColorizer) Write(w io.Writer, s string, scheme string, t TextType
 	}
 	// We use this lexer simply for token iteration
 	lexer := lexers.Get("plaintext")
-	formatter := formatters.Get("terminal256")
+	formatter := formatters.Get("terminal16m")
 	if !colorize || lexer == nil || formatter == nil {
 		t = TextTypeNormal
 	}
@@ -79,15 +82,26 @@ func (c *chromaColorizer) Write(w io.Writer, s string, scheme string, t TextType
 	case TextTypeNormal:
 		_, err = w.Write([]byte(s))
 	case TextTypeTSql:
-		if err = quick.Highlight(w, s, "transact-sql", "terminal256", scheme); err != nil {
+		if err = quick.Highlight(w, s, "transact-sql", "terminal16m", scheme); err != nil {
 			_, err = w.Write([]byte(s))
 		}
 	default:
 		tokens := chroma.Literator(chroma.Token{
 			Type: typeMap[t], Value: s})
-		if err := formatter.Format(w, style, tokens); err != nil {
+		if err = formatter.Format(w, style, tokens); err != nil {
 			_, err = w.Write([]byte(s))
 		}
 	}
 	return
+}
+
+func (c *chromaColorizer) Styles() []string {
+	s := make([]string, len(styles.Registry))
+	i := 0
+	for key := range styles.Registry {
+		s[i] = key
+		i++
+	}
+	sort.Strings(s)
+	return s
 }
