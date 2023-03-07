@@ -124,7 +124,7 @@ func (c *Uninstall) run() {
 				err = controller.ContainerRemove(id)
 				c.CheckErr(err)
 			} else {
-				output.Warnf("Container %s no longer exists, continuing to remove context...", id)
+				output.Warnf("Container %q no longer exists, continuing to remove context...", id)
 			}
 		}
 
