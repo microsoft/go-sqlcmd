@@ -24,48 +24,56 @@ stages:
             os:
             arch:
             binaryName: 'sqlcmd'
+            binaryExt: ''
           mac:
             imageName: 'macOS-latest'
             artifact: DarwinAmd64
             os:
             arch:
             binaryName: 'sqlcmd'
+            binaryExt: ''
           macArm:
             imageName: 'macOS-latest'
             artifact: DarwinArm64
             os:
             arch: arm64
             binaryName: 'sqlcmd'
+            binaryExt: ''
           windows:
             imageName: 'windows-latest'
             artifact: WindowsAmd64
             os:
             arch:
-            binaryName: 'sqlcmd.exe'
+            binaryName: 'sqlcmd'
+            binaryExt: '.exe'
           linuxArm:
             imageName: 'ubuntu-latest'
             artifact: LinuxArm64
             os:
             arch: arm64
             binaryName: 'sqlcmd'
+            binaryExt: ''
           windowsArm:
            imageName: 'windows-latest'
            artifact: WindowsArm
            os:
            arch: arm
-           binaryName: 'sqlcmd.exe'
+           binaryName: 'sqlcmd'
+           binaryExt: '.exe'
           windowsArm64:
             imageName: 'windows-latest'
             artifact: WindowsArm64
             os:
             arch: arm64
-            binaryName: 'sqlcmd.exe' 
+            binaryName: 'sqlcmd'
+            binaryExt: '.exe'
           linuxs390x:
             imageName: 'ubuntu-latest'
             artifact: LinuxS390x
             os:
             arch: s390x
             binaryName: 'sqlcmd'
+            binaryExt: ''
       pool:
         vmImage: $(imageName)
       steps:
@@ -79,7 +87,7 @@ stages:
             ArtifactName: $(artifact)
             VersionTag: $(getVersion.VERSION_TAG)
             BinaryName: $(binaryName)
-
+            BinaryExt: $(binaryExt)
   - stage: CreatePackages
     displayName: Create packages to publish
     jobs:
@@ -97,7 +105,7 @@ stages:
         inputs:
           ConnectedServiceName: 'Code Signing'
           FolderPath: '$(Pipeline.Workspace)'
-          Pattern: 'sqlcmd.exe'
+          Pattern: 'sqlcmd*.exe'
           signConfigType: 'inlineSignParams'
           inlineOperation: |
             [

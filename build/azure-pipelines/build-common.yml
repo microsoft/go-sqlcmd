@@ -12,6 +12,8 @@ parameters:
   default:  $(Build.BuildNumber)
 - name: BinaryName
   type: string
+- name: BinaryExt
+  type: string
 
 steps:
 - task: GoTool@0
@@ -50,7 +52,7 @@ steps:
   displayName: 'Go: build sqlcmd'
   inputs:
     command: 'build'
-    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }} -ldflags="-s -w -X main.version=${{ parameters.VersionTag }}"'
+    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }}${{ parameters.BinaryExt }} -ldflags="-s -w -X main.version=${{ parameters.VersionTag }}"'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/modern'
   env:
       GOOS: ${{ parameters.OS }}
@@ -62,7 +64,7 @@ steps:
   displayName: 'Go: build sqlcmd with debug symbols'
   inputs:
     command: 'build'
-    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }}_debug -ldflags="-X main.version=${{ parameters.VersionTag }}"'
+    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }}_debug${{ parameters.BinaryExt }} -ldflags="-X main.version=${{ parameters.VersionTag }}"'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/modern'
   env:
       GOOS: ${{ parameters.OS }}
