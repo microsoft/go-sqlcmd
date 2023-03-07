@@ -13,6 +13,7 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/go-connections/nat"
+	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"io"
 	"path/filepath"
 	"strconv"
@@ -65,15 +66,7 @@ func (c Controller) EnsureImage(image string) (err error) {
 // ContainerRun creates a new container using the provided image and env values
 // and binds it to the specified port number. It then starts the container and returns
 // the ID of the container.
-func (c Controller) ContainerRun(
-	image string,
-	env []string,
-	port int,
-	name string,
-	hostname string,
-	command []string,
-	unitTestFailure bool,
-) string {
+func (c Controller) ContainerRun(image string, env []string, port int, name string, hostname string, architecture string, os string, command []string, unitTestFailure bool) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
 			nat.Port("1433/tcp"): []nat.PortBinding{
@@ -85,6 +78,11 @@ func (c Controller) ContainerRun(
 		},
 	}
 
+	platform := specs.Platform{
+		Architecture: "AMD64",
+		OS:           "linux",
+	}
+
 	resp, err := c.cli.ContainerCreate(context.Background(), &container.Config{
 		Tty:        true,
 		Image:      image,
@@ -92,7 +90,7 @@ func (c Controller) ContainerRun(
 		Env:        env,
 		Hostname:   hostname,
 		Domainname: name,
-	}, hostConfig, nil, nil, "")
+	}, hostConfig, nil, &platform, "")
 	checkErr(err)
 
 	err = c.cli.ContainerStart(
