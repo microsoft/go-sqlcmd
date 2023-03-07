@@ -8,7 +8,7 @@ import (
 )
 
 type Sql interface {
-	Connect(endpoint Endpoint, user *User, options ConnectOptions)
+	Connect(endpoint Endpoint, user *User, database string, options ConnectOptions)
 	Query(text string)
 }
 

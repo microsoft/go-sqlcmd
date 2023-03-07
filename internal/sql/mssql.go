@@ -19,6 +19,7 @@ import (
 func (m *mssql) Connect(
 	endpoint sqlconfig.Endpoint,
 	user *sqlconfig.User,
+	database string,
 	options ConnectOptions,
 ) {
 	v := sqlcmd.InitializeVariables(true)
@@ -36,6 +37,10 @@ func (m *mssql) Connect(
 			endpoint.EndpointDetails.Address,
 			endpoint.EndpointDetails.Port),
 		ApplicationName: "sqlcmd",
+	}
+
+	if database != "" {
+		connect.Database = database
 	}
 
 	if user == nil {

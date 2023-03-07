@@ -13,7 +13,8 @@ import (
 type Query struct {
 	cmdparser.Cmd
 
-	text string
+	text     string
+	database string
 }
 
 func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
@@ -47,6 +48,12 @@ func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 		Name:      "query",
 		Shorthand: "q",
 		Usage:     "Command text to run"})
+
+	c.AddFlag(cmdparser.FlagOptions{
+		String:    &c.database,
+		Name:      "database",
+		Shorthand: "d",
+		Usage:     "Database to use"})
 }
 
 // run executes the Query command.
@@ -58,9 +65,9 @@ func (c *Query) run() {
 
 	s := sql.New(sql.SqlOptions{})
 	if c.text == "" {
-		s.Connect(endpoint, user, sql.ConnectOptions{Interactive: true})
+		s.Connect(endpoint, user, c.database, sql.ConnectOptions{Interactive: true})
 	} else {
-		s.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
+		s.Connect(endpoint, user, c.database, sql.ConnectOptions{Interactive: false})
 	}
 
 	s.Query(c.text)
