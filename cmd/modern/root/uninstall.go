@@ -101,7 +101,7 @@ func (c *Uninstall) run() {
 					output.Fatal("Operation cancelled.")
 				}
 			}
-			if !c.force {
+			if controller.ContainerExists(id) && !c.force {
 				output.Infof("Verifying no user (non-system) database (.mdf) files")
 				if !controller.ContainerRunning(id) {
 					output.FatalfWithHintExamples([][]string{
