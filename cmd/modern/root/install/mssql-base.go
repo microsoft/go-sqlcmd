@@ -385,7 +385,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
-	databaseName := getDbNAmeIfExists(c.usingDatabaseUrl)
+	databaseName := getDbNameIfExists(c.usingDatabaseUrl)
 	databaseUrl := c.usingDatabaseUrl
 	if databaseName != "" {
 		databaseUrl = strings.Split(databaseUrl, ",")[0]
@@ -450,7 +450,7 @@ CHECK_POLICY=OFF`
 	}
 }
 
-func getDbNAmeIfExists(usingDbUrl string) string {
+func getDbNameIfExists(usingDbUrl string) string {
 	if strings.Contains(usingDbUrl, ",") {
 		dbToken := strings.Split(usingDbUrl, ",")
 		if len(dbToken) > 1 {
@@ -466,7 +466,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	userName string,
 ) {
 	output := c.Cmd.Output()
-	databaseName := getDbNAmeIfExists(c.usingDatabaseUrl)
+	databaseName := getDbNameIfExists(c.usingDatabaseUrl)
 	databaseUrl := c.usingDatabaseUrl
 	if databaseName != "" {
 		databaseUrl = strings.Split(c.usingDatabaseUrl, ",")[0]
