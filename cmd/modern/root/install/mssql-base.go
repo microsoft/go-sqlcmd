@@ -5,6 +5,11 @@ package install
 
 import (
 	"fmt"
+	"net/url"
+	"path/filepath"
+	"runtime"
+	"strings"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -15,10 +20,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"github.com/spf13/viper"
-	"net/url"
-	"path/filepath"
-	"runtime"
-	"strings"
 )
 
 // MssqlBase provide base support for installing SQL Server and all of its
@@ -384,7 +385,12 @@ func (c *MssqlBase) validateUsingUrlExists() {
 
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
-	if _, file := filepath.Split(c.usingDatabaseUrl); filepath.Ext(file) != ".bak" {
+	databaseName := getDbNAmeIfExists(c.usingDatabaseUrl)
+	databaseUrl := c.usingDatabaseUrl
+	if databaseName != "" {
+		databaseUrl = strings.Split(databaseUrl, ",")[0]
+	}
+	if _, file := filepath.Split(databaseUrl); filepath.Ext(file) != ".bak" {
 		output.FatalfWithHints(
 			[]string{
 				"--using file URL must be a .bak file",
@@ -393,7 +399,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	}
 
 	// Verify the url actually exists, and early exit if it doesn't
-	urlExists(c.usingDatabaseUrl, output)
+	urlExists(databaseUrl, output)
 }
 
 func (c *MssqlBase) query(commandText string) {
@@ -444,18 +450,35 @@ CHECK_POLICY=OFF`
 	}
 }
 
+func getDbNAmeIfExists(usingDbUrl string) string {
+	if strings.Contains(usingDbUrl, ",") {
+		dbToken := strings.Split(usingDbUrl, ",")
+		if len(dbToken) > 1 {
+			return dbToken[1]
+		}
+	}
+	return ""
+}
+
 func (c *MssqlBase) downloadAndRestoreDb(
 	controller *container.Controller,
 	containerId string,
 	userName string,
 ) {
 	output := c.Cmd.Output()
+	databaseName := getDbNAmeIfExists(c.usingDatabaseUrl)
+	databaseUrl := c.usingDatabaseUrl
+	if databaseName != "" {
+		databaseUrl = strings.Split(c.usingDatabaseUrl, ",")[0]
+	}
 
-	u, err := url.Parse(c.usingDatabaseUrl)
+	u, err := url.Parse(databaseUrl)
 	c.CheckErr(err)
-	_, file := filepath.Split(c.usingDatabaseUrl)
+	_, file := filepath.Split(databaseUrl)
 	fileNameWithNoExt := strings.TrimSuffix(file, filepath.Ext(file))
-
+	if databaseName == "" {
+		databaseName = fileNameWithNoExt
+	}
 	// Download file from URL into container
 	output.Infof("Downloading %s from %s", file, u.Hostname())
 
@@ -463,12 +486,12 @@ func (c *MssqlBase) downloadAndRestoreDb(
 
 	controller.DownloadFile(
 		containerId,
-		c.usingDatabaseUrl,
+		databaseUrl,
 		temporaryFolder,
 	)
 
 	// Restore database from file
-	output.Infof("Restoring database %s", fileNameWithNoExt)
+	output.Infof("Restoring database %s", databaseName)
 
 	text := `SET NOCOUNT ON;
 
@@ -511,12 +534,12 @@ WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
 EXEC(@sql)`
 
-	c.query(fmt.Sprintf(text, temporaryFolder, file, fileNameWithNoExt, temporaryFolder, file))
+	c.query(fmt.Sprintf(text, temporaryFolder, file, databaseName, temporaryFolder, file))
 
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
 		userName,
-		fileNameWithNoExt)
+		databaseName)
 	c.query(alterDefaultDb)
 }
 
