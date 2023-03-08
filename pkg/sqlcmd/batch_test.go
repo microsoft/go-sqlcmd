@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"fmt"
 	"io"
 	"strings"
 	"testing"
@@ -53,7 +54,7 @@ func TestBatchNext(t *testing.T) {
 				}
 				break loop
 			case err != nil:
-				t.Fatalf("test %s did not expect error, got: %v", test.s, err)
+				assert.Fail(t, fmt.Sprintf("test %s did not expect error, got: %v", test.s, err))
 			}
 			if cmd != nil {
 				cmds = append(cmds, cmd.name)
@@ -143,9 +144,7 @@ func TestReadString(t *testing.T) {
 	for _, test := range tests {
 		r := []rune(test.s)
 		c, end := rune(strings.TrimSpace(test.s)[0]), len(r)
-		if c != '\'' && c != '"' {
-			t.Fatalf("test %+v incorrect!", test)
-		}
+		assert.False(t, c != '\'' && c != '"', fmt.Sprintf("test %+v incorrect!", test))
 		pos, ok, err := b.readString(r, test.i+1, end, c, uint(0))
 		assert.NoErrorf(t, err, "should be no error for %s", test)
 		assert.Equal(t, test.ok, ok, "test %+v ok", test)
