@@ -342,7 +342,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	hints := [][]string{}
 
 	// TODO: sqlcmd open ads only support on Windows right now, add Mac support
-	if runtime.GOOS == "windows" {
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 		hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
 	}
 
@@ -536,8 +536,9 @@ func (c *MssqlBase) downloadImage(
 					"\t\thttps://podman-desktop.io/" + pal.LineBreak() +
 					"\t\tor" + pal.LineBreak() +
 					"\t\thttps://docs.docker.com/get-docker/",
-				"Is a container runtime running. Try `podman ps` or `docker ps` (list containers), does it return without error?",
-				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with: `podman|docker pull %s`", imageName)},
+				"Is a container runtime running?  (Try `podman ps` or `docker ps` (list containers), does it return without error?)",
+				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
+					"\t`podman|docker pull %s`", imageName)},
 			"Unable to download image %s", imageName)
 	}
 }

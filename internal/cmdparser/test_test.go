@@ -50,8 +50,9 @@ func TestTest2(t *testing.T) {
 }
 
 func TestThrowError(t *testing.T) {
+	TestSetup(t)
+
 	assert.Panics(t, func() {
-		TestSetup(t)
 		TestCmd[*TestCommand]("throw-error")
 	})
 }

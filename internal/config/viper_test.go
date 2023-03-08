@@ -10,7 +10,6 @@ import (
 
 func Test_configureViper(t *testing.T) {
 	assert.Panics(t, func() {
-
 		configureViper("")
 	})
 }
@@ -22,15 +21,15 @@ func Test_Load(t *testing.T) {
 }
 
 func TestNeg_Load(t *testing.T) {
+	filename = ""
 	assert.Panics(t, func() {
-		filename = ""
 		Load()
 	})
 }
 
 func TestNeg_Save(t *testing.T) {
+	filename = ""
 	assert.Panics(t, func() {
-		filename = ""
 		Save()
 	})
 }

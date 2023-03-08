@@ -35,7 +35,7 @@ func CmdLineWithEnvVars(vars []string, cmd string) string {
 	var sb strings.Builder
 	for _, v := range vars {
 		sb.WriteString(CreateEnvVarKeyword())
-		sb.WriteString(cliQuoteIdentifier() + v + cliQuoteIdentifier())
+		sb.WriteString(" " + cliQuoteIdentifier() + v + cliQuoteIdentifier())
 	}
 	sb.WriteString(cliCommandSeparator())
 	sb.WriteString(cmd)

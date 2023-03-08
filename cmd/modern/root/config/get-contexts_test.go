@@ -18,9 +18,8 @@ func TestGetContexts(t *testing.T) {
 }
 
 func TestNegGetContexts(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*GetContexts]("does-not-exist")
 	})
 }

@@ -31,10 +31,13 @@ func TestMkdirAll(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() { assert.NotNil(t, recover(), "The code did not panic as expected") }()
+				assert.Panics(t, func() {
+					MkdirAll(tt.args.folder)
+				})
+			} else {
+				MkdirAll(tt.args.folder)
 			}
 
-			MkdirAll(tt.args.folder)
 		})
 	}
 }

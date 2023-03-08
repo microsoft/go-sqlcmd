@@ -24,9 +24,9 @@ func (c *Config) DefineCommand(...cmdparser.CommandOptions) {
 		SubCommands: c.SubCommands(),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Add context for existing endpoint and user",
+				Description: "Add context for existing endpoint and user (use SQLCMD_PASSWORD or SQLCMDPASSWORD)",
 				Steps: []string{
-					fmt.Sprintf("%s SQLCMD_PASSWORD=<password>", pal.CreateEnvVarKeyword()),
+					fmt.Sprintf("%s SQLCMD_PASSWORD=<placeholderpassword>", pal.CreateEnvVarKeyword()),
 					"sqlcmd config add-user --name sa1434 --username sa",
 					fmt.Sprintf("%s SQLCMD_PASSWORD=", pal.CreateEnvVarKeyword()),
 					"sqlcmd config add-endpoint --name ep1434 --address localhost --port 1434",

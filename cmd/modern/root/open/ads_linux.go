@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 package open
 
 import (
@@ -13,5 +16,9 @@ type Ads struct {
 }
 
 func (c *Ads) persistCredentialForAds(hostname string, endpoint sqlconfig.Endpoint, user *sqlconfig.User) {
+	panic("not implemented")
+}
+
+func (c *Ads) displayPreLaunchInfo() {
 	panic("not implemented")
 }

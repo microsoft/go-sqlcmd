@@ -17,9 +17,8 @@ func TestGetUsers(t *testing.T) {
 }
 
 func TestNegGetUsers(t *testing.T) {
+	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-
-		cmdparser.TestSetup(t)
 		cmdparser.TestCmd[*GetUsers]("does-not-exist")
 	})
 }
