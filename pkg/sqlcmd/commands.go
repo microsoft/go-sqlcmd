@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/alecthomas/kong"
+	"github.com/microsoft/go-sqlcmd/internal/color"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -355,12 +356,35 @@ func resetCommand(s *Sqlcmd, args []string, line uint) error {
 }
 
 // listCommand displays statements currently in  the statement cache
-func listCommand(s *Sqlcmd, args []string, line uint) error {
-	if s.batch != nil && s.batch.String() != "" {
-		fmt.Fprintf(s.GetOutput(), `%s%s`, []byte(s.batch.String()), SqlcmdEol)
+func listCommand(s *Sqlcmd, args []string, line uint) (err error) {
+	cmd := ""
+	if args != nil {
+		if len(args) > 0 {
+			cmd = strings.ToLower(strings.TrimSpace(args[0]))
+			if len(args) > 1 || (cmd != "color" && cmd != "") {
+				return InvalidCommandError("LIST", line)
+			}
+		}
+	}
+	output := s.GetOutput()
+	if cmd == "color" {
+		// ignoring errors since it's not critical output
+		for _, style := range s.colorizer.Styles() {
+			_, _ = output.Write([]byte(style + ": "))
+			_ = s.colorizer.Write(output, "select 'literal' as literal, 100 as number from [sys].[tables]", style, color.TextTypeTSql)
+			_, _ = output.Write([]byte(SqlcmdEol))
+		}
+		return
+	}
+	if s.batch == nil || s.batch.String() == "" {
+		return
 	}
 
-	return nil
+	if err = s.colorizer.Write(output, s.batch.String(), s.vars.ColorScheme(), color.TextTypeTSql); err == nil {
+		_, err = output.Write([]byte(SqlcmdEol))
+	}
+
+	return
 }
 
 type connectData struct {

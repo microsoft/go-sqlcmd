@@ -3,6 +3,7 @@ module github.com/microsoft/go-sqlcmd
 go 1.18
 
 require (
+	github.com/alecthomas/chroma/v2 v2.5.0
 	github.com/alecthomas/kong v0.6.2-0.20220922001058-c62bf25854a0
 	github.com/billgraziano/dpapi v0.4.0
 	github.com/docker/distribution v2.8.1+incompatible
@@ -30,6 +31,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7 // indirect
