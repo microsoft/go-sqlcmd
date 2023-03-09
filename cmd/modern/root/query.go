@@ -4,8 +4,10 @@
 package root
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 )
 
@@ -26,7 +28,15 @@ func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 				`sqlcmd query "SELECT @@SERVERNAME"`,
 				`sqlcmd query --text "SELECT @@SERVERNAME"`,
 				`sqlcmd query --query "SELECT @@SERVERNAME"`,
-			}}},
+			}},
+			{Description: "Run a query using [master] database", Steps: []string{
+				`sqlcmd query "SELECT DB_NAME()" --database master`,
+			}},
+			{Description: "Set new default database", Steps: []string{
+				fmt.Sprintf(`sqlcmd query "ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [tempdb]" --database master`,
+					pal.UserName()),
+			}},
+		},
 		Run: c.run,
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagOptions{
 			Flag:  "text",
