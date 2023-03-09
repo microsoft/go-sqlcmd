@@ -6,6 +6,7 @@ package config
 import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -42,9 +43,9 @@ func (c *ConnectionStrings) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.database,
 		Name:          "database",
-		DefaultString: "master",
+		DefaultString: "",
 		Shorthand:     "d",
-		Usage:         "Default database to use for the connection string"})
+		Usage:         "Database for the connection string (default is taken from the T/SQL login)"})
 }
 
 // run generates connection strings for the current context in multiple formats.
@@ -62,6 +63,14 @@ func (c *ConnectionStrings) run() {
 	}
 
 	endpoint, user := config.CurrentContext()
+
+	if c.database == "" {
+		s := sql.New(sql.SqlOptions{})
+		s.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
+		str := s.ExecuteString("PRINT DB_NAME()")
+		output.Infof("%q", str)
+		c.database = str
+	}
 
 	if user != nil {
 		for k, v := range connectionStringFormats {
