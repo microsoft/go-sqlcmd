@@ -44,15 +44,11 @@
         <Directory Id="SqlcmdDirectory" Name="$(var.AppName)">
           <Component Id="sqlcmd.exe" Guid="2988854C-D02C-4D48-866C-8EAEBA6BC54B">
             <CreateFolder />
-            <RemoveFolder Id="RemoveSqlCmdDirectory" On="uninstall" />
-            <RegistryKey Root="HKCU" Key="Software\Microsoft\SqlCmd">
-              <RegistryValue Name="MainExe" Value="1" KeyPath="yes" Type="integer" />
-            </RegistryKey>
+            <RemoveFolder Id="RemoveFolder" On="uninstall" />
             <File
               Id="sqlcmd.exe"
               Name="sqlcmd.exe"
-              Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindowsAmd64\sqlcmd.exe"
-              DiskId="1"
+              Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindows-$(env.ARCHITECTURE)\sqlcmd.exe"
               Checksum="yes"/>
             <Environment
               Id="PATH"
@@ -63,6 +59,20 @@
               Action="set"
               System="yes" />
           </Component>
+          <Component Id="notice" Guid="9BB06B71-91BF-4431-B88D-C7E4BCA1F435">
+            <File
+              Id="NOTICE.md"
+              Name="NOTICE.md"
+              Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindows-$(env.ARCHITECTURE)\NOTICE.md"
+              Checksum="no"/>
+          </Component>
+         <Component Id="license" Guid="F9E6D3F8-8B09-49C6-8309-74F88DD765B0">
+            <File
+              Id="LICENSE"
+              Name="LICENSE"
+              Source="$(env.PIPELINE_WORKSPACE)\s\LICENSE"
+              Checksum="no"/>
+          </Component>
         </Directory>
       </Directory>
     </Directory>
@@ -71,7 +81,8 @@
              Level="1"
              AllowAdvertise="no">
       <ComponentRef Id="sqlcmd.exe" />
+      <ComponentRef Id="notice" />
+      <ComponentRef Id="license" />
     </Feature>
-
   </Product>
 </Wix>
