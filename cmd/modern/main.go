@@ -18,6 +18,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
 
@@ -134,7 +135,7 @@ func checkErr(err error) {
 // to make progress.  displayHints is injected into dependencies (helpers etc.)
 func displayHints(hints []string) {
 	if len(hints) > 0 {
-		outputter.Infof("%vHINT:", sqlcmd.SqlcmdEol)
+		outputter.Infof("%vHINT:", pal.LineBreak())
 		for i, hint := range hints {
 			outputter.Infof("  %d. %v", i+1, hint)
 		}
