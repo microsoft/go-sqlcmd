@@ -40,6 +40,10 @@ func (m *mssql) Connect(
 		ApplicationName: "sqlcmd",
 	}
 
+	if options.Database != "" {
+		connect.Database = options.Database
+	}
+
 	if user == nil {
 		connect.UseTrustedConnection = true
 	} else {

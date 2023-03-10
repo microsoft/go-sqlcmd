@@ -4,7 +4,6 @@ parameters:
   default:
 - name: Arch
   type: string
-  default: 
 - name: ArtifactName
   type: string
 - name: VersionTag

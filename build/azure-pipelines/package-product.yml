@@ -19,17 +19,31 @@ stages:
             imageName: 'ubuntu-latest'
             os: linux
             type: rpm
+            architecture: x86_x64
           debian:
             imageName: 'ubuntu-latest'
             os: linux
             type: deb
+            architecture: amd64
           docker:
             imageName: 'ubuntu-latest'
             os: linux
             type: docker
-          windows:
+            architecture: amd64
+          windows-x64:
             imageName: 'windows-2019'
             os: windows
+            architecture: x64
+            type: msi
+          windows-arm:
+            imageName: 'windows-2019'
+            os: windows
+            architecture: arm
+            type: msi
+          windows-arm64:
+            imageName: 'windows-2019'
+            os: windows
+            architecture: arm64
             type: msi
       pool:
         vmImage: $(imageName)
@@ -37,8 +51,10 @@ stages:
         - template: package-common-create.yml
           parameters:
             OS: $(os)
+            Architecture: $(architecture)
             Type: $(type)
         - template: package-common-test.yml
           parameters:
             OS: $(os)
+            Architecture: $(architecture)
             Type: $(type)

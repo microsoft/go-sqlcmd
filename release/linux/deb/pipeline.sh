@@ -46,7 +46,7 @@ DIST_DIR=${BUILD_STAGINGDIRECTORY:=${REPO_ROOT_DIR}/output/debian}
 PIPELINE_WORKSPACE=${REPO_ROOT_DIR}
 
 if [[ "${BUILD_OUTPUT}" != "" ]]; then
-    cp ${BUILD_OUTPUT}/SqlcmdLinuxAmd64/sqlcmd ${REPO_ROOT_DIR}/sqlcmd
+    cp ${BUILD_OUTPUT}/SqlcmdLinux-amd64/sqlcmd ${REPO_ROOT_DIR}/sqlcmd
 fi
 
 CLI_VERSION=${CLI_VERSION:=0.0.1}

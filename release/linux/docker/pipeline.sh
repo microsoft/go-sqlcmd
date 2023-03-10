@@ -22,7 +22,7 @@ DIST_DIR=${BUILD_STAGINGDIRECTORY:=${REPO_ROOT_DIR}/output/docker}
 IMAGE_NAME=microsoft/sqlcmd${BUILD_BUILDNUMBER:=''}
 
 if [[ "${BUILD_OUTPUT}" != "" ]]; then
-    cp ${BUILD_OUTPUT}/SqlcmdLinuxAmd64/sqlcmd ${REPO_ROOT_DIR}/sqlcmd
+    cp ${BUILD_OUTPUT}/SqlcmdLinux-amd64/sqlcmd ${REPO_ROOT_DIR}/sqlcmd
 fi
 
 chmod u+x ${REPO_ROOT_DIR}/sqlcmd
