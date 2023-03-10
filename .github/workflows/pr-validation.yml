@@ -17,14 +17,11 @@ jobs:
     - name: Run tests against Linux SQL
       run: |
         go version
-        cd cmd/modern
+        cd cmd/sqlcmd
         go get -d
         go build .
         export SQLCMDPASSWORD=$(date +%s|sha256sum|base64|head -c 32)
         export SQLCMDUSER=sa
-        export SQLCMDSERVER=127.0.0.1
-        docker run -m 2GB -e ACCEPT_EULA=1 -d --name sql2017 -p:1433:1433 -e MSSQL_SA_PASSWORD=$SQLCMDPASSWORD mcr.microsoft.com/mssql/server:latest
-        sleep 5
-        docker logs sql2017
+        docker run -m 2GB -e ACCEPT_EULA=1 -d --name sql2017 -p:1433:1433 -e SA_PASSWORD=$SQLCMDPASSWORD mcr.microsoft.com/mssql/server:2017-latest
         cd ../..
         go test -v ./...
