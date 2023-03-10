@@ -66,7 +66,17 @@ func (c Controller) EnsureImage(image string) (err error) {
 // ContainerRun creates a new container using the provided image and env values
 // and binds it to the specified port number. It then starts the container and returns
 // the ID of the container.
-func (c Controller) ContainerRun(image string, env []string, port int, name string, hostname string, architecture string, os string, command []string, unitTestFailure bool) string {
+func (c Controller) ContainerRun(
+	image string,
+	env []string,
+	port int,
+	name string,
+	hostname string,
+	architecture string,
+	os string,
+	command []string,
+	unitTestFailure bool,
+) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
 			nat.Port("1433/tcp"): []nat.PortBinding{
@@ -79,18 +89,17 @@ func (c Controller) ContainerRun(image string, env []string, port int, name stri
 	}
 
 	platform := specs.Platform{
-		Architecture: "AMD64",
-		OS:           "linux",
+		Architecture: architecture,
+		OS:           os,
 	}
 
 	resp, err := c.cli.ContainerCreate(context.Background(), &container.Config{
-		Tty:        true,
-		Image:      image,
-		Cmd:        command,
-		Env:        env,
-		Hostname:   hostname,
-		Domainname: name,
-	}, hostConfig, nil, &platform, "")
+		Tty:      true,
+		Image:    image,
+		Cmd:      command,
+		Env:      env,
+		Hostname: hostname,
+	}, hostConfig, nil, &platform, name)
 	checkErr(err)
 
 	err = c.cli.ContainerStart(
