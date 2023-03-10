@@ -22,7 +22,7 @@ set -exv
 : "${REPO_ROOT_DIR:=`cd $(dirname $0); cd ../../../; pwd`}"
 
 if [[ "${BUILD_OUTPUT}" != "" ]]; then
-    cp ${BUILD_OUTPUT}/SqlcmdLinuxAmd64/sqlcmd ${REPO_ROOT_DIR}/sqlcmd
+    cp ${BUILD_OUTPUT}/SqlcmdLinux-amd64/sqlcmd ${REPO_ROOT_DIR}/sqlcmd
 fi
 
 DIST_DIR=${BUILD_STAGINGDIRECTORY:=${REPO_ROOT_DIR}/output/rpm}
