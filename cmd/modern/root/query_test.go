@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/config"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"runtime"
 	"testing"
@@ -18,8 +17,27 @@ func TestQuery(t *testing.T) {
 	if runtime.GOOS != "windows" {
 		t.Skip("stuartpa: This is failing in the pipeline (Login failed for user 'sa'.)")
 	}
+
 	cmdparser.TestSetup(t)
 
+	setupContext(t)
+	cmdparser.TestCmd[*Query]("PRINT")
+}
+
+func TestQueryWithNonDefaultDatabase(t *testing.T) {
+	if runtime.GOOS != "windows" {
+		t.Skip("stuartpa: This is failing in the pipeline (Login failed for user 'sa'.)")
+	}
+	
+	cmdparser.TestSetup(t)
+
+	setupContext(t)
+	cmdparser.TestCmd[*Query](`--text "PRINT DB_NAME()" --database master`)
+
+	// TODO: Add test validation that DB name was actually master!
+}
+
+func setupContext(t *testing.T) {
 	// if SQLCMDSERVER != "" add an endpoint using the --address
 	if os.Getenv("SQLCMDSERVER") == "" {
 		cmdparser.TestCmd[*config.AddEndpoint]()
@@ -33,10 +51,6 @@ func TestQuery(t *testing.T) {
 	if os.Getenv("SQLCMDPASSWORD") != "" &&
 		os.Getenv("SQLCMDUSER") != "" {
 
-		// sqlcmd uses the SQLCMD_PASSWORD env var, but the tests use the
-		// SQLCMDPASSWORD env var
-		err := os.Setenv("SQLCMD_PASSWORD", os.Getenv("SQLCMDPASSWORD"))
-		assert.Nil(t, err)
 		cmdparser.TestCmd[*config.AddUser](
 			fmt.Sprintf("--name user1 --username %s",
 				os.Getenv("SQLCMDUSER")))
@@ -45,5 +59,4 @@ func TestQuery(t *testing.T) {
 		cmdparser.TestCmd[*config.AddContext]("--endpoint endpoint")
 	}
 	cmdparser.TestCmd[*config.View]() // displaying the config (info in-case test fails)
-	cmdparser.TestCmd[*Query]("PRINT")
 }
