@@ -6,6 +6,8 @@ package config
 import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -17,6 +19,8 @@ import (
 // ConnectionStrings implements the `sqlcmd config connection-strings` command
 type ConnectionStrings struct {
 	cmdparser.Cmd
+
+	database string
 }
 
 func (c *ConnectionStrings) DefineCommand(...cmdparser.CommandOptions) {
@@ -36,6 +40,13 @@ func (c *ConnectionStrings) DefineCommand(...cmdparser.CommandOptions) {
 	}
 
 	c.Cmd.DefineCommand(options)
+
+	c.AddFlag(cmdparser.FlagOptions{
+		String:        &c.database,
+		Name:          "database",
+		DefaultString: "",
+		Shorthand:     "d",
+		Usage:         "Database for the connection string (default is taken from the T/SQL login)"})
 }
 
 // run generates connection strings for the current context in multiple formats.
@@ -48,11 +59,26 @@ func (c *ConnectionStrings) run() {
 		"ADO.NET": "Server=tcp:%s,%d;Initial Catalog=%s;Persist Security Info=False;User ID=%s;Password=%s;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=%s;Connection Timeout=30;",
 		"JDBC":    "jdbc:sqlserver://%s:%d;database=%s;user=%s;password=%s;encrypt=true;trustServerCertificate=%s;loginTimeout=30;",
 		"ODBC":    "Driver={ODBC Driver 18 for SQL Server};Server=tcp:%s,%d;Database=%s;Uid=%s;Pwd=%s;Encrypt=yes;TrustServerCertificate=%s;Connection Timeout=30;",
-		"GO":      "sqlserver://%s:%s@%s,%d?database=master;encrypt=true;trustServerCertificate=%s;dial+timeout=30",
+		"GO":      "sqlserver://%s:%s@%s,%d?database=%s;encrypt=true;trustServerCertificate=%s;dial+timeout=30",
 		"SQLCMD":  "sqlcmd -S %s,%d -U %s",
 	}
 
 	endpoint, user := config.CurrentContext()
+
+	if c.database == "" {
+		if endpoint.AssetDetails != nil && endpoint.AssetDetails.ContainerDetails != nil {
+			controller := container.NewController()
+			if controller.ContainerRunning(endpoint.AssetDetails.ContainerDetails.Id) {
+				s := sql.New(sql.SqlOptions{})
+				s.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
+				c.database = s.ScalarString("PRINT DB_NAME()")
+			} else {
+				c.database = "master"
+			}
+		} else {
+			c.database = "master"
+		}
+	}
 
 	if user != nil {
 		for k, v := range connectionStringFormats {
@@ -63,23 +89,25 @@ func (c *ConnectionStrings) run() {
 					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted),
 					endpoint.EndpointDetails.Address,
 					endpoint.EndpointDetails.Port,
+					c.database,
 					c.stringForBoolean(c.trustServerCertificate(endpoint), k))
 			} else if k == "SQLCMD" {
 				format := pal.CmdLineWithEnvVars(
 					[]string{"SQLCMDPASSWORD=%s"},
-					"sqlcmd -S %s,%d -U %s",
+					"sqlcmd -S %s,%d -U %s -d %s",
 				)
 
 				connectionStringFormats[k] = fmt.Sprintf(format,
 					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted),
 					endpoint.EndpointDetails.Address,
 					endpoint.EndpointDetails.Port,
-					user.BasicAuth.Username)
+					user.BasicAuth.Username,
+					c.database)
 			} else {
 				connectionStringFormats[k] = fmt.Sprintf(v,
 					endpoint.EndpointDetails.Address,
 					endpoint.EndpointDetails.Port,
-					"master",
+					c.database,
 					user.BasicAuth.Username,
 					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted),
 					c.stringForBoolean(c.trustServerCertificate(endpoint), k))
