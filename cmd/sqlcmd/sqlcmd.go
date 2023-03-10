@@ -117,7 +117,7 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 }
 
 func Execute(version string) {
-	// Conbra Tryout #2 : This has version and help flags. But they are also getting stucked inside run function without error
+	// Cobra Tryout #2 : This has version and help flags. But they are also getting stucked inside run function without error
 	rootCmd := &cobra.Command{
 		Use:   "testCommand",
 		Short: "A brief description of your command",
@@ -142,20 +142,24 @@ func Execute(version string) {
 			}
 
 			fmt.Printf("after exit exitCode: %d\n", exitCode)
-			os.Exit(exitCode)
+			//os.Exit(exitCode)
 			fmt.Printf("after execute Function")
 		},
 	}
+	setFlags(rootCmd, &args)
+	if err := rootCmd.Execute(); err != nil {
+		os.Exit(1)
+	}
+}
 
+func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	var inputfiles []string
 	rootCmd.Flags().StringArrayVarP(&args.InputFile, "i", "i", inputfiles, "input file")
 	rootCmd.PersistentFlags().BoolVarP(&args.Version, "Version", "", false, "Print version information and exit")
 	rootCmd.PersistentFlags().BoolVarP(&args.Help, "help", "h", false, "Print this help message and exit")
 	rootCmd.PersistentFlags().BoolVarP(&args.DisableCmdAndWarn, "disable-cmd-and-warn", "", false, "Description of DisableCmdAndWarn")
-
-	if err := rootCmd.Execute(); err != nil {
-		os.Exit(1)
-	}
+	rootCmd.PersistentFlags().StringVarP(&args.BatchTerminator, "Batch Terminator", "c", "GO", "Specifies the batch terminator. The default value is GO")
+	rootCmd.PersistentFlags().StringVarP(&args.UserName, "User Name", "U", "", "Specifies the batch terminator. The default value is GO")
 }
 
 // setVars initializes scripting variables from command line arguments
