@@ -326,7 +326,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			Password:          secret.Encode(saPassword, c.encryptPassword)},
 		Name: "sa"}
 
-	c.sql.Connect(endpoint, saUser, "master", sql.ConnectOptions{Interactive: false})
+	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
 
 	c.createNonSaUser(userName, password)
 

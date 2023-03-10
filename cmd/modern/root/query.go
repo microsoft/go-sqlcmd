@@ -75,9 +75,9 @@ func (c *Query) run() {
 
 	s := sql.New(sql.SqlOptions{})
 	if c.text == "" {
-		s.Connect(endpoint, user, c.database, sql.ConnectOptions{Interactive: true})
+		s.Connect(endpoint, user, sql.ConnectOptions{Database: c.database, Interactive: true})
 	} else {
-		s.Connect(endpoint, user, c.database, sql.ConnectOptions{Interactive: false})
+		s.Connect(endpoint, user, sql.ConnectOptions{Database: c.database, Interactive: false})
 	}
 
 	s.Query(c.text)

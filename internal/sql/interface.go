@@ -8,10 +8,12 @@ import (
 )
 
 type Sql interface {
-	Connect(endpoint Endpoint, user *User, database string, options ConnectOptions)
+	Connect(endpoint Endpoint, user *User, options ConnectOptions)
 	Query(text string)
 }
 
 type ConnectOptions struct {
+	Database string
+
 	Interactive bool
 }

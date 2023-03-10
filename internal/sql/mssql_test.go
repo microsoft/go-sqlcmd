@@ -82,11 +82,11 @@ func TestConnect(t *testing.T) {
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
 				assert.Panics(t, func() {
-					mssql.Connect(tt.args.endpoint, tt.args.user, "", ConnectOptions{})
+					mssql.Connect(tt.args.endpoint, tt.args.user, ConnectOptions{})
 					mssql.Query("SELECT @@version")
 				})
 			} else {
-				mssql.Connect(tt.args.endpoint, tt.args.user, "", ConnectOptions{})
+				mssql.Connect(tt.args.endpoint, tt.args.user, ConnectOptions{})
 				mssql.Query("SELECT @@version")
 			}
 		})
