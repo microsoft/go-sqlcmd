@@ -10,6 +10,7 @@ import (
 type Sql interface {
 	Connect(endpoint Endpoint, user *User, options ConnectOptions)
 	Query(text string)
+	ScalarString(query string) string
 }
 
 type ConnectOptions struct {

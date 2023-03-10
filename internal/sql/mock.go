@@ -16,3 +16,7 @@ func (m *mock) Connect(
 // Query is a mock implementation used to speed up unit testing of other units
 func (m *mock) Query(text string) {
 }
+
+func (m *mock) ScalarString(query string) string {
+	return ""
+}

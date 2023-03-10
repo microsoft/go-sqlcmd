@@ -5,8 +5,10 @@ package sql
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/buffer"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"os"
+	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
@@ -80,4 +82,19 @@ func (m *mssql) Query(text string) {
 		err := m.sqlcmd.Run(false, true)
 		checkErr(err)
 	}
+}
+
+func (m *mssql) ScalarString(query string) string {
+	buf := buffer.NewMemoryBuffer()
+	defer func() { _ = buf.Close() }()
+
+	m.sqlcmd.Query = query
+	m.sqlcmd.SetOutput(buf)
+	m.sqlcmd.SetError(os.Stderr)
+
+	trace("Running query: %v", query)
+	err := m.sqlcmd.Run(true, false)
+	checkErr(err)
+
+	return strings.TrimRight(buf.String(), "\r\n")
 }
