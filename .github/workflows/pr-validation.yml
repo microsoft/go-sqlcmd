@@ -17,7 +17,7 @@ jobs:
     - name: Run tests against Linux SQL
       run: |
         go version
-        cd cmd/sqlcmd
+        cd cmd/modern
         go get -d
         go build .
         export SQLCMDPASSWORD=$(date +%s|sha256sum|base64|head -c 32)
