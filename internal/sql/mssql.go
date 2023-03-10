@@ -5,7 +5,7 @@ package sql
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/microsoft/go-sqlcmd/internal/buffer"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"os"
 	"strings"
@@ -80,18 +80,17 @@ func (m *mssql) Query(text string) {
 	}
 }
 
-func (m *mssql) ExecuteString(text string) string {
-	m.sqlcmd.Query = text
+func (m *mssql) ScalarString(query string) string {
+	buf := buffer.NewMemoryBuffer()
+	defer func() { _ = buf.Close() }()
 
-	// BUG(stuartpa): Need to move MemoryBuffer out of test package if going to use here!
-	buf := test.NewMemoryBuffer()
-	defer func(buf *test.MemoryBuffer) {
-		_ = buf.Close()
-	}(buf)
+	m.sqlcmd.Query = query
 	m.sqlcmd.SetOutput(buf)
 	m.sqlcmd.SetError(os.Stderr)
-	trace("Running query: %v", text)
+
+	trace("Running query: %v", query)
 	err := m.sqlcmd.Run(true, false)
 	checkErr(err)
+
 	return strings.TrimRight(buf.String(), "\r\n")
 }

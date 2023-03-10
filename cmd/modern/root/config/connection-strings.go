@@ -6,6 +6,7 @@ package config
 import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"strings"
 
@@ -65,11 +66,18 @@ func (c *ConnectionStrings) run() {
 	endpoint, user := config.CurrentContext()
 
 	if c.database == "" {
-		s := sql.New(sql.SqlOptions{})
-		s.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
-		str := s.ExecuteString("PRINT DB_NAME()")
-		output.Infof("%q", str)
-		c.database = str
+		if endpoint.AssetDetails != nil && endpoint.AssetDetails.ContainerDetails != nil {
+			controller := container.NewController()
+			if controller.ContainerRunning(endpoint.AssetDetails.ContainerDetails.Id) {
+				s := sql.New(sql.SqlOptions{})
+				s.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
+				c.database = s.ScalarString("PRINT DB_NAME()")
+			} else {
+				c.database = "master"
+			}
+		} else {
+			c.database = "master"
+		}
 	}
 
 	if user != nil {

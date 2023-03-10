@@ -5,11 +5,11 @@ package main
 
 import (
 	"errors"
+	"github.com/microsoft/go-sqlcmd/internal/buffer"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
-	"github.com/microsoft/go-sqlcmd/internal/test"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -26,14 +26,15 @@ func TestInitializeCallback(t *testing.T) {
 }
 
 func TestDisplayHints(t *testing.T) {
-	buf := test.NewMemoryBuffer()
-	defer checkErr(buf.Close())
+	buf := buffer.NewMemoryBuffer()
 	outputter = output.New(output.Options{StandardWriter: buf})
 	displayHints([]string{"This is a hint"})
-	assert.Equal(t, pal.LineBreak()+
+	assert.Equal(t, "\r"+pal.LineBreak()+
 		"HINT:"+
 		pal.LineBreak()+
 		"  1. This is a hint"+pal.LineBreak()+pal.LineBreak(), buf.String())
+	err := buf.Close()
+	checkErr(err)
 }
 
 func TestCheckErr(t *testing.T) {

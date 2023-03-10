@@ -7,6 +7,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/output"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
@@ -48,5 +49,10 @@ func TestConnectionStrings(t *testing.T) {
 	cmdparser.TestCmd[*AddUser]("--username user")
 	cmdparser.TestCmd[*AddContext]("--endpoint endpoint2 --user user")
 
-	cmdparser.TestCmd[*ConnectionStrings]()
+	result := cmdparser.TestCmd[*ConnectionStrings]()
+	assert.Contains(t, result, "database=master")
+
+	result = cmdparser.TestCmd[*ConnectionStrings]("--database tempdb")
+	assert.NotContains(t, result, "database=master")
+	assert.Contains(t, result, "database=tempdb")
 }

@@ -17,6 +17,6 @@ func (m *mock) Connect(
 func (m *mock) Query(text string) {
 }
 
-func (m *mock) ExecuteString(text string) string {
+func (m *mock) ScalarString(query string) string {
 	return ""
 }

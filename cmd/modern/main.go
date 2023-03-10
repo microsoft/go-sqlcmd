@@ -121,7 +121,7 @@ func initializeCallback() {
 // To aid debugging issues, if the logging level is > 2 (e.g. --verbosity 3 or --verbosity 4), we
 // panic which outputs a stacktrace.
 func checkErr(err error) {
-	if rootCmd.loggingLevel > 2 {
+	if rootCmd != nil && rootCmd.loggingLevel > 2 {
 		if err != nil {
 			panic(err)
 		}
