@@ -13,6 +13,7 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/go-connections/nat"
+	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"io"
 	"path/filepath"
 	"strconv"
@@ -71,6 +72,8 @@ func (c Controller) ContainerRun(
 	port int,
 	name string,
 	hostname string,
+	architecture string,
+	os string,
 	command []string,
 	unitTestFailure bool,
 ) string {
@@ -85,14 +88,18 @@ func (c Controller) ContainerRun(
 		},
 	}
 
+	platform := specs.Platform{
+		Architecture: architecture,
+		OS:           os,
+	}
+
 	resp, err := c.cli.ContainerCreate(context.Background(), &container.Config{
-		Tty:        true,
-		Image:      image,
-		Cmd:        command,
-		Env:        env,
-		Hostname:   hostname,
-		Domainname: name,
-	}, hostConfig, nil, nil, "")
+		Tty:      true,
+		Image:    image,
+		Cmd:      command,
+		Env:      env,
+		Hostname: hostname,
+	}, hostConfig, nil, &platform, name)
 	checkErr(err)
 
 	err = c.cli.ContainerStart(

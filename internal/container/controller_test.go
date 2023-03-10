@@ -33,7 +33,17 @@ func TestController_EnsureImage(t *testing.T) {
 	c := NewController()
 	err := c.EnsureImage(imageName)
 	checkErr(err)
-	id := c.ContainerRun(imageName, []string{}, port, "", "", []string{"ash", "-c", "echo 'Hello World'; sleep 3"}, false)
+	id := c.ContainerRun(
+		imageName,
+		[]string{},
+		port,
+		"",
+		"",
+		"amd64",
+		"linux",
+		[]string{"ash", "-c", "echo 'Hello World'; sleep 3"},
+		false,
+	)
 	c.ContainerRunning(id)
 	c.ContainerWaitForLogEntry(id, "Hello World")
 	c.ContainerExists(id)
@@ -76,6 +86,8 @@ func TestController_ContainerRunFailure(t *testing.T) {
 			0,
 			"",
 			"",
+			"amd64",
+			"linux",
 			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
 			false,
 		)
@@ -102,6 +114,8 @@ func TestController_ContainerRunFailureCleanup(t *testing.T) {
 			0,
 			"",
 			"",
+			"amd64",
+			"linux",
 			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
 			true,
 		)
