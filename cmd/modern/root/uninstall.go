@@ -101,7 +101,7 @@ func (c *Uninstall) run() {
 					output.Fatal("Operation cancelled.")
 				}
 			}
-			if !c.force {
+			if controller.ContainerExists(id) && !c.force {
 				output.Infof("Verifying no user (non-system) database (.mdf) files")
 				if !controller.ContainerRunning(id) {
 					output.FatalfWithHintExamples([][]string{
@@ -112,16 +112,20 @@ func (c *Uninstall) run() {
 				c.userDatabaseSafetyCheck(controller, id)
 			}
 
-			output.Infof(
-				"Stopping %s",
-				endpoint.ContainerDetails.Image,
-			)
-			err := controller.ContainerStop(id)
-			c.CheckErr(err)
-
 			output.Infof("Removing context %s", config.CurrentContextName())
-			err = controller.ContainerRemove(id)
-			c.CheckErr(err)
+
+			if controller.ContainerExists(id) {
+				output.Infof(
+					"Stopping %s",
+					endpoint.ContainerDetails.Image,
+				)
+				err := controller.ContainerStop(id)
+				c.CheckErr(err)
+				err = controller.ContainerRemove(id)
+				c.CheckErr(err)
+			} else {
+				output.Warnf("Container %q no longer exists, continuing to remove context...", id)
+			}
 		}
 
 		config.RemoveCurrentContext()

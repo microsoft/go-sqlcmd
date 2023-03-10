@@ -412,9 +412,7 @@ func TestPromptForPasswordPositive(t *testing.T) {
 	err = s.ConnectDb(c, false)
 	assert.True(t, prompted, "ConnectDb with !nopw should prompt for password")
 	assert.NoError(t, err, "ConnectDb with !nopw and valid password returned from prompt")
-	if s.Connect.Password != password {
-		t.Fatal(t, err, "Password not stored in the connection")
-	}
+	assert.Equal(t, password, s.Connect.Password, "Password not stored in the connection")
 }
 
 func TestVerticalLayoutNoColumns(t *testing.T) {
