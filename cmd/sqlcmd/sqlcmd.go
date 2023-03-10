@@ -157,9 +157,20 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringArrayVarP(&args.InputFile, "i", "i", inputfiles, "input file")
 	rootCmd.PersistentFlags().BoolVarP(&args.Version, "Version", "", false, "Print version information and exit")
 	rootCmd.PersistentFlags().BoolVarP(&args.Help, "help", "h", false, "Print this help message and exit")
-	rootCmd.PersistentFlags().BoolVarP(&args.DisableCmdAndWarn, "disable-cmd-and-warn", "", false, "Description of DisableCmdAndWarn")
 	rootCmd.PersistentFlags().StringVarP(&args.BatchTerminator, "Batch Terminator", "c", "GO", "Specifies the batch terminator. The default value is GO")
 	rootCmd.PersistentFlags().StringVarP(&args.UserName, "User Name", "U", "", "Specifies the batch terminator. The default value is GO")
+	rootCmd.PersistentFlags().StringVarP(&args.InitialQuery, "InitialQuery", "q", "", "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.")
+	rootCmd.PersistentFlags().StringVarP(&args.Query, "Query", "Q", "", "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.")
+	rootCmd.PersistentFlags().StringVarP(&args.Server, "Server", "S", "", "[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER.")
+	rootCmd.PersistentFlags().BoolVarP(&args.DisableCmdAndWarn, "DisableCmdAndWarn", "X", false, "Disables commands that might compromise system security. Sqlcmd issues a warning and continues.")
+	rootCmd.PersistentFlags().StringVar(&args.AuthenticationMethod, "AuthenticationMethod", "", "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword")
+	rootCmd.PersistentFlags().BoolVarP(&args.UseAad, "UseAad", "G", false, "Tells sqlcmd to use Active Directory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.")
+	rootCmd.PersistentFlags().BoolVarP(&args.DisableVariableSubstitution, "DisableVariableSubstitution", "x", false, "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name).")
+	var variables map[string]string
+	rootCmd.Flags().StringToStringVarP(&args.Variables, "Variables", "v", variables, "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits")
+	rootCmd.Flags().IntVarP(&args.PacketSize, "PacketSize", "a", 0, "Requests a packet of a different size. This option sets the sqlcmd scripting variable SQLCMDPACKETSIZE. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between GO commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.")
+	rootCmd.Flags().IntVarP(&args.LoginTimeout, "LoginTimeOut", "l", -1, "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable SQLCMDLOGINTIMEOUT. The default value is 30. 0 means infinite.")
+	rootCmd.Flags().StringVarP(&args.WorkstationName, "WorkstationName", "H", "", "This option sets the sqlcmd scripting variable SQLCMDWORKSTATION. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.")
 }
 
 // setVars initializes scripting variables from command line arguments
