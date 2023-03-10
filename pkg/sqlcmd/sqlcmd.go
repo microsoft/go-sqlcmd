@@ -21,6 +21,7 @@ import (
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-mssqldb/msdsn"
+	"github.com/microsoft/go-sqlcmd/internal/color"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -78,6 +79,7 @@ type Sqlcmd struct {
 	// PrintError allows the host to redirect errors away from the default output. Returns false if the error is not redirected by the host.
 	PrintError        func(msg string, severity uint8) bool
 	UnicodeOutputFile bool
+	colorizer         color.Colorizer
 }
 
 // New creates a new Sqlcmd instance
@@ -88,6 +90,7 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 		vars:             vars,
 		Cmd:              newCommands(),
 		Connect:          &ConnectSettings{},
+		colorizer:        color.New(false),
 	}
 	s.batch = NewBatch(s.scanNext, s.Cmd)
 	mssql.SetContextLogger(s)

@@ -26,7 +26,7 @@ func newKong(t *testing.T, cli interface{}, options ...kong.Option) *kong.Kong {
 		kong.NoDefaultHelp(),
 		kong.Exit(func(int) {
 			t.Helper()
-			t.Fatalf("unexpected exit()")
+			assert.Fail(t, "unexpected exit()")
 		}),
 	}, options...)
 	parser, err := kong.New(cli, options...)
