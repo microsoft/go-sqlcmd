@@ -41,7 +41,7 @@ func setupContext(t *testing.T) {
 	// we'll use trusted auth
 	if os.Getenv("SQLCMDPASSWORD") != "" &&
 		os.Getenv("SQLCMDUSER") != "" {
-		
+
 		cmdparser.TestCmd[*config.AddUser](
 			fmt.Sprintf("--name user1 --username %s",
 				os.Getenv("SQLCMDUSER")))
@@ -49,5 +49,5 @@ func setupContext(t *testing.T) {
 	} else {
 		cmdparser.TestCmd[*config.AddContext]("--endpoint endpoint")
 	}
-	cmdparser.TestCmd[*config.View]() // displaying the config (info in-case test fails)
+	cmdparser.TestCmd[*config.View]("--raw") // displaying the config (info in-case test fails)
 }
