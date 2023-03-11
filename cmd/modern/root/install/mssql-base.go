@@ -452,9 +452,12 @@ CHECK_POLICY=OFF`
 
 func getDbNameIfExists(usingDbUrl string) string {
 	if strings.Contains(usingDbUrl, ",") {
-		dbToken := strings.Split(usingDbUrl, ",")
-		if len(dbToken) > 1 {
-			return dbToken[1]
+		dbNameStartIdx := strings.Index(usingDbUrl, ",") + 1
+		if dbNameStartIdx < len(usingDbUrl) {
+			dbName := usingDbUrl[dbNameStartIdx:]
+			dbName = strings.ReplaceAll(dbName, "'", "''")
+			dbName = strings.ReplaceAll(dbName, "]", "]]")
+			return dbName
 		}
 	}
 	return ""
