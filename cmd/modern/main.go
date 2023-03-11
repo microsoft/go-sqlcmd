@@ -19,6 +19,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
 	"path"
@@ -142,7 +143,7 @@ func initializeCallback() {
 // To aid debugging issues, if the logging level is > 2 (e.g. --verbosity 3 or --verbosity 4), we
 // panic which outputs a stacktrace.
 func checkErr(err error) {
-	if rootCmd.loggingLevel > 2 {
+	if rootCmd != nil && rootCmd.loggingLevel > 2 {
 		if err != nil {
 			panic(err)
 		}
@@ -155,7 +156,7 @@ func checkErr(err error) {
 // to make progress.  displayHints is injected into dependencies (helpers etc.)
 func displayHints(hints []string) {
 	if len(hints) > 0 {
-		outputter.Infof("%vHINT:", sqlcmd.SqlcmdEol)
+		outputter.Infof("%vHINT:", pal.LineBreak())
 		for i, hint := range hints {
 			outputter.Infof("  %d. %v", i+1, hint)
 		}

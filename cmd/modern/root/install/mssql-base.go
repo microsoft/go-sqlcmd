@@ -46,8 +46,10 @@ type MssqlBase struct {
 	defaultContextName     string
 	collation              string
 
-	name     string
-	hostname string
+	name         string
+	hostname     string
+	architecture string
+	os           string
 
 	port int
 
@@ -175,6 +177,20 @@ func (c *MssqlBase) AddFlags(
 	})
 
 	addFlag(cmdparser.FlagOptions{
+		String:        &c.architecture,
+		DefaultString: "amd64",
+		Name:          "architecture",
+		Usage:         "Specifies the image CPU architecture",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.os,
+		DefaultString: "linux",
+		Name:          "os",
+		Usage:         "Specifies the image operating system",
+	})
+
+	addFlag(cmdparser.FlagOptions{
 		String:        &c.collation,
 		DefaultString: "SQL_Latin1_General_CP1_CI_AS",
 		Name:          "collation",
@@ -273,6 +289,8 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.port,
 		c.name,
 		c.hostname,
+		c.architecture,
+		c.os,
 		[]string{},
 		false,
 	)
@@ -327,7 +345,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			Password:          secret.Encode(saPassword, c.encryptPassword)},
 		Name: "sa"}
 
-	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Interactive: false})
+	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
 
 	c.createNonSaUser(userName, password)
 

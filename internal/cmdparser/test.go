@@ -5,6 +5,7 @@ package cmdparser
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal"
+	"github.com/microsoft/go-sqlcmd/internal/buffer"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/output"
@@ -44,21 +45,26 @@ func TestSetup(t *testing.T) {
 }
 
 // Run a command expecing it to pass, passing in any supplied args (args are split on " " (space))
-func TestCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...string) {
-	err := testCmd[T](args...)
+func TestCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...string) string {
+	result, err := testCmd[T](args...)
 
-	// DEVNOTE: I don't think the code will ever get here (c.Command().Execute() will
-	// always panic first. This is here to silence code checkers, that require the err return
-	// variable be checked.
 	if err != nil {
+
+		// DEVNOTE: I don't think the code will ever get here (c.Command().Execute() will
+		// always panic first. This is here to silence code checkers, that require the err return
+		// variable be used.
 		panic(err)
 	}
+	return result
 }
 
-func testCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...string) error {
+func testCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...string) (result string, err error) {
+	buf := buffer.NewMemoryBuffer()
+	defer func() { buf.Close() }()
 	c := New[T](dependency.Options{
 		Output: output.New(output.Options{
-			LoggingLevel: verbosity.Trace}),
+			StandardWriter: buf,
+			LoggingLevel:   verbosity.Trace}),
 	})
 	c.DefineCommand()
 	if len(args) > 1 {
@@ -68,8 +74,8 @@ func testCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...strin
 	} else {
 		c.SetArgsForUnitTesting([]string{})
 	}
-	err := c.Command().Execute()
-	return err
+	err = c.Command().Execute()
+	return buf.String(), err
 }
 
 // splitStringIntoArgsSlice uses a regular expression that matches either a

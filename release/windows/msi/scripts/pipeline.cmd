@@ -29,9 +29,9 @@ set REPO_ROOT=%~dp0..\..\..\..
 
 set PIPELINE_WORKSPACE=%ARTIFACTS_DIR%\workspace
 
-mkdir %PIPELINE_WORKSPACE%\SqlcmdWindowsAmd64
+mkdir %PIPELINE_WORKSPACE%\SqlcmdWindows-%ARCHITECTURE%
 
-copy /y %REPO_ROOT%\sqlcmd.exe %PIPELINE_WORKSPACE%\SqlcmdWindowsAmd64\sqlcmd.exe
+copy /y %REPO_ROOT%\sqlcmd.exe %PIPELINE_WORKSPACE%\SqlcmdWindows-%ARCHITECTURE%\sqlcmd.exe
 
 ::ensure wix is available
 if exist %WIX_DIR% (

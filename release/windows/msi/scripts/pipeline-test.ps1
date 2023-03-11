@@ -16,10 +16,11 @@
 
 if (-not (Test-Path env:CLI_VERSION)) { $env:CLI_VERSION = '0.0.1' }
 if (-not (Test-Path env:CLI_VERSION_REVISION)) { $env:CLI_VERSION_REVISION = '1' }
+if (-not (Test-Path env:ARCHITECTURE)) { $env:ARCHITECTURE = 'amd64' }
 
 tree /A /F $env:SYSTEM_ARTIFACTSDIRECTORY
 
-$msiPath = Join-Path $env:SYSTEM_ARTIFACTSDIRECTORY ("sqlcmd_" + $env:CLI_VERSION + "-" + $env:CLI_VERSION_REVISION + ".msi")
+$msiPath = Join-Path $env:SYSTEM_ARTIFACTSDIRECTORY ("sqlcmd-" + $env:ARCHITECTURE + "_" + $env:CLI_VERSION + "-" + $env:CLI_VERSION_REVISION + ".msi")
 
 $msiPath
 
