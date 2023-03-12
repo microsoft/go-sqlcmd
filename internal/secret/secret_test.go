@@ -23,18 +23,18 @@ func TestEncodeAndDecode(t *testing.T) {
 
 func TestNegEncode(t *testing.T) {
 	assert.Panics(t, func() {
-		Encode("", "dpapi")
+		Encode("", "none")
 	})
 }
 
 func TestNegDecode(t *testing.T) {
 	assert.Panics(t, func() {
-		Decode("", "dpapi")
+		Decode("", "none")
 	})
 }
 
 func TestDecodeAsUtf16(t *testing.T) {
-	cipherText := Encode("plainText", "dpapi")
-	plainText := DecodeAsUtf16(cipherText, "dpapi")
+	cipherText := Encode("plainText", "none")
+	plainText := DecodeAsUtf16(cipherText, "none")
 	assert.Equal(t, "plainText", plainText)
 }

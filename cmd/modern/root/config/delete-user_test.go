@@ -14,7 +14,7 @@ func TestDeleteUser(t *testing.T) {
 
 	// SQLCMDPASSWORD is already set in the build pipelines, so don't
 	// overwrite it here.
-	if os.Getenv("SQLCMDPASSWORD") == "" {
+	if os.Getenv("SQLCMDPASSWORD") == "" && os.Getenv("SQLCMD_PASSWORD") == "" {
 		os.Setenv("SQLCMDPASSWORD", "it's-a-secret")
 	}
 	cmdparser.TestSetup(t)
