@@ -5,14 +5,20 @@ package secret
 
 import (
 	"github.com/stretchr/testify/assert"
+	"runtime"
 	"testing"
 )
 
 func TestEncodeAndDecode(t *testing.T) {
 	notEncrypted := Encode("plainText", "none")
-	encrypted := Encode("plainText", "dpapi")
-	Decode(notEncrypted, "none")
-	Decode(encrypted, "dpapi")
+	plainText := Decode(notEncrypted, "none")
+	assert.Equal(t, "plainText", plainText)
+
+	if runtime.GOOS == "windows" {
+		encrypted := Encode("plainText", "dpapi")
+		plainText := Decode(encrypted, "dpapi")
+		assert.Equal(t, "plainText", plainText)
+	}
 }
 
 func TestNegEncode(t *testing.T) {
@@ -29,5 +35,6 @@ func TestNegDecode(t *testing.T) {
 
 func TestDecodeAsUtf16(t *testing.T) {
 	cipherText := Encode("plainText", "dpapi")
-	DecodeAsUtf16(cipherText, "dpapi")
+	plainText := DecodeAsUtf16(cipherText, "dpapi")
+	assert.Equal(t, "plainText", plainText)
 }
