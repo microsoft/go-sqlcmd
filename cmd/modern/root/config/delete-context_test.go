@@ -11,7 +11,7 @@ import (
 
 func TestDeleteContext(t *testing.T) {
 	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*AddUser]("--name delete-test--username user --auth-type other")
+	cmdparser.TestCmd[*AddUser]("--name delete-test --username user --auth-type other")
 	cmdparser.TestCmd[*AddEndpoint]()
 	cmdparser.TestCmd[*AddContext]("--endpoint endpoint --user delete-test")
 	cmdparser.TestCmd[*DeleteContext]("--name context")

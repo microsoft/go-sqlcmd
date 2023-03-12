@@ -55,7 +55,7 @@ func TestDecodeAsUtf16(t *testing.T) {
 // encryption method for usage.
 func TestEncryptionMethodsForUsage(t *testing.T) {
 	s := EncryptionMethodsForUsage()
-	assert.Contains(t, "none", s)
+	assert.Contains(t, s, "none")
 }
 
 func TestIsValidEncryptionMethod(t *testing.T) {

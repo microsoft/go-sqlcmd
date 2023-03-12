@@ -18,6 +18,7 @@ func TestAddUser(t *testing.T) {
 	// overwrite it here.
 	if os.Getenv("SQLCMDPASSWORD") == "" {
 		os.Setenv("SQLCMDPASSWORD", "it's-a-secret")
+		defer os.Setenv("SQLCMDPASSWORD", "")
 	}
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*AddUser]("--username user1 --password-encryption none")
@@ -57,8 +58,10 @@ func TestNegAddUser3(t *testing.T) {
 // TestNegAddUser4 tests that the `sqlcmd config add-user` command
 // when username is not set
 func TestNegAddUser4(t *testing.T) {
-	os.Setenv("SQLCMD_PASSWORD", "whatever")
-
+	if os.Getenv("SQLCMD_PASSWORD") == "" {
+		os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+		defer os.Setenv("SQLCMD_PASSWORD", "")
+	}
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
 		cmdparser.TestCmd[*AddUser]()
@@ -68,8 +71,10 @@ func TestNegAddUser4(t *testing.T) {
 // TestNegAddUserNoUserName tests that the `sqlcmd config add-user` command
 // when username is not set
 func TestNegAddUserNoUserName(t *testing.T) {
-	os.Setenv("SQLCMD_PASSWORD", "whatever")
-
+	if os.Getenv("SQLCMD_PASSWORD") == "" {
+		os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+		defer os.Setenv("SQLCMD_PASSWORD", "")
+	}
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
 		cmdparser.TestCmd[*AddUser]("--password-encryption none")
@@ -79,8 +84,10 @@ func TestNegAddUserNoUserName(t *testing.T) {
 // TestNegAddUserBadEncryptionMethod tests that the `sqlcmd config add-user` command
 // when encryption method is not valid
 func TestNegAddUserBadEncryptionMethod(t *testing.T) {
-	os.Setenv("SQLCMD_PASSWORD", "whatever")
-
+	if os.Getenv("SQLCMD_PASSWORD") == "" {
+		os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+		defer os.Setenv("SQLCMD_PASSWORD", "")
+	}
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
 		cmdparser.TestCmd[*AddUser]("--username sa --password-encryption bad-bad")
@@ -90,10 +97,12 @@ func TestNegAddUserBadEncryptionMethod(t *testing.T) {
 func TestNegBothPasswordEnvVarsSet(t *testing.T) {
 	if os.Getenv("SQLCMD_PASSWORD") == "" {
 		os.Setenv("SQLCMD_PASSWORD", "whatever")
+		defer os.Setenv("SQLCMD_PASSWORD", "")
 	}
 
 	if os.Getenv("SQLCMDPASSWORD") == "" {
 		os.Setenv("SQLCMDPASSWORD", "whatever")
+		defer os.Setenv("SQLCMDPASSWORD", "")
 	}
 
 	cmdparser.TestSetup(t)
@@ -105,7 +114,8 @@ func TestNegBothPasswordEnvVarsSet(t *testing.T) {
 func TestNegNoPasswordEnvVarsSet(t *testing.T) {
 	if os.Getenv("SQLCMD_PASSWORD") != "" ||
 		os.Getenv("SQLCMDPASSWORD") != "" {
-		t.Skip("Skipping test because SQLCMD_PASSWORD or SQLCMDPASSWORD is set")
+		os.Setenv("SQLCMD_PASSWORD", "whatever")
+		defer os.Setenv("SQLCMD_PASSWORD", "")
 	}
 
 	cmdparser.TestSetup(t)

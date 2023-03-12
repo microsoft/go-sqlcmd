@@ -32,7 +32,8 @@ func TestConnectionStrings(t *testing.T) {
 
 	if os.Getenv("SQLCMDPASSWORD") == "" &&
 		os.Getenv("SQLCMD_PASSWORD") == "" {
-		os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+		os.Setenv("SQLCMDPASSWORD", "it's-a-secret")
+		defer os.Setenv("SQLCMDPASSWORD", "")
 	}
 
 	cmdparser.TestCmd[*AddEndpoint]()

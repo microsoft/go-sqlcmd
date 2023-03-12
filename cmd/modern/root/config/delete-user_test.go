@@ -17,6 +17,7 @@ func TestDeleteUser(t *testing.T) {
 	// overwrite it here.
 	if os.Getenv("SQLCMDPASSWORD") == "" && os.Getenv("SQLCMD_PASSWORD") == "" {
 		os.Setenv("SQLCMDPASSWORD", "it's-a-secret")
+		defer os.Setenv("SQLCMDPASSWORD", "")
 	}
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*AddUser]("--username user1 --password-encryption none")
