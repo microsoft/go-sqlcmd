@@ -9,25 +9,25 @@ import (
 )
 
 func TestEncodeAndDecode(t *testing.T) {
-	notEncrypted := Encode("plainText", false)
-	encrypted := Encode("plainText", true)
-	Decode(notEncrypted, false)
-	Decode(encrypted, true)
+	notEncrypted := Encode("plainText", "none")
+	encrypted := Encode("plainText", "dpapi")
+	Decode(notEncrypted, "none")
+	Decode(encrypted, "dpapi")
 }
 
 func TestNegEncode(t *testing.T) {
 	assert.Panics(t, func() {
-		Encode("", true)
+		Encode("", "dpapi")
 	})
 }
 
 func TestNegDecode(t *testing.T) {
 	assert.Panics(t, func() {
-		Decode("", true)
+		Decode("", "dpapi")
 	})
 }
 
 func TestDecodeAsUtf16(t *testing.T) {
-	cipherText := Encode("plainText", true)
-	DecodeAsUtf16(cipherText, true)
+	cipherText := Encode("plainText", "dpapi")
+	DecodeAsUtf16(cipherText, "dpapi")
 }

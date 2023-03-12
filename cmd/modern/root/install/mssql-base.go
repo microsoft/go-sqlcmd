@@ -38,7 +38,7 @@ type MssqlBase struct {
 	passwordMinNumber      int
 	passwordMinUpper       int
 	passwordSpecialCharSet string
-	encryptPassword        bool
+	passwordEncryption     string
 
 	useCached              bool
 	errorLogEntryToWaitFor string
@@ -142,7 +142,13 @@ func (c *MssqlBase) AddFlags(
 		Usage:         "Special character set to include in password",
 	})
 
-	c.encryptPasswordFlag(addFlag)
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.passwordEncryption,
+		DefaultString: "none",
+		Name:          "password-encryption",
+		Usage: fmt.Sprintf("Password encryption method (%s) in sqlconfig file",
+			secret.EncryptionMethodsForUsage()),
+	})
 
 	addFlag(cmdparser.FlagOptions{
 		Bool:  &c.useCached,
@@ -307,7 +313,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		containerId,
 		userName,
 		password,
-		c.encryptPassword,
+		c.passwordEncryption,
 	)
 
 	output.Infof(
@@ -339,9 +345,9 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	saUser := &sqlconfig.User{
 		AuthenticationType: "basic",
 		BasicAuth: &sqlconfig.BasicAuthDetails{
-			Username:          "sa",
-			PasswordEncrypted: c.encryptPassword,
-			Password:          secret.Encode(saPassword, c.encryptPassword)},
+			Username:           "sa",
+			PasswordEncryption: c.passwordEncryption,
+			Password:           secret.Encode(saPassword, c.passwordEncryption)},
 		Name: "sa"}
 
 	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})

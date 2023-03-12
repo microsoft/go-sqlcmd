@@ -11,7 +11,7 @@ import (
 
 func TestGetUsers(t *testing.T) {
 	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*AddUser]("--name user --username user")
+	cmdparser.TestCmd[*AddUser]("--name user --username user  --password-encryption none")
 	cmdparser.TestCmd[*GetUsers]()
 	cmdparser.TestCmd[*GetUsers]("user")
 }

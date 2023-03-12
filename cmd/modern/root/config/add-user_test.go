@@ -20,7 +20,7 @@ func TestAddUser(t *testing.T) {
 		os.Setenv("SQLCMDPASSWORD", "it's-a-secret")
 	}
 	cmdparser.TestSetup(t)
-	cmdparser.TestCmd[*AddUser]("--username user1")
+	cmdparser.TestCmd[*AddUser]("--username user1 --password-encryption none")
 }
 
 // TestNegAddUser tests that the `sqlcmd config add-user` command
@@ -33,11 +33,11 @@ func TestNegAddUser(t *testing.T) {
 }
 
 // TestNegAddUser2 tests that the `sqlcmd config add-user` command
-// fails when the auth-type is not basic and --encrypt-password is set
+// fails when the auth-type is not basic and --password-encryption is set
 func TestNegAddUser2(t *testing.T) {
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestCmd[*AddUser]("--username user1 --auth-type other --encrypt-password")
+		cmdparser.TestCmd[*AddUser]("--username user1 --auth-type other --password-encryption dpapi")
 	})
 }
 

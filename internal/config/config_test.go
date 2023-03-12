@@ -33,9 +33,9 @@ func TestConfig(t *testing.T) {
 						Name:               "user1",
 						AuthenticationType: "basic",
 						BasicAuth: &BasicAuthDetails{
-							Username:          "user",
-							PasswordEncrypted: false,
-							Password:          secret.Encode("weak", false),
+							Username:           "user",
+							PasswordEncryption: "none",
+							Password:           secret.Encode("weak", "none"),
 						},
 					}}}}},
 	}
@@ -90,9 +90,9 @@ func TestConfig(t *testing.T) {
 				Name:               "user",
 				AuthenticationType: "basic",
 				BasicAuth: &BasicAuthDetails{
-					Username:          "username",
-					PasswordEncrypted: false,
-					Password:          secret.Encode("password", false),
+					Username:           "username",
+					PasswordEncryption: "none",
+					Password:           secret.Encode("password", "none"),
 				},
 			}
 
@@ -130,7 +130,7 @@ func TestConfig(t *testing.T) {
 			ContainerId()
 			RemoveCurrentContext()
 			RemoveCurrentContext()
-			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", false)
+			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", "none")
 			RemoveCurrentContext()
 			DeleteEndpoint("endpoint")
 			DeleteContext("context")
@@ -295,35 +295,35 @@ func Test_userOrdinal(t *testing.T) {
 
 func TestAddContextWithContainerPanic(t *testing.T) {
 	type args struct {
-		contextName     string
-		imageName       string
-		portNumber      int
-		containerId     string
-		username        string
-		password        string
-		encryptPassword bool
+		contextName        string
+		imageName          string
+		portNumber         int
+		containerId        string
+		username           string
+		password           string
+		passwordEncryption string
 	}
 	tests := []struct {
 		name string
 		args args
 	}{
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"", "image", 1433, "id", "user", "password", false}},
+			args: args{"", "image", 1433, "id", "user", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "", 1433, "id", "user", "password", false}},
+			args: args{"context", "", 1433, "id", "user", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "image", 1433, "", "user", "password", false}},
+			args: args{"context", "image", 1433, "", "user", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "image", 0, "id", "user", "password", false}},
+			args: args{"context", "image", 0, "id", "user", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "image", 1433, "id", "", "password", false}},
+			args: args{"context", "image", 1433, "id", "", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "image", 1433, "id", "user", "", false}},
+			args: args{"context", "image", 1433, "id", "user", "", "none"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Panics(t, func() {
-				AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.encryptPassword)
+				AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.passwordEncryption)
 			})
 		})
 	}
