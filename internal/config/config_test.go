@@ -9,6 +9,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -409,4 +410,20 @@ func TestNegConfig_GetContext(t *testing.T) {
 	assert.Panics(t, func() {
 		GetContext("doesnotexist")
 	})
+}
+
+func TestNegConfig_SetFileNameEmpty(t *testing.T) {
+	assert.Panics(t, func() {
+		SetFileName("")
+	})
+}
+
+func TestNegConfig_DefaultFileNameNoHomeDir(t *testing.T) {
+	old := os.Getenv("USERPROFILE")
+	defer os.Setenv("USERPROFILE", old)
+
+	os.Setenv("USERPROFILE", "")
+
+	s := DefaultFileName()
+	assert.Contains(t, s, "sqlconfig")
 }

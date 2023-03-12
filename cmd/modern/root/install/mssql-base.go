@@ -164,7 +164,7 @@ func (c *MssqlBase) AddFlags(
 		String:        &c.errorLogEntryToWaitFor,
 		DefaultString: "The default language",
 		Name:          "errorlog-wait-line",
-		Usage:         "Line in errorlog to wait for before connecting to disable 'sa' account",
+		Usage:         "Line in errorlog to wait for before connecting",
 	})
 
 	addFlag(cmdparser.FlagOptions{

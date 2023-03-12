@@ -64,3 +64,52 @@ func TestNegAddUser4(t *testing.T) {
 		cmdparser.TestCmd[*AddUser]()
 	})
 }
+
+// TestNegAddUserNoUserName tests that the `sqlcmd config add-user` command
+// when username is not set
+func TestNegAddUserNoUserName(t *testing.T) {
+	os.Setenv("SQLCMD_PASSWORD", "whatever")
+
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*AddUser]("--password-encryption none")
+	})
+}
+
+// TestNegAddUserBadEncryptionMethod tests that the `sqlcmd config add-user` command
+// when encryption method is not valid
+func TestNegAddUserBadEncryptionMethod(t *testing.T) {
+	os.Setenv("SQLCMD_PASSWORD", "whatever")
+
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*AddUser]("--username sa --password-encryption bad-bad")
+	})
+}
+
+func TestNegBothPasswordEnvVarsSet(t *testing.T) {
+	if os.Getenv("SQLCMD_PASSWORD") == "" {
+		os.Setenv("SQLCMD_PASSWORD", "whatever")
+	}
+
+	if os.Getenv("SQLCMDPASSWORD") == "" {
+		os.Setenv("SQLCMDPASSWORD", "whatever")
+	}
+
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*AddUser]("--username sa --password-encryption none")
+	})
+}
+
+func TestNegNoPasswordEnvVarsSet(t *testing.T) {
+	if os.Getenv("SQLCMD_PASSWORD") != "" ||
+		os.Getenv("SQLCMDPASSWORD") != "" {
+		t.Skip("Skipping test because SQLCMD_PASSWORD or SQLCMDPASSWORD is set")
+	}
+
+	cmdparser.TestSetup(t)
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*AddUser]("--username sa --password-encryption none")
+	})
+}

@@ -27,7 +27,7 @@ func (c *Mssql) DefineCommand(...cmdparser.CommandOptions) {
 				Description: "Install/Create SQL Server in a container",
 				Steps:       []string{"sqlcmd create mssql"}},
 			{
-				Description: "See all release tags of SQL Server, install previous version",
+				Description: "See all release tags for SQL Server, install previous version",
 				Steps: []string{
 					"sqlcmd create mssql get-tags",
 					"sqlcmd create mssql --tag 2019-latest",

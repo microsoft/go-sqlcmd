@@ -5,6 +5,7 @@ package config
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
@@ -20,4 +21,20 @@ func TestDeleteUser(t *testing.T) {
 	cmdparser.TestSetup(t)
 	cmdparser.TestCmd[*AddUser]("--username user1 --password-encryption none")
 	cmdparser.TestCmd[*DeleteUser]("--name user")
+}
+
+func TestNegDeleteUserNoName(t *testing.T) {
+	cmdparser.TestSetup(t)
+
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*DeleteUser]()
+	})
+}
+
+func TestNegDeleteUserInvalidName(t *testing.T) {
+	cmdparser.TestSetup(t)
+
+	assert.Panics(t, func() {
+		cmdparser.TestCmd[*DeleteUser]("--name bad-bad")
+	})
 }

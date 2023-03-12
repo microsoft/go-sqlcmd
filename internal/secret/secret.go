@@ -9,6 +9,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
+	"strings"
 	"unicode/utf16"
 )
 
@@ -84,9 +85,10 @@ func DecodeAsUtf16(cipherText string, passwordEncryption string) []byte {
 	return buf.Bytes()
 }
 
-// Encryption methods as comma seperated string for use in help text
+// EncryptionMethodsForUsage return the encryption methods for the current
+// OS as comma seperated string for use in help text
 func EncryptionMethodsForUsage() string {
-	return stringJoin(encryptionMethods, ", ")
+	return strings.Join(encryptionMethods, ", ")
 }
 
 // IsValidEncryptionMethod returns true if the method is a valid encryption method
@@ -97,27 +99,4 @@ func IsValidEncryptionMethod(method string) bool {
 		}
 	}
 	return false
-}
-
-// stringJoin joins the elements of a string to create a single string. The separator
-// string sep is placed between elements in the resulting string.
-func stringJoin(a []string, sep string) string {
-	switch len(a) {
-	case 0:
-		return ""
-	case 1:
-		return a[0]
-	}
-	n := len(sep) * (len(a) - 1)
-	for _, s := range a {
-		n += len(s)
-	}
-	var b bytes.Buffer
-	b.Grow(n)
-	b.WriteString(a[0])
-	for _, s := range a[1:] {
-		b.WriteString(sep)
-		b.WriteString(s)
-	}
-	return b.String()
 }
