@@ -47,7 +47,7 @@ func (c *Ads) persistCredentialForAds(
 	c.credential = credman.Credential{
 		TargetName: targetName,
 		CredentialBlob: secret.DecodeAsUtf16(
-			user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted),
+			user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
 		UserName: user.BasicAuth.Username,
 		Persist:  credman.PersistSession,
 	}

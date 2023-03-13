@@ -44,9 +44,9 @@ func TestConnect(t *testing.T) {
 					Name:               "basicUser",
 					AuthenticationType: "basic",
 					BasicAuth: &BasicAuthDetails{
-						Username:          "foo",
-						PasswordEncrypted: true,
-						Password:          "bar",
+						Username:           "foo",
+						PasswordEncryption: "dpapi",
+						Password:           "bar",
 					},
 				},
 				console: nil,
