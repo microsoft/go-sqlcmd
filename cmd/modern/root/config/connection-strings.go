@@ -86,7 +86,7 @@ func (c *ConnectionStrings) run() {
 				connectionStringFormats[k] = fmt.Sprintf(
 					v,
 					user.BasicAuth.Username,
-					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted),
+					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
 					endpoint.EndpointDetails.Address,
 					endpoint.EndpointDetails.Port,
 					c.database,
@@ -98,7 +98,7 @@ func (c *ConnectionStrings) run() {
 				)
 
 				connectionStringFormats[k] = fmt.Sprintf(format,
-					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted),
+					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
 					endpoint.EndpointDetails.Address,
 					endpoint.EndpointDetails.Port,
 					user.BasicAuth.Username,
@@ -109,7 +109,7 @@ func (c *ConnectionStrings) run() {
 					endpoint.EndpointDetails.Port,
 					c.database,
 					user.BasicAuth.Username,
-					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted),
+					secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
 					c.stringForBoolean(c.trustServerCertificate(endpoint), k))
 			}
 		}

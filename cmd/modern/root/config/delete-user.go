@@ -4,6 +4,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 )
@@ -43,6 +44,18 @@ func (c *DeleteUser) DefineCommand(...cmdparser.CommandOptions) {
 func (c *DeleteUser) run() {
 	output := c.Output()
 
-	config.DeleteUser(c.name)
-	output.Infof("User '%v' deleted", c.name)
+	if c.name == "" {
+		output.Fatal("User name must be provided.  Provide user name with --name flag")
+	}
+
+	if config.UserNameExists(c.name) {
+		config.DeleteUser(c.name)
+	} else {
+		output.FatalfWithHintExamples([][]string{
+			{"View users", "sqlcmd config get-users"},
+		},
+			fmt.Sprintf("User %q does not exist", c.name))
+	}
+
+	output.Infof("User %q deleted", c.name)
 }

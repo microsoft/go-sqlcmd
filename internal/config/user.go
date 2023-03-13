@@ -11,10 +11,13 @@ import (
 )
 
 // AddUser adds a new user to the configuration.
-// The user's name is first modified to be unique by calling the FindUniqueUserName function.
-// If the user's authentication type is "basic", the user's BasicAuth field must be non-nil and the username must be non-empty.
-// The new user is then added to the list of users in the configuration object and the configuration is saved to the file.
-func AddUser(user User) {
+// The user's name is first modified to be unique by calling the FindUniqueUserName
+// function. If the user's authentication type is "basic", the user's BasicAuth field
+// must be non-nil and the username must be non-empty. The new user is then
+// added to the list of users in the configuration object and the configuration is saved to the file.
+// the function returns the actual username that was added. This may be different
+// from the provided name if the original name was not unique.
+func AddUser(user User) (actualUserName string) {
 	user.Name = FindUniqueUserName(user.Name)
 
 	if user.AuthenticationType == "basic" {
@@ -29,6 +32,8 @@ func AddUser(user User) {
 
 	config.Users = append(config.Users, user)
 	Save()
+
+	return user.Name
 }
 
 // DeleteUser removes a user from the configuration by their name.

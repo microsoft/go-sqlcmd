@@ -42,9 +42,9 @@ func TestNegAddUser(t *testing.T) {
 			Name:               "",
 			AuthenticationType: "basic",
 			BasicAuth: &BasicAuthDetails{
-				Username:          "",
-				PasswordEncrypted: false,
-				Password:          "",
+				Username:           "",
+				PasswordEncryption: "none",
+				Password:           "",
 			},
 		})
 	})
