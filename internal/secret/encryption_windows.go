@@ -7,6 +7,8 @@ import (
 	"github.com/billgraziano/dpapi"
 )
 
+var encryptionMethods = []string{"none", "dpapi"}
+
 func encrypt(plainText string) (cipherText string) {
 	var err error
 

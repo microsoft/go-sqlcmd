@@ -52,7 +52,7 @@ func (m *mssql) Connect(
 			connect.UserName = user.BasicAuth.Username
 			connect.Password = decryptCallback(
 				user.BasicAuth.Password,
-				user.BasicAuth.PasswordEncrypted,
+				user.BasicAuth.PasswordEncryption,
 			)
 		} else {
 			panic("Authentication not supported")

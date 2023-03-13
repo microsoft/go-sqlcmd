@@ -106,7 +106,7 @@ func GetCurrentContextInfo() (server string, username string, password string) {
 		if user.AuthenticationType == "basic" {
 			password = decryptCallback(
 				user.BasicAuth.Password,
-				user.BasicAuth.PasswordEncrypted,
+				user.BasicAuth.PasswordEncryption,
 			)
 		}
 	}

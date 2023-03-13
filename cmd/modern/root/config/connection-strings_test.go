@@ -32,11 +32,12 @@ func TestConnectionStrings(t *testing.T) {
 
 	if os.Getenv("SQLCMDPASSWORD") == "" &&
 		os.Getenv("SQLCMD_PASSWORD") == "" {
-		os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+		os.Setenv("SQLCMDPASSWORD", "it's-a-secret")
+		defer os.Setenv("SQLCMDPASSWORD", "")
 	}
 
 	cmdparser.TestCmd[*AddEndpoint]()
-	cmdparser.TestCmd[*AddUser]("--username user")
+	cmdparser.TestCmd[*AddUser]("--username user --password-encryption none")
 	cmdparser.TestCmd[*AddContext]("--endpoint endpoint --user user")
 	cmdparser.TestCmd[*ConnectionStrings]()
 
@@ -46,7 +47,7 @@ func TestConnectionStrings(t *testing.T) {
 
 	// Add endpoint to Azure SQL (connection strings won't Trust server cert)
 	cmdparser.TestCmd[*AddEndpoint]("--address server.database.windows.net")
-	cmdparser.TestCmd[*AddUser]("--username user")
+	cmdparser.TestCmd[*AddUser]("--username user  --password-encryption none")
 	cmdparser.TestCmd[*AddContext]("--endpoint endpoint2 --user user")
 
 	result := cmdparser.TestCmd[*ConnectionStrings]()
