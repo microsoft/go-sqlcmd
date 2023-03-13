@@ -93,7 +93,7 @@ func DecodeAsUtf16(cipherText string, passwordEncryption string) []byte {
 }
 
 // EncryptionMethodsForUsage return the encryption methods for the current
-// OS as comma seperated string for use in help text
+// OS as comma separated string for use in help text
 func EncryptionMethodsForUsage() string {
 	return strings.Join(encryptionMethods, ", ")
 }
