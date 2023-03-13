@@ -31,7 +31,7 @@ func (c *Mssql) DefineCommand(...cmdparser.CommandOptions) {
 				Steps:       []string{"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak"}},
 			{
 				Description: "Create SQL Server, download and attach AdventureWorks sample database with different database name",
-				Steps:       []string{"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak,MyDatabaseName"}},
+				Steps:       []string{"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak,adventureworks"}},
 			{
 				Description: "Create SQL Server with an empty user database",
 				Steps:       []string{"sqlcmd create mssql --user-database db1"}},
