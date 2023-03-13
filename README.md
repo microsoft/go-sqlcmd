@@ -26,6 +26,12 @@ This repo contains the `sqlcmd` command line tool and go packages for working wi
 | --------------------- | --------------------- |
 | `brew install sqlcmd` | `brew upgrade sqlcmd` |
 
+### Linux
+
+`sqlcmd` is available via [Linuxbrew][], and as a downloadable .rpm/.deb and .tar from the [releases page][].
+
+`sqlcmd` is also available through `apt-get`, `yum` and `zypper` package managers.  Instructions can be found [here](https://learn.microsoft.com/sql/tools/sqlcmd/go-sqlcmd-utility?view=sql-server-ver16#download-and-install-go-sqlcmd).
+
 ## Use sqlcmd to create local SQL Server and Azure SQL Edge instances
 
 Use `sqlcmd` to create SQL Server and Azure SQL Edge instances using a local container runtime (e.g. [Docker][] or [Podman][])
@@ -253,6 +259,7 @@ Use of Microsoft trademarks or logos in modified versions of this project must n
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 
 [Homebrew]: https://formulae.brew.sh/formula/sqlcmd
+[Linuxbrew]: https://docs.brew.sh/Homebrew-on-Linux
 [Winget]: https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/Sqlcmd
 [Docker]: https://www.docker.com/products/docker-desktop/
 [Podman]: https://podman-desktop.io/downloads/
