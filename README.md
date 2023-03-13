@@ -30,7 +30,15 @@ This repo contains the `sqlcmd` command line tool and go packages for working wi
 
 `sqlcmd` is available via [Linuxbrew][], and as a downloadable .rpm/.deb and .tar from the [releases page][].
 
-`sqlcmd` is also available through `apt-get`, `yum` and `zypper` package managers.  Instructions can be found [here](https://learn.microsoft.com/sql/tools/sqlcmd/go-sqlcmd-utility?view=sql-server-ver16#download-and-install-go-sqlcmd).
+On Linux, `sqlcmd` is also available through `apt-get`, `yum` and `zypper` package managers.  Instructions can be found [here](https://learn.microsoft.com/sql/tools/sqlcmd/go-sqlcmd-utility?view=sql-server-ver16#download-and-install-go-sqlcmd).
+
+#### Linuxbrew
+
+The Homebrew package manager may be used on Linux and Windows Subsystem for Linux (WSL) 2. Homebrew was formerly referred to as Linuxbrew when running on Linux or WSL.
+
+| Install:              | Upgrade:              |
+| --------------------- | --------------------- |
+| `brew install sqlcmd` | `brew upgrade sqlcmd` |
 
 ## Use sqlcmd to create local SQL Server and Azure SQL Edge instances
 
@@ -48,6 +56,8 @@ sqlcmd open ads
 
 Use `sqlcmd --help` to view all the available sub-commands.  Use `sqlcmd -?` to view the original ODBC `sqlcmd` flags.
 
+### The ~/.sqlcmd/sqlconfig file
+
 Each time `sqlcmd create` completes, a new context is created (e.g. mssql, mssql2, mssql3 etc.).  A context contains the endpoint and user configuation detail.  To switch between contexts, run `sqlcmd config use <context-name>`, to view name of the current context, run `sqlcmd config current-context`, to list all contexts, run `sqlcmd config get-contexts`.
 
 To view connection strings (ODBC/ADO.NET/JDBC etc.) for the current context and user & endpoint details for all contexts held in the `~/.sqlcmd/sqlconfig` file:
@@ -56,6 +66,8 @@ To view connection strings (ODBC/ADO.NET/JDBC etc.) for the current context and 
 sqlcmd config connection-strings
 sqlcmd config view
 ```
+
+### Versions
 
 To see all version tags to choose from (2017, 2019, 2022 etc.), and install a specific version, run:
 
@@ -74,7 +86,9 @@ sqlcmd start
 sqlcmd delete
 ```
 
-To connect to the current context (SQL Server running in a local container), and use the original ODBC sqlcmd flags (e.g. -q, -Q, -i, -o etc.) that can be listed with `sqlcmd -?` run:
+### Backwards compatibility with ODBC sqlcmd
+
+To connect to the current context, and use the original ODBC sqlcmd flags (e.g. -q, -Q, -i, -o etc.), that can be listed with `sqlcmd -?`, run:
 
 ```
 sqlcmd -q "SELECT @@version"
