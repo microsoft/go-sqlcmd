@@ -40,6 +40,8 @@ sqlcmd query "SELECT DB_NAME()"
 sqlcmd open ads
 ```
 
+Use `sqlcmd --help` to view all the available sub-commands.  Use `sqlcmd -?` to view the original ODBC `sqlcmd` flags.
+
 Each time `sqlcmd create` completes, a new context is created (e.g. mssql, mssql2, mssql3 etc.).  A context contains the endpoint and user configuation detail.  To switch between contexts, run `sqlcmd config use <context-name>`, to view name of the current context, run `sqlcmd config current-context`, to list all contexts, run `sqlcmd config get-contexts`.
 
 To view connection strings (ODBC/ADO.NET/JDBC etc.) for the current context and user & endpoint details for all contexts held in the `~/.sqlcmd/sqlconfig` file:
