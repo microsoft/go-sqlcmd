@@ -46,6 +46,13 @@ func Decode(cipherText string, passwordEncryption string) (plainText string) {
 	if cipherText == "" {
 		panic("Cannot decode/decrypt an empty string")
 	}
+
+	// BUG(stuartpa): Temporary code, remove when rolling over to v1.0.0, needed
+	// as very early users migrated from the old password-encrypted bool value
+	if passwordEncryption == "" {
+		passwordEncryption = "none"
+	}
+
 	if !IsValidEncryptionMethod(passwordEncryption) {
 		panic(fmt.Sprintf(
 			"Invalid encryption method (%q not in %q)",
