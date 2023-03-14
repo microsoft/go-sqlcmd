@@ -403,7 +403,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
-	databaseName := getDbNameIfExists(c.usingDatabaseUrl)
+	databaseName := parseDbName(c.usingDatabaseUrl)
 	databaseUrl := c.usingDatabaseUrl
 	if databaseName != "" {
 		databaseUrl = strings.Split(databaseUrl, ",")[0]
@@ -468,14 +468,17 @@ CHECK_POLICY=OFF`
 	}
 }
 
-func getDbNameIfExists(usingDbUrl string) string {
+func getEscapedDbName(dbName string) string {
+	dbName = strings.ReplaceAll(dbName, "'", "''")
+	dbName = strings.ReplaceAll(dbName, "]", "]]")
+	return dbName
+}
+
+func parseDbName(usingDbUrl string) string {
 	if strings.Contains(usingDbUrl, ",") {
 		dbNameStartIdx := strings.Index(usingDbUrl, ",") + 1
 		if dbNameStartIdx < len(usingDbUrl) {
-			dbName := usingDbUrl[dbNameStartIdx:]
-			dbName = strings.ReplaceAll(dbName, "'", "''")
-			dbName = strings.ReplaceAll(dbName, "]", "]]")
-			return dbName
+			return usingDbUrl[dbNameStartIdx:]
 		}
 	}
 	return ""
@@ -487,7 +490,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	userName string,
 ) {
 	output := c.Cmd.Output()
-	databaseName := getDbNameIfExists(c.usingDatabaseUrl)
+	databaseName := parseDbName(c.usingDatabaseUrl)
 	databaseUrl := c.usingDatabaseUrl
 	if databaseName != "" {
 		databaseUrl = strings.Split(c.usingDatabaseUrl, ",")[0]
@@ -513,7 +516,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 
 	// Restore database from file
 	output.Infof("Restoring database %s", databaseName)
-
+	databaseName = getEscapedDbName(databaseName)
 	text := `SET NOCOUNT ON;
 
 -- Build a SQL Statement to restore any .bak file to the Linux filesystem

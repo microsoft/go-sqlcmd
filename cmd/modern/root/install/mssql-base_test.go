@@ -27,6 +27,8 @@ func TestGetDbNameIfExists(t *testing.T) {
 	}
 
 	for _, testcase := range tests {
-		assert.Equal(t, testcase.expectedOutput, getDbNameIfExists(testcase.input), "Unexpected value from getDbNameIfExists")
+		dbname := parseDbName(testcase.input)
+		dbname = getEscapedDbName(dbname)
+		assert.Equal(t, testcase.expectedOutput, dbname, "Unexpected value from getDbNameForScripts")
 	}
 }
