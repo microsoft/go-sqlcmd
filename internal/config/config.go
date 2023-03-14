@@ -97,7 +97,7 @@ func AddContextWithContainer(
 	containerId string,
 	username string,
 	password string,
-	encryptPassword bool,
+	passwordEncryption string,
 ) {
 	if containerId == "" {
 		panic("containerId must be provided")
@@ -148,9 +148,9 @@ func AddContextWithContainer(
 	user := User{
 		AuthenticationType: "basic",
 		BasicAuth: &BasicAuthDetails{
-			Username:          username,
-			PasswordEncrypted: encryptPassword,
-			Password:          encryptCallback(password, encryptPassword),
+			Username:           username,
+			PasswordEncryption: passwordEncryption,
+			Password:           encryptCallback(password, passwordEncryption),
 		},
 		Name: userName,
 	}
@@ -173,7 +173,7 @@ func RedactedConfig(raw bool) (c Sqlconfig) {
 			if raw {
 				user.BasicAuth.Password = decryptCallback(
 					user.BasicAuth.Password,
-					user.BasicAuth.PasswordEncrypted,
+					user.BasicAuth.PasswordEncryption,
 				)
 			} else {
 				user.BasicAuth.Password = "REDACTED"

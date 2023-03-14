@@ -9,8 +9,8 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 )
 
-var encryptCallback func(plainText string, encrypt bool) (cipherText string)
-var decryptCallback func(cipherText string, decrypt bool) (secret string)
+var encryptCallback func(plainText string, encryptionMethod string) (cipherText string)
+var decryptCallback func(cipherText string, encryptionMethod string) (secret string)
 var isLocalPortAvailableCallback func(port int) (portAvailable bool)
 
 // init sets up the package to work with a set of handlers to be used for the period
@@ -42,8 +42,8 @@ func init() {
 func Initialize(
 	errorHandler func(err error),
 	traceHandler func(format string, a ...any),
-	encryptHandler func(plainText string, encrypt bool) (cipherText string),
-	decryptHandler func(cipherText string, decrypt bool) (secret string),
+	encryptHandler func(plainText string, encryptionMethod string) (cipherText string),
+	decryptHandler func(cipherText string, encryptionMethod string) (secret string),
 	isLocalPortAvailableHandler func(port int) (portAvailable bool),
 ) {
 	errorCallback = errorHandler
