@@ -13,6 +13,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 // SQLCmdArguments defines the command line arguments for sqlcmd
@@ -171,6 +172,35 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().IntVarP(&args.PacketSize, "PacketSize", "a", 0, "Requests a packet of a different size. This option sets the sqlcmd scripting variable SQLCMDPACKETSIZE. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between GO commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.")
 	rootCmd.Flags().IntVarP(&args.LoginTimeout, "LoginTimeOut", "l", -1, "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable SQLCMDLOGINTIMEOUT. The default value is 30. 0 means infinite.")
 	rootCmd.Flags().StringVarP(&args.WorkstationName, "WorkstationName", "H", "", "This option sets the sqlcmd scripting variable SQLCMDWORKSTATION. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.")
+
+	rootCmd.Flags().StringVarP(&args.ApplicationIntent, "ApplicationIntent", "K", "default", "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If -K is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group")
+
+	//Adding a validator for checking the enum flags
+	rootCmd.Flags().SetNormalizeFunc(func(f *pflag.FlagSet, name string) pflag.NormalizedName {
+		switch name {
+		case "ApplicationIntent":
+			value := getFlagValueByName(f, name)
+			//value := f.Lookup(name).Value.String()
+			switch value {
+			case "default", "ReadOnly":
+				return pflag.NormalizedName(name)
+			default:
+				fmt.Fprintf(os.Stderr, "Invalid value for %s flag. Allowed values are default and ReadOnly.\n", name)
+				os.Exit(1)
+			}
+		}
+		return pflag.NormalizedName(name)
+	})
+}
+
+func getFlagValueByName(flagSet *pflag.FlagSet, name string) string {
+	var value string
+	flagSet.VisitAll(func(f *pflag.Flag) {
+		if f.Name == name {
+			value = f.Value.String()
+		}
+	})
+	return value
 }
 
 // setVars initializes scripting variables from command line arguments
