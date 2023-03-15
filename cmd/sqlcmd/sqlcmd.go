@@ -177,6 +177,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.Format, "Format", "F", "horiz", "Specifies the formatting for results.")
 	rootCmd.Flags().IntVarP(&args.ErrorsToStderr, "ErrorsToStderr", "r", -1, "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.")
 
+	//Adding a validator for checking the enum flags
 	rootCmd.Flags().SetNormalizeFunc(func(f *pflag.FlagSet, name string) pflag.NormalizedName {
 		switch name {
 		case "ApplicationIntent":
@@ -223,7 +224,8 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.ExitOnError, "ExitOnError", "b", false, "Specifies that sqlcmd exits and returns a DOS ERRORLEVEL value when an error occurs.")
 	rootCmd.Flags().IntVarP(&args.ErrorLevel, "ErrorLevel", "m", 0, "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.")
 
-	//rootCmd.Flags().IntVarP(&args.Headers, "Headers", "h", 0, "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.")
+	//Need to decide on short of Header , as "h" is already used in help command in Cobra
+	rootCmd.Flags().IntVar(&args.Headers, "Headers", 0, "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.")
 
 	rootCmd.Flags().BoolVarP(&args.UnicodeOutputFile, "UnicodeOutputFile", "u", false, "Specifies that all output files are encoded with little-endian Unicode")
 	rootCmd.Flags().StringVarP(&args.ColumnSeparator, "ColumnSeparator", "s", "", "Specifies the column separator character. Sets the SQLCMDCOLSEP variable.")
@@ -233,9 +235,8 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.Password, "Password", "P", "", "Obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.")
 	rootCmd.Flags().BoolVarP(&args.Help, "Help", "?", false, "Show syntax summary.")
 
-	// ErrorSeverityLevel          uint8             `short:"V" help:"Controls the severity level that is used to set the ERRORLEVEL variable on exit."`
-	// ScreenWidth                 *int              `short:"w" help:"Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable."`
-
+	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "ErrorSeverityLevel", "V", 0, "Controls the severity level that is used to set the ERRORLEVEL variable on exit.")
+	//rootCmd.PersistentFlags().IntVarP(args.ScreenWidth, "ScreenWidth", "w", 0, "Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable.")
 }
 
 func getFlagValueByName(flagSet *pflag.FlagSet, name string) string {
