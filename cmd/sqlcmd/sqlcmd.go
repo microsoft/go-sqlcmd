@@ -157,7 +157,6 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	var inputfiles []string
 	rootCmd.Flags().StringArrayVarP(&args.InputFile, "i", "i", inputfiles, "input file")
 	rootCmd.PersistentFlags().BoolVarP(&args.Version, "Version", "", false, "Print version information and exit")
-	rootCmd.PersistentFlags().BoolVarP(&args.Help, "help", "h", false, "Print this help message and exit")
 	rootCmd.PersistentFlags().StringVarP(&args.BatchTerminator, "Batch Terminator", "c", "GO", "Specifies the batch terminator. The default value is GO")
 	rootCmd.PersistentFlags().StringVarP(&args.UserName, "User Name", "U", "", "Specifies the batch terminator. The default value is GO")
 	rootCmd.PersistentFlags().StringVarP(&args.InitialQuery, "InitialQuery", "q", "", "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.")
@@ -174,13 +173,14 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.WorkstationName, "WorkstationName", "H", "", "This option sets the sqlcmd scripting variable SQLCMDWORKSTATION. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.")
 
 	rootCmd.Flags().StringVarP(&args.ApplicationIntent, "ApplicationIntent", "K", "default", "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If -K is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group")
+	rootCmd.Flags().StringVarP(&args.EncryptConnection, "EncryptConnection", "N", "default", "This switch is used by the client to request an encrypted connection.")
+	rootCmd.Flags().StringVarP(&args.Format, "Format", "F", "horiz", "Specifies the formatting for results.")
+	rootCmd.Flags().IntVarP(&args.ErrorsToStderr, "ErrorsToStderr", "r", -1, "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.")
 
-	//Adding a validator for checking the enum flags
 	rootCmd.Flags().SetNormalizeFunc(func(f *pflag.FlagSet, name string) pflag.NormalizedName {
 		switch name {
 		case "ApplicationIntent":
 			value := getFlagValueByName(f, name)
-			//value := f.Lookup(name).Value.String()
 			switch value {
 			case "default", "ReadOnly":
 				return pflag.NormalizedName(name)
@@ -188,9 +188,54 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 				fmt.Fprintf(os.Stderr, "Invalid value for %s flag. Allowed values are default and ReadOnly.\n", name)
 				os.Exit(1)
 			}
+		case "EncryptConnection":
+			value := getFlagValueByName(f, name)
+			switch value {
+			case "default", "false", "true", "disable":
+				return pflag.NormalizedName(name)
+			default:
+				fmt.Fprintf(os.Stderr, "Invalid value for %s flag. Allowed values are default,false,true,disable.\n", name)
+				os.Exit(1)
+			}
+		case "Format":
+			value := getFlagValueByName(f, name)
+			switch value {
+			case "horiz", "horizontal", "vert", "vertical":
+				return pflag.NormalizedName(name)
+			default:
+				fmt.Fprintf(os.Stderr, "Invalid value for %s flag. Allowed values are horiz,horizontal,vert,vertical.\n", name)
+				os.Exit(1)
+			}
+		case "ErrorsToStderr":
+			value := getFlagValueByName(f, name)
+			switch value {
+			case "-1", "0", "1":
+				return pflag.NormalizedName(name)
+			default:
+				fmt.Fprintf(os.Stderr, "Invalid value for %s flag. Allowed values are -1,0,1.\n", name)
+				os.Exit(1)
+			}
 		}
 		return pflag.NormalizedName(name)
 	})
+
+	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "DriverLoggingLevel", 0, "Level of mssql driver messages to print.")
+	rootCmd.Flags().BoolVarP(&args.ExitOnError, "ExitOnError", "b", false, "Specifies that sqlcmd exits and returns a DOS ERRORLEVEL value when an error occurs.")
+	rootCmd.Flags().IntVarP(&args.ErrorLevel, "ErrorLevel", "m", 0, "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.")
+
+	//rootCmd.Flags().IntVarP(&args.Headers, "Headers", "h", 0, "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.")
+
+	rootCmd.Flags().BoolVarP(&args.UnicodeOutputFile, "UnicodeOutputFile", "u", false, "Specifies that all output files are encoded with little-endian Unicode")
+	rootCmd.Flags().StringVarP(&args.ColumnSeparator, "ColumnSeparator", "s", "", "Specifies the column separator character. Sets the SQLCMDCOLSEP variable.")
+	rootCmd.Flags().BoolVarP(&args.TrimSpaces, "TrimSpaces", "W", false, "Remove trailing spaces from a column.")
+	rootCmd.Flags().BoolVarP(&args.MultiSubnetFailover, "MultiSubnetFailover", "M", false, "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.")
+
+	rootCmd.Flags().StringVarP(&args.Password, "Password", "P", "", "Obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.")
+	rootCmd.Flags().BoolVarP(&args.Help, "Help", "?", false, "Show syntax summary.")
+
+	// ErrorSeverityLevel          uint8             `short:"V" help:"Controls the severity level that is used to set the ERRORLEVEL variable on exit."`
+	// ScreenWidth                 *int              `short:"w" help:"Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable."`
+
 }
 
 func getFlagValueByName(flagSet *pflag.FlagSet, name string) string {
