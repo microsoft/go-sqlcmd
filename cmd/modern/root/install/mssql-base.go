@@ -486,9 +486,11 @@ func getEscapedDbName(dbName string) string {
 func parseDbName(usingDbUrl string) string {
 	u, _ := url.Parse(usingDbUrl)
 	dbToken := path.Base(u.Path)
-	tokens := strings.Split(dbToken, ".bak,")
-	if len(tokens) > 1 {
-		return tokens[1]
+	if dbToken != "." && dbToken != "/" {
+		tokens := strings.Split(dbToken, ".bak,")
+		if len(tokens) > 1 {
+			return tokens[1]
+		}
 	}
 	return ""
 }
