@@ -138,13 +138,8 @@ func Execute(version string) {
 
 			exitCode, err := run(vars, &args)
 			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
+				os.Exit(exitCode)
 			}
-
-			fmt.Printf("after exit exitCode: %d\n", exitCode)
-			//os.Exit(exitCode)
-			fmt.Printf("after execute Function")
 		},
 	}
 	setFlags(rootCmd, &args)
@@ -155,13 +150,13 @@ func Execute(version string) {
 
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	var inputfiles []string
-	rootCmd.Flags().StringArrayVarP(&args.InputFile, "i", "i", inputfiles, "input file")
+	rootCmd.Flags().StringSliceVarP(&args.InputFile, "i", "i", inputfiles, "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with -Q/-q.")
 	rootCmd.PersistentFlags().BoolVarP(&args.Version, "Version", "", false, "Print version information and exit")
 	rootCmd.PersistentFlags().StringVarP(&args.BatchTerminator, "Batch Terminator", "c", "GO", "Specifies the batch terminator. The default value is GO")
-	rootCmd.PersistentFlags().StringVarP(&args.UserName, "User Name", "U", "", "Specifies the batch terminator. The default value is GO")
+	rootCmd.PersistentFlags().StringVarP(&args.UserName, "User Name", "U", "", "The login name or contained database user name.  For contained database users, you must provide the database name option")
 	rootCmd.PersistentFlags().StringVarP(&args.InitialQuery, "InitialQuery", "q", "", "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.")
 	rootCmd.PersistentFlags().StringVarP(&args.Query, "Query", "Q", "", "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.")
-	rootCmd.PersistentFlags().StringVarP(&args.Server, "Server", "S", "", "[tcp:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER.")
+	rootCmd.PersistentFlags().StringVarP(&args.Server, "Server", "S", "", "[tcp|np|lpc:]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER.")
 	rootCmd.PersistentFlags().BoolVarP(&args.DisableCmdAndWarn, "DisableCmdAndWarn", "X", false, "Disables commands that might compromise system security. Sqlcmd issues a warning and continues.")
 	rootCmd.PersistentFlags().StringVar(&args.AuthenticationMethod, "AuthenticationMethod", "", "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword")
 	rootCmd.PersistentFlags().BoolVarP(&args.UseAad, "UseAad", "G", false, "Tells sqlcmd to use Active Directory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.")
@@ -236,6 +231,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.Help, "Help", "?", false, "Show syntax summary.")
 
 	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "ErrorSeverityLevel", "V", 0, "Controls the severity level that is used to set the ERRORLEVEL variable on exit.")
+	// ScreenWidth is *int type , need to find corresponding Flag Type in PFlag
 	//rootCmd.PersistentFlags().IntVarP(args.ScreenWidth, "ScreenWidth", "w", 0, "Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable.")
 }
 
@@ -244,6 +240,7 @@ func getFlagValueByName(flagSet *pflag.FlagSet, name string) string {
 	flagSet.VisitAll(func(f *pflag.Flag) {
 		if f.Name == name {
 			value = f.Value.String()
+			return
 		}
 	})
 	return value
