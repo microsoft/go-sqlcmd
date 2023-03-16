@@ -248,7 +248,6 @@ func getFlagValueByName(flagSet *pflag.FlagSet, name string) string {
 
 // setVars initializes scripting variables from command line arguments
 func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
-	fmt.Printf("in setvar function")
 	varmap := map[string]func(*SQLCmdArguments) string{
 		sqlcmd.SQLCMDDBNAME: func(a *SQLCmdArguments) string { return a.DatabaseName },
 		sqlcmd.SQLCMDLOGINTIMEOUT: func(a *SQLCmdArguments) string {
@@ -348,7 +347,6 @@ func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLC
 }
 
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
-	fmt.Printf("inside run function")
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
@@ -441,7 +439,6 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 			}
 		}
 	}
-	fmt.Printf("run function end")
 	s.SetOutput(nil)
 	s.SetError(nil)
 	return s.Exitcode, err
