@@ -6,6 +6,7 @@ package install
 import (
 	"fmt"
 	"net/url"
+	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -412,7 +413,9 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	databaseName := parseDbName(c.usingDatabaseUrl)
 	databaseUrl := c.usingDatabaseUrl
 	if databaseName != "" {
-		databaseUrl = strings.Split(databaseUrl, ",")[0]
+		argLen := len(c.usingDatabaseUrl)
+		dbNameLen := len(databaseName)
+		databaseUrl = c.usingDatabaseUrl[0:(argLen - dbNameLen - 1)]
 	}
 	if _, file := filepath.Split(databaseUrl); filepath.Ext(file) != ".bak" {
 		output.FatalfWithHints(
@@ -481,11 +484,11 @@ func getEscapedDbName(dbName string) string {
 }
 
 func parseDbName(usingDbUrl string) string {
-	if strings.Contains(usingDbUrl, ",") {
-		dbNameStartIdx := strings.Index(usingDbUrl, ",") + 1
-		if dbNameStartIdx < len(usingDbUrl) {
-			return usingDbUrl[dbNameStartIdx:]
-		}
+	u, _ := url.Parse(usingDbUrl)
+	dbToken := path.Base(u.Path)
+	tokens := strings.Split(dbToken, ".bak,")
+	if len(tokens) > 1 {
+		return tokens[1]
 	}
 	return ""
 }
