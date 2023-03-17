@@ -21,15 +21,15 @@ func (c *View) DefineCommand(...cmdparser.CommandOptions) {
 		Short: "Display merged sqlconfig settings or a specified sqlconfig file",
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Show merged sqlconfig settings",
+				Description: "Show sqlconfig settings, with REDACTED authentication data",
 				Steps:       []string{"sqlcmd config view"},
 			},
 			{
-				Description: "Show merged sqlconfig settings and raw authentication data",
+				Description: "Show sqlconfig settings and raw authentication data",
 				Steps:       []string{"sqlcmd config view --raw"},
 			},
 		},
-		Aliases: []string{"use", "change-context", "set-context"},
+		Aliases: []string{"show"},
 		Run:     c.run,
 	}
 

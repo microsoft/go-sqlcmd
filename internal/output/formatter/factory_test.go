@@ -4,7 +4,7 @@
 package formatter
 
 import (
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
 )
@@ -24,11 +24,9 @@ func TestFormatter(t *testing.T) {
 }
 
 func TestNegFormatterBadFormat(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	s := "serialize this"
-	f := New(Options{SerializationFormat: "badbad"})
-	f.Serialize(s)
+	assert.Panics(t, func() {
+		New(Options{SerializationFormat: "badbad"})
+	})
 }
 
 func TestFormatterEmptyFormat(t *testing.T) {

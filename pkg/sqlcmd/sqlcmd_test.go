@@ -10,10 +10,12 @@ import (
 	"io"
 	"os"
 	"os/user"
+	"runtime"
 	"strings"
 	"testing"
 
 	"github.com/microsoft/go-mssqldb/azuread"
+	"github.com/microsoft/go-mssqldb/msdsn"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -37,8 +39,8 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			"sqlserver://.?database=somedatabase&trustservercertificate=true&workstation+id=mystation",
 		},
 		{
-			&ConnectSettings{WorkstationName: "mystation", Encrypt: "false", Database: "somedatabase"},
-			"sqlserver://.?database=somedatabase&encrypt=false&workstation+id=mystation",
+			&ConnectSettings{WorkstationName: "mystation", Encrypt: "false", Database: "somedatabase", LoginTimeoutSeconds: 50},
+			"sqlserver://.?database=somedatabase&dial+timeout=50&encrypt=false&workstation+id=mystation",
 		},
 		{
 			&ConnectSettings{TrustServerCertificate: true, Password: pwd, ServerName: `someserver\instance`, Database: "somedatabase", UserName: "someuser"},
@@ -46,15 +48,19 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 		},
 		{
 			&ConnectSettings{TrustServerCertificate: true, UseTrustedConnection: true, Password: pwd, ServerName: `tcp:someserver,1045`, UserName: "someuser"},
-			"sqlserver://someserver:1045?trustservercertificate=true",
+			"sqlserver://someserver:1045?protocol=tcp&trustservercertificate=true",
 		},
 		{
 			&ConnectSettings{ServerName: `tcp:someserver,1045`},
-			"sqlserver://someserver:1045",
+			"sqlserver://someserver:1045?protocol=tcp",
 		},
 		{
 			&ConnectSettings{ServerName: "someserver", AuthenticationMethod: azuread.ActiveDirectoryServicePrincipal, UserName: "myapp@mytenant", Password: pwd},
 			fmt.Sprintf("sqlserver://myapp%%40mytenant:%s@someserver", pwd),
+		},
+		{
+			&ConnectSettings{ServerName: `\\someserver\pipe\sql\query`},
+			"sqlserver://someserver?pipe=sql%5Cquery&protocol=np",
 		},
 	}
 
@@ -356,16 +362,20 @@ func TestPromptForPasswordNegative(t *testing.T) {
 	}
 	v := InitializeVariables(true)
 	s := New(console, "", v)
+	c := newConnect(t)
 	s.Connect.UserName = "someuser"
+	s.Connect.ServerName = c.ServerName
 	err := s.ConnectDb(nil, false)
 	assert.True(t, prompted, "Password prompt not shown for SQL auth")
 	assert.Error(t, err, "ConnectDb")
 	prompted = false
-	s.Connect.AuthenticationMethod = azuread.ActiveDirectoryPassword
-	err = s.ConnectDb(nil, false)
-	assert.True(t, prompted, "Password prompt not shown for AD Password auth")
-	assert.Error(t, err, "ConnectDb")
-	prompted = false
+	if canTestAzureAuth() {
+		s.Connect.AuthenticationMethod = azuread.ActiveDirectoryPassword
+		err = s.ConnectDb(nil, false)
+		assert.True(t, prompted, "Password prompt not shown for AD Password auth")
+		assert.Error(t, err, "ConnectDb")
+		prompted = false
+	}
 }
 
 func TestPromptForPasswordPositive(t *testing.T) {
@@ -402,9 +412,7 @@ func TestPromptForPasswordPositive(t *testing.T) {
 	err = s.ConnectDb(c, false)
 	assert.True(t, prompted, "ConnectDb with !nopw should prompt for password")
 	assert.NoError(t, err, "ConnectDb with !nopw and valid password returned from prompt")
-	if s.Connect.Password != password {
-		t.Fatal(t, err, "Password not stored in the connection")
-	}
+	assert.Equal(t, password, s.Connect.Password, "Password not stored in the connection")
 }
 
 func TestVerticalLayoutNoColumns(t *testing.T) {
@@ -618,4 +626,14 @@ func newConnect(t testing.TB) *ConnectSettings {
 		connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
 	}
 	return &connect
+}
+
+func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
+	if runtime.GOOS != "windows" || runtime.GOARCH != "amd64" {
+		t.Skip("Only valid on Windows amd64")
+	}
+	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
+	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[1].Protocol(), "tcp should be second protocol")
+	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[2].Protocol(), "np should be third protocol")
+
 }

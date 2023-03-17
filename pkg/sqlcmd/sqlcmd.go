@@ -21,9 +21,13 @@ import (
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-mssqldb/msdsn"
+	"github.com/microsoft/go-sqlcmd/internal/color"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
+
+// Note: The order of includes above matters for namedpipe and sharedmemory.
+// init() swaps shared memory protocol with tcp so it gets priority when dialing.
 
 var (
 	// ErrExitRequested tells the hosting application to exit immediately
@@ -54,7 +58,7 @@ type Console interface {
 
 // Sqlcmd is the core processor for text lines.
 //
-// It accumulates non-command lines in a buffer and  and sends command lines to the appropriate command runner.
+// It accumulates non-command lines in a buffer and sends command lines to the appropriate command runner.
 // When the batch delimiter is encountered it sends the current batch to the active connection and prints
 // the results to the output writer
 type Sqlcmd struct {
@@ -75,6 +79,7 @@ type Sqlcmd struct {
 	// PrintError allows the host to redirect errors away from the default output. Returns false if the error is not redirected by the host.
 	PrintError        func(msg string, severity uint8) bool
 	UnicodeOutputFile bool
+	colorizer         color.Colorizer
 }
 
 // New creates a new Sqlcmd instance
@@ -85,6 +90,7 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 		vars:             vars,
 		Cmd:              newCommands(),
 		Connect:          &ConnectSettings{},
+		colorizer:        color.New(false),
 	}
 	s.batch = NewBatch(s.scanNext, s.Cmd)
 	mssql.SetContextLogger(s)

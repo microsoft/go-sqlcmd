@@ -7,7 +7,7 @@ This document provides instructions on creating the MSI.
 1. WIX Toolset
 2. Turn on the '.NET Framework 3.5' Windows Feature (required for WIX Toolset)
 3. Install [WIX Toolset build tools](http://wixtoolset.org/releases/) if not already installed
-4. Install [Microsoft Build Tools](https://www.microsoft.com/en-us/download/details.aspx?id=48159)
+4. Install [Microsoft Build Tools](https://www.microsoft.com/download/details.aspx?id=48159)
 
 ## Building
 

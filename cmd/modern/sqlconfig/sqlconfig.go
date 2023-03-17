@@ -31,7 +31,7 @@ type Endpoint struct {
 
 type ContextDetails struct {
 	Endpoint string  `mapstructure:"endpoint"`
-	User     *string `mapstructure:"user,omitempty"`
+	User     *string `mapstructure:"user,omitempty" yaml:"user,omitempty"`
 }
 
 type Context struct {
@@ -40,9 +40,9 @@ type Context struct {
 }
 
 type BasicAuthDetails struct {
-	Username          string `mapstructure:"username"`
-	PasswordEncrypted bool   `mapstructure:"password-encrypted" yaml:"password-encrypted"`
-	Password          string `mapstructure:"password"`
+	Username           string `mapstructure:"username"`
+	PasswordEncryption string `mapstructure:"password-encryption" yaml:"password-encryption"`
+	Password           string `mapstructure:"password"`
 }
 
 type User struct {

@@ -4,6 +4,8 @@
 package main
 
 import (
+	"runtime"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -23,17 +25,29 @@ type Root struct {
 // It sets the cli name, description, and subcommands, and adds global flags.
 // It also provides usage examples for sqlcmd.
 func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
+	// Example usage steps
+	steps := []string{"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak"}
+
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+		steps = append(steps, "sqlcmd open ads")
+	}
+
+	steps = append(steps, `sqlcmd query "SELECT @@version"`)
+	steps = append(steps, "sqlcmd delete")
+
 	examples := []cmdparser.ExampleOptions{
-		{
-			Description: "Install, Query, Uninstall SQL Server",
-			Steps: []string{
-				"sqlcmd install mssql",
-				`sqlcmd query "SELECT @@version"`,
-				"sqlcmd uninstall"}}}
+		{Description: "Install/Create, Query, Uninstall SQL Server",
+			Steps: steps},
+		{Description: "View configuration information and connection strings",
+			Steps: []string{"sqlcmd config view", "sqlcmd config cs"}},
+	}
 
 	commandOptions := cmdparser.CommandOptions{
-		Use:         "sqlcmd",
-		Short:       "sqlcmd: command-line interface for the #SQLFamily",
+		Use: "sqlcmd",
+		Short: `sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools
+
+Feedback:
+  https://github.com/microsoft/go-sqlcmd/issues/new`,
 		SubCommands: c.SubCommands(),
 		Examples:    examples,
 	}
@@ -47,12 +61,21 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 func (c *Root) SubCommands() []cmdparser.Command {
 	dependencies := c.Dependencies()
 
-	return []cmdparser.Command{
+	subCommands := []cmdparser.Command{
 		cmdparser.New[*root.Config](dependencies),
 		cmdparser.New[*root.Install](dependencies),
 		cmdparser.New[*root.Query](dependencies),
+		cmdparser.New[*root.Start](dependencies),
+		cmdparser.New[*root.Stop](dependencies),
 		cmdparser.New[*root.Uninstall](dependencies),
 	}
+
+	// BUG(stuartpa): - Add Linux support
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+		subCommands = append(subCommands, cmdparser.New[*root.Open](dependencies))
+	}
+
+	return subCommands
 }
 
 // Execute runs the application based on the command-line
@@ -70,47 +93,49 @@ func (c *Root) IsValidSubCommand(command string) bool {
 }
 
 func (c *Root) addGlobalFlags() {
+
+	// BUG(stuartpa): - This is a temporary flag until we have migrated
+	// the kong impl to cobra.  sqlcmd -? will show the kong help (all the back-compat
+	// flags), sqlcmd --? will show the kong "did you mean one of" help.
+	var unused bool
 	c.AddFlag(cmdparser.FlagOptions{
-		Bool:      &globalOptions.TrustServerCertificate,
-		Name:      "trust-server-certificate",
-		Shorthand: "C",
-		Usage:     "Whether to trust the certificate presented by the endpoint for encryption",
+		Bool:      &unused,
+		Name:      "?",
+		Shorthand: "?",
+		Usage:     "help for backwards compatibility flags (-S, -U, -E etc.)",
 	})
 
+	// BUG(stuartpa): - This is a temporary flag until we have migrated
+	// the kong impl to cobra.  The implementation of --version is coming from
+	// kong, but we need to add it to the list of flags so that it shows up in the --help
 	c.AddFlag(cmdparser.FlagOptions{
-		String:    &globalOptions.DatabaseName,
-		Name:      "database-name",
-		Shorthand: "d",
-		Usage:     "The initial database for the connection",
-	})
-
-	c.AddFlag(cmdparser.FlagOptions{
-		Bool:      &globalOptions.UseTrustedConnection,
-		Name:      "use-trusted-connection",
-		Shorthand: "E",
-		Usage:     "Whether to use integrated security",
+		Bool:  &unused,
+		Name:  "version",
+		Usage: "print version of sqlcmd",
 	})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.configFilename,
 		DefaultString: config.DefaultFileName(),
 		Name:          "sqlconfig",
-		Usage:         "Configuration file",
+		Usage:         "configuration file",
 	})
 
+	/* BUG(stuartpa): - At the moment this is a top level flag, but it doesn't
+	work with all sub-commands (e.g. query), so removing for now.
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.outputType,
-		DefaultString: "yaml",
+		DefaultString: "json",
 		Name:          "output",
 		Shorthand:     "o",
 		Usage:         "output type (yaml, json or xml)",
 	})
+	*/
 
 	c.AddFlag(cmdparser.FlagOptions{
 		Int:        (*int)(&c.loggingLevel),
 		DefaultInt: 2,
 		Name:       "verbosity",
-		Shorthand:  "v",
-		Usage:      "Log level, error=0, warn=1, info=2, debug=3, trace=4",
+		Usage:      "log level, error=0, warn=1, info=2, debug=3, trace=4",
 	})
 }

@@ -4,6 +4,7 @@
   <?define ProductVersion="$(env.CLI_VERSION)" ?>
 
   <?define ProductName = "Sqlcmd Tools" ?>
+  <?define AppName = "SqlCmd" ?>
   <?define ProductDescription = "Command-line tools for Microsoft SQL Server." ?>
   <?define ProductAuthor = "Microsoft Corporation" ?>
   <?define ProductResources = ".\resources\" ?>
@@ -26,11 +27,9 @@
     <Icon Id="SqlCmdIcon" SourceFile="$(var.ProductResources)sqlcmd.ico" />
 
     <Property Id="ARPPRODUCTICON" Value="SqlCmdIcon" />
-    <Property Id="ARPHELPLINK" Value="https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility" />
+    <Property Id="ARPHELPLINK" Value="https://docs.microsoft.com/sql/tools/sqlcmd-utility" />
     <Property Id="ARPURLINFOABOUT" Value="https://github.com/microsoft/go-sqlcmd" />
     <Property Id="ARPURLUPDATEINFO" Value="https://github.com/microsoft/go-sqlcmd" />
-    <Property Id="ApplicationFolderName" Value="SqlCmd\Tools" />
-    <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
 
     <!-- User Interface -->
     <WixVariable Id="WixUILicenseRtf" Value="$(var.ProductResources)CLI_LICENSE.rtf"/>
@@ -42,33 +41,48 @@
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder">
-        <Directory Id="SQLCMDFOLDER" Name="SqlCmd">
-          <Directory Id="SQLCMDTOOLSFOLDER" Name="Tools">
-          </Directory>
+        <Directory Id="SqlcmdDirectory" Name="$(var.AppName)">
+          <Component Id="sqlcmd.exe" Guid="2988854C-D02C-4D48-866C-8EAEBA6BC54B">
+            <CreateFolder />
+            <RemoveFolder Id="RemoveFolder" On="uninstall" />
+            <File
+              Id="sqlcmd.exe"
+              Name="sqlcmd.exe"
+              Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindows-$(env.ARCHITECTURE)\sqlcmd.exe"
+              Checksum="yes"/>
+            <Environment
+              Id="PATH"
+              Name="PATH"
+              Value="[SqlcmdDirectory]"
+              Permanent="yes"
+              Part="first"
+              Action="set"
+              System="yes" />
+          </Component>
+          <Component Id="notice" Guid="9BB06B71-91BF-4431-B88D-C7E4BCA1F435">
+            <File
+              Id="NOTICE.md"
+              Name="NOTICE.md"
+              Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindows-$(env.ARCHITECTURE)\NOTICE.md"
+              Checksum="no"/>
+          </Component>
+         <Component Id="license" Guid="F9E6D3F8-8B09-49C6-8309-74F88DD765B0">
+            <File
+              Id="LICENSE"
+              Name="LICENSE"
+              Source="$(env.PIPELINE_WORKSPACE)\s\LICENSE"
+              Checksum="no"/>
+          </Component>
         </Directory>
       </Directory>
     </Directory>
-
-    <DirectoryRef Id="SQLCMDTOOLSFOLDER">
-      <Component Id="sqlcmd.exe" Guid="2988854C-D02C-4D48-866C-8EAEBA6BC54B">
-        <File Id="sqlcmd.exe" Source="$(env.PIPELINE_WORKSPACE)\SqlcmdWindowsAmd64\sqlcmd.exe" KeyPath="yes" Checksum="yes"/>
-        <Environment 
-          Id="PATH" 
-          Name="PATH" 
-          Value="[SQLCMDTOOLSFOLDER]" 
-          Permanent="yes" 
-          Part="last" 
-          Action="set" 
-          System="yes" />
-      </Component>
-    </DirectoryRef>
-    
     <Feature Id="ProductFeature"
              Title="SqlCmd Tools"
              Level="1"
              AllowAdvertise="no">
       <ComponentRef Id="sqlcmd.exe" />
+      <ComponentRef Id="notice" />
+      <ComponentRef Id="license" />
     </Feature>
-
   </Product>
 </Wix>

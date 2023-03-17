@@ -26,7 +26,7 @@ func newKong(t *testing.T, cli interface{}, options ...kong.Option) *kong.Kong {
 		kong.NoDefaultHelp(),
 		kong.Exit(func(int) {
 			t.Helper()
-			t.Fatalf("unexpected exit()")
+			assert.Fail(t, "unexpected exit()")
 		}),
 	}, options...)
 	parser, err := kong.New(cli, options...)
@@ -190,7 +190,6 @@ func TestUnicodeOutput(t *testing.T) {
 }
 
 func TestUnicodeInput(t *testing.T) {
-	t.Skip()
 	testfiles := []string{
 		filepath.Join(`testdata`, `selectutf8.txt`),
 		filepath.Join(`testdata`, `selectutf8_bom.txt`),
@@ -299,7 +298,6 @@ func TestExitOnError(t *testing.T) {
 }
 
 func TestAzureAuth(t *testing.T) {
-
 	if !canTestAzureAuth() {
 		t.Skip("Server name is not an Azure DB name")
 	}

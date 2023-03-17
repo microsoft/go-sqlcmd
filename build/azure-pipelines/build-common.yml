@@ -4,13 +4,14 @@ parameters:
   default:
 - name: Arch
   type: string
-  default: 
 - name: ArtifactName
   type: string
 - name: VersionTag
   type: string
   default:  $(Build.BuildNumber)
 - name: BinaryName
+  type: string
+- name: BinaryExt
   type: string
 
 steps:
@@ -50,7 +51,19 @@ steps:
   displayName: 'Go: build sqlcmd'
   inputs:
     command: 'build'
-    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }} -ldflags="-X main.version=${{ parameters.VersionTag }}"'
+    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }}${{ parameters.BinaryExt }} -ldflags="-s -w -X main.version=${{ parameters.VersionTag }}"'
+    workingDirectory: '$(Build.SourcesDirectory)/cmd/modern'
+  env:
+      GOOS: ${{ parameters.OS }}
+      GOARCH: ${{ parameters.Arch }}
+      GOBIN: $(Build.SourcesDirectory)
+      CGO_ENABLED: 0 # Enables Docker image based off 'scratch'
+
+- task: Go@0
+  displayName: 'Go: build sqlcmd with debug symbols'
+  inputs:
+    command: 'build'
+    arguments: '-o $(Build.BinariesDirectory)/${{ parameters.BinaryName }}_debug${{ parameters.BinaryExt }} -ldflags="-X main.version=${{ parameters.VersionTag }}"'
     workingDirectory: '$(Build.SourcesDirectory)/cmd/modern'
   env:
       GOOS: ${{ parameters.OS }}

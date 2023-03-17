@@ -4,7 +4,7 @@
 package output
 
 import (
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -18,17 +18,17 @@ func TestFactory(t *testing.T) {
 }
 
 func TestNegtactory(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	New(Options{unitTesting: true,
-		HintHandler:  func(hints []string) {},
-		ErrorHandler: nil})
+	assert.Panics(t, func() {
+		New(Options{unitTesting: true,
+			HintHandler:  func(hints []string) {},
+			ErrorHandler: nil})
+	})
 }
 
 func TestNegFactory2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	New(Options{unitTesting: true,
-		HintHandler:  nil,
-		ErrorHandler: func(err error) {}})
+	assert.Panics(t, func() {
+		New(Options{unitTesting: true,
+			HintHandler:  nil,
+			ErrorHandler: func(err error) {}})
+	})
 }

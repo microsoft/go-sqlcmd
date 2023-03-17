@@ -27,3 +27,8 @@ testresults.xml
 # IDE files
 .idea
 
+darwin-amd64/sqlcmd
+darwin-arm64/sqlcmd
+linux-amd64/sqlcmd
+linux-arm64/sqlcmd
+linux-s390x/sqlcmd

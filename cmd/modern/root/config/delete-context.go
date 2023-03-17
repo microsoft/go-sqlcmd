@@ -22,10 +22,16 @@ func (c *DeleteContext) DefineCommand(...cmdparser.CommandOptions) {
 		Short: "Delete a context",
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Delete a context",
+				Description: "Delete a context (including its endpoint and user)",
 				Steps: []string{
 					"sqlcmd config delete-context --name my-context --cascade",
 					"sqlcmd config delete-context my-context --cascade"},
+			},
+			{
+				Description: "Delete a context (excluding its endpoint and user)",
+				Steps: []string{
+					"sqlcmd config delete-context --name my-context --cascade=false",
+					"sqlcmd config delete-context my-context --cascade=false"},
 			},
 		},
 		Run: c.run,
@@ -64,7 +70,7 @@ func (c *DeleteContext) run() {
 
 		if c.cascade {
 			config.DeleteEndpoint(context.Endpoint)
-			if *context.ContextDetails.User != "" {
+			if config.UserExists(context) {
 				config.DeleteUser(*context.ContextDetails.User)
 			}
 		}

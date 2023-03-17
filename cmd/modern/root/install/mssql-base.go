@@ -9,11 +9,16 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
-	"github.com/microsoft/go-sqlcmd/internal/mssql"
+	"github.com/microsoft/go-sqlcmd/internal/http"
+	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
-	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
+	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"github.com/spf13/viper"
+	"net/url"
+	"path/filepath"
+	"runtime"
+	"strings"
 )
 
 // MssqlBase provide base support for installing SQL Server and all of its
@@ -33,18 +38,25 @@ type MssqlBase struct {
 	passwordMinNumber      int
 	passwordMinUpper       int
 	passwordSpecialCharSet string
-	encryptPassword        bool
+	passwordEncryption     string
 
 	useCached              bool
 	errorLogEntryToWaitFor string
 	defaultContextName     string
 	collation              string
 
+	name         string
+	hostname     string
+	architecture string
+	os           string
+
 	port int
 
-	sqlcmdPkg *sqlcmd.Sqlcmd
+	usingDatabaseUrl string
 
-	unittesting bool
+	unitTesting bool
+
+	sql sql.Sql
 }
 
 func (c *MssqlBase) AddFlags(
@@ -130,7 +142,13 @@ func (c *MssqlBase) AddFlags(
 		Usage:         "Special character set to include in password",
 	})
 
-	c.encryptPasswordFlag(addFlag)
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.passwordEncryption,
+		DefaultString: "none",
+		Name:          "password-encryption",
+		Usage: fmt.Sprintf("Password encryption method (%s) in sqlconfig file",
+			secret.EncryptionMethodsForUsage()),
+	})
 
 	addFlag(cmdparser.FlagOptions{
 		Bool:  &c.useCached,
@@ -146,7 +164,35 @@ func (c *MssqlBase) AddFlags(
 		String:        &c.errorLogEntryToWaitFor,
 		DefaultString: "The default language",
 		Name:          "errorlog-wait-line",
-		Usage:         "Line in errorlog to wait for before connecting to disable 'sa' account",
+		Usage:         "Line in errorlog to wait for before connecting",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.name,
+		DefaultString: "",
+		Name:          "name",
+		Usage:         "Specify a custom name for the container rather than a randomly generated one",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.hostname,
+		DefaultString: "",
+		Name:          "hostname",
+		Usage:         "Explicitly set the container hostname, it defaults to the container ID",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.architecture,
+		DefaultString: "amd64",
+		Name:          "architecture",
+		Usage:         "Specifies the image CPU architecture",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.os,
+		DefaultString: "linux",
+		Name:          "os",
+		Usage:         "Specifies the image operating system",
 	})
 
 	addFlag(cmdparser.FlagOptions{
@@ -159,15 +205,24 @@ func (c *MssqlBase) AddFlags(
 	addFlag(cmdparser.FlagOptions{
 		Int:        &c.port,
 		DefaultInt: 0,
-		Name:       "port-override",
-		Usage:      "Port override (next available port from 1433 upwards used by default)",
+		Name:       "port",
+		Usage:      "Port (next available port from 1433 upwards used by default)",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.usingDatabaseUrl,
+		DefaultString: "",
+		Name:          "using",
+		Usage:         "Download (into container) and attach database (.bak) from URL",
 	})
 }
 
 // Run checks that the end-user license agreement has been accepted,
 // constructs the container image name from the provided registry, repository, and tag,
 // and sets the context name to a default value if it is not provided.
-// Finally, it installs the image as a container and names it using the context name.
+// Then, it creates the image as a container and names it using the context name.
+// Once the container is running, if a database backup file is provided, it is downloaded,
+// restored attached.
 // If the EULA has not been accepted, it prints an error message with suggestions for how to proceed,
 // and exits the program.
 func (c *MssqlBase) Run() {
@@ -178,7 +233,7 @@ func (c *MssqlBase) Run() {
 	if !c.acceptEula && viper.GetString("ACCEPT_EULA") == "" {
 		output.FatalWithHints(
 			[]string{"Either, add the --accept-eula flag to the command-line",
-				"Or, set the environment variable SQLCMD_ACCEPT_EULA=YES "},
+				fmt.Sprintf("Or, set the environment variable i.e. %s SQLCMD_ACCEPT_EULA=YES ", pal.CreateEnvVarKeyword())},
 			"EULA not accepted")
 	}
 
@@ -192,16 +247,16 @@ func (c *MssqlBase) Run() {
 		c.contextName = c.defaultContextName
 	}
 
-	c.installContainerImage(imageName, c.contextName)
+	c.createContainer(imageName, c.contextName)
 }
 
-// installContainerImage installs an image for a SQL Server container. The image
+// createContainer installs an image for a SQL Server container. The image
 // is specified by imageName, and the container will be given the name contextName.
 // If the useCached flag is set, the function will skip downloading the image
 // from the internet. The function outputs progress messages to the command-line
 // as it runs. If any errors are encountered, they will be printed to the
 // command-line and the program will exit.
-func (c *MssqlBase) installContainerImage(imageName string, contextName string) {
+func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	output := c.Cmd.Output()
 	saPassword := c.generatePassword()
 
@@ -210,37 +265,46 @@ func (c *MssqlBase) installContainerImage(imageName string, contextName string) 
 		fmt.Sprintf("MSSQL_SA_PASSWORD=%s", saPassword),
 		fmt.Sprintf("MSSQL_COLLATION=%s", c.collation),
 	}
+
 	if c.port == 0 {
 		c.port = config.FindFreePortForTds()
 	}
-	controller := container.NewController()
 
-	if !c.useCached {
-		output.Infof("Downloading %v", imageName)
-		err := controller.EnsureImage(imageName)
-		if err != nil || c.unittesting {
-			output.FatalfErrorWithHints(
-				err,
-				[]string{
-					"Is a container runtime installed on this machine (e.g. Podman or Docker)?" + sqlcmd.SqlcmdEol +
-						"\tIf not, download desktop engine from:" + sqlcmd.SqlcmdEol +
-						"\t\thttps://podman-desktop.io/" + sqlcmd.SqlcmdEol +
-						"\t\tor" + sqlcmd.SqlcmdEol +
-						"\t\thttps://docs.docker.com/get-docker/",
-					"Is a container runtime running. Try `podman ps` or `docker ps` (list containers), does it return without error?",
-					fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with: `podman|docker pull %s`", imageName)},
-				"Unable to download image %s", imageName)
+	// Do an early exit if url doesn't exist
+	if c.usingDatabaseUrl != "" {
+		c.validateUsingUrlExists()
+	}
+
+	if c.defaultDatabase != "" {
+		if !c.validateDbName(c.defaultDatabase) {
+			output.Fatalf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase)
 		}
 	}
 
+	controller := container.NewController()
+
+	if !c.useCached {
+		c.downloadImage(imageName, output, controller)
+	}
+
 	output.Infof("Starting %v", imageName)
-	containerId := controller.ContainerRun(imageName, env, c.port, []string{}, false)
+	containerId := controller.ContainerRun(
+		imageName,
+		env,
+		c.port,
+		c.name,
+		c.hostname,
+		c.architecture,
+		c.os,
+		[]string{},
+		false,
+	)
 	previousContextName := config.CurrentContextName()
 
 	userName := pal.UserName()
 	password := c.generatePassword()
 
-	// Save the config now, so user can uninstall, even if mssql in the container
+	// Save the config now, so user can uninstall/delete, even if mssql in the container
 	// fails to start
 	config.AddContextWithContainer(
 		contextName,
@@ -249,57 +313,79 @@ func (c *MssqlBase) installContainerImage(imageName string, contextName string) 
 		containerId,
 		userName,
 		password,
-		c.encryptPassword,
+		c.passwordEncryption,
 	)
 
 	output.Infof(
-		"Created context %q in %q, configuring user account...",
+		"Created context %q in \"%s\", configuring user account...",
 		config.CurrentContextName(),
-		config.GetConfigFileUsed(),
-	)
+		config.GetConfigFileUsed())
 
 	controller.ContainerWaitForLogEntry(
 		containerId, c.errorLogEntryToWaitFor)
 
 	output.Infof(
-		"Disabled %q account (also rotated %q password). Creating user %q",
+		"Disabled %q account (and rotated %q password). Creating user %q",
 		"sa",
 		"sa",
 		userName)
 
 	endpoint, _ := config.CurrentContext()
-	c.sqlcmdPkg = mssql.Connect(
-		endpoint,
-		&sqlconfig.User{
-			AuthenticationType: "basic",
-			BasicAuth: &sqlconfig.BasicAuthDetails{
-				Username:          "sa",
-				PasswordEncrypted: c.encryptPassword,
-				Password:          secret.Encode(saPassword, c.encryptPassword),
-			},
-			Name: "sa",
-		},
-		nil,
-	)
+
+	// Connect to the instance as `sa` so we can create a new user
+	//
+	// For Unit Testing we use the Docker Hello World container, which
+	// starts much faster than the SQL Server container!
+	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
+		c.sql = sql.New(sql.SqlOptions{UnitTesting: true})
+	} else {
+		c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
+	}
+
+	saUser := &sqlconfig.User{
+		AuthenticationType: "basic",
+		BasicAuth: &sqlconfig.BasicAuthDetails{
+			Username:           "sa",
+			PasswordEncryption: c.passwordEncryption,
+			Password:           secret.Encode(saPassword, c.passwordEncryption)},
+		Name: "sa"}
+
+	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
+
 	c.createNonSaUser(userName, password)
 
-	hints := [][]string{
-		{"To run a query", "sqlcmd query \"SELECT @@version\""},
-		{"To start interactive session", "sqlcmd query"}}
+	// Download and restore DB if asked
+	if c.usingDatabaseUrl != "" {
+		c.downloadAndRestoreDb(
+			controller,
+			containerId,
+			userName,
+		)
+	}
+
+	hints := [][]string{}
+
+	// TODO: sqlcmd open ads only support on Windows right now, add Mac support
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+		hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
+	}
+
+	hints = append(hints, []string{"Run a query", "sqlcmd query \"SELECT @@version\""})
+	hints = append(hints, []string{"Start interactive session", "sqlcmd query"})
 
 	if previousContextName != "" {
 		hints = append(
 			hints,
-			[]string{"To change context", fmt.Sprintf(
+			[]string{"Change current context", fmt.Sprintf(
 				"sqlcmd config use-context %v",
 				previousContextName,
 			)},
 		)
 	}
 
-	hints = append(hints, []string{"To view config", "sqlcmd config view"})
-	hints = append(hints, []string{"To see connection strings", "sqlcmd config connection-strings"})
-	hints = append(hints, []string{"To remove", "sqlcmd uninstall"})
+	hints = append(hints, []string{"View sqlcmd configuration", "sqlcmd config view"})
+	hints = append(hints, []string{"See connection strings", "sqlcmd config connection-strings"})
+	hints = append(hints, []string{"Remove", "sqlcmd delete"})
 
 	output.InfofWithHintExamples(hints,
 		"Now ready for client connections on port %d",
@@ -307,21 +393,53 @@ func (c *MssqlBase) installContainerImage(imageName string, contextName string) 
 	)
 }
 
+func (c *MssqlBase) validateUsingUrlExists() {
+	output := c.Cmd.Output()
+	u, err := url.Parse(c.usingDatabaseUrl)
+	c.CheckErr(err)
+
+	if u.Scheme != "http" && u.Scheme != "https" {
+		output.FatalfWithHints(
+			[]string{
+				"--using URL must be http or https",
+			},
+			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
+	}
+
+	// At the moment we only support attaching .bak files, but we should
+	// support .bacpacs and .mdfs in the future
+	if _, file := filepath.Split(c.usingDatabaseUrl); filepath.Ext(file) != ".bak" {
+		output.FatalfWithHints(
+			[]string{
+				"--using file URL must be a .bak file",
+			},
+			"Invalid --using file type")
+	}
+
+	// Verify the url actually exists, and early exit if it doesn't
+	urlExists(c.usingDatabaseUrl, output)
+}
+
 func (c *MssqlBase) query(commandText string) {
-	mssql.Query(c.sqlcmdPkg, commandText)
+	c.sql.Query(commandText)
 }
 
 // createNonSaUser creates a user (non-sa) and assigns the sysadmin role
 // to the user. It also creates a default database with the provided name
 // and assigns the default database to the user. Finally, it disables
 // the sa account and rotates the sa password for security reasons.
-func (c *MssqlBase) createNonSaUser(userName string, password string) {
+func (c *MssqlBase) createNonSaUser(
+	userName string,
+	password string,
+) {
 	output := c.Cmd.Output()
 
 	defaultDatabase := "master"
 
 	if c.defaultDatabase != "" {
 		defaultDatabase = c.defaultDatabase
+
+		// Create the default database, if it isn't a downloaded database
 		output.Infof("Creating default database [%s]", defaultDatabase)
 		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
@@ -350,6 +468,114 @@ CHECK_POLICY=OFF`
 	}
 }
 
+func (c *MssqlBase) downloadAndRestoreDb(
+	controller *container.Controller,
+	containerId string,
+	userName string,
+) {
+	output := c.Cmd.Output()
+
+	u, err := url.Parse(c.usingDatabaseUrl)
+	c.CheckErr(err)
+	_, file := filepath.Split(c.usingDatabaseUrl)
+	fileNameWithNoExt := strings.TrimSuffix(file, filepath.Ext(file))
+
+	// Download file from URL into container
+	output.Infof("Downloading %s from %s", file, u.Hostname())
+
+	temporaryFolder := "/var/opt/mssql/backup"
+
+	controller.DownloadFile(
+		containerId,
+		c.usingDatabaseUrl,
+		temporaryFolder,
+	)
+
+	// Restore database from file
+	output.Infof("Restoring database %s", fileNameWithNoExt)
+
+	text := `SET NOCOUNT ON;
+
+-- Build a SQL Statement to restore any .bak file to the Linux filesystem
+DECLARE @sql NVARCHAR(max)
+
+-- This table definition works since SQL Server 2017, therefore 
+-- works for all SQL Server containers (which started in 2017)
+DECLARE @fileListTable TABLE (
+    [LogicalName]           NVARCHAR(128),
+    [PhysicalName]          NVARCHAR(260),
+    [Type]                  CHAR(1),
+    [FileGroupName]         NVARCHAR(128),
+    [Size]                  NUMERIC(20,0),
+    [MaxSize]               NUMERIC(20,0),
+    [FileID]                BIGINT,
+    [CreateLSN]             NUMERIC(25,0),
+    [DropLSN]               NUMERIC(25,0),
+    [UniqueID]              UNIQUEIDENTIFIER,
+    [ReadOnlyLSN]           NUMERIC(25,0),
+    [ReadWriteLSN]          NUMERIC(25,0),
+    [BackupSizeInBytes]     BIGINT,
+    [SourceBlockSize]       INT,
+    [FileGroupID]           INT,
+    [LogGroupGUID]          UNIQUEIDENTIFIER,
+    [DifferentialBaseLSN]   NUMERIC(25,0),
+    [DifferentialBaseGUID]  UNIQUEIDENTIFIER,
+    [IsReadOnly]            BIT,
+    [IsPresent]             BIT,
+    [TDEThumbprint]         VARBINARY(32),
+    [SnapshotURL]           NVARCHAR(360)
+)
+
+INSERT INTO @fileListTable
+EXEC('RESTORE FILELISTONLY FROM DISK = ''%s/%s''')
+SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''%s/%s'' WITH '
+SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
+FROM @fileListTable
+WHERE IsPresent = 1
+SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
+EXEC(@sql)`
+
+	c.query(fmt.Sprintf(text, temporaryFolder, file, fileNameWithNoExt, temporaryFolder, file))
+
+	alterDefaultDb := fmt.Sprintf(
+		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
+		userName,
+		fileNameWithNoExt)
+	c.query(alterDefaultDb)
+}
+
+func (c *MssqlBase) downloadImage(
+	imageName string,
+	output *output.Output,
+	controller *container.Controller,
+) {
+	output.Infof("Downloading %v", imageName)
+	err := controller.EnsureImage(imageName)
+	if err != nil || c.unitTesting {
+		output.FatalfErrorWithHints(
+			err,
+			[]string{
+				"Is a container runtime installed on this machine (e.g. Podman or Docker)?" + pal.LineBreak() +
+					"\tIf not, download desktop engine from:" + pal.LineBreak() +
+					"\t\thttps://podman-desktop.io/" + pal.LineBreak() +
+					"\t\tor" + pal.LineBreak() +
+					"\t\thttps://docs.docker.com/get-docker/",
+				"Is a container runtime running?  (Try `podman ps` or `docker ps` (list containers), does it return without error?)",
+				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
+					"\t`podman|docker pull %s`", imageName)},
+			"Unable to download image %s", imageName)
+	}
+}
+
+// Verify the file exists at the URL
+func urlExists(url string, output *output.Output) {
+	if !http.UrlExists(url) {
+		output.FatalfWithHints(
+			[]string{"File does not exist at URL"},
+			"Unable to download file")
+	}
+}
+
 func (c *MssqlBase) generatePassword() (password string) {
 	password = secret.Generate(
 		c.passwordLength,
@@ -359,4 +585,19 @@ func (c *MssqlBase) generatePassword() (password string) {
 		c.passwordSpecialCharSet)
 
 	return
+}
+
+// validateDbName checks if the database name is something that is likely
+// to work seamlessly through all tools, connection strings etc.
+//
+// TODO: Right now this is any ASCII char except for quotes,
+// but this needs to be opened up for Kanji characters etc. with a full test suite
+// to ensure the database name is valid in all the places it is passed to.
+func (c *MssqlBase) validateDbName(s string) bool {
+	for _, b := range []byte(s) {
+		if b > 127 {
+			return false
+		}
+	}
+	return !strings.ContainsAny(s, "'\"`'")
 }

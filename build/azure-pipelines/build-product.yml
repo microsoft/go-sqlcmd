@@ -20,40 +20,60 @@ stages:
         matrix:
           linux:
             imageName: 'ubuntu-latest'
-            artifact: LinuxAmd64
+            artifact: Linux-amd64
             os:
             arch:
             binaryName: 'sqlcmd'
+            binaryExt: ''
           mac:
             imageName: 'macOS-latest'
-            artifact: DarwinAmd64
+            artifact: Darwin-x64
             os:
             arch:
             binaryName: 'sqlcmd'
-          windows:
-            imageName: 'windows-latest'
-            artifact: WindowsAmd64
-            os:
-            arch:
-            binaryName: 'sqlcmd.exe'
-          linuxArm:
-            imageName: 'ubuntu-latest'
-            artifact: LinuxArm64
+            binaryExt: ''
+          macArm:
+            imageName: 'macOS-latest'
+            artifact: Darwin-arm64
             os:
             arch: arm64
             binaryName: 'sqlcmd'
-          windowsArm:
+            binaryExt: ''
+          windows:
             imageName: 'windows-latest'
-            artifact: WindowsArm
+            artifact: Windows-x64
             os:
-            arch: arm
-            binaryName: 'sqlcmd.exe'
+            arch:
+            binaryName: 'sqlcmd'
+            binaryExt: '.exe'
+          linuxArm:
+            imageName: 'ubuntu-latest'
+            artifact: Linux-arm64
+            os:
+            arch: arm64
+            binaryName: 'sqlcmd'
+            binaryExt: ''
+          windowsArm:
+           imageName: 'windows-latest'
+           artifact: Windows-arm
+           os:
+           arch: arm
+           binaryName: 'sqlcmd'
+           binaryExt: '.exe'
+          windowsArm64:
+            imageName: 'windows-latest'
+            artifact: Windows-arm64
+            os:
+            arch: arm64
+            binaryName: 'sqlcmd'
+            binaryExt: '.exe'
           linuxs390x:
             imageName: 'ubuntu-latest'
-            artifact: LinuxS390x
+            artifact: Linux-s390x
             os:
             arch: s390x
             binaryName: 'sqlcmd'
+            binaryExt: ''
       pool:
         vmImage: $(imageName)
       steps:
@@ -67,7 +87,7 @@ stages:
             ArtifactName: $(artifact)
             VersionTag: $(getVersion.VERSION_TAG)
             BinaryName: $(binaryName)
-
+            BinaryExt: $(binaryExt)
   - stage: CreatePackages
     displayName: Create packages to publish
     jobs:
@@ -85,7 +105,7 @@ stages:
         inputs:
           ConnectedServiceName: 'Code Signing'
           FolderPath: '$(Pipeline.Workspace)'
-          Pattern: 'sqlcmd.exe'
+          Pattern: 'sqlcmd*.exe'
           signConfigType: 'inlineSignParams'
           inlineOperation: |
             [
@@ -134,9 +154,9 @@ stages:
           MaxConcurrency: '50'
           MaxRetryAttempts: '5'
       - task: ArchiveFiles@2
-        displayName: Zip Windows amd64 binary
+        displayName: Zip Windows x64 binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsAmd64\Sqlcmd.exe'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindows-x64'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-x64.zip'
@@ -144,33 +164,50 @@ stages:
       - task: ArchiveFiles@2
         displayName: Zip Windows arm binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindowsArm\Sqlcmd.exe'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindows-arm'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm.zip'
+
+      - task: ArchiveFiles@2
+        displayName: Zip Windows arm64 binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdWindows-arm64'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-windows-arm64.zip'
   
       - task: ArchiveFiles@2
         displayName: Tar Linux amd64 binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinuxAmd64'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinux-amd64'
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-linux-x64.tar.bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-linux-amd64.tar.bz2'
 
       - task: ArchiveFiles@2
         displayName: Tar Darwin binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdDarwinAmd64'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdDarwin-x64'
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
           archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-darwin-x64.tar.bz2'
 
       - task: ArchiveFiles@2
+        displayName: Tar Darwin arm binary
+        inputs:
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdDarwin-arm64'
+          includeRootFolder: false
+          archiveType: 'tar'
+          tarCompression: 'bz2'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/sqlcmd-$(getVersion.VERSION_TAG)-darwin-arm64.tar.bz2'
+
+      - task: ArchiveFiles@2
         displayName: Tar Linux arm64 binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinuxArm64'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinux-arm64'
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'
@@ -179,7 +216,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: Tar Linux s390x binary
         inputs:
-          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinuxS390x'
+          rootFolderOrFile: '$(Pipeline.Workspace)\SqlcmdLinux-s390x'
           includeRootFolder: false
           archiveType: 'tar'
           tarCompression: 'bz2'

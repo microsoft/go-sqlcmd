@@ -2,6 +2,8 @@ parameters:
 - name: OS
   type: string
   default:
+- name: Architecture
+  type: string
 - name: Type
   type: string
 
@@ -25,12 +27,17 @@ steps:
     CLI_VERSION: $(VERSION_TAG)
     BUILD_STAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
 - task: PowerShell@2
-  condition: eq(variables.OS, 'windows')
-  displayName: 'Test ${{ parameters.OS }}/${{ parameters.Type }} package'
+
+  # Windows ARM not available in ADO pipelines yet, so only test on Amd64
+  # https://learn.microsoft.com/azure/devops/pipelines/agents/hosted
+  # https://github.com/microsoft/azure-pipelines-agent/issues/3935
+  condition: and(eq(variables.OS, 'windows'), eq(variables.Architecture, 'x64'))
+  displayName: 'Test ${{ parameters.OS }}/${{ parameters.Architecture }}/${{ parameters.Type }} package'
   inputs:
     targetType: 'filePath'
     filePath: '$(Build.SourcesDirectory)\release\windows\msi\scripts\pipeline-test.ps1'
     failOnStderr: true
   env:
     CLI_VERSION: $(VERSION_TAG)
+    ARCHITECTURE: ${{ parameters.Architecture }}
     

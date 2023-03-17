@@ -8,6 +8,8 @@ import (
 	"os"
 	"strings"
 	"unicode"
+
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // Variables provides set and get of sqlcmd scripting variables
@@ -33,6 +35,7 @@ const (
 	SQLCMDMAXFIXEDTYPEWIDTH = "SQLCMDMAXFIXEDTYPEWIDTH"
 	SQLCMDEDITOR            = "SQLCMDEDITOR"
 	SQLCMDUSEAAD            = "SQLCMDUSEAAD"
+	SQLCMDCOLORSCHEME       = "SQLCMDCOLORSCHEME"
 )
 
 // builtinVariables are the predefined SQLCMD variables. Their values are printed first by :listvar
@@ -54,6 +57,7 @@ var builtinVariables = []string{
 	SQLCMDUSEAAD,
 	SQLCMDUSER,
 	SQLCMDWORKSTATION,
+	SQLCMDCOLORSCHEME,
 }
 
 // readonlyVariables are variables that can't be changed via :setvar
@@ -109,7 +113,7 @@ func (v Variables) SQLCmdUser() string {
 }
 
 // SQLCmdServer returns the server connection parameters derived from the SQLCMDSERVER variable value
-func (v Variables) SQLCmdServer() (serverName string, instance string, port uint64, err error) {
+func (v Variables) SQLCmdServer() (serverName string, instance string, port uint64, protocol string, err error) {
 	serverName = v[SQLCMDSERVER]
 	return splitServer(serverName)
 }
@@ -189,6 +193,11 @@ func (v Variables) TextEditor() string {
 	return v[SQLCMDEDITOR]
 }
 
+// ColorScheme is the name of the console output color scheme
+func (v Variables) ColorScheme() string {
+	return v[SQLCMDCOLORSCHEME]
+}
+
 func mustValue(val string) int64 {
 	var n int64
 	_, err := fmt.Sscanf(val, "%d", &n)
@@ -231,6 +240,7 @@ func InitializeVariables(fromEnvironment bool) *Variables {
 		SQLCMDSTATTIMEOUT:       defaultVariables[SQLCMDSTATTIMEOUT],
 		SQLCMDUSER:              "",
 		SQLCMDUSEAAD:            "",
+		SQLCMDCOLORSCHEME:       "",
 	}
 	hostname, _ := os.Hostname()
 	variables.Set(SQLCMDWORKSTATION, hostname)
@@ -286,7 +296,7 @@ func ValidIdentifier(name string) error {
 	first := true
 	for _, c := range name {
 		if !unicode.IsLetter(c) && c != '_' && (first || (!unicode.IsDigit(c) && !strings.ContainsRune(validVariableRunes, c))) {
-			return fmt.Errorf("Invalid variable identifier %s", name)
+			return localizer.Errorf("Invalid variable identifier %s", name)
 		}
 		first = false
 	}
@@ -300,7 +310,7 @@ func ValidIdentifier(name string) error {
 // "this has a quote" in it" is not valid
 func ParseValue(val string) (string, error) {
 	quoted := val[0] == '"'
-	err := fmt.Errorf("Invalid variable value %s", val)
+	err := localizer.Errorf("Invalid variable value %s", val)
 	if !quoted {
 		if strings.ContainsAny(val, "\t\n\r ") {
 			return "", err

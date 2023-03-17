@@ -4,7 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    
 
         {
 
@@ -24,16 +23,30 @@
             "type" : "go",
             "request": "launch",
             "mode" : "auto",
+<<<<<<< HEAD
             "program": "${workspaceFolder}/cmd/sqlcmd",
             "args" : ["-Q", "EXIT(select 100 as Count)"],      
+=======
+            "program": "${workspaceFolder}/cmd/modern",
+            "args" : ["-Q", "EXIT(select net_transport from sys.dm_exec_connections)"],
+>>>>>>> 5c47bd4fb4d8efcefbeb5af3949ef107ff4e0f4b
         },
         {
             "name" : "Run file query",
             "type" : "go",
             "request": "launch",
             "mode" : "auto",
-            "program": "${workspaceFolder}/cmd/sqlcmd",
-            "args" : ["-i", "testdata\\select100.sql"],
+            "program": "${workspaceFolder}/cmd/modern",
+            "args" : ["-S", "np:.", "-i", "${workspaceFolder}/cmd/sqlcmd/testdata/select100.sql"],
         },
+        {
+            "name" : "Run sqlcmdlinter",
+            "type" : "go",
+            "request" : "launch",
+            "mode" : "auto",
+            "program": "${workspaceFolder}/cmd/sqlcmd-linter",
+            "args" : ["${workspaceFolder}/..."]
+
+        }
     ]
 }

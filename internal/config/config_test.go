@@ -8,7 +8,8 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
+	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -33,9 +34,9 @@ func TestConfig(t *testing.T) {
 						Name:               "user1",
 						AuthenticationType: "basic",
 						BasicAuth: &BasicAuthDetails{
-							Username:          "user",
-							PasswordEncrypted: false,
-							Password:          secret.Encode("weak", false),
+							Username:           "user",
+							PasswordEncryption: "none",
+							Password:           secret.Encode("weak", "none"),
 						},
 					}}}}},
 	}
@@ -55,7 +56,7 @@ func TestConfig(t *testing.T) {
 						Image: "www.image.url"},
 				},
 				EndpointDetails: EndpointDetails{
-					Address: "localhost",
+					Address: "127.0.0.1",
 					Port:    1433,
 				},
 				Name: "endpoint",
@@ -63,7 +64,7 @@ func TestConfig(t *testing.T) {
 
 			AddEndpoint(Endpoint{
 				EndpointDetails: EndpointDetails{
-					Address: "localhost",
+					Address: "127.0.0.1",
 					Port:    1434,
 				},
 				Name: "endpoint",
@@ -71,7 +72,7 @@ func TestConfig(t *testing.T) {
 
 			AddEndpoint(Endpoint{
 				EndpointDetails: EndpointDetails{
-					Address: "localhost",
+					Address: "127.0.0.1",
 					Port:    1435,
 				},
 				Name: "endpoint",
@@ -90,9 +91,9 @@ func TestConfig(t *testing.T) {
 				Name:               "user",
 				AuthenticationType: "basic",
 				BasicAuth: &BasicAuthDetails{
-					Username:          "username",
-					PasswordEncrypted: false,
-					Password:          secret.Encode("password", false),
+					Username:           "username",
+					PasswordEncryption: "none",
+					Password:           secret.Encode("password", "none"),
 				},
 			}
 
@@ -130,11 +131,12 @@ func TestConfig(t *testing.T) {
 			ContainerId()
 			RemoveCurrentContext()
 			RemoveCurrentContext()
-			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", false)
+			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", "none")
 			RemoveCurrentContext()
 			DeleteEndpoint("endpoint")
 			DeleteContext("context")
 			DeleteUser("user2")
+
 		})
 	}
 }
@@ -148,6 +150,32 @@ func addContext() {
 		},
 		Name: "context",
 	})
+}
+
+func TestAddContextWithEmptyUser(t *testing.T) {
+	SetFileName(pal.FilenameInUserHomeDotDirectory(
+		".sqlcmd", "sqlconfig-TestAddContextWithEmptyUser"))
+	Clean()
+
+	AddEndpoint(Endpoint{
+		EndpointDetails: EndpointDetails{
+			Address: "127.0.0.1",
+			Port:    1434,
+		},
+		Name: "endpoint",
+	})
+
+	user := ""
+	AddContext(Context{
+		ContextDetails: ContextDetails{
+			Endpoint: "endpoint",
+			User:     &user,
+		},
+		Name: "context",
+	})
+
+	context := GetContext("context")
+	assert.Nil(t, context.User)
 }
 
 func TestDeleteUser(t *testing.T) {
@@ -176,9 +204,8 @@ func TestFindUniqueUserName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotUniqueUserName := FindUniqueUserName(tt.args.name); gotUniqueUserName != tt.wantUniqueUserName {
-				t.Errorf("FindUniqueUserName() = %v, want %v", gotUniqueUserName, tt.wantUniqueUserName)
-			}
+			gotUniqueUserName := FindUniqueUserName(tt.args.name)
+			assert.Equal(t, gotUniqueUserName, tt.wantUniqueUserName, "FindUniqueUserName() = %v, want %v", gotUniqueUserName, tt.wantUniqueUserName)
 		})
 	}
 }
@@ -194,9 +221,8 @@ func TestGetUser(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotUser := GetUser(tt.args.name); !reflect.DeepEqual(gotUser, tt.wantUser) {
-				t.Errorf("GetUser() = %v, want %v", gotUser, tt.wantUser)
-			}
+			gotUser := GetUser(tt.args.name)
+			assert.Truef(t, reflect.DeepEqual(gotUser, tt.wantUser), "GetUser() = %v, want %v", gotUser, tt.wantUser)
 		})
 	}
 }
@@ -228,9 +254,8 @@ func TestUserExists(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotExists := UserNameExists(tt.args.name); gotExists != tt.wantExists {
-				t.Errorf("UserNameExists() = %v, want %v", gotExists, tt.wantExists)
-			}
+			gotExists := UserNameExists(tt.args.name)
+			assert.Equal(t, gotExists, tt.wantExists, "UserNameExists() = %v, want %v", gotExists, tt.wantExists)
 		})
 	}
 }
@@ -246,9 +271,8 @@ func TestUserNameExists(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotExists := UserNameExists(tt.args.name); gotExists != tt.wantExists {
-				t.Errorf("UserNameExists() = %v, want %v", gotExists, tt.wantExists)
-			}
+			gotExists := UserNameExists(tt.args.name)
+			assert.Equal(t, gotExists, tt.wantExists, "UserNameExists() = %v, want %v", gotExists, tt.wantExists)
 		})
 	}
 }
@@ -264,70 +288,68 @@ func Test_userOrdinal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotOrdinal := userOrdinal(tt.args.name); gotOrdinal != tt.wantOrdinal {
-				t.Errorf("userOrdinal() = %v, want %v", gotOrdinal, tt.wantOrdinal)
-			}
+			gotOrdinal := userOrdinal(tt.args.name)
+			assert.Equal(t, gotOrdinal, tt.wantOrdinal, "userOrdinal() = %v, want %v", gotOrdinal, tt.wantOrdinal)
 		})
 	}
 }
 
 func TestAddContextWithContainerPanic(t *testing.T) {
 	type args struct {
-		contextName     string
-		imageName       string
-		portNumber      int
-		containerId     string
-		username        string
-		password        string
-		encryptPassword bool
+		contextName        string
+		imageName          string
+		portNumber         int
+		containerId        string
+		username           string
+		password           string
+		passwordEncryption string
 	}
 	tests := []struct {
 		name string
 		args args
 	}{
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"", "image", 1433, "id", "user", "password", false}},
+			args: args{"", "image", 1433, "id", "user", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "", 1433, "id", "user", "password", false}},
+			args: args{"context", "", 1433, "id", "user", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "image", 1433, "", "user", "password", false}},
+			args: args{"context", "image", 1433, "", "user", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "image", 0, "id", "user", "password", false}},
+			args: args{"context", "image", 0, "id", "user", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "image", 1433, "id", "", "password", false}},
+			args: args{"context", "image", 1433, "id", "", "password", "none"}},
 		{name: "AddContextWithContainerDefensePanics",
-			args: args{"context", "image", 1433, "id", "user", "", false}},
+			args: args{"context", "image", 1433, "id", "user", "", "none"}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			defer func() { test.CatchExpectedError(recover(), t) }()
-			AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.encryptPassword)
+			assert.Panics(t, func() {
+				AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.passwordEncryption)
+			})
 		})
 	}
 }
 
 func TestConfig_AddContextWithNoEndpoint(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	user := "user1"
-	AddContext(Context{
-		ContextDetails: ContextDetails{
-			Endpoint: "badbad",
-			User:     &user,
-		},
-		Name: "context",
+	assert.Panics(t, func() {
+		AddContext(Context{
+			ContextDetails: ContextDetails{
+				Endpoint: "badbad",
+				User:     &user,
+			},
+			Name: "context",
+		})
 	})
 }
 
 func TestConfig_GetCurrentContextWithNoContexts(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	CurrentContext()
+	assert.Panics(t, func() {
+		CurrentContext()
+	})
 }
 
 func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	AddEndpoint(Endpoint{
 		AssetDetails: &AssetDetails{
 			ContainerDetails: &ContainerDetails{
@@ -335,7 +357,7 @@ func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
 				Image: "www.image.url"},
 		},
 		EndpointDetails: EndpointDetails{
-			Address: "localhost",
+			Address: "127.0.0.1",
 			Port:    1433,
 		},
 		Name: "endpoint",
@@ -353,25 +375,27 @@ func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
 	DeleteEndpoint("endpoint")
 
 	SetCurrentContextName("context")
-	CurrentContext()
+	assert.Panics(t, func() {
+		CurrentContext()
+	})
 }
 
 func TestConfig_DeleteContextThatDoesNotExist(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	contextOrdinal("does-not-exist")
+	assert.Panics(t, func() {
+		contextOrdinal("does-not-exist")
+	})
 }
 
 func TestNegConfig_SetFileName(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	SetFileName("")
+	assert.Panics(t, func() {
+		SetFileName("")
+	})
 }
 
 func TestNegConfig_SetCurrentContextName(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	SetCurrentContextName("does not exist")
+	assert.Panics(t, func() {
+		SetCurrentContextName("does not exist")
+	})
 }
 
 func TestNegConfig_SetFileNameForTest(t *testing.T) {
@@ -383,7 +407,23 @@ func TestNegConfig_DefaultFileName(t *testing.T) {
 }
 
 func TestNegConfig_GetContext(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
+	assert.Panics(t, func() {
+		GetContext("doesnotexist")
+	})
+}
 
-	GetContext("doesnotexist")
+func TestNegConfig_SetFileNameEmpty(t *testing.T) {
+	assert.Panics(t, func() {
+		SetFileName("")
+	})
+}
+
+func TestNegConfig_DefaultFileNameNoHomeDir(t *testing.T) {
+	old := os.Getenv("USERPROFILE")
+	defer os.Setenv("USERPROFILE", old)
+
+	os.Setenv("USERPROFILE", "")
+
+	s := DefaultFileName()
+	assert.Contains(t, s, "sqlconfig")
 }

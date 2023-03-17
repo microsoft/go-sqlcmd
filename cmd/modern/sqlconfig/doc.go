@@ -30,7 +30,7 @@ An example of the sqlconfig file looks like this:
 			id: 0e698e65e19d9c
 			image: mcr.microsoft.com/mssql/server:2022-latest
 	  endpoint:
-		address: localhost
+		address: 127.0.0.1
 		port: 1435
 	  name: mssql
 	contexts:

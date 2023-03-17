@@ -7,10 +7,13 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/output"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
 
+// TestConnectionStrings tests that the `sqlcmd config connection-strings` command
+// works as expected
 func TestConnectionStrings(t *testing.T) {
 	cmdparser.TestSetup(t)
 
@@ -27,10 +30,30 @@ func TestConnectionStrings(t *testing.T) {
 	}
 	internal.Initialize(options)
 
-	os.Setenv("SQLCMD_PASSWORD", "it's-a-secret")
+	if os.Getenv("SQLCMDPASSWORD") == "" &&
+		os.Getenv("SQLCMD_PASSWORD") == "" {
+		os.Setenv("SQLCMDPASSWORD", "it's-a-secret")
+		defer os.Setenv("SQLCMDPASSWORD", "")
+	}
 
 	cmdparser.TestCmd[*AddEndpoint]()
-	cmdparser.TestCmd[*AddUser]("--username user")
+	cmdparser.TestCmd[*AddUser]("--username user --password-encryption none")
 	cmdparser.TestCmd[*AddContext]("--endpoint endpoint --user user")
 	cmdparser.TestCmd[*ConnectionStrings]()
+
+	// Add endpoint with no user
+	cmdparser.TestCmd[*AddContext]("--endpoint endpoint")
+	cmdparser.TestCmd[*ConnectionStrings]()
+
+	// Add endpoint to Azure SQL (connection strings won't Trust server cert)
+	cmdparser.TestCmd[*AddEndpoint]("--address server.database.windows.net")
+	cmdparser.TestCmd[*AddUser]("--username user  --password-encryption none")
+	cmdparser.TestCmd[*AddContext]("--endpoint endpoint2 --user user")
+
+	result := cmdparser.TestCmd[*ConnectionStrings]()
+	assert.Contains(t, result, "database=master")
+
+	result = cmdparser.TestCmd[*ConnectionStrings]("--database tempdb")
+	assert.NotContains(t, result, "database=master")
+	assert.Contains(t, result, "database=tempdb")
 }

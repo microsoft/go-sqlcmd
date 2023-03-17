@@ -5,37 +5,53 @@ package config
 
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestAddUser(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
-	AddUser(User{
-		Name:               "",
-		AuthenticationType: "basic",
-		BasicAuth:          nil,
+	assert.Panics(t, func() {
+		AddUser(User{
+			Name:               "",
+			AuthenticationType: "basic",
+			BasicAuth:          nil,
+		})
 	})
 }
 
+func TestUserExists2(t *testing.T) {
+	context := Context{
+		ContextDetails: ContextDetails{},
+		Name:           "context",
+	}
+	assert.False(t, UserExists(context))
+}
+
+func TestUserExists3(t *testing.T) {
+	user := "user"
+	context := Context{
+		ContextDetails: ContextDetails{User: &user},
+		Name:           "context",
+	}
+	assert.True(t, UserExists(context))
+}
+
 func TestNegAddUser(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-	AddUser(User{
-		Name:               "",
-		AuthenticationType: "basic",
-		BasicAuth: &BasicAuthDetails{
-			Username:          "",
-			PasswordEncrypted: false,
-			Password:          "",
-		},
+	assert.Panics(t, func() {
+		AddUser(User{
+			Name:               "",
+			AuthenticationType: "basic",
+			BasicAuth: &BasicAuthDetails{
+				Username:           "",
+				PasswordEncryption: "none",
+				Password:           "",
+			},
+		})
 	})
 }
 
 func TestNegAddUser2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-	GetUser("doesnotexist")
+	assert.Panics(t, func() {
+		GetUser("doesnotexist")
+	})
 }

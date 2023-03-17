@@ -4,6 +4,8 @@
 package folder
 
 import (
+	"github.com/stretchr/testify/assert"
+	"os"
 	"strings"
 	"testing"
 )
@@ -29,16 +31,22 @@ func TestMkdirAll(t *testing.T) {
 
 			// If test name ends in 'Panic' expect a Panic
 			if strings.HasSuffix(tt.name, "Panic") {
-				defer func() {
-					if r := recover(); r == nil {
-						t.Errorf("The code did not panic")
-					}
-				}()
+				assert.Panics(t, func() {
+					MkdirAll(tt.args.folder)
+				})
+			} else {
+				MkdirAll(tt.args.folder)
 			}
 
-			MkdirAll(tt.args.folder)
 		})
 	}
+}
+
+func TestGetwd(t *testing.T) {
+	// Test 1: Check that the function returns the correct path
+	wd, err := os.Getwd()
+	assert.NoErrorf(t, err, "unexpected error: %v", err)
+	assert.Equal(t, Getwd(), wd)
 }
 
 func cleanup(folderName string) {

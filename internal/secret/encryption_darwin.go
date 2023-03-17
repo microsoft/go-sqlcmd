@@ -3,6 +3,8 @@
 
 package secret
 
+var encryptionMethods = []string{"none"}
+
 func encrypt(plainText string) (cipherText string) {
 
 	//BUG(stuartpa): Encryption not yet implemented on macOS, will use the KeyChain

@@ -6,6 +6,7 @@ package config
 import (
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
+	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"os"
 	"path/filepath"
@@ -40,7 +41,14 @@ func SetFileNameForTest(t *testing.T) {
 // the user's home directory, the function will return an empty string.
 func DefaultFileName() (filename string) {
 	home, err := os.UserHomeDir()
-	checkErr(err)
+	if err != nil {
+		trace(
+			"Error getting user's home directory: %v, will use current directory %q as default",
+			err,
+			folder.Getwd(),
+		)
+		home = "."
+	}
 	filename = filepath.Join(home, ".sqlcmd", "sqlconfig")
 
 	return
@@ -89,7 +97,7 @@ func AddContextWithContainer(
 	containerId string,
 	username string,
 	password string,
-	encryptPassword bool,
+	passwordEncryption string,
 ) {
 	if containerId == "" {
 		panic("containerId must be provided")
@@ -123,7 +131,7 @@ func AddContextWithContainer(
 				Image: imageName},
 		},
 		EndpointDetails: EndpointDetails{
-			Address: "localhost",
+			Address: "127.0.0.1",
 			Port:    portNumber,
 		},
 		Name: endPointName,
@@ -140,9 +148,9 @@ func AddContextWithContainer(
 	user := User{
 		AuthenticationType: "basic",
 		BasicAuth: &BasicAuthDetails{
-			Username:          username,
-			PasswordEncrypted: encryptPassword,
-			Password:          encryptCallback(password, encryptPassword),
+			Username:           username,
+			PasswordEncryption: passwordEncryption,
+			Password:           encryptCallback(password, passwordEncryption),
 		},
 		Name: userName,
 	}
@@ -165,7 +173,7 @@ func RedactedConfig(raw bool) (c Sqlconfig) {
 			if raw {
 				user.BasicAuth.Password = decryptCallback(
 					user.BasicAuth.Password,
-					user.BasicAuth.PasswordEncrypted,
+					user.BasicAuth.PasswordEncryption,
 				)
 			} else {
 				user.BasicAuth.Password = "REDACTED"

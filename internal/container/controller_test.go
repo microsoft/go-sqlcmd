@@ -5,7 +5,9 @@ package container
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/internal/test"
+	"github.com/stretchr/testify/assert"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 )
 
@@ -31,10 +33,33 @@ func TestController_EnsureImage(t *testing.T) {
 	c := NewController()
 	err := c.EnsureImage(imageName)
 	checkErr(err)
-	id := c.ContainerRun(imageName, []string{}, port, []string{"ash", "-c", "echo 'Hello World'; sleep 1"}, false)
+	id := c.ContainerRun(
+		imageName,
+		[]string{},
+		port,
+		"",
+		"",
+		"amd64",
+		"linux",
+		[]string{"ash", "-c", "echo 'Hello World'; sleep 3"},
+		false,
+	)
+	c.ContainerRunning(id)
 	c.ContainerWaitForLogEntry(id, "Hello World")
 	c.ContainerExists(id)
 	c.ContainerFiles(id, "*.mdf")
+
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("test"))
+	}))
+	defer ts.Close()
+
+	c.DownloadFile(id, ts.URL, "test.txt")
+
+	err = c.ContainerStop(id)
+	checkErr(err)
+	err = c.ContainerStart(id)
+	checkErr(err)
 	err = c.ContainerStop(id)
 	checkErr(err)
 	err = c.ContainerRemove(id)
@@ -52,16 +77,21 @@ func TestController_ContainerRunFailure(t *testing.T) {
 		repo,
 		tag)
 
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	c := NewController()
-	c.ContainerRun(
-		imageName,
-		[]string{},
-		0,
-		[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-		false,
-	)
+
+	assert.Panics(t, func() {
+		c.ContainerRun(
+			imageName,
+			[]string{},
+			0,
+			"",
+			"",
+			"amd64",
+			"linux",
+			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+			false,
+		)
+	})
 }
 
 func TestController_ContainerRunFailureCleanup(t *testing.T) {
@@ -75,69 +105,85 @@ func TestController_ContainerRunFailureCleanup(t *testing.T) {
 		repo,
 		tag)
 
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	c := NewController()
-	id := c.ContainerRun(
-		imageName,
-		[]string{},
-		0,
-		[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-		true,
-	)
-	err := c.ContainerStop(id)
-	checkErr(err)
-	err = c.ContainerRemove(id)
-	checkErr(err)
-}
 
-func TestController_ContainerStopNeg(t *testing.T) {
-	const registry = "docker.io"
-	const repo = "does-not-exist"
-	const tag = "latest"
-
-	imageName := fmt.Sprintf(
-		"%s/%s:%s",
-		registry,
-		repo,
-		tag)
-
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
-	c := NewController()
-	id := c.ContainerRun(imageName, []string{}, 0, []string{"ash", "-c", "echo 'Hello World'; sleep 1"}, false)
-	err := c.ContainerStop(id)
-	checkErr(err)
-	err = c.ContainerRemove(id)
-	checkErr(err)
+	assert.Panics(t, func() {
+		c.ContainerRun(
+			imageName,
+			[]string{},
+			0,
+			"",
+			"",
+			"amd64",
+			"linux",
+			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+			true,
+		)
+	})
 }
 
 func TestController_ContainerStopNeg2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	c := NewController()
-	err := c.ContainerStop("")
-	checkErr(err)
+	assert.Panics(t, func() {
+		err := c.ContainerStop("")
+		checkErr(err)
+	})
 }
 
 func TestController_ContainerRemoveNeg(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	c := NewController()
-	err := c.ContainerRemove("")
-	checkErr(err)
+	assert.Panics(t, func() {
+		err := c.ContainerRemove("")
+		checkErr(err)
+	})
 }
 
 func TestController_ContainerFilesNeg(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	c := NewController()
-	c.ContainerFiles("", "")
+	assert.Panics(t, func() {
+		c.ContainerFiles("", "")
+	})
 }
 
 func TestController_ContainerFilesNeg2(t *testing.T) {
-	defer func() { test.CatchExpectedError(recover(), t) }()
-
 	c := NewController()
-	c.ContainerFiles("id", "")
+	assert.Panics(t, func() {
+		c.ContainerFiles("id", "")
+	})
+}
+
+func TestController_ContainerRunningNeg(t *testing.T) {
+	c := NewController()
+	assert.Panics(t, func() {
+		c.ContainerRunning("")
+	})
+}
+
+func TestController_ContainerStartNeg(t *testing.T) {
+	c := NewController()
+	assert.Panics(t, func() {
+		err := c.ContainerStart("")
+		checkErr(err)
+	})
+}
+
+func TestController_DownloadFileNeg(t *testing.T) {
+	c := NewController()
+	assert.Panics(t, func() {
+		c.DownloadFile("", "", "")
+	})
+}
+
+func TestController_DownloadFileNeg2(t *testing.T) {
+	c := NewController()
+	assert.Panics(t, func() {
+		c.DownloadFile("not_blank", "", "")
+	})
+}
+
+func TestController_DownloadFileNeg3(t *testing.T) {
+	c := NewController()
+	assert.Panics(t, func() {
+		c.DownloadFile("not_blank", "not_blank", "")
+	})
 }

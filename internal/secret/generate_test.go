@@ -3,7 +3,10 @@
 
 package secret
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestGenerate(t *testing.T) {
 	type args struct {
@@ -32,15 +35,14 @@ func TestGenerate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Generate(
+			got := Generate(
 				tt.args.passwordLength,
 				tt.args.minSpecialChar,
 				tt.args.minNum,
 				tt.args.minUpperCase,
 				tt.args.specialChars,
-			); len(got) != tt.args.passwordLength {
-				t.Errorf("Generate() = %v, want %v", got, tt.want)
-			}
+			)
+			assert.Len(t, got, tt.args.passwordLength)
 		})
 	}
 }

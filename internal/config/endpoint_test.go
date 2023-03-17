@@ -3,13 +3,12 @@
 
 package config
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
 func TestEndpointExists(t *testing.T) {
-	defer func() {
-		if r := recover(); r == nil {
-			t.Errorf("The code did not panic")
-		}
-	}()
-	EndpointExists("")
+	assert.Panics(t, func() { EndpointExists("") })
+
 }
