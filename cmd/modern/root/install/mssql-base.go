@@ -408,22 +408,25 @@ func (c *MssqlBase) validateUsingUrlExists() {
 			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
 	}
 
+	if u.Path == "" {
+		output.FatalfWithHints(
+			[]string{
+				"--using URL must have a path to .bak file",
+			},
+			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
+	}
+
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
-	databaseName := parseDbName(c.usingDatabaseUrl)
-	databaseUrl := c.usingDatabaseUrl
-	if databaseName != "" {
-		argLen := len(c.usingDatabaseUrl)
-		dbNameLen := len(databaseName)
-		databaseUrl = c.usingDatabaseUrl[0:(argLen - dbNameLen - 1)]
-	}
-	if _, file := filepath.Split(databaseUrl); filepath.Ext(file) != ".bak" {
+	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
 		output.FatalfWithHints(
 			[]string{
 				"--using file URL must be a .bak file",
 			},
 			"Invalid --using file type")
 	}
+
+	databaseUrl := extractUrl(c.usingDatabaseUrl)
 
 	// Verify the url actually exists, and early exit if it doesn't
 	urlExists(databaseUrl, output)
@@ -483,14 +486,33 @@ func getEscapedDbName(dbName string) string {
 	return dbName
 }
 
+//parseDbName returns the databaseName from --using arg
+// It sets database name to the specified database name
+// or in absence of it, it is set to the filename without
+// extension.
 func parseDbName(usingDbUrl string) string {
 	u, _ := url.Parse(usingDbUrl)
 	dbToken := path.Base(u.Path)
 	if dbToken != "." && dbToken != "/" {
-		tokens := strings.Split(dbToken, ".bak,")
-		if len(tokens) > 1 {
-			return tokens[1]
+		lastIdx := strings.LastIndex(dbToken, ".bak")
+		if lastIdx != -1 {
+			//Get file name without extension
+			fileName := dbToken[0:lastIdx]
+			lastIdx += 5
+			if lastIdx >= len(dbToken) {
+				return fileName
+			}
+			//Return database name if it was specified
+			return dbToken[lastIdx:]
 		}
+	}
+	return ""
+}
+
+func extractUrl(usingArg string) string {
+	urlEndIdx := strings.LastIndex(usingArg, ".bak")
+	if urlEndIdx != -1 {
+		return usingArg[0:(urlEndIdx + 4)]
 	}
 	return ""
 }
@@ -502,18 +524,12 @@ func (c *MssqlBase) downloadAndRestoreDb(
 ) {
 	output := c.Cmd.Output()
 	databaseName := parseDbName(c.usingDatabaseUrl)
-	databaseUrl := c.usingDatabaseUrl
-	if databaseName != "" {
-		databaseUrl = strings.Split(c.usingDatabaseUrl, ",")[0]
-	}
+	databaseUrl := extractUrl(c.usingDatabaseUrl)
 
 	u, err := url.Parse(databaseUrl)
 	c.CheckErr(err)
 	_, file := filepath.Split(databaseUrl)
-	fileNameWithNoExt := strings.TrimSuffix(file, filepath.Ext(file))
-	if databaseName == "" {
-		databaseName = fileNameWithNoExt
-	}
+
 	// Download file from URL into container
 	output.Infof("Downloading %s from %s", file, u.Hostname())
 
