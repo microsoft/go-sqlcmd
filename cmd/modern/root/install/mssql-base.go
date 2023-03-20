@@ -480,10 +480,13 @@ CHECK_POLICY=OFF`
 	}
 }
 
-func getEscapedDbName(dbName string) string {
-	dbName = strings.ReplaceAll(dbName, "'", "''")
-	dbName = strings.ReplaceAll(dbName, "]", "]]")
-	return dbName
+func getDbNameAsIdentifier(dbName string) string {
+	escapedDbNAme := strings.ReplaceAll(dbName, "'", "''")
+	return strings.ReplaceAll(escapedDbNAme, "]", "]]")
+}
+
+func getDbNameAsNonIdentifier(dbName string) string {
+	return strings.ReplaceAll(dbName, "]", "]]")
 }
 
 //parseDbName returns the databaseName from --using arg
@@ -526,12 +529,10 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	databaseName := parseDbName(c.usingDatabaseUrl)
 	databaseUrl := extractUrl(c.usingDatabaseUrl)
 
-	u, err := url.Parse(databaseUrl)
-	c.CheckErr(err)
 	_, file := filepath.Split(databaseUrl)
 
 	// Download file from URL into container
-	output.Infof("Downloading %s from %s", file, u.Hostname())
+	output.Infof("Downloading %s", file)
 
 	temporaryFolder := "/var/opt/mssql/backup"
 
@@ -543,7 +544,10 @@ func (c *MssqlBase) downloadAndRestoreDb(
 
 	// Restore database from file
 	output.Infof("Restoring database %s", databaseName)
-	databaseName = getEscapedDbName(databaseName)
+
+	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
+	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
+
 	text := `SET NOCOUNT ON;
 
 -- Build a SQL Statement to restore any .bak file to the Linux filesystem
@@ -585,12 +589,12 @@ WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
 EXEC(@sql)`
 
-	c.query(fmt.Sprintf(text, temporaryFolder, file, databaseName, temporaryFolder, file))
+	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
 
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
 		userName,
-		databaseName)
+		dbNameAsNonIdentifier)
 	c.query(alterDefaultDb)
 }
 
