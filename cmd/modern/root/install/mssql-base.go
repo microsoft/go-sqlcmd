@@ -397,7 +397,8 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 func (c *MssqlBase) validateUsingUrlExists() {
 	output := c.Cmd.Output()
-	u, err := url.Parse(c.usingDatabaseUrl)
+	databaseUrl := extractUrl(c.usingDatabaseUrl)
+	u, err := url.Parse(databaseUrl)
 	c.CheckErr(err)
 
 	if u.Scheme != "http" && u.Scheme != "https" {
@@ -425,8 +426,6 @@ func (c *MssqlBase) validateUsingUrlExists() {
 			},
 			"Invalid --using file type")
 	}
-
-	databaseUrl := extractUrl(c.usingDatabaseUrl)
 
 	// Verify the url actually exists, and early exit if it doesn't
 	urlExists(databaseUrl, output)
@@ -517,7 +516,7 @@ func extractUrl(usingArg string) string {
 	if urlEndIdx != -1 {
 		return usingArg[0:(urlEndIdx + 4)]
 	}
-	return ""
+	return usingArg
 }
 
 func (c *MssqlBase) downloadAndRestoreDb(
