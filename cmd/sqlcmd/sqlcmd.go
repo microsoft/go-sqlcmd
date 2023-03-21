@@ -120,7 +120,9 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 func Execute(version string) {
 	ctx := kong.Parse(&args, kong.NoDefaultHelp())
 	if args.Version {
-		ctx.Printf("%v", version)
+		ctx.Printf("%v\n", version)
+		fmt.Println(localizer.Sprintf("Legal docs and information: aka.ms/SqlcmdLegal"))
+		fmt.Println(localizer.Sprintf("Third party notices: aka.ms/SqlcmdNotices"))
 		os.Exit(0)
 	}
 	if args.Help {
