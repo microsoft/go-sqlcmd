@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>sqlcmd</id>
-    <version>0.15.3</version>
+    <version>0.15.4</version>
     <title>sqlcmd (Install)</title>
     <authors>Microsoft</authors>
     <projectUrl>https://docs.microsoft.com/sql/tools/go-sqlcmd-utility</projectUrl>
@@ -17,7 +17,7 @@
     <tags>sqlcmd mssql sqlserver</tags>
     <summary>sqlcmd CLI for Microsoft SQL Server and Azure SQL</summary>
     <description>sqlcmd is a multi-platform command line experience for Microsoft SQL Server and Azure SQL</description>
-    <releaseNotes>https://github.com/microsoft/go-sqlcmd/releases/tag/v0.15.3</releaseNotes>
+    <releaseNotes>https://github.com/microsoft/go-sqlcmd/releases/tag/v0.15.4</releaseNotes>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
