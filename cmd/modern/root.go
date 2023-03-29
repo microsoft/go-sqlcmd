@@ -68,6 +68,7 @@ func (c *Root) SubCommands() []cmdparser.Command {
 		cmdparser.New[*root.Start](dependencies),
 		cmdparser.New[*root.Stop](dependencies),
 		cmdparser.New[*root.Uninstall](dependencies),
+		cmdparser.New[*root.Use](dependencies),
 	}
 
 	// BUG(stuartpa): - Add Linux support
