@@ -243,7 +243,7 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 	}
 
 	cmd := []string{"mkdir", destFolder}
-	c.runCmdInContainer(id, cmd)
+	c.RunCmdInContainer(id, cmd)
 
 	_, file := filepath.Split(src)
 
@@ -255,16 +255,17 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		src,
 	}
 
-	c.runCmdInContainer(id, cmd)
+	c.RunCmdInContainer(id, cmd)
 }
 
-func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) {
+func (c Controller) RunCmdInContainer(id string, cmd []string) ([]byte, []byte) {
 	trace("Running command in container: " + strings.Join(cmd, " "))
 
 	response, err := c.cli.ContainerExecCreate(
 		context.Background(),
 		id,
 		types.ExecConfig{
+			User:         "root",
 			AttachStderr: true,
 			AttachStdout: true,
 			Cmd:          cmd,

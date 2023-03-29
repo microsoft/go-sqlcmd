@@ -4,12 +4,19 @@
 package install
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
+	"github.com/microsoft/go-sqlcmd/internal/tools"
 	"net/url"
+	"os"
 	"path"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -55,6 +62,8 @@ type MssqlBase struct {
 	port int
 
 	usingDatabaseUrl string
+	openTool         string
+	openFile         string
 
 	unitTesting bool
 
@@ -217,6 +226,20 @@ func (c *MssqlBase) AddFlags(
 		Name:          "using",
 		Usage:         "Download (into container) and attach database (.bak) from URL",
 	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.openTool,
+		DefaultString: "ads",
+		Name:          "open",
+		Usage:         "Open tool e.g. ads",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.openFile,
+		DefaultString: "",
+		Name:          "open-file",
+		Usage:         "Open file in tool e.g. https://aks.ms/adventureworks-demo.sql",
+	})
 }
 
 // Run checks that the end-user license agreement has been accepted,
@@ -358,41 +381,120 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	// Download and restore DB if asked
 	if c.usingDatabaseUrl != "" {
-		c.downloadAndRestoreDb(
-			controller,
-			containerId,
-			userName,
+		c.downloadAndRestoreDb(controller, containerId, userName, password)
+	}
+
+	if c.openTool == "" {
+
+		hints := [][]string{}
+
+		// TODO: sqlcmd open ads only support on Windows right now, add Mac support
+		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+			hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
+		}
+
+		hints = append(hints, []string{"Run a query", "sqlcmd query \"SELECT @@version\""})
+		hints = append(hints, []string{"Start interactive session", "sqlcmd query"})
+
+		if previousContextName != "" {
+			hints = append(
+				hints,
+				[]string{"Change current context", fmt.Sprintf(
+					"sqlcmd config use-context %v",
+					previousContextName,
+				)},
+			)
+		}
+
+		hints = append(hints, []string{"View sqlcmd configuration", "sqlcmd config view"})
+		hints = append(hints, []string{"See connection strings", "sqlcmd config connection-strings"})
+		hints = append(hints, []string{"Remove", "sqlcmd delete"})
+
+		output.InfofWithHintExamples(hints,
+			"Now ready for client connections on port %d",
+			c.port,
 		)
 	}
 
-	hints := [][]string{}
+	if c.openTool == "ads" {
+		ads := open.Ads{}
+		ads.SetCrossCuttingConcerns(dependency.Options{
+			EndOfLine: pal.LineBreak(),
+			Output:    c.Output(),
+		})
 
-	// TODO: sqlcmd open ads only support on Windows right now, add Mac support
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
+		user := &sqlconfig.User{
+			AuthenticationType: "basic",
+			BasicAuth: &sqlconfig.BasicAuthDetails{
+				Username:           userName,
+				PasswordEncryption: c.passwordEncryption,
+				Password:           secret.Encode(password, c.passwordEncryption)},
+			Name: userName}
+
+		ads.PersistCredentialForAds(endpoint.EndpointDetails.Address, endpoint, user)
+
+		output := c.Output()
+		args := []string{
+			"-r",
+			fmt.Sprintf(
+				"--server=%s", fmt.Sprintf(
+					"%s,%d",
+					"127.0.0.1",
+					c.port)),
+		}
+
+		args = append(args, fmt.Sprintf("--user=%s",
+			strings.Replace(userName, `"`, `\"`, -1)))
+
+		tool := tools.NewTool("ads")
+		if !tool.IsInstalled() {
+			output.Fatalf(tool.HowToInstall())
+		}
+
+		if c.openFile != "" {
+			args = append(args, c.openFile)
+
+			/*
+				var k registry.Key
+				prefix := "SOFTWARE\\Classes\\"
+				urlScheme := "sqlcmd"
+				basePath := prefix + urlScheme
+				permission := uint32(registry.QUERY_VALUE | registry.SET_VALUE)
+				baseKey := registry.CURRENT_USER
+
+				programLocation := "\"C:\\Windows\\notepad.exe\""
+
+				// create key
+				registry.CreateKey(baseKey, basePath, permission)
+
+				// set description
+				k.SetStringValue("", "Notepad app")
+				k.SetStringValue("URL Protocol", "")
+
+				// set icon
+				registry.CreateKey(registry.CURRENT_USER, "lumiere\\DefaultIcon", registry.ALL_ACCESS)
+				k.SetStringValue("", programLocation+",1")
+
+				// create tree
+				registry.CreateKey(baseKey, basePath+"\\shell", permission)
+				registry.CreateKey(baseKey, basePath+"\\shell\\open", permission)
+				registry.CreateKey(baseKey, basePath+"\\shell\\open\\command", permission)
+
+				// set open command
+				k.SetStringValue("", programLocation+" \"%1\"")
+			*/
+
+			a := os.Args[1:]
+			data, _ := json.Marshal(&a)
+
+			fmt.Printf("The URL for sharing this `sqlcmd create` is:\n\n")
+			sEnc := base64.StdEncoding.EncodeToString(data)
+			fmt.Printf("sqlcmd://%s\n", sEnc)
+		}
+
+		_, err := tool.Run(args)
+		c.CheckErr(err)
 	}
-
-	hints = append(hints, []string{"Run a query", "sqlcmd query \"SELECT @@version\""})
-	hints = append(hints, []string{"Start interactive session", "sqlcmd query"})
-
-	if previousContextName != "" {
-		hints = append(
-			hints,
-			[]string{"Change current context", fmt.Sprintf(
-				"sqlcmd config use-context %v",
-				previousContextName,
-			)},
-		)
-	}
-
-	hints = append(hints, []string{"View sqlcmd configuration", "sqlcmd config view"})
-	hints = append(hints, []string{"See connection strings", "sqlcmd config connection-strings"})
-	hints = append(hints, []string{"Remove", "sqlcmd delete"})
-
-	output.InfofWithHintExamples(hints,
-		"Now ready for client connections on port %d",
-		c.port,
-	)
 }
 
 func (c *MssqlBase) validateUsingUrlExists() {
@@ -412,19 +514,20 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	if u.Path == "" {
 		output.FatalfWithHints(
 			[]string{
-				"--using URL must have a path to .bak file",
+				"--using URL must have a path to .bak or .bacpac file",
 			},
 			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
 	}
 
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
-	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
+	_, f := filepath.Split(u.Path)
+	if filepath.Ext(f) != ".bak" && filepath.Ext(f) != ".bacpac" {
 		output.FatalfWithHints(
 			[]string{
-				"--using file URL must be a .bak file",
+				"--using file URL must be a .bak or .bacpac file",
 			},
-			"Invalid --using file type")
+			"Invalid --using file type, extension %q is not supported", filepath.Ext(f))
 	}
 
 	// Verify the url actually exists, and early exit if it doesn't
@@ -488,7 +591,7 @@ func getDbNameAsNonIdentifier(dbName string) string {
 	return strings.ReplaceAll(dbName, "]", "]]")
 }
 
-//parseDbName returns the databaseName from --using arg
+// parseDbName returns the databaseName from --using arg
 // It sets database name to the specified database name
 // or in absence of it, it is set to the filename without
 // extension.
@@ -497,6 +600,9 @@ func parseDbName(usingDbUrl string) string {
 	dbToken := path.Base(u.Path)
 	if dbToken != "." && dbToken != "/" {
 		lastIdx := strings.LastIndex(dbToken, ".bak")
+		if lastIdx == -1 {
+			lastIdx = strings.LastIndex(dbToken, ".bacpac")
+		}
 		if lastIdx != -1 {
 			//Get file name without extension
 			fileName := dbToken[0:lastIdx]
@@ -516,6 +622,14 @@ func extractUrl(usingArg string) string {
 	if urlEndIdx != -1 {
 		return usingArg[0:(urlEndIdx + 4)]
 	}
+
+	if urlEndIdx == -1 {
+		urlEndIdx = strings.LastIndex(usingArg, ".bacpac")
+		if urlEndIdx != -1 {
+			return usingArg[0:(urlEndIdx + 7)]
+		}
+	}
+
 	return usingArg
 }
 
@@ -523,6 +637,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	controller *container.Controller,
 	containerId string,
 	userName string,
+	password string,
 ) {
 	output := c.Cmd.Output()
 	databaseName := parseDbName(c.usingDatabaseUrl)
@@ -541,13 +656,18 @@ func (c *MssqlBase) downloadAndRestoreDb(
 		temporaryFolder,
 	)
 
-	// Restore database from file
-	output.Infof("Restoring database %s", databaseName)
-
 	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
 	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
 
-	text := `SET NOCOUNT ON;
+	u, err := url.Parse(databaseUrl)
+	c.CheckErr(err)
+
+	_, f := filepath.Split(u.Path)
+	if filepath.Ext(f) == ".bak" {
+		// Restore database from file
+		output.Infof("Restoring database %s", databaseName)
+
+		text := `SET NOCOUNT ON;
 
 -- Build a SQL Statement to restore any .bak file to the Linux filesystem
 DECLARE @sql NVARCHAR(max)
@@ -588,7 +708,36 @@ WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
 EXEC(@sql)`
 
-	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
+		c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
+	} else if filepath.Ext(f) == ".bacpac" {
+		// sqlpackage /a:import /SourceFile:DaasMM.bacpac
+		//	/tu:"joey"
+		//	/tp:"6%oO3L#X%d%8hAH5E*y6plD6#IV1$PEESS$ZAhC8uL#@Q@40e3"
+		//	/tsn:"localhost,1433"
+		//	/tdn:"db1"
+
+		controller.DownloadFile(
+			containerId,
+			"https://aka.ms/sqlpackage-linux",
+			"/tmp",
+		)
+
+		controller.RunCmdInContainer(containerId, []string{"apt-get", "update"})
+		controller.RunCmdInContainer(containerId, []string{"apt-get", "install", "-y", "unzip"})
+		controller.RunCmdInContainer(containerId, []string{"unzip", "/tmp/sqlpackage-linux", "-d", "/opt/sqlpackage"})
+		controller.RunCmdInContainer(containerId, []string{"chmod", "+x", "/opt/sqlpackage/sqlpackage"})
+		//controller.RunCmdInContainer(containerId, []string{"echo", `'export PATH="$PATH:/opt/sqlpackage"' >> ~/.bash_profile`})
+		//controller.RunCmdInContainer(containerId, []string{"source", "~/.bash_profile"})
+		controller.RunCmdInContainer(containerId, []string{
+			"/opt/sqlpackage/sqlpackage",
+			"/a:import",
+			"/SourceFile:" + temporaryFolder + "/" + file,
+			"/tu:" + userName,
+			"/tp:" + password,
+			"/tsn:127.0.0.1,1433",
+			"/tdn:" + dbNameAsIdentifier,
+			"/TargetTrustServerCertificate:true"})
+	}
 
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",

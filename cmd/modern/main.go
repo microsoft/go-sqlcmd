@@ -12,6 +12,8 @@
 package main
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"github.com/microsoft/go-sqlcmd/internal"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
@@ -22,9 +24,9 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
-	"path"
-
 	"os"
+	"path"
+	"strings"
 
 	legacyCmd "github.com/microsoft/go-sqlcmd/cmd/sqlcmd"
 )
@@ -44,6 +46,29 @@ func main() {
 			ErrorHandler:   checkErr,
 			HintHandler:    displayHints})}
 	rootCmd = cmdparser.New[*Root](dependencies)
+
+	//var input string
+
+	if strings.HasPrefix(os.Args[1], "sqlcmd://") {
+		sqlcmdUrl := strings.TrimRight(os.Args[1][9:], "/")
+
+		//fmt.Printf("%q", sqlcmdUrl)
+
+		//_, _ = fmt.Scanln(&input)
+
+		data2, err := base64.StdEncoding.DecodeString(sqlcmdUrl)
+		if err == nil {
+			var genre2 []string
+			if err = json.Unmarshal(data2, &genre2); err == nil {
+				cobra.MousetrapHelpText = ""
+				cmdparser.Initialize(initializeCallback)
+				rootCmd.SetArgsForUnitTesting(genre2)
+				rootCmd.Execute()
+				os.Exit(0)
+			}
+		}
+	}
+
 	if isFirstArgModernCliSubCommand() {
 		cmdparser.Initialize(initializeCallback)
 		rootCmd.Execute()
