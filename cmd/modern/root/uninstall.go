@@ -10,6 +10,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // Uninstall defines the `sqlcmd uninstall` command
@@ -34,16 +35,16 @@ var systemDatabases = [...]string{
 func (c *Uninstall) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "delete",
-		Short: "Uninstall/Delete the current context",
+		Short: localizer.Sprintf("Uninstall/Delete the current context"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Uninstall/Delete the current context",
+				Description: localizer.Sprintf("Uninstall/Delete the current context"),
 				Steps:       []string{`sqlcmd delete`}},
 			{
-				Description: "Uninstall/Delete the current context, no user prompt",
+				Description: localizer.Sprintf("Uninstall/Delete the current context, no user prompt"),
 				Steps:       []string{`sqlcmd delete --yes`}},
 			{
-				Description: "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+				Description: localizer.Sprintf("Uninstall/Delete the current context, no user prompt and override safety check for user databases"),
 				Steps:       []string{`sqlcmd delete --yes --force`}},
 		},
 		Aliases: []string{"uninstall", "drop", "remove"},
@@ -55,13 +56,13 @@ func (c *Uninstall) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:  &c.yes,
 		Name:  "yes",
-		Usage: "Quiet mode (do not stop for user input to confirm the operation)",
+		Usage: localizer.Sprintf("Quiet mode (do not stop for user input to confirm the operation)"),
 	})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:  &c.force,
 		Name:  "force",
-		Usage: "Complete the operation even if non-system (user) database files are present",
+		Usage: localizer.Sprintf("Complete the operation even if non-system (user) database files are present"),
 	})
 }
 
@@ -76,11 +77,11 @@ func (c *Uninstall) run() {
 
 	if config.CurrentContextName() == "" {
 		output.FatalfWithHintExamples([][]string{
-			{"View available contexts", "sqlcmd config get-contexts"},
-			{"Create context", "sqlcmd create --help"},
-			{"Create context with SQL Server container", "sqlcmd create mssql"},
-			{"Add a context manually", "sqlcmd config add-context"},
-		}, "No current context")
+			{localizer.Sprintf("View available contexts"), "sqlcmd config get-contexts"},
+			{localizer.Sprintf("Create context"), "sqlcmd create --help"},
+			{localizer.Sprintf("Create context with SQL Server container"), "sqlcmd create mssql"},
+			{localizer.Sprintf("Add a context manually"), "sqlcmd config add-context"},
+		}, localizer.Sprintf("No current context"))
 	}
 	if c.currentContextEndPointExists() {
 		if config.CurrentContextEndpointHasContainer() {
@@ -91,9 +92,9 @@ func (c *Uninstall) run() {
 			var input string
 			if !c.yes {
 				output.Infof(
-					"Current context is %q. Do you want to continue? (Y/N)",
-					config.CurrentContextName(),
-				)
+					localizer.Sprintf("Current context is %q. Do you want to continue? (Y/N)",
+						config.CurrentContextName(),
+					))
 				_, err := fmt.Scanln(&input)
 				c.CheckErr(err)
 
@@ -102,17 +103,17 @@ func (c *Uninstall) run() {
 				}
 			}
 			if controller.ContainerExists(id) && !c.force {
-				output.Infof("Verifying no user (non-system) database (.mdf) files")
+				output.Infof(localizer.Sprintf("Verifying no user (non-system) database (.mdf) files"))
 				if !controller.ContainerRunning(id) {
 					output.FatalfWithHintExamples([][]string{
-						{"To start the container", "sqlcmd start"},
-						{"To override the check, use --force", "sqlcmd delete --force"},
-					}, "Container is not running, unable to verify that user database files do not exist")
+						{localizer.Sprintf("To start the container"), "sqlcmd start"},
+						{localizer.Sprintf("To override the check, use --force"), "sqlcmd delete --force"},
+					}, localizer.Sprintf("Container is not running, unable to verify that user database files do not exist"))
 				}
 				c.userDatabaseSafetyCheck(controller, id)
 			}
 
-			output.Infof("Removing context %s", config.CurrentContextName())
+			output.Infof(localizer.Sprintf("Removing context %s", config.CurrentContextName()))
 
 			if controller.ContainerExists(id) {
 				output.Infof(
@@ -124,7 +125,7 @@ func (c *Uninstall) run() {
 				err = controller.ContainerRemove(id)
 				c.CheckErr(err)
 			} else {
-				output.Warnf("Container %q no longer exists, continuing to remove context...", id)
+				output.Warnf(localizer.Sprintf("Container %q no longer exists, continuing to remove context...", id))
 			}
 		}
 
@@ -133,9 +134,9 @@ func (c *Uninstall) run() {
 
 		newContextName := config.CurrentContextName()
 		if newContextName != "" {
-			output.Infof("Current context is now %s", newContextName)
+			output.Infof(localizer.Sprintf("Current context is now %s", newContextName))
 		} else {
-			output.Infof("%v", "Operation completed successfully")
+			output.Infof(localizer.Sprintf("%v", "Operation completed successfully"))
 		}
 	}
 }
@@ -159,7 +160,7 @@ func (c *Uninstall) userDatabaseSafetyCheck(controller *container.Controller, id
 
 			if !isSystemDatabase {
 				output.FatalfWithHints([]string{
-					fmt.Sprintf(
+					localizer.Sprintf(
 						"If the database is mounted, run `sqlcmd query \"use master; DROP DATABASE [%s]\"`",
 						"<database_name>"),
 					"Pass in the flag --force to override this safety check for user (non-system) databases"},
@@ -174,7 +175,7 @@ func (c *Uninstall) currentContextEndPointExists() (exists bool) {
 	exists = true
 
 	if !config.EndpointsExists() {
-		output.Fatal("No endpoints to uninstall")
+		output.Fatal(localizer.Sprintf("No endpoints to uninstall"))
 		exists = false
 	}
 
