@@ -3,12 +3,61 @@ package mssqlcontainer
 import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/http"
 	output2 "github.com/microsoft/go-sqlcmd/internal/output"
 	"net/url"
 	"path"
 	"path/filepath"
 	"strings"
 )
+
+func ValidateUsingUrlExists(
+	usingDatabaseUrl string,
+	output *output2.Output) {
+	databaseUrl := extractUrl(usingDatabaseUrl)
+	u, _ := url.Parse(databaseUrl)
+
+	if len(u.Scheme) > 3 {
+		if u.Scheme != "http" && u.Scheme != "https" {
+			output.FatalfWithHints(
+				[]string{
+					"--using URL must be http or https",
+				},
+				"%q is not a valid URL for --using flag", usingDatabaseUrl)
+		}
+	}
+
+	if len(u.Scheme) > 3 {
+
+		if u.Path == "" {
+			output.FatalfWithHints(
+				[]string{
+					"--using URL must have a path to .bak, .bacpac or .mdf (.7z) file",
+				},
+				"%q is not a valid URL for --using flag", usingDatabaseUrl)
+		}
+	}
+
+	var f string
+	if len(u.Scheme) > 3 {
+		_, f = filepath.Split(u.Path)
+	} else {
+		_, f = filepath.Split(usingDatabaseUrl)
+	}
+	if filepath.Ext(f) != ".bak" && filepath.Ext(f) != ".bacpac" && filepath.Ext(f) != ".mdf" && filepath.Ext(f) != ".7z" {
+		output.FatalfWithHints(
+			[]string{
+				"--using file URL must be a .bak, .bacpac, or .mdf (.7z) file",
+			},
+			"Invalid --using file type, extension %q is not supported", filepath.Ext(f))
+	}
+
+	if len(u.Scheme) > 3 {
+
+		// Verify the url actually exists, and early exit if it doesn't
+		urlExists(databaseUrl, output)
+	}
+}
 
 func DownloadAndRestoreDb(
 	controller *container.Controller,
@@ -19,7 +68,13 @@ func DownloadAndRestoreDb(
 	query func(commandText string),
 	output *output2.Output,
 ) {
+	parsed, _ := url.Parse(usingDatabaseUrl)
+
 	databaseName := parseDbName(usingDatabaseUrl)
+	if databaseName == "" {
+		panic(fmt.Sprintf("databaseName is empty, failed to parse URL %q", usingDatabaseUrl))
+	}
+
 	databaseUrl := extractUrl(usingDatabaseUrl)
 
 	_, file := filepath.Split(databaseUrl)
@@ -27,24 +82,39 @@ func DownloadAndRestoreDb(
 	// Download file from URL into container
 	output.Infof("Downloading %s", file)
 
-	u, _ := url.Parse(usingDatabaseUrl)
-
-	_, f := filepath.Split(u.Path)
+	var f string
+	if len(parsed.Scheme) > 3 {
+		u, _ := url.Parse(usingDatabaseUrl)
+		_, f = filepath.Split(u.Path)
+	} else {
+		_, f = filepath.Split(usingDatabaseUrl)
+	}
 
 	var temporaryFolder string
-	if filepath.Ext(f) == ".bak" || filepath.Ext(f) == ".7z" {
+	if filepath.Ext(f) == ".bak" || filepath.Ext(f) == ".7z" || filepath.Ext(f) == ".bacpac" {
 		temporaryFolder = "/var/opt/mssql/backup"
 	} else if filepath.Ext(f) == ".mdf" {
 		temporaryFolder = "/var/opt/mssql/data"
 	} else {
-		panic("Unsupported file extension")
+		panic(fmt.Sprintf("Unsupported file extension (%q)", filepath.Ext(f)))
 	}
 
-	controller.DownloadFile(
-		containerId,
-		databaseUrl,
-		temporaryFolder,
-	)
+	if len(parsed.Scheme) > 3 {
+		controller.DownloadFile(
+			containerId,
+			databaseUrl,
+			temporaryFolder,
+		)
+	} else {
+		controller.CopyFile(
+			containerId,
+			databaseUrl,
+			temporaryFolder,
+		)
+
+		_, f := filepath.Split(databaseUrl)
+		controller.RunCmdInContainer(containerId, []string{"chmod", "g+r", temporaryFolder + "/" + f})
+	}
 
 	if filepath.Ext(f) == ".7z" {
 		controller.RunCmdInContainer(containerId, []string{
@@ -157,11 +227,12 @@ CREATE DATABASE [%s]
 			"/opt/sqlpackage/sqlpackage",
 			"/Action:import",
 			"/SourceFile:" + temporaryFolder + "/" + file,
-			"/TargetUser:" + userName,
-			"/TargetPassword:" + password,
 			"/TargetServerName:localhost",
 			"/TargetDatabaseName:" + dbNameAsIdentifier,
-			"/TargetTrustServerCertificate:true"})
+			"/TargetTrustServerCertificate:true",
+			"/TargetUser:" + userName,
+			"/TargetPassword:" + password,
+		})
 	}
 
 	alterDefaultDb := fmt.Sprintf(
@@ -228,7 +299,9 @@ func parseDbName(usingDbUrl string) string {
 		}
 
 	}
-	return ""
+
+	fileName := filepath.Base(usingDbUrl)
+	return fileName[:len(fileName)-len(filepath.Ext(fileName))]
 }
 
 func extractUrl(usingArg string) string {
@@ -255,4 +328,13 @@ func extractUrl(usingArg string) string {
 	}
 
 	return usingArg
+}
+
+// Verify the file exists at the URL
+func urlExists(url string, output *output2.Output) {
+	if !http.UrlExists(url) {
+		output.FatalfWithHints(
+			[]string{"File does not exist at URL"},
+			"Unable to download file")
+	}
 }

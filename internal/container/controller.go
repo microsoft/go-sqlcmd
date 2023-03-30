@@ -4,6 +4,7 @@
 package container
 
 import (
+	"archive/tar"
 	"bufio"
 	"bytes"
 	"context"
@@ -15,6 +16,7 @@ import (
 	"github.com/docker/go-connections/nat"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 	"io"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -229,6 +231,40 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	checkErr(err)
 
 	return strings.Split(string(stdout), "\n")
+}
+
+func (c Controller) CopyFile(id string, src string, destFolder string) {
+	if id == "" {
+		panic("Must pass in non-empty id")
+	}
+	if src == "" {
+		panic("Must pass in non-empty src")
+	}
+	if destFolder == "" {
+		panic("Must pass in non-empty destFolder")
+	}
+
+	_, f := filepath.Split(src)
+	h, err := os.ReadFile(src)
+	checkErr(err)
+
+	// Create and add some files to the archive.
+	var buf bytes.Buffer
+	tw := tar.NewWriter(&buf)
+	hdr := &tar.Header{
+		Name: f,
+		Mode: 0600,
+		Size: int64(len(h)),
+	}
+	err = tw.WriteHeader(hdr)
+	checkErr(err)
+	_, err = tw.Write([]byte(h))
+	checkErr(err)
+	err = tw.Close()
+	checkErr(err)
+
+	err = c.cli.CopyToContainer(context.Background(), id, destFolder, &buf, types.CopyToContainerOptions{})
+	checkErr(err)
 }
 
 func (c Controller) DownloadFile(id string, src string, destFolder string) {

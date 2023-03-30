@@ -9,9 +9,7 @@ import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
-	"net/url"
 	"os"
-	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -23,7 +21,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
-	"github.com/microsoft/go-sqlcmd/internal/http"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
@@ -298,7 +295,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	// Do an early exit if url doesn't exist
 	if c.usingDatabaseUrl != "" {
-		c.validateUsingUrlExists()
+		mssqlcontainer.ValidateUsingUrlExists(c.usingDatabaseUrl, output)
 	}
 
 	if c.defaultDatabase != "" {
@@ -382,7 +379,15 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	// Download and restore DB if asked
 	if c.usingDatabaseUrl != "" {
-		c.downloadAndRestoreDb(controller, containerId, userName, password)
+		mssqlcontainer.DownloadAndRestoreDb(
+			controller,
+			containerId,
+			c.usingDatabaseUrl,
+			userName,
+			password,
+			c.sql.Query,
+			c.Cmd.Output(),
+		)
 	}
 
 	if c.openTool == "" {
@@ -455,36 +460,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		if c.openFile != "" {
 			args = append(args, c.openFile)
 
-			/*
-				var k registry.Key
-				prefix := "SOFTWARE\\Classes\\"
-				urlScheme := "sqlcmd"
-				basePath := prefix + urlScheme
-				permission := uint32(registry.QUERY_VALUE | registry.SET_VALUE)
-				baseKey := registry.CURRENT_USER
-
-				programLocation := "\"C:\\Windows\\notepad.exe\""
-
-				// create key
-				registry.CreateKey(baseKey, basePath, permission)
-
-				// set description
-				k.SetStringValue("", "Notepad app")
-				k.SetStringValue("URL Protocol", "")
-
-				// set icon
-				registry.CreateKey(registry.CURRENT_USER, "lumiere\\DefaultIcon", registry.ALL_ACCESS)
-				k.SetStringValue("", programLocation+",1")
-
-				// create tree
-				registry.CreateKey(baseKey, basePath+"\\shell", permission)
-				registry.CreateKey(baseKey, basePath+"\\shell\\open", permission)
-				registry.CreateKey(baseKey, basePath+"\\shell\\open\\command", permission)
-
-				// set open command
-				k.SetStringValue("", programLocation+" \"%1\"")
-			*/
-
 			a := os.Args[1:]
 			data, _ := json.Marshal(&a)
 
@@ -496,45 +471,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		_, err := tool.Run(args)
 		c.CheckErr(err)
 	}
-}
-
-func (c *MssqlBase) validateUsingUrlExists() {
-	output := c.Cmd.Output()
-	databaseUrl := extractUrl(c.usingDatabaseUrl)
-	u, err := url.Parse(databaseUrl)
-	c.CheckErr(err)
-
-	if u.Scheme != "http" && u.Scheme != "https" {
-		output.FatalfWithHints(
-			[]string{
-				"--using URL must be http or https",
-			},
-			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
-	}
-
-	if u.Path == "" {
-		output.FatalfWithHints(
-			[]string{
-				"--using URL must have a path to .bak, .bacpac or .mdf (.7z) file",
-			},
-			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
-	}
-
-	_, f := filepath.Split(u.Path)
-	if filepath.Ext(f) != ".bak" && filepath.Ext(f) != ".bacpac" && filepath.Ext(f) != ".mdf" && filepath.Ext(f) != ".7z" {
-		output.FatalfWithHints(
-			[]string{
-				"--using file URL must be a .bak, .bacpac, or .mdf (.7z) file",
-			},
-			"Invalid --using file type, extension %q is not supported", filepath.Ext(f))
-	}
-
-	// Verify the url actually exists, and early exit if it doesn't
-	urlExists(databaseUrl, output)
-}
-
-func (c *MssqlBase) query(commandText string) {
-	c.sql.Query(commandText)
 }
 
 // createNonSaUser creates a user (non-sa) and assigns the sysadmin role
@@ -554,7 +490,7 @@ func (c *MssqlBase) createNonSaUser(
 
 		// Create the default database, if it isn't a downloaded database
 		output.Infof("Creating default database [%s]", defaultDatabase)
-		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
+		c.sql.Query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
 	const createLogin = `CREATE LOGIN [%s]
@@ -566,62 +502,19 @@ CHECK_POLICY=OFF`
 @loginame = N'%s',
 @rolename = N'sysadmin'`
 
-	c.query(fmt.Sprintf(createLogin, userName, password, defaultDatabase))
-	c.query(fmt.Sprintf(addSrvRoleMember, userName))
+	c.sql.Query(fmt.Sprintf(createLogin, userName, password, defaultDatabase))
+	c.sql.Query(fmt.Sprintf(addSrvRoleMember, userName))
 
 	// Correct safety protocol is to rotate the sa password, because the first
 	// sa password has been in the docker environment (as SA_PASSWORD)
-	c.query(fmt.Sprintf("ALTER LOGIN [sa] WITH PASSWORD = N'%s';",
+	c.sql.Query(fmt.Sprintf("ALTER LOGIN [sa] WITH PASSWORD = N'%s';",
 		c.generatePassword()))
-	c.query("ALTER LOGIN [sa] DISABLE")
+	c.sql.Query("ALTER LOGIN [sa] DISABLE")
 
 	if c.defaultDatabase != "" {
-		c.query(fmt.Sprintf("ALTER AUTHORIZATION ON DATABASE::[%s] TO %s",
+		c.sql.Query(fmt.Sprintf("ALTER AUTHORIZATION ON DATABASE::[%s] TO %s",
 			defaultDatabase, userName))
 	}
-}
-
-func extractUrl(usingArg string) string {
-	urlEndIdx := strings.LastIndex(usingArg, ".bak")
-	if urlEndIdx == -1 {
-		urlEndIdx = strings.LastIndex(usingArg, ".mdf")
-	}
-	if urlEndIdx != -1 {
-		return usingArg[0:(urlEndIdx + 4)]
-	}
-
-	if urlEndIdx == -1 {
-		urlEndIdx = strings.LastIndex(usingArg, ".7z")
-		if urlEndIdx != -1 {
-			return usingArg[0:(urlEndIdx + 3)]
-		}
-	}
-
-	if urlEndIdx == -1 {
-		urlEndIdx = strings.LastIndex(usingArg, ".bacpac")
-		if urlEndIdx != -1 {
-			return usingArg[0:(urlEndIdx + 7)]
-		}
-	}
-
-	return usingArg
-}
-
-func (c *MssqlBase) downloadAndRestoreDb(
-	controller *container.Controller,
-	containerId string,
-	userName string,
-	password string,
-) {
-	mssqlcontainer.DownloadAndRestoreDb(
-		controller,
-		containerId,
-		c.usingDatabaseUrl,
-		userName,
-		password,
-		c.query,
-		c.Cmd.Output(),
-	)
 }
 
 func (c *MssqlBase) downloadImage(
@@ -644,15 +537,6 @@ func (c *MssqlBase) downloadImage(
 				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
 					"\t`podman|docker pull %s`", imageName)},
 			"Unable to download image %s", imageName)
-	}
-}
-
-// Verify the file exists at the URL
-func urlExists(url string, output *output.Output) {
-	if !http.UrlExists(url) {
-		output.FatalfWithHints(
-			[]string{"File does not exist at URL"},
-			"Unable to download file")
 	}
 }
 
