@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -28,7 +29,6 @@ func ValidateUsingUrlExists(
 	}
 
 	if len(u.Scheme) > 3 {
-
 		if u.Path == "" {
 			output.FatalfWithHints(
 				[]string{
@@ -77,6 +77,9 @@ func DownloadAndRestoreDb(
 
 	databaseUrl := extractUrl(usingDatabaseUrl)
 
+	var log_f string
+	var log_file string
+
 	_, file := filepath.Split(databaseUrl)
 
 	// Download file from URL into container
@@ -84,8 +87,7 @@ func DownloadAndRestoreDb(
 
 	var f string
 	if len(parsed.Scheme) > 3 {
-		u, _ := url.Parse(usingDatabaseUrl)
-		_, f = filepath.Split(u.Path)
+		_, f = filepath.Split(databaseUrl)
 	} else {
 		_, f = filepath.Split(usingDatabaseUrl)
 	}
@@ -118,13 +120,22 @@ func DownloadAndRestoreDb(
 
 	if filepath.Ext(f) == ".7z" {
 		controller.RunCmdInContainer(containerId, []string{
+			"mkdir",
+			"/opt/7-zip"})
+
+		controller.RunCmdInContainer(containerId, []string{
 			"wget",
 			"-O",
 			"/opt/7-zip/7-zip.tar",
 			"https://7-zip.org/a/7z2201-linux-x64.tar.xz"})
 
-		controller.RunCmdInContainer(containerId, []string{"tar", "xvf", "/tmp/7-zip.tar"})
-		controller.RunCmdInContainer(containerId, []string{"mkdir", "/opt/7-zip"})
+		controller.RunCmdInContainer(containerId, []string{
+			"tar",
+			"xvf",
+			"/opt/7-zip/7-zip.tar",
+			"-C",
+			"/opt/7-zip",
+		})
 		controller.RunCmdInContainer(containerId, []string{"chmod", "u+x", "/opt/7-zip/7zz"})
 		controller.RunCmdInContainer(containerId, []string{
 			"/opt/7-zip/7zz",
@@ -133,7 +144,7 @@ func DownloadAndRestoreDb(
 			temporaryFolder + "/" + file,
 		})
 
-		controller.RunCmdInContainer(containerId, []string{
+		stdout, _ := controller.RunCmdInContainer(containerId, []string{
 			"./opt/7-zip/7zz",
 			"l",
 			"-ba",
@@ -141,9 +152,22 @@ func DownloadAndRestoreDb(
 			temporaryFolder + "/" + file,
 		})
 
-		databaseName = "StackOverflow2010"
-		f = "StackOverflow2010.mdf"
+		databaseName = parseDbName(usingDatabaseUrl)
+
 		temporaryFolder = "/var/opt/mssql/data"
+
+		paths := extractPaths(string(stdout))
+		for _, p := range paths {
+			if filepath.Ext(p) == ".mdf" {
+				f = p
+				file = p
+			}
+
+			if filepath.Ext(p) == ".ldf" {
+				log_f = p
+				log_file = p
+			}
+		}
 	}
 
 	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
@@ -188,7 +212,7 @@ DECLARE @fileListTable TABLE (
 INSERT INTO @fileListTable
 EXEC('RESTORE FILELISTONLY FROM DISK = ''%s/%s''')
 SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''%s/%s'' WITH '
-SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
+SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/data/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
 FROM @fileListTable
 WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
@@ -204,13 +228,26 @@ EXEC(@sql)`
 		controller.RunCmdInContainer(containerId, []string{"chmod", "-u+rw", temporaryFolder + "/" + file})
 		controller.RunCmdInContainer(containerId, []string{"chmod", "-g+r", temporaryFolder + "/" + file})
 
-		text := `SET NOCOUNT ON;
+		text := `SET NOCOUNT ON;`
+		if log_f == "" {
+			text += `CREATE DATABASE [%s]   
+    ON (FILENAME = '%s/%s')
+    FOR ATTACH;`
+			query(fmt.Sprintf(text, dbNameAsIdentifier, temporaryFolder, file))
 
-CREATE DATABASE [%s]   
-    ON (FILENAME = '%s/%s'), (FILENAME = '/var/opt/mssql/data/StackOverflow2010_log.ldf')
+		} else {
+			controller.RunCmdInContainer(containerId, []string{"chown", "mssql:root", temporaryFolder + "/" + log_file})
+			controller.RunCmdInContainer(containerId, []string{"chmod", "-o-r", temporaryFolder + "/" + log_file})
+			controller.RunCmdInContainer(containerId, []string{"chmod", "-u+rw", temporaryFolder + "/" + log_file})
+			controller.RunCmdInContainer(containerId, []string{"chmod", "-g+r", temporaryFolder + "/" + log_file})
+
+			text += `CREATE DATABASE [%s]   
+    ON (FILENAME = '%s/%s'), (FILENAME = '%s/%s') 
     FOR ATTACH;`
 
-		query(fmt.Sprintf(text, dbNameAsIdentifier, temporaryFolder, file))
+			query(fmt.Sprintf(text, dbNameAsIdentifier, temporaryFolder, file, temporaryFolder, log_file))
+		}
+
 	} else if filepath.Ext(f) == ".bacpac" {
 		controller.DownloadFile(
 			containerId,
@@ -223,8 +260,16 @@ CREATE DATABASE [%s]
 		controller.RunCmdInContainer(containerId, []string{"unzip", "/tmp/sqlpackage-linux", "-d", "/opt/sqlpackage"})
 		controller.RunCmdInContainer(containerId, []string{"rm", "/tmp/sqlpackage-linux"})
 		controller.RunCmdInContainer(containerId, []string{"chmod", "+x", "/opt/sqlpackage/sqlpackage"})
+
+		alterDefaultDb := fmt.Sprintf(
+			"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
+			userName,
+			"master")
+		query(alterDefaultDb)
+
 		controller.RunCmdInContainer(containerId, []string{
 			"/opt/sqlpackage/sqlpackage",
+			"/Diagnostics:true",
 			"/Action:import",
 			"/SourceFile:" + temporaryFolder + "/" + file,
 			"/TargetServerName:localhost",
@@ -240,6 +285,16 @@ CREATE DATABASE [%s]
 		userName,
 		dbNameAsNonIdentifier)
 	query(alterDefaultDb)
+}
+
+func extractPaths(input string) []string {
+	re := regexp.MustCompile(`Path\s*=\s*(\S+)`)
+	matches := re.FindAllStringSubmatch(input, -1)
+	var paths []string
+	for _, match := range matches {
+		paths = append(paths, match[1])
+	}
+	return paths
 }
 
 func getDbNameAsIdentifier(dbName string) string {

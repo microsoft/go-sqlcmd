@@ -227,7 +227,7 @@ func (c *MssqlBase) AddFlags(
 
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.openTool,
-		DefaultString: "ads",
+		DefaultString: "",
 		Name:          "open",
 		Usage:         "Open tool e.g. ads",
 	})

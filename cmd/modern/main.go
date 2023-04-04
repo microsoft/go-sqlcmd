@@ -52,10 +52,6 @@ func main() {
 	if strings.HasPrefix(os.Args[1], "sqlcmd://") {
 		sqlcmdUrl := strings.TrimRight(os.Args[1][9:], "/")
 
-		//fmt.Printf("%q", sqlcmdUrl)
-
-		//_, _ = fmt.Scanln(&input)
-
 		data2, err := base64.StdEncoding.DecodeString(sqlcmdUrl)
 		if err == nil {
 			var genre2 []string

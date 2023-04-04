@@ -7,6 +7,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer"
 )
@@ -61,14 +62,14 @@ func (c *Use) run() {
 		endpoint, user := config.CurrentContext()
 
 		c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
-		c.sql.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
+		c.sql.Connect(endpoint, user, sql.ConnectOptions{Database: "master", Interactive: false})
 
 		mssqlcontainer.DownloadAndRestoreDb(
 			controller,
 			id,
 			c.url,
 			user.BasicAuth.Username,
-			user.BasicAuth.Password,
+			secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
 			c.query,
 			c.Cmd.Output(),
 		)
