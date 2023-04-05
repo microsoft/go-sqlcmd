@@ -9,11 +9,10 @@ import (
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest"
 	"os"
 	"runtime"
 	"strings"
-
-	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
 
@@ -59,9 +58,11 @@ type MssqlBase struct {
 
 	port int
 
-	usingDatabaseUrl string
-	openTool         string
-	openFile         string
+	useDatabaseUrl string
+	useMechanism   string
+
+	openTool string
+	openFile string
 
 	unitTesting bool
 
@@ -219,10 +220,24 @@ func (c *MssqlBase) AddFlags(
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.usingDatabaseUrl,
+		String:        &c.useDatabaseUrl,
 		DefaultString: "",
 		Name:          "using",
 		Usage:         "Download and use database from .bak/.bacpac/.mdf/.7z URL",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.useDatabaseUrl,
+		DefaultString: "",
+		Name:          "use",
+		Usage:         "Download and use database from .bak/.bacpac/.mdf/.7z URL",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.useMechanism,
+		DefaultString: "",
+		Name:          "use-mechanism",
+		Usage:         "Mechanism to use to make --use database online (attach, restore, dacfx)",
 	})
 
 	addFlag(cmdparser.FlagOptions{
@@ -281,6 +296,7 @@ func (c *MssqlBase) Run() {
 // command-line and the program will exit.
 func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	output := c.Cmd.Output()
+	controller := container.NewController()
 	saPassword := c.generatePassword()
 
 	env := []string{
@@ -294,8 +310,39 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	// Do an early exit if url doesn't exist
-	if c.usingDatabaseUrl != "" {
-		mssqlcontainer.ValidateUsingUrlExists(c.usingDatabaseUrl, output)
+	var useDatabase ingest.Ingest
+	if c.useDatabaseUrl != "" {
+		useDatabase = ingest.NewIngest(c.useDatabaseUrl, controller, ingest.IngestOptions{
+			Mechanism: c.useMechanism,
+		})
+
+		if !useDatabase.IsValidFileExtension() {
+			output.FatalfWithHints(
+				[]string{
+					fmt.Sprintf(
+						"--using must be a path to a file with a %q extension",
+						strings.Join(useDatabase.ValidFileExtensions(), ", "),
+					),
+				},
+				"%q is not a valid file extension for --using flag", useDatabase.UserProvidedFileExt())
+		}
+
+		if useDatabase.IsRemoteUrl() && !useDatabase.IsValidScheme() {
+			output.FatalfWithHints(
+				[]string{
+					fmt.Sprintf(
+						"--using URL must one of %q",
+						strings.Join(useDatabase.ValidSchemes(), ", "),
+					),
+				},
+				"%q is not a valid URL for --using flag", c.useDatabaseUrl)
+		}
+
+		if !useDatabase.SourceFileExists() {
+			output.FatalfWithHints(
+				[]string{fmt.Sprintf("File does not exist at URL %q", c.useDatabaseUrl)},
+				"Unable to download file")
+		}
 	}
 
 	if c.defaultDatabase != "" {
@@ -303,8 +350,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			output.Fatalf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase)
 		}
 	}
-
-	controller := container.NewController()
 
 	if !c.useCached {
 		c.downloadImage(imageName, output, controller)
@@ -344,8 +389,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		config.CurrentContextName(),
 		config.GetConfigFileUsed())
 
-	controller.ContainerWaitForLogEntry(
-		containerId, c.errorLogEntryToWaitFor)
+	controller.ContainerWaitForLogEntry(containerId, c.errorLogEntryToWaitFor)
 
 	output.Infof(
 		"Disabled %q account (and rotated %q password). Creating user %q",
@@ -374,24 +418,23 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		Name: "sa"}
 
 	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
-
 	c.createNonSaUser(userName, password)
 
 	// Download and restore DB if asked
-	if c.usingDatabaseUrl != "" {
-		mssqlcontainer.DownloadAndRestoreDb(
-			controller,
-			containerId,
-			c.usingDatabaseUrl,
-			userName,
-			password,
-			c.sql.Query,
-			c.Cmd.Output(),
-		)
+	if useDatabase != nil {
+		output.Infof("Copying to container")
+		useDatabase.CopyToContainer(containerId)
+
+		if useDatabase.IsExtractionNeeded() {
+			output.Infof("Extracting files from archive")
+			useDatabase.Extract()
+		}
+
+		output.Infof("Bringing database online")
+		useDatabase.BringOnline(c.sql.Query, userName, password)
 	}
 
 	if c.openTool == "" {
-
 		hints := [][]string{}
 
 		// TODO: sqlcmd open ads only support on Windows right now, add Mac support

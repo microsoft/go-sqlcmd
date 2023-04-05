@@ -4,18 +4,20 @@
 package root
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
-	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest"
 )
 
 type Use struct {
 	cmdparser.Cmd
 
-	url string
+	url          string
+	useMechanism string
 
 	sql sql.Sql
 }
@@ -39,6 +41,14 @@ func (c *Use) DefineCommand(...cmdparser.CommandOptions) {
 		String: &c.url,
 		Name:   "url",
 		Usage:  "Name of context to set as current context"})
+
+	c.AddFlag(cmdparser.FlagOptions{
+		String:        &c.useMechanism,
+		DefaultString: "",
+		Name:          "use-mechanism",
+		Usage:         "Mechanism to use to make --use database online (attach, restore, dacfx)",
+	})
+
 }
 
 func (c *Use) run() {
@@ -64,16 +74,27 @@ func (c *Use) run() {
 		c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
 		c.sql.Connect(endpoint, user, sql.ConnectOptions{Database: "master", Interactive: false})
 
-		mssqlcontainer.DownloadAndRestoreDb(
-			controller,
-			id,
-			c.url,
+		useDatabase := ingest.NewIngest(c.url, controller, ingest.IngestOptions{
+			Mechanism: c.useMechanism,
+		})
+
+		if !useDatabase.SourceFileExists() {
+			output.FatalfWithHints(
+				[]string{fmt.Sprintf("File does not exist at URL %q", c.url)},
+				"Unable to download file to container")
+		}
+
+		useDatabase.CopyToContainer(id)
+
+		if useDatabase.IsExtractionNeeded() {
+			useDatabase.Extract()
+		}
+
+		useDatabase.BringOnline(
+			c.sql.Query,
 			user.BasicAuth.Username,
 			secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
-			c.query,
-			c.Cmd.Output(),
 		)
-
 	} else {
 		output.FatalfWithHintExamples([][]string{
 			{"Create new context with a sql container ", "sqlcmd create mssql"},
