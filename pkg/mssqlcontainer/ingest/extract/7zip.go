@@ -1,11 +1,9 @@
 package extract
 
 import (
-	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"path/filepath"
 	"regexp"
-	"strings"
 )
 
 type sevenZip struct {
@@ -42,8 +40,6 @@ func (e *sevenZip) Extract(srcFile string, destFolder string) (string, string) {
 		"-slt",
 		"/var/opt/mssql/backup/" + srcFile,
 	})
-
-	fmt.Println(stdout)
 
 	var mdfFile string
 	var ldfFile string
@@ -95,6 +91,5 @@ func extractPaths(input string) []string {
 	for _, match := range matches {
 		paths = append(paths, match[1])
 	}
-	fmt.Println("Path: " + strings.Join(paths, ", "))
 	return paths
 }

@@ -35,6 +35,10 @@ func (i *ingest) IsRemoteUrl() bool {
 	return !i.location.IsLocal()
 }
 
+func (i *ingest) UrlFilename() string {
+	return i.uri.Filename()
+}
+
 func (i *ingest) IsValidScheme() bool {
 	for _, s := range i.location.ValidSchemes() {
 		if s == i.uri.Scheme() {
@@ -75,12 +79,9 @@ func (i *ingest) Extract() {
 		i.extractor.Extract(i.uri.Filename(), "/var/opt/mssql/data")
 
 	if i.mechanism == nil {
-		fmt.Println("FOO: " + i.options.Filename)
 		ext := strings.TrimLeft(filepath.Ext(i.options.Filename), ".")
 		i.mechanism = mechanism.NewMechanismByFileExt(ext, i.controller)
 	}
-	fmt.Println("FOO: " + i.mechanism.Name())
-
 }
 
 func (i *ingest) BringOnline(query func(string), username string, password string) {
@@ -131,18 +132,4 @@ func (i *ingest) UserProvidedFileExt() string {
 
 func (i *ingest) ValidSchemes() []string {
 	return i.location.ValidSchemes()
-}
-
-func (i *ingest) ValidFileExtensions() []string {
-	extensions := []string{}
-
-	for _, m := range mechanism.FileTypes() {
-		extensions = append(extensions, m)
-	}
-
-	for _, e := range extract.FileTypes() {
-		extensions = append(extensions, e)
-	}
-
-	return extensions
 }

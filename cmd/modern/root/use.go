@@ -25,7 +25,7 @@ type Use struct {
 func (c *Use) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "use",
-		Short: "Download (into container) and use database",
+		Short: fmt.Sprintf("Download database (into container) (%s)", ingest.ValidFileExtensions()),
 		Examples: []cmdparser.ExampleOptions{
 			{
 				Description: "Download AdventureWorksLT into container for current context, set as default database",
@@ -46,9 +46,8 @@ func (c *Use) DefineCommand(...cmdparser.CommandOptions) {
 		String:        &c.useMechanism,
 		DefaultString: "",
 		Name:          "use-mechanism",
-		Usage:         "Mechanism to use to make --use database online (attach, restore, dacfx)",
+		Usage:         "Mechanism to use to bring database online (attach, restore, dacfx)",
 	})
-
 }
 
 func (c *Use) run() {
@@ -87,7 +86,7 @@ func (c *Use) run() {
 		useDatabase.CopyToContainer(id)
 
 		if useDatabase.IsExtractionNeeded() {
-			fmt.Println("Extracting database from file")
+			output.Infof("Extracting files from %q", useDatabase.UrlFilename())
 			useDatabase.Extract()
 		}
 

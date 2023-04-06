@@ -4,26 +4,22 @@
 package install
 
 import (
-	"encoding/base64"
-	"encoding/json"
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
-	"github.com/microsoft/go-sqlcmd/internal/tools"
-	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest"
-	"os"
 	"runtime"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
-
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
+	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
+	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest"
 	"github.com/spf13/viper"
 )
 
@@ -104,10 +100,18 @@ func (c *MssqlBase) AddFlags(
 		Usage:     "Context name (a default context name will be created if not provided)",
 	})
 
+	// BUG(stuartpa): Make this a hidden flag so we don't break existing usage
 	addFlag(cmdparser.FlagOptions{
 		String:    &c.defaultDatabase,
 		Name:      "user-database",
 		Shorthand: "u",
+		Usage:     "[DEPRECATED use --database] Create a user database and set it as the default for login",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:    &c.defaultDatabase,
+		Name:      "database",
+		Shorthand: "d",
 		Usage:     "Create a user database and set it as the default for login",
 	})
 
@@ -219,25 +223,26 @@ func (c *MssqlBase) AddFlags(
 		Usage:      "Port (next available port from 1433 upwards used by default)",
 	})
 
+	// BUG(stuartpa): Make this a hidden flag so we don't break existing usage
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.useDatabaseUrl,
 		DefaultString: "",
 		Name:          "using",
-		Usage:         "Download and use database from .bak/.bacpac/.mdf/.7z URL",
+		Usage:         fmt.Sprintf("[DEPRECATED use --use] Download %q and use database", ingest.ValidFileExtensions()),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.useDatabaseUrl,
 		DefaultString: "",
 		Name:          "use",
-		Usage:         "Download and use database from .bak/.bacpac/.mdf/.7z URL",
+		Usage:         fmt.Sprintf("Download %q and use database", ingest.ValidFileExtensions()),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.useMechanism,
 		DefaultString: "",
 		Name:          "use-mechanism",
-		Usage:         "Mechanism to use to make --use database online (attach, restore, dacfx)",
+		Usage:         "Mechanism to use to bring database online (attach, restore, dacfx)",
 	})
 
 	addFlag(cmdparser.FlagOptions{
@@ -321,7 +326,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				[]string{
 					fmt.Sprintf(
 						"--using must be a path to a file with a %q extension",
-						strings.Join(useDatabase.ValidFileExtensions(), ", "),
+						ingest.ValidFileExtensions(),
 					),
 				},
 				"%q is not a valid file extension for --using flag", useDatabase.UserProvidedFileExt())
@@ -498,17 +503,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		tool := tools.NewTool("ads")
 		if !tool.IsInstalled() {
 			output.Fatalf(tool.HowToInstall())
-		}
-
-		if c.openFile != "" {
-			args = append(args, c.openFile)
-
-			a := os.Args[1:]
-			data, _ := json.Marshal(&a)
-
-			fmt.Printf("The URL for sharing this `sqlcmd create` is:\n\n")
-			sEnc := base64.StdEncoding.EncodeToString(data)
-			fmt.Printf("sqlcmd://%s\n", sEnc)
 		}
 
 		_, err := tool.Run(args)

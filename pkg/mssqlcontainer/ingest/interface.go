@@ -7,6 +7,7 @@ type Ingest interface {
 	IsExtractionNeeded() bool
 
 	SourceFileExists() bool
+	UrlFilename() string
 	UserProvidedFileExt() string
 
 	CopyToContainer(containerId string)
@@ -14,5 +15,4 @@ type Ingest interface {
 	BringOnline(query func(string), username string, password string)
 
 	ValidSchemes() []string
-	ValidFileExtensions() []string
 }

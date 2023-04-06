@@ -12,7 +12,6 @@
 package main
 
 import (
-	legacyCmd "github.com/microsoft/go-sqlcmd/cmd/sqlcmd"
 	"github.com/microsoft/go-sqlcmd/internal"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
@@ -23,8 +22,11 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
-	"os"
 	"path"
+
+	"os"
+
+	legacyCmd "github.com/microsoft/go-sqlcmd/cmd/sqlcmd"
 )
 
 var rootCmd *Root

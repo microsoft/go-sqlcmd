@@ -1,12 +1,10 @@
 package extract
 
 import (
-	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 )
 
 func NewExtractor(fileExtension string, controller *container.Controller) Extractor {
-	fmt.Println("NewExtractor: " + fileExtension)
 	for _, extractor := range extractors {
 		for _, ext := range extractor.FileTypes() {
 			if ext == fileExtension {

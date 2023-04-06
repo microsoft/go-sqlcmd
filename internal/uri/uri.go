@@ -1,7 +1,6 @@
 package uri
 
 import (
-	"path"
 	"path/filepath"
 	"strings"
 )
@@ -14,30 +13,14 @@ func (u Uri) IsLocal() bool {
 	}
 }
 
+// actualUrl returns the url without the query string
 func (u Uri) ActualUrl() string {
-	urlEndIdx := strings.LastIndex(u.uri, ".bak")
-	if urlEndIdx == -1 {
-		urlEndIdx = strings.LastIndex(u.uri, ".mdf")
+	terminator := strings.LastIndex(u.uri, ",")
+	if terminator != -1 {
+		return u.uri[0:terminator]
+	} else {
+		return u.uri
 	}
-	if urlEndIdx != -1 {
-		return u.uri[0:(urlEndIdx + 4)]
-	}
-
-	if urlEndIdx == -1 {
-		urlEndIdx = strings.LastIndex(u.uri, ".7z")
-		if urlEndIdx != -1 {
-			return u.uri[0:(urlEndIdx + 3)]
-		}
-	}
-
-	if urlEndIdx == -1 {
-		urlEndIdx = strings.LastIndex(u.uri, ".bacpac")
-		if urlEndIdx != -1 {
-			return u.uri[0:(urlEndIdx + 7)]
-		}
-	}
-
-	return u.uri
 }
 
 func (u Uri) Scheme() string {
@@ -66,50 +49,8 @@ func (u Uri) ParseDbName() string {
 		panic("uri is empty")
 	}
 
-	dbToken := path.Base(u.url.Path)
-	if dbToken != "." && dbToken != "/" {
-		lastIdx := strings.LastIndex(dbToken, ".bak")
-		if lastIdx == -1 {
-			lastIdx = strings.LastIndex(dbToken, ".mdf")
-		}
-		if lastIdx != -1 {
-			//Get file name without extension
-			fileName := dbToken[0:lastIdx]
-			lastIdx += 5
-			if lastIdx >= len(dbToken) {
-				return fileName
-			}
-			//Return database name if it was specified
-			return dbToken[lastIdx:]
-		} else {
-			lastIdx := strings.LastIndex(dbToken, ".bacpac")
-			if lastIdx != -1 {
-				//Get file name without extension
-				fileName := dbToken[0:lastIdx]
-				lastIdx += 8
-				if lastIdx >= len(dbToken) {
-					return fileName
-				}
-				//Return database name if it was specified
-				return dbToken[lastIdx:]
-			} else {
-				lastIdx := strings.LastIndex(dbToken, ".7z")
-				if lastIdx != -1 {
-					//Get file name without extension
-					fileName := dbToken[0:lastIdx]
-					lastIdx += 4
-					if lastIdx >= len(dbToken) {
-						return fileName
-					}
-					//Return database name if it was specified
-					return dbToken[lastIdx:]
-				}
-			}
-		}
-	}
-
-	fileName := filepath.Base(u.uri)
-	return fileName[:len(fileName)-len(filepath.Ext(fileName))]
+	// TODO: Reimplement
+	return ""
 }
 
 func (u Uri) GetDbNameAsIdentifier() string {
