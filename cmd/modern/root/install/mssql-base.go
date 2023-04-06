@@ -4,18 +4,22 @@
 package install
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
-	"net/url"
-	"path"
-	"path/filepath"
+	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
+	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest"
+	"os"
 	"runtime"
 	"strings"
+
+	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
-	"github.com/microsoft/go-sqlcmd/internal/http"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
@@ -54,7 +58,11 @@ type MssqlBase struct {
 
 	port int
 
-	usingDatabaseUrl string
+	useDatabaseUrl string
+	useMechanism   string
+
+	openTool string
+	openFile string
 
 	unitTesting bool
 
@@ -212,10 +220,38 @@ func (c *MssqlBase) AddFlags(
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.usingDatabaseUrl,
+		String:        &c.useDatabaseUrl,
 		DefaultString: "",
 		Name:          "using",
-		Usage:         "Download (into container) and attach database (.bak) from URL",
+		Usage:         "Download and use database from .bak/.bacpac/.mdf/.7z URL",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.useDatabaseUrl,
+		DefaultString: "",
+		Name:          "use",
+		Usage:         "Download and use database from .bak/.bacpac/.mdf/.7z URL",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.useMechanism,
+		DefaultString: "",
+		Name:          "use-mechanism",
+		Usage:         "Mechanism to use to make --use database online (attach, restore, dacfx)",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.openTool,
+		DefaultString: "",
+		Name:          "open",
+		Usage:         "Open tool e.g. ads",
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.openFile,
+		DefaultString: "",
+		Name:          "open-file",
+		Usage:         "Open file in tool e.g. https://aks.ms/adventureworks-demo.sql",
 	})
 }
 
@@ -260,6 +296,7 @@ func (c *MssqlBase) Run() {
 // command-line and the program will exit.
 func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	output := c.Cmd.Output()
+	controller := container.NewController()
 	saPassword := c.generatePassword()
 
 	env := []string{
@@ -273,8 +310,39 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	// Do an early exit if url doesn't exist
-	if c.usingDatabaseUrl != "" {
-		c.validateUsingUrlExists()
+	var useDatabase ingest.Ingest
+	if c.useDatabaseUrl != "" {
+		useDatabase = ingest.NewIngest(c.useDatabaseUrl, controller, ingest.IngestOptions{
+			Mechanism: c.useMechanism,
+		})
+
+		if !useDatabase.IsValidFileExtension() {
+			output.FatalfWithHints(
+				[]string{
+					fmt.Sprintf(
+						"--using must be a path to a file with a %q extension",
+						strings.Join(useDatabase.ValidFileExtensions(), ", "),
+					),
+				},
+				"%q is not a valid file extension for --using flag", useDatabase.UserProvidedFileExt())
+		}
+
+		if useDatabase.IsRemoteUrl() && !useDatabase.IsValidScheme() {
+			output.FatalfWithHints(
+				[]string{
+					fmt.Sprintf(
+						"--using URL must one of %q",
+						strings.Join(useDatabase.ValidSchemes(), ", "),
+					),
+				},
+				"%q is not a valid URL for --using flag", c.useDatabaseUrl)
+		}
+
+		if !useDatabase.SourceFileExists() {
+			output.FatalfWithHints(
+				[]string{fmt.Sprintf("File does not exist at URL %q", c.useDatabaseUrl)},
+				"Unable to download file")
+		}
 	}
 
 	if c.defaultDatabase != "" {
@@ -282,8 +350,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			output.Fatalf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase)
 		}
 	}
-
-	controller := container.NewController()
 
 	if !c.useCached {
 		c.downloadImage(imageName, output, controller)
@@ -323,8 +389,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		config.CurrentContextName(),
 		config.GetConfigFileUsed())
 
-	controller.ContainerWaitForLogEntry(
-		containerId, c.errorLogEntryToWaitFor)
+	controller.ContainerWaitForLogEntry(containerId, c.errorLogEntryToWaitFor)
 
 	output.Infof(
 		"Disabled %q account (and rotated %q password). Creating user %q",
@@ -353,86 +418,102 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		Name: "sa"}
 
 	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
-
 	c.createNonSaUser(userName, password)
 
 	// Download and restore DB if asked
-	if c.usingDatabaseUrl != "" {
-		c.downloadAndRestoreDb(
-			controller,
-			containerId,
-			userName,
+	if useDatabase != nil {
+		output.Infof("Copying to container")
+		useDatabase.CopyToContainer(containerId)
+
+		if useDatabase.IsExtractionNeeded() {
+			output.Infof("Extracting files from archive")
+			useDatabase.Extract()
+		}
+
+		output.Infof("Bringing database online")
+		useDatabase.BringOnline(c.sql.Query, userName, password)
+	}
+
+	if c.openTool == "" {
+		hints := [][]string{}
+
+		// TODO: sqlcmd open ads only support on Windows right now, add Mac support
+		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+			hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
+		}
+
+		hints = append(hints, []string{"Run a query", "sqlcmd query \"SELECT @@version\""})
+		hints = append(hints, []string{"Start interactive session", "sqlcmd query"})
+
+		if previousContextName != "" {
+			hints = append(
+				hints,
+				[]string{"Change current context", fmt.Sprintf(
+					"sqlcmd config use-context %v",
+					previousContextName,
+				)},
+			)
+		}
+
+		hints = append(hints, []string{"View sqlcmd configuration", "sqlcmd config view"})
+		hints = append(hints, []string{"See connection strings", "sqlcmd config connection-strings"})
+		hints = append(hints, []string{"Remove", "sqlcmd delete"})
+
+		output.InfofWithHintExamples(hints,
+			"Now ready for client connections on port %d",
+			c.port,
 		)
 	}
 
-	hints := [][]string{}
+	if c.openTool == "ads" {
+		ads := open.Ads{}
+		ads.SetCrossCuttingConcerns(dependency.Options{
+			EndOfLine: pal.LineBreak(),
+			Output:    c.Output(),
+		})
 
-	// TODO: sqlcmd open ads only support on Windows right now, add Mac support
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
+		user := &sqlconfig.User{
+			AuthenticationType: "basic",
+			BasicAuth: &sqlconfig.BasicAuthDetails{
+				Username:           userName,
+				PasswordEncryption: c.passwordEncryption,
+				Password:           secret.Encode(password, c.passwordEncryption)},
+			Name: userName}
+
+		ads.PersistCredentialForAds(endpoint.EndpointDetails.Address, endpoint, user)
+
+		output := c.Output()
+		args := []string{
+			"-r",
+			fmt.Sprintf(
+				"--server=%s", fmt.Sprintf(
+					"%s,%d",
+					"127.0.0.1",
+					c.port)),
+		}
+
+		args = append(args, fmt.Sprintf("--user=%s",
+			strings.Replace(userName, `"`, `\"`, -1)))
+
+		tool := tools.NewTool("ads")
+		if !tool.IsInstalled() {
+			output.Fatalf(tool.HowToInstall())
+		}
+
+		if c.openFile != "" {
+			args = append(args, c.openFile)
+
+			a := os.Args[1:]
+			data, _ := json.Marshal(&a)
+
+			fmt.Printf("The URL for sharing this `sqlcmd create` is:\n\n")
+			sEnc := base64.StdEncoding.EncodeToString(data)
+			fmt.Printf("sqlcmd://%s\n", sEnc)
+		}
+
+		_, err := tool.Run(args)
+		c.CheckErr(err)
 	}
-
-	hints = append(hints, []string{"Run a query", "sqlcmd query \"SELECT @@version\""})
-	hints = append(hints, []string{"Start interactive session", "sqlcmd query"})
-
-	if previousContextName != "" {
-		hints = append(
-			hints,
-			[]string{"Change current context", fmt.Sprintf(
-				"sqlcmd config use-context %v",
-				previousContextName,
-			)},
-		)
-	}
-
-	hints = append(hints, []string{"View sqlcmd configuration", "sqlcmd config view"})
-	hints = append(hints, []string{"See connection strings", "sqlcmd config connection-strings"})
-	hints = append(hints, []string{"Remove", "sqlcmd delete"})
-
-	output.InfofWithHintExamples(hints,
-		"Now ready for client connections on port %d",
-		c.port,
-	)
-}
-
-func (c *MssqlBase) validateUsingUrlExists() {
-	output := c.Cmd.Output()
-	databaseUrl := extractUrl(c.usingDatabaseUrl)
-	u, err := url.Parse(databaseUrl)
-	c.CheckErr(err)
-
-	if u.Scheme != "http" && u.Scheme != "https" {
-		output.FatalfWithHints(
-			[]string{
-				"--using URL must be http or https",
-			},
-			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
-	}
-
-	if u.Path == "" {
-		output.FatalfWithHints(
-			[]string{
-				"--using URL must have a path to .bak file",
-			},
-			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
-	}
-
-	// At the moment we only support attaching .bak files, but we should
-	// support .bacpacs and .mdfs in the future
-	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
-		output.FatalfWithHints(
-			[]string{
-				"--using file URL must be a .bak file",
-			},
-			"Invalid --using file type")
-	}
-
-	// Verify the url actually exists, and early exit if it doesn't
-	urlExists(databaseUrl, output)
-}
-
-func (c *MssqlBase) query(commandText string) {
-	c.sql.Query(commandText)
 }
 
 // createNonSaUser creates a user (non-sa) and assigns the sysadmin role
@@ -452,7 +533,7 @@ func (c *MssqlBase) createNonSaUser(
 
 		// Create the default database, if it isn't a downloaded database
 		output.Infof("Creating default database [%s]", defaultDatabase)
-		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
+		c.sql.Query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
 	const createLogin = `CREATE LOGIN [%s]
@@ -464,137 +545,19 @@ CHECK_POLICY=OFF`
 @loginame = N'%s',
 @rolename = N'sysadmin'`
 
-	c.query(fmt.Sprintf(createLogin, userName, password, defaultDatabase))
-	c.query(fmt.Sprintf(addSrvRoleMember, userName))
+	c.sql.Query(fmt.Sprintf(createLogin, userName, password, defaultDatabase))
+	c.sql.Query(fmt.Sprintf(addSrvRoleMember, userName))
 
 	// Correct safety protocol is to rotate the sa password, because the first
 	// sa password has been in the docker environment (as SA_PASSWORD)
-	c.query(fmt.Sprintf("ALTER LOGIN [sa] WITH PASSWORD = N'%s';",
+	c.sql.Query(fmt.Sprintf("ALTER LOGIN [sa] WITH PASSWORD = N'%s';",
 		c.generatePassword()))
-	c.query("ALTER LOGIN [sa] DISABLE")
+	c.sql.Query("ALTER LOGIN [sa] DISABLE")
 
 	if c.defaultDatabase != "" {
-		c.query(fmt.Sprintf("ALTER AUTHORIZATION ON DATABASE::[%s] TO %s",
+		c.sql.Query(fmt.Sprintf("ALTER AUTHORIZATION ON DATABASE::[%s] TO %s",
 			defaultDatabase, userName))
 	}
-}
-
-func getDbNameAsIdentifier(dbName string) string {
-	escapedDbNAme := strings.ReplaceAll(dbName, "'", "''")
-	return strings.ReplaceAll(escapedDbNAme, "]", "]]")
-}
-
-func getDbNameAsNonIdentifier(dbName string) string {
-	return strings.ReplaceAll(dbName, "]", "]]")
-}
-
-//parseDbName returns the databaseName from --using arg
-// It sets database name to the specified database name
-// or in absence of it, it is set to the filename without
-// extension.
-func parseDbName(usingDbUrl string) string {
-	u, _ := url.Parse(usingDbUrl)
-	dbToken := path.Base(u.Path)
-	if dbToken != "." && dbToken != "/" {
-		lastIdx := strings.LastIndex(dbToken, ".bak")
-		if lastIdx != -1 {
-			//Get file name without extension
-			fileName := dbToken[0:lastIdx]
-			lastIdx += 5
-			if lastIdx >= len(dbToken) {
-				return fileName
-			}
-			//Return database name if it was specified
-			return dbToken[lastIdx:]
-		}
-	}
-	return ""
-}
-
-func extractUrl(usingArg string) string {
-	urlEndIdx := strings.LastIndex(usingArg, ".bak")
-	if urlEndIdx != -1 {
-		return usingArg[0:(urlEndIdx + 4)]
-	}
-	return usingArg
-}
-
-func (c *MssqlBase) downloadAndRestoreDb(
-	controller *container.Controller,
-	containerId string,
-	userName string,
-) {
-	output := c.Cmd.Output()
-	databaseName := parseDbName(c.usingDatabaseUrl)
-	databaseUrl := extractUrl(c.usingDatabaseUrl)
-
-	_, file := filepath.Split(databaseUrl)
-
-	// Download file from URL into container
-	output.Infof("Downloading %s", file)
-
-	temporaryFolder := "/var/opt/mssql/backup"
-
-	controller.DownloadFile(
-		containerId,
-		databaseUrl,
-		temporaryFolder,
-	)
-
-	// Restore database from file
-	output.Infof("Restoring database %s", databaseName)
-
-	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
-	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
-
-	text := `SET NOCOUNT ON;
-
--- Build a SQL Statement to restore any .bak file to the Linux filesystem
-DECLARE @sql NVARCHAR(max)
-
--- This table definition works since SQL Server 2017, therefore 
--- works for all SQL Server containers (which started in 2017)
-DECLARE @fileListTable TABLE (
-    [LogicalName]           NVARCHAR(128),
-    [PhysicalName]          NVARCHAR(260),
-    [Type]                  CHAR(1),
-    [FileGroupName]         NVARCHAR(128),
-    [Size]                  NUMERIC(20,0),
-    [MaxSize]               NUMERIC(20,0),
-    [FileID]                BIGINT,
-    [CreateLSN]             NUMERIC(25,0),
-    [DropLSN]               NUMERIC(25,0),
-    [UniqueID]              UNIQUEIDENTIFIER,
-    [ReadOnlyLSN]           NUMERIC(25,0),
-    [ReadWriteLSN]          NUMERIC(25,0),
-    [BackupSizeInBytes]     BIGINT,
-    [SourceBlockSize]       INT,
-    [FileGroupID]           INT,
-    [LogGroupGUID]          UNIQUEIDENTIFIER,
-    [DifferentialBaseLSN]   NUMERIC(25,0),
-    [DifferentialBaseGUID]  UNIQUEIDENTIFIER,
-    [IsReadOnly]            BIT,
-    [IsPresent]             BIT,
-    [TDEThumbprint]         VARBINARY(32),
-    [SnapshotURL]           NVARCHAR(360)
-)
-
-INSERT INTO @fileListTable
-EXEC('RESTORE FILELISTONLY FROM DISK = ''%s/%s''')
-SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''%s/%s'' WITH '
-SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
-FROM @fileListTable
-WHERE IsPresent = 1
-SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
-EXEC(@sql)`
-
-	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
-
-	alterDefaultDb := fmt.Sprintf(
-		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
-		userName,
-		dbNameAsNonIdentifier)
-	c.query(alterDefaultDb)
 }
 
 func (c *MssqlBase) downloadImage(
@@ -617,15 +580,6 @@ func (c *MssqlBase) downloadImage(
 				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
 					"\t`podman|docker pull %s`", imageName)},
 			"Unable to download image %s", imageName)
-	}
-}
-
-// Verify the file exists at the URL
-func urlExists(url string, output *output.Output) {
-	if !http.UrlExists(url) {
-		output.FatalfWithHints(
-			[]string{"File does not exist at URL"},
-			"Unable to download file")
 	}
 }
 

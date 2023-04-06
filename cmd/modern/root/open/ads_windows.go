@@ -28,9 +28,9 @@ func (c *Ads) displayPreLaunchInfo() {
 	output.Infof("Press Ctrl+C to exit this process...")
 }
 
-// persistCredentialForAds stores a SQL password in the Windows Credential Manager
+// PersistCredentialForAds stores a SQL password in the Windows Credential Manager
 // for the given hostname and endpoint.
-func (c *Ads) persistCredentialForAds(
+func (c *Ads) PersistCredentialForAds(
 	hostname string,
 	endpoint sqlconfig.Endpoint,
 	user *sqlconfig.User,

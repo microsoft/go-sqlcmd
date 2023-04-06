@@ -214,6 +214,11 @@ func (o Output) maskSecrets(text string) string {
 	// Mask password from T/SQL e.g. ALTER LOGIN [sa] WITH PASSWORD = N'foo';
 	r := regexp.MustCompile(`(PASSWORD.*\s?=.*\s?N?')(.*)(')`)
 	text = r.ReplaceAllString(text, "$1********$3")
+
+	// Mask password from sqlpackage.exe command line e.g. /TargetPassword:foo
+	r = regexp.MustCompile(`(/TargetPassword:)(.*)( /)`)
+	text = r.ReplaceAllString(text, "$1********$3")
+
 	return text
 }
 

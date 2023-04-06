@@ -27,7 +27,7 @@ func TestPersistCredentialForAds(t *testing.T) {
 			PasswordEncryption: "none",
 		},
 	}
-	ads.persistCredentialForAds("localhost", sqlconfig.Endpoint{
+	ads.PersistCredentialForAds("localhost", sqlconfig.Endpoint{
 		EndpointDetails: sqlconfig.EndpointDetails{
 			Port: 1433,
 		},
