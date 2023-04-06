@@ -1,32 +1,38 @@
 package extract
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"path/filepath"
 	"regexp"
+	"strings"
 )
 
 type sevenZip struct {
-	controller  container.Controller
+	controller  *container.Controller
 	containerId string
 }
 
-func (e sevenZip) FileTypes() []string {
+func (e *sevenZip) Initialize(controller *container.Controller) {
+	e.controller = controller
+}
+
+func (e *sevenZip) FileTypes() []string {
 	return []string{"7z"}
 }
 
-func (e sevenZip) IsInstalled(containerId string) bool {
+func (e *sevenZip) IsInstalled(containerId string) bool {
 	e.containerId = containerId
 
 	return false
 }
 
-func (e sevenZip) Extract(srcFile string, destFolder string) (string, string) {
+func (e *sevenZip) Extract(srcFile string, destFolder string) (string, string) {
 	e.controller.RunCmdInContainer(e.containerId, []string{
 		"/opt/7-zip/7zz",
 		"x",
 		"-o" + destFolder,
-		srcFile,
+		"/var/opt/mssql/backup/" + srcFile,
 	})
 
 	stdout, _ := e.controller.RunCmdInContainer(e.containerId, []string{
@@ -34,8 +40,10 @@ func (e sevenZip) Extract(srcFile string, destFolder string) (string, string) {
 		"l",
 		"-ba",
 		"-slt",
-		srcFile,
+		"/var/opt/mssql/backup/" + srcFile,
 	})
+
+	fmt.Println(stdout)
 
 	var mdfFile string
 	var ldfFile string
@@ -54,7 +62,7 @@ func (e sevenZip) Extract(srcFile string, destFolder string) (string, string) {
 	return mdfFile, ldfFile
 }
 
-func (e sevenZip) Install() {
+func (e *sevenZip) Install() {
 	e.controller.RunCmdInContainer(e.containerId, []string{
 		"mkdir",
 		"/opt/7-zip"})
@@ -87,5 +95,6 @@ func extractPaths(input string) []string {
 	for _, match := range matches {
 		paths = append(paths, match[1])
 	}
+	fmt.Println("Path: " + strings.Join(paths, ", "))
 	return paths
 }

@@ -2,16 +2,19 @@ package ingest
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/uri"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/extract"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/location"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/mechanism"
 	"path/filepath"
+	"strings"
 )
 
 type ingest struct {
 	uri         uri.Uri
 	location    location.Location
+	controller  *container.Controller
 	mechanism   mechanism.Mechanism
 	options     mechanism.BringOnlineOptions
 	extractor   extract.Extractor
@@ -19,8 +22,8 @@ type ingest struct {
 	query       func(text string)
 }
 
-func (i ingest) IsExtractionNeeded() bool {
-	i.extractor = extract.NewExtractor(i.uri.FileExtension())
+func (i *ingest) IsExtractionNeeded() bool {
+	i.extractor = extract.NewExtractor(i.uri.FileExtension(), i.controller)
 	if i.extractor == nil {
 		return false
 	} else {
@@ -28,11 +31,11 @@ func (i ingest) IsExtractionNeeded() bool {
 	}
 }
 
-func (i ingest) IsRemoteUrl() bool {
+func (i *ingest) IsRemoteUrl() bool {
 	return !i.location.IsLocal()
 }
 
-func (i ingest) IsValidScheme() bool {
+func (i *ingest) IsValidScheme() bool {
 	for _, s := range i.location.ValidSchemes() {
 		if s == i.uri.Scheme() {
 			return true
@@ -41,17 +44,25 @@ func (i ingest) IsValidScheme() bool {
 	return false
 }
 
-func (i ingest) CopyToLocation() string {
-	return i.mechanism.CopyToLocation()
-}
+func (i *ingest) CopyToContainer(containerId string) {
+	destFolder := "/var/opt/mssql/backup"
+	if i.mechanism != nil {
+		destFolder = i.mechanism.CopyToLocation()
+	}
+	if i.location == nil {
+		panic("location is nil, did you call NewIngest()?")
+	}
 
-func (i ingest) CopyToContainer(containerId string) {
 	i.containerId = containerId
-	i.location.CopyToContainer(containerId, i.CopyToLocation())
+	i.location.CopyToContainer(containerId, destFolder)
 	i.options.Filename = i.uri.Filename()
+
+	if i.options.Filename == "" {
+		panic("filename is empty")
+	}
 }
 
-func (i ingest) Extract() {
+func (i *ingest) Extract() {
 	if i.extractor == nil {
 		panic("extractor is nil")
 	}
@@ -61,22 +72,34 @@ func (i ingest) Extract() {
 	}
 
 	i.options.Filename, i.options.LdfFilename =
-		i.extractor.Extract(i.uri.ActualUrl(), i.CopyToLocation())
+		i.extractor.Extract(i.uri.Filename(), "/var/opt/mssql/data")
 
 	if i.mechanism == nil {
-		ext := filepath.Ext(i.options.Filename)
-		i.mechanism = mechanism.NewMechanismByFileExt(ext)
+		fmt.Println("FOO: " + i.options.Filename)
+		ext := strings.TrimLeft(filepath.Ext(i.options.Filename), ".")
+		i.mechanism = mechanism.NewMechanismByFileExt(ext, i.controller)
 	}
+	fmt.Println("FOO: " + i.mechanism.Name())
+
 }
 
-func (i ingest) BringOnline(query func(string), username string, password string) {
+func (i *ingest) BringOnline(query func(string), username string, password string) {
+	if i.options.Filename == "" {
+		panic("filename is empty, did you call CopyToContainer()?")
+	}
+
+	i.query = query
 	i.options.Username = username
 	i.options.Password = password
-	i.mechanism.BringOnline(i.uri.GetDbNameAsIdentifier(), i.containerId, query, i.options)
+	i.mechanism.BringOnline(i.uri.GetDbNameAsIdentifier(), i.containerId, i.query, i.options)
 	i.setDefaultDatabase(username)
 }
 
-func (i ingest) setDefaultDatabase(username string) {
+func (i *ingest) setDefaultDatabase(username string) {
+	if i.query == nil {
+		panic("query is nil, did you call BringOnline()?")
+	}
+
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
 		username,
@@ -84,7 +107,7 @@ func (i ingest) setDefaultDatabase(username string) {
 	i.query(alterDefaultDb)
 }
 
-func (i ingest) IsValidFileExtension() bool {
+func (i *ingest) IsValidFileExtension() bool {
 	for _, m := range mechanism.FileTypes() {
 		if m == i.uri.FileExtension() {
 			return true
@@ -98,19 +121,19 @@ func (i ingest) IsValidFileExtension() bool {
 	return false
 }
 
-func (i ingest) SourceFileExists() bool {
+func (i *ingest) SourceFileExists() bool {
 	return i.location.Exists()
 }
 
-func (i ingest) UserProvidedFileExt() string {
+func (i *ingest) UserProvidedFileExt() string {
 	return i.uri.FileExtension()
 }
 
-func (i ingest) ValidSchemes() []string {
+func (i *ingest) ValidSchemes() []string {
 	return i.location.ValidSchemes()
 }
 
-func (i ingest) ValidFileExtensions() []string {
+func (i *ingest) ValidFileExtensions() []string {
 	extensions := []string{}
 
 	for _, m := range mechanism.FileTypes() {

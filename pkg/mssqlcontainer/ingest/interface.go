@@ -6,7 +6,6 @@ type Ingest interface {
 	IsValidFileExtension() bool
 	IsExtractionNeeded() bool
 
-	CopyToLocation() string
 	SourceFileExists() bool
 	UserProvidedFileExt() string
 

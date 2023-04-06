@@ -1,9 +1,9 @@
 package mechanism
 
 var mechanisms = []Mechanism{
-	attach{},
-	bacpac{},
-	restore{},
+	&attach{},
+	&bacpac{},
+	&restore{},
 }
 
 func FileTypes() []string {

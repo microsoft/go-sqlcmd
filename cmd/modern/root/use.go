@@ -87,6 +87,7 @@ func (c *Use) run() {
 		useDatabase.CopyToContainer(id)
 
 		if useDatabase.IsExtractionNeeded() {
+			fmt.Println("Extracting database from file")
 			useDatabase.Extract()
 		}
 

@@ -10,19 +10,23 @@ type bacpac struct {
 	containerId string
 }
 
-func (m bacpac) CopyToLocation() string {
+func (m *bacpac) Initialize(controller *container.Controller) {
+	m.controller = controller
+}
+
+func (m *bacpac) CopyToLocation() string {
 	return "/var/opt/mssql/backup"
 }
 
-func (m bacpac) Name() string {
+func (m *bacpac) Name() string {
 	return "dacfx"
 }
 
-func (m bacpac) FileTypes() []string {
+func (m *bacpac) FileTypes() []string {
 	return []string{"bacpac", "dacpac"}
 }
 
-func (m bacpac) BringOnline(databaseName string, containerId string, query func(string), options BringOnlineOptions) {
+func (m *bacpac) BringOnline(databaseName string, containerId string, query func(string), options BringOnlineOptions) {
 	m.containerId = containerId
 	m.installSqlPackage()
 	m.setDefaultDatabaseToMaster(options.Username, query)
@@ -40,7 +44,7 @@ func (m bacpac) BringOnline(databaseName string, containerId string, query func(
 	})
 }
 
-func (m bacpac) setDefaultDatabaseToMaster(username string, query func(string)) {
+func (m *bacpac) setDefaultDatabaseToMaster(username string, query func(string)) {
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
 		username,
@@ -48,7 +52,11 @@ func (m bacpac) setDefaultDatabaseToMaster(username string, query func(string)) 
 	query(alterDefaultDb)
 }
 
-func (m bacpac) installSqlPackage() {
+func (m *bacpac) installSqlPackage() {
+	if m.controller == nil {
+		panic("controller is nil")
+	}
+
 	m.controller.DownloadFile(
 		m.containerId,
 		"https://aka.ms/sqlpackage-linux",
@@ -62,6 +70,6 @@ func (m bacpac) installSqlPackage() {
 	m.RunCommand([]string{"chmod", "+x", "/opt/sqlpackage/sqlpackage"})
 }
 
-func (m bacpac) RunCommand(s []string) ([]byte, []byte) {
+func (m *bacpac) RunCommand(s []string) ([]byte, []byte) {
 	return m.controller.RunCmdInContainer(m.containerId, s)
 }

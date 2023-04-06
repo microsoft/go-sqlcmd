@@ -10,19 +10,23 @@ type attach struct {
 	containerId string
 }
 
-func (m attach) CopyToLocation() string {
+func (m *attach) Initialize(controller *container.Controller) {
+	m.controller = controller
+}
+
+func (m *attach) CopyToLocation() string {
 	return "/var/opt/mssql/data"
 }
 
-func (m attach) Name() string {
+func (m *attach) Name() string {
 	return "attach"
 }
 
-func (m attach) FileTypes() []string {
+func (m *attach) FileTypes() []string {
 	return []string{"mdf"}
 }
 
-func (m attach) BringOnline(databaseName string, containerId string, query func(string), options BringOnlineOptions) {
+func (m *attach) BringOnline(databaseName string, containerId string, query func(string), options BringOnlineOptions) {
 	text := `SET NOCOUNT ON; `
 
 	m.containerId = containerId
@@ -49,13 +53,13 @@ func (m attach) BringOnline(databaseName string, containerId string, query func(
 	}
 }
 
-func (m attach) setFilePermissions(filename string) {
+func (m *attach) setFilePermissions(filename string) {
 	m.RunCommand([]string{"chown", "mssql:root", filename})
 	m.RunCommand([]string{"chmod", "-o-r", filename})
 	m.RunCommand([]string{"chmod", "-u+rw", filename})
 	m.RunCommand([]string{"chmod", "-g+r", filename})
 }
 
-func (m attach) RunCommand(s []string) ([]byte, []byte) {
+func (m *attach) RunCommand(s []string) ([]byte, []byte) {
 	return m.controller.RunCmdInContainer(m.containerId, s)
 }

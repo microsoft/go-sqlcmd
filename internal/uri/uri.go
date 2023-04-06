@@ -50,7 +50,11 @@ func (u Uri) FileExtension() string {
 }
 
 func (u Uri) Filename() string {
-	return filepath.Base(u.ActualUrl())
+	filename := filepath.Base(u.ActualUrl())
+	if filename == "" {
+		panic("filename is empty")
+	}
+	return filename
 }
 
 // parseDbName returns the databaseName from --using arg
@@ -110,9 +114,17 @@ func (u Uri) ParseDbName() string {
 
 func (u Uri) GetDbNameAsIdentifier() string {
 	escapedDbName := strings.ReplaceAll(u.ParseDbName(), "'", "''")
-	return strings.ReplaceAll(escapedDbName, "]", "]]")
+	dbName := strings.ReplaceAll(escapedDbName, "]", "]]")
+	if dbName == "" {
+		panic("database name is empty")
+	}
+	return dbName
 }
 
 func (u Uri) GetDbNameAsNonIdentifier() string {
-	return strings.ReplaceAll(u.ParseDbName(), "]", "]]")
+	dbName := strings.ReplaceAll(u.ParseDbName(), "]", "]]")
+	if dbName == "" {
+		panic("database name is empty")
+	}
+	return dbName
 }

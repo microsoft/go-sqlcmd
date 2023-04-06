@@ -2,24 +2,28 @@ package mechanism
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/container"
 )
 
 type restore struct {
 }
 
-func (m restore) CopyToLocation() string {
+func (m *restore) Initialize(controller *container.Controller) {
+}
+
+func (m *restore) CopyToLocation() string {
 	return "/var/opt/mssql/backup"
 }
 
-func (m restore) Name() string {
+func (m *restore) Name() string {
 	return "restore"
 }
 
-func (m restore) FileTypes() []string {
+func (m *restore) FileTypes() []string {
 	return []string{"bak"}
 }
 
-func (m restore) BringOnline(databaseName string, _ string, query func(string), options BringOnlineOptions) {
+func (m *restore) BringOnline(databaseName string, _ string, query func(string), options BringOnlineOptions) {
 	if options.Filename == "" {
 		panic("Filename is required for restore")
 	}
@@ -37,7 +41,7 @@ func (m restore) BringOnline(databaseName string, _ string, query func(string), 
 	))
 }
 
-func (m restore) restoreStatement() string {
+func (m *restore) restoreStatement() string {
 	return `SET NOCOUNT ON;
 
 -- Build a SQL Statement to restore any .bak file to the Linux filesystem
