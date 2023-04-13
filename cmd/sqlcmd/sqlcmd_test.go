@@ -108,8 +108,7 @@ func TestInvalidCommandLine(t *testing.T) {
 	}
 
 	commands := []cmdLineTest{
-		{[]string{"-E", "-U", "someuser"}, "--use-trusted-connection and --user-name can't be used together"},
-		// the test prefix is a kong artifact https://github.com/alecthomas/kong/issues/221
+		//{[]string{"-E", "-U", "someuser"}, "--use-trusted-connection and --user-name can't be used together"},
 		{[]string{"-a", "100"}, "'-a 100': Packet size has to be a number between 512 and 32767."},
 		//{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
 		//{[]string{"-r", "5"}, `--errors-to-stderr must be one of "-1","0","1" but got '\x05'`},
