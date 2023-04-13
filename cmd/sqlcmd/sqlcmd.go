@@ -133,6 +133,8 @@ func Execute(version string) {
 
 			if args.Version {
 				fmt.Printf("%v\n", version)
+				fmt.Println(localizer.Sprintf("Legal docs and information: aka.ms/SqlcmdLegal"))
+				fmt.Println(localizer.Sprintf("Third party notices: aka.ms/SqlcmdNotices"))
 				os.Exit(0)
 			}
 

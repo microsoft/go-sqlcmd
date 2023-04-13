@@ -5,6 +5,12 @@ package install
 
 import (
 	"fmt"
+	"net/url"
+	"path"
+	"path/filepath"
+	"runtime"
+	"strings"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -15,10 +21,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"github.com/spf13/viper"
-	"net/url"
-	"path/filepath"
-	"runtime"
-	"strings"
 )
 
 // MssqlBase provide base support for installing SQL Server and all of its
@@ -395,7 +397,8 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 func (c *MssqlBase) validateUsingUrlExists() {
 	output := c.Cmd.Output()
-	u, err := url.Parse(c.usingDatabaseUrl)
+	databaseUrl := extractUrl(c.usingDatabaseUrl)
+	u, err := url.Parse(databaseUrl)
 	c.CheckErr(err)
 
 	if u.Scheme != "http" && u.Scheme != "https" {
@@ -406,9 +409,17 @@ func (c *MssqlBase) validateUsingUrlExists() {
 			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
 	}
 
+	if u.Path == "" {
+		output.FatalfWithHints(
+			[]string{
+				"--using URL must have a path to .bak file",
+			},
+			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
+	}
+
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
-	if _, file := filepath.Split(c.usingDatabaseUrl); filepath.Ext(file) != ".bak" {
+	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
 		output.FatalfWithHints(
 			[]string{
 				"--using file URL must be a .bak file",
@@ -417,7 +428,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	}
 
 	// Verify the url actually exists, and early exit if it doesn't
-	urlExists(c.usingDatabaseUrl, output)
+	urlExists(databaseUrl, output)
 }
 
 func (c *MssqlBase) query(commandText string) {
@@ -468,31 +479,73 @@ CHECK_POLICY=OFF`
 	}
 }
 
+func getDbNameAsIdentifier(dbName string) string {
+	escapedDbNAme := strings.ReplaceAll(dbName, "'", "''")
+	return strings.ReplaceAll(escapedDbNAme, "]", "]]")
+}
+
+func getDbNameAsNonIdentifier(dbName string) string {
+	return strings.ReplaceAll(dbName, "]", "]]")
+}
+
+//parseDbName returns the databaseName from --using arg
+// It sets database name to the specified database name
+// or in absence of it, it is set to the filename without
+// extension.
+func parseDbName(usingDbUrl string) string {
+	u, _ := url.Parse(usingDbUrl)
+	dbToken := path.Base(u.Path)
+	if dbToken != "." && dbToken != "/" {
+		lastIdx := strings.LastIndex(dbToken, ".bak")
+		if lastIdx != -1 {
+			//Get file name without extension
+			fileName := dbToken[0:lastIdx]
+			lastIdx += 5
+			if lastIdx >= len(dbToken) {
+				return fileName
+			}
+			//Return database name if it was specified
+			return dbToken[lastIdx:]
+		}
+	}
+	return ""
+}
+
+func extractUrl(usingArg string) string {
+	urlEndIdx := strings.LastIndex(usingArg, ".bak")
+	if urlEndIdx != -1 {
+		return usingArg[0:(urlEndIdx + 4)]
+	}
+	return usingArg
+}
+
 func (c *MssqlBase) downloadAndRestoreDb(
 	controller *container.Controller,
 	containerId string,
 	userName string,
 ) {
 	output := c.Cmd.Output()
+	databaseName := parseDbName(c.usingDatabaseUrl)
+	databaseUrl := extractUrl(c.usingDatabaseUrl)
 
-	u, err := url.Parse(c.usingDatabaseUrl)
-	c.CheckErr(err)
-	_, file := filepath.Split(c.usingDatabaseUrl)
-	fileNameWithNoExt := strings.TrimSuffix(file, filepath.Ext(file))
+	_, file := filepath.Split(databaseUrl)
 
 	// Download file from URL into container
-	output.Infof("Downloading %s from %s", file, u.Hostname())
+	output.Infof("Downloading %s", file)
 
 	temporaryFolder := "/var/opt/mssql/backup"
 
 	controller.DownloadFile(
 		containerId,
-		c.usingDatabaseUrl,
+		databaseUrl,
 		temporaryFolder,
 	)
 
 	// Restore database from file
-	output.Infof("Restoring database %s", fileNameWithNoExt)
+	output.Infof("Restoring database %s", databaseName)
+
+	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
+	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
 
 	text := `SET NOCOUNT ON;
 
@@ -535,12 +588,12 @@ WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
 EXEC(@sql)`
 
-	c.query(fmt.Sprintf(text, temporaryFolder, file, fileNameWithNoExt, temporaryFolder, file))
+	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
 
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
 		userName,
-		fileNameWithNoExt)
+		dbNameAsNonIdentifier)
 	c.query(alterDefaultDb)
 }
 
