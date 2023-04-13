@@ -250,6 +250,18 @@ If you are developing on Windows, you can use docker or WSL to run the tests on 
 docker run -rm -e SQLCMDSERVER=<yourserver> -e SQLCMDUSER=<youruser> -e SQLCMDPASSWORD=<yourpassword> -v i:\git\go-sqlcmd:/go-sqlcmd -w /go-sqlcmd golang:1.16 go test ./...
 ```
 
+## Localization
+A partial localization suppport exists in go-sqlcmd for following languages for user visible content that also existed in ODBC based SQLCMD.
+Chinese (Simplified) | Chinese (Traditional) | English (United States) | French | German | Italian | Japanese | Korean | Portuguese (Brazil) | Russian | Spanish
+
+To get localized messages from SQLCMD user needs to set environment variable SQLCMD_LANG to a language tag as per BCP47 convention.
+E.g.
+```
+\git\go-sqlcmd>set SQLCMD_LANG=de-de
+\git\go-sqlcmd>.\sqlcmd.exe -w 4
+sqlcmd.exe: error: sqlcmd.exe: '-w 4': Der Wert muss größer als 8 und kleiner als 65536 sein.
+```
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
