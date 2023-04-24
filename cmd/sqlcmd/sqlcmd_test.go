@@ -84,8 +84,6 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 			Long:  "A long description of my command",
 			Run: func(cmd *cobra.Command, argss []string) {
 				// Command logic goes here
-				vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
-				setVars(vars, &args)
 			},
 		}
 		setFlags(cmd, arguments)
@@ -126,15 +124,11 @@ func TestInvalidCommandLine(t *testing.T) {
 				return arguments.Validate()
 			},
 			Run: func(cmd *cobra.Command, argss []string) {
-				// Command logic goes here
-				vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
-				setVars(vars, &args)
 			},
 		}
 		setFlags(cmd, arguments)
 		cmd.SetArgs(test.commandLine)
 		err := cmd.ParseFlags(test.commandLine)
-		//cmd.SetArgs(test.commandLine)
 		if err != nil {
 			t.Fatalf("Failed to parse flags: %v", err)
 		}
