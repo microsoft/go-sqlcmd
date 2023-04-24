@@ -150,21 +150,17 @@ func Execute(version string) {
 		},
 	}
 	setFlags(rootCmd, &args)
-
-	rootCmd.PreRunE = func(cmd *cobra.Command, argss []string) error {
-		if err := args.Validate(); err != nil {
-			return err
-		}
-		return nil
+	if err := normalizeFlags(rootCmd); err != nil {
+		os.Exit(1)
 	}
-
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }
 
 func normalizeWithError(name string, err error) (pflag.NormalizedName, error) {
-	if err != nil {
+	//checking nil
+	if name != "" && err != nil {
 		return "", fmt.Errorf("--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"%s\": %w", name, err)
 	}
 	return pflag.NormalizedName(name), nil
@@ -219,7 +215,9 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	// int *defaultSomeFlag;
 	// 	rootCmd.Flags().IntVarP(args.ScreenWidth, "ScreenWidth", "w", 0, "Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable.")
 	// rootCmd.Flags().NoOptDefVal = ""
+}
 
+func normalizeFlags(rootCmd *cobra.Command) error {
 	//Adding a validator for checking the enum flags
 	rootCmd.Flags().SetNormalizeFunc(func(f *pflag.FlagSet, name string) pflag.NormalizedName {
 		switch name {
@@ -229,7 +227,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 			case "default", "readonly":
 				return pflag.NormalizedName(name)
 			default:
-				_, err := normalizeWithError(value, fmt.Errorf("--application-intent must be one of \"default\",\"readonly\",\"vert\",\"vertical\" but got \"%s\"", value))
+				_, err := normalizeWithError(value, fmt.Errorf("--application-intent must be one of \"default\",\"readonly\" but got \"%s\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
@@ -274,9 +272,8 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 		}
 		return pflag.NormalizedName(name)
 	})
-
+	return err
 }
-
 func getFlagValueByName(flagSet *pflag.FlagSet, name string) string {
 	var value string
 	flagSet.VisitAll(func(f *pflag.Flag) {

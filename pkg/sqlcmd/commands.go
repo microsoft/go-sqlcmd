@@ -11,8 +11,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/alecthomas/kong"
 	"github.com/microsoft/go-sqlcmd/internal/color"
+	"github.com/spf13/cobra"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -397,44 +397,57 @@ type connectData struct {
 }
 
 func connectCommand(s *Sqlcmd, args []string, line uint) error {
-
-	if len(args) == 0 {
-		return InvalidCommandError("CONNECT", line)
-	}
-	cmdLine := strings.TrimSpace(args[0])
-	if cmdLine == "" {
-		return InvalidCommandError("CONNECT", line)
-	}
-	arguments := &connectData{}
-	parser, err := kong.New(arguments)
-	if err != nil {
-		return InvalidCommandError("CONNECT", line)
-	}
-
-	// Fields removes extra whitespace.
-	// Note :connect doesn't support passwords with spaces
-	if _, err = parser.Parse(strings.Fields(cmdLine)); err != nil {
-		return InvalidCommandError("CONNECT", line)
-	}
-
-	connect := *s.Connect
-	connect.UserName, _ = resolveArgumentVariables(s, []rune(arguments.Username), false)
-	connect.Password, _ = resolveArgumentVariables(s, []rune(arguments.Password), false)
-	connect.ServerName, _ = resolveArgumentVariables(s, []rune(arguments.Server), false)
-	timeout, _ := resolveArgumentVariables(s, []rune(arguments.LoginTimeout), false)
-	if timeout != "" {
-		if timeoutSeconds, err := strconv.ParseInt(timeout, 10, 32); err == nil {
-			if timeoutSeconds < 0 {
+	cmd := &cobra.Command{
+		Use:   "connect",
+		Short: "Connect to a database",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cmdLine := strings.TrimSpace(args[0])
+			if cmdLine == "" {
 				return InvalidCommandError("CONNECT", line)
 			}
-			connect.LoginTimeoutSeconds = int(timeoutSeconds)
-		}
+
+			connect := connectData{}
+			if err := cmd.Flags().Parse(args); err != nil {
+				return InvalidCommandError("CONNECT", line)
+			}
+			connect.Server = cmd.Flag("server").Value.String()
+			connect.Database = cmd.Flag("database").Value.String()
+			connect.Username = cmd.Flag("username").Value.String()
+			connect.Password = cmd.Flag("password").Value.String()
+			connect.LoginTimeout = cmd.Flag("login-timeout").Value.String()
+			connect.AuthenticationMethod = cmd.Flag("authentication-method").Value.String()
+
+			Connect := *s.Connect
+			Connect.ServerName, _ = resolveArgumentVariables(s, []rune(connect.Server), false)
+			Connect.UserName, _ = resolveArgumentVariables(s, []rune(connect.Username), false)
+			Connect.Password, _ = resolveArgumentVariables(s, []rune(connect.Password), false)
+
+			timeout, _ := resolveArgumentVariables(s, []rune(connect.LoginTimeout), false)
+			if timeout != "" {
+				if timeoutSeconds, err := strconv.ParseInt(timeout, 10, 32); err == nil {
+					if timeoutSeconds < 0 {
+						return InvalidCommandError("CONNECT", line)
+					}
+					Connect.LoginTimeoutSeconds = int(timeoutSeconds)
+				}
+			}
+			Connect.AuthenticationMethod = connect.AuthenticationMethod
+
+			_ = s.ConnectDb(&Connect, s.lineIo == nil)
+
+			return nil
+		},
 	}
-	connect.AuthenticationMethod = arguments.AuthenticationMethod
-	// If no user name is provided we switch to integrated auth
-	_ = s.ConnectDb(&connect, s.lineIo == nil)
-	// ConnectDb prints connection errors already, and failure to connect is not fatal even with -b option
-	return nil
+
+	cmd.Flags().StringP("server", "", "", "Specifies the server to connect to")
+	cmd.Flags().StringP("database", "D", "", "Specifies the database to connect to")
+	cmd.Flags().StringP("username", "U", "", "Specifies the username to use for authentication")
+	cmd.Flags().StringP("password", "P", "", "Specifies the password to use for authentication")
+	cmd.Flags().StringP("login-timeout", "l", "", "Specifies the login timeout in seconds")
+	cmd.Flags().StringP("authentication-method", "G", "", "Specifies the authentication method to use")
+
+	return cmd.Execute()
 }
 
 func execCommand(s *Sqlcmd, args []string, line uint) error {
