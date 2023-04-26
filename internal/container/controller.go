@@ -305,6 +305,7 @@ func (c Controller) RunCmdInContainer(id string, cmd []string) ([]byte, []byte) 
 			AttachStderr: true,
 			AttachStdout: true,
 			Cmd:          cmd,
+			Env:          []string{"DOTNET_ROOT=/root/.dotnet"},
 		},
 	)
 	checkErr(err)

@@ -1,4 +1,4 @@
-package uri
+package databaseurl
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -19,7 +19,7 @@ func TestExtractUrl(t *testing.T) {
 
 	for _, testcase := range tests {
 		u := NewUri(testcase.inputURL)
-		assert.Equal(t, testcase.expectedURL, u.ActualUrl(),
+		assert.Equal(t, testcase.expectedURL, u.ActualUrl,
 			"Extracted URL does not match expected URL")
 	}
 }
@@ -54,7 +54,7 @@ func TestParseDbName(t *testing.T) {
 
 	for _, testcase := range tests {
 		u := NewUri(testcase.inputURL)
-		assert.Equal(t, testcase.expectedURL, u.ParseDbName(),
+		assert.Equal(t, testcase.expectedURL, u.DatabaseName,
 			"Extracted DB Name does not match expected DB Name")
 	}
 }
@@ -92,9 +92,9 @@ func TestGetDbNameIfExists(t *testing.T) {
 	for _, testcase := range tests {
 		u := NewUri(testcase.input)
 
-		assert.Equal(t, testcase.expectedIdentifierOp, u.GetDbNameAsIdentifier(),
+		assert.Equal(t, testcase.expectedIdentifierOp, u.DatabaseNameAsTsqlIdentifier,
 			"Unexpected database name as identifier")
-		assert.Equal(t, testcase.expectedNonIdentifierOp, u.GetDbNameAsNonIdentifier(),
+		assert.Equal(t, testcase.expectedNonIdentifierOp, u.DatabaseNameAsNonTsqlIdentifier,
 			"Unexpected database name as non-identifier")
 	}
 }

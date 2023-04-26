@@ -1,8 +1,13 @@
 package mechanism
 
-import "github.com/microsoft/go-sqlcmd/internal/container"
+import (
+	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/container"
+)
 
 func NewMechanism(fileExtension string, name string, controller *container.Controller) Mechanism {
+	fmt.Println("NewMechanism:" + fileExtension)
+
 	for _, m := range mechanisms {
 		if m.Name() == name {
 			m.Initialize(controller)

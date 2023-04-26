@@ -2,7 +2,7 @@ package ingest
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/container"
-	"github.com/microsoft/go-sqlcmd/internal/uri"
+	"github.com/microsoft/go-sqlcmd/internal/databaseurl"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/extract"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/location"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/mechanism"
@@ -10,13 +10,13 @@ import (
 )
 
 func NewIngest(databaseUri string, controller *container.Controller, options IngestOptions) Ingest {
-	uri := uri.NewUri(databaseUri)
+	databaseUrl := databaseurl.NewDatabaseUrl(databaseUri)
 
 	return &ingest{
-		uri:        uri,
+		uri:        databaseUrl,
 		controller: controller,
-		location:   location.NewLocation(uri.IsLocal(), uri.ActualUrl(), controller),
-		mechanism:  mechanism.NewMechanism(uri.FileExtension(), options.Mechanism, controller),
+		location:   location.NewLocation(databaseUrl.IsLocal, databaseUrl.String(), controller),
+		mechanism:  mechanism.NewMechanism(databaseUrl.FileExtension, options.Mechanism, controller),
 	}
 }
 

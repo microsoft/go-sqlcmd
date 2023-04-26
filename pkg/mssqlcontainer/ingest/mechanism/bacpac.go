@@ -32,7 +32,7 @@ func (m *bacpac) BringOnline(databaseName string, containerId string, query func
 	m.setDefaultDatabaseToMaster(options.Username, query)
 
 	m.RunCommand([]string{
-		"/opt/sqlpackage/sqlpackage",
+		"./root/.dotnet/tools/sqlpackage",
 		"/Diagnostics:true",
 		"/Action:import",
 		"/SourceFile:" + m.CopyToLocation() + "/" + options.Filename,
@@ -57,17 +57,23 @@ func (m *bacpac) installSqlPackage() {
 		panic("controller is nil")
 	}
 
-	m.controller.DownloadFile(
-		m.containerId,
-		"https://aka.ms/sqlpackage-linux",
-		"/tmp",
-	)
+	/*
+	   m.controller.DownloadFile(
+	   		m.containerId,
+	   		"https://aka.ms/sqlpackage-linux",
+	   		"/tmp",
+	   	)
+	*/
+	// wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+	// sudo chmod +x ./dotnet-install.sh
+	// ./dotnet-install.sh
+	// dotnet tool install -g microsoft.sqlpackage
 
-	m.RunCommand([]string{"apt-get", "update"})
-	m.RunCommand([]string{"apt-get", "install", "-y", "unzip"})
-	m.RunCommand([]string{"unzip", "/tmp/sqlpackage-linux", "-d", "/opt/sqlpackage"})
-	m.RunCommand([]string{"rm", "/tmp/sqlpackage-linux"})
-	m.RunCommand([]string{"chmod", "+x", "/opt/sqlpackage/sqlpackage"})
+	m.RunCommand([]string{"wget", "https://dot.net/v1/dotnet-install.sh", "-O", "dotnet-install.sh"})
+	m.RunCommand([]string{"chmod", "+x", "./dotnet-install.sh"})
+	m.RunCommand([]string{"./dotnet-install.sh"})
+	m.RunCommand([]string{"/root/.dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
+	//m.RunCommand([]string{"echo", `export PATH="$PATH:/root/.dotnet/tools"`, ">", "~/.bash_profile"})
 }
 
 func (m *bacpac) RunCommand(s []string) ([]byte, []byte) {
