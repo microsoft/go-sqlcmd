@@ -18,8 +18,8 @@ func TestExtractUrl(t *testing.T) {
 	}
 
 	for _, testcase := range tests {
-		u := NewUri(testcase.inputURL)
-		assert.Equal(t, testcase.expectedURL, u.ActualUrl,
+		u := NewDatabaseUrl(testcase.inputURL)
+		assert.Equal(t, testcase.expectedURL, u.String(),
 			"Extracted URL does not match expected URL")
 	}
 }
@@ -53,7 +53,7 @@ func TestParseDbName(t *testing.T) {
 	}
 
 	for _, testcase := range tests {
-		u := NewUri(testcase.inputURL)
+		u := NewDatabaseUrl(testcase.inputURL)
 		assert.Equal(t, testcase.expectedURL, u.DatabaseName,
 			"Extracted DB Name does not match expected DB Name")
 	}
@@ -90,7 +90,7 @@ func TestGetDbNameIfExists(t *testing.T) {
 	}
 
 	for _, testcase := range tests {
-		u := NewUri(testcase.input)
+		u := NewDatabaseUrl(testcase.input)
 
 		assert.Equal(t, testcase.expectedIdentifierOp, u.DatabaseNameAsTsqlIdentifier,
 			"Unexpected database name as identifier")

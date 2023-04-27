@@ -85,6 +85,10 @@ func (c *Cmd) AddFlag(options FlagOptions) {
 				options.Usage)
 		}
 	}
+
+	if options.Hidden {
+		c.command.Flags().MarkHidden(options.Name)
+	}
 }
 
 // DefineCommand defines a command with the provided CommandOptions and adds

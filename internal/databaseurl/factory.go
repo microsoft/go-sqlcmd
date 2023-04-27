@@ -1,32 +1,30 @@
 package databaseurl
 
 import (
-	"fmt"
 	url2 "net/url"
 	"path/filepath"
 	"strings"
 )
 
 func NewDatabaseUrl(url string) *DatabaseUrl {
+	trace("NewDatabaseUrl(" + url + ")")
+
 	databaseUrl := DatabaseUrl{}
 
 	// To enable URL.Parse, switch to / from \\
 	url = strings.Replace(url, "\\", "/", -1)
 
-	// Cope with a URL that has no schema, e.g. in local dir, or local folder \foo.mdf
+	// Cope with a URL that in the local directory, so it can be URL.Parsed()
 	if !strings.Contains(url, "/") {
 		url = "./" + url
 	}
 
-	var err error
 	parsedUrl, err := url2.Parse(url)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 
 	databaseUrl.URL = parsedUrl
 
-	fmt.Println("databaseUrl.URL.Path: " + databaseUrl.URL.Path)
+	trace("databaseUrl.URL.Path: " + databaseUrl.URL.Path)
 
 	databaseUrl.Filename = filepath.Base(databaseUrl.URL.Path)
 	databaseUrl.FileExtension = strings.TrimLeft(filepath.Ext(databaseUrl.Filename), ".")
@@ -38,9 +36,7 @@ func NewDatabaseUrl(url string) *DatabaseUrl {
 		// Remove the database name (specified after the comma)  from the URL, and reparse it
 		url = strings.Replace(url, ","+split[1], "", 1)
 		databaseUrl.URL, err = databaseUrl.URL.Parse(url)
-		if err != nil {
-			panic(err)
-		}
+		checkErr(err)
 
 		split := strings.Split(databaseUrl.FileExtension, ",")
 		databaseUrl.FileExtension = split[0]
@@ -55,9 +51,9 @@ func NewDatabaseUrl(url string) *DatabaseUrl {
 		)
 	}
 
-	fmt.Println("databaseUrl.Filename: " + databaseUrl.Filename)
-	fmt.Println("databaseUrl.FileExtension: " + databaseUrl.FileExtension)
-	fmt.Println("databaseUrl.DatabaseName: " + databaseUrl.DatabaseName)
+	trace("databaseUrl.Filename: " + databaseUrl.Filename)
+	trace("databaseUrl.FileExtension: " + databaseUrl.FileExtension)
+	trace("databaseUrl.DatabaseName: " + databaseUrl.DatabaseName)
 
 	databaseUrl.IsLocal = databaseUrl.URL.Scheme == "file" || len(databaseUrl.URL.Scheme) < 3
 

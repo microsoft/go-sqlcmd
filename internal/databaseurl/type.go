@@ -4,6 +4,7 @@ import "net/url"
 
 type DatabaseUrl struct {
 	*url.URL
+
 	Filename      string
 	FileExtension string
 	IsLocal       bool

@@ -12,7 +12,7 @@ import (
 )
 
 type ingest struct {
-	uri         *databaseurl.DatabaseUrl
+	url         *databaseurl.DatabaseUrl
 	location    location.Location
 	controller  *container.Controller
 	mechanism   mechanism.Mechanism
@@ -23,7 +23,7 @@ type ingest struct {
 }
 
 func (i *ingest) IsExtractionNeeded() bool {
-	i.extractor = extract.NewExtractor(i.uri.FileExtension, i.controller)
+	i.extractor = extract.NewExtractor(i.url.FileExtension, i.controller)
 	if i.extractor == nil {
 		return false
 	} else {
@@ -36,12 +36,12 @@ func (i *ingest) IsRemoteUrl() bool {
 }
 
 func (i *ingest) UrlFilename() string {
-	return i.uri.Filename
+	return i.url.Filename
 }
 
 func (i *ingest) IsValidScheme() bool {
 	for _, s := range i.location.ValidSchemes() {
-		if s == i.uri.Scheme {
+		if s == i.url.Scheme {
 			return true
 		}
 	}
@@ -50,6 +50,7 @@ func (i *ingest) IsValidScheme() bool {
 
 func (i *ingest) CopyToContainer(containerId string) {
 	destFolder := "/var/opt/mssql/backup"
+
 	if i.mechanism != nil {
 		destFolder = i.mechanism.CopyToLocation()
 	}
@@ -59,7 +60,7 @@ func (i *ingest) CopyToContainer(containerId string) {
 
 	i.containerId = containerId
 	i.location.CopyToContainer(containerId, destFolder)
-	i.options.Filename = i.uri.Filename
+	i.options.Filename = i.url.Filename
 
 	if i.options.Filename == "" {
 		panic("filename is empty")
@@ -76,7 +77,7 @@ func (i *ingest) Extract() {
 	}
 
 	i.options.Filename, i.options.LdfFilename =
-		i.extractor.Extract(i.uri.Filename, "/var/opt/mssql/data")
+		i.extractor.Extract(i.url.Filename, "/var/opt/mssql/data")
 
 	if i.mechanism == nil {
 		ext := strings.TrimLeft(filepath.Ext(i.options.Filename), ".")
@@ -98,8 +99,8 @@ func (i *ingest) BringOnline(query func(string), username string, password strin
 	i.query = query
 	i.options.Username = username
 	i.options.Password = password
-	fmt.Println(i.uri.DatabaseNameAsTsqlIdentifier)
-	i.mechanism.BringOnline(i.uri.DatabaseNameAsTsqlIdentifier, i.containerId, i.query, i.options)
+	fmt.Println(i.url.DatabaseNameAsTsqlIdentifier)
+	i.mechanism.BringOnline(i.url.DatabaseNameAsTsqlIdentifier, i.containerId, i.query, i.options)
 	i.setDefaultDatabase(username)
 }
 
@@ -111,18 +112,18 @@ func (i *ingest) setDefaultDatabase(username string) {
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
 		username,
-		i.uri.DatabaseNameAsNonTsqlIdentifier)
+		i.url.DatabaseNameAsNonTsqlIdentifier)
 	i.query(alterDefaultDb)
 }
 
 func (i *ingest) IsValidFileExtension() bool {
 	for _, m := range mechanism.FileTypes() {
-		if m == i.uri.FileExtension {
+		if m == i.url.FileExtension {
 			return true
 		}
 	}
 	for _, e := range extract.FileTypes() {
-		if e == i.uri.FileExtension {
+		if e == i.url.FileExtension {
 			return true
 		}
 	}
@@ -134,7 +135,7 @@ func (i *ingest) SourceFileExists() bool {
 }
 
 func (i *ingest) UserProvidedFileExt() string {
-	return i.uri.FileExtension
+	return i.url.FileExtension
 }
 
 func (i *ingest) ValidSchemes() []string {

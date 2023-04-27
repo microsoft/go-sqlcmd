@@ -29,3 +29,11 @@ func NewMechanismByFileExt(fileExtension string, controller *container.Controlle
 	}
 	return nil
 }
+
+func Mechanisms() []string {
+	m := []string{}
+	for _, mechanism := range mechanisms {
+		m = append(m, mechanism.Name())
+	}
+	return m
+}

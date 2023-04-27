@@ -5,6 +5,7 @@ package install
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/mechanism"
 	"runtime"
 	"strings"
 
@@ -100,11 +101,11 @@ func (c *MssqlBase) AddFlags(
 		Usage:     "Context name (a default context name will be created if not provided)",
 	})
 
-	// BUG(stuartpa): Make this a hidden flag so we don't break existing usage
 	addFlag(cmdparser.FlagOptions{
 		String:    &c.defaultDatabase,
 		Name:      "user-database",
 		Shorthand: "u",
+		Hidden:    true,
 		Usage:     "[DEPRECATED use --database] Create a user database and set it as the default for login",
 	})
 
@@ -223,11 +224,11 @@ func (c *MssqlBase) AddFlags(
 		Usage:      "Port (next available port from 1433 upwards used by default)",
 	})
 
-	// BUG(stuartpa): Make this a hidden flag so we don't break existing usage
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.useDatabaseUrl,
 		DefaultString: "",
 		Name:          "using",
+		Hidden:        true,
 		Usage:         fmt.Sprintf("[DEPRECATED use --use] Download %q and use database", ingest.ValidFileExtensions()),
 	})
 
@@ -242,7 +243,7 @@ func (c *MssqlBase) AddFlags(
 		String:        &c.useMechanism,
 		DefaultString: "",
 		Name:          "use-mechanism",
-		Usage:         "Mechanism to use to bring database online (attach, restore, dacfx)",
+		Usage:         fmt.Sprintf("Mechanism to use to bring database online (%s)", strings.Join(mechanism.Mechanisms(), ",")),
 	})
 
 	addFlag(cmdparser.FlagOptions{
@@ -317,37 +318,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	// Do an early exit if url doesn't exist
 	var useDatabase ingest.Ingest
 	if c.useDatabaseUrl != "" {
-		useDatabase = ingest.NewIngest(c.useDatabaseUrl, controller, ingest.IngestOptions{
-			Mechanism: c.useMechanism,
-		})
-
-		if !useDatabase.IsValidFileExtension() {
-			output.FatalfWithHints(
-				[]string{
-					fmt.Sprintf(
-						"--using must be a path to a file with a %q extension",
-						ingest.ValidFileExtensions(),
-					),
-				},
-				"%q is not a valid file extension for --using flag", useDatabase.UserProvidedFileExt())
-		}
-
-		if useDatabase.IsRemoteUrl() && !useDatabase.IsValidScheme() {
-			output.FatalfWithHints(
-				[]string{
-					fmt.Sprintf(
-						"--using URL must one of %q",
-						strings.Join(useDatabase.ValidSchemes(), ", "),
-					),
-				},
-				"%q is not a valid URL for --using flag", c.useDatabaseUrl)
-		}
-
-		if !useDatabase.SourceFileExists() {
-			output.FatalfWithHints(
-				[]string{fmt.Sprintf("File does not exist at URL %q", c.useDatabaseUrl)},
-				"Unable to download file")
-		}
+		useDatabase = c.verifyUseSourceFileExists(useDatabase, controller, output)
 	}
 
 	if c.defaultDatabase != "" {
@@ -360,18 +331,18 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.downloadImage(imageName, output, controller)
 	}
 
+	runOptions := container.RunOptions{
+		Env:          env,
+		Port:         c.port,
+		Name:         c.name,
+		Hostname:     c.hostname,
+		Architecture: c.architecture,
+		Os:           c.os,
+		Command:      []string{},
+	}
+
 	output.Infof("Starting %v", imageName)
-	containerId := controller.ContainerRun(
-		imageName,
-		env,
-		c.port,
-		c.name,
-		c.hostname,
-		c.architecture,
-		c.os,
-		[]string{},
-		false,
-	)
+	containerId := controller.ContainerRun(imageName, runOptions)
 	previousContextName := config.CurrentContextName()
 
 	userName := pal.UserName()
@@ -396,8 +367,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	controller.ContainerWaitForLogEntry(containerId, c.errorLogEntryToWaitFor)
 
-	output.Infof(
-		"Disabled %q account (and rotated %q password). Creating user %q",
+	output.Infof("Disabled %q account (and rotated %q password). Creating user %q",
 		"sa",
 		"sa",
 		userName)
@@ -488,14 +458,10 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		ads.PersistCredentialForAds(endpoint.EndpointDetails.Address, endpoint, user)
 
 		output := c.Output()
-		args := []string{
-			"-r",
-			fmt.Sprintf(
-				"--server=%s", fmt.Sprintf(
-					"%s,%d",
-					"127.0.0.1",
-					c.port)),
-		}
+		args := []string{"-r", fmt.Sprintf("--server=%s", fmt.Sprintf(
+			"%s,%d",
+			"127.0.0.1",
+			c.port))}
 
 		args = append(args, fmt.Sprintf("--user=%s",
 			strings.Replace(userName, `"`, `\"`, -1)))
@@ -508,6 +474,41 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		_, err := tool.Run(args)
 		c.CheckErr(err)
 	}
+}
+
+func (c *MssqlBase) verifyUseSourceFileExists(useDatabase ingest.Ingest, controller *container.Controller, output *output.Output) ingest.Ingest {
+	useDatabase = ingest.NewIngest(c.useDatabaseUrl, controller, ingest.IngestOptions{
+		Mechanism: c.useMechanism,
+	})
+
+	if !useDatabase.IsValidFileExtension() {
+		output.FatalfWithHints(
+			[]string{
+				fmt.Sprintf(
+					"--using must be a path to a file with a %q extension",
+					ingest.ValidFileExtensions(),
+				),
+			},
+			"%q is not a valid file extension for --using flag", useDatabase.UserProvidedFileExt())
+	}
+
+	if useDatabase.IsRemoteUrl() && !useDatabase.IsValidScheme() {
+		output.FatalfWithHints(
+			[]string{
+				fmt.Sprintf(
+					"--using URL must one of %q",
+					strings.Join(useDatabase.ValidSchemes(), ", "),
+				),
+			},
+			"%q is not a valid URL for --using flag", c.useDatabaseUrl)
+	}
+
+	if !useDatabase.SourceFileExists() {
+		output.FatalfWithHints(
+			[]string{fmt.Sprintf("File does not exist at URL %q", c.useDatabaseUrl)},
+			"Unable to download file")
+	}
+	return useDatabase
 }
 
 // createNonSaUser creates a user (non-sa) and assigns the sysadmin role

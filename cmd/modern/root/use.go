@@ -53,53 +53,43 @@ func (c *Use) DefineCommand(...cmdparser.CommandOptions) {
 func (c *Use) run() {
 	output := c.Output()
 
-	if config.CurrentContextName() == "" {
+	controller := container.NewController()
+	id := config.ContainerId()
+
+	if !controller.ContainerRunning(id) {
 		output.FatalfWithHintExamples([][]string{
-			{"To view available contexts", "sqlcmd config get-contexts"},
-		}, "No current context")
+			{"Start container for current context", "sqlcmd start"},
+		}, "Container for current context is not running")
 	}
-	if config.CurrentContextEndpointHasContainer() {
-		controller := container.NewController()
-		id := config.ContainerId()
 
-		if !controller.ContainerRunning(id) {
-			output.FatalfWithHintExamples([][]string{
-				{"Start container for current context", "sqlcmd start"},
-			}, "Container for current context is not running")
-		}
+	endpoint, user := config.CurrentContext()
 
-		endpoint, user := config.CurrentContext()
+	c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
+	c.sql.Connect(endpoint, user, sql.ConnectOptions{Database: "master", Interactive: false})
 
-		c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
-		c.sql.Connect(endpoint, user, sql.ConnectOptions{Database: "master", Interactive: false})
+	useDatabase := ingest.NewIngest(c.url, controller, ingest.IngestOptions{
+		Mechanism: c.useMechanism,
+	})
 
-		useDatabase := ingest.NewIngest(c.url, controller, ingest.IngestOptions{
-			Mechanism: c.useMechanism,
-		})
-
-		if !useDatabase.SourceFileExists() {
-			output.FatalfWithHints(
-				[]string{fmt.Sprintf("File does not exist at URL %q", c.url)},
-				"Unable to download file to container")
-		}
-
-		useDatabase.CopyToContainer(id)
-
-		if useDatabase.IsExtractionNeeded() {
-			output.Infof("Extracting files from %q", useDatabase.UrlFilename())
-			useDatabase.Extract()
-		}
-
-		useDatabase.BringOnline(
-			c.sql.Query,
-			user.BasicAuth.Username,
-			secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
-		)
-	} else {
-		output.FatalfWithHintExamples([][]string{
-			{"Create new context with a sql container ", "sqlcmd create mssql"},
-		}, "Current context does not have a container")
+	if !useDatabase.SourceFileExists() {
+		output.FatalfWithHints(
+			[]string{fmt.Sprintf("File does not exist at URL %q", c.url)},
+			"Unable to download file to container")
 	}
+
+	// Copy source file (e.g. .bak/.bacpac etc.) for database to be made available to container
+	useDatabase.CopyToContainer(id)
+
+	if useDatabase.IsExtractionNeeded() {
+		output.Infof("Extracting files from %q", useDatabase.UrlFilename())
+		useDatabase.Extract()
+	}
+
+	useDatabase.BringOnline(
+		c.sql.Query,
+		user.BasicAuth.Username,
+		secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
+	)
 }
 
 func (c *Use) query(commandText string) {

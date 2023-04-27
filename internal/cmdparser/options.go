@@ -28,6 +28,8 @@ type FlagOptions struct {
 	Shorthand string
 	Usage     string
 
+	Hidden bool
+
 	String        *string
 	DefaultString string
 

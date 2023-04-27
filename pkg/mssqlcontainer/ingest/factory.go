@@ -9,14 +9,14 @@ import (
 	"strings"
 )
 
-func NewIngest(databaseUri string, controller *container.Controller, options IngestOptions) Ingest {
-	databaseUrl := databaseurl.NewDatabaseUrl(databaseUri)
+func NewIngest(databaseUrl string, controller *container.Controller, options IngestOptions) Ingest {
+	url := databaseurl.NewDatabaseUrl(databaseUrl)
 
 	return &ingest{
-		uri:        databaseUrl,
+		url:        url,
 		controller: controller,
-		location:   location.NewLocation(databaseUrl.IsLocal, databaseUrl.String(), controller),
-		mechanism:  mechanism.NewMechanism(databaseUrl.FileExtension, options.Mechanism, controller),
+		location:   location.NewLocation(url.IsLocal, url.String(), controller),
+		mechanism:  mechanism.NewMechanism(url.FileExtension, options.Mechanism, controller),
 	}
 }
 

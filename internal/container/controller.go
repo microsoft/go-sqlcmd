@@ -70,38 +70,31 @@ func (c Controller) EnsureImage(image string) (err error) {
 // the ID of the container.
 func (c Controller) ContainerRun(
 	image string,
-	env []string,
-	port int,
-	name string,
-	hostname string,
-	architecture string,
-	os string,
-	command []string,
-	unitTestFailure bool,
+	options RunOptions,
 ) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
 			nat.Port("1433/tcp"): []nat.PortBinding{
 				{
 					HostIP:   "0.0.0.0",
-					HostPort: strconv.Itoa(port),
+					HostPort: strconv.Itoa(options.Port),
 				},
 			},
 		},
 	}
 
 	platform := specs.Platform{
-		Architecture: architecture,
-		OS:           os,
+		Architecture: options.Architecture,
+		OS:           options.Os,
 	}
 
 	resp, err := c.cli.ContainerCreate(context.Background(), &container.Config{
 		Tty:      true,
 		Image:    image,
-		Cmd:      command,
-		Env:      env,
-		Hostname: hostname,
-	}, hostConfig, nil, &platform, name)
+		Cmd:      options.Command,
+		Env:      options.Env,
+		Hostname: options.Hostname,
+	}, hostConfig, nil, &platform, options.Name)
 	checkErr(err)
 
 	err = c.cli.ContainerStart(
@@ -109,7 +102,7 @@ func (c Controller) ContainerRun(
 		resp.ID,
 		types.ContainerStartOptions{},
 	)
-	if err != nil || unitTestFailure {
+	if err != nil || options.UnitTestFailure {
 		// Remove the container, because we haven't persisted to config yet, so
 		// uninstall won't work yet
 		if resp.ID != "" {
