@@ -212,13 +212,14 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	// Using PersistentFlags() for ErrorSeverityLevel due to data type uint8 , which is not supported in Flags()
 	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "error-severity-level", "V", 0, "Controls the severity level that is used to set the ERRORLEVEL variable on exit.")
 	// ScreenWidth is *int type , need to find corresponding Flag Type in PFlag
-	// int *defaultSomeFlag;
-	// 	rootCmd.Flags().IntVarP(args.ScreenWidth, "ScreenWidth", "w", 0, "Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable.")
-	// rootCmd.Flags().NoOptDefVal = ""
+	// var screenwidth *int;
+	// rootCmd.Flags().IntVarP(args.ScreenWidth, "ScreenWidth", "w", 0, "Specifies the screen width for output. Sets the SQLCMDCOLWIDTH variable.")
+	// // rootCmd.Flags().NoOptDefVal = ""
 }
 
 func normalizeFlags(rootCmd *cobra.Command) error {
 	//Adding a validator for checking the enum flags
+	var err error
 	rootCmd.Flags().SetNormalizeFunc(func(f *pflag.FlagSet, name string) pflag.NormalizedName {
 		switch name {
 		case "application-intent":

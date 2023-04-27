@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"regexp"
@@ -12,7 +13,6 @@ import (
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/color"
-	"github.com/spf13/cobra"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -387,67 +387,47 @@ func listCommand(s *Sqlcmd, args []string, line uint) (err error) {
 	return
 }
 
-type connectData struct {
-	Server               string `arg:""`
-	Database             string `short:"D"`
-	Username             string `short:"U"`
-	Password             string `short:"P"`
-	LoginTimeout         string `short:"l"`
-	AuthenticationMethod string `short:"G"`
-}
-
 func connectCommand(s *Sqlcmd, args []string, line uint) error {
-	cmd := &cobra.Command{
-		Use:   "connect",
-		Short: "Connect to a database",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cmdLine := strings.TrimSpace(args[0])
-			if cmdLine == "" {
-				return InvalidCommandError("CONNECT", line)
-			}
+	if len(args) == 0 {
+		return InvalidCommandError("CONNECT", line)
+	}
+	// Parse flags
+	flags := flag.NewFlagSet("connect", flag.ContinueOnError)
+	server := flags.String("S", "", "server name")
+	database := flags.String("D", "", "database name")
+	username := flags.String("U", "", "user name")
+	password := flags.String("P", "", "password")
+	loginTimeout := flags.String("l", "", "login timeout")
+	authenticationMethod := flags.String("G", "", "authentication method")
 
-			connect := connectData{}
-			if err := cmd.Flags().Parse(args); err != nil {
-				return InvalidCommandError("CONNECT", line)
-			}
-			connect.Server = cmd.Flag("server").Value.String()
-			connect.Database = cmd.Flag("database").Value.String()
-			connect.Username = cmd.Flag("username").Value.String()
-			connect.Password = cmd.Flag("password").Value.String()
-			connect.LoginTimeout = cmd.Flag("login-timeout").Value.String()
-			connect.AuthenticationMethod = cmd.Flag("authentication-method").Value.String()
-
-			Connect := *s.Connect
-			Connect.ServerName, _ = resolveArgumentVariables(s, []rune(connect.Server), false)
-			Connect.UserName, _ = resolveArgumentVariables(s, []rune(connect.Username), false)
-			Connect.Password, _ = resolveArgumentVariables(s, []rune(connect.Password), false)
-
-			timeout, _ := resolveArgumentVariables(s, []rune(connect.LoginTimeout), false)
-			if timeout != "" {
-				if timeoutSeconds, err := strconv.ParseInt(timeout, 10, 32); err == nil {
-					if timeoutSeconds < 0 {
-						return InvalidCommandError("CONNECT", line)
-					}
-					Connect.LoginTimeoutSeconds = int(timeoutSeconds)
-				}
-			}
-			Connect.AuthenticationMethod = connect.AuthenticationMethod
-
-			_ = s.ConnectDb(&Connect, s.lineIo == nil)
-
-			return nil
-		},
+	err := flags.Parse(args[1:])
+	if err != nil {
+		return InvalidCommandError("CONNECT", line)
 	}
 
-	cmd.Flags().StringP("server", "", "", "Specifies the server to connect to")
-	cmd.Flags().StringP("database", "D", "", "Specifies the database to connect to")
-	cmd.Flags().StringP("username", "U", "", "Specifies the username to use for authentication")
-	cmd.Flags().StringP("password", "P", "", "Specifies the password to use for authentication")
-	cmd.Flags().StringP("login-timeout", "l", "", "Specifies the login timeout in seconds")
-	cmd.Flags().StringP("authentication-method", "G", "", "Specifies the authentication method to use")
+	connect := *s.Connect
+	connect.UserName, _ = resolveArgumentVariables(s, []rune(*username), false)
+	connect.Password, _ = resolveArgumentVariables(s, []rune(*password), false)
+	connect.ServerName, _ = resolveArgumentVariables(s, []rune(*server), false)
+	connect.Database, _ = resolveArgumentVariables(s, []rune(*database), false)
 
-	return cmd.Execute()
+	timeout, _ := resolveArgumentVariables(s, []rune(*loginTimeout), false)
+	if timeout != "" {
+		if timeoutSeconds, err := strconv.ParseInt(timeout, 10, 32); err == nil {
+			if timeoutSeconds < 0 {
+				return InvalidCommandError("CONNECT", line)
+			}
+			connect.LoginTimeoutSeconds = int(timeoutSeconds)
+		}
+	}
+
+	connect.AuthenticationMethod = *authenticationMethod
+
+	// If no user name is provided we switch to integrated auth
+	_ = s.ConnectDb(&connect, s.lineIo == nil)
+
+	// ConnectDb prints connection errors already, and failure to connect is not fatal even with -b option
+	return nil
 }
 
 func execCommand(s *Sqlcmd, args []string, line uint) error {
