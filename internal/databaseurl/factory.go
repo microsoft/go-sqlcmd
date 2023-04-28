@@ -19,6 +19,12 @@ func NewDatabaseUrl(url string) *DatabaseUrl {
 		url = "./" + url
 	}
 
+	// Cope with a file:// URL that in the local directory, so it can be URL.Parsed()
+	if strings.HasPrefix(strings.ToLower(url), "file://") &&
+		!strings.Contains(url[7:], "/") {
+		url = "file://./" + url[7:]
+	}
+
 	parsedUrl, err := url2.Parse(url)
 	checkErr(err)
 
@@ -44,7 +50,6 @@ func NewDatabaseUrl(url string) *DatabaseUrl {
 		split = strings.Split(databaseUrl.Filename, ",")
 		databaseUrl.Filename = split[0]
 	} else {
-
 		databaseUrl.DatabaseName = strings.TrimSuffix(
 			databaseUrl.Filename,
 			"."+databaseUrl.FileExtension,

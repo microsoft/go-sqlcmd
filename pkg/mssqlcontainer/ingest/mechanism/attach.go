@@ -26,7 +26,12 @@ func (m *attach) FileTypes() []string {
 	return []string{"mdf"}
 }
 
-func (m *attach) BringOnline(databaseName string, containerId string, query func(string), options BringOnlineOptions) {
+func (m *attach) BringOnline(
+	databaseName string,
+	containerId string,
+	query func(string),
+	options BringOnlineOptions,
+) {
 	text := `SET NOCOUNT ON; `
 
 	m.containerId = containerId
@@ -55,9 +60,7 @@ func (m *attach) BringOnline(databaseName string, containerId string, query func
 
 func (m *attach) setFilePermissions(filename string) {
 	m.RunCommand([]string{"chown", "mssql:root", filename})
-	m.RunCommand([]string{"chmod", "-o-r", filename})
-	m.RunCommand([]string{"chmod", "-u+rw", filename})
-	m.RunCommand([]string{"chmod", "-g+r", filename})
+	m.RunCommand([]string{"chmod", "-o-r-u+rw-g+r", filename})
 }
 
 func (m *attach) RunCommand(s []string) ([]byte, []byte) {

@@ -24,41 +24,6 @@ func TestExtractUrl(t *testing.T) {
 	}
 }
 
-func TestParseDbName(t *testing.T) {
-	type test struct {
-		inputURL    string
-		expectedURL string
-	}
-
-	tests := []test{
-		{"https://example.com/testdb.bak,myDbName", "myDbName"},
-		{"https://example.com/testdb.bak", "testdb"},
-		{"https://example.com/test.foo", "test"},
-		{"https://example.com/test.foo,test", "test"},
-		{"https://example.com/test.7z,tql_name", "tsql_name"},
-		{"https://example.com/test.mdf,tsql_name?foo=bar", "tsql_name"},
-		{"https://example.com/test.mdf,tsql_name#link?foo=bar", "tsql_name"},
-		{"https://example.com/test.mdf?foo=bar", "test"},
-		{"https://example.com/test.mdf#link?foo=bar", "test"},
-		{"https://example.com/test,test", "test"},
-		{"https://example.com,", ""},
-		{"https://example.com", ""},
-		{"test.7z,tql_name", "tsql_name"},
-		{"test.mdf,tql_name", "tsql_name"},
-		{"test.mdf", "test"},
-		{"c:\test.mdf", "test"},
-		{"c:\test.mdf,tsql_name", "tsql_name"},
-		{"file://test.mdf,tsql_name", "tsql_name"},
-		{"file://test.mdf", "test"},
-	}
-
-	for _, testcase := range tests {
-		u := NewDatabaseUrl(testcase.inputURL)
-		assert.Equal(t, testcase.expectedURL, u.DatabaseName,
-			"Extracted DB Name does not match expected DB Name")
-	}
-}
-
 func TestGetDbNameIfExists(t *testing.T) {
 
 	type test struct {

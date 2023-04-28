@@ -69,7 +69,7 @@ func (c *ConnectionStrings) run() {
 		if endpoint.AssetDetails != nil && endpoint.AssetDetails.ContainerDetails != nil {
 			controller := container.NewController()
 			if controller.ContainerRunning(endpoint.AssetDetails.ContainerDetails.Id) {
-				s := sql.New(sql.SqlOptions{})
+				s := sql.NewSql(sql.SqlOptions{})
 				s.Connect(endpoint, user, sql.ConnectOptions{Interactive: false})
 				c.database = s.ScalarString("PRINT DB_NAME()")
 			} else {

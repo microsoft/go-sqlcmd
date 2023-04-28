@@ -244,6 +244,9 @@ func (c Controller) CopyFile(id string, src string, destFolder string) {
 	// Create and add some files to the archive.
 	var buf bytes.Buffer
 	tw := tar.NewWriter(&buf)
+	defer func() {
+		checkErr(tw.Close())
+	}()
 	hdr := &tar.Header{
 		Name: f,
 		Mode: 0600,
@@ -252,8 +255,6 @@ func (c Controller) CopyFile(id string, src string, destFolder string) {
 	err = tw.WriteHeader(hdr)
 	checkErr(err)
 	_, err = tw.Write([]byte(h))
-	checkErr(err)
-	err = tw.Close()
 	checkErr(err)
 
 	err = c.cli.CopyToContainer(context.Background(), id, destFolder, &buf, types.CopyToContainerOptions{})
@@ -271,7 +272,7 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		panic("Must pass in non-empty destFolder")
 	}
 
-	cmd := []string{"mkdir", destFolder}
+	cmd := []string{"mkdir", "-p", destFolder}
 	c.RunCmdInContainer(id, cmd)
 
 	_, file := filepath.Split(src)

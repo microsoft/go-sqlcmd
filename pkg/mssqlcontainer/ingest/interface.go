@@ -7,6 +7,7 @@ type Ingest interface {
 	IsExtractionNeeded() bool
 
 	SourceFileExists() bool
+	DatabaseName() string
 	UrlFilename() string
 	UserProvidedFileExt() string
 

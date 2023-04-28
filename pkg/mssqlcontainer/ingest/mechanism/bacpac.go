@@ -26,7 +26,12 @@ func (m *bacpac) FileTypes() []string {
 	return []string{"bacpac", "dacpac"}
 }
 
-func (m *bacpac) BringOnline(databaseName string, containerId string, query func(string), options BringOnlineOptions) {
+func (m *bacpac) BringOnline(
+	databaseName string,
+	containerId string,
+	query func(string),
+	options BringOnlineOptions,
+) {
 	m.containerId = containerId
 	m.installSqlPackage()
 	m.setDefaultDatabaseToMaster(options.Username, query)
@@ -57,23 +62,11 @@ func (m *bacpac) installSqlPackage() {
 		panic("controller is nil")
 	}
 
-	/*
-	   m.controller.DownloadFile(
-	   		m.containerId,
-	   		"https://aka.ms/sqlpackage-linux",
-	   		"/tmp",
-	   	)
-	*/
-	// wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
-	// sudo chmod +x ./dotnet-install.sh
-	// ./dotnet-install.sh
-	// dotnet tool install -g microsoft.sqlpackage
-
+	//BUG(stuartpa): Can this be done in the mssql user, don't think it needs root
 	m.RunCommand([]string{"wget", "https://dot.net/v1/dotnet-install.sh", "-O", "dotnet-install.sh"})
 	m.RunCommand([]string{"chmod", "+x", "./dotnet-install.sh"})
 	m.RunCommand([]string{"./dotnet-install.sh"})
 	m.RunCommand([]string{"/root/.dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
-	//m.RunCommand([]string{"echo", `export PATH="$PATH:/root/.dotnet/tools"`, ">", "~/.bash_profile"})
 }
 
 func (m *bacpac) RunCommand(s []string) ([]byte, []byte) {

@@ -39,6 +39,10 @@ func (i *ingest) UrlFilename() string {
 	return i.url.Filename
 }
 
+func (i *ingest) DatabaseName() string {
+	return i.url.DatabaseName
+}
+
 func (i *ingest) IsValidScheme() bool {
 	for _, s := range i.location.ValidSchemes() {
 		if s == i.url.Scheme {
@@ -99,7 +103,6 @@ func (i *ingest) BringOnline(query func(string), username string, password strin
 	i.query = query
 	i.options.Username = username
 	i.options.Password = password
-	fmt.Println(i.url.DatabaseNameAsTsqlIdentifier)
 	i.mechanism.BringOnline(i.url.DatabaseNameAsTsqlIdentifier, i.containerId, i.query, i.options)
 	i.setDefaultDatabase(username)
 }

@@ -9,7 +9,7 @@ type DatabaseUrl struct {
 	FileExtension string
 	IsLocal       bool
 
-	// DatabaseName returns the databaseName from --using arg
+	// DatabaseName returns the databaseName from --use arg
 	// It sets database name to the specified database name
 	// or in absence of it, it is set to the filename without
 	// extension.

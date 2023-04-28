@@ -216,7 +216,7 @@ func (o Output) maskSecrets(text string) string {
 	text = r.ReplaceAllString(text, "$1********$3")
 
 	// Mask password from sqlpackage.exe command line e.g. /TargetPassword:foo
-	r = regexp.MustCompile(`(/TargetPassword:)(.*)( /)`)
+	r = regexp.MustCompile(`(/TargetPassword:)(.*)`)
 	text = r.ReplaceAllString(text, "$1********$3")
 
 	return text

@@ -75,6 +75,7 @@ func (c *Ads) launchAds(host string, port int, username string) {
 				port)),
 	}
 
+	// If a username is specified, use that (basic auth), otherwise use integrated auth
 	if username != "" {
 
 		// Here's a fun SQL Server behavior  - it allows you to create database

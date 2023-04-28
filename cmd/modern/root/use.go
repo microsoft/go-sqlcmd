@@ -23,14 +23,16 @@ type Use struct {
 }
 
 func (c *Use) DefineCommand(...cmdparser.CommandOptions) {
+	examples := []cmdparser.ExampleOptions{
+		{
+			Description: "Download AdventureWorksLT into container for current context, set as default database",
+			Steps:       []string{`sqlcmd use https://aka.ms/AdventureWorksLT.bak`}},
+	}
+
 	options := cmdparser.CommandOptions{
-		Use:   "use",
-		Short: fmt.Sprintf("Download database (into container) (%s)", ingest.ValidFileExtensions()),
-		Examples: []cmdparser.ExampleOptions{
-			{
-				Description: "Download AdventureWorksLT into container for current context, set as default database",
-				Steps:       []string{`sqlcmd use https://aka.ms/AdventureWorksLT.bak`}},
-		},
+		Use:                        "use",
+		Short:                      fmt.Sprintf("Download database (into container) (%s)", ingest.ValidFileExtensions()),
+		Examples:                   examples,
 		Run:                        c.run,
 		FirstArgAlternativeForFlag: &cmdparser.AlternativeForFlagOptions{Flag: "url", Value: &c.url},
 	}
@@ -66,8 +68,8 @@ func (c *Use) run() {
 
 	endpoint, user := config.CurrentContext()
 
-	c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
-	c.sql.Connect(endpoint, user, sql.ConnectOptions{Database: "master", Interactive: false})
+	c.sql = sql.NewSql(sql.SqlOptions{})
+	c.sql.Connect(endpoint, user, sql.ConnectOptions{Database: "master"})
 
 	useDatabase := ingest.NewIngest(c.url, controller, ingest.IngestOptions{
 		Mechanism: c.useMechanism,

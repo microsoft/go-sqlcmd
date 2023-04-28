@@ -270,23 +270,22 @@ func (c *MssqlBase) AddFlags(
 // If the EULA has not been accepted, it prints an error message with suggestions for how to proceed,
 // and exits the program.
 func (c *MssqlBase) Run() {
-	output := c.Cmd.Output()
-
 	var imageName string
+
+	output := c.Cmd.Output()
 
 	if !c.acceptEula && viper.GetString("ACCEPT_EULA") == "" {
 		output.FatalWithHints(
 			[]string{"Either, add the --accept-eula flag to the command-line",
-				fmt.Sprintf("Or, set the environment variable i.e. %s SQLCMD_ACCEPT_EULA=YES ", pal.CreateEnvVarKeyword())},
+				fmt.Sprintf(
+					"Or, set the environment variable i.e. %s SQLCMD_ACCEPT_EULA=YES ",
+					pal.CreateEnvVarKeyword())},
 			"EULA not accepted")
 	}
 
-	imageName = fmt.Sprintf(
-		"%s/%s:%s",
-		c.registry,
-		c.repo,
-		c.tag)
+	imageName = fmt.Sprintf("%s/%s:%s", c.registry, c.repo, c.tag)
 
+	// If no context name provided, set it to the default (e.g. mssql or edge)
 	if c.contextName == "" {
 		c.contextName = c.defaultContextName
 	}
@@ -294,7 +293,7 @@ func (c *MssqlBase) Run() {
 	c.createContainer(imageName, c.contextName)
 }
 
-// createContainer installs an image for a SQL Server container. The image
+// createContainer creates a SQL Server container for an image. The image
 // is specified by imageName, and the container will be given the name contextName.
 // If the useCached flag is set, the function will skip downloading the image
 // from the internet. The function outputs progress messages to the command-line
@@ -305,12 +304,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	controller := container.NewController()
 	saPassword := c.generatePassword()
 
-	env := []string{
-		"ACCEPT_EULA=Y",
-		fmt.Sprintf("MSSQL_SA_PASSWORD=%s", saPassword),
-		fmt.Sprintf("MSSQL_COLLATION=%s", c.collation),
-	}
-
 	if c.port == 0 {
 		c.port = config.FindFreePortForTds()
 	}
@@ -318,12 +311,12 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	// Do an early exit if url doesn't exist
 	var useDatabase ingest.Ingest
 	if c.useDatabaseUrl != "" {
-		useDatabase = c.verifyUseSourceFileExists(useDatabase, controller, output)
+		useDatabase = c.verifyUseSourceFileExists(controller, output)
 	}
 
 	if c.defaultDatabase != "" {
 		if !c.validateDbName(c.defaultDatabase) {
-			output.Fatalf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase)
+			output.Fatalf("--database %q contains non-ASCII chars and/or quotes", c.defaultDatabase)
 		}
 	}
 
@@ -332,38 +325,34 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	runOptions := container.RunOptions{
-		Env:          env,
 		Port:         c.port,
 		Name:         c.name,
 		Hostname:     c.hostname,
 		Architecture: c.architecture,
-		Os:           c.os,
-		Command:      []string{},
-	}
+		Os:           c.os}
+
+	runOptions.Env = []string{
+		"ACCEPT_EULA=Y",
+		fmt.Sprintf("MSSQL_SA_PASSWORD=%s", saPassword),
+		fmt.Sprintf("MSSQL_COLLATION=%s", c.collation)}
 
 	output.Infof("Starting %v", imageName)
 	containerId := controller.ContainerRun(imageName, runOptions)
 	previousContextName := config.CurrentContextName()
 
-	userName := pal.UserName()
-	password := c.generatePassword()
-
 	// Save the config now, so user can uninstall/delete, even if mssql in the container
 	// fails to start
-
 	contextOptions := config.ContextOptions{
 		ImageName:          imageName,
 		PortNumber:         c.port,
 		ContainerId:        containerId,
-		Username:           userName,
-		Password:           password,
-		PasswordEncryption: c.passwordEncryption,
-	}
-
+		Username:           pal.UserName(),
+		Password:           c.generatePassword(),
+		PasswordEncryption: c.passwordEncryption}
 	config.AddContextWithContainer(contextName, contextOptions)
 
 	output.Infof(
-		"Created context %q in \"%s\", configuring user account...",
+		"Created context %q in \"%s\", configuring user account",
 		config.CurrentContextName(),
 		config.GetConfigFileUsed())
 
@@ -372,7 +361,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	output.Infof("Disabled %q account (and rotated %q password). Creating user %q",
 		"sa",
 		"sa",
-		userName)
+		contextOptions.Username)
 
 	endpoint, _ := config.CurrentContext()
 
@@ -384,7 +373,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
 		sqlOptions.UnitTesting = true
 	}
-	c.sql = sql.New(sqlOptions)
+	c.sql = sql.NewSql(sqlOptions)
 
 	saUser := &sqlconfig.User{
 		AuthenticationType: "basic",
@@ -394,27 +383,34 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			Password:           secret.Encode(saPassword, c.passwordEncryption)},
 		Name: "sa"}
 
-	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
-	c.createNonSaUser(userName, password)
+	// Connect to master database on SQL Server in the container as `sa`
+	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master"})
 
-	// Download and restore DB if asked
+	// Create a new (non-sa) SQL Server user
+	c.createUser(contextOptions.Username, contextOptions.Password)
+
+	// Download and restore/attach etc. DB if asked
 	if useDatabase != nil {
-		output.Infof("Copying to container")
+		if useDatabase.IsRemoteUrl() {
+			output.Infof("Downloading %q to container", useDatabase.UrlFilename())
+		} else {
+			output.Infof("Copying %q to container", useDatabase.UrlFilename())
+		}
 		useDatabase.CopyToContainer(containerId)
 
 		if useDatabase.IsExtractionNeeded() {
-			output.Infof("Extracting files from archive")
+			output.Infof("Extracting files from %q archive", useDatabase.UrlFilename())
 			useDatabase.Extract()
 		}
 
-		output.Infof("Bringing database online")
-		useDatabase.BringOnline(c.sql.Query, userName, password)
+		output.Infof("Bringing database %q online", useDatabase.DatabaseName())
+		useDatabase.BringOnline(c.sql.Query, contextOptions.Username, contextOptions.Password)
 	}
 
 	if c.openTool == "" {
 		hints := [][]string{}
 
-		// TODO: sqlcmd open ads only support on Windows right now, add Mac support
+		// TODO: sqlcmd open ads only support on Windows/Mac right now, add Linux support
 		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 			hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
 		}
@@ -452,10 +448,10 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		user := &sqlconfig.User{
 			AuthenticationType: "basic",
 			BasicAuth: &sqlconfig.BasicAuthDetails{
-				Username:           userName,
+				Username:           contextOptions.Username,
 				PasswordEncryption: c.passwordEncryption,
-				Password:           secret.Encode(password, c.passwordEncryption)},
-			Name: userName}
+				Password:           secret.Encode(contextOptions.Password, c.passwordEncryption)},
+			Name: contextOptions.Username}
 
 		ads.PersistCredentialForAds(endpoint.EndpointDetails.Address, endpoint, user)
 
@@ -466,7 +462,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			c.port))}
 
 		args = append(args, fmt.Sprintf("--user=%s",
-			strings.Replace(userName, `"`, `\"`, -1)))
+			strings.Replace(contextOptions.Username, `"`, `\"`, -1)))
 
 		tool := tools.NewTool("ads")
 		if !tool.IsInstalled() {
@@ -478,7 +474,10 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 }
 
-func (c *MssqlBase) verifyUseSourceFileExists(useDatabase ingest.Ingest, controller *container.Controller, output *output.Output) ingest.Ingest {
+func (c *MssqlBase) verifyUseSourceFileExists(
+	controller *container.Controller,
+	output *output.Output,
+) (useDatabase ingest.Ingest) {
 	useDatabase = ingest.NewIngest(c.useDatabaseUrl, controller, ingest.IngestOptions{
 		Mechanism: c.useMechanism,
 	})
@@ -487,22 +486,22 @@ func (c *MssqlBase) verifyUseSourceFileExists(useDatabase ingest.Ingest, control
 		output.FatalfWithHints(
 			[]string{
 				fmt.Sprintf(
-					"--using must be a path to a file with a %q extension",
+					"--use must be a path to a file with a %q extension",
 					ingest.ValidFileExtensions(),
 				),
 			},
-			"%q is not a valid file extension for --using flag", useDatabase.UserProvidedFileExt())
+			"%q is not a valid file extension for --use flag", useDatabase.UserProvidedFileExt())
 	}
 
 	if useDatabase.IsRemoteUrl() && !useDatabase.IsValidScheme() {
 		output.FatalfWithHints(
 			[]string{
 				fmt.Sprintf(
-					"--using URL must one of %q",
+					"--use URL must one of %q",
 					strings.Join(useDatabase.ValidSchemes(), ", "),
 				),
 			},
-			"%q is not a valid URL for --using flag", c.useDatabaseUrl)
+			"%q is not a valid URL for --use flag", c.useDatabaseUrl)
 	}
 
 	if !useDatabase.SourceFileExists() {
@@ -510,29 +509,17 @@ func (c *MssqlBase) verifyUseSourceFileExists(useDatabase ingest.Ingest, control
 			[]string{fmt.Sprintf("File does not exist at URL %q", c.useDatabaseUrl)},
 			"Unable to download file")
 	}
-	return useDatabase
+	return
 }
 
-// createNonSaUser creates a user (non-sa) and assigns the sysadmin role
+// createUser creates a user (non-sa) and assigns the sysadmin role
 // to the user. It also creates a default database with the provided name
 // and assigns the default database to the user. Finally, it disables
 // the sa account and rotates the sa password for security reasons.
-func (c *MssqlBase) createNonSaUser(
+func (c *MssqlBase) createUser(
 	userName string,
 	password string,
 ) {
-	output := c.Cmd.Output()
-
-	defaultDatabase := "master"
-
-	if c.defaultDatabase != "" {
-		defaultDatabase = c.defaultDatabase
-
-		// Create the default database, if it isn't a downloaded database
-		output.Infof("Creating default database [%s]", defaultDatabase)
-		c.sql.Query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
-	}
-
 	const createLogin = `CREATE LOGIN [%s]
 WITH PASSWORD=N'%s',
 DEFAULT_DATABASE=[%s],
@@ -541,6 +528,17 @@ CHECK_POLICY=OFF`
 	const addSrvRoleMember = `EXEC master..sp_addsrvrolemember
 @loginame = N'%s',
 @rolename = N'sysadmin'`
+
+	output := c.Cmd.Output()
+
+	defaultDatabase := "master"
+	if c.defaultDatabase != "" {
+		defaultDatabase = c.defaultDatabase
+
+		// Create the default database, if it isn't a downloaded database
+		output.Infof("Creating default database [%s]", defaultDatabase)
+		c.sql.Query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
+	}
 
 	c.sql.Query(fmt.Sprintf(createLogin, userName, password, defaultDatabase))
 	c.sql.Query(fmt.Sprintf(addSrvRoleMember, userName))
