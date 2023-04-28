@@ -131,7 +131,16 @@ func TestConfig(t *testing.T) {
 			ContainerId()
 			RemoveCurrentContext()
 			RemoveCurrentContext()
-			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", "none")
+
+			options := ContextOptions{
+				ImageName:          "imageName",
+				PortNumber:         1433,
+				ContainerId:        "containerId",
+				Username:           "user",
+				Password:           "password",
+				PasswordEncryption: "none",
+			}
+			AddContextWithContainer("context", options)
 			RemoveCurrentContext()
 			DeleteEndpoint("endpoint")
 			DeleteContext("context")
@@ -324,7 +333,15 @@ func TestAddContextWithContainerPanic(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Panics(t, func() {
-				AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.passwordEncryption)
+				options := ContextOptions{
+					ImageName:          tt.args.imageName,
+					PortNumber:         tt.args.portNumber,
+					ContainerId:        tt.args.containerId,
+					Username:           tt.args.username,
+					Password:           tt.args.password,
+					PasswordEncryption: tt.args.passwordEncryption,
+				}
+				AddContextWithContainer(tt.args.contextName, options)
 			})
 		})
 	}

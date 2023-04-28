@@ -67,13 +67,8 @@ func (c *Root) SubCommands() []cmdparser.Command {
 		cmdparser.New[*root.Query](dependencies),
 		cmdparser.New[*root.Start](dependencies),
 		cmdparser.New[*root.Stop](dependencies),
+		cmdparser.New[*root.Use](dependencies),
 		cmdparser.New[*root.Uninstall](dependencies),
-	}
-
-	// If the current context is a container, then add the "use" sub-command, so
-	// databases can be added to the already existing container.
-	if config.CurrentContextEndpointHasContainer() {
-		subCommands = append(subCommands, cmdparser.New[*root.Use](dependencies))
 	}
 
 	// BUG(stuartpa): - Add Linux support

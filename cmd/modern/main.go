@@ -95,9 +95,7 @@ func initializeEnvVars() {
 				os.Setenv("SQLCMDPASSWORD", password)
 			}
 		}
-
 	}
-
 }
 
 // isFirstArgModernCliSubCommand is TEMPORARY code, to be removed when

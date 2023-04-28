@@ -51,15 +51,17 @@ func (c *Use) DefineCommand(...cmdparser.CommandOptions) {
 }
 
 func (c *Use) run() {
-	output := c.Output()
+	output := useOutput{output: c.Output()}
 
 	controller := container.NewController()
 	id := config.ContainerId()
 
+	if !config.CurrentContextEndpointHasContainer() {
+		output.FatalNoContainerInCurrentContext()
+	}
+
 	if !controller.ContainerRunning(id) {
-		output.FatalfWithHintExamples([][]string{
-			{"Start container for current context", "sqlcmd start"},
-		}, "Container for current context is not running")
+		output.FatalContainerNotRunning()
 	}
 
 	endpoint, user := config.CurrentContext()
@@ -72,16 +74,14 @@ func (c *Use) run() {
 	})
 
 	if !useDatabase.SourceFileExists() {
-		output.FatalfWithHints(
-			[]string{fmt.Sprintf("File does not exist at URL %q", c.url)},
-			"Unable to download file to container")
+		output.FatalDatabaseSourceFileNotExist(c.url)
 	}
 
 	// Copy source file (e.g. .bak/.bacpac etc.) for database to be made available to container
 	useDatabase.CopyToContainer(id)
 
 	if useDatabase.IsExtractionNeeded() {
-		output.Infof("Extracting files from %q", useDatabase.UrlFilename())
+		output.output.Infof("Extracting files from %q", useDatabase.UrlFilename())
 		useDatabase.Extract()
 	}
 

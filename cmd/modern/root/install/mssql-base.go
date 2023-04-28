@@ -5,7 +5,6 @@ package install
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/mechanism"
 	"runtime"
 	"strings"
 
@@ -21,6 +20,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/mechanism"
 	"github.com/spf13/viper"
 )
 
@@ -350,15 +350,17 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	// Save the config now, so user can uninstall/delete, even if mssql in the container
 	// fails to start
-	config.AddContextWithContainer(
-		contextName,
-		imageName,
-		c.port,
-		containerId,
-		userName,
-		password,
-		c.passwordEncryption,
-	)
+
+	contextOptions := config.ContextOptions{
+		ImageName:          imageName,
+		PortNumber:         c.port,
+		ContainerId:        containerId,
+		Username:           userName,
+		Password:           password,
+		PasswordEncryption: c.passwordEncryption,
+	}
+
+	config.AddContextWithContainer(contextName, contextOptions)
 
 	output.Infof(
 		"Created context %q in \"%s\", configuring user account...",
@@ -378,11 +380,11 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	//
 	// For Unit Testing we use the Docker Hello World container, which
 	// starts much faster than the SQL Server container!
+	sqlOptions := sql.SqlOptions{}
 	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
-		c.sql = sql.New(sql.SqlOptions{UnitTesting: true})
-	} else {
-		c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
+		sqlOptions.UnitTesting = true
 	}
+	c.sql = sql.New(sqlOptions)
 
 	saUser := &sqlconfig.User{
 		AuthenticationType: "basic",

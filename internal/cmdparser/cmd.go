@@ -87,7 +87,7 @@ func (c *Cmd) AddFlag(options FlagOptions) {
 	}
 
 	if options.Hidden {
-		c.command.Flags().MarkHidden(options.Name)
+		c.command.PersistentFlags().MarkHidden(options.Name)
 	}
 }
 
