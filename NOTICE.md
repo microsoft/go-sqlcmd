@@ -556,8 +556,8 @@ Apache License
 ## github.com/docker/docker
 
 * Name: github.com/docker/docker
-* Version: v20.10.21
-* License: [Apache-2.0](https://github.com/docker/docker/blob/v20.10.21/LICENSE)
+* Version: v20.10.24
+* License: [Apache-2.0](https://github.com/docker/docker/blob/v20.10.24/LICENSE)
 
 ```
 
