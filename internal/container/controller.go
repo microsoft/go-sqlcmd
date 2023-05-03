@@ -8,6 +8,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"fmt"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
@@ -308,7 +309,7 @@ func (c Controller) RunCmdInContainer(
 			AttachStderr: true,
 			AttachStdout: true,
 			Cmd:          cmd,
-			//Env:          []string{"DOTNET_ROOT=/root/.dotnet"},
+			Env:          options.Env,
 		},
 	)
 	checkErr(err)
@@ -338,6 +339,7 @@ func (c Controller) RunCmdInContainer(
 	stderr, err := io.ReadAll(&errBuf)
 	checkErr(err)
 
+	trace(fmt.Sprintf("Err: %v", err))
 	trace("Stdout: " + string(stdout))
 	trace("Stderr: " + string(stderr))
 

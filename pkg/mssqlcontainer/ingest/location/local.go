@@ -3,6 +3,7 @@ package location
 import (
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
+	"path/filepath"
 )
 
 type local struct {
@@ -29,12 +30,17 @@ func (l local) CopyToContainer(containerId string, destFolder string) {
 		destFolder,
 	)
 
-	/*
-		_, filename := filepath.Split(l.uri)
+	_, filename := filepath.Split(l.uri)
 
-		l.controller.RunCmdInContainer(
-			containerId,
-			[]string{"chmod", "g+r", destFolder + "/" + filename},
-			container.ExecOptions{},
-		)*/
+	l.controller.RunCmdInContainer(
+		containerId,
+		[]string{"chown", "mssql:root", destFolder + "/" + filename},
+		container.ExecOptions{User: "root"},
+	)
+
+	l.controller.RunCmdInContainer(
+		containerId,
+		[]string{"chmod", "-o-r-u+rw-g+r", destFolder + "/" + filename},
+		container.ExecOptions{User: "root"},
+	)
 }

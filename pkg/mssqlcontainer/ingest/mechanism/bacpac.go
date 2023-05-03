@@ -37,7 +37,7 @@ func (m *bacpac) BringOnline(
 	m.setDefaultDatabaseToMaster(options.Username, query)
 
 	m.RunCommand([]string{
-		"./.dotnet/tools/sqlpackage",
+		"/home/mssql/.dotnet/tools/sqlpackage",
 		"/Diagnostics:true",
 		"/Action:import",
 		"/SourceFile:" + m.CopyToLocation() + "/" + options.Filename,
@@ -62,29 +62,35 @@ func (m *bacpac) installSqlPackage() {
 		panic("controller is nil")
 	}
 
-	//BUG(stuartpa): Can this be done in the mssql user, don't think it needs root
-	m.RunCommand([]string{"wget", "https://dot.net/v1/dotnet-install.sh", "-O", "/tmp/dotnet-install.sh"})
-	m.RunCommand([]string{"chmod", "+x", "/tmp/dotnet-install.sh"})
-	m.RunCommand([]string{"/tmp/dotnet-install.sh", "--install-dir", "/opt/dotnet"})
+	_, stderr := m.RunCommand([]string{"/opt/dotnet/dotnet", "--version"})
+	if len(stderr) > 0 {
+		m.RunCommand([]string{"wget", "https://dot.net/v1/dotnet-install.sh", "-O", "/tmp/dotnet-install.sh"})
+		m.RunCommand([]string{"chmod", "+x", "/tmp/dotnet-install.sh"})
+		m.RunCommand([]string{"/tmp/dotnet-install.sh", "--install-dir", "/opt/dotnet"})
 
-	// The SQL Server container doesn't have a /home/mssql directory (which is ~), this
-	// causes all sorts of things to break in the container that expect to create .toolname folders
-	m.RunCommandAsRoot([]string{"mkdir", "-p", "/home/mssql"})
-	m.RunCommandAsRoot([]string{"chown", "mssql:root", "/home/mssql"})
+		// The SQL Server container doesn't have a /home/mssql directory (which is ~), this
+		// causes all sorts of things to break in the container that expect to create .toolname folders
+		m.RunCommandAsRoot([]string{"mkdir", "-p", "/home/mssql"})
+		m.RunCommandAsRoot([]string{"chown", "mssql:root", "/home/mssql"})
 
-	m.RunCommand([]string{"touch", "/home/mssql/.bashrc"})
-	m.RunCommand([]string{"sed", "-i", "$ a/export DOTNET_ROOT=/opt/dotnet", "/home/mssql/.bashrc"})
-	m.RunCommand([]string{"sed", "-i", "$ a/export PATH=$PATH:$DOTNET_ROOT:~/.dotnet/tools", "/home/mssql/.bashrc"})
-	m.RunCommand([]string{"/opt/dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
+		m.RunCommand([]string{"/bin/bash", "-c", "echo 'export DOTNET_ROOT=/opt/dotnet' > /home/mssql/.bashrc"})
+		m.RunCommand([]string{"/bin/bash", "-c", "echo 'export PATH=$PATH:$DOTNET_ROOT:/home/mssql/.dotnet/tools' >> /home/mssql/.bashrc"})
+	}
+
+	_, stderr = m.RunCommand([]string{"/home/mssql/.dotnet/tools/sqlpackage", "/version"})
+	if len(stderr) > 0 {
+		m.RunCommand([]string{"/opt/dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
+	}
 }
 
 func (m *bacpac) RunCommand(s []string) ([]byte, []byte) {
-	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{})
+	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{
+		Env: []string{"DOTNET_ROOT=/opt/dotnet"},
+	})
 }
 
 func (m *bacpac) RunCommandAsRoot(s []string) ([]byte, []byte) {
 	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{
 		User: "root",
-		Env:  nil,
 	})
 }
