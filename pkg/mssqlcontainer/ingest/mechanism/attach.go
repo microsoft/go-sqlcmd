@@ -64,5 +64,5 @@ func (m *attach) setFilePermissions(filename string) {
 }
 
 func (m *attach) RunCommand(s []string) ([]byte, []byte) {
-	return m.controller.RunCmdInContainer(m.containerId, s)
+	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{})
 }

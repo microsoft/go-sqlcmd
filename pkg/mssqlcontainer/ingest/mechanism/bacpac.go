@@ -37,7 +37,7 @@ func (m *bacpac) BringOnline(
 	m.setDefaultDatabaseToMaster(options.Username, query)
 
 	m.RunCommand([]string{
-		"./root/.dotnet/tools/sqlpackage",
+		"./.dotnet/tools/sqlpackage",
 		"/Diagnostics:true",
 		"/Action:import",
 		"/SourceFile:" + m.CopyToLocation() + "/" + options.Filename,
@@ -63,12 +63,28 @@ func (m *bacpac) installSqlPackage() {
 	}
 
 	//BUG(stuartpa): Can this be done in the mssql user, don't think it needs root
-	m.RunCommand([]string{"wget", "https://dot.net/v1/dotnet-install.sh", "-O", "dotnet-install.sh"})
-	m.RunCommand([]string{"chmod", "+x", "./dotnet-install.sh"})
-	m.RunCommand([]string{"./dotnet-install.sh"})
-	m.RunCommand([]string{"/root/.dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
+	m.RunCommand([]string{"wget", "https://dot.net/v1/dotnet-install.sh", "-O", "/tmp/dotnet-install.sh"})
+	m.RunCommand([]string{"chmod", "+x", "/tmp/dotnet-install.sh"})
+	m.RunCommand([]string{"/tmp/dotnet-install.sh", "--install-dir", "/opt/dotnet"})
+
+	// The SQL Server container doesn't have a /home/mssql directory (which is ~), this
+	// causes all sorts of things to break in the container that expect to create .toolname folders
+	m.RunCommandAsRoot([]string{"mkdir", "-p", "/home/mssql"})
+	m.RunCommandAsRoot([]string{"chown", "mssql:root", "/home/mssql"})
+
+	m.RunCommand([]string{"touch", "/home/mssql/.bashrc"})
+	m.RunCommand([]string{"sed", "-i", "$ a/export DOTNET_ROOT=/opt/dotnet", "/home/mssql/.bashrc"})
+	m.RunCommand([]string{"sed", "-i", "$ a/export PATH=$PATH:$DOTNET_ROOT:~/.dotnet/tools", "/home/mssql/.bashrc"})
+	m.RunCommand([]string{"/opt/dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
 }
 
 func (m *bacpac) RunCommand(s []string) ([]byte, []byte) {
-	return m.controller.RunCmdInContainer(m.containerId, s)
+	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{})
+}
+
+func (m *bacpac) RunCommandAsRoot(s []string) ([]byte, []byte) {
+	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{
+		User: "root",
+		Env:  nil,
+	})
 }

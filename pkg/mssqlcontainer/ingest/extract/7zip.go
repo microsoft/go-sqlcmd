@@ -32,7 +32,7 @@ func (e *sevenZip) Extract(srcFile string, destFolder string) (string, string) {
 		"-aoa",
 		"-o" + destFolder,
 		"/var/opt/mssql/backup/" + srcFile,
-	})
+	}, container.ExecOptions{})
 
 	stdout, _ := e.controller.RunCmdInContainer(e.containerId, []string{
 		"./opt/7-zip/7zz",
@@ -40,7 +40,7 @@ func (e *sevenZip) Extract(srcFile string, destFolder string) (string, string) {
 		"-ba",
 		"-slt",
 		"/var/opt/mssql/backup/" + srcFile,
-	})
+	}, container.ExecOptions{})
 
 	var mdfFile string
 	var ldfFile string
@@ -62,13 +62,13 @@ func (e *sevenZip) Extract(srcFile string, destFolder string) (string, string) {
 func (e *sevenZip) Install() {
 	e.controller.RunCmdInContainer(e.containerId, []string{
 		"mkdir",
-		"/opt/7-zip"})
+		"/opt/7-zip"}, container.ExecOptions{})
 
 	e.controller.RunCmdInContainer(e.containerId, []string{
 		"wget",
 		"-O",
 		"/opt/7-zip/7-zip.tar",
-		"https://7-zip.org/a/7z2201-linux-x64.tar.xz"})
+		"https://7-zip.org/a/7z2201-linux-x64.tar.xz"}, container.ExecOptions{})
 
 	e.controller.RunCmdInContainer(e.containerId, []string{
 		"tar",
@@ -76,13 +76,13 @@ func (e *sevenZip) Install() {
 		"/opt/7-zip/7-zip.tar",
 		"-C",
 		"/opt/7-zip",
-	})
+	}, container.ExecOptions{})
 
 	e.controller.RunCmdInContainer(e.containerId, []string{
 		"chmod",
 		"u+x",
 		"/opt/7-zip/7zz",
-	})
+	}, container.ExecOptions{})
 }
 
 func extractPaths(input string) []string {

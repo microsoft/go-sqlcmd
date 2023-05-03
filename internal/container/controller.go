@@ -273,7 +273,7 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 	}
 
 	cmd := []string{"mkdir", "-p", destFolder}
-	c.RunCmdInContainer(id, cmd)
+	c.RunCmdInContainer(id, cmd, ExecOptions{})
 
 	_, file := filepath.Split(src)
 
@@ -285,21 +285,30 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		src,
 	}
 
-	c.RunCmdInContainer(id, cmd)
+	c.RunCmdInContainer(id, cmd, ExecOptions{})
 }
 
-func (c Controller) RunCmdInContainer(id string, cmd []string) ([]byte, []byte) {
+type ExecOptions struct {
+	User string
+	Env  []string
+}
+
+func (c Controller) RunCmdInContainer(
+	id string,
+	cmd []string,
+	options ExecOptions,
+) ([]byte, []byte) {
 	trace("Running command in container: " + strings.Join(cmd, " "))
 
 	response, err := c.cli.ContainerExecCreate(
 		context.Background(),
 		id,
 		types.ExecConfig{
-			User:         "root",
+			User:         options.User,
 			AttachStderr: true,
 			AttachStdout: true,
 			Cmd:          cmd,
-			Env:          []string{"DOTNET_ROOT=/root/.dotnet"},
+			//Env:          []string{"DOTNET_ROOT=/root/.dotnet"},
 		},
 	)
 	checkErr(err)
