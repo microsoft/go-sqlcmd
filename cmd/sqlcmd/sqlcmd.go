@@ -7,9 +7,9 @@ package sqlcmd
 import (
 	"errors"
 	"fmt"
-	"github.com/alecthomas/kong"
 	"os"
 
+	"github.com/alecthomas/kong"
 	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
@@ -252,6 +252,9 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s := sqlcmd.New(line, wd, vars)
+	// We want the default behavior on ctrl-c - exit the process
+	s.SetupCloseHandler()
+	defer s.StopCloseHandler()
 	s.UnicodeOutputFile = args.UnicodeOutputFile
 
 	if args.DisableCmdAndWarn {
