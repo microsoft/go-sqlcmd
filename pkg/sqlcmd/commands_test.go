@@ -220,6 +220,7 @@ func TestConnectCommand(t *testing.T) {
 	password := ""
 	username := ""
 	if canTestAzureAuth() {
+		fmt.Printf("Inside canTestAzureAuth")
 		authenticationMethod = "-G " + azuread.ActiveDirectoryDefault
 	}
 	if c.Password != "" {
