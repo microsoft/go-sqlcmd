@@ -9,6 +9,7 @@ type Ingest interface {
 	SourceFileExists() bool
 	DatabaseName() string
 	UrlFilename() string
+	OnlineMethod() string
 	UserProvidedFileExt() string
 
 	CopyToContainer(containerId string)

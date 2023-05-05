@@ -5,28 +5,28 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/container"
 )
 
-type bacpac struct {
+type dacfx struct {
 	controller  *container.Controller
 	containerId string
 }
 
-func (m *bacpac) Initialize(controller *container.Controller) {
+func (m *dacfx) Initialize(controller *container.Controller) {
 	m.controller = controller
 }
 
-func (m *bacpac) CopyToLocation() string {
+func (m *dacfx) CopyToLocation() string {
 	return "/var/opt/mssql/backup"
 }
 
-func (m *bacpac) Name() string {
+func (m *dacfx) Name() string {
 	return "dacfx"
 }
 
-func (m *bacpac) FileTypes() []string {
+func (m *dacfx) FileTypes() []string {
 	return []string{"bacpac", "dacpac"}
 }
 
-func (m *bacpac) BringOnline(
+func (m *dacfx) BringOnline(
 	databaseName string,
 	containerId string,
 	query func(string),
@@ -36,7 +36,7 @@ func (m *bacpac) BringOnline(
 	m.installSqlPackage()
 	m.setDefaultDatabaseToMaster(options.Username, query)
 
-	m.RunCommand([]string{
+	_, stderr := m.RunCommand([]string{
 		"/home/mssql/.dotnet/tools/sqlpackage",
 		"/Diagnostics:true",
 		"/Action:import",
@@ -47,9 +47,14 @@ func (m *bacpac) BringOnline(
 		"/TargetUser:" + options.Username,
 		"/TargetPassword:" + options.Password,
 	})
+
+	if len(stderr) == 0 {
+		// Remove the source bacpac file
+		m.RunCommandAsRoot([]string{"rm", m.CopyToLocation() + "/" + options.Filename})
+	}
 }
 
-func (m *bacpac) setDefaultDatabaseToMaster(username string, query func(string)) {
+func (m *dacfx) setDefaultDatabaseToMaster(username string, query func(string)) {
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
 		username,
@@ -57,13 +62,25 @@ func (m *bacpac) setDefaultDatabaseToMaster(username string, query func(string))
 	query(alterDefaultDb)
 }
 
-func (m *bacpac) installSqlPackage() {
+func (m *dacfx) installSqlPackage() {
 	if m.controller == nil {
 		panic("controller is nil")
 	}
 
+	m.installDotNet()
+
+	// Check if sqlpackage is installed, if not, install it
+	_, stderr := m.RunCommand([]string{"/home/mssql/.dotnet/tools/sqlpackage", "/version"})
+	if len(stderr) > 0 {
+		m.RunCommand([]string{"/opt/dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
+	}
+}
+
+func (m *dacfx) installDotNet() {
+	// Check if dotnet is installed, if not, install it
 	_, stderr := m.RunCommand([]string{"/opt/dotnet/dotnet", "--version"})
 	if len(stderr) > 0 {
+		// Download dotnet-install.sh and run it
 		m.RunCommand([]string{"wget", "https://dot.net/v1/dotnet-install.sh", "-O", "/tmp/dotnet-install.sh"})
 		m.RunCommand([]string{"chmod", "+x", "/tmp/dotnet-install.sh"})
 		m.RunCommand([]string{"/tmp/dotnet-install.sh", "--install-dir", "/opt/dotnet"})
@@ -73,23 +90,29 @@ func (m *bacpac) installSqlPackage() {
 		m.RunCommandAsRoot([]string{"mkdir", "-p", "/home/mssql"})
 		m.RunCommandAsRoot([]string{"chown", "mssql:root", "/home/mssql"})
 
-		m.RunCommand([]string{"/bin/bash", "-c", "echo 'export DOTNET_ROOT=/opt/dotnet' > /home/mssql/.bashrc"})
-		m.RunCommand([]string{"/bin/bash", "-c", "echo 'export PATH=$PATH:$DOTNET_ROOT:/home/mssql/.dotnet/tools' >> /home/mssql/.bashrc"})
-	}
-
-	_, stderr = m.RunCommand([]string{"/home/mssql/.dotnet/tools/sqlpackage", "/version"})
-	if len(stderr) > 0 {
-		m.RunCommand([]string{"/opt/dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
+		// Add dotnet to the path
+		m.AddTextLineToFile(
+			"export DOTNET_ROOT=/opt/dotnet",
+			"/home/mssql/.bashrc",
+		)
+		m.AddTextLineToFile(
+			"export PATH=$PATH:$DOTNET_ROOT:/home/mssql/.dotnet/tools",
+			"/home/mssql/.bashrc",
+		)
 	}
 }
 
-func (m *bacpac) RunCommand(s []string) ([]byte, []byte) {
+func (m *dacfx) AddTextLineToFile(text string, file string) ([]byte, []byte) {
+	return m.RunCommand([]string{"/bin/bash", "-c", fmt.Sprintf("echo '%v' >> %v", text, file)})
+}
+
+func (m *dacfx) RunCommand(s []string) ([]byte, []byte) {
 	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{
 		Env: []string{"DOTNET_ROOT=/opt/dotnet"},
 	})
 }
 
-func (m *bacpac) RunCommandAsRoot(s []string) ([]byte, []byte) {
+func (m *dacfx) RunCommandAsRoot(s []string) ([]byte, []byte) {
 	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{
 		User: "root",
 	})

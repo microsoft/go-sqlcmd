@@ -2,7 +2,7 @@ package mechanism
 
 var mechanisms = []Mechanism{
 	&attach{},
-	&bacpac{},
+	&dacfx{},
 	&restore{},
 }
 

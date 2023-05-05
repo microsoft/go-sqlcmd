@@ -39,6 +39,10 @@ func (i *ingest) UrlFilename() string {
 	return i.url.Filename
 }
 
+func (i *ingest) OnlineMethod() string {
+	return i.mechanism.Name()
+}
+
 func (i *ingest) DatabaseName() string {
 	return i.url.DatabaseName
 }

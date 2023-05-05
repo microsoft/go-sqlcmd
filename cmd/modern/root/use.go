@@ -83,15 +83,22 @@ func (c *Use) run() {
 	useDatabase.CopyToContainer(id)
 
 	if useDatabase.IsExtractionNeeded() {
-		output.output.Infof("Extracting files from %q", useDatabase.UrlFilename())
+		output.Infof("Extracting files from %q", useDatabase.UrlFilename())
 		useDatabase.Extract()
 	}
+
+	output.output.Infof("Bringing %q online using %q method",
+		useDatabase.DatabaseName(),
+		useDatabase.OnlineMethod(),
+	)
 
 	useDatabase.BringOnline(
 		c.sql.Query,
 		user.BasicAuth.Username,
 		secret.Decode(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption),
 	)
+
+	output.InfoDatabaseOnline(useDatabase.DatabaseName())
 }
 
 func (c *Use) query(commandText string) {
