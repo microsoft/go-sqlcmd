@@ -51,6 +51,7 @@ func TestCommandParsing(t *testing.T) {
 		{`:!!notepad`, "EXEC", []string{"notepad"}},
 		{` !! dir c:\`, "EXEC", []string{` dir c:\`}},
 		{`!!dir c:\`, "EXEC", []string{`dir c:\`}},
+		{`:XML ON `, "XML", []string{`ON `}},
 	}
 
 	for _, test := range commands {
