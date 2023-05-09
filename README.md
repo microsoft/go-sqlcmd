@@ -132,24 +132,9 @@ The following switches have different behavior in this version of `sqlcmd` compa
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 - `-i` now requires multiple arguments for the switch to be separated by `,`.
 
-The following switches are yet to be implemented in this version of `sqlcmd` compared to the original ODBC base `sqlcmd`:
+### Switches not available in the new sqlcmd (go-sqlcmd) yet
 
-- `-A` (dedicated administrator connection)
-- `-D` (DSN name)
-- `-e` (echo input)
-- `-f` codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]
-- `-g` (enable column encryption)
-- `-j` (Print raw error messages)
-- `-k[1 | 2]` (remove or replace control characters)
-- `-p[1]` (print statistics, optional colon format)
-- `-P` password
-- `-t` query_timeout
-- `-y` variable_length_type_display_width
-- `-Y` fixed_length_type_display_width
-- `-z` new_password
-- `-Z` new_password (and exit)
-
-There is active an discussion, #293, on prioritizing the order the above switches are added to this new version of sqlcmd (go-sqlcmd), please feedback to aid prioritization.
+There are a few switches yet to be implemented in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`, discussion [#293](https://github.com/microsoft/go-sqlcmd/discussions/292) lists these switches. Please provide feedback in the discussion on which switches are most important to you to have implemented next in the new sqlcmd (go-sqlcmd).
 
 ### Miscellaneous enhancements
 
