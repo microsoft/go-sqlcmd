@@ -134,11 +134,13 @@ The following switches have different behavior in this version of `sqlcmd` compa
 
 ### Switches not available in the new sqlcmd (go-sqlcmd) yet
 
-There are a few switches yet to be implemented in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`, discussion [#293](https://github.com/microsoft/go-sqlcmd/discussions/292) lists these switches. Please provide feedback in the discussion on which switches are most important to you to have implemented next in the new sqlcmd (go-sqlcmd).
+There are a few switches yet to be implemented in the new `sqlcmd` (go-sqlcmd) compared
+to the original ODBC based `sqlcmd`, discussion [#293](https://github.com/microsoft/go-sqlcmd/discussions/292) 
+lists these switches. Please provide feedback in the discussion on which 
+switches are most important to you to have implemented next in the new sqlcmd.
 
-There is an active discussion, #293, on prioritizing the order the above switches are added to this new version of sqlcmd (go-sqlcmd), please feedback to aid prioritization.
-
-Also, the XML Output command `:XML [On]|[Off]` is not implemented yet in the new sqlcmd (go-sqlcmd).
+Also, the XML Output command `:XML [On]|[Off]` is not implemented yet
+in the new sqlcmd (go-sqlcmd).
 
 ### Miscellaneous enhancements
 
