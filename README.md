@@ -8,14 +8,14 @@ This repo contains the `sqlcmd` command line tool and go packages for working wi
 
 ### Windows
 
-`sqlcmd` is available via [Winget][] and [Choco][], and as a downloadable .msi or .zip from the [releases page][]. The .msi installer is signed with a Microsoft Authenticode certificate.
+`sqlcmd` is available via [Winget][], [Choco][], and as a downloadable .msi or .zip from the [releases page][]. The .msi installer is signed with a Microsoft Authenticode certificate.
 
 #### WinGet
 
-| Install:                | Upgrade:                |
-| ----------------------- |-------------------------|
-| `winget install sqlcmd` | `winget remove sqlcmd`* |
-|                         | `winget install sqlcmd` |
+| Install:                | Upgrade:                   |
+| ----------------------- |----------------------------|
+| `winget install sqlcmd` | `winget uninstall sqlcmd`* |
+|                         | `winget install sqlcmd`    |
 
 * temporary workaround, while we fix `winget upgrade`
 
