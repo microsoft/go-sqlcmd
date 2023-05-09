@@ -1,4 +1,4 @@
-# SQLCMD CLI - Preview 
+# SQLCMD CLI
 
 This repo contains the `sqlcmd` command line tool and go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.
 
@@ -8,13 +8,22 @@ This repo contains the `sqlcmd` command line tool and go packages for working wi
 
 ### Windows
 
-`sqlcmd` is available via [Winget][], and as a downloadable .msi or .zip from the [releases page][]. The .msi installer is signed with a Microsoft Authenticode certificate.
+`sqlcmd` is available via [Winget][] and [Choco][], and as a downloadable .msi or .zip from the [releases page][]. The .msi installer is signed with a Microsoft Authenticode certificate.
 
 #### WinGet
 
 | Install:                | Upgrade:                |
-| ----------------------- | ----------------------- |
-| `winget install sqlcmd` | `winget upgrade sqlcmd` |
+| ----------------------- |-------------------------|
+| `winget install sqlcmd` | `winget remove sqlcmd`* |
+|                         | `winget install sqlcmd` |
+
+* temporary workaround, while we fix `winget upgrade`
+
+#### Choco
+
+| Install:                | Upgrade:                |
+| ----------------------- |-------------------------|
+| `choco install sqlcmd`  | `choco upgrade sqlcmd`  |
 
 ### macOS
 
@@ -287,6 +296,7 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 [Homebrew]: https://formulae.brew.sh/formula/sqlcmd
 [Linuxbrew]: https://docs.brew.sh/Homebrew-on-Linux
 [Winget]: https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/Sqlcmd
+[Choco]: https://community.chocolatey.org/packages/sqlcmd
 [Docker]: https://www.docker.com/products/docker-desktop/
 [Podman]: https://podman-desktop.io/downloads/
 [releases page]: https://github.com/microsoft/go-sqlcmd/releases/latest
