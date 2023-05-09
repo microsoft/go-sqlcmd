@@ -8,7 +8,7 @@ This repo contains the `sqlcmd` command line tool and go packages for working wi
 
 ### Windows
 
-`sqlcmd` is available via [Winget][], [Choco][], and as a downloadable .msi or .zip from the [releases page][]. The .msi installer is signed with a Microsoft Authenticode certificate.
+`sqlcmd` is available via [Winget][], [Choco][] and as a downloadable .msi or .zip from the [releases page][]. The .msi installer is signed with a Microsoft Authenticode certificate.
 
 #### WinGet
 
@@ -149,12 +149,12 @@ The following switches are yet to be implemented in this version of `sqlcmd` com
 - `-z` new_password
 - `-Z` new_password (and exit)
 
-There is active an discussion, #293, on prioritizing the order the above switches are added to this new version of sqlcmd (go-sqlcmd), please feedback to aid prioritization.
+There is an active discussion, #293, on prioritizing the order the above switches are added to this new version of sqlcmd (go-sqlcmd), please feedback to aid prioritization.
 
 ### Miscellaneous enhancements
 
 - Console output coloring (see below)
-- `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` user name parameter.
+- `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `-F vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
 
@@ -186,7 +186,7 @@ net_transport Named pipe
 
 To use AAD auth, you can use one of two command line switches:
 
-`-G` is (mostly) compatible with its usage in the prior version of sqlcmd. If a user name and password are provided, it will authenticate using AAD Password authentication. If a user name is provided it will use AAD Interactive authentication which may display a web browser. If no user name or password is provided, it will use a DefaultAzureCredential which attempts to authenticate through a variety of mechanisms.
+`-G` is (mostly) compatible with its usage in the prior version of sqlcmd. If a username and password are provided, it will authenticate using AAD Password authentication. If a username is provided it will use AAD Interactive authentication which may display a web browser. If no username or password is provided, it will use a DefaultAzureCredential which attempts to authenticate through a variety of mechanisms.
 
 `--authentication-method=` can be used to specify one of the following authentication types.
 
@@ -206,8 +206,8 @@ This method is currently not implemented and will fall back to `ActiveDirectoryD
 
 `ActiveDirectoryPassword`
 
-This method will authenticate using a user name and password. It will not work if MFA is required.
-You provide the user name and password using the usual command line switches or SQLCMD environment variables.
+This method will authenticate using a username and password. It will not work if MFA is required.
+You provide the username and password using the usual command line switches or SQLCMD environment variables.
 Set `AZURE_TENANT_ID` environment variable to the tenant id of the server if not using the default tenant of the user.
 
 `ActiveDirectoryInteractive`
@@ -216,11 +216,11 @@ This method will launch a web browser to authenticate the user.
 
 `ActiveDirectoryManagedIdentity`
 
-Use this method when running sqlcmd on an Azure VM that has either a system-assigned or user-assigned managed identity. If using a user-assigned managed identity, set the user name to the ID of the managed identity. If using a system-assigned identity, leave user name empty.
+Use this method when running sqlcmd on an Azure VM that has either a system-assigned or user-assigned managed identity. If using a user-assigned managed identity, set the username to the ID of the managed identity. If using a system-assigned identity, leave username empty.
 
 `ActiveDirectoryServicePrincipal`
 
-This method authenticates the provided user name as a service principal id and the password as the client secret for the service principal. Provide a user name in the form `<service principal id>@<tenant id>`. Set `SQLCMDPASSWORD` variable to the client secret. If using a certificate instead of a client secret, set `AZURE_CLIENT_CERTIFICATE_PATH` environment variable to the path of the certificate file.
+This method authenticates the provided username as a service principal id and the password as the client secret for the service principal. Provide a username in the form `<service principal id>@<tenant id>`. Set `SQLCMDPASSWORD` variable to the client secret. If using a certificate instead of a client secret, set `AZURE_CLIENT_CERTIFICATE_PATH` environment variable to the path of the certificate file.
 
 #### Environment variables for AAD auth
 
@@ -279,11 +279,13 @@ docker run -rm -e SQLCMDSERVER=<yourserver> -e SQLCMDUSER=<youruser> -e SQLCMDPA
 ```
 
 ## Localization
-A partial localization suppport exists in go-sqlcmd for following languages for user visible content that also existed in ODBC based SQLCMD.
+The new sqlcmd (go-sqlcmd) is localized for the following languages:
 Chinese (Simplified) | Chinese (Traditional) | English (United States) | French | German | Italian | Japanese | Korean | Portuguese (Brazil) | Russian | Spanish
 
-To get localized messages from SQLCMD user needs to set environment variable SQLCMD_LANG to a language tag as per BCP47 convention.
-E.g.
+Currently, the user visible strings that also existed in ODBC based sqlcmd are localized in the new sqlcmd, new strings (introduced with the new sqlcmd functionality) will be localized shortly.
+
+To get localized messages from `sqlcmd` set environment variable SQLCMD_LANG to a language tag as per BCP47 convention.
+e.g.
 ```
 \git\go-sqlcmd>set SQLCMD_LANG=de-de
 \git\go-sqlcmd>.\sqlcmd.exe -w 4
