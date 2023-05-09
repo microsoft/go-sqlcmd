@@ -12,12 +12,12 @@ This repo contains the `sqlcmd` command line tool and go packages for working wi
 
 #### WinGet
 
-| Install:                | Upgrade:                   |
-| ----------------------- |----------------------------|
-| `winget install sqlcmd` | `winget uninstall sqlcmd`* |
-|                         | `winget install sqlcmd`    |
+| Install:                | Upgrade:                    |
+| ----------------------- |-----------------------------|
+| `winget install sqlcmd` | `winget uninstall sqlcmd`** |
+|                         | `winget install sqlcmd`     |
 
-* temporary workaround, while we fix `winget upgrade`
+** temporary workaround, while we fix `winget upgrade`
 
 #### Choco
 
@@ -104,7 +104,7 @@ sqlcmd -q "SELECT @@version"
 sqlcmd
 ```
 
-If no current context exists, `sqlcmd` (with no connection parameters) reverts to the original ODBC `sqlcmd` behavior of connecting to the default local instance on port 1433 using trusted authentication.
+If no current context exists, `sqlcmd` (with no connection parameters) reverts to the original ODBC `sqlcmd` behavior of creating an interactive session to the default local instance on port 1433 using trusted authentication, otherwise it will create an interactive session to the current context.
 
 ## Sqlcmd
 
@@ -131,6 +131,25 @@ The following switches have different behavior in this version of `sqlcmd` compa
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 - `-i` now requires multiple arguments for the switch to be separated by `,`.
+
+The following switches are yet to be implemented in this version of `sqlcmd` compared to the original ODBC base `sqlcmd`:
+
+- `-A` (dedicated administrator connection)
+- `-D` (DSN name)
+- `-e` (echo input)
+- `-f` codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]
+- `-g` (enable column encryption)
+- `-j` (Print raw error messages)
+- `-k[1 | 2]` (remove or replace control characters)
+- `-p[1]` (print statistics, optional colon format)
+- `-P` password
+- `-t` query_timeout
+- `-y` variable_length_type_display_width
+- `-Y` fixed_length_type_display_width
+- `-z` new_password
+- `-Z` new_password (and exit)
+
+There is active an discussion, #293, on prioritizing the order the above switches are added to this new version of sqlcmd (go-sqlcmd), please feedback to aid prioritization.
 
 ### Miscellaneous enhancements
 
