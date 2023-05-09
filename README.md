@@ -97,7 +97,7 @@ sqlcmd delete
 
 ### Backwards compatibility with ODBC sqlcmd
 
-To connect to the current context, and use the original ODBC sqlcmd flags (e.g. -q, -Q, -i, -o etc.), that can be listed with `sqlcmd -?`, run:
+To connect to the current context, and use the original ODBC sqlcmd flags (e.g. -q, -Q, -i, -o etc.), which can be listed with `sqlcmd -?`, run:
 
 ```
 sqlcmd -q "SELECT @@version"
@@ -135,6 +135,8 @@ The following switches have different behavior in this version of `sqlcmd` compa
 ### Switches not available in the new sqlcmd (go-sqlcmd) yet
 
 There are a few switches yet to be implemented in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`, discussion [#293](https://github.com/microsoft/go-sqlcmd/discussions/292) lists these switches. Please provide feedback in the discussion on which switches are most important to you to have implemented next in the new sqlcmd (go-sqlcmd).
+
+Also, the XML Output command `:XML [On]|[Off]` is not implemented yet in the new sqlcmd (go-sqlcmd).
 
 ### Miscellaneous enhancements
 
