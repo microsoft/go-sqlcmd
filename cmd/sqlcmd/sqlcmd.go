@@ -66,7 +66,7 @@ type SQLCmdArguments struct {
 	Help bool
 }
 
-// Validate accounts for settings not described by Kong attributes
+// Validate arguments for settings not described by Kong attributes
 func (a *SQLCmdArguments) Validate() error {
 	if a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767) {
 		return localizer.Errorf(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
