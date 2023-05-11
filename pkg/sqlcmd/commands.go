@@ -393,7 +393,6 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 	// Parse flags
 	flags := flag.NewFlagSet("connect", flag.ContinueOnError)
-	server := flags.String("S", "", "server name")
 	database := flags.String("D", "", "database name")
 	username := flags.String("U", "", "user name")
 	password := flags.String("P", "", "password")
@@ -408,7 +407,6 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	connect := *s.Connect
 	connect.UserName, _ = resolveArgumentVariables(s, []rune(*username), false)
 	connect.Password, _ = resolveArgumentVariables(s, []rune(*password), false)
-	connect.ServerName, _ = resolveArgumentVariables(s, []rune(*server), false)
 	connect.Database, _ = resolveArgumentVariables(s, []rune(*database), false)
 
 	timeout, _ := resolveArgumentVariables(s, []rune(*loginTimeout), false)
@@ -422,6 +420,11 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 
 	connect.AuthenticationMethod = *authenticationMethod
+
+	// Set server name as the first positional argument
+	if len(args) > 0 {
+		connect.ServerName = args[0]
+	}
 
 	// If no user name is provided we switch to integrated auth
 	_ = s.ConnectDb(&connect, s.lineIo == nil)

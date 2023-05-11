@@ -207,9 +207,9 @@ func TestConnectCommand(t *testing.T) {
 			return []byte{}, nil
 		},
 	}
-	err := connectCommand(s, []string{"-S", "someserver", "-U", "someuser"}, 1)
+	err := connectCommand(s, []string{"someserver", "-U", "someuser"}, 1)
 	assert.NoError(t, err, "connectCommand with valid arguments doesn't return an error on connect failure")
-	assert.False(t, prompted, "connectCommand with user name and password should not prompt for password")
+	assert.True(t, prompted, "connectCommand with user name and no password should prompt for password")
 	assert.NotEqual(t, "someserver", s.Connect.ServerName, "On connection failure, sqlCmd.Connect does not copy inputs")
 
 	err = connectCommand(s, []string{}, 2)
@@ -232,8 +232,8 @@ func TestConnectCommand(t *testing.T) {
 	s.vars.Set("servername", c.ServerName)
 	s.vars.Set("to", "111")
 	buf.buf.Reset()
-	err = connectCommand(s, []string{"connect",
-		"-S", c.ServerName,
+	err = connectCommand(s, []string{
+		c.ServerName,
 		"-U", username,
 		"-P", password,
 		"-G", authenticationMethod,

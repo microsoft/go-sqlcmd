@@ -74,6 +74,12 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"--version"}, func(args SQLCmdArguments) bool {
 			return args.Version
 		}},
+		{[]string{}, func(args SQLCmdArguments) bool {
+			return args.ScreenWidth == nil
+		}},
+		{[]string{"-w", "10"}, func(args SQLCmdArguments) bool {
+			return args.ScreenWidth != nil && *args.ScreenWidth == 10
+		}},
 		{[]string{"-s", "|", "-w", "10", "-W"}, func(args SQLCmdArguments) bool {
 			return args.TrimSpaces && args.ColumnSeparator == "|" && *args.ScreenWidth == 10
 		}},
