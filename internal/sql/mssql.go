@@ -5,10 +5,11 @@ package sql
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/internal/buffer"
-	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"os"
 	"strings"
+
+	"github.com/microsoft/go-sqlcmd/internal/buffer"
+	"github.com/microsoft/go-sqlcmd/pkg/console"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
@@ -79,8 +80,12 @@ func (m *mssql) Query(text string) {
 		err := m.sqlcmd.Run(true, false)
 		checkErr(err)
 	} else {
+		// sqlcmd prints the ErrCtrlC message before returning
+		// In modern mode we do not exit the process on ctrl-c during interactive mode
 		err := m.sqlcmd.Run(false, true)
-		checkErr(err)
+		if err != sqlcmd.ErrCtrlC {
+			checkErr(err)
+		}
 	}
 }
 
