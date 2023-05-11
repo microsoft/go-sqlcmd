@@ -10,7 +10,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/alecthomas/kong"
 	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
