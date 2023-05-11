@@ -1,0 +1,14 @@
+{
+    "Projects": [
+        {
+            "LanguangeSet": "AzureKatal_Languages",
+            "LocItems": [
+                {
+                    "SourceFile": "internal\\translations\\en-US\\out.gotext.json",
+                    "Languages": "cs;de;es;fr;it;ja;ko;pl;pt-BR;ru;tr;zh-Hans;zh-Hant",
+                    "LclFile": "internal\\translations\\LCL\\{Lang}\\out.gotext.json.lcl"
+                }
+            ]
+        }
+    ]
+}
