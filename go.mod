@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	github.com/alecthomas/chroma/v2 v2.5.0
-	github.com/alecthomas/kong v0.6.2-0.20220922001058-c62bf25854a0
 	github.com/billgraziano/dpapi v0.4.0
 	github.com/docker/distribution v2.8.1+incompatible
 	github.com/docker/docker v20.10.24+incompatible
@@ -16,6 +15,7 @@ require (
 	github.com/peterh/liner v1.2.2
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.6.1
+	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
 	golang.org/x/sys v0.5.0
@@ -65,7 +65,6 @@ require (
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
