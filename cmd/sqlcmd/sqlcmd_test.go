@@ -130,16 +130,15 @@ func TestInvalidCommandLine(t *testing.T) {
 			Use:   "testCommand",
 			Short: "A brief description of my command",
 			Long:  "A long description of my command",
-			PersistentPreRunE: func(cmd *cobra.Command, argss []string) error {
-				return arguments.Validate()
+			PreRunE: func(cmd *cobra.Command, argss []string) error {
+				return normalizeFlags(cmd)
 			},
 			Run: func(cmd *cobra.Command, argss []string) {
 			},
 		}
 		setFlags(cmd, arguments)
 		cmd.SetArgs(test.commandLine)
-		err := cmd.ParseFlags(test.commandLine)
-		err = normalizeFlags(cmd)
+		err := cmd.Execute()
 		assert.EqualError(t, err, test.errorMessage, "Command line:%v", test.commandLine)
 	}
 }

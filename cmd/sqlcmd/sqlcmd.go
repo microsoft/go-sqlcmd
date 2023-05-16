@@ -128,6 +128,9 @@ func Execute(version string) {
 			if err := args.Validate(); err != nil {
 				return err
 			}
+			if err := normalizeFlags(cmd); err != nil {
+				return err
+			}
 			return nil
 		},
 		Run: func(cmd *cobra.Command, argss []string) {
@@ -153,9 +156,6 @@ func Execute(version string) {
 		},
 	}
 	setFlags(rootCmd, &args)
-	if err := normalizeFlags(rootCmd); err != nil {
-		os.Exit(1)
-	}
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
@@ -171,13 +171,16 @@ func normalizeWithError(name string, err error) (pflag.NormalizedName, error) {
 
 func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
 	screenWidth := rootCmd.Flags().Lookup("screenwidth")
+	if screenWidth == nil {
+		return
+	}
 	value := screenWidth.Value.String()
-	if screenWidth != nil && value != screenWidth.DefValue {
+	if value != screenWidth.DefValue {
 		args.ScreenWidth = new(int)
 
 		screenWidthValue, err := strconv.Atoi(value)
 		if err != nil {
-			fmt.Printf("Error converting screen width:", err)
+			fmt.Println("Error converting screen width:", err)
 			return
 		}
 		args.ScreenWidth = &screenWidthValue
