@@ -119,6 +119,7 @@ func TestInvalidCommandLine(t *testing.T) {
 	}
 
 	commands := []cmdLineTest{
+		// Issue:341  https://github.com/microsoft/go-sqlcmd/issues/341
 		//{[]string{"-E", "-U", "someuser"}, "--use-trusted-connection and --user-name can't be used together"},
 		{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
 		{[]string{"-r", "5"}, `--errors-to-stderr must be one of "-1","0","1" but got "5"`},
