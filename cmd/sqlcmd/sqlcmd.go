@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/microsoft/go-mssqldb/azuread"
@@ -120,12 +121,14 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 }
 
 func Execute(version string) {
-	// Cobra Tryout #2 : This has version and help flags. But they are also getting stucked inside run function without error
+	//var screenWidth *int
 	rootCmd := &cobra.Command{
-		Use:   "testCommand",
-		Short: "A brief description of your command",
-		PersistentPreRunE: func(cmd *cobra.Command, argss []string) error {
-			return args.Validate()
+		PreRunE: func(cmd *cobra.Command, argss []string) error {
+			SetScreenWidthFlag(&args, cmd)
+			if err := args.Validate(); err != nil {
+				return err
+			}
+			return nil
 		},
 		Run: func(cmd *cobra.Command, argss []string) {
 			vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
@@ -161,9 +164,26 @@ func Execute(version string) {
 func normalizeWithError(name string, err error) (pflag.NormalizedName, error) {
 	//checking nil
 	if name != "" && err != nil {
-		return "", fmt.Errorf("--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"%s\": %w", name, err)
+		return "", localizer.Errorf("%s", err)
 	}
 	return pflag.NormalizedName(name), nil
+}
+
+func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
+	screenWidth := rootCmd.Flags().Lookup("screenwidth")
+	value := screenWidth.Value.String()
+	if screenWidth != nil && value != screenWidth.DefValue {
+		args.ScreenWidth = new(int)
+
+		screenWidthValue, err := strconv.Atoi(value)
+		if err != nil {
+			fmt.Printf("Error converting screen width:", err)
+			return
+		}
+		args.ScreenWidth = &screenWidthValue
+	} else {
+		args.ScreenWidth = nil
+	}
 }
 
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
@@ -213,13 +233,6 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "error-severity-level", "V", 0, "Controls the severity level that is used to set the ERRORLEVEL variable on exit.")
 	screenWidth := rootCmd.Flags().Int("screenwidth", 0, "Specifies the screen width for output")
 	rootCmd.Flags().IntVarP(screenWidth, "w", "w", 0, "Specifies the screen width for output")
-	rootCmd.PersistentPreRun = func(cmd *cobra.Command, argss []string) {
-		if *screenWidth != 0 {
-			args.ScreenWidth = screenWidth
-		} else {
-			args.ScreenWidth = nil
-		}
-	}
 }
 
 func normalizeFlags(rootCmd *cobra.Command) error {
@@ -233,7 +246,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "default", "readonly":
 				return pflag.NormalizedName(name)
 			default:
-				_, err := normalizeWithError(value, fmt.Errorf("--application-intent must be one of \"default\",\"readonly\" but got \"%s\"", value))
+				_, err = normalizeWithError(value, fmt.Errorf("--application-intent must be one of \"default\",\"readonly\" but got \"%s\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
@@ -245,7 +258,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "default", "false", "true", "disable":
 				return pflag.NormalizedName(name)
 			default:
-				_, err := normalizeWithError(value, fmt.Errorf("--encrypt-connection must be one of \"default\",\"false\",\"true\",\"disable\" but got \"%s\"", value))
+				_, err = normalizeWithError(value, fmt.Errorf("--encrypt-connection must be one of \"default\",\"false\",\"true\",\"disable\" but got \"%s\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
@@ -257,7 +270,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "horiz", "horizontal", "vert", "vertical":
 				return pflag.NormalizedName(name)
 			default:
-				_, err := normalizeWithError(value, fmt.Errorf("--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"%s\"", value))
+				_, err = normalizeWithError(value, fmt.Errorf("--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"%s\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
@@ -269,7 +282,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "-1", "0", "1":
 				return pflag.NormalizedName(name)
 			default:
-				_, err := normalizeWithError(value, fmt.Errorf("--errors-to-stderr must be one of \"-1\",\"0\",\"1\" but got \"%s\"", value))
+				_, err = normalizeWithError(value, fmt.Errorf("--errors-to-stderr must be one of \"-1\",\"0\",\"1\" but got \"%s\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}

@@ -91,6 +91,10 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 			Use:   "testCommand",
 			Short: "A brief description of my command",
 			Long:  "A long description of my command",
+			PreRunE: func(cmd *cobra.Command, argss []string) error {
+				SetScreenWidthFlag(arguments, cmd)
+				return arguments.Validate()
+			},
 			Run: func(cmd *cobra.Command, argss []string) {
 				// Command logic goes here
 			},
@@ -116,11 +120,8 @@ func TestInvalidCommandLine(t *testing.T) {
 
 	commands := []cmdLineTest{
 		//{[]string{"-E", "-U", "someuser"}, "--use-trusted-connection and --user-name can't be used together"},
-		{[]string{"-a", "100"}, "'-a 100': Packet size has to be a number between 512 and 32767."},
-		//{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
-		//{[]string{"-r", "5"}, `--errors-to-stderr must be one of "-1","0","1" but got '\x05'`},
-		{[]string{"-h-4"}, "'-h -4': header value must be either -1 or a value between 1 and 2147483647"},
-		//{[]string{"-w", "6"}, "test: '-w 6': value must be greater than 8 and less than 65536."},
+		{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
+		{[]string{"-r", "5"}, `--errors-to-stderr must be one of "-1","0","1" but got "5"`},
 	}
 
 	for _, test := range commands {
@@ -138,10 +139,41 @@ func TestInvalidCommandLine(t *testing.T) {
 		setFlags(cmd, arguments)
 		cmd.SetArgs(test.commandLine)
 		err := cmd.ParseFlags(test.commandLine)
-		if err != nil {
-			t.Fatalf("Failed to parse flags: %v", err)
+		err = normalizeFlags(cmd)
+		assert.EqualError(t, err, test.errorMessage, "Command line:%v", test.commandLine)
+	}
+}
+
+func TestValidateFlags(t *testing.T) {
+	type cmdLineTest struct {
+		commandLine  []string
+		errorMessage string
+	}
+
+	commands := []cmdLineTest{
+		{[]string{"-a", "100"}, "'-a 100': Packet size has to be a number between 512 and 32767."},
+		{[]string{"-h-4"}, "'-h -4': header value must be either -1 or a value between 1 and 2147483647"},
+		{[]string{"-w", "6"}, "'-w 6': value must be greater than 8 and less than 65536."},
+	}
+
+	for _, test := range commands {
+		arguments := &SQLCmdArguments{}
+		//var screenWidth *int
+		cmd := &cobra.Command{
+			Use:   "testCommand",
+			Short: "A brief description of my command",
+			Long:  "A long description of my command",
+			PreRunE: func(cmd *cobra.Command, argss []string) error {
+				SetScreenWidthFlag(arguments, cmd)
+				return arguments.Validate()
+			},
+			Run: func(cmd *cobra.Command, argss []string) {
+			},
 		}
-		err = cmd.Execute()
+
+		setFlags(cmd, arguments)
+		cmd.SetArgs(test.commandLine)
+		err := cmd.Execute()
 		assert.EqualError(t, err, test.errorMessage, "Command line:%v", test.commandLine)
 	}
 }
