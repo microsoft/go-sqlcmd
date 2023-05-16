@@ -438,7 +438,6 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 
 	// Set server name as the first positional argument
 	if len(commandArgs) > 0 {
-		connect.ServerName = commandArgs[0]
 		connect.ServerName, _ = resolveArgumentVariables(s, []rune(commandArgs[0]), false)
 	}
 
