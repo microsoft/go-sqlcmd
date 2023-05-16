@@ -35,7 +35,7 @@ var systemDatabases = [...]string{
 func (c *Uninstall) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "delete",
-		Short: localizer.Sprintf("Uninstall/Delete the current context"),
+		Short: localizer.Sprintf(localizer.Sprintf("Uninstall/Delete the current context")),
 		Examples: []cmdparser.ExampleOptions{
 			{
 				Description: localizer.Sprintf("Uninstall/Delete the current context"),
