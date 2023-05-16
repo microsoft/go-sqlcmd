@@ -1,4 +1,4 @@
-# SQLCMD CLI - Preview 
+# SQLCMD CLI
 
 This repo contains the `sqlcmd` command line tool and go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.
 
@@ -8,13 +8,22 @@ This repo contains the `sqlcmd` command line tool and go packages for working wi
 
 ### Windows
 
-`sqlcmd` is available via [Winget][], and as a downloadable .msi or .zip from the [releases page][]. The .msi installer is signed with a Microsoft Authenticode certificate.
+`sqlcmd` is available via [Winget][], [Choco][] and as a downloadable .msi or .zip from the [releases page][]. The .msi installer is signed with a Microsoft Authenticode certificate.
 
 #### WinGet
 
+| Install:                | Upgrade:                    |
+| ----------------------- |-----------------------------|
+| `winget install sqlcmd` | `winget uninstall sqlcmd`** |
+|                         | `winget install sqlcmd`     |
+
+** temporary workaround, while we fix `winget upgrade`
+
+#### Choco
+
 | Install:                | Upgrade:                |
-| ----------------------- | ----------------------- |
-| `winget install sqlcmd` | `winget upgrade sqlcmd` |
+| ----------------------- |-------------------------|
+| `choco install sqlcmd`  | `choco upgrade sqlcmd`  |
 
 ### macOS
 
@@ -58,7 +67,7 @@ Use `sqlcmd --help` to view all the available sub-commands.  Use `sqlcmd -?` to 
 
 ### The ~/.sqlcmd/sqlconfig file
 
-Each time `sqlcmd create` completes, a new context is created (e.g. mssql, mssql2, mssql3 etc.).  A context contains the endpoint and user configuation detail.  To switch between contexts, run `sqlcmd config use <context-name>`, to view name of the current context, run `sqlcmd config current-context`, to list all contexts, run `sqlcmd config get-contexts`.
+Each time `sqlcmd create` completes, a new context is created (e.g. mssql, mssql2, mssql3 etc.).  A context contains the endpoint and user configuration detail.  To switch between contexts, run `sqlcmd config use <context-name>`, to view name of the current context, run `sqlcmd config current-context`, to list all contexts, run `sqlcmd config get-contexts`.
 
 To view connection strings (ODBC/ADO.NET/JDBC etc.) for the current context and user & endpoint details for all contexts held in the `~/.sqlcmd/sqlconfig` file:
 
@@ -88,14 +97,14 @@ sqlcmd delete
 
 ### Backwards compatibility with ODBC sqlcmd
 
-To connect to the current context, and use the original ODBC sqlcmd flags (e.g. -q, -Q, -i, -o etc.), that can be listed with `sqlcmd -?`, run:
+To connect to the current context, and use the original ODBC sqlcmd flags (e.g. -q, -Q, -i, -o etc.), which can be listed with `sqlcmd -?`, run:
 
 ```
 sqlcmd -q "SELECT @@version"
 sqlcmd
 ```
 
-If no current context exists, `sqlcmd` (with no connection parameters) reverts to the original ODBC `sqlcmd` behavior of connecting to the default local instance on port 1433 using trusted authentication.
+If no current context exists, `sqlcmd` (with no connection parameters) reverts to the original ODBC `sqlcmd` behavior of creating an interactive session to the default local instance on port 1433 using trusted authentication, otherwise it will create an interactive session to the current context.
 
 ## Sqlcmd
 
@@ -103,7 +112,7 @@ The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to t
 
 ### Changes in behavior from the ODBC based sqlcmd
 
-The following switches have different behavior in this version of `sqlcmd` compared to the oroignla ODBC based `sqlcmd`.
+The following switches have different behavior in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`.
 
 - `-P` switch will be removed. Passwords for SQL authentication can only be provided through these mechanisms:
 
@@ -123,10 +132,20 @@ The following switches have different behavior in this version of `sqlcmd` compa
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 - `-i` now requires multiple arguments for the switch to be separated by `,`.
 
+### Switches not available in the new sqlcmd (go-sqlcmd) yet
+
+There are a few switches yet to be implemented in the new `sqlcmd` (go-sqlcmd) compared
+to the original ODBC based `sqlcmd`, discussion [#293](https://github.com/microsoft/go-sqlcmd/discussions/292) 
+lists these switches. Please provide feedback in the discussion on which 
+switches are most important to you to have implemented next in the new sqlcmd.
+
+Also, the XML Output command `:XML [On]|[Off]` is not implemented yet
+in the new sqlcmd (go-sqlcmd).
+
 ### Miscellaneous enhancements
 
 - Console output coloring (see below)
-- `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` user name parameter.
+- `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `-F vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
 
@@ -158,7 +177,7 @@ net_transport Named pipe
 
 To use AAD auth, you can use one of two command line switches:
 
-`-G` is (mostly) compatible with its usage in the prior version of sqlcmd. If a user name and password are provided, it will authenticate using AAD Password authentication. If a user name is provided it will use AAD Interactive authentication which may display a web browser. If no user name or password is provided, it will use a DefaultAzureCredential which attempts to authenticate through a variety of mechanisms.
+`-G` is (mostly) compatible with its usage in the prior version of sqlcmd. If a username and password are provided, it will authenticate using AAD Password authentication. If a username is provided it will use AAD Interactive authentication which may display a web browser. If no username or password is provided, it will use a DefaultAzureCredential which attempts to authenticate through a variety of mechanisms.
 
 `--authentication-method=` can be used to specify one of the following authentication types.
 
@@ -178,8 +197,8 @@ This method is currently not implemented and will fall back to `ActiveDirectoryD
 
 `ActiveDirectoryPassword`
 
-This method will authenticate using a user name and password. It will not work if MFA is required.
-You provide the user name and password using the usual command line switches or SQLCMD environment variables.
+This method will authenticate using a username and password. It will not work if MFA is required.
+You provide the username and password using the usual command line switches or SQLCMD environment variables.
 Set `AZURE_TENANT_ID` environment variable to the tenant id of the server if not using the default tenant of the user.
 
 `ActiveDirectoryInteractive`
@@ -188,11 +207,11 @@ This method will launch a web browser to authenticate the user.
 
 `ActiveDirectoryManagedIdentity`
 
-Use this method when running sqlcmd on an Azure VM that has either a system-assigned or user-assigned managed identity. If using a user-assigned managed identity, set the user name to the ID of the managed identity. If using a system-assigned identity, leave user name empty.
+Use this method when running sqlcmd on an Azure VM that has either a system-assigned or user-assigned managed identity. If using a user-assigned managed identity, set the username to the ID of the managed identity. If using a system-assigned identity, leave username empty.
 
 `ActiveDirectoryServicePrincipal`
 
-This method authenticates the provided user name as a service principal id and the password as the client secret for the service principal. Provide a user name in the form `<service principal id>@<tenant id>`. Set `SQLCMDPASSWORD` variable to the client secret. If using a certificate instead of a client secret, set `AZURE_CLIENT_CERTIFICATE_PATH` environment variable to the path of the certificate file.
+This method authenticates the provided username as a service principal id and the password as the client secret for the service principal. Provide a username in the form `<service principal id>@<tenant id>`. Set `SQLCMDPASSWORD` variable to the client secret. If using a certificate instead of a client secret, set `AZURE_CLIENT_CERTIFICATE_PATH` environment variable to the path of the certificate file.
 
 #### Environment variables for AAD auth
 
@@ -250,6 +269,20 @@ If you are developing on Windows, you can use docker or WSL to run the tests on 
 docker run -rm -e SQLCMDSERVER=<yourserver> -e SQLCMDUSER=<youruser> -e SQLCMDPASSWORD=<yourpassword> -v i:\git\go-sqlcmd:/go-sqlcmd -w /go-sqlcmd golang:1.16 go test ./...
 ```
 
+## Localization
+The new sqlcmd (go-sqlcmd) is localized for the following languages:
+Chinese (Simplified) | Chinese (Traditional) | English (United States) | French | German | Italian | Japanese | Korean | Portuguese (Brazil) | Russian | Spanish
+
+Currently, the user visible strings that also existed in ODBC based sqlcmd are localized in the new sqlcmd, new strings (introduced with the new sqlcmd functionality) will be localized shortly.
+
+To get localized messages from `sqlcmd` set environment variable SQLCMD_LANG to a language tag as per BCP47 convention.
+e.g.
+```
+\git\go-sqlcmd>set SQLCMD_LANG=de-de
+\git\go-sqlcmd>.\sqlcmd.exe -w 4
+sqlcmd.exe: error: sqlcmd.exe: '-w 4': Der Wert muss größer als 8 und kleiner als 65536 sein.
+```
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -275,6 +308,7 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 [Homebrew]: https://formulae.brew.sh/formula/sqlcmd
 [Linuxbrew]: https://docs.brew.sh/Homebrew-on-Linux
 [Winget]: https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/Sqlcmd
+[Choco]: https://community.chocolatey.org/packages/sqlcmd
 [Docker]: https://www.docker.com/products/docker-desktop/
 [Podman]: https://podman-desktop.io/downloads/
 [releases page]: https://github.com/microsoft/go-sqlcmd/releases/latest
