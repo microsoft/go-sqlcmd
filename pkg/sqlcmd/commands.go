@@ -391,6 +391,9 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	if len(args) == 0 {
 		return InvalidCommandError("CONNECT", line)
 	}
+
+	commandArgs := strings.Fields(args[0])
+
 	// Parse flags
 	flags := flag.NewFlagSet("connect", flag.ContinueOnError)
 	database := flags.String("D", "", "database name")
@@ -399,7 +402,8 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	loginTimeout := flags.String("l", "", "login timeout")
 	authenticationMethod := flags.String("G", "", "authentication method")
 
-	err := flags.Parse(args[1:])
+	err := flags.Parse(commandArgs[1:])
+	//err := flags.Parse(args[1:])
 	if err != nil {
 		return InvalidCommandError("CONNECT", line)
 	}
@@ -422,8 +426,9 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	connect.AuthenticationMethod = *authenticationMethod
 
 	// Set server name as the first positional argument
-	if len(args) > 0 {
-		connect.ServerName = args[0]
+	if len(commandArgs) > 0 {
+		connect.ServerName = commandArgs[0]
+		connect.ServerName, _ = resolveArgumentVariables(s, []rune(commandArgs[0]), false)
 	}
 
 	// If no user name is provided we switch to integrated auth
