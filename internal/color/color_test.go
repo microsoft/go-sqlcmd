@@ -54,6 +54,11 @@ func TestWrite(t *testing.T) {
 			args:  args{s: "warn", t: TextTypeWarning},
 			wantW: "\x1b[3mwarn\x1b[0m",
 		},
+		{
+			name:  "XML",
+			args:  args{s: "<node>value</node>", t: TextTypeXml},
+			wantW: "\x1b[1m\x1b[38;2;0;128;0m<node>\x1b[0mvalue\x1b[1m\x1b[38;2;0;128;0m</node>\x1b[0m",
+		},
 	}
 
 	for _, tt := range tests {
