@@ -108,6 +108,11 @@ func newCommands() Commands {
 			action: onerrorCommand,
 			name:   "ONERROR",
 		},
+		"XML": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:XML(?:[ \t]+(.*$)|$)`),
+			action: xmlCommand,
+			name:   "XML",
+		},
 	}
 }
 
@@ -368,10 +373,16 @@ func listCommand(s *Sqlcmd, args []string, line uint) (err error) {
 	}
 	output := s.GetOutput()
 	if cmd == "color" {
+		sample := "select 'literal' as literal, 100 as number from [sys].[tables]"
+		clr := color.TextTypeTSql
+		if s.Format.IsXmlMode() {
+			sample = `<node att="attValue"/><node>value</node>`
+			clr = color.TextTypeXml
+		}
 		// ignoring errors since it's not critical output
 		for _, style := range s.colorizer.Styles() {
 			_, _ = output.Write([]byte(style + ": "))
-			_ = s.colorizer.Write(output, "select 'literal' as literal, 100 as number from [sys].[tables]", style, color.TextTypeTSql)
+			_ = s.colorizer.Write(output, sample, style, clr)
 			_, _ = output.Write([]byte(SqlcmdEol))
 		}
 		return
@@ -503,6 +514,22 @@ func onerrorCommand(s *Sqlcmd, args []string, line uint) error {
 		s.Connect.ExitOnError = false
 	} else {
 		return InvalidCommandError("ON ERROR", line)
+	}
+	return nil
+}
+
+func xmlCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) != 1 || args[0] == "" {
+		return InvalidCommandError("XML", line)
+	}
+	params := strings.TrimSpace(args[0])
+	// "OFF" and "ON" are documented as the allowed values.
+	// ODBC sqlcmd treats any value other than "ON" the same as "OFF".
+	// So we will too.
+	if strings.EqualFold(params, "on") {
+		s.Format.XmlMode(true)
+	} else {
+		s.Format.XmlMode(false)
 	}
 	return nil
 }

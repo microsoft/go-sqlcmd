@@ -36,6 +36,10 @@ type Formatter interface {
 	AddMessage(string)
 	// AddError is called for each error encountered during batch execution
 	AddError(err error)
+	// XmlMode enables or disables XML rendering mode
+	XmlMode(enable bool)
+	// IsXmlMode returns whether XML mode is enabled
+	IsXmlMode() bool
 }
 
 // ControlCharacterBehavior specifies the text handling required for control characters in the output
@@ -77,6 +81,7 @@ type sqlCmdFormatterType struct {
 	format               string
 	maxColNameLen        int
 	colorizer            color.Colorizer
+	xml                  bool
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
@@ -119,7 +124,7 @@ func (f *sqlCmdFormatterType) writeOut(s string, t color.TextType) {
 	}
 }
 
-// Stores the settings to use for processing the current batch
+// BeginBatch stores the settings to use for processing the current batch
 // TODO: add a third io.Writer for messages when we add -r support
 func (f *sqlCmdFormatterType) BeginBatch(_ string, vars *Variables, out io.Writer, err io.Writer) {
 	f.out = out
@@ -138,17 +143,19 @@ func (f *sqlCmdFormatterType) EndBatch() {
 func (f *sqlCmdFormatterType) BeginResultSet(cols []*sql.ColumnType) {
 	f.rowcount = 0
 	f.columnDetails, f.maxColNameLen = calcColumnDetails(cols, f.vars.MaxFixedColumnWidth(), f.vars.MaxVarColumnWidth())
-	if f.vars.RowsBetweenHeaders() > -1 && f.format == "horizontal" {
+	if f.vars.RowsBetweenHeaders() > -1 && f.format == "horizontal" && !f.xml {
 		f.printColumnHeadings()
 	}
 }
 
-// Writes a blank line to the designated output writer
+// EndResultSet writes a blank line to the designated output writer
 func (f *sqlCmdFormatterType) EndResultSet() {
-	f.writeOut(SqlcmdEol, color.TextTypeNormal)
+	if !f.xml {
+		f.writeOut(SqlcmdEol, color.TextTypeNormal)
+	}
 }
 
-// Writes the current row to the designated output writer
+// AddRow writes the current row to the designated output writer
 func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) string {
 	retval := ""
 	values, err := f.scanRow(row)
@@ -157,7 +164,9 @@ func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) string {
 		return retval
 	}
 	retval = values[0]
-	if f.format == "horizontal" {
+	if f.xml {
+		f.printColumnValue(retval, 0)
+	} else if f.format == "horizontal" {
 		// values are the full values, look at the displaywidth of each column and truncate accordingly
 		for i, v := range values {
 			if i > 0 {
@@ -176,7 +185,6 @@ func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) string {
 	}
 	f.writeOut(SqlcmdEol, color.TextTypeNormal)
 	return retval
-
 }
 
 func (f *sqlCmdFormatterType) addVerticalRow(values []string) {
@@ -193,12 +201,14 @@ func (f *sqlCmdFormatterType) addVerticalRow(values []string) {
 	}
 }
 
-// Writes a non-error message to the designated message writer
+// AddMessage writes a non-error message to the designated message writer
 func (f *sqlCmdFormatterType) AddMessage(msg string) {
-	f.mustWriteOut(msg+SqlcmdEol, color.TextTypeWarning)
+	if !f.xml {
+		f.mustWriteOut(msg+SqlcmdEol, color.TextTypeWarning)
+	}
 }
 
-// Writes an error to the designated err Writer
+// AddError writes an error to the designated err Writer
 func (f *sqlCmdFormatterType) AddError(err error) {
 	print := true
 	b := new(strings.Builder)
@@ -215,6 +225,16 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 		b.WriteString(SqlcmdEol)
 		f.mustWriteErr(fitToScreen(b, f.vars.ScreenWidth()).String())
 	}
+}
+
+// XmlMode enables or disables XML mode
+func (f *sqlCmdFormatterType) XmlMode(enable bool) {
+	f.xml = enable
+}
+
+// IsXmlMode returns whether XML mode is enabled
+func (f *sqlCmdFormatterType) IsXmlMode() bool {
+	return f.xml
 }
 
 // Prints column headings based on columnDetail, variables, and command line arguments
@@ -535,7 +555,7 @@ func (f *sqlCmdFormatterType) printColumnValue(val string, col int) {
 
 	s.WriteString(val)
 	r := []rune(val)
-	if f.format == "horizontal" {
+	if !f.xml && f.format == "horizontal" {
 		if !f.removeTrailingSpaces {
 			if f.vars.MaxVarColumnWidth() != 0 || !isLargeVariableType(&c.col) {
 				padding := c.displayWidth - min64(c.displayWidth, int64(len(r)))
@@ -551,11 +571,15 @@ func (f *sqlCmdFormatterType) printColumnValue(val string, col int) {
 
 		r = []rune(s.String())
 	}
-	if c.displayWidth > 0 && int64(len(r)) > c.displayWidth {
+	if !f.xml && (c.displayWidth > 0 && int64(len(r)) > c.displayWidth) {
 		s.Reset()
 		s.WriteString(string(r[:c.displayWidth]))
 	}
-	f.writeOut(s.String(), color.TextTypeCell)
+	clr := color.TextTypeCell
+	if f.xml {
+		clr = color.TextTypeXml
+	}
+	f.writeOut(s.String(), clr)
 }
 
 func (f *sqlCmdFormatterType) mustWriteOut(s string, t color.TextType) {

@@ -30,6 +30,8 @@ const (
 	TextTypeError
 	// TextTypeWarning is for warning messages
 	TextTypeWarning
+	// TextTypeXml indicates the content is XML
+	TextTypeXml
 )
 
 var typeMap map[TextType]chroma.TokenType = map[TextType]chroma.TokenType{
@@ -83,6 +85,10 @@ func (c *chromaColorizer) Write(w io.Writer, s string, scheme string, t TextType
 		_, err = w.Write([]byte(s))
 	case TextTypeTSql:
 		if err = quick.Highlight(w, s, "transact-sql", "terminal16m", scheme); err != nil {
+			_, err = w.Write([]byte(s))
+		}
+	case TextTypeXml:
+		if err = quick.Highlight(w, s, "xml", "terminal16m", scheme); err != nil {
 			_, err = w.Write([]byte(s))
 		}
 	default:
