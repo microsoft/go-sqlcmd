@@ -5,6 +5,9 @@
             "LocItems": [
                 {
                     "SourceFile": "internal\\translations\\en-US\\out.gotext.json",
+                    "CopyOption": "LangIDOnName",
+                    "Languages": "de-de;fr-fr;it-it;es-es;ja-jp;ko-kr,zh-cn,zh-tw,pt-br,ru-ru",
+                    "LssFiles": ["internal\\translations\\P306PairNamesToProcess.lss"],
                     "LclFile": "internal\\translations\\LCL\\{Lang}\\out.gotext.json.lcl"
                 }
             ]
