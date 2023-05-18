@@ -21,7 +21,6 @@ var ImportsAnalyzer = &analysis.Analyzer{
 }
 
 var AllowedImports = map[string][]string{
-	`"github.com/alecthomas/kong`:      {`cmd/sqlcmd`, `pkg/sqlcmd`},
 	`"github.com/golang-sql/sqlexp`:    {`pkg/sqlcmd`},
 	`"github.com/google/uuid`:          {},
 	`"github.com/peterh/liner`:         {`pkg/console`},
