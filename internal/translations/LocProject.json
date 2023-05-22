@@ -4,7 +4,7 @@
             "LanguageSet": "AzureKatal_Languages",
             "LocItems": [
                 {
-                    "SourceFile": "internal\\translations\\en-US\\out.gotext.json",
+                    "SourceFile": "internal\\translations\\locales\\en-US\\out.gotext.json",
                     "CopyOption": "LangIDOnName",
                     "Languages": "de-de;fr-fr;it-it;es-es;ja-jp;ko-kr,zh-cn,zh-tw,pt-br,ru-ru",
                     "LssFiles": ["internal\\translations\\P306PairNamesToProcess.lss"],
