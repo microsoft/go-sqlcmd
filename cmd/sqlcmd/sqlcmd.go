@@ -188,7 +188,7 @@ func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
 }
 
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
-	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, "Show syntax summary.")
+	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, "-? shows this syntax summary, --help shows modern sqlcmd sub-command help")
 	var inputfiles []string
 	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with -Q/-q.")
 	rootCmd.Flags().StringVarP(&args.OutputFile, "output-file", "o", "", "Identifies the file that receives output from sqlcmd.")
