@@ -137,7 +137,7 @@ func Execute(version string) {
 		},
 		Run: func(cmd *cobra.Command, argss []string) {
 			if len(argss) > 0 {
-				fmt.Printf("Sqlcmd: '%s': Unknown Option. Enter '-?' for help.", argss[0])
+				fmt.Printf("Sqlcmd: '%s': Unknown command. Enter '--help' for command help.", argss[0])
 				os.Exit(1)
 			}
 
@@ -161,29 +161,6 @@ func Execute(version string) {
 
 		},
 	}
-
-	// rootCmd.SetUsageTemplate(`
-	// Usage:{{if .Runnable}}
-	//   {{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
-	//   {{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
-
-	// Aliases:
-	//   {{.NameAndAliases}}{{end}}{{if .HasExample}}
-
-	// Examples:
-	// {{.Example}}{{end}}{{if .HasAvailableSubCommands}}
-
-	// Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
-	//   {{rpad .Name .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
-
-	// Flags:{{.LocalFlagsIndented}}{{end}}{{if .HasAvailableInheritedFlags}}
-
-	// Global Flags:{{.InheritedFlagsIndented}}{{end}}{{if .HasHelpSubCommands}}
-
-	// Additional help topics:{{range .Commands}}{{if .IsHelpCommand}}
-	//   {{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}
-	// `)
-
 	setFlags(rootCmd, &args)
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
