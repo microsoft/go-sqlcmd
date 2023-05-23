@@ -17,10 +17,10 @@ type Stop struct {
 func (c *Stop) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "stop",
-		Short: localizer.Sprintf("Stop current-context"),
+		Short: localizer.Sprintf("Stop current context"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: localizer.Sprintf("Stop the current-context"),
+				Description: localizer.Sprintf("Stop the current context"),
 				Steps:       []string{`sqlcmd stop`}},
 		},
 		Run: c.run,

@@ -159,7 +159,7 @@ func (c *Uninstall) userDatabaseSafetyCheck(controller *container.Controller, id
 			}
 
 			if !isSystemDatabase {
-				dropDbQuery := "`sqlcmd query \"use master; DROP DATABASE [<database_name>]\"`"
+				const dropDbQuery = "`sqlcmd query \"use master; DROP DATABASE [<database_name>]\"`"
 				output.FatalfWithHints([]string{
 					localizer.Sprintf(
 						"If the database is mounted, run %s", dropDbQuery),
