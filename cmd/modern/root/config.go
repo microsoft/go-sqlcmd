@@ -20,9 +20,10 @@ type Config struct {
 // DefineCommand defines the `sqlcmd config` command, which is only
 // more sub-commands (`sqlcmd config` does not `run` anything itself)
 func (c *Config) DefineCommand(...cmdparser.CommandOptions) {
+	const configCommand = "sqlcmd config use-context mssql"
 	options := cmdparser.CommandOptions{
 		Use:         "config",
-		Short:       localizer.Sprintf(`Modify sqlconfig files using subcommands like "sqlcmd config use-context mssql"`),
+		Short:       localizer.Sprintf(`Modify sqlconfig files using subcommands like "%s"`, configCommand),
 		SubCommands: c.SubCommands(),
 		Examples: []cmdparser.ExampleOptions{
 			{

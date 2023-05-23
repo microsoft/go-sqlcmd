@@ -17,7 +17,7 @@ type Open struct {
 func (c *Open) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:         "open",
-		Short:       localizer.Sprintf("Open tools (e.g ADS) for current context"),
+		Short:       localizer.Sprintf("Open tools (e.g ADS) for current-context"),
 		SubCommands: c.SubCommands(),
 	}
 

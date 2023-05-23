@@ -24,7 +24,7 @@ type Query struct {
 func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "query",
-		Short: localizer.Sprintf("Run a query against the current context"),
+		Short: localizer.Sprintf("Run a query against the current-context"),
 		Examples: []cmdparser.ExampleOptions{
 			{Description: localizer.Sprintf("Run a query"), Steps: []string{
 				`sqlcmd query "SELECT @@SERVERNAME"`,

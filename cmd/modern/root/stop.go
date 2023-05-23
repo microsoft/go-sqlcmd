@@ -17,10 +17,10 @@ type Stop struct {
 func (c *Stop) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "stop",
-		Short: localizer.Sprintf("Stop current context"),
+		Short: localizer.Sprintf("Stop current-context"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: localizer.Sprintf("Stop the current context"),
+				Description: localizer.Sprintf("Stop the current-context"),
 				Steps:       []string{`sqlcmd stop`}},
 		},
 		Run: c.run,
@@ -34,7 +34,7 @@ func (c *Stop) run() {
 
 	if config.CurrentContextName() == "" {
 		output.FatalfWithHintExamples([][]string{
-			{localizer.Sprintf("To view available contexts", "sqlcmd config get-contexts")},
+			{localizer.Sprintf("To view available contexts"), "sqlcmd config get-contexts"},
 		}, localizer.Sprintf("No current context"))
 	}
 	if config.CurrentContextEndpointHasContainer() {
@@ -51,7 +51,7 @@ func (c *Stop) run() {
 		c.CheckErr(err)
 	} else {
 		output.FatalfWithHintExamples([][]string{
-			{localizer.Sprintf("Create a new context with a SQL Server container ", "sqlcmd create mssql")},
+			{localizer.Sprintf("Create a new context with a SQL Server container "), "sqlcmd create mssql"},
 		}, localizer.Sprintf("Current context does not have a container"))
 	}
 }
