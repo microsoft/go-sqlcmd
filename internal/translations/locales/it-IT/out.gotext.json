@@ -2,6 +2,426 @@
     "language": "it-IT",
     "messages": [
         {
+            "id": "Install/Create, Query, Uninstall SQL Server",
+            "message": "Install/Create, Query, Uninstall SQL Server",
+            "translation": ""
+        },
+        {
+            "id": "View configuration information and connection strings",
+            "message": "View configuration information and connection strings",
+            "translation": ""
+        },
+        {
+            "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
+            "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "FeedbackUrl",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "feedbackUrl"
+                }
+            ]
+        },
+        {
+            "id": "help for backwards compatibility flags (-S, -U, -E etc.)",
+            "message": "help for backwards compatibility flags (-S, -U, -E etc.)",
+            "translation": ""
+        },
+        {
+            "id": "print version of sqlcmd",
+            "message": "print version of sqlcmd",
+            "translation": ""
+        },
+        {
+            "id": "configuration file",
+            "message": "configuration file",
+            "translation": ""
+        },
+        {
+            "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
+            "message": "log level, error=0, warn=1, info=2, debug=3, trace=4",
+            "translation": ""
+        },
+        {
+            "id": "Modify sqlconfig files using subcommands like \"{ConfigCommand}\"",
+            "message": "Modify sqlconfig files using subcommands like \"{ConfigCommand}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ConfigCommand",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "configCommand"
+                }
+            ]
+        },
+        {
+            "id": "Add context for existing endpoint and user (use {SQLCMDPASSWORD} or {SQLCMDPASSWORD_1})",
+            "message": "Add context for existing endpoint and user (use {SQLCMDPASSWORD} or {SQLCMDPASSWORD_1})",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDPASSWORD",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"SQLCMD_PASSWORD\""
+                },
+                {
+                    "id": "SQLCMDPASSWORD_1",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"SQLCMDPASSWORD\""
+                }
+            ]
+        },
+        {
+            "id": "Install/Create SQL Server, Azure SQL, and Tools",
+            "message": "Install/Create SQL Server, Azure SQL, and Tools",
+            "translation": ""
+        },
+        {
+            "id": "Open tools (e.g Azure Data Studio) for current context",
+            "message": "Open tools (e.g Azure Data Studio) for current context",
+            "translation": ""
+        },
+        {
+            "id": "Run a query against the current context",
+            "message": "Run a query against the current context",
+            "translation": ""
+        },
+        {
+            "id": "Run a query",
+            "message": "Run a query",
+            "translation": ""
+        },
+        {
+            "id": "Run a query using [{Master}] database",
+            "message": "Run a query using [{Master}] database",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Master",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"master\""
+                }
+            ]
+        },
+        {
+            "id": "Set new default database",
+            "message": "Set new default database",
+            "translation": ""
+        },
+        {
+            "id": "Command text to run",
+            "message": "Command text to run",
+            "translation": ""
+        },
+        {
+            "id": "Database to use",
+            "message": "Database to use",
+            "translation": ""
+        },
+        {
+            "id": "Start current context",
+            "message": "Start current context",
+            "translation": ""
+        },
+        {
+            "id": "Start the current context",
+            "message": "Start the current context",
+            "translation": ""
+        },
+        {
+            "id": "To view available contexts",
+            "message": "To view available contexts",
+            "translation": ""
+        },
+        {
+            "id": "No current context",
+            "message": "No current context",
+            "translation": ""
+        },
+        {
+            "id": "Starting {Arg_1} for context {Arg_2}",
+            "message": "Starting {Arg_1} for context {Arg_2}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Arg_1",
+                    "string": "%[1]q",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 1
+                },
+                {
+                    "id": "Arg_2",
+                    "string": "%[2]q",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 2
+                }
+            ]
+        },
+        {
+            "id": "Create new context with a sql container",
+            "message": "Create new context with a sql container",
+            "translation": ""
+        },
+        {
+            "id": "Current context does not have a container",
+            "message": "Current context does not have a container",
+            "translation": ""
+        },
+        {
+            "id": "Stop current context",
+            "message": "Stop current context",
+            "translation": ""
+        },
+        {
+            "id": "Stop the current context",
+            "message": "Stop the current context",
+            "translation": ""
+        },
+        {
+            "id": "Stopping {Arg_1} for context {Arg_2}",
+            "message": "Stopping {Arg_1} for context {Arg_2}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Arg_1",
+                    "string": "%[1]q",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 1
+                },
+                {
+                    "id": "Arg_2",
+                    "string": "%[2]q",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 2
+                }
+            ]
+        },
+        {
+            "id": "Create a new context with a SQL Server container",
+            "message": "Create a new context with a SQL Server container",
+            "translation": ""
+        },
+        {
+            "id": "Uninstall/Delete the current context",
+            "message": "Uninstall/Delete the current context",
+            "translation": ""
+        },
+        {
+            "id": "Uninstall/Delete the current context, no user prompt",
+            "message": "Uninstall/Delete the current context, no user prompt",
+            "translation": ""
+        },
+        {
+            "id": "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+            "message": "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+            "translation": ""
+        },
+        {
+            "id": "Quiet mode (do not stop for user input to confirm the operation)",
+            "message": "Quiet mode (do not stop for user input to confirm the operation)",
+            "translation": ""
+        },
+        {
+            "id": "Complete the operation even if non-system (user) database files are present",
+            "message": "Complete the operation even if non-system (user) database files are present",
+            "translation": ""
+        },
+        {
+            "id": "View available contexts",
+            "message": "View available contexts",
+            "translation": ""
+        },
+        {
+            "id": "Create context",
+            "message": "Create context",
+            "translation": ""
+        },
+        {
+            "id": "Create context with SQL Server container",
+            "message": "Create context with SQL Server container",
+            "translation": ""
+        },
+        {
+            "id": "Add a context manually",
+            "message": "Add a context manually",
+            "translation": ""
+        },
+        {
+            "id": "Current context is {CurrentContextName}. Do you want to continue? (Y/N)",
+            "message": "Current context is {CurrentContextName}. Do you want to continue? (Y/N)",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CurrentContextName",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "config.CurrentContextName()"
+                }
+            ]
+        },
+        {
+            "id": "Verifying no user (non-system) database (.mdf) files",
+            "message": "Verifying no user (non-system) database (.mdf) files",
+            "translation": ""
+        },
+        {
+            "id": "To start the container",
+            "message": "To start the container",
+            "translation": ""
+        },
+        {
+            "id": "To override the check, use {__force}",
+            "message": "To override the check, use {__force}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__force",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--force\""
+                }
+            ]
+        },
+        {
+            "id": "Container is not running, unable to verify that user database files do not exist",
+            "message": "Container is not running, unable to verify that user database files do not exist",
+            "translation": ""
+        },
+        {
+            "id": "Removing context {CurrentContextName}",
+            "message": "Removing context {CurrentContextName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CurrentContextName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "config.CurrentContextName()"
+                }
+            ]
+        },
+        {
+            "id": "Container {Id} no longer exists, continuing to remove context...",
+            "message": "Container {Id} no longer exists, continuing to remove context...",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Id",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "id"
+                }
+            ]
+        },
+        {
+            "id": "Current context is now {NewContextName}",
+            "message": "Current context is now {NewContextName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "NewContextName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "newContextName"
+                }
+            ]
+        },
+        {
+            "id": "{Operation_completed_successfully}",
+            "message": "{Operation_completed_successfully}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Operation_completed_successfully",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"Operation completed successfully\""
+                }
+            ]
+        },
+        {
+            "id": "If the database is mounted, run {DropDbQuery}",
+            "message": "If the database is mounted, run {DropDbQuery}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DropDbQuery",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "dropDbQuery"
+                }
+            ]
+        },
+        {
+            "id": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
+            "message": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__force",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--force\""
+                }
+            ]
+        },
+        {
+            "id": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
+            "message": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DatabaseFile",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "databaseFile"
+                }
+            ]
+        },
+        {
+            "id": "No endpoints to uninstall",
+            "message": "No endpoints to uninstall",
+            "translation": ""
+        },
+        {
             "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
             "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
             "translation": "",
@@ -50,6 +470,487 @@
             "id": "'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.",
             "message": "'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.",
             "translation": ""
+        },
+        {
+            "id": "Legal docs and information: aka.ms/SqlcmdLegal",
+            "message": "Legal docs and information: aka.ms/SqlcmdLegal",
+            "translation": ""
+        },
+        {
+            "id": "Third party notices: aka.ms/SqlcmdNotices",
+            "message": "Third party notices: aka.ms/SqlcmdNotices",
+            "translation": ""
+        },
+        {
+            "id": "{Err}",
+            "message": "{Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]s",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Error converting screen width: {Error}",
+            "message": "Error converting screen width: {Error}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
+            "id": "-? shows this syntax summary, {__help} shows modern sqlcmd sub-command help",
+            "message": "-? shows this syntax summary, {__help} shows modern sqlcmd sub-command help",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__help",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--help\""
+                }
+            ]
+        },
+        {
+            "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {_Q}/{_q}.",
+            "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {_Q}/{_q}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "_Q",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"-Q\""
+                },
+                {
+                    "id": "_q",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"-q\""
+                }
+            ]
+        },
+        {
+            "id": "Identifies the file that receives output from sqlcmd.",
+            "message": "Identifies the file that receives output from sqlcmd.",
+            "translation": ""
+        },
+        {
+            "id": "Print version information and exit",
+            "message": "Print version information and exit",
+            "translation": ""
+        },
+        {
+            "id": "Implicitly trust the server certificate without validation.",
+            "message": "Implicitly trust the server certificate without validation.",
+            "translation": ""
+        },
+        {
+            "id": "This option sets the sqlcmd scripting variable {SQLCMDDBNAME}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits.",
+            "message": "This option sets the sqlcmd scripting variable {SQLCMDDBNAME}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDDBNAME",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"SQLCMDDBNAME\""
+                }
+            ]
+        },
+        {
+            "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password.",
+            "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password.",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the batch terminator. The default value is {GO}",
+            "message": "Specifies the batch terminator. The default value is {GO}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "GO",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"GO\""
+                }
+            ]
+        },
+        {
+            "id": "The login name or contained database user name.  For contained database users, you must provide the database name option",
+            "message": "The login name or contained database user name.  For contained database users, you must provide the database name option",
+            "translation": ""
+        },
+        {
+            "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.",
+            "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.",
+            "translation": ""
+        },
+        {
+            "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.",
+            "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.",
+            "translation": ""
+        },
+        {
+            "id": "{Tcplpcnpserverinstancenameport} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {SQLCMDSERVER}.",
+            "message": "{Tcplpcnpserverinstancenameport} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {SQLCMDSERVER}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Tcplpcnpserverinstancenameport",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"[[tcp:]|[lpc:]|[np:]]server[\\\\instance_name][,port]\""
+                },
+                {
+                    "id": "SQLCMDSERVER",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"SQLCMDSERVER\""
+                }
+            ]
+        },
+        {
+            "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues.",
+            "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues.",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword",
+            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword",
+            "translation": ""
+        },
+        {
+            "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.",
+            "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.",
+            "translation": ""
+        },
+        {
+            "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {INSERT} statements that may contain strings that have the same format as regular variables, such as $(variable_name).",
+            "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {INSERT} statements that may contain strings that have the same format as regular variables, such as $(variable_name).",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "INSERT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"INSERT\""
+                }
+            ]
+        },
+        {
+            "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
+            "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
+            "translation": ""
+        },
+        {
+            "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {SQLCMDPACKETSIZE}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {GO} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.",
+            "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {SQLCMDPACKETSIZE}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {GO} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDPACKETSIZE",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"SQLCMDPACKETSIZE\""
+                },
+                {
+                    "id": "GO",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"GO\""
+                }
+            ]
+        },
+        {
+            "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {SQLCMDLOGINTIMEOUT}. The default value is 30. 0 means infinite.",
+            "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {SQLCMDLOGINTIMEOUT}. The default value is 30. 0 means infinite.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDLOGINTIMEOUT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"SQLCMDLOGINTIMEOUT\""
+                }
+            ]
+        },
+        {
+            "id": "This option sets the sqlcmd scripting variable {SQLCMDWORKSTATION}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.",
+            "message": "This option sets the sqlcmd scripting variable {SQLCMDWORKSTATION}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDWORKSTATION",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"SQLCMDWORKSTATION\""
+                }
+            ]
+        },
+        {
+            "id": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {_K} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
+            "message": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {_K} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "_K",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"-K\""
+                }
+            ]
+        },
+        {
+            "id": "This switch is used by the client to request an encrypted connection.",
+            "message": "This switch is used by the client to request an encrypted connection.",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the formatting for results.",
+            "message": "Specifies the formatting for results.",
+            "translation": ""
+        },
+        {
+            "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.",
+            "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.",
+            "translation": ""
+        },
+        {
+            "id": "Level of mssql driver messages to print.",
+            "message": "Level of mssql driver messages to print.",
+            "translation": ""
+        },
+        {
+            "id": "Specifies that sqlcmd exits and returns a {DOS_ERRORLEVEL} value when an error occurs.",
+            "message": "Specifies that sqlcmd exits and returns a {DOS_ERRORLEVEL} value when an error occurs.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DOS_ERRORLEVEL",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"DOS ERRORLEVEL\""
+                }
+            ]
+        },
+        {
+            "id": "Controls which error messages are sent to {Stdout}. Messages that have severity level greater than or equal to this level are sent.",
+            "message": "Controls which error messages are sent to {Stdout}. Messages that have severity level greater than or equal to this level are sent.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Stdout",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"stdout\""
+                }
+            ]
+        },
+        {
+            "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.",
+            "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.",
+            "translation": ""
+        },
+        {
+            "id": "Specifies that all output files are encoded with little-endian Unicode",
+            "message": "Specifies that all output files are encoded with little-endian Unicode",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the column separator character. Sets the {SQLCMDCOLSEP} variable.",
+            "message": "Specifies the column separator character. Sets the {SQLCMDCOLSEP} variable.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDCOLSEP",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"SQLCMDCOLSEP\""
+                }
+            ]
+        },
+        {
+            "id": "Remove trailing spaces from a column.",
+            "message": "Remove trailing spaces from a column.",
+            "translation": ""
+        },
+        {
+            "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.",
+            "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.",
+            "translation": ""
+        },
+        {
+            "id": "Obsolete. The initial passwords must be set using the {SQLCMDPASSWORD} environment variable or entered at the password prompt.",
+            "message": "Obsolete. The initial passwords must be set using the {SQLCMDPASSWORD} environment variable or entered at the password prompt.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDPASSWORD",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"SQLCMDPASSWORD\""
+                }
+            ]
+        },
+        {
+            "id": "Controls the severity level that is used to set the {ERRORLEVEL} variable on exit.",
+            "message": "Controls the severity level that is used to set the {ERRORLEVEL} variable on exit.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ERRORLEVEL",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"ERRORLEVEL\""
+                }
+            ]
+        },
+        {
+            "id": "Specifies the screen width for output",
+            "message": "Specifies the screen width for output",
+            "translation": ""
+        },
+        {
+            "id": "{__application_intent} must be one of \"default\",\"readonly\" but got \"{Value}\"",
+            "message": "{__application_intent} must be one of \"default\",\"readonly\" but got \"{Value}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__application_intent",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--application-intent\""
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                }
+            ]
+        },
+        {
+            "id": "{__application_intent} must be one of \"default\",\"false\",\"true\",\"disable\" but got \"{Value}\"",
+            "message": "{__application_intent} must be one of \"default\",\"false\",\"true\",\"disable\" but got \"{Value}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__application_intent",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--application-intent\""
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                }
+            ]
+        },
+        {
+            "id": "{__format} must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"{Value}\"",
+            "message": "{__format} must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"{Value}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__format",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--format\""
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                }
+            ]
+        },
+        {
+            "id": "{__errors_to_stderr} must be one of \"-1\",\"0\",\"1\" but got \"{Value}\"",
+            "message": "{__errors_to_stderr} must be one of \"-1\",\"0\",\"1\" but got \"{Value}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__errors_to_stderr",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--errors-to-stderr\""
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                }
+            ]
         },
         {
             "id": "invalid batch terminator '{BatchTerminator}'",

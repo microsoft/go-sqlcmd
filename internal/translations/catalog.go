@@ -48,31 +48,151 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"%s Error occurred while opening or operating on file %s (Reason: %s).": 10,
+	"%s": 66,
+	"%s Error occurred while opening or operating on file %s (Reason: %s).":                                  10,
+	"%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.": 79,
+	"%s must be one of \"-1\",\"0\",\"1\" but got \"%s\"":                                                    106,
+	"%s must be one of \"default\",\"false\",\"true\",\"disable\" but got \"%s\"":                            104,
+	"%s must be one of \"default\",\"readonly\" but got \"%s\"":                                              103,
+	"%s must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"%s\"":                        105,
 	"%sSyntax error at line %d":            11,
+	"%v":                                   57,
 	"'%s' scripting variable not defined.": 7,
-	"'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.": 13,
-	"'-a %d': Packet size has to be a number between 512 and 32767.":                                                                       12,
+	"'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.": 63,
+	"'-a %d': Packet size has to be a number between 512 and 32767.":                                                                       62,
 	"'-h %d': header value must be either -1 or a value between 1 and 2147483647":                                                          0,
 	"'-w %d': value must be greater than 8 and less than 65536.":                                                                           1,
-	"ED and !!<command> commands, startup script, and environment variables are disabled":                                                  5,
-	"Invalid variable identifier %s":                          14,
-	"Invalid variable value %s":                               15,
-	"Sqlcmd: Error: ":                                         3,
-	"Sqlcmd: Warning: ":                                       4,
-	"Syntax error at line %d near command '%s'.":              9,
-	"The environment variable: '%s' has invalid value: '%s'.": 8,
-	"The scripting variable: '%s' is read-only":               6,
-	"invalid batch terminator '%s'":                           2,
+	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help":                                                                68,
+	"Add a context manually":                                    48,
+	"Add context for existing endpoint and user (use %s or %s)": 20,
+	"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name).": 83,
+	"Command text to run": 27,
+	"Complete the operation even if non-system (user) database files are present":                                                       44,
+	"Container %q no longer exists, continuing to remove context...":                                                                    55,
+	"Container is not running, unable to verify that user database files do not exist":                                                  53,
+	"Controls the severity level that is used to set the %s variable on exit.":                                                          101,
+	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent.":     94,
+	"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.": 91,
+	"Create a new context with a SQL Server container ":                                                                                 39,
+	"Create context": 46,
+	"Create context with SQL Server container": 47,
+	"Create new context with a sql container ": 34,
+	"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits": 84,
+	"Current context does not have a container":             35,
+	"Current context is %q. Do you want to continue? (Y/N)": 49,
+	"Current context is now %s":                             56,
+	"Database to use":                                       28,
+	"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group": 88,
+	"Disables commands that might compromise system security. Sqlcmd issues a warning and continues.": 80,
+	"ED and !!<command> commands, startup script, and environment variables are disabled":             5,
+	"Error converting screen width: %s": 67,
+	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.":                             78,
+	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.": 77,
+	"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s.": 69,
+	"Identifies the file that receives output from sqlcmd.":       70,
+	"If the database is mounted, run %s":                          58,
+	"Implicitly trust the server certificate without validation.": 72,
+	"Install/Create SQL Server, Azure SQL, and Tools":             21,
+	"Install/Create, Query, Uninstall SQL Server":                 12,
+	"Invalid variable identifier %s":                              107,
+	"Invalid variable value %s":                                   108,
+	"Legal docs and information: aka.ms/SqlcmdLegal":              64,
+	"Level of mssql driver messages to print.":                    92,
+	"Modify sqlconfig files using subcommands like \"%s\"":        19,
+	"No current context":                                          32,
+	"No endpoints to uninstall":                                   61,
+	"Obsolete. The initial passwords must be set using the %s environment variable or entered at the password prompt.":        100,
+	"Open tools (e.g Azure Data Studio) for current context":                                                                  22,
+	"Pass in the flag %s to override this safety check for user (non-system) databases":                                       59,
+	"Print version information and exit":                                                                                      71,
+	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.": 99,
+	"Quiet mode (do not stop for user input to confirm the operation)":                                                        43,
+	"Remove trailing spaces from a column.":                                                                                   98,
+	"Removing context %s":                                                                                                     54,
+	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.": 85,
+	"Run a query": 24,
+	"Run a query against the current context":                                  23,
+	"Run a query using [%s] database":                                          25,
+	"Set new default database":                                                 26,
+	"Specifies that all output files are encoded with little-endian Unicode":   96,
+	"Specifies that sqlcmd exits and returns a %s value when an error occurs.": 93,
+	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword": 81,
+	"Specifies the batch terminator. The default value is %s":                                                             75,
+	"Specifies the column separator character. Sets the %s variable.":                                                     97,
+	"Specifies the formatting for results.":                                                                               90,
+	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.": 95,
+	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite.": 86,
+	"Specifies the screen width for output":      102,
+	"Sqlcmd: Error: ":                            3,
+	"Sqlcmd: Warning: ":                          4,
+	"Start current context":                      29,
+	"Start the current context":                  30,
+	"Starting %q for context %q":                 33,
+	"Stop current context":                       36,
+	"Stop the current context":                   37,
+	"Stopping %q for context %q":                 38,
+	"Syntax error at line %d near command '%s'.": 9,
+	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.": 82,
+	"The environment variable: '%s' has invalid value: '%s'.":                                                                  8,
+	"The login name or contained database user name.  For contained database users, you must provide the database name option": 76,
+	"The scripting variable: '%s' is read-only":                                                                                6,
+	"Third party notices: aka.ms/SqlcmdNotices":                                                                                65,
+	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.": 87,
+	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits.":                                                                                                     73,
+	"This switch is used by the client to request an encrypted connection.":                             89,
+	"To override the check, use %s":                                                                     52,
+	"To start the container":                                                                            51,
+	"To view available contexts":                                                                        31,
+	"Unable to continue, a user (non-system) database (%s) is present":                                  60,
+	"Uninstall/Delete the current context":                                                              40,
+	"Uninstall/Delete the current context, no user prompt":                                              41,
+	"Uninstall/Delete the current context, no user prompt and override safety check for user databases": 42,
+	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password.": 74,
+	"Verifying no user (non-system) database (.mdf) files":                             50,
+	"View available contexts":                                                          45,
+	"View configuration information and connection strings":                            13,
+	"configuration file":                                                               17,
+	"help for backwards compatibility flags (-S, -U, -E etc.)":                         15,
+	"invalid batch terminator '%s'":                                                    2,
+	"log level, error=0, warn=1, info=2, debug=3, trace=4":                             18,
+	"print version of sqlcmd":                                                          16,
+	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  %s": 14,
 }
 
-var de_DEIndex = []uint32{ // 17 elements
+var de_DEIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000005a, 0x0000009f, 0x000000c9,
 	0x000000de, 0x000000f4, 0x00000148, 0x00000179,
 	0x000001a9, 0x000001f3, 0x00000230, 0x0000027d,
 	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
-	0x0000029e,
-} // Size: 92 bytes
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	// Entry 20 - 3F
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	// Entry 40 - 5F
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	// Entry 60 - 7F
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e,
+} // Size: 464 bytes
 
 const de_DEData string = "" + // Size: 670 bytes
 	"\x02'-h %[1]d': Der Headerwert muss entweder -1 oder ein Wert zwischen -" +
@@ -87,15 +207,42 @@ const de_DEData string = "" + // Size: 670 bytes
 	"beiten von Datei %[2]s (Ursache: %[3]s).\x02%[1]sSyntaxfehler in Zeile %" +
 	"[2]d"
 
-var en_USIndex = []uint32{ // 17 elements
+var en_USIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x0000008d, 0x000000ae,
 	0x000000c2, 0x000000d8, 0x0000012c, 0x00000159,
 	0x00000181, 0x000001bf, 0x000001f0, 0x0000023f,
-	0x0000025f, 0x000002a1, 0x00000326, 0x00000348,
-	0x00000365,
-} // Size: 92 bytes
+	0x0000025f, 0x0000028b, 0x000002c1, 0x00000312,
+	0x0000034b, 0x00000363, 0x00000376, 0x000003ab,
+	0x000003e1, 0x00000421, 0x00000451, 0x00000488,
+	0x000004b0, 0x000004bc, 0x000004df, 0x000004f8,
+	0x0000050c, 0x0000051c, 0x00000532, 0x0000054c,
+	// Entry 20 - 3F
+	0x00000567, 0x0000057a, 0x0000059b, 0x000005c8,
+	0x000005f2, 0x00000607, 0x00000620, 0x00000641,
+	0x00000677, 0x0000069c, 0x000006d1, 0x00000733,
+	0x00000774, 0x000007c0, 0x000007d8, 0x000007e7,
+	0x00000810, 0x00000827, 0x00000860, 0x00000895,
+	0x000008ac, 0x000008cd, 0x0000091e, 0x00000935,
+	0x00000977, 0x00000994, 0x0000099a, 0x000009c0,
+	0x00000a15, 0x00000a59, 0x00000a73, 0x00000ab5,
+	// Entry 40 - 5F
+	0x00000b3a, 0x00000b69, 0x00000b93, 0x00000b99,
+	0x00000bbe, 0x00000c07, 0x00000ca6, 0x00000cdc,
+	0x00000cff, 0x00000d3b, 0x00000e27, 0x00000ecc,
+	0x00000f07, 0x00000f80, 0x00001019, 0x00001096,
+	0x00001103, 0x00001163, 0x0000126a, 0x0000135b,
+	0x00001431, 0x0000154e, 0x000016ea, 0x000017c9,
+	0x00001919, 0x00001a13, 0x00001a59, 0x00001a7f,
+	0x00001b01, 0x00001b2a, 0x00001b76, 0x00001bf7,
+	// Entry 60 - 7F
+	0x00001c6b, 0x00001cb2, 0x00001cf5, 0x00001d1b,
+	0x00001d93, 0x00001e07, 0x00001e53, 0x00001e79,
+	0x00001eb3, 0x00001efb, 0x00001f47, 0x00001f79,
+	0x00001f9b, 0x00001fb8,
+} // Size: 464 bytes
 
-const en_USData string = "" + // Size: 869 bytes
+const en_USData string = "" + // Size: 8120 bytes
 	"\x02'-h %[1]d': header value must be either -1 or a value between 1 and " +
 	"2147483647\x02'-w %[1]d': value must be greater than 8 and less than 655" +
 	"36.\x02invalid batch terminator '%[1]s'\x04\x00\x01 \x0f\x02Sqlcmd: Erro" +
@@ -105,19 +252,152 @@ const en_USData string = "" + // Size: 869 bytes
 	".\x02The environment variable: '%[1]s' has invalid value: '%[2]s'.\x02Sy" +
 	"ntax error at line %[1]d near command '%[2]s'.\x02%[1]s Error occurred w" +
 	"hile opening or operating on file %[2]s (Reason: %[3]s).\x02%[1]sSyntax " +
-	"error at line %[2]d\x02'-a %[1]d': Packet size has to be a number betwee" +
-	"n 512 and 32767.\x02'-P' is obsolete. The initial passwords must be set " +
-	"using the SQLCMDPASSWORD environment variable or entered at the password" +
-	" prompt.\x02Invalid variable identifier %[1]s\x02Invalid variable value " +
-	"%[1]s"
+	"error at line %[2]d\x02Install/Create, Query, Uninstall SQL Server\x02Vi" +
+	"ew configuration information and connection strings\x02sqlcmd: Install/C" +
+	"reate/Query SQL Server, Azure SQL, and Tools\x0a\x0aFeedback:\x0a  %[1]s" +
+	"\x02help for backwards compatibility flags (-S, -U, -E etc.)\x02print ve" +
+	"rsion of sqlcmd\x02configuration file\x02log level, error=0, warn=1, inf" +
+	"o=2, debug=3, trace=4\x02Modify sqlconfig files using subcommands like " +
+	"\x22%[1]s\x22\x02Add context for existing endpoint and user (use %[1]s o" +
+	"r %[2]s)\x02Install/Create SQL Server, Azure SQL, and Tools\x02Open tool" +
+	"s (e.g Azure Data Studio) for current context\x02Run a query against the" +
+	" current context\x02Run a query\x02Run a query using [%[1]s] database" +
+	"\x02Set new default database\x02Command text to run\x02Database to use" +
+	"\x02Start current context\x02Start the current context\x02To view availa" +
+	"ble contexts\x02No current context\x02Starting %[1]q for context %[2]q" +
+	"\x04\x00\x01 (\x02Create new context with a sql container\x02Current con" +
+	"text does not have a container\x02Stop current context\x02Stop the curre" +
+	"nt context\x02Stopping %[1]q for context %[2]q\x04\x00\x01 1\x02Create a" +
+	" new context with a SQL Server container\x02Uninstall/Delete the current" +
+	" context\x02Uninstall/Delete the current context, no user prompt\x02Unin" +
+	"stall/Delete the current context, no user prompt and override safety che" +
+	"ck for user databases\x02Quiet mode (do not stop for user input to confi" +
+	"rm the operation)\x02Complete the operation even if non-system (user) da" +
+	"tabase files are present\x02View available contexts\x02Create context" +
+	"\x02Create context with SQL Server container\x02Add a context manually" +
+	"\x02Current context is %[1]q. Do you want to continue? (Y/N)\x02Verifyin" +
+	"g no user (non-system) database (.mdf) files\x02To start the container" +
+	"\x02To override the check, use %[1]s\x02Container is not running, unable" +
+	" to verify that user database files do not exist\x02Removing context %[1" +
+	"]s\x02Container %[1]q no longer exists, continuing to remove context..." +
+	"\x02Current context is now %[1]s\x02%[1]v\x02If the database is mounted," +
+	" run %[1]s\x02Pass in the flag %[1]s to override this safety check for u" +
+	"ser (non-system) databases\x02Unable to continue, a user (non-system) da" +
+	"tabase (%[1]s) is present\x02No endpoints to uninstall\x02'-a %[1]d': Pa" +
+	"cket size has to be a number between 512 and 32767.\x02'-P' is obsolete." +
+	" The initial passwords must be set using the SQLCMDPASSWORD environment " +
+	"variable or entered at the password prompt.\x02Legal docs and informatio" +
+	"n: aka.ms/SqlcmdLegal\x02Third party notices: aka.ms/SqlcmdNotices\x02%[" +
+	"1]s\x02Error converting screen width: %[1]s\x02-? shows this syntax summ" +
+	"ary, %[1]s shows modern sqlcmd sub-command help\x02Identifies one or mor" +
+	"e files that contain batches of SQL statements. If one or more files do " +
+	"not exist, sqlcmd will exit. Mutually exclusive with %[1]s/%[2]s.\x02Ide" +
+	"ntifies the file that receives output from sqlcmd.\x02Print version info" +
+	"rmation and exit\x02Implicitly trust the server certificate without vali" +
+	"dation.\x02This option sets the sqlcmd scripting variable %[1]s. This pa" +
+	"rameter specifies the initial database. The default is your login's defa" +
+	"ult-database property. If the database does not exist, an error message " +
+	"is generated and sqlcmd exits.\x02Uses a trusted connection instead of u" +
+	"sing a user name and password to sign in to SQL Server, ignoring any env" +
+	"ironment variables that define user name and password.\x02Specifies the " +
+	"batch terminator. The default value is %[1]s\x02The login name or contai" +
+	"ned database user name.  For contained database users, you must provide " +
+	"the database name option\x02Executes a query when sqlcmd starts, but doe" +
+	"s not exit sqlcmd when the query has finished running. Multiple-semicolo" +
+	"n-delimited queries can be executed.\x02Executes a query when sqlcmd sta" +
+	"rts and then immediately exits sqlcmd. Multiple-semicolon-delimited quer" +
+	"ies can be executed.\x02%[1]s Specifies the instance of SQL Server to wh" +
+	"ich to connect. It sets the sqlcmd scripting variable %[2]s.\x02Disables" +
+	" commands that might compromise system security. Sqlcmd issues a warning" +
+	" and continues.\x02Specifies the SQL authentication method to use to con" +
+	"nect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirector" +
+	"yIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDir" +
+	"ectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword\x02Tel" +
+	"ls sqlcmd to use ActiveDirectory authentication. If no user name is prov" +
+	"ided, authentication method ActiveDirectoryDefault is used. If a passwor" +
+	"d is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirector" +
+	"yInteractive is used.\x02Causes sqlcmd to ignore scripting variables. Th" +
+	"is parameter is useful when a script contains many %[1]s statements that" +
+	" may contain strings that have the same format as regular variables, suc" +
+	"h as $(variable_name).\x02Creates a sqlcmd scripting variable that can b" +
+	"e used in a sqlcmd script. Enclose the value in quotation marks if the v" +
+	"alue contains spaces. You can specify multiple var=values values. If the" +
+	"re are errors in any of the values specified, sqlcmd generates an error " +
+	"message and then exits\x02Requests a packet of a different size. This op" +
+	"tion sets the sqlcmd scripting variable %[1]s. packet_size must be a val" +
+	"ue between 512 and 32767. The default = 4096. A larger packet size can e" +
+	"nhance performance for execution of scripts that have lots of SQL statem" +
+	"ents between %[2]s commands. You can request a larger packet size. Howev" +
+	"er, if the request is denied, sqlcmd uses the server default for packet " +
+	"size.\x02Specifies the number of seconds before a sqlcmd login to the go" +
+	"-mssqldb driver times out when you try to connect to a server. This opti" +
+	"on sets the sqlcmd scripting variable %[1]s. The default value is 30. 0 " +
+	"means infinite.\x02This option sets the sqlcmd scripting variable %[1]s." +
+	" The workstation name is listed in the hostname column of the sys.syspro" +
+	"cesses catalog view and can be returned using the stored procedure sp_wh" +
+	"o. If this option is not specified, the default is the current computer " +
+	"name. This name can be used to identify different sqlcmd sessions.\x02De" +
+	"clares the application workload type when connecting to a server. The on" +
+	"ly currently supported value is ReadOnly. If %[1]s is not specified, the" +
+	" sqlcmd utility will not support connectivity to a secondary replica in " +
+	"an Always On availability group\x02This switch is used by the client to " +
+	"request an encrypted connection.\x02Specifies the formatting for results" +
+	".\x02Controls which error messages are sent to stdout. Messages that hav" +
+	"e severity level greater than or equal to this level are sent.\x02Level " +
+	"of mssql driver messages to print.\x02Specifies that sqlcmd exits and re" +
+	"turns a %[1]s value when an error occurs.\x02Controls which error messag" +
+	"es are sent to %[1]s. Messages that have severity level greater than or " +
+	"equal to this level are sent.\x02Specifies the number of rows to print b" +
+	"etween the column headings. Use -h-1 to specify that headers not be prin" +
+	"ted.\x02Specifies that all output files are encoded with little-endian U" +
+	"nicode\x02Specifies the column separator character. Sets the %[1]s varia" +
+	"ble.\x02Remove trailing spaces from a column.\x02Provided for backward c" +
+	"ompatibility. Sqlcmd always optimizes detection of the active replica of" +
+	" a SQL Failover Cluster.\x02Obsolete. The initial passwords must be set " +
+	"using the %[1]s environment variable or entered at the password prompt." +
+	"\x02Controls the severity level that is used to set the %[1]s variable o" +
+	"n exit.\x02Specifies the screen width for output\x02%[1]s must be one of" +
+	" \x22default\x22,\x22readonly\x22 but got \x22%[2]s\x22\x02%[1]s must be" +
+	" one of \x22default\x22,\x22false\x22,\x22true\x22,\x22disable\x22 but g" +
+	"ot \x22%[2]s\x22\x02%[1]s must be one of \x22horiz\x22,\x22horizontal" +
+	"\x22,\x22vert\x22,\x22vertical\x22 but got \x22%[2]s\x22\x02%[1]s must b" +
+	"e one of \x22-1\x22,\x220\x22,\x221\x22 but got \x22%[2]s\x22\x02Invalid" +
+	" variable identifier %[1]s\x02Invalid variable value %[1]s"
 
-var es_ESIndex = []uint32{ // 17 elements
+var es_ESIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x00000050, 0x0000008d, 0x000000b3,
 	0x000000c7, 0x000000e1, 0x00000145, 0x00000176,
 	0x000001a4, 0x000001e7, 0x00000227, 0x0000026f,
 	0x00000299, 0x00000299, 0x00000299, 0x00000299,
-	0x00000299,
-} // Size: 92 bytes
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	// Entry 20 - 3F
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	// Entry 40 - 5F
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	// Entry 60 - 7F
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299,
+} // Size: 464 bytes
 
 const es_ESData string = "" + // Size: 665 bytes
 	"\x02'-h %[1]d': el valor de encabezado debe ser -1 o un valor entre -1 y" +
@@ -131,13 +411,40 @@ const es_ESData string = "" + // Size: 665 bytes
 	"rca del comando '%[2]s'.\x02%[1]s no se pudo abrir o actuar sobre el arc" +
 	"hivo %[2]s (motivo: %[3]s).\x02%[1]serror de sintaxis en la línea %[2]d"
 
-var fr_FRIndex = []uint32{ // 17 elements
+var fr_FRIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x00000060, 0x000000ad, 0x000000d7,
 	0x000000f0, 0x0000010f, 0x00000187, 0x000001c0,
 	0x000001f8, 0x00000253, 0x0000029f, 0x0000030b,
 	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
-	0x0000032f,
-} // Size: 92 bytes
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	// Entry 20 - 3F
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	// Entry 40 - 5F
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	// Entry 60 - 7F
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f,
+} // Size: 464 bytes
 
 const fr_FRData string = "" + // Size: 815 bytes
 	"\x02'-h %[1]d': la valeur d'en-tête doit être\u00a0-1 ou une valeur comp" +
@@ -154,13 +461,40 @@ const fr_FRData string = "" + // Size: 815 bytes
 	"eur s'est produite lors de l'ouverture ou de l'utilisation du fichier %[" +
 	"2]s (Raison\u00a0: %[3]s).\x02erreur de syntaxe à la ligne %[2]d"
 
-var it_ITIndex = []uint32{ // 17 elements
+var it_ITIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000005e, 0x000000a1, 0x000000c9,
 	0x000000de, 0x000000f3, 0x0000014f, 0x00000184,
 	0x000001b1, 0x000001f4, 0x0000023b, 0x00000288,
 	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
-	0x000002b0,
-} // Size: 92 bytes
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	// Entry 20 - 3F
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	// Entry 40 - 5F
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	// Entry 60 - 7F
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0,
+} // Size: 464 bytes
 
 const it_ITData string = "" + // Size: 688 bytes
 	"\x02'-h %[1]d': il valore di intestazione deve essere -1 o un valore com" +
@@ -175,13 +509,40 @@ const it_ITData string = "" + // Size: 688 bytes
 	"e l'apertura o l'utilizzo del file %[2]s (motivo: %[3]s).\x02%[1]serrore" +
 	" di sintassi alla riga %[2]d"
 
-var ja_JPIndex = []uint32{ // 17 elements
+var ja_JPIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x00000069, 0x000000d1, 0x00000106,
 	0x0000011e, 0x00000133, 0x000001ad, 0x000001f2,
 	0x00000231, 0x00000274, 0x000002c1, 0x00000342,
 	0x00000376, 0x00000376, 0x00000376, 0x00000376,
-	0x00000376,
-} // Size: 92 bytes
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	// Entry 20 - 3F
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	// Entry 40 - 5F
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	// Entry 60 - 7F
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376,
+} // Size: 464 bytes
 
 const ja_JPData string = "" + // Size: 886 bytes
 	"\x02'-h %[1]d': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください\x02'-w %[1]" +
@@ -192,13 +553,40 @@ const ja_JPData string = "" + // Size: 886 bytes
 	"' があります。\x02行 %[1]d のコマンド '%[2]s' 付近に構文エラーがあります。\x02%[1]s ファイル %[2]s を開く" +
 	"ときか、このファイルの処理中にエラーが発生しました (理由: %[3]s)。\x02%[1]s行 %[2]d に構文エラーがあります。"
 
-var ko_KRIndex = []uint32{ // 17 elements
+var ko_KRIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000005b, 0x0000009e, 0x000000ca,
 	0x000000df, 0x000000f4, 0x00000152, 0x0000018d,
 	0x000001ca, 0x0000020b, 0x00000259, 0x000002cd,
 	0x00000306, 0x00000306, 0x00000306, 0x00000306,
-	0x00000306,
-} // Size: 92 bytes
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	// Entry 20 - 3F
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	// Entry 40 - 5F
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	// Entry 60 - 7F
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306,
+} // Size: 464 bytes
 
 const ko_KRData string = "" + // Size: 774 bytes
 	"\x02'-h %[1]d': 헤더 값은 -1이거나 -1에서 2147483647 사이의 값이어야 합니다\x02'-w %[1]d': " +
@@ -209,13 +597,40 @@ const ko_KRData string = "" + // Size: 774 bytes
 	"처의 줄 %[1]d에서 구문 오류가 발생했습니다.\x02%[1]s 파일 %[2]s을(를) 열거나 해당 작업을 수행하는 중 오류" +
 	"가 발생했습니다(원인: %[3]s).\x02%[1]s줄 %[2]d에서 구문 오류가 발생했습니다"
 
-var pt_BRIndex = []uint32{ // 17 elements
+var pt_BRIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x0000008b, 0x000000b0,
 	0x000000c3, 0x000000d7, 0x00000142, 0x00000175,
 	0x000001a0, 0x000001e2, 0x0000021e, 0x00000269,
 	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
-	0x0000028d,
-} // Size: 92 bytes
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	// Entry 20 - 3F
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	// Entry 40 - 5F
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	// Entry 60 - 7F
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d,
+} // Size: 464 bytes
 
 const pt_BRData string = "" + // Size: 653 bytes
 	"\x02'-h %[1]d': o valor do cabeçalho deve ser -1 ou um valor entre 1 e 2" +
@@ -229,13 +644,40 @@ const pt_BRData string = "" + // Size: 653 bytes
 	" '%[2]s'.\x02%[1]s ocorreu um erro ao abrir ou operar no arquivo %[2]s (" +
 	"Motivo: %[3]s).\x02%[1]serro de sintaxe na linha %[2]d"
 
-var ru_RUIndex = []uint32{ // 17 elements
+var ru_RUIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000007f, 0x000000d8, 0x00000120,
 	0x0000013c, 0x0000015b, 0x000001db, 0x0000023a,
 	0x00000281, 0x000002e9, 0x0000035d, 0x000003cc,
 	0x00000411, 0x00000411, 0x00000411, 0x00000411,
-	0x00000411,
-} // Size: 92 bytes
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	// Entry 20 - 3F
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	// Entry 40 - 5F
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	// Entry 60 - 7F
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411,
+} // Size: 464 bytes
 
 const ru_RUData string = "" + // Size: 1041 bytes
 	"\x02'-h %[1]d': значением заголовка может быть или -1, или число между -" +
@@ -249,13 +691,40 @@ const ru_RUData string = "" + // Size: 1041 bytes
 	"команды '%[2]s'.\x02%[1]s ошибка при открытии или обработке файла %[2]s" +
 	" (причина: %[3]s).\x02%[1]sсинтаксическая ошибка в строке %[2]d"
 
-var zh_CNIndex = []uint32{ // 17 elements
+var zh_CNIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000004d, 0x0000007e, 0x000000a1,
 	0x000000b6, 0x000000cb, 0x0000010b, 0x0000012e,
 	0x0000014e, 0x00000176, 0x000001af, 0x000001f9,
 	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
-	0x0000021e,
-} // Size: 92 bytes
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	// Entry 20 - 3F
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	// Entry 40 - 5F
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	// Entry 60 - 7F
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e,
+} // Size: 464 bytes
 
 const zh_CNData string = "" + // Size: 542 bytes
 	"\x02'-h %[1]d': 标头值必须是 -1 或是介于 1 和 2147483647 之间的值\x02'-w %[1]d': 值必须大于 " +
@@ -265,13 +734,40 @@ const zh_CNData string = "" + // Size: 542 bytes
 	"]d 行存在语法错误。\x02%[1]s 打开文件 %[2]s 或对其执行操作时出错(原因: %[3]s)。\x02%[1]s第 %[2]d 行" +
 	"存在语法错误"
 
-var zh_TWIndex = []uint32{ // 17 elements
+var zh_TWIndex = []uint32{ // 110 elements
+	// Entry 0 - 1F
 	0x00000000, 0x0000004b, 0x0000007c, 0x0000009e,
 	0x000000b3, 0x000000c8, 0x0000010d, 0x00000130,
 	0x00000155, 0x00000184, 0x000001bf, 0x00000204,
 	0x00000229, 0x00000229, 0x00000229, 0x00000229,
-	0x00000229,
-} // Size: 92 bytes
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	// Entry 20 - 3F
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	// Entry 40 - 5F
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	// Entry 60 - 7F
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229,
+} // Size: 464 bytes
 
 const zh_TWData string = "" + // Size: 553 bytes
 	"\x02'-h %[1]d': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值\x02'-w %[1]d': 值必須大於 " +
@@ -281,4 +777,4 @@ const zh_TWData string = "" + // Size: 553 bytes
 	"\x02第 %[1]d 行接近命令 '%[2]s' 之處有語法錯誤。\x02%[1]s 開啟或操作檔案 %[2]s 時發生錯誤 (原因: %[3" +
 	"]s)。\x02%[1]s第 %[2]d 行有語法錯誤。"
 
-	// Total table size 9168 bytes (8KiB); checksum: EBB4F85F
+	// Total table size 20511 bytes (20KiB); checksum: F4DE9095
