@@ -27,7 +27,7 @@ func (c *Config) DefineCommand(...cmdparser.CommandOptions) {
 		SubCommands: c.SubCommands(),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: localizer.Sprintf("Add context for existing endpoint and user (use SQLCMD_PASSWORD or SQLCMDPASSWORD)"),
+				Description: localizer.Sprintf("Add context for existing endpoint and user (use %s or %s)", "SQLCMD_PASSWORD", "SQLCMDPASSWORD"),
 				Steps: []string{
 					fmt.Sprintf("%s SQLCMD_PASSWORD=<placeholderpassword>", pal.CreateEnvVarKeyword()),
 					"sqlcmd config add-user --name sa1434 --username sa",

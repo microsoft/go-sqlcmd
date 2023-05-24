@@ -43,12 +43,13 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 			Steps: []string{"sqlcmd config view", "sqlcmd config cs"}},
 	}
 
+	const feedbackUrl = "https://github.com/microsoft/go-sqlcmd/issues/new"
 	commandOptions := cmdparser.CommandOptions{
 		Use: "sqlcmd",
 		Short: localizer.Sprintf(`sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools
 
 Feedback:
-  https://github.com/microsoft/go-sqlcmd/issues/new`),
+  %s`, feedbackUrl),
 		SubCommands: c.SubCommands(),
 		Examples:    examples,
 	}

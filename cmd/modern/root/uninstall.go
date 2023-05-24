@@ -35,16 +35,16 @@ var systemDatabases = [...]string{
 func (c *Uninstall) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "delete",
-		Short: localizer.Sprintf(localizer.Sprintf("Uninstall/Delete the current-context")),
+		Short: localizer.Sprintf(localizer.Sprintf("Uninstall/Delete the current context")),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: localizer.Sprintf("Uninstall/Delete the current-context"),
+				Description: localizer.Sprintf("Uninstall/Delete the current context"),
 				Steps:       []string{`sqlcmd delete`}},
 			{
-				Description: localizer.Sprintf("Uninstall/Delete the current-context, no user prompt"),
+				Description: localizer.Sprintf("Uninstall/Delete the current context, no user prompt"),
 				Steps:       []string{`sqlcmd delete --yes`}},
 			{
-				Description: localizer.Sprintf("Uninstall/Delete the current-context, no user prompt and override safety check for user databases"),
+				Description: localizer.Sprintf("Uninstall/Delete the current context, no user prompt and override safety check for user databases"),
 				Steps:       []string{`sqlcmd delete --yes --force`}},
 		},
 		Aliases: []string{"uninstall", "drop", "remove"},
@@ -107,7 +107,7 @@ func (c *Uninstall) run() {
 				if !controller.ContainerRunning(id) {
 					output.FatalfWithHintExamples([][]string{
 						{localizer.Sprintf("To start the container"), "sqlcmd start"},
-						{localizer.Sprintf("To override the check, use --force"), "sqlcmd delete --force"},
+						{localizer.Sprintf("To override the check, use %s", "--force"), "sqlcmd delete --force"},
 					}, localizer.Sprintf("Container is not running, unable to verify that user database files do not exist"))
 				}
 				c.userDatabaseSafetyCheck(controller, id)
@@ -163,7 +163,7 @@ func (c *Uninstall) userDatabaseSafetyCheck(controller *container.Controller, id
 				output.FatalfWithHints([]string{
 					localizer.Sprintf(
 						"If the database is mounted, run %s", dropDbQuery),
-					localizer.Sprintf("Pass in the flag --force to override this safety check for user (non-system) databases")},
+					localizer.Sprintf("Pass in the flag %s to override this safety check for user (non-system) databases", "--force")},
 					localizer.Sprintf("Unable to continue, a user (non-system) database (%s) is present", databaseFile))
 			}
 		}

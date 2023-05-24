@@ -24,14 +24,14 @@ type Query struct {
 func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "query",
-		Short: localizer.Sprintf("Run a query against the current-context"),
+		Short: localizer.Sprintf("Run a query against the current context"),
 		Examples: []cmdparser.ExampleOptions{
 			{Description: localizer.Sprintf("Run a query"), Steps: []string{
 				`sqlcmd query "SELECT @@SERVERNAME"`,
 				`sqlcmd query --text "SELECT @@SERVERNAME"`,
 				`sqlcmd query --query "SELECT @@SERVERNAME"`,
 			}},
-			{Description: localizer.Sprintf("Run a query using [master] database"), Steps: []string{
+			{Description: localizer.Sprintf("Run a query using [%s] database", "master"), Steps: []string{
 				`sqlcmd query "SELECT DB_NAME()" --database master`,
 			}},
 			{Description: localizer.Sprintf("Set new default database"), Steps: []string{
