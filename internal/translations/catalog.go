@@ -51,13 +51,10 @@ var messageKeyToIndex = map[string]int{
 	"%s": 66,
 	"%s Error occurred while opening or operating on file %s (Reason: %s).":                                  10,
 	"%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.": 79,
-	"%s must be one of \"-1\",\"0\",\"1\" but got \"%s\"":                                                    106,
-	"%s must be one of \"default\",\"false\",\"true\",\"disable\" but got \"%s\"":                            104,
-	"%s must be one of \"default\",\"readonly\" but got \"%s\"":                                              103,
-	"%s must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"%s\"":                        105,
-	"%sSyntax error at line %d":            11,
-	"%v":                                   57,
-	"'%s' scripting variable not defined.": 7,
+	"%s must be one of %s but got \"%s\"":                                                                    103,
+	"%sSyntax error at line %d":                                                                              11,
+	"%v":                                                                                                     57,
+	"'%s' scripting variable not defined.":                                                                   7,
 	"'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.": 63,
 	"'-a %d': Packet size has to be a number between 512 and 32767.":                                                                       62,
 	"'-h %d': header value must be either -1 or a value between 1 and 2147483647":                                                          0,
@@ -94,8 +91,8 @@ var messageKeyToIndex = map[string]int{
 	"Implicitly trust the server certificate without validation.": 72,
 	"Install/Create SQL Server, Azure SQL, and Tools":             21,
 	"Install/Create, Query, Uninstall SQL Server":                 12,
-	"Invalid variable identifier %s":                              107,
-	"Invalid variable value %s":                                   108,
+	"Invalid variable identifier %s":                              104,
+	"Invalid variable value %s":                                   105,
 	"Legal docs and information: aka.ms/SqlcmdLegal":              64,
 	"Level of mssql driver messages to print.":                    92,
 	"Modify sqlconfig files using subcommands like \"%s\"":        19,
@@ -159,7 +156,7 @@ var messageKeyToIndex = map[string]int{
 	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  %s": 14,
 }
 
-var de_DEIndex = []uint32{ // 110 elements
+var de_DEIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005a, 0x0000009f, 0x000000c9,
 	0x000000de, 0x000000f4, 0x00000148, 0x00000179,
@@ -190,9 +187,8 @@ var de_DEIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
 	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
-	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
-	0x0000029e, 0x0000029e,
-} // Size: 464 bytes
+	0x0000029e, 0x0000029e, 0x0000029e,
+} // Size: 452 bytes
 
 const de_DEData string = "" + // Size: 670 bytes
 	"\x02'-h %[1]d': Der Headerwert muss entweder -1 oder ein Wert zwischen -" +
@@ -207,7 +203,7 @@ const de_DEData string = "" + // Size: 670 bytes
 	"beiten von Datei %[2]s (Ursache: %[3]s).\x02%[1]sSyntaxfehler in Zeile %" +
 	"[2]d"
 
-var en_USIndex = []uint32{ // 110 elements
+var en_USIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x0000008d, 0x000000ae,
 	0x000000c2, 0x000000d8, 0x0000012c, 0x00000159,
@@ -238,11 +234,10 @@ var en_USIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x00001c6b, 0x00001cb2, 0x00001cf5, 0x00001d1b,
 	0x00001d93, 0x00001e07, 0x00001e53, 0x00001e79,
-	0x00001eb3, 0x00001efb, 0x00001f47, 0x00001f79,
-	0x00001f9b, 0x00001fb8,
-} // Size: 464 bytes
+	0x00001ea4, 0x00001ec6, 0x00001ee3,
+} // Size: 452 bytes
 
-const en_USData string = "" + // Size: 8120 bytes
+const en_USData string = "" + // Size: 7907 bytes
 	"\x02'-h %[1]d': header value must be either -1 or a value between 1 and " +
 	"2147483647\x02'-w %[1]d': value must be greater than 8 and less than 655" +
 	"36.\x02invalid batch terminator '%[1]s'\x04\x00\x01 \x0f\x02Sqlcmd: Erro" +
@@ -357,14 +352,10 @@ const en_USData string = "" + // Size: 8120 bytes
 	"using the %[1]s environment variable or entered at the password prompt." +
 	"\x02Controls the severity level that is used to set the %[1]s variable o" +
 	"n exit.\x02Specifies the screen width for output\x02%[1]s must be one of" +
-	" \x22default\x22,\x22readonly\x22 but got \x22%[2]s\x22\x02%[1]s must be" +
-	" one of \x22default\x22,\x22false\x22,\x22true\x22,\x22disable\x22 but g" +
-	"ot \x22%[2]s\x22\x02%[1]s must be one of \x22horiz\x22,\x22horizontal" +
-	"\x22,\x22vert\x22,\x22vertical\x22 but got \x22%[2]s\x22\x02%[1]s must b" +
-	"e one of \x22-1\x22,\x220\x22,\x221\x22 but got \x22%[2]s\x22\x02Invalid" +
-	" variable identifier %[1]s\x02Invalid variable value %[1]s"
+	" %[2]s but got \x22%[3]s\x22\x02Invalid variable identifier %[1]s\x02Inv" +
+	"alid variable value %[1]s"
 
-var es_ESIndex = []uint32{ // 110 elements
+var es_ESIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000050, 0x0000008d, 0x000000b3,
 	0x000000c7, 0x000000e1, 0x00000145, 0x00000176,
@@ -395,9 +386,8 @@ var es_ESIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x00000299, 0x00000299, 0x00000299, 0x00000299,
 	0x00000299, 0x00000299, 0x00000299, 0x00000299,
-	0x00000299, 0x00000299, 0x00000299, 0x00000299,
-	0x00000299, 0x00000299,
-} // Size: 464 bytes
+	0x00000299, 0x00000299, 0x00000299,
+} // Size: 452 bytes
 
 const es_ESData string = "" + // Size: 665 bytes
 	"\x02'-h %[1]d': el valor de encabezado debe ser -1 o un valor entre -1 y" +
@@ -411,7 +401,7 @@ const es_ESData string = "" + // Size: 665 bytes
 	"rca del comando '%[2]s'.\x02%[1]s no se pudo abrir o actuar sobre el arc" +
 	"hivo %[2]s (motivo: %[3]s).\x02%[1]serror de sintaxis en la línea %[2]d"
 
-var fr_FRIndex = []uint32{ // 110 elements
+var fr_FRIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000060, 0x000000ad, 0x000000d7,
 	0x000000f0, 0x0000010f, 0x00000187, 0x000001c0,
@@ -442,9 +432,8 @@ var fr_FRIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
 	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
-	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
-	0x0000032f, 0x0000032f,
-} // Size: 464 bytes
+	0x0000032f, 0x0000032f, 0x0000032f,
+} // Size: 452 bytes
 
 const fr_FRData string = "" + // Size: 815 bytes
 	"\x02'-h %[1]d': la valeur d'en-tête doit être\u00a0-1 ou une valeur comp" +
@@ -461,7 +450,7 @@ const fr_FRData string = "" + // Size: 815 bytes
 	"eur s'est produite lors de l'ouverture ou de l'utilisation du fichier %[" +
 	"2]s (Raison\u00a0: %[3]s).\x02erreur de syntaxe à la ligne %[2]d"
 
-var it_ITIndex = []uint32{ // 110 elements
+var it_ITIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005e, 0x000000a1, 0x000000c9,
 	0x000000de, 0x000000f3, 0x0000014f, 0x00000184,
@@ -492,9 +481,8 @@ var it_ITIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
 	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
-	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
-	0x000002b0, 0x000002b0,
-} // Size: 464 bytes
+	0x000002b0, 0x000002b0, 0x000002b0,
+} // Size: 452 bytes
 
 const it_ITData string = "" + // Size: 688 bytes
 	"\x02'-h %[1]d': il valore di intestazione deve essere -1 o un valore com" +
@@ -509,7 +497,7 @@ const it_ITData string = "" + // Size: 688 bytes
 	"e l'apertura o l'utilizzo del file %[2]s (motivo: %[3]s).\x02%[1]serrore" +
 	" di sintassi alla riga %[2]d"
 
-var ja_JPIndex = []uint32{ // 110 elements
+var ja_JPIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000069, 0x000000d1, 0x00000106,
 	0x0000011e, 0x00000133, 0x000001ad, 0x000001f2,
@@ -540,9 +528,8 @@ var ja_JPIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x00000376, 0x00000376, 0x00000376, 0x00000376,
 	0x00000376, 0x00000376, 0x00000376, 0x00000376,
-	0x00000376, 0x00000376, 0x00000376, 0x00000376,
-	0x00000376, 0x00000376,
-} // Size: 464 bytes
+	0x00000376, 0x00000376, 0x00000376,
+} // Size: 452 bytes
 
 const ja_JPData string = "" + // Size: 886 bytes
 	"\x02'-h %[1]d': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください\x02'-w %[1]" +
@@ -553,7 +540,7 @@ const ja_JPData string = "" + // Size: 886 bytes
 	"' があります。\x02行 %[1]d のコマンド '%[2]s' 付近に構文エラーがあります。\x02%[1]s ファイル %[2]s を開く" +
 	"ときか、このファイルの処理中にエラーが発生しました (理由: %[3]s)。\x02%[1]s行 %[2]d に構文エラーがあります。"
 
-var ko_KRIndex = []uint32{ // 110 elements
+var ko_KRIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005b, 0x0000009e, 0x000000ca,
 	0x000000df, 0x000000f4, 0x00000152, 0x0000018d,
@@ -584,9 +571,8 @@ var ko_KRIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x00000306, 0x00000306, 0x00000306, 0x00000306,
 	0x00000306, 0x00000306, 0x00000306, 0x00000306,
-	0x00000306, 0x00000306, 0x00000306, 0x00000306,
-	0x00000306, 0x00000306,
-} // Size: 464 bytes
+	0x00000306, 0x00000306, 0x00000306,
+} // Size: 452 bytes
 
 const ko_KRData string = "" + // Size: 774 bytes
 	"\x02'-h %[1]d': 헤더 값은 -1이거나 -1에서 2147483647 사이의 값이어야 합니다\x02'-w %[1]d': " +
@@ -597,7 +583,7 @@ const ko_KRData string = "" + // Size: 774 bytes
 	"처의 줄 %[1]d에서 구문 오류가 발생했습니다.\x02%[1]s 파일 %[2]s을(를) 열거나 해당 작업을 수행하는 중 오류" +
 	"가 발생했습니다(원인: %[3]s).\x02%[1]s줄 %[2]d에서 구문 오류가 발생했습니다"
 
-var pt_BRIndex = []uint32{ // 110 elements
+var pt_BRIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x0000008b, 0x000000b0,
 	0x000000c3, 0x000000d7, 0x00000142, 0x00000175,
@@ -628,9 +614,8 @@ var pt_BRIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
 	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
-	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
-	0x0000028d, 0x0000028d,
-} // Size: 464 bytes
+	0x0000028d, 0x0000028d, 0x0000028d,
+} // Size: 452 bytes
 
 const pt_BRData string = "" + // Size: 653 bytes
 	"\x02'-h %[1]d': o valor do cabeçalho deve ser -1 ou um valor entre 1 e 2" +
@@ -644,7 +629,7 @@ const pt_BRData string = "" + // Size: 653 bytes
 	" '%[2]s'.\x02%[1]s ocorreu um erro ao abrir ou operar no arquivo %[2]s (" +
 	"Motivo: %[3]s).\x02%[1]serro de sintaxe na linha %[2]d"
 
-var ru_RUIndex = []uint32{ // 110 elements
+var ru_RUIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000007f, 0x000000d8, 0x00000120,
 	0x0000013c, 0x0000015b, 0x000001db, 0x0000023a,
@@ -675,9 +660,8 @@ var ru_RUIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x00000411, 0x00000411, 0x00000411, 0x00000411,
 	0x00000411, 0x00000411, 0x00000411, 0x00000411,
-	0x00000411, 0x00000411, 0x00000411, 0x00000411,
-	0x00000411, 0x00000411,
-} // Size: 464 bytes
+	0x00000411, 0x00000411, 0x00000411,
+} // Size: 452 bytes
 
 const ru_RUData string = "" + // Size: 1041 bytes
 	"\x02'-h %[1]d': значением заголовка может быть или -1, или число между -" +
@@ -691,7 +675,7 @@ const ru_RUData string = "" + // Size: 1041 bytes
 	"команды '%[2]s'.\x02%[1]s ошибка при открытии или обработке файла %[2]s" +
 	" (причина: %[3]s).\x02%[1]sсинтаксическая ошибка в строке %[2]d"
 
-var zh_CNIndex = []uint32{ // 110 elements
+var zh_CNIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004d, 0x0000007e, 0x000000a1,
 	0x000000b6, 0x000000cb, 0x0000010b, 0x0000012e,
@@ -722,9 +706,8 @@ var zh_CNIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
 	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
-	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
-	0x0000021e, 0x0000021e,
-} // Size: 464 bytes
+	0x0000021e, 0x0000021e, 0x0000021e,
+} // Size: 452 bytes
 
 const zh_CNData string = "" + // Size: 542 bytes
 	"\x02'-h %[1]d': 标头值必须是 -1 或是介于 1 和 2147483647 之间的值\x02'-w %[1]d': 值必须大于 " +
@@ -734,7 +717,7 @@ const zh_CNData string = "" + // Size: 542 bytes
 	"]d 行存在语法错误。\x02%[1]s 打开文件 %[2]s 或对其执行操作时出错(原因: %[3]s)。\x02%[1]s第 %[2]d 行" +
 	"存在语法错误"
 
-var zh_TWIndex = []uint32{ // 110 elements
+var zh_TWIndex = []uint32{ // 107 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004b, 0x0000007c, 0x0000009e,
 	0x000000b3, 0x000000c8, 0x0000010d, 0x00000130,
@@ -765,9 +748,8 @@ var zh_TWIndex = []uint32{ // 110 elements
 	// Entry 60 - 7F
 	0x00000229, 0x00000229, 0x00000229, 0x00000229,
 	0x00000229, 0x00000229, 0x00000229, 0x00000229,
-	0x00000229, 0x00000229, 0x00000229, 0x00000229,
-	0x00000229, 0x00000229,
-} // Size: 464 bytes
+	0x00000229, 0x00000229, 0x00000229,
+} // Size: 452 bytes
 
 const zh_TWData string = "" + // Size: 553 bytes
 	"\x02'-h %[1]d': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值\x02'-w %[1]d': 值必須大於 " +
@@ -777,4 +759,4 @@ const zh_TWData string = "" + // Size: 553 bytes
 	"\x02第 %[1]d 行接近命令 '%[2]s' 之處有語法錯誤。\x02%[1]s 開啟或操作檔案 %[2]s 時發生錯誤 (原因: %[3" +
 	"]s)。\x02%[1]s第 %[2]d 行有語法錯誤。"
 
-	// Total table size 20511 bytes (20KiB); checksum: F4DE9095
+	// Total table size 20166 bytes (19KiB); checksum: BD92A84F

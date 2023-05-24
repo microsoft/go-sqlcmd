@@ -1047,9 +1047,9 @@
             "fuzzy": true
         },
         {
-            "id": "{__application_intent} must be one of \"default\",\"readonly\" but got \"{Value}\"",
-            "message": "{__application_intent} must be one of \"default\",\"readonly\" but got \"{Value}\"",
-            "translation": "{__application_intent} must be one of \"default\",\"readonly\" but got \"{Value}\"",
+            "id": "{__application_intent} must be one of {Defaultreadonly} but got \"{Value}\"",
+            "message": "{__application_intent} must be one of {Defaultreadonly} but got \"{Value}\"",
+            "translation": "{__application_intent} must be one of {Defaultreadonly} but got \"{Value}\"",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -1061,86 +1061,19 @@
                     "expr": "\"--application-intent\""
                 },
                 {
-                    "id": "Value",
+                    "id": "Defaultreadonly",
                     "string": "%[2]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 2,
-                    "expr": "value"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
-            "id": "{__application_intent} must be one of \"default\",\"false\",\"true\",\"disable\" but got \"{Value}\"",
-            "message": "{__application_intent} must be one of \"default\",\"false\",\"true\",\"disable\" but got \"{Value}\"",
-            "translation": "{__application_intent} must be one of \"default\",\"false\",\"true\",\"disable\" but got \"{Value}\"",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "__application_intent",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "\"--application-intent\""
+                    "expr": "\"\\\"default\\\",\\\"readonly\\\"\""
                 },
                 {
                     "id": "Value",
-                    "string": "%[2]s",
+                    "string": "%[3]s",
                     "type": "string",
                     "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "value"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
-            "id": "{__format} must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"{Value}\"",
-            "message": "{__format} must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"{Value}\"",
-            "translation": "{__format} must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"{Value}\"",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "__format",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "\"--format\""
-                },
-                {
-                    "id": "Value",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "value"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
-            "id": "{__errors_to_stderr} must be one of \"-1\",\"0\",\"1\" but got \"{Value}\"",
-            "message": "{__errors_to_stderr} must be one of \"-1\",\"0\",\"1\" but got \"{Value}\"",
-            "translation": "{__errors_to_stderr} must be one of \"-1\",\"0\",\"1\" but got \"{Value}\"",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "__errors_to_stderr",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "\"--errors-to-stderr\""
-                },
-                {
-                    "id": "Value",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
+                    "argNum": 3,
                     "expr": "value"
                 }
             ],
