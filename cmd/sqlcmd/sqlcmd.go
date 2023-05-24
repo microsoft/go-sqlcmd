@@ -248,7 +248,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "default", "readonly":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of \"default\",\"readonly\" but got \"%s\"", "--application-intent", value))
+				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of %s but got \"%s\"", "--application-intent", "\"default\",\"readonly\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
@@ -260,7 +260,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "default", "false", "true", "disable":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of \"default\",\"false\",\"true\",\"disable\" but got \"%s\"", "--application-intent", value))
+				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of %s but got \"%s\"", "--application-intent", "\"default\",\"false\",\"true\",\"disable\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
@@ -272,7 +272,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "horiz", "horizontal", "vert", "vertical":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"%s\"", "--format", value))
+				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of %s but got \"%s\"", "--format", "\"horiz\",\"horizontal\",\"vert\",\"vertical\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
@@ -284,7 +284,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "-1", "0", "1":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of \"-1\",\"0\",\"1\" but got \"%s\"", "--errors-to-stderr", value))
+				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of %s but got \"%s\"", "--errors-to-stderr", "\"-1\",\"0\",\"1\"", value))
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 				}
