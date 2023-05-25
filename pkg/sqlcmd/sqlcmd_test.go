@@ -67,7 +67,7 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			"sqlserver://.?protocol=admin",
 		},
 		{
-			&ConnectSettings{ServerName: `np:someserver`, DedicatedAdminConnection: true},
+			&ConnectSettings{ServerName: `tcp:someserver`, DedicatedAdminConnection: true},
 			"sqlserver://someserver?protocol=admin",
 		},
 		{
