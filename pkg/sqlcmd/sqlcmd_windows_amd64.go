@@ -7,12 +7,12 @@ import (
 )
 
 func init() {
-	if len(msdsn.ProtocolParsers) == 3 {
-		// reorder the protocol parsers to lpc->tcp->np
+	if len(msdsn.ProtocolParsers) == 4 {
+		// reorder the protocol parsers to lpc->admin->tcp->np
 		// ODBC follows this same order.
 		var tcp = msdsn.ProtocolParsers[0]
-		msdsn.ProtocolParsers[0] = msdsn.ProtocolParsers[2]
-		msdsn.ProtocolParsers[2] = msdsn.ProtocolParsers[1]
-		msdsn.ProtocolParsers[1] = tcp
+		msdsn.ProtocolParsers[0] = msdsn.ProtocolParsers[3]
+		msdsn.ProtocolParsers[3] = msdsn.ProtocolParsers[2]
+		msdsn.ProtocolParsers[2] = tcp
 	}
 }
