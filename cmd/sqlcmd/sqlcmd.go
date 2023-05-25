@@ -126,14 +126,21 @@ func Execute(version string) {
 		PreRunE: func(cmd *cobra.Command, argss []string) error {
 			SetScreenWidthFlag(&args, cmd)
 			if err := args.Validate(); err != nil {
+				cmd.SilenceUsage = true
 				return err
 			}
 			if err := normalizeFlags(cmd); err != nil {
+				cmd.SilenceUsage = true
 				return err
 			}
 			return nil
 		},
 		Run: func(cmd *cobra.Command, argss []string) {
+			if len(argss) > 0 {
+				fmt.Printf("Sqlcmd: '%s': Unknown command. Enter '--help' for command help.", argss[0])
+				os.Exit(1)
+			}
+
 			vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 			setVars(vars, &args)
 
