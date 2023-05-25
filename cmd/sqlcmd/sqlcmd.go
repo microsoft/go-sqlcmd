@@ -160,14 +160,6 @@ func Execute(version string) {
 	}
 }
 
-func normalizeWithError(name string, err error) (pflag.NormalizedName, error) {
-	//checking nil
-	if name != "" && err != nil {
-		return "", localizer.Errorf("%s", err)
-	}
-	return pflag.NormalizedName(name), nil
-}
-
 func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
 	screenWidth := rootCmd.Flags().Lookup("screen-width")
 	if screenWidth == nil {
@@ -248,10 +240,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "default", "readonly":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of %s but got \"%s\"", "--application-intent", "\"default\",\"readonly\"", value))
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
+				err = localizer.Errorf("%s must be one of %s but got \"%s\"", "--application-intent", "\"default\",\"readonly\"", value)
 				return pflag.NormalizedName("")
 			}
 		case "encrypt-connection":
@@ -260,10 +249,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "default", "false", "true", "disable":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of %s but got \"%s\"", "--application-intent", "\"default\",\"false\",\"true\",\"disable\"", value))
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
+				err = localizer.Errorf("%s must be one of %s but got \"%s\"", "--encrypt-connection", "\"default\",\"false\",\"true\",\"disable\"", value)
 				return pflag.NormalizedName("")
 			}
 		case "format":
@@ -272,10 +258,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "horiz", "horizontal", "vert", "vertical":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of %s but got \"%s\"", "--format", "\"horiz\",\"horizontal\",\"vert\",\"vertical\"", value))
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
+				err = fmt.Errorf(localizer.Sprintf("%s must be one of %s but got \"%s\"", "--format", "\"horiz\",\"horizontal\",\"vert\",\"vertical\"", value))
 				return pflag.NormalizedName("")
 			}
 		case "errors-to-stderr":
@@ -284,10 +267,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "-1", "0", "1":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, localizer.Errorf("%s must be one of %s but got \"%s\"", "--errors-to-stderr", "\"-1\",\"0\",\"1\"", value))
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
+				err = fmt.Errorf(localizer.Sprintf("%s must be one of %s but got \"%s\"", "--errors-to-stderr", "\"-1\",\"0\",\"1\"", value))
 				return pflag.NormalizedName("")
 			}
 		}

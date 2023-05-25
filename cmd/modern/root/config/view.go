@@ -6,6 +6,7 @@ package config
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // View implements the `sqlcmd config view` command
@@ -18,14 +19,14 @@ type View struct {
 func (c *View) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "view",
-		Short: "Display merged sqlconfig settings or a specified sqlconfig file",
+		Short: localizer.Sprintf("Display merged sqlconfig settings or a specified sqlconfig file"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Show sqlconfig settings, with REDACTED authentication data",
+				Description: localizer.Sprintf("Show sqlconfig settings, with REDACTED authentication data"),
 				Steps:       []string{"sqlcmd config view"},
 			},
 			{
-				Description: "Show sqlconfig settings and raw authentication data",
+				Description: localizer.Sprintf("Show sqlconfig settings and raw authentication data"),
 				Steps:       []string{"sqlcmd config view --raw"},
 			},
 		},
@@ -38,7 +39,7 @@ func (c *View) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		Name:  "raw",
 		Bool:  &c.raw,
-		Usage: "Display raw byte data",
+		Usage: localizer.Sprintf("Display raw byte data"),
 	})
 }
 

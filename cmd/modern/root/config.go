@@ -20,14 +20,13 @@ type Config struct {
 // DefineCommand defines the `sqlcmd config` command, which is only
 // more sub-commands (`sqlcmd config` does not `run` anything itself)
 func (c *Config) DefineCommand(...cmdparser.CommandOptions) {
-	const configCommand = "sqlcmd config use-context mssql"
 	options := cmdparser.CommandOptions{
 		Use:         "config",
-		Short:       localizer.Sprintf(`Modify sqlconfig files using subcommands like "%s"`, configCommand),
+		Short:       localizer.Sprintf(`Modify sqlconfig files using subcommands like "%s"`, localizer.UseContextCommand),
 		SubCommands: c.SubCommands(),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: localizer.Sprintf("Add context for existing endpoint and user (use %s or %s)", "SQLCMD_PASSWORD", "SQLCMDPASSWORD"),
+				Description: localizer.Sprintf("Add context for existing endpoint and user (use %s or %s)", localizer.PasswordEnvVar, localizer.PasswordEnvVar2),
 				Steps: []string{
 					fmt.Sprintf("%s SQLCMD_PASSWORD=<placeholderpassword>", pal.CreateEnvVarKeyword()),
 					"sqlcmd config add-user --name sa1434 --username sa",

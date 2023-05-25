@@ -6,6 +6,7 @@ package config
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // CurrentContext implements the `sqlcmd config current-context` command
@@ -16,10 +17,10 @@ type CurrentContext struct {
 func (c *CurrentContext) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "current-context",
-		Short: "Display the current-context",
+		Short: localizer.Sprintf("Display the current-context"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Display the current-context",
+				Description: localizer.Sprintf("Display the current-context"),
 				Steps: []string{
 					"sqlcmd config current-context"},
 			},
