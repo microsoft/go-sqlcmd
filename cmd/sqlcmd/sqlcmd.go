@@ -162,6 +162,16 @@ func Execute(version string) {
 		},
 	}
 	setFlags(rootCmd, &args)
+	rootCmd.SetHelpFunc(func(cmd *cobra.Command, argss []string) {
+		fmt.Println(cmd.Long)
+		cmd.Flags().SetInterspersed(false)
+		fmt.Println("Flags:")
+		cmd.Flags().VisitAll(func(flag *pflag.Flag) {
+			fmt.Printf("  -%s, --%s\n", flag.Shorthand, flag.Name)
+			fmt.Printf("      %s\n", flag.Usage)
+			fmt.Println()
+		})
+	})
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
