@@ -173,7 +173,7 @@ func Execute(version string) {
 				fmt.Printf("      --%s\n", flag.Name)
 			}
 			desc := formatDescription(flag.Usage, 60, 8)
-			fmt.Printf("      --%s\n", desc)
+			fmt.Printf("        %s\n", desc)
 			fmt.Println()
 		})
 	})
@@ -235,7 +235,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.Query, "query", "Q", "", "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.")
 	rootCmd.Flags().StringVarP(&args.Server, "server", "S", "", "[[tcp:]|[lpc:]|[np:]]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER.")
 	rootCmd.Flags().BoolVarP(&args.DisableCmdAndWarn, "disable-cmd-and-warn", "X", false, "Disables commands that might compromise system security. Sqlcmd issues a warning and continues.")
-	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword")
+	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword")
 	rootCmd.Flags().BoolVarP(&args.UseAad, "use-aad", "G", false, "Tells sqlcmd to use Active Directory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.")
 	rootCmd.Flags().BoolVarP(&args.DisableVariableSubstitution, "disable-variable-substitution", "x", false, "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name).")
 	var variables map[string]string
