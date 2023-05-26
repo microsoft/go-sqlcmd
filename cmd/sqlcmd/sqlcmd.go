@@ -235,7 +235,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 
 	var screenWidth int
 	screenWidthPtr := &screenWidth
-	rootCmd.Flags().IntVarP(screenWidthPtr, "screen-width", "w", 0, "Specifies the screen width for output")
+	rootCmd.Flags().IntVarP(screenWidthPtr, "screen-width", "w", 0, localizer.Sprintf("Specifies the screen width for output"))
 }
 
 func normalizeFlags(rootCmd *cobra.Command) error {
