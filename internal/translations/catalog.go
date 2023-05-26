@@ -48,115 +48,283 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"%s": 66,
+	"\t\tor": 214,
+	"\tIf not, download desktop engine from:":                                                                213,
+	"%q is not a valid URL for --using flag":                                                                 204,
 	"%s Error occurred while opening or operating on file %s (Reason: %s).":                                  10,
-	"%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.": 79,
-	"%s must be one of %s but got \"%s\"":                                                                    103,
+	"%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.": 244,
 	"%sSyntax error at line %d":                                                                              11,
 	"%v":                                                                                                     57,
 	"'%s' scripting variable not defined.":                                                                   7,
-	"'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.": 63,
-	"'-a %d': Packet size has to be a number between 512 and 32767.":                                                                       62,
+	"'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.": 229,
+	"'-a %d': Packet size has to be a number between 512 and 32767.":                                                                       228,
 	"'-h %d': header value must be either -1 or a value between 1 and 2147483647":                                                          0,
 	"'-w %d': value must be greater than 8 and less than 65536.":                                                                           1,
-	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help":                                                                68,
-	"Add a context manually":                                    48,
-	"Add context for existing endpoint and user (use %s or %s)": 20,
-	"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name).": 83,
-	"Command text to run": 27,
-	"Complete the operation even if non-system (user) database files are present":                                                       44,
-	"Container %q no longer exists, continuing to remove context...":                                                                    55,
-	"Container is not running, unable to verify that user database files do not exist":                                                  53,
-	"Controls the severity level that is used to set the %s variable on exit.":                                                          101,
-	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent.":     94,
-	"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.": 91,
+	"--application-intent must be one of %s but got \"%s\"":                                                                                268,
+	"--encrypt-connection must be one of %s but got \"%s\"":                                                                                269,
+	"--errors-to-stderr must be one of %s but got \"%s\"":                                                                                  271,
+	"--format must be one of %s but got \"%s\"":                                                                                            270,
+	"--user-database %q contains non-ASCII chars and/or quotes":                                                                            193,
+	"--using URL must be http or https":                                                                                                    203,
+	"--using URL must have a path to .bak file":                                                                                            205,
+	"--using file URL must be a .bak file":                                                                                                 206,
+	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help":                                                                233,
+	"Accept the SQL Server EULA":                                                                                                           176,
+	"Add a context":                                                                                                                        62,
+	"Add a context for a local instance of SQL Server on port 1433 using trusted authentication":                                           63,
+	"Add a context for this endpoint":                                                                                                      83,
+	"Add a context manually":                                                                                                               48,
+	"Add a default endpoint":                                                                                                               79,
+	"Add a new local endpoint":                                                                                                             68,
+	"Add a user":                                                                                                                           92,
+	"Add a user (using the SQLCMDPASSWORD environment variable)":                                                                           90,
+	"Add a user (using the SQLCMD_PASSWORD environment variable)":                                                                          89,
+	"Add a user using Windows Data Protection API to encrypt password in sqlconfig":                                                        91,
+	"Add an already existing endpoint":                                                                                                     69,
+	"Add an endpoint":                                                                                                                      73,
+	"Add context for existing endpoint and user (use %s or %s)":                                                                            20,
+	"Add the %s flag": 102,
+	"Add the user":    72,
+	"Authentication Type '%s' requires a password":           105,
+	"Authentication type '' is not valid %v'":                98,
+	"Authentication type must be '%s' or '%s'":               97,
+	"Authentication type this user will use (basic | other)": 94,
+	"Both environment variables %s and %s are set. ":         111,
+	"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name).": 248,
+	"Change current context": 198,
+	"Command text to run":    27,
+	"Complete the operation even if non-system (user) database files are present":      44,
+	"Connection Strings only supported for %s Auth type":                               116,
+	"Container %q no longer exists, continuing to remove context...":                   55,
+	"Container is not running, unable to verify that user database files do not exist": 53,
+	"Context '%v' deleted":        124,
+	"Context '%v' does not exist": 125,
+	"Context name (a default context name will be created if not provided)":                                                             174,
+	"Context name to view details of":                                                                                                   142,
+	"Controls the severity level that is used to set the %s variable on exit.":                                                          266,
+	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent.":     259,
+	"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.": 256,
+	"Create SQL Server with an empty user database":                                                                                     223,
+	"Create SQL Server, download and attach AdventureWorks sample database":                                                             221,
+	"Create SQL Server, download and attach AdventureWorks sample database with different database name":                                222,
 	"Create a new context with a SQL Server container ":                                                                                 39,
+	"Create a user database and set it as the default for login":                                                                        175,
 	"Create context": 46,
-	"Create context with SQL Server container": 47,
-	"Create new context with a sql container ": 34,
-	"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits": 84,
-	"Current context does not have a container":             35,
-	"Current context is %q. Do you want to continue? (Y/N)": 49,
-	"Current context is now %s":                             56,
-	"Database to use":                                       28,
-	"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group": 88,
-	"Disables commands that might compromise system security. Sqlcmd issues a warning and continues.": 80,
-	"ED and !!<command> commands, startup script, and environment variables are disabled":             5,
-	"Error converting screen width: %s": 67,
-	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.":                             78,
-	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.": 77,
-	"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s.": 69,
-	"Identifies the file that receives output from sqlcmd.":       70,
-	"If the database is mounted, run %s":                          58,
-	"Implicitly trust the server certificate without validation.": 72,
-	"Install/Create SQL Server, Azure SQL, and Tools":             21,
-	"Install/Create, Query, Uninstall SQL Server":                 12,
-	"Invalid variable identifier %s":                              104,
-	"Invalid variable value %s":                                   105,
-	"Legal docs and information: aka.ms/SqlcmdLegal":              64,
-	"Level of mssql driver messages to print.":                    92,
-	"Modify sqlconfig files using subcommands like \"%s\"":        19,
-	"No current context":                                          32,
-	"No endpoints to uninstall":                                   61,
-	"Obsolete. The initial passwords must be set using the %s environment variable or entered at the password prompt.":        100,
-	"Open tools (e.g Azure Data Studio) for current context":                                                                  22,
-	"Pass in the flag %s to override this safety check for user (non-system) databases":                                       59,
-	"Print version information and exit":                                                                                      71,
-	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.": 99,
+	"Create context with SQL Server container":                  47,
+	"Create new context with a sql container ":                  34,
+	"Created context %q in \"%s\", configuring user account...": 195,
+	"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits": 249,
+	"Creating default database [%s]":                                             208,
+	"Current Context '%v'":                                                       78,
+	"Current context does not have a container":                                  35,
+	"Current context is %q. Do you want to continue? (Y/N)":                      49,
+	"Current context is now %s":                                                  56,
+	"Database for the connection string (default is taken from the T/SQL login)": 115,
+	"Database to use":                                                            28,
+	"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group": 253,
+	"Delete a context": 118,
+	"Delete a context (excluding its endpoint and user)": 120,
+	"Delete a context (including its endpoint and user)": 119,
+	"Delete a user":      132,
+	"Delete an endpoint": 126,
+	"Delete the context's endpoint and user as well":                                                  122,
+	"Delete this endpoint":                                                                            87,
+	"Describe one context in your sqlconfig file":                                                     141,
+	"Describe one endpoint in your sqlconfig file":                                                    148,
+	"Describe one user in your sqlconfig file":                                                        155,
+	"Disabled %q account (and rotated %q password). Creating user %q":                                 196,
+	"Disables commands that might compromise system security. Sqlcmd issues a warning and continues.": 245,
+	"Display connections strings for the current context":                                             113,
+	"Display merged sqlconfig settings or a specified sqlconfig file":                                 167,
+	"Display name for the context":                                                                    64,
+	"Display name for the endpoint":                                                                   80,
+	"Display name for the user (this is not the username)":                                            93,
+	"Display one or many contexts from the sqlconfig file":                                            138,
+	"Display one or many endpoints from the sqlconfig file":                                           146,
+	"Display one or many users from the sqlconfig file":                                               153,
+	"Display raw byte data":                                                                           170,
+	"Display the current-context":                                                                     117,
+	"Don't download image.  Use already downloaded image":                                             182,
+	"Download (into container) and attach database (.bak) from URL":                                   189,
+	"Downloading %s": 209,
+	"Downloading %v": 211,
+	"ED and !!<command> commands, startup script, and environment variables are disabled": 5,
+	"EULA not accepted":                                                             192,
+	"Either, add the %s flag to the command-line":                                   190,
+	"Encryption method '%v' is not valid":                                           109,
+	"Endpoint '%v' added (address: '%v', port: '%v')":                               88,
+	"Endpoint '%v' deleted":                                                         131,
+	"Endpoint '%v' does not exist":                                                  130,
+	"Endpoint name must be provided.  Provide endpoint name with %s flag":           128,
+	"Endpoint name to view details of":                                              149,
+	"Endpoint required to add context.  Endpoint '%v' does not exist.  Use %s flag": 70,
+	"Error converting screen width: %s":                                             232,
+	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.":                             243,
+	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.": 242,
+	"Explicitly set the container hostname, it defaults to the container ID":                                                                                   185,
+	"File does not exist at URL":                    217,
+	"Generated password length":                     177,
+	"Get tags available for Azure SQL Edge install": 225,
+	"Get tags available for mssql install":          227,
+	"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s.": 234,
+	"Identifies the file that receives output from sqlcmd.":                     235,
+	"If the database is mounted, run %s":                                        58,
+	"Implicitly trust the server certificate without validation.":               237,
+	"Include context details":                                                   143,
+	"Include endpoint details":                                                  150,
+	"Include user details":                                                      157,
+	"Install Azure Sql Edge":                                                    171,
+	"Install/Create Azure SQL Edge in a container":                              172,
+	"Install/Create SQL Server in a container":                                  219,
+	"Install/Create SQL Server with full logging":                               224,
+	"Install/Create SQL Server, Azure SQL, and Tools":                           21,
+	"Install/Create, Query, Uninstall SQL Server":                               12,
+	"Invalid --using file type":                                                 207,
+	"Invalid variable identifier %s":                                            272,
+	"Invalid variable value %s":                                                 273,
+	"Is a container runtime installed on this machine (e.g. Podman or Docker)?": 212,
+	"Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)": 215,
+	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       230,
+	"Level of mssql driver messages to print.":                                                             257,
+	"Line in errorlog to wait for before connecting":                                                       183,
+	"List all the context names in your sqlconfig file":                                                    139,
+	"List all the contexts in your sqlconfig file":                                                         140,
+	"List all the endpoints in your sqlconfig file":                                                        147,
+	"List all the users in your sqlconfig file":                                                            154,
+	"List connection strings for all client drivers":                                                       114,
+	"List tags":                                            226,
+	"Minimum number of numeric characters":                 179,
+	"Minimum number of special characters":                 178,
+	"Minimum number of upper characters":                   180,
+	"Modify sqlconfig files using subcommands like \"%s\"": 19,
+	"Name of context to delete":                            121,
+	"Name of context to set as current context":            162,
+	"Name of endpoint this context will use":               65,
+	"Name of endpoint to delete":                           127,
+	"Name of user this context will use":                   66,
+	"Name of user to delete":                               133,
+	"No context exists with the name: \"%v\"":              166,
+	"No current context":                                   32,
+	"No endpoints to uninstall":                            61,
+	"Now ready for client connections on port %d":          202,
+	"Obsolete. The initial passwords must be set using the %s environment variable or entered at the password prompt.": 265,
+	"Open in Azure Data Studio":                                                         75,
+	"Open tools (e.g Azure Data Studio) for current context":                            22,
+	"Or, set the environment variable i.e. %s %s=YES ":                                  191,
+	"Pass in the %s %s":                                                                 100,
+	"Pass in the flag %s to override this safety check for user (non-system) databases": 59,
+	"Password encryption method (%s) in sqlconfig file":                                 96,
+	"Port (next available port from 1433 upwards used by default)":                      188,
+	"Print version information and exit":                                                236,
+	"Provide a username with the %s flag":                                               106,
+	"Provide a valid encryption method (%s) with the %s flag":                           108,
+	"Provide password in the %s (or %s) environment variable":                           104,
+	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.": 264,
 	"Quiet mode (do not stop for user input to confirm the operation)":                                                        43,
-	"Remove trailing spaces from a column.":                                                                                   98,
-	"Removing context %s":                                                                                                     54,
-	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.": 85,
-	"Run a query": 24,
+	"Remove":                                201,
+	"Remove the %s flag":                    99,
+	"Remove trailing spaces from a column.": 263,
+	"Removing context %s":                   54,
+	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.": 250,
+	"Restoring database %s":                                                    210,
+	"Run a query":                                                              24,
 	"Run a query against the current context":                                  23,
 	"Run a query using [%s] database":                                          25,
+	"See all release tags for SQL Server, install previous version":            220,
+	"See connection strings":                                                   200,
 	"Set new default database":                                                 26,
-	"Specifies that all output files are encoded with little-endian Unicode":   96,
-	"Specifies that sqlcmd exits and returns a %s value when an error occurs.": 93,
-	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword": 81,
-	"Specifies the batch terminator. The default value is %s":                                                             75,
-	"Specifies the column separator character. Sets the %s variable.":                                                     97,
-	"Specifies the formatting for results.":                                                                               90,
-	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.": 95,
-	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite.": 86,
-	"Specifies the screen width for output":      102,
-	"Sqlcmd: Error: ":                            3,
-	"Sqlcmd: Warning: ":                          4,
-	"Start current context":                      29,
-	"Start the current context":                  30,
-	"Starting %q for context %q":                 33,
-	"Stop current context":                       36,
-	"Stop the current context":                   37,
-	"Stopping %q for context %q":                 38,
-	"Syntax error at line %d near command '%s'.": 9,
-	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.": 82,
+	"Set the current context":                                                  160,
+	"Set the mssql context (endpoint/user) to be the current context":          161,
+	"Show sqlconfig settings and raw authentication data":                      169,
+	"Show sqlconfig settings, with REDACTED authentication data":               168,
+	"Special character set to include in password":                             181,
+	"Specifies that all output files are encoded with little-endian Unicode":   261,
+	"Specifies that sqlcmd exits and returns a %s value when an error occurs.": 258,
+	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword": 246,
+	"Specifies the batch terminator. The default value is %s":         240,
+	"Specifies the column separator character. Sets the %s variable.": 262,
+	"Specifies the formatting for results.":                           255,
+	"Specifies the image CPU architecture":                            186,
+	"Specifies the image operating system":                            187,
+	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.":                                                                                                         260,
+	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite.": 251,
+	"Specifies the screen width for output":                                        267,
+	"Specify a custom name for the container rather than a randomly generated one": 184,
+	"Sqlcmd: Error: ":                              3,
+	"Sqlcmd: Warning: ":                            4,
+	"Start current context":                        29,
+	"Start interactive session":                    197,
+	"Start the current context":                    30,
+	"Starting %q for context %q":                   33,
+	"Starting %v":                                  194,
+	"Stop current context":                         36,
+	"Stop the current context":                     37,
+	"Stopping %q for context %q":                   38,
+	"Switched to context \"%v\".":                  165,
+	"Syntax error at line %d near command '%s'.":   9,
+	"Tag to use, use get-tags to see list of tags": 173,
+	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.": 247,
+	"The %s flag can only be used when authentication type is '%s'":                                                            101,
+	"The %s flag must be set when authentication type is '%s'":                                                                 103,
 	"The environment variable: '%s' has invalid value: '%s'.":                                                                  8,
-	"The login name or contained database user name.  For contained database users, you must provide the database name option": 76,
+	"The login name or contained database user name.  For contained database users, you must provide the database name option": 241,
+	"The network address to connect to, e.g. 127.0.0.1 etc.":                                                                   81,
+	"The network port to connect to, e.g. 1433 etc.":                                                                           82,
 	"The scripting variable: '%s' is read-only":                                                                                6,
-	"Third party notices: aka.ms/SqlcmdNotices":                                                                                65,
-	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.": 87,
-	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits.":                                                                                                     73,
-	"This switch is used by the client to request an encrypted connection.":                             89,
-	"To override the check, use %s":                                                                     52,
-	"To start the container":                                                                            51,
-	"To view available contexts":                                                                        31,
-	"Unable to continue, a user (non-system) database (%s) is present":                                  60,
-	"Uninstall/Delete the current context":                                                              40,
-	"Uninstall/Delete the current context, no user prompt":                                              41,
+	"The username (provide password in %s or %s environment variable)":                                                         95,
+	"Third party notices: aka.ms/SqlcmdNotices":                                                                                231,
+	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.": 252,
+	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits.":                                                                                                     238,
+	"This switch is used by the client to request an encrypted connection.": 254,
+	"To override the check, use %s":                                         52,
+	"To remove:         %s":                                                 164,
+	"To run a query":                                                        77,
+	"To run a query:    %s":                                                 163,
+	"To start interactive query session":                                    76,
+	"To start the container":                                                51,
+	"To view available contexts":                                            31,
+	"To view available contexts run `%s`":                                   144,
+	"To view available endpoints run `%s`":                                  151,
+	"To view available users run `%s`":                                      158,
+	"Unable to continue, a user (non-system) database (%s) is present":      60,
+	"Unable to download file":                                               218,
+	"Unable to download image %s":                                           216,
+	"Uninstall/Delete the current context":                                  40,
+	"Uninstall/Delete the current context, no user prompt":                  41,
 	"Uninstall/Delete the current context, no user prompt and override safety check for user databases": 42,
-	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password.": 74,
-	"Verifying no user (non-system) database (.mdf) files":                             50,
-	"View available contexts":                                                          45,
-	"View configuration information and connection strings":                            13,
-	"configuration file":                                                               17,
-	"help for backwards compatibility flags (-S, -U, -E etc.)":                         15,
-	"invalid batch terminator '%s'":                                                    2,
-	"log level, error=0, warn=1, info=2, debug=3, trace=4":                             18,
-	"print version of sqlcmd":                                                          16,
+	"Unset one of the environment variables %s or %s":                                                   110,
+	"Use the %s flag to pass in a context name to delete":                                               123,
+	"User %q deleted":          137,
+	"User %q does not exist":   136,
+	"User '%v' added":          112,
+	"User '%v' does not exist": 74,
+	"User name must be provided.  Provide user name with %s flag": 134,
+	"User name to view details of":                                156,
+	"Username not provided":                                       107,
+	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password.": 239,
+	"Verifying no user (non-system) database (.mdf) files":     50,
+	"View all endpoints details":                               86,
+	"View available contexts":                                  45,
+	"View configuration information and connection strings":    13,
+	"View endpoint details":                                    85,
+	"View endpoint names":                                      84,
+	"View endpoints":                                           129,
+	"View existing endpoints to choose from":                   67,
+	"View list of users":                                       71,
+	"View sqlcmd configuration":                                199,
+	"View users":                                               135,
+	"configuration file":                                       17,
+	"error: no context exists with the name: \"%v\"":           145,
+	"error: no endpoint exists with the name: \"%v\"":          152,
+	"error: no user exists with the name: \"%v\"":              159,
+	"help for backwards compatibility flags (-S, -U, -E etc.)": 15,
+	"invalid batch terminator '%s'":                            2,
+	"log level, error=0, warn=1, info=2, debug=3, trace=4":     18,
+	"print version of sqlcmd":                                  16,
 	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  %s": 14,
 }
 
-var de_DEIndex = []uint32{ // 107 elements
+var de_DEIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005a, 0x0000009f, 0x000000c9,
 	0x000000de, 0x000000f4, 0x00000148, 0x00000179,
@@ -187,8 +355,55 @@ var de_DEIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
 	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	// Entry 80 - 9F
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	// Entry A0 - BF
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	// Entry C0 - DF
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	// Entry E0 - FF
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	// Entry 100 - 11F
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
+	0x0000029e, 0x0000029e, 0x0000029e, 0x0000029e,
 	0x0000029e, 0x0000029e, 0x0000029e,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const de_DEData string = "" + // Size: 670 bytes
 	"\x02'-h %[1]d': Der Headerwert muss entweder -1 oder ein Wert zwischen -" +
@@ -203,7 +418,7 @@ const de_DEData string = "" + // Size: 670 bytes
 	"beiten von Datei %[2]s (Ursache: %[3]s).\x02%[1]sSyntaxfehler in Zeile %" +
 	"[2]d"
 
-var en_USIndex = []uint32{ // 107 elements
+var en_USIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x0000008d, 0x000000ae,
 	0x000000c2, 0x000000d8, 0x0000012c, 0x00000159,
@@ -221,23 +436,70 @@ var en_USIndex = []uint32{ // 107 elements
 	0x00000810, 0x00000827, 0x00000860, 0x00000895,
 	0x000008ac, 0x000008cd, 0x0000091e, 0x00000935,
 	0x00000977, 0x00000994, 0x0000099a, 0x000009c0,
-	0x00000a15, 0x00000a59, 0x00000a73, 0x00000ab5,
+	0x00000a15, 0x00000a59, 0x00000a73, 0x00000a81,
 	// Entry 40 - 5F
-	0x00000b3a, 0x00000b69, 0x00000b93, 0x00000b99,
-	0x00000bbe, 0x00000c07, 0x00000ca6, 0x00000cdc,
-	0x00000cff, 0x00000d3b, 0x00000e27, 0x00000ecc,
-	0x00000f07, 0x00000f80, 0x00001019, 0x00001096,
-	0x00001103, 0x00001163, 0x0000126a, 0x0000135b,
-	0x00001431, 0x0000154e, 0x000016ea, 0x000017c9,
-	0x00001919, 0x00001a13, 0x00001a59, 0x00001a7f,
-	0x00001b01, 0x00001b2a, 0x00001b76, 0x00001bf7,
+	0x00000adc, 0x00000af9, 0x00000b20, 0x00000b43,
+	0x00000b6a, 0x00000b83, 0x00000ba4, 0x00000bf8,
+	0x00000c0b, 0x00000c18, 0x00000c28, 0x00000c44,
+	0x00000c5e, 0x00000c81, 0x00000c90, 0x00000ca8,
+	0x00000cbf, 0x00000cdd, 0x00000d14, 0x00000d43,
+	0x00000d63, 0x00000d77, 0x00000d8d, 0x00000da8,
+	0x00000dbd, 0x00000df6, 0x00000e32, 0x00000e6d,
+	0x00000ebb, 0x00000ec6, 0x00000efb, 0x00000f32,
 	// Entry 60 - 7F
-	0x00001c6b, 0x00001cb2, 0x00001cf5, 0x00001d1b,
-	0x00001d93, 0x00001e07, 0x00001e53, 0x00001e79,
-	0x00001ea4, 0x00001ec6, 0x00001ee3,
-} // Size: 452 bytes
+	0x00000f79, 0x00000fae, 0x00000fdd, 0x00001008,
+	0x0000101e, 0x00001036, 0x0000107a, 0x0000108d,
+	0x000010cc, 0x0000110a, 0x0000113a, 0x00001161,
+	0x00001177, 0x000011b5, 0x000011dc, 0x00001212,
+	0x0000124b, 0x0000125e, 0x00001292, 0x000012c1,
+	0x0000130c, 0x00001342, 0x0000135e, 0x0000136f,
+	0x000013a2, 0x000013d5, 0x000013ef, 0x0000141e,
+	0x00001455, 0x0000146d, 0x0000148c, 0x0000149f,
+	// Entry 80 - 9F
+	0x000014ba, 0x00001501, 0x00001510, 0x00001530,
+	0x00001549, 0x00001557, 0x0000156e, 0x000015ad,
+	0x000015b8, 0x000015d2, 0x000015e5, 0x0000161a,
+	0x0000164c, 0x00001679, 0x000016a5, 0x000016c5,
+	0x000016dd, 0x00001704, 0x00001734, 0x0000176a,
+	0x00001798, 0x000017c5, 0x000017e6, 0x000017ff,
+	0x00001827, 0x00001858, 0x0000188a, 0x000018b4,
+	0x000018dd, 0x000018fa, 0x0000190f, 0x00001933,
+	// Entry A0 - BF
+	0x00001960, 0x00001978, 0x000019b8, 0x000019e2,
+	0x000019fb, 0x00001a14, 0x00001a31, 0x00001a5a,
+	0x00001a9a, 0x00001ad5, 0x00001b09, 0x00001b1f,
+	0x00001b36, 0x00001b63, 0x00001b90, 0x00001bd6,
+	0x00001c11, 0x00001c2c, 0x00001c46, 0x00001c6b,
+	0x00001c90, 0x00001cb3, 0x00001ce0, 0x00001d14,
+	0x00001d43, 0x00001d90, 0x00001dd7, 0x00001dfc,
+	0x00001e21, 0x00001e5e, 0x00001e9c, 0x00001ecb,
+	// Entry C0 - DF
+	0x00001f06, 0x00001f18, 0x00001f55, 0x00001f64,
+	0x00001fa2, 0x00001feb, 0x00002005, 0x0000201c,
+	0x00002036, 0x0000204d, 0x00002054, 0x00002083,
+	0x000020a5, 0x000020cf, 0x000020f9, 0x0000211e,
+	0x00002138, 0x0000215a, 0x0000216c, 0x00002185,
+	0x00002197, 0x000021e1, 0x0000220c, 0x00002215,
+	0x00002280, 0x0000229f, 0x000022ba, 0x000022d2,
+	0x000022fb, 0x00002339, 0x0000237f, 0x000023e2,
+	// Entry E0 - FF
+	0x00002410, 0x0000243c, 0x0000246a, 0x00002474,
+	0x00002499, 0x000024db, 0x00002560, 0x0000258f,
+	0x000025b9, 0x000025de, 0x00002627, 0x000026c6,
+	0x000026fc, 0x0000271f, 0x0000275b, 0x00002847,
+	0x000028ec, 0x00002927, 0x000029a0, 0x00002a39,
+	0x00002ab6, 0x00002b23, 0x00002b83, 0x00002c8a,
+	0x00002d7b, 0x00002e51, 0x00002f6e, 0x0000310a,
+	0x000031e9, 0x00003339, 0x00003433, 0x00003479,
+	// Entry 100 - 11F
+	0x0000349f, 0x00003521, 0x0000354a, 0x00003596,
+	0x00003617, 0x0000368b, 0x000036d2, 0x00003715,
+	0x0000373b, 0x000037b3, 0x00003827, 0x00003873,
+	0x00003899, 0x000038d3, 0x0000390d, 0x0000393b,
+	0x00003973, 0x00003995, 0x000039b2,
+} // Size: 1124 bytes
 
-const en_USData string = "" + // Size: 7907 bytes
+const en_USData string = "" + // Size: 14770 bytes
 	"\x02'-h %[1]d': header value must be either -1 or a value between 1 and " +
 	"2147483647\x02'-w %[1]d': value must be greater than 8 and less than 655" +
 	"36.\x02invalid batch terminator '%[1]s'\x04\x00\x01 \x0f\x02Sqlcmd: Erro" +
@@ -278,84 +540,188 @@ const en_USData string = "" + // Size: 7907 bytes
 	"\x02Current context is now %[1]s\x02%[1]v\x02If the database is mounted," +
 	" run %[1]s\x02Pass in the flag %[1]s to override this safety check for u" +
 	"ser (non-system) databases\x02Unable to continue, a user (non-system) da" +
-	"tabase (%[1]s) is present\x02No endpoints to uninstall\x02'-a %[1]d': Pa" +
-	"cket size has to be a number between 512 and 32767.\x02'-P' is obsolete." +
-	" The initial passwords must be set using the SQLCMDPASSWORD environment " +
-	"variable or entered at the password prompt.\x02Legal docs and informatio" +
-	"n: aka.ms/SqlcmdLegal\x02Third party notices: aka.ms/SqlcmdNotices\x02%[" +
-	"1]s\x02Error converting screen width: %[1]s\x02-? shows this syntax summ" +
-	"ary, %[1]s shows modern sqlcmd sub-command help\x02Identifies one or mor" +
-	"e files that contain batches of SQL statements. If one or more files do " +
-	"not exist, sqlcmd will exit. Mutually exclusive with %[1]s/%[2]s.\x02Ide" +
-	"ntifies the file that receives output from sqlcmd.\x02Print version info" +
-	"rmation and exit\x02Implicitly trust the server certificate without vali" +
-	"dation.\x02This option sets the sqlcmd scripting variable %[1]s. This pa" +
-	"rameter specifies the initial database. The default is your login's defa" +
-	"ult-database property. If the database does not exist, an error message " +
-	"is generated and sqlcmd exits.\x02Uses a trusted connection instead of u" +
-	"sing a user name and password to sign in to SQL Server, ignoring any env" +
-	"ironment variables that define user name and password.\x02Specifies the " +
-	"batch terminator. The default value is %[1]s\x02The login name or contai" +
-	"ned database user name.  For contained database users, you must provide " +
-	"the database name option\x02Executes a query when sqlcmd starts, but doe" +
-	"s not exit sqlcmd when the query has finished running. Multiple-semicolo" +
-	"n-delimited queries can be executed.\x02Executes a query when sqlcmd sta" +
-	"rts and then immediately exits sqlcmd. Multiple-semicolon-delimited quer" +
-	"ies can be executed.\x02%[1]s Specifies the instance of SQL Server to wh" +
-	"ich to connect. It sets the sqlcmd scripting variable %[2]s.\x02Disables" +
-	" commands that might compromise system security. Sqlcmd issues a warning" +
-	" and continues.\x02Specifies the SQL authentication method to use to con" +
-	"nect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirector" +
-	"yIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDir" +
-	"ectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword\x02Tel" +
-	"ls sqlcmd to use ActiveDirectory authentication. If no user name is prov" +
-	"ided, authentication method ActiveDirectoryDefault is used. If a passwor" +
-	"d is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirector" +
-	"yInteractive is used.\x02Causes sqlcmd to ignore scripting variables. Th" +
-	"is parameter is useful when a script contains many %[1]s statements that" +
-	" may contain strings that have the same format as regular variables, suc" +
-	"h as $(variable_name).\x02Creates a sqlcmd scripting variable that can b" +
-	"e used in a sqlcmd script. Enclose the value in quotation marks if the v" +
-	"alue contains spaces. You can specify multiple var=values values. If the" +
-	"re are errors in any of the values specified, sqlcmd generates an error " +
-	"message and then exits\x02Requests a packet of a different size. This op" +
-	"tion sets the sqlcmd scripting variable %[1]s. packet_size must be a val" +
-	"ue between 512 and 32767. The default = 4096. A larger packet size can e" +
-	"nhance performance for execution of scripts that have lots of SQL statem" +
-	"ents between %[2]s commands. You can request a larger packet size. Howev" +
-	"er, if the request is denied, sqlcmd uses the server default for packet " +
-	"size.\x02Specifies the number of seconds before a sqlcmd login to the go" +
-	"-mssqldb driver times out when you try to connect to a server. This opti" +
-	"on sets the sqlcmd scripting variable %[1]s. The default value is 30. 0 " +
-	"means infinite.\x02This option sets the sqlcmd scripting variable %[1]s." +
-	" The workstation name is listed in the hostname column of the sys.syspro" +
-	"cesses catalog view and can be returned using the stored procedure sp_wh" +
-	"o. If this option is not specified, the default is the current computer " +
-	"name. This name can be used to identify different sqlcmd sessions.\x02De" +
-	"clares the application workload type when connecting to a server. The on" +
-	"ly currently supported value is ReadOnly. If %[1]s is not specified, the" +
-	" sqlcmd utility will not support connectivity to a secondary replica in " +
-	"an Always On availability group\x02This switch is used by the client to " +
-	"request an encrypted connection.\x02Specifies the formatting for results" +
-	".\x02Controls which error messages are sent to stdout. Messages that hav" +
-	"e severity level greater than or equal to this level are sent.\x02Level " +
-	"of mssql driver messages to print.\x02Specifies that sqlcmd exits and re" +
-	"turns a %[1]s value when an error occurs.\x02Controls which error messag" +
-	"es are sent to %[1]s. Messages that have severity level greater than or " +
-	"equal to this level are sent.\x02Specifies the number of rows to print b" +
-	"etween the column headings. Use -h-1 to specify that headers not be prin" +
-	"ted.\x02Specifies that all output files are encoded with little-endian U" +
-	"nicode\x02Specifies the column separator character. Sets the %[1]s varia" +
-	"ble.\x02Remove trailing spaces from a column.\x02Provided for backward c" +
-	"ompatibility. Sqlcmd always optimizes detection of the active replica of" +
-	" a SQL Failover Cluster.\x02Obsolete. The initial passwords must be set " +
-	"using the %[1]s environment variable or entered at the password prompt." +
-	"\x02Controls the severity level that is used to set the %[1]s variable o" +
-	"n exit.\x02Specifies the screen width for output\x02%[1]s must be one of" +
-	" %[2]s but got \x22%[3]s\x22\x02Invalid variable identifier %[1]s\x02Inv" +
-	"alid variable value %[1]s"
+	"tabase (%[1]s) is present\x02No endpoints to uninstall\x02Add a context" +
+	"\x02Add a context for a local instance of SQL Server on port 1433 using " +
+	"trusted authentication\x02Display name for the context\x02Name of endpoi" +
+	"nt this context will use\x02Name of user this context will use\x02View e" +
+	"xisting endpoints to choose from\x02Add a new local endpoint\x02Add an a" +
+	"lready existing endpoint\x02Endpoint required to add context.  Endpoint " +
+	"'%[1]v' does not exist.  Use %[2]s flag\x02View list of users\x02Add the" +
+	" user\x02Add an endpoint\x02User '%[1]v' does not exist\x02Open in Azure" +
+	" Data Studio\x02To start interactive query session\x02To run a query\x02" +
+	"Current Context '%[1]v'\x02Add a default endpoint\x02Display name for th" +
+	"e endpoint\x02The network address to connect to, e.g. 127.0.0.1 etc.\x02" +
+	"The network port to connect to, e.g. 1433 etc.\x02Add a context for this" +
+	" endpoint\x02View endpoint names\x02View endpoint details\x02View all en" +
+	"dpoints details\x02Delete this endpoint\x02Endpoint '%[1]v' added (addre" +
+	"ss: '%[2]v', port: '%[3]v')\x02Add a user (using the SQLCMD_PASSWORD env" +
+	"ironment variable)\x02Add a user (using the SQLCMDPASSWORD environment v" +
+	"ariable)\x02Add a user using Windows Data Protection API to encrypt pass" +
+	"word in sqlconfig\x02Add a user\x02Display name for the user (this is no" +
+	"t the username)\x02Authentication type this user will use (basic | other" +
+	")\x02The username (provide password in %[1]s or %[2]s environment variab" +
+	"le)\x02Password encryption method (%[1]s) in sqlconfig file\x02Authentic" +
+	"ation type must be '%[1]s' or '%[2]s'\x02Authentication type '' is not v" +
+	"alid %[1]v'\x02Remove the %[1]s flag\x02Pass in the %[1]s %[2]s\x02The %" +
+	"[1]s flag can only be used when authentication type is '%[2]s'\x02Add th" +
+	"e %[1]s flag\x02The %[1]s flag must be set when authentication type is '" +
+	"%[2]s'\x02Provide password in the %[1]s (or %[2]s) environment variable" +
+	"\x02Authentication Type '%[1]s' requires a password\x02Provide a usernam" +
+	"e with the %[1]s flag\x02Username not provided\x02Provide a valid encryp" +
+	"tion method (%[1]s) with the %[2]s flag\x02Encryption method '%[1]v' is " +
+	"not valid\x02Unset one of the environment variables %[1]s or %[2]s\x04" +
+	"\x00\x01 4\x02Both environment variables %[1]s and %[2]s are set.\x02Use" +
+	"r '%[1]v' added\x02Display connections strings for the current context" +
+	"\x02List connection strings for all client drivers\x02Database for the c" +
+	"onnection string (default is taken from the T/SQL login)\x02Connection S" +
+	"trings only supported for %[1]s Auth type\x02Display the current-context" +
+	"\x02Delete a context\x02Delete a context (including its endpoint and use" +
+	"r)\x02Delete a context (excluding its endpoint and user)\x02Name of cont" +
+	"ext to delete\x02Delete the context's endpoint and user as well\x02Use t" +
+	"he %[1]s flag to pass in a context name to delete\x02Context '%[1]v' del" +
+	"eted\x02Context '%[1]v' does not exist\x02Delete an endpoint\x02Name of " +
+	"endpoint to delete\x02Endpoint name must be provided.  Provide endpoint " +
+	"name with %[1]s flag\x02View endpoints\x02Endpoint '%[1]v' does not exis" +
+	"t\x02Endpoint '%[1]v' deleted\x02Delete a user\x02Name of user to delete" +
+	"\x02User name must be provided.  Provide user name with %[1]s flag\x02Vi" +
+	"ew users\x02User %[1]q does not exist\x02User %[1]q deleted\x02Display o" +
+	"ne or many contexts from the sqlconfig file\x02List all the context name" +
+	"s in your sqlconfig file\x02List all the contexts in your sqlconfig file" +
+	"\x02Describe one context in your sqlconfig file\x02Context name to view " +
+	"details of\x02Include context details\x02To view available contexts run " +
+	"`%[1]s`\x02error: no context exists with the name: \x22%[1]v\x22\x02Disp" +
+	"lay one or many endpoints from the sqlconfig file\x02List all the endpoi" +
+	"nts in your sqlconfig file\x02Describe one endpoint in your sqlconfig fi" +
+	"le\x02Endpoint name to view details of\x02Include endpoint details\x02To" +
+	" view available endpoints run `%[1]s`\x02error: no endpoint exists with " +
+	"the name: \x22%[1]v\x22\x02Display one or many users from the sqlconfig " +
+	"file\x02List all the users in your sqlconfig file\x02Describe one user i" +
+	"n your sqlconfig file\x02User name to view details of\x02Include user de" +
+	"tails\x02To view available users run `%[1]s`\x02error: no user exists wi" +
+	"th the name: \x22%[1]v\x22\x02Set the current context\x02Set the mssql c" +
+	"ontext (endpoint/user) to be the current context\x02Name of context to s" +
+	"et as current context\x02To run a query:    %[1]s\x02To remove:         " +
+	"%[1]s\x02Switched to context \x22%[1]v\x22.\x02No context exists with th" +
+	"e name: \x22%[1]v\x22\x02Display merged sqlconfig settings or a specifie" +
+	"d sqlconfig file\x02Show sqlconfig settings, with REDACTED authenticatio" +
+	"n data\x02Show sqlconfig settings and raw authentication data\x02Display" +
+	" raw byte data\x02Install Azure Sql Edge\x02Install/Create Azure SQL Edg" +
+	"e in a container\x02Tag to use, use get-tags to see list of tags\x02Cont" +
+	"ext name (a default context name will be created if not provided)\x02Cre" +
+	"ate a user database and set it as the default for login\x02Accept the SQ" +
+	"L Server EULA\x02Generated password length\x02Minimum number of special " +
+	"characters\x02Minimum number of numeric characters\x02Minimum number of " +
+	"upper characters\x02Special character set to include in password\x02Don'" +
+	"t download image.  Use already downloaded image\x02Line in errorlog to w" +
+	"ait for before connecting\x02Specify a custom name for the container rat" +
+	"her than a randomly generated one\x02Explicitly set the container hostna" +
+	"me, it defaults to the container ID\x02Specifies the image CPU architect" +
+	"ure\x02Specifies the image operating system\x02Port (next available port" +
+	" from 1433 upwards used by default)\x02Download (into container) and att" +
+	"ach database (.bak) from URL\x02Either, add the %[1]s flag to the comman" +
+	"d-line\x04\x00\x01 6\x02Or, set the environment variable i.e. %[1]s %[2]" +
+	"s=YES\x02EULA not accepted\x02--user-database %[1]q contains non-ASCII c" +
+	"hars and/or quotes\x02Starting %[1]v\x02Created context %[1]q in \x22%[2" +
+	"]s\x22, configuring user account...\x02Disabled %[1]q account (and rotat" +
+	"ed %[2]q password). Creating user %[3]q\x02Start interactive session\x02" +
+	"Change current context\x02View sqlcmd configuration\x02See connection st" +
+	"rings\x02Remove\x02Now ready for client connections on port %[1]d\x02--u" +
+	"sing URL must be http or https\x02%[1]q is not a valid URL for --using f" +
+	"lag\x02--using URL must have a path to .bak file\x02--using file URL mus" +
+	"t be a .bak file\x02Invalid --using file type\x02Creating default databa" +
+	"se [%[1]s]\x02Downloading %[1]s\x02Restoring database %[1]s\x02Downloadi" +
+	"ng %[1]v\x02Is a container runtime installed on this machine (e.g. Podma" +
+	"n or Docker)?\x04\x01\x09\x00&\x02If not, download desktop engine from:" +
+	"\x04\x02\x09\x09\x00\x03\x02or\x02Is a container runtime running?  (Try " +
+	"`%[1]s` or `%[2]s` (list containers), does it return without error?)\x02" +
+	"Unable to download image %[1]s\x02File does not exist at URL\x02Unable t" +
+	"o download file\x02Install/Create SQL Server in a container\x02See all r" +
+	"elease tags for SQL Server, install previous version\x02Create SQL Serve" +
+	"r, download and attach AdventureWorks sample database\x02Create SQL Serv" +
+	"er, download and attach AdventureWorks sample database with different da" +
+	"tabase name\x02Create SQL Server with an empty user database\x02Install/" +
+	"Create SQL Server with full logging\x02Get tags available for Azure SQL " +
+	"Edge install\x02List tags\x02Get tags available for mssql install\x02'-a" +
+	" %[1]d': Packet size has to be a number between 512 and 32767.\x02'-P' i" +
+	"s obsolete. The initial passwords must be set using the SQLCMDPASSWORD e" +
+	"nvironment variable or entered at the password prompt.\x02Legal docs and" +
+	" information: aka.ms/SqlcmdLegal\x02Third party notices: aka.ms/SqlcmdNo" +
+	"tices\x02Error converting screen width: %[1]s\x02-? shows this syntax su" +
+	"mmary, %[1]s shows modern sqlcmd sub-command help\x02Identifies one or m" +
+	"ore files that contain batches of SQL statements. If one or more files d" +
+	"o not exist, sqlcmd will exit. Mutually exclusive with %[1]s/%[2]s.\x02I" +
+	"dentifies the file that receives output from sqlcmd.\x02Print version in" +
+	"formation and exit\x02Implicitly trust the server certificate without va" +
+	"lidation.\x02This option sets the sqlcmd scripting variable %[1]s. This " +
+	"parameter specifies the initial database. The default is your login's de" +
+	"fault-database property. If the database does not exist, an error messag" +
+	"e is generated and sqlcmd exits.\x02Uses a trusted connection instead of" +
+	" using a user name and password to sign in to SQL Server, ignoring any e" +
+	"nvironment variables that define user name and password.\x02Specifies th" +
+	"e batch terminator. The default value is %[1]s\x02The login name or cont" +
+	"ained database user name.  For contained database users, you must provid" +
+	"e the database name option\x02Executes a query when sqlcmd starts, but d" +
+	"oes not exit sqlcmd when the query has finished running. Multiple-semico" +
+	"lon-delimited queries can be executed.\x02Executes a query when sqlcmd s" +
+	"tarts and then immediately exits sqlcmd. Multiple-semicolon-delimited qu" +
+	"eries can be executed.\x02%[1]s Specifies the instance of SQL Server to " +
+	"which to connect. It sets the sqlcmd scripting variable %[2]s.\x02Disabl" +
+	"es commands that might compromise system security. Sqlcmd issues a warni" +
+	"ng and continues.\x02Specifies the SQL authentication method to use to c" +
+	"onnect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirect" +
+	"oryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveD" +
+	"irectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword\x02T" +
+	"ells sqlcmd to use ActiveDirectory authentication. If no user name is pr" +
+	"ovided, authentication method ActiveDirectoryDefault is used. If a passw" +
+	"ord is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirect" +
+	"oryInteractive is used.\x02Causes sqlcmd to ignore scripting variables. " +
+	"This parameter is useful when a script contains many %[1]s statements th" +
+	"at may contain strings that have the same format as regular variables, s" +
+	"uch as $(variable_name).\x02Creates a sqlcmd scripting variable that can" +
+	" be used in a sqlcmd script. Enclose the value in quotation marks if the" +
+	" value contains spaces. You can specify multiple var=values values. If t" +
+	"here are errors in any of the values specified, sqlcmd generates an erro" +
+	"r message and then exits\x02Requests a packet of a different size. This " +
+	"option sets the sqlcmd scripting variable %[1]s. packet_size must be a v" +
+	"alue between 512 and 32767. The default = 4096. A larger packet size can" +
+	" enhance performance for execution of scripts that have lots of SQL stat" +
+	"ements between %[2]s commands. You can request a larger packet size. How" +
+	"ever, if the request is denied, sqlcmd uses the server default for packe" +
+	"t size.\x02Specifies the number of seconds before a sqlcmd login to the " +
+	"go-mssqldb driver times out when you try to connect to a server. This op" +
+	"tion sets the sqlcmd scripting variable %[1]s. The default value is 30. " +
+	"0 means infinite.\x02This option sets the sqlcmd scripting variable %[1]" +
+	"s. The workstation name is listed in the hostname column of the sys.sysp" +
+	"rocesses catalog view and can be returned using the stored procedure sp_" +
+	"who. If this option is not specified, the default is the current compute" +
+	"r name. This name can be used to identify different sqlcmd sessions.\x02" +
+	"Declares the application workload type when connecting to a server. The " +
+	"only currently supported value is ReadOnly. If %[1]s is not specified, t" +
+	"he sqlcmd utility will not support connectivity to a secondary replica i" +
+	"n an Always On availability group\x02This switch is used by the client t" +
+	"o request an encrypted connection.\x02Specifies the formatting for resul" +
+	"ts.\x02Controls which error messages are sent to stdout. Messages that h" +
+	"ave severity level greater than or equal to this level are sent.\x02Leve" +
+	"l of mssql driver messages to print.\x02Specifies that sqlcmd exits and " +
+	"returns a %[1]s value when an error occurs.\x02Controls which error mess" +
+	"ages are sent to %[1]s. Messages that have severity level greater than o" +
+	"r equal to this level are sent.\x02Specifies the number of rows to print" +
+	" between the column headings. Use -h-1 to specify that headers not be pr" +
+	"inted.\x02Specifies that all output files are encoded with little-endian" +
+	" Unicode\x02Specifies the column separator character. Sets the %[1]s var" +
+	"iable.\x02Remove trailing spaces from a column.\x02Provided for backward" +
+	" compatibility. Sqlcmd always optimizes detection of the active replica " +
+	"of a SQL Failover Cluster.\x02Obsolete. The initial passwords must be se" +
+	"t using the %[1]s environment variable or entered at the password prompt" +
+	".\x02Controls the severity level that is used to set the %[1]s variable " +
+	"on exit.\x02Specifies the screen width for output\x02--application-inten" +
+	"t must be one of %[1]s but got \x22%[2]s\x22\x02--encrypt-connection mus" +
+	"t be one of %[1]s but got \x22%[2]s\x22\x02--format must be one of %[1]s" +
+	" but got \x22%[2]s\x22\x02--errors-to-stderr must be one of %[1]s but go" +
+	"t \x22%[2]s\x22\x02Invalid variable identifier %[1]s\x02Invalid variable" +
+	" value %[1]s"
 
-var es_ESIndex = []uint32{ // 107 elements
+var es_ESIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000050, 0x0000008d, 0x000000b3,
 	0x000000c7, 0x000000e1, 0x00000145, 0x00000176,
@@ -386,8 +752,55 @@ var es_ESIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x00000299, 0x00000299, 0x00000299, 0x00000299,
 	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	// Entry 80 - 9F
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	// Entry A0 - BF
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	// Entry C0 - DF
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	// Entry E0 - FF
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	// Entry 100 - 11F
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
+	0x00000299, 0x00000299, 0x00000299, 0x00000299,
 	0x00000299, 0x00000299, 0x00000299,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const es_ESData string = "" + // Size: 665 bytes
 	"\x02'-h %[1]d': el valor de encabezado debe ser -1 o un valor entre -1 y" +
@@ -401,7 +814,7 @@ const es_ESData string = "" + // Size: 665 bytes
 	"rca del comando '%[2]s'.\x02%[1]s no se pudo abrir o actuar sobre el arc" +
 	"hivo %[2]s (motivo: %[3]s).\x02%[1]serror de sintaxis en la línea %[2]d"
 
-var fr_FRIndex = []uint32{ // 107 elements
+var fr_FRIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000060, 0x000000ad, 0x000000d7,
 	0x000000f0, 0x0000010f, 0x00000187, 0x000001c0,
@@ -432,8 +845,55 @@ var fr_FRIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
 	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	// Entry 80 - 9F
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	// Entry A0 - BF
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	// Entry C0 - DF
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	// Entry E0 - FF
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	// Entry 100 - 11F
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
+	0x0000032f, 0x0000032f, 0x0000032f, 0x0000032f,
 	0x0000032f, 0x0000032f, 0x0000032f,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const fr_FRData string = "" + // Size: 815 bytes
 	"\x02'-h %[1]d': la valeur d'en-tête doit être\u00a0-1 ou une valeur comp" +
@@ -450,7 +910,7 @@ const fr_FRData string = "" + // Size: 815 bytes
 	"eur s'est produite lors de l'ouverture ou de l'utilisation du fichier %[" +
 	"2]s (Raison\u00a0: %[3]s).\x02erreur de syntaxe à la ligne %[2]d"
 
-var it_ITIndex = []uint32{ // 107 elements
+var it_ITIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005e, 0x000000a1, 0x000000c9,
 	0x000000de, 0x000000f3, 0x0000014f, 0x00000184,
@@ -481,8 +941,55 @@ var it_ITIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
 	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	// Entry 80 - 9F
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	// Entry A0 - BF
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	// Entry C0 - DF
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	// Entry E0 - FF
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	// Entry 100 - 11F
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
+	0x000002b0, 0x000002b0, 0x000002b0, 0x000002b0,
 	0x000002b0, 0x000002b0, 0x000002b0,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const it_ITData string = "" + // Size: 688 bytes
 	"\x02'-h %[1]d': il valore di intestazione deve essere -1 o un valore com" +
@@ -497,7 +1004,7 @@ const it_ITData string = "" + // Size: 688 bytes
 	"e l'apertura o l'utilizzo del file %[2]s (motivo: %[3]s).\x02%[1]serrore" +
 	" di sintassi alla riga %[2]d"
 
-var ja_JPIndex = []uint32{ // 107 elements
+var ja_JPIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000069, 0x000000d1, 0x00000106,
 	0x0000011e, 0x00000133, 0x000001ad, 0x000001f2,
@@ -528,8 +1035,55 @@ var ja_JPIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x00000376, 0x00000376, 0x00000376, 0x00000376,
 	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	// Entry 80 - 9F
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	// Entry A0 - BF
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	// Entry C0 - DF
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	// Entry E0 - FF
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	// Entry 100 - 11F
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
+	0x00000376, 0x00000376, 0x00000376, 0x00000376,
 	0x00000376, 0x00000376, 0x00000376,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const ja_JPData string = "" + // Size: 886 bytes
 	"\x02'-h %[1]d': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください\x02'-w %[1]" +
@@ -540,7 +1094,7 @@ const ja_JPData string = "" + // Size: 886 bytes
 	"' があります。\x02行 %[1]d のコマンド '%[2]s' 付近に構文エラーがあります。\x02%[1]s ファイル %[2]s を開く" +
 	"ときか、このファイルの処理中にエラーが発生しました (理由: %[3]s)。\x02%[1]s行 %[2]d に構文エラーがあります。"
 
-var ko_KRIndex = []uint32{ // 107 elements
+var ko_KRIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005b, 0x0000009e, 0x000000ca,
 	0x000000df, 0x000000f4, 0x00000152, 0x0000018d,
@@ -571,8 +1125,55 @@ var ko_KRIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x00000306, 0x00000306, 0x00000306, 0x00000306,
 	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	// Entry 80 - 9F
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	// Entry A0 - BF
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	// Entry C0 - DF
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	// Entry E0 - FF
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	// Entry 100 - 11F
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
+	0x00000306, 0x00000306, 0x00000306, 0x00000306,
 	0x00000306, 0x00000306, 0x00000306,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const ko_KRData string = "" + // Size: 774 bytes
 	"\x02'-h %[1]d': 헤더 값은 -1이거나 -1에서 2147483647 사이의 값이어야 합니다\x02'-w %[1]d': " +
@@ -583,7 +1184,7 @@ const ko_KRData string = "" + // Size: 774 bytes
 	"처의 줄 %[1]d에서 구문 오류가 발생했습니다.\x02%[1]s 파일 %[2]s을(를) 열거나 해당 작업을 수행하는 중 오류" +
 	"가 발생했습니다(원인: %[3]s).\x02%[1]s줄 %[2]d에서 구문 오류가 발생했습니다"
 
-var pt_BRIndex = []uint32{ // 107 elements
+var pt_BRIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x0000008b, 0x000000b0,
 	0x000000c3, 0x000000d7, 0x00000142, 0x00000175,
@@ -614,8 +1215,55 @@ var pt_BRIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
 	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	// Entry 80 - 9F
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	// Entry A0 - BF
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	// Entry C0 - DF
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	// Entry E0 - FF
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	// Entry 100 - 11F
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
+	0x0000028d, 0x0000028d, 0x0000028d, 0x0000028d,
 	0x0000028d, 0x0000028d, 0x0000028d,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const pt_BRData string = "" + // Size: 653 bytes
 	"\x02'-h %[1]d': o valor do cabeçalho deve ser -1 ou um valor entre 1 e 2" +
@@ -629,7 +1277,7 @@ const pt_BRData string = "" + // Size: 653 bytes
 	" '%[2]s'.\x02%[1]s ocorreu um erro ao abrir ou operar no arquivo %[2]s (" +
 	"Motivo: %[3]s).\x02%[1]serro de sintaxe na linha %[2]d"
 
-var ru_RUIndex = []uint32{ // 107 elements
+var ru_RUIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000007f, 0x000000d8, 0x00000120,
 	0x0000013c, 0x0000015b, 0x000001db, 0x0000023a,
@@ -660,8 +1308,55 @@ var ru_RUIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x00000411, 0x00000411, 0x00000411, 0x00000411,
 	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	// Entry 80 - 9F
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	// Entry A0 - BF
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	// Entry C0 - DF
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	// Entry E0 - FF
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	// Entry 100 - 11F
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
+	0x00000411, 0x00000411, 0x00000411, 0x00000411,
 	0x00000411, 0x00000411, 0x00000411,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const ru_RUData string = "" + // Size: 1041 bytes
 	"\x02'-h %[1]d': значением заголовка может быть или -1, или число между -" +
@@ -675,7 +1370,7 @@ const ru_RUData string = "" + // Size: 1041 bytes
 	"команды '%[2]s'.\x02%[1]s ошибка при открытии или обработке файла %[2]s" +
 	" (причина: %[3]s).\x02%[1]sсинтаксическая ошибка в строке %[2]d"
 
-var zh_CNIndex = []uint32{ // 107 elements
+var zh_CNIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004d, 0x0000007e, 0x000000a1,
 	0x000000b6, 0x000000cb, 0x0000010b, 0x0000012e,
@@ -706,8 +1401,55 @@ var zh_CNIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
 	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	// Entry 80 - 9F
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	// Entry A0 - BF
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	// Entry C0 - DF
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	// Entry E0 - FF
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	// Entry 100 - 11F
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
+	0x0000021e, 0x0000021e, 0x0000021e, 0x0000021e,
 	0x0000021e, 0x0000021e, 0x0000021e,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const zh_CNData string = "" + // Size: 542 bytes
 	"\x02'-h %[1]d': 标头值必须是 -1 或是介于 1 和 2147483647 之间的值\x02'-w %[1]d': 值必须大于 " +
@@ -717,7 +1459,7 @@ const zh_CNData string = "" + // Size: 542 bytes
 	"]d 行存在语法错误。\x02%[1]s 打开文件 %[2]s 或对其执行操作时出错(原因: %[3]s)。\x02%[1]s第 %[2]d 行" +
 	"存在语法错误"
 
-var zh_TWIndex = []uint32{ // 107 elements
+var zh_TWIndex = []uint32{ // 275 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004b, 0x0000007c, 0x0000009e,
 	0x000000b3, 0x000000c8, 0x0000010d, 0x00000130,
@@ -748,8 +1490,55 @@ var zh_TWIndex = []uint32{ // 107 elements
 	// Entry 60 - 7F
 	0x00000229, 0x00000229, 0x00000229, 0x00000229,
 	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	// Entry 80 - 9F
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	// Entry A0 - BF
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	// Entry C0 - DF
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	// Entry E0 - FF
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	// Entry 100 - 11F
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
+	0x00000229, 0x00000229, 0x00000229, 0x00000229,
 	0x00000229, 0x00000229, 0x00000229,
-} // Size: 452 bytes
+} // Size: 1124 bytes
 
 const zh_TWData string = "" + // Size: 553 bytes
 	"\x02'-h %[1]d': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值\x02'-w %[1]d': 值必須大於 " +
@@ -759,4 +1548,4 @@ const zh_TWData string = "" + // Size: 553 bytes
 	"\x02第 %[1]d 行接近命令 '%[2]s' 之處有語法錯誤。\x02%[1]s 開啟或操作檔案 %[2]s 時發生錯誤 (原因: %[3" +
 	"]s)。\x02%[1]s第 %[2]d 行有語法錯誤。"
 
-	// Total table size 20166 bytes (19KiB); checksum: BD92A84F
+	// Total table size 34421 bytes (33KiB); checksum: E4936B38
