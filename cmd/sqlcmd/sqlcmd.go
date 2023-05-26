@@ -167,14 +167,37 @@ func Execute(version string) {
 		cmd.Flags().SetInterspersed(false)
 		fmt.Println("Flags:")
 		cmd.Flags().VisitAll(func(flag *pflag.Flag) {
-			fmt.Printf("  -%s, --%s\n", flag.Shorthand, flag.Name)
-			fmt.Printf("      %s\n", flag.Usage)
+			if len(flag.Shorthand) > 0 {
+				fmt.Printf("  -%s, --%s\n", flag.Shorthand, flag.Name)
+			} else {
+				fmt.Printf("      --%s\n", flag.Name)
+			}
+			desc := formatDescription(flag.Usage, 60, 8)
+			fmt.Printf("      --%s\n", desc)
 			fmt.Println()
 		})
 	})
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
+}
+
+func formatDescription(description string, maxWidth, indentWidth int) string {
+	var lines []string
+	words := strings.Fields(description)
+	line := ""
+	for _, word := range words {
+		if len(line)+len(word)+1 <= maxWidth {
+			line += word + " "
+		} else {
+			lines = append(lines, line)
+			line = strings.Repeat(" ", indentWidth) + word + " "
+		}
+	}
+	if line != "" {
+		lines = append(lines, line)
+	}
+	return strings.Join(lines, "\n")
 }
 
 func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
