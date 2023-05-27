@@ -10,6 +10,7 @@ func init() {
 	if len(msdsn.ProtocolParsers) == 4 {
 		// reorder the protocol parsers to lpc->admin->tcp->np
 		// ODBC follows this same order.
+		// Named pipes/shared memory package doesn't support ARM
 		var tcp = msdsn.ProtocolParsers[0]
 		msdsn.ProtocolParsers[0] = msdsn.ProtocolParsers[3]
 		msdsn.ProtocolParsers[3] = msdsn.ProtocolParsers[2]
