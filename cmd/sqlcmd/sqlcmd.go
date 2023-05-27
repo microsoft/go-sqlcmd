@@ -233,8 +233,9 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 
 	// Using PersistentFlags() for ErrorSeverityLevel due to data type uint8 , which is not supported in Flags()
 	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "error-severity-level", "V", 0, "Controls the severity level that is used to set the ERRORLEVEL variable on exit.")
-	screenWidth := rootCmd.Flags().Int("screen-width", 0, "Specifies the screen width for output")
-	rootCmd.Flags().IntVarP(screenWidth, "w", "w", 0, "Specifies the screen width for output")
+	var screenWidth int
+	screenWidthPtr := &screenWidth
+	rootCmd.Flags().IntVarP(screenWidthPtr, "screen-width", "w", 0, localizer.Sprintf("Specifies the screen width for output"))
 	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 }
 
