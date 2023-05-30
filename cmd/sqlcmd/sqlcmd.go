@@ -63,6 +63,7 @@ type SQLCmdArguments struct {
 	TrimSpaces                  bool
 	MultiSubnetFailover         bool
 	Password                    string
+	DedicatedAdminConnection    bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -236,6 +237,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	var screenWidth int
 	screenWidthPtr := &screenWidth
 	rootCmd.Flags().IntVarP(screenWidthPtr, "screen-width", "w", 0, localizer.Sprintf("Specifies the screen width for output"))
+	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 }
 
 func normalizeFlags(rootCmd *cobra.Command) error {
@@ -388,6 +390,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.LogLevel = args.DriverLoggingLevel
 	connect.ExitOnError = args.ExitOnError
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
+	connect.DedicatedAdminConnection = args.DedicatedAdminConnection
 }
 
 func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {

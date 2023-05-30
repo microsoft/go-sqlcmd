@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -68,8 +69,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-h", "2", "-?"}, func(args SQLCmdArguments) bool {
 			return args.Help && args.Headers == 2
 		}},
-		{[]string{"-u"}, func(args SQLCmdArguments) bool {
-			return args.UnicodeOutputFile
+		{[]string{"-u", "-A"}, func(args SQLCmdArguments) bool {
+			return args.UnicodeOutputFile && args.DedicatedAdminConnection
 		}},
 		{[]string{"--version"}, func(args SQLCmdArguments) bool {
 			return args.Version
@@ -98,7 +99,10 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 			Run: func(cmd *cobra.Command, argss []string) {
 				// Command logic goes here
 			},
+			SilenceErrors: true,
+			SilenceUsage:  true,
 		}
+		cmd.SetOut(new(bytes.Buffer))
 		setFlags(cmd, arguments)
 		cmd.SetArgs(test.commandLine)
 		err := cmd.Execute()
@@ -136,6 +140,8 @@ func TestInvalidCommandLine(t *testing.T) {
 			},
 			Run: func(cmd *cobra.Command, argss []string) {
 			},
+			SilenceErrors: true,
+			SilenceUsage:  true,
 		}
 		setFlags(cmd, arguments)
 		cmd.SetArgs(test.commandLine)
@@ -169,6 +175,8 @@ func TestValidateFlags(t *testing.T) {
 			},
 			Run: func(cmd *cobra.Command, argss []string) {
 			},
+			SilenceErrors: true,
+			SilenceUsage:  true,
 		}
 
 		setFlags(cmd, arguments)

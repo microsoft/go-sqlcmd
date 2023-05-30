@@ -37,8 +37,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azidentity
-* Version: v1.1.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.1.0/sdk/azidentity/LICENSE.txt)
+* Version: v1.2.1
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.2.1/sdk/azidentity/LICENSE.txt)
 
 ```
 MIT License
@@ -99,8 +99,8 @@ SOFTWARE
 ## github.com/AzureAD/microsoft-authentication-library-for-go/apps
 
 * Name: github.com/AzureAD/microsoft-authentication-library-for-go/apps
-* Version: v0.5.1
-* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v0.5.1/LICENSE)
+* Version: v0.8.1
+* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v0.8.1/LICENSE)
 
 ```
     MIT License
@@ -167,35 +167,6 @@ SOFTWARE.
 
 ```
 Copyright (C) 2017 Alec Thomas
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-```
-
-## github.com/alecthomas/kong
-
-* Name: github.com/alecthomas/kong
-* Version: v0.6.2-0.20220922001058-c62bf25854a0
-* License: [MIT](https://github.com/alecthomas/kong/blob/c62bf25854a0/COPYING)
-
-```
-Copyright (C) 2018 Alec Thomas
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -344,8 +315,8 @@ SOFTWARE.
 ## github.com/docker/distribution
 
 * Name: github.com/docker/distribution
-* Version: v2.8.1
-* License: [Apache-2.0](https://github.com/docker/distribution/blob/v2.8.1/LICENSE)
+* Version: v2.8.2
+* License: [Apache-2.0](https://github.com/docker/distribution/blob/v2.8.2/LICENSE)
 
 ```
 Apache License
@@ -1437,11 +1408,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ```
 
-## github.com/golang-jwt/jwt
+## github.com/golang-jwt/jwt/v4
 
-* Name: github.com/golang-jwt/jwt
-* Version: v3.2.2
-* License: [MIT](https://github.com/golang-jwt/jwt/blob/v3.2.2/LICENSE)
+* Name: github.com/golang-jwt/jwt/v4
+* Version: v4.4.2
+* License: [MIT](https://github.com/golang-jwt/jwt/blob/v4.4.2/LICENSE)
 
 ```
 Copyright (c) 2012 Dave Grijalva

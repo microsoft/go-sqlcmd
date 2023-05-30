@@ -62,6 +62,18 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			&ConnectSettings{ServerName: `\\someserver\pipe\sql\query`},
 			"sqlserver://someserver?pipe=sql%5Cquery&protocol=np",
 		},
+		{
+			&ConnectSettings{DedicatedAdminConnection: true},
+			"sqlserver://.?protocol=admin",
+		},
+		{
+			&ConnectSettings{ServerName: `tcp:someserver`, DedicatedAdminConnection: true},
+			"sqlserver://someserver?protocol=admin",
+		},
+		{
+			&ConnectSettings{ServerName: `admin:someserver`, DedicatedAdminConnection: true},
+			"sqlserver://someserver?protocol=admin",
+		},
 	}
 
 	for i, test := range commands {
@@ -633,7 +645,8 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 		t.Skip("Only valid on Windows amd64")
 	}
 	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
-	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[1].Protocol(), "tcp should be second protocol")
-	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[2].Protocol(), "np should be third protocol")
+	assert.Truef(t, msdsn.ProtocolParsers[1].Hidden(), "Protocol %s should be hidden", msdsn.ProtocolParsers[1].Protocol())
+	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[2].Protocol(), "tcp should be second protocol")
+	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be third protocol")
 
 }
