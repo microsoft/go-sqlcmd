@@ -6,6 +6,7 @@ package root
 import (
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // Open defines the `sqlcmd open` sub-commands
@@ -16,7 +17,7 @@ type Open struct {
 func (c *Open) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:         "open",
-		Short:       "Open tools (e.g ADS) for current context",
+		Short:       localizer.Sprintf("Open tools (e.g Azure Data Studio) for current context"),
 		SubCommands: c.SubCommands(),
 	}
 

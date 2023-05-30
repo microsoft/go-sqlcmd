@@ -6,6 +6,7 @@ package config
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // DeleteContext implements the `sqlcmd config delete-context` command
@@ -19,16 +20,16 @@ type DeleteContext struct {
 func (c *DeleteContext) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "delete-context",
-		Short: "Delete a context",
+		Short: localizer.Sprintf("Delete a context"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Delete a context (including its endpoint and user)",
+				Description: localizer.Sprintf("Delete a context (including its endpoint and user)"),
 				Steps: []string{
 					"sqlcmd config delete-context --name my-context --cascade",
 					"sqlcmd config delete-context my-context --cascade"},
 			},
 			{
-				Description: "Delete a context (excluding its endpoint and user)",
+				Description: localizer.Sprintf("Delete a context (excluding its endpoint and user)"),
 				Steps: []string{
 					"sqlcmd config delete-context --name my-context --cascade=false",
 					"sqlcmd config delete-context my-context --cascade=false"},
@@ -44,13 +45,13 @@ func (c *DeleteContext) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.name,
 		Name:   "name",
-		Usage:  "Name of context to delete"})
+		Usage:  localizer.Sprintf("Name of context to delete")})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:        &c.cascade,
 		Name:        "cascade",
 		DefaultBool: true,
-		Usage:       "Delete the context's endpoint and user as well"})
+		Usage:       localizer.Sprintf("Delete the context's endpoint and user as well")})
 }
 
 // run is responsible for deleting a context in a configuration. It first checks if
@@ -61,7 +62,7 @@ func (c *DeleteContext) run() {
 	output := c.Output()
 
 	if c.name == "" {
-		output.FatalWithHints([]string{"Use the --name flag to pass in a context name to delete"},
+		output.FatalWithHints([]string{localizer.Sprintf("Use the %s flag to pass in a context name to delete", localizer.NameFlag)},
 			"A 'name' is required")
 	}
 
@@ -77,11 +78,11 @@ func (c *DeleteContext) run() {
 
 		config.DeleteContext(c.name)
 
-		output.Infof("Context '%v' deleted", c.name)
+		output.Infof(localizer.Sprintf("Context '%v' deleted", c.name))
 	} else {
 		output.FatalfWithHintExamples([][]string{
-			{"View available contexts", "sqlcmd config get-contexts"},
+			{localizer.Sprintf("View available contexts"), "sqlcmd config get-contexts"},
 		},
-			"Context '%v' does not exist", c.name)
+			localizer.Sprintf("Context '%v' does not exist", c.name))
 	}
 }

@@ -5,10 +5,12 @@ package config
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
-	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"os"
 	"runtime"
+
+	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -28,7 +30,7 @@ type AddUser struct {
 func (c *AddUser) DefineCommand(...cmdparser.CommandOptions) {
 	examples := []cmdparser.ExampleOptions{
 		{
-			Description: "Add a user (using the SQLCMD_PASSWORD environment variable)",
+			Description: localizer.Sprintf("Add a user (using the SQLCMD_PASSWORD environment variable)"),
 			Steps: []string{
 				fmt.Sprintf(`%s SQLCMD_PASSWORD=<placeholderpassword>`, pal.CreateEnvVarKeyword()),
 				"sqlcmd config add-user --name my-user --username user1 --password-encryption none",
@@ -36,7 +38,7 @@ func (c *AddUser) DefineCommand(...cmdparser.CommandOptions) {
 			},
 		},
 		{
-			Description: "Add a user (using the SQLCMDPASSWORD environment variable)",
+			Description: localizer.Sprintf("Add a user (using the SQLCMDPASSWORD environment variable)"),
 			Steps: []string{
 				fmt.Sprintf(`%s SQLCMDPASSWORD=<placeholderpassword>`, pal.CreateEnvVarKeyword()),
 				"sqlcmd config add-user --name my-user --username user1 --password-encryption none",
@@ -47,7 +49,7 @@ func (c *AddUser) DefineCommand(...cmdparser.CommandOptions) {
 
 	if runtime.GOOS == "windows" {
 		examples = append(examples, cmdparser.ExampleOptions{
-			Description: "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
+			Description: localizer.Sprintf("Add a user using Windows Data Protection API to encrypt password in sqlconfig"),
 			Steps: []string{
 				fmt.Sprintf(`%s SQLCMD_PASSWORD=<placeholderpassword>`, pal.CreateEnvVarKeyword()),
 				"sqlcmd config add-user --name my-user --username user1 --password-encryption dpapi",
@@ -58,7 +60,7 @@ func (c *AddUser) DefineCommand(...cmdparser.CommandOptions) {
 
 	options := cmdparser.CommandOptions{
 		Use:      "add-user",
-		Short:    "Add a user",
+		Short:    localizer.Sprintf("Add a user"),
 		Examples: examples,
 		Run:      c.run}
 
@@ -68,27 +70,26 @@ func (c *AddUser) DefineCommand(...cmdparser.CommandOptions) {
 		String:        &c.name,
 		Name:          "name",
 		DefaultString: "user",
-		Usage:         "Display name for the user (this is not the username)",
+		Usage:         localizer.Sprintf("Display name for the user (this is not the username)"),
 	})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.authType,
 		Name:          "auth-type",
 		DefaultString: "basic",
-		Usage:         "Authentication type this user will use (basic | other)",
+		Usage:         localizer.Sprintf("Authentication type this user will use (basic | other)"),
 	})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.username,
 		Name:   "username",
-		Usage:  "The username (provide password in SQLCMD_PASSWORD or SQLCMDPASSWORD environment variable)",
+		Usage:  localizer.Sprintf("The username (provide password in %s or %s environment variable)", localizer.PasswordEnvVar, localizer.PasswordEnvVar2),
 	})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.passwordEncryption,
 		Name:   "password-encryption",
-		Usage: fmt.Sprintf("Password encryption method (%s) in sqlconfig file",
-			secret.EncryptionMethodsForUsage()),
+		Usage:  localizer.Sprintf("Password encryption method (%s) in sqlconfig file", secret.EncryptionMethodsForUsage()),
 	})
 }
 
@@ -105,21 +106,21 @@ func (c *AddUser) run() {
 
 	if c.authType != "basic" &&
 		c.authType != "other" {
-		output.FatalfWithHints([]string{"Authentication type must be 'basic' or 'other'"},
-			"Authentication type '' is not valid %v'", c.authType)
+		output.FatalfWithHints([]string{localizer.Sprintf("Authentication type must be '%s' or '%s'", localizer.ModernAuthTypeBasic, localizer.ModernAuthTypeOther)},
+			localizer.Sprintf("Authentication type '' is not valid %v'", c.authType))
 	}
 
 	if c.authType != "basic" && c.passwordEncryption != "" {
 		output.FatalWithHints([]string{
-			"Remove the --password-encryption flag",
-			"Pass in the --auth-type basic"},
-			"The --password-encryption flag can only be used when authentication type is 'basic'")
+			localizer.Sprintf("Remove the %s flag", localizer.PasswordEncryptFlag),
+			localizer.Sprintf("Pass in the %s %s", localizer.AuthTypeFlag, localizer.ModernAuthTypeBasic)},
+			localizer.Sprintf("The %s flag can only be used when authentication type is '%s'", localizer.PasswordEncryptFlag, localizer.ModernAuthTypeBasic))
 	}
 
 	if c.authType == "basic" && c.passwordEncryption == "" {
 		output.FatalWithHints([]string{
-			"Add the --password-encryption flag"},
-			"The --password-encryption flag must be set when authentication type is 'basic'")
+			localizer.Sprintf("Add the %s flag", localizer.PasswordEncryptFlag)},
+			localizer.Sprintf("The %s flag must be set when authentication type is '%s'", localizer.PasswordEncryptFlag, localizer.ModernAuthTypeBasic))
 	}
 
 	user := sqlconfig.User{
@@ -130,29 +131,29 @@ func (c *AddUser) run() {
 	if c.authType == "basic" {
 		if os.Getenv("SQLCMD_PASSWORD") == "" && os.Getenv("SQLCMDPASSWORD") == "" {
 			output.FatalWithHints([]string{
-				"Provide password in the SQLCMD_PASSWORD (or SQLCMDPASSWORD) environment variable"},
-				"Authentication Type 'basic' requires a password")
+				localizer.Sprintf("Provide password in the %s (or %s) environment variable", localizer.PasswordEnvVar, localizer.PasswordEnvVar2)},
+				localizer.Sprintf("Authentication Type '%s' requires a password", localizer.ModernAuthTypeBasic))
 		}
 
 		if c.username == "" {
 			output.FatalfWithHintExamples([][]string{
-				{"Provide a username with the --username flag",
+				{localizer.Sprintf("Provide a username with the %s flag"),
 					"sqlcmd config add-user --username sa"},
 			},
-				"Username not provided")
+				localizer.Sprintf("Username not provided"))
 		}
 
 		if !secret.IsValidEncryptionMethod(c.passwordEncryption) {
 			output.FatalfWithHints([]string{
-				fmt.Sprintf("Provide a valid encryption method (%s) with the --password-encryption flag", secret.EncryptionMethodsForUsage())},
-				"Encryption method '%v' is not valid", c.passwordEncryption)
+				localizer.Sprintf("Provide a valid encryption method (%s) with the %s flag", secret.EncryptionMethodsForUsage(), localizer.PasswordEncryptFlag)},
+				localizer.Sprintf("Encryption method '%v' is not valid", c.passwordEncryption))
 		}
 
 		if os.Getenv("SQLCMD_PASSWORD") != "" &&
 			os.Getenv("SQLCMDPASSWORD") != "" {
 			output.FatalWithHints([]string{
-				"Unset one of the environment variables SQLCMD_PASSWORD or SQLCMDPASSWORD"},
-				"Both environment variables SQLCMD_PASSWORD and SQLCMDPASSWORD are set. ")
+				localizer.Sprintf("Unset one of the environment variables %s or %s", localizer.PasswordEnvVar, localizer.PasswordEnvVar2)},
+				localizer.Sprintf("Both environment variables %s and %s are set. ", localizer.PasswordEnvVar, localizer.PasswordEnvVar2))
 		}
 
 		password := os.Getenv("SQLCMD_PASSWORD")
@@ -167,5 +168,5 @@ func (c *AddUser) run() {
 	}
 
 	uniqueUserName := config.AddUser(user)
-	output.Infof("User '%v' added", uniqueUserName)
+	output.Infof(localizer.Sprintf("User '%v' added", uniqueUserName))
 }

@@ -5,10 +5,12 @@ package config
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
-	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -26,10 +28,10 @@ type ConnectionStrings struct {
 func (c *ConnectionStrings) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "connection-strings",
-		Short: "Display connections strings for the current context",
+		Short: localizer.Sprintf("Display connections strings for the current context"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "List connection strings for all client drivers",
+				Description: localizer.Sprintf("List connection strings for all client drivers"),
 				Steps: []string{
 					"sqlcmd config connection-strings",
 					"sqlcmd config cs"},
@@ -46,7 +48,7 @@ func (c *ConnectionStrings) DefineCommand(...cmdparser.CommandOptions) {
 		Name:          "database",
 		DefaultString: "",
 		Shorthand:     "d",
-		Usage:         "Database for the connection string (default is taken from the T/SQL login)"})
+		Usage:         localizer.Sprintf("Database for the connection string (default is taken from the T/SQL login)")})
 }
 
 // run generates connection strings for the current context in multiple formats.
@@ -118,7 +120,7 @@ func (c *ConnectionStrings) run() {
 			output.Infof("%-8s %s", k+":", v)
 		}
 	} else {
-		output.Infof("Connection Strings only supported for Basic Auth type")
+		output.Infof(localizer.Sprintf("Connection Strings only supported for %s Auth type", localizer.ModernAuthTypeBasic))
 	}
 }
 
