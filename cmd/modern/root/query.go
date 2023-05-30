@@ -5,8 +5,10 @@ package root
 
 import (
 	"fmt"
+
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 )
@@ -22,17 +24,17 @@ type Query struct {
 func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "query",
-		Short: "Run a query against the current context",
+		Short: localizer.Sprintf("Run a query against the current context"),
 		Examples: []cmdparser.ExampleOptions{
-			{Description: "Run a query", Steps: []string{
+			{Description: localizer.Sprintf("Run a query"), Steps: []string{
 				`sqlcmd query "SELECT @@SERVERNAME"`,
 				`sqlcmd query --text "SELECT @@SERVERNAME"`,
 				`sqlcmd query --query "SELECT @@SERVERNAME"`,
 			}},
-			{Description: "Run a query using [master] database", Steps: []string{
+			{Description: localizer.Sprintf("Run a query using [%s] database", "master"), Steps: []string{
 				`sqlcmd query "SELECT DB_NAME()" --database master`,
 			}},
-			{Description: "Set new default database", Steps: []string{
+			{Description: localizer.Sprintf("Set new default database"), Steps: []string{
 				fmt.Sprintf(`sqlcmd query "ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [tempdb]" --database master`,
 					pal.UserName()),
 			}},
@@ -50,20 +52,20 @@ func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 		String:    &c.text,
 		Name:      "text",
 		Shorthand: "t",
-		Usage:     "Command text to run"})
+		Usage:     localizer.Sprintf("Command text to run")})
 
 	// BUG(stuartpa): Decide on if --text or --query is best (or leave both for convenience)
 	c.AddFlag(cmdparser.FlagOptions{
 		String:    &c.text,
 		Name:      "query",
 		Shorthand: "q",
-		Usage:     "Command text to run"})
+		Usage:     localizer.Sprintf("Command text to run")})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String:    &c.database,
 		Name:      "database",
 		Shorthand: "d",
-		Usage:     "Database to use"})
+		Usage:     localizer.Sprintf("Database to use")})
 }
 
 // run executes the Query command.

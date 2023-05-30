@@ -7,6 +7,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/install/edge"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 )
 
@@ -21,9 +22,9 @@ func (c *Edge) DefineCommand(...cmdparser.CommandOptions) {
 
 	options := cmdparser.CommandOptions{
 		Use:   "azsql-edge",
-		Short: "Install Azure Sql Edge",
+		Short: localizer.Sprintf("Install Azure Sql Edge"),
 		Examples: []cmdparser.ExampleOptions{{
-			Description: "Install/Create Azure SQL Edge in a container",
+			Description: localizer.Sprintf("Install/Create Azure SQL Edge in a container"),
 			Steps:       []string{"sqlcmd create azsql-edge"}}},
 		Run:         c.MssqlBase.Run,
 		SubCommands: c.SubCommands(),

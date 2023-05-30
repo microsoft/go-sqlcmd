@@ -6,6 +6,7 @@ package config
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // GetEndpoints implements the `sqlcmd config get-endpoints` command
@@ -19,16 +20,16 @@ type GetEndpoints struct {
 func (c *GetEndpoints) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "get-endpoints",
-		Short: "Display one or many endpoints from the sqlconfig file",
+		Short: localizer.Sprintf("Display one or many endpoints from the sqlconfig file"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "List all the endpoints in your sqlconfig file",
+				Description: localizer.Sprintf("List all the endpoints in your sqlconfig file"),
 				Steps:       []string{"sqlcmd config get-endpoints"}},
 			{
-				Description: "List all the endpoints in your sqlconfig file",
+				Description: localizer.Sprintf("List all the endpoints in your sqlconfig file"),
 				Steps:       []string{"sqlcmd config get-endpoints --detailed"}},
 			{
-				Description: "Describe one endpoint in your sqlconfig file",
+				Description: localizer.Sprintf("Describe one endpoint in your sqlconfig file"),
 				Steps:       []string{"sqlcmd config get-endpoints my-endpoint"}},
 		},
 		Run:                        c.run,
@@ -40,12 +41,12 @@ func (c *GetEndpoints) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.name,
 		Name:   "name",
-		Usage:  "Endpoint name to view details of"})
+		Usage:  localizer.Sprintf("Endpoint name to view details of")})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:  &c.detailed,
 		Name:  "detailed",
-		Usage: "Include endpoint details"})
+		Usage: localizer.Sprintf("Include endpoint details")})
 }
 
 func (c *GetEndpoints) run() {
@@ -57,9 +58,8 @@ func (c *GetEndpoints) run() {
 			output.Struct(context)
 		} else {
 			output.FatalfWithHints(
-				[]string{"To view available endpoints run `sqlcmd config get-endpoints"},
-				"error: no endpoint exists with the name: \"%v\"",
-				c.name)
+				[]string{localizer.Sprintf("To view available endpoints run `%s`", localizer.GetEndpointsCommand)},
+				localizer.Sprintf("error: no endpoint exists with the name: \"%v\"", c.name))
 		}
 	} else {
 		config.OutputEndpoints(output.Struct, c.detailed)

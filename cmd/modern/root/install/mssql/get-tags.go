@@ -6,6 +6,7 @@ package mssql
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 type GetTags struct {
@@ -15,10 +16,10 @@ type GetTags struct {
 func (c *GetTags) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "get-tags",
-		Short: "Get tags available for mssql install",
+		Short: localizer.Sprintf("Get tags available for mssql install"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "List tags",
+				Description: localizer.Sprintf("List tags"),
 				Steps:       []string{"sqlcmd create mssql get-tags"},
 			},
 		},
