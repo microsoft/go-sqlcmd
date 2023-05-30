@@ -121,7 +121,6 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 }
 
 func Execute(version string) {
-	//var screenWidth *int
 	rootCmd := &cobra.Command{
 		PreRunE: func(cmd *cobra.Command, argss []string) error {
 			SetScreenWidthFlag(&args, cmd)
@@ -164,16 +163,17 @@ func Execute(version string) {
 	setFlags(rootCmd, &args)
 	rootCmd.SetHelpFunc(func(cmd *cobra.Command, argss []string) {
 		fmt.Println(cmd.Long)
+		fmt.Printf("version : %v\n", version)
 		cmd.Flags().SetInterspersed(false)
-		fmt.Println("Flags:")
+		fmt.Println(localizer.Sprintf("Flags:"))
 		cmd.Flags().VisitAll(func(flag *pflag.Flag) {
 			if len(flag.Shorthand) > 0 {
-				fmt.Printf("  -%s, --%s\n", flag.Shorthand, flag.Name)
+				fmt.Printf("-%s,--%s\n", flag.Shorthand, flag.Name)
 			} else {
-				fmt.Printf("      --%s\n", flag.Name)
+				fmt.Printf("   --%s\n", flag.Name)
 			}
-			desc := formatDescription(flag.Usage, 60, 8)
-			fmt.Printf("        %s\n", desc)
+			desc := formatDescription(flag.Usage, 60, 3)
+			fmt.Printf("   %s\n", desc)
 			fmt.Println()
 		})
 	})
