@@ -23,7 +23,7 @@
               </defaultList>
               <currentList>
                 <item string="language" itemID="0"/>
-				<item string="translation" itemID="1"/>
+                <item string="translation" itemID="1"/>
               </currentList>
             </stringList>
           </option>
