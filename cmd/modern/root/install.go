@@ -6,6 +6,7 @@ package root
 import (
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/install"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // Install defines the `sqlcmd install` sub-commands
@@ -16,7 +17,7 @@ type Install struct {
 func (c *Install) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:         "create",
-		Short:       "Install/Create SQL Server, Azure SQL, and Tools",
+		Short:       localizer.Sprintf("Install/Create SQL Server, Azure SQL, and Tools"),
 		Aliases:     []string{"install"},
 		SubCommands: c.SubCommands(),
 	}
