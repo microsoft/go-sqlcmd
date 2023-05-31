@@ -9,6 +9,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // Root type implements the very top-level command for sqlcmd (which contains
@@ -36,18 +37,19 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	steps = append(steps, "sqlcmd delete")
 
 	examples := []cmdparser.ExampleOptions{
-		{Description: "Install/Create, Query, Uninstall SQL Server",
+		{Description: localizer.Sprintf("Install/Create, Query, Uninstall SQL Server"),
 			Steps: steps},
-		{Description: "View configuration information and connection strings",
+		{Description: localizer.Sprintf("View configuration information and connection strings"),
 			Steps: []string{"sqlcmd config view", "sqlcmd config cs"}},
 	}
 
+	const feedbackUrl = "https://github.com/microsoft/go-sqlcmd/issues/new"
 	commandOptions := cmdparser.CommandOptions{
 		Use: "sqlcmd",
-		Short: `sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools
+		Short: localizer.Sprintf(`sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools
 
 Feedback:
-  https://github.com/microsoft/go-sqlcmd/issues/new`,
+  %s`, feedbackUrl),
 		SubCommands: c.SubCommands(),
 		Examples:    examples,
 	}
@@ -103,7 +105,7 @@ func (c *Root) addGlobalFlags() {
 		Bool:      &unused,
 		Name:      "?",
 		Shorthand: "?",
-		Usage:     "help for backwards compatibility flags (-S, -U, -E etc.)",
+		Usage:     localizer.Sprintf("help for backwards compatibility flags (-S, -U, -E etc.)"),
 	})
 
 	// BUG(stuartpa): - This is a temporary flag until we have migrated
@@ -112,14 +114,14 @@ func (c *Root) addGlobalFlags() {
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:  &unused,
 		Name:  "version",
-		Usage: "print version of sqlcmd",
+		Usage: localizer.Sprintf("print version of sqlcmd"),
 	})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String:        &c.configFilename,
 		DefaultString: config.DefaultFileName(),
 		Name:          "sqlconfig",
-		Usage:         "configuration file",
+		Usage:         localizer.Sprintf("configuration file"),
 	})
 
 	/* BUG(stuartpa): - At the moment this is a top level flag, but it doesn't
@@ -137,6 +139,6 @@ func (c *Root) addGlobalFlags() {
 		Int:        (*int)(&c.loggingLevel),
 		DefaultInt: 2,
 		Name:       "verbosity",
-		Usage:      "log level, error=0, warn=1, info=2, debug=3, trace=4",
+		Usage:      localizer.Sprintf("log level, error=0, warn=1, info=2, debug=3, trace=4"),
 	})
 }

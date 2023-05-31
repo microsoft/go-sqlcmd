@@ -51,6 +51,8 @@ type ConnectSettings struct {
 	Database string
 	// ApplicationName is the name of the application to be included in the connection string
 	ApplicationName string
+	// DedicatedAdminConnection forces the connection to occur over tcp on the dedicated admin port. Requires Browser service access
+	DedicatedAdminConnection bool
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -146,6 +148,9 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if connect.ApplicationName != "" {
 		query.Add(`app name`, connect.ApplicationName)
+	}
+	if connect.DedicatedAdminConnection {
+		query.Set("protocol", "admin")
 	}
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil

@@ -63,6 +63,7 @@ type SQLCmdArguments struct {
 	TrimSpaces                  bool
 	MultiSubnetFailover         bool
 	Password                    string
+	DedicatedAdminConnection    bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -121,19 +122,25 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 }
 
 func Execute(version string) {
-	//var screenWidth *int
 	rootCmd := &cobra.Command{
 		PreRunE: func(cmd *cobra.Command, argss []string) error {
 			SetScreenWidthFlag(&args, cmd)
 			if err := args.Validate(); err != nil {
+				cmd.SilenceUsage = true
 				return err
 			}
 			if err := normalizeFlags(cmd); err != nil {
+				cmd.SilenceUsage = true
 				return err
 			}
 			return nil
 		},
 		Run: func(cmd *cobra.Command, argss []string) {
+			if len(argss) > 0 {
+				fmt.Printf("Sqlcmd: '%s': Unknown command. Enter '--help' for command help.", argss[0])
+				os.Exit(1)
+			}
+
 			vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
 			setVars(vars, &args)
 
@@ -155,17 +162,43 @@ func Execute(version string) {
 		},
 	}
 	setFlags(rootCmd, &args)
+	rootCmd.SetHelpFunc(func(cmd *cobra.Command, argss []string) {
+		fmt.Println(cmd.Long)
+		fmt.Println(localizer.Sprintf("Version %v\n", version))
+		cmd.Flags().SetInterspersed(false)
+		fmt.Println(localizer.Sprintf("Flags:"))
+		cmd.Flags().VisitAll(func(flag *pflag.Flag) {
+			if len(flag.Shorthand) > 0 {
+				fmt.Printf("-%s,--%s\n", flag.Shorthand, flag.Name)
+			} else {
+				fmt.Printf("   --%s\n", flag.Name)
+			}
+			desc := formatDescription(flag.Usage, 60, 3)
+			fmt.Printf("   %s\n", desc)
+			fmt.Println()
+		})
+	})
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
 }
 
-func normalizeWithError(name string, err error) (pflag.NormalizedName, error) {
-	//checking nil
-	if name != "" && err != nil {
-		return "", localizer.Errorf("%s", err)
+func formatDescription(description string, maxWidth, indentWidth int) string {
+	var lines []string
+	words := strings.Fields(description)
+	line := ""
+	for _, word := range words {
+		if len(line)+len(word)+1 <= maxWidth {
+			line += word + " "
+		} else {
+			lines = append(lines, line)
+			line = strings.Repeat(" ", indentWidth) + word + " "
+		}
 	}
-	return pflag.NormalizedName(name), nil
+	if line != "" {
+		lines = append(lines, line)
+	}
+	return strings.Join(lines, "\n")
 }
 
 func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
@@ -179,7 +212,7 @@ func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
 
 		screenWidthValue, err := strconv.Atoi(value)
 		if err != nil {
-			fmt.Println("Error converting screen width:", err)
+			fmt.Println(localizer.Sprintf("Error converting screen width: %s", err.Error()))
 			return
 		}
 		args.ScreenWidth = &screenWidthValue
@@ -189,52 +222,55 @@ func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
 }
 
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
-	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, "-? shows this syntax summary, --help shows modern sqlcmd sub-command help")
+	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, localizer.Sprintf("-? shows this syntax summary, %s shows modern sqlcmd sub-command help", localizer.HelpFlag))
 	var inputfiles []string
-	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with -Q/-q.")
-	rootCmd.Flags().StringVarP(&args.OutputFile, "output-file", "o", "", "Identifies the file that receives output from sqlcmd.")
-	rootCmd.Flags().BoolVarP(&args.Version, "version", "", false, "Print version information and exit")
-	rootCmd.Flags().BoolVarP(&args.TrustServerCertificate, "trust-server-certificate", "C", false, "Implicitly trust the server certificate without validation.")
-	rootCmd.Flags().StringVarP(&args.DatabaseName, "database-name", "d", "", "This option sets the sqlcmd scripting variable SQLCMDDBNAME. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits.")
-	rootCmd.Flags().BoolVarP(&args.UseTrustedConnection, "use-trusted-connection", "E", false, "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password.")
-	rootCmd.Flags().StringVarP(&args.BatchTerminator, "batch-terminator", "c", "GO", "Specifies the batch terminator. The default value is GO")
-	rootCmd.Flags().StringVarP(&args.UserName, "user-name", "U", "", "The login name or contained database user name.  For contained database users, you must provide the database name option")
-	rootCmd.Flags().StringVarP(&args.InitialQuery, "initial-query", "q", "", "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.")
-	rootCmd.Flags().StringVarP(&args.Query, "query", "Q", "", "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.")
-	rootCmd.Flags().StringVarP(&args.Server, "server", "S", "", "[[tcp:]|[lpc:]|[np:]]server[\\instance_name][,port]Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable SQLCMDSERVER.")
-	rootCmd.Flags().BoolVarP(&args.DisableCmdAndWarn, "disable-cmd-and-warn", "X", false, "Disables commands that might compromise system security. Sqlcmd issues a warning and continues.")
-	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword")
-	rootCmd.Flags().BoolVarP(&args.UseAad, "use-aad", "G", false, "Tells sqlcmd to use Active Directory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.")
-	rootCmd.Flags().BoolVarP(&args.DisableVariableSubstitution, "disable-variable-substitution", "x", false, "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many INSERT statements that may contain strings that have the same format as regular variables, such as $(variable_name).")
+	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, localizer.Sprintf("Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s", localizer.QueryAndExitFlag, localizer.QueryFlag))
+	rootCmd.Flags().StringVarP(&args.OutputFile, "output-file", "o", "", localizer.Sprintf("Identifies the file that receives output from sqlcmd"))
+	rootCmd.Flags().BoolVarP(&args.Version, "version", "", false, localizer.Sprintf("Print version information and exit"))
+	rootCmd.Flags().BoolVarP(&args.TrustServerCertificate, "trust-server-certificate", "C", false, localizer.Sprintf("Implicitly trust the server certificate without validation"))
+	rootCmd.Flags().StringVarP(&args.DatabaseName, "database-name", "d", "", localizer.Sprintf("This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits", localizer.DbNameVar))
+	rootCmd.Flags().BoolVarP(&args.UseTrustedConnection, "use-trusted-connection", "E", false, localizer.Sprintf("Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password"))
+	rootCmd.Flags().StringVarP(&args.BatchTerminator, "batch-terminator", "c", "GO", localizer.Sprintf("Specifies the batch terminator. The default value is %s", localizer.BatchTerminatorGo))
+	rootCmd.Flags().StringVarP(&args.UserName, "user-name", "U", "", localizer.Sprintf("The login name or contained database user name.  For contained database users, you must provide the database name option"))
+	rootCmd.Flags().StringVarP(&args.InitialQuery, "initial-query", "q", "", localizer.Sprintf("Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed"))
+	rootCmd.Flags().StringVarP(&args.Query, "query", "Q", "", localizer.Sprintf("Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed"))
+	rootCmd.Flags().StringVarP(&args.Server, "server", "S", "", localizer.Sprintf("%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.", localizer.ConnStrPattern, localizer.ServerEnvVar))
+	rootCmd.Flags().BoolVarP(&args.DisableCmdAndWarn, "disable-cmd-and-warn", "X", false, localizer.Sprintf("Disables commands that might compromise system security. Sqlcmd issues a warning and continues"))
+	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", localizer.Sprintf("Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword"))
+	rootCmd.Flags().BoolVarP(&args.UseAad, "use-aad", "G", false, localizer.Sprintf("Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used"))
+	rootCmd.Flags().BoolVarP(&args.DisableVariableSubstitution, "disable-variable-substitution", "x", false, localizer.Sprintf("Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)", localizer.InsertKeyword))
 	var variables map[string]string
-	rootCmd.Flags().StringToStringVarP(&args.Variables, "variables", "v", variables, "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits")
-	rootCmd.Flags().IntVarP(&args.PacketSize, "packet-size", "a", 0, "Requests a packet of a different size. This option sets the sqlcmd scripting variable SQLCMDPACKETSIZE. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between GO commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.")
-	rootCmd.Flags().IntVarP(&args.LoginTimeout, "login-timeOut", "l", -1, "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable SQLCMDLOGINTIMEOUT. The default value is 30. 0 means infinite.")
-	rootCmd.Flags().StringVarP(&args.WorkstationName, "workstation-name", "H", "", "This option sets the sqlcmd scripting variable SQLCMDWORKSTATION. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.")
+	rootCmd.Flags().StringToStringVarP(&args.Variables, "variables", "v", variables, localizer.Sprintf("Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits"))
+	rootCmd.Flags().IntVarP(&args.PacketSize, "packet-size", "a", 0, localizer.Sprintf("Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size", localizer.PacketSizeVar, localizer.BatchTerminatorGo))
+	rootCmd.Flags().IntVarP(&args.LoginTimeout, "login-timeOut", "l", -1, localizer.Sprintf("Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite", localizer.LoginTimeOutVar))
+	rootCmd.Flags().StringVarP(&args.WorkstationName, "workstation-name", "H", "", localizer.Sprintf("This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions", localizer.WorkstationVar))
 
-	rootCmd.Flags().StringVarP(&args.ApplicationIntent, "application-intent", "K", "default", "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If -K is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group")
-	rootCmd.Flags().StringVarP(&args.EncryptConnection, "encrypt-connection", "N", "default", "This switch is used by the client to request an encrypted connection.")
-	rootCmd.Flags().StringVarP(&args.Format, "format", "F", "horiz", "Specifies the formatting for results.")
-	rootCmd.Flags().IntVarP(&args.ErrorsToStderr, "errors-to-stderr", "r", -1, "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.")
+	rootCmd.Flags().StringVarP(&args.ApplicationIntent, "application-intent", "K", "default", localizer.Sprintf("Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group", localizer.ApplicationIntentFlagShort))
+	rootCmd.Flags().StringVarP(&args.EncryptConnection, "encrypt-connection", "N", "default", localizer.Sprintf("This switch is used by the client to request an encrypted connection"))
+	rootCmd.Flags().StringVarP(&args.Format, "format", "F", "horiz", localizer.Sprintf("Specifies the formatting for results"))
+	rootCmd.Flags().IntVarP(&args.ErrorsToStderr, "errors-to-stderr", "r", -1, localizer.Sprintf("Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent"))
 
-	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, "Level of mssql driver messages to print.")
-	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, "Specifies that sqlcmd exits and returns a DOS ERRORLEVEL value when an error occurs.")
-	rootCmd.Flags().IntVarP(&args.ErrorLevel, "error-level", "m", 0, "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.")
+	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, localizer.Sprintf("Level of mssql driver messages to print"))
+	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, localizer.Sprintf("Specifies that sqlcmd exits and returns a %s value when an error occurs", localizer.DosErrorLevel))
+	rootCmd.Flags().IntVarP(&args.ErrorLevel, "error-level", "m", 0, localizer.Sprintf("Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent", localizer.StdoutName))
 
 	//Need to decide on short of Header , as "h" is already used in help command in Cobra
-	rootCmd.Flags().IntVarP(&args.Headers, "headers", "h", 0, "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.")
+	rootCmd.Flags().IntVarP(&args.Headers, "headers", "h", 0, localizer.Sprintf("Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed"))
 
-	rootCmd.Flags().BoolVarP(&args.UnicodeOutputFile, "unicode-output-file", "u", false, "Specifies that all output files are encoded with little-endian Unicode")
-	rootCmd.Flags().StringVarP(&args.ColumnSeparator, "column-separator", "s", "", "Specifies the column separator character. Sets the SQLCMDCOLSEP variable.")
-	rootCmd.Flags().BoolVarP(&args.TrimSpaces, "trim-spaces", "W", false, "Remove trailing spaces from a column.")
-	rootCmd.Flags().BoolVarP(&args.MultiSubnetFailover, "multi-subnet-failover", "M", false, "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.")
+	rootCmd.Flags().BoolVarP(&args.UnicodeOutputFile, "unicode-output-file", "u", false, localizer.Sprintf("Specifies that all output files are encoded with little-endian Unicode"))
+	rootCmd.Flags().StringVarP(&args.ColumnSeparator, "column-separator", "s", "", localizer.Sprintf("Specifies the column separator character. Sets the %s variable.", localizer.ColSeparatorVar))
+	rootCmd.Flags().BoolVarP(&args.TrimSpaces, "trim-spaces", "W", false, localizer.Sprintf("Remove trailing spaces from a column"))
+	rootCmd.Flags().BoolVarP(&args.MultiSubnetFailover, "multi-subnet-failover", "M", false, localizer.Sprintf("Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster"))
 
-	rootCmd.Flags().StringVarP(&args.Password, "password", "P", "", "Obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.")
+	rootCmd.Flags().StringVarP(&args.Password, "password", "P", "", localizer.Sprintf("Obsolete. The initial passwords must be set using the %s environment variable or entered at the password prompt", localizer.PasswordEnvVar2))
 
 	// Using PersistentFlags() for ErrorSeverityLevel due to data type uint8 , which is not supported in Flags()
-	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "error-severity-level", "V", 0, "Controls the severity level that is used to set the ERRORLEVEL variable on exit.")
-	screenWidth := rootCmd.Flags().Int("screen-width", 0, "Specifies the screen width for output")
-	rootCmd.Flags().IntVarP(screenWidth, "w", "w", 0, "Specifies the screen width for output")
+	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "error-severity-level", "V", 0, localizer.Sprintf("Controls the severity level that is used to set the %s variable on exit", localizer.ErrorLevel))
+
+	var screenWidth int
+	screenWidthPtr := &screenWidth
+	rootCmd.Flags().IntVarP(screenWidthPtr, "screen-width", "w", 0, localizer.Sprintf("Specifies the screen width for output"))
+	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 }
 
 func normalizeFlags(rootCmd *cobra.Command) error {
@@ -248,10 +284,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "default", "readonly":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, fmt.Errorf("--application-intent must be one of \"default\",\"readonly\" but got \"%s\"", value))
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
+				err = localizer.Errorf("--application-intent must be one of %s but got \"%s\"", localizer.AppIntentValues, value)
 				return pflag.NormalizedName("")
 			}
 		case "encrypt-connection":
@@ -260,10 +293,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "default", "false", "true", "disable":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, fmt.Errorf("--encrypt-connection must be one of \"default\",\"false\",\"true\",\"disable\" but got \"%s\"", value))
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
+				err = localizer.Errorf("--encrypt-connection must be one of %s but got \"%s\"", localizer.EncryptConnValues, value)
 				return pflag.NormalizedName("")
 			}
 		case "format":
@@ -272,10 +302,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "horiz", "horizontal", "vert", "vertical":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, fmt.Errorf("--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"%s\"", value))
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
+				err = fmt.Errorf(localizer.Sprintf("--format must be one of %s but got \"%s\"", localizer.FormatValues, value))
 				return pflag.NormalizedName("")
 			}
 		case "errors-to-stderr":
@@ -284,10 +311,7 @@ func normalizeFlags(rootCmd *cobra.Command) error {
 			case "-1", "0", "1":
 				return pflag.NormalizedName(name)
 			default:
-				_, err = normalizeWithError(value, fmt.Errorf("--errors-to-stderr must be one of \"-1\",\"0\",\"1\" but got \"%s\"", value))
-				if err != nil {
-					fmt.Fprintln(os.Stderr, err)
-				}
+				err = fmt.Errorf(localizer.Sprintf("--errors-to-stderr must be one of %s but got \"%s\"", localizer.ErrToStderrValues, value))
 				return pflag.NormalizedName("")
 			}
 		}
@@ -399,6 +423,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.LogLevel = args.DriverLoggingLevel
 	connect.ExitOnError = args.ExitOnError
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
+	connect.DedicatedAdminConnection = args.DedicatedAdminConnection
 }
 
 func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {

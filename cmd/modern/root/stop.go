@@ -7,6 +7,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 type Stop struct {
@@ -16,10 +17,10 @@ type Stop struct {
 func (c *Stop) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "stop",
-		Short: "Stop current context",
+		Short: localizer.Sprintf("Stop current context"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Stop the current context",
+				Description: localizer.Sprintf("Stop the current context"),
 				Steps:       []string{`sqlcmd stop`}},
 		},
 		Run: c.run,
@@ -33,8 +34,8 @@ func (c *Stop) run() {
 
 	if config.CurrentContextName() == "" {
 		output.FatalfWithHintExamples([][]string{
-			{"To view available contexts", "sqlcmd config get-contexts"},
-		}, "No current context")
+			{localizer.Sprintf("To view available contexts"), "sqlcmd config get-contexts"},
+		}, localizer.Sprintf("No current context"))
 	}
 	if config.CurrentContextEndpointHasContainer() {
 		controller := container.NewController()
@@ -42,7 +43,7 @@ func (c *Stop) run() {
 		endpoint, _ := config.CurrentContext()
 
 		output.Infof(
-			"Stopping %q for context %q",
+			localizer.Sprintf("Stopping %q for context %q"),
 			endpoint.ContainerDetails.Image,
 			config.CurrentContextName(),
 		)
@@ -50,7 +51,7 @@ func (c *Stop) run() {
 		c.CheckErr(err)
 	} else {
 		output.FatalfWithHintExamples([][]string{
-			{"Create a new context with a SQL Server container ", "sqlcmd create mssql"},
-		}, "Current context does not have a container")
+			{localizer.Sprintf("Create a new context with a SQL Server container "), "sqlcmd create mssql"},
+		}, localizer.Sprintf("Current context does not have a container"))
 	}
 }

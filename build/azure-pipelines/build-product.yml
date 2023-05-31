@@ -239,3 +239,4 @@ stages:
           tag: '$(getVersion.VERSION_TAG)'
           changeLogCompareToRelease: 'lastFullRelease'
           changeLogType: 'commitBased'
+          isPreRelease: true
