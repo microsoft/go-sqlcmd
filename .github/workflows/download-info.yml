@@ -1,0 +1,47 @@
+name: Download Info
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  print-download-info:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'  # Replace with the desired Python version
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Get Download Info
+      id: download_info
+      run: |
+        python - <<EOF
+        import requests
+
+        url = "https://api.github.com/repos/microsoft/go-sqlcmd/releases"
+        response = requests.get(url)
+        data = response.json()
+
+        download_info = []
+        for release in data:
+            for asset in release['assets']:
+                browser_download_url = asset['browser_download_url']
+                download_count = asset['download_count']
+                download_info.append(f"Download URL: {browser_download_url}\nDownload Count: {download_count}\n")
+
+        print('::set-output name=download_info::' + ';'.join(download_info))
+        EOF
+
+    - name: Print Download Info
+      run: echo "${{ steps.download_info.outputs.download_info }}"
