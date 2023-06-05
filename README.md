@@ -1,6 +1,8 @@
 # SQLCMD CLI
 
-This repo contains the `sqlcmd` command line tool and go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.
+This repo contains the `sqlcmd` command line tool and Go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.  
+
+Learn more about how `sqlcmd` is used from a articles/posts written by the community: [Community Buzz][].
 
 ## Installation
 
@@ -300,6 +302,7 @@ trademarks or logos is subject to and must follow
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 
+[Community Buzz]: https://github.com/microsoft/go-sqlcmd/discussions/367
 [Homebrew]: https://formulae.brew.sh/formula/sqlcmd
 [Linuxbrew]: https://docs.brew.sh/Homebrew-on-Linux
 [Winget]: https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/Sqlcmd
