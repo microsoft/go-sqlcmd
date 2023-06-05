@@ -3,7 +3,7 @@ name: Download Info
 on:
   push:
     branches:
-      - main
+      - release_count
 
 jobs:
   print-download-info:
