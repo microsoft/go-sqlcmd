@@ -2850,27 +2850,27 @@
             "fuzzy": true
         },
         {
-            "id": "Sets the sqlcmd scripting variable {SQLCMDMAXVARTYPEWIDTH}",
-            "message": "Sets the sqlcmd scripting variable {SQLCMDMAXVARTYPEWIDTH}",
-            "translation": "Sets the sqlcmd scripting variable {SQLCMDMAXVARTYPEWIDTH}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "SQLCMDMAXVARTYPEWIDTH",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "\"SQLCMDMAXVARTYPEWIDTH\""
-                }
-            ],
-            "fuzzy": true
-        },
-        {
             "id": "Dedicated administrator connection",
             "message": "Dedicated administrator connection",
             "translation": "Dedicated administrator connection",
             "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Sets the sqlcmd scripting variable {V}",
+            "message": "Sets the sqlcmd scripting variable {V}",
+            "translation": "Sets the sqlcmd scripting variable {V}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "V",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "v"
+                }
+            ],
             "fuzzy": true
         },
         {

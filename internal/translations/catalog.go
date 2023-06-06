@@ -122,7 +122,7 @@ var messageKeyToIndex = map[string]int{
 	"Database for the connection string (default is taken from the T/SQL login)": 114,
 	"Database to use":                                                            27,
 	"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group": 252,
-	"Dedicated administrator connection":                              268,
+	"Dedicated administrator connection":                              267,
 	"Delete a context":                                                117,
 	"Delete a context (excluding its endpoint and user)":              119,
 	"Delete a context (including its endpoint and user)":              118,
@@ -236,7 +236,7 @@ var messageKeyToIndex = map[string]int{
 	"Set new default database":                                                25,
 	"Set the current context":                                                 159,
 	"Set the mssql context (endpoint/user) to be the current context":         160,
-	"Sets the sqlcmd scripting variable %s":                                   267,
+	"Sets the sqlcmd scripting variable %s":                                   268,
 	"Show sqlconfig settings and raw authentication data":                     168,
 	"Show sqlconfig settings, with REDACTED authentication data":              167,
 	"Special character set to include in password":                            180,
@@ -498,7 +498,7 @@ var en_USIndex = []uint32{ // 278 elements
 	0x0000344a, 0x00003472, 0x000034bd, 0x0000353d,
 	0x000035b0, 0x000035f7, 0x0000363a, 0x0000365f,
 	0x000036d6, 0x000036df, 0x0000372a, 0x00003750,
-	0x00003779, 0x0000379c, 0x000037fb, 0x00003842,
+	0x00003773, 0x0000379c, 0x000037fb, 0x00003842,
 	0x00003886, 0x000038d1, 0x00003901, 0x0000392f,
 	0x00003951, 0x0000396e,
 } // Size: 1136 bytes
@@ -714,8 +714,8 @@ const en_USData string = "" + // Size: 14702 bytes
 	"ard compatibility. Sqlcmd always optimizes detection of the active repli" +
 	"ca of a SQL Failover Cluster\x02Password\x02Controls the severity level " +
 	"that is used to set the %[1]s variable on exit\x02Specifies the screen w" +
-	"idth for output\x02Sets the sqlcmd scripting variable %[1]s\x02Dedicated" +
-	" administrator connection\x02'%[1]s %[2]s': value must be greater than o" +
+	"idth for output\x02Dedicated administrator connection\x02Sets the sqlcmd" +
+	" scripting variable %[1]s\x02'%[1]s %[2]s': value must be greater than o" +
 	"r equal to %#[3]v and less than or equal to %#[4]v.\x02'%[1]s %[2]s': va" +
 	"lue must be greater than %#[3]v and less than %#[4]v.\x02'%[1]s %[2]s': " +
 	"Unexpected argument. Argument value has to be %[3]v.\x02'%[1]s %[2]s': U" +
@@ -1555,4 +1555,4 @@ const zh_TWData string = "" + // Size: 504 bytes
 	"數。\x02環境變數: '%[1]s' 有無效值: '%[2]s'。\x02第 %[1]d 行接近命令 '%[2]s' 之處有語法錯誤。" +
 	"\x02%[1]s 開啟或操作檔案 %[2]s 時發生錯誤 (原因: %[3]s)。\x02%[1]s第 %[2]d 行有語法錯誤。"
 
-	// Total table size 33793 bytes (33KiB); checksum: 5942E239
+	// Total table size 33793 bytes (33KiB); checksum: 40444E17

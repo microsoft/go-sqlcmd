@@ -5,6 +5,10 @@ for /F "tokens=1,2 delims=#" %%a in ('"prompt #$H#$E# & echo on & for %%b in (1)
   set "DEL=%%a"
   set "ESC=%%b"
 )
+
+REM Get Version Tag
+for /f %%i in ('"git describe --tags --abbrev=0"') do set sqlcmdVersion=%%i
+
 setlocal
 SET     RED=%ESC%[1;31m
 echo %RED%
@@ -13,9 +17,6 @@ REM using for/do instead of running it directly so the status code isn't checked
 REM Once we are prepared to block the build with the linter we will move this step into a pipeline
 for /F  "usebackq"  %%l in (`go run cmd\sqlcmd-linter\main.go -test %~dp0../...`) DO echo %%l
 echo %ESC%[0m
-endlocal
-REM Get Version Tag
-for /f %%i in ('"git describe --tags --abbrev=0"') do set sqlcmdVersion=%%i
 
 if not exist %gopath%\bin\go-winres.exe (
     go install github.com/tc-hib/go-winres@latest
@@ -33,6 +34,8 @@ echo Fix any conflicting localizable strings:
 echo %RED%
 findstr conflicting "%~dp0generate.txt"
 echo %ESC%[0m
+endlocal
+
 if not %errorlevel% == 0 goto :end
 REM Generates sqlcmd.exe in the root dir of the repo
 go build -o %~dp0..\sqlcmd.exe -ldflags="-X main.version=%sqlcmdVersion%" %~dp0..\cmd\modern

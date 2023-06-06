@@ -2336,24 +2336,24 @@
             "translation": ""
         },
         {
-            "id": "Sets the sqlcmd scripting variable {SQLCMDMAXVARTYPEWIDTH}",
-            "message": "Sets the sqlcmd scripting variable {SQLCMDMAXVARTYPEWIDTH}",
+            "id": "Dedicated administrator connection",
+            "message": "Dedicated administrator connection",
+            "translation": ""
+        },
+        {
+            "id": "Sets the sqlcmd scripting variable {V}",
+            "message": "Sets the sqlcmd scripting variable {V}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "SQLCMDMAXVARTYPEWIDTH",
+                    "id": "V",
                     "string": "%[1]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "\"SQLCMDMAXVARTYPEWIDTH\""
+                    "expr": "v"
                 }
             ]
-        },
-        {
-            "id": "Dedicated administrator connection",
-            "message": "Dedicated administrator connection",
-            "translation": ""
         },
         {
             "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",

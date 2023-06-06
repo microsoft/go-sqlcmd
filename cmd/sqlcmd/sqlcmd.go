@@ -292,11 +292,14 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "error-severity-level", "V", 0, localizer.Sprintf("Controls the severity level that is used to set the %s variable on exit", localizer.ErrorLevel))
 
 	_ = rootCmd.Flags().IntP(screenWidth, "w", 0, localizer.Sprintf("Specifies the screen width for output"))
-	_ = rootCmd.Flags().IntP(variableTypeWidth, "y", 256, localizer.Sprintf("Sets the sqlcmd scripting variable %s", "SQLCMDMAXVARTYPEWIDTH"))
-	_ = rootCmd.Flags().IntP(fixedTypeWidth, "Y", 0, localizer.Sprintf("Sets the sqlcmd scripting variable %s", "SQLCMDMAXFIXEDTYPEWIDTH"))
+	_ = rootCmd.Flags().IntP(variableTypeWidth, "y", 256, setScriptVariable("SQLCMDMAXVARTYPEWIDTH"))
+	_ = rootCmd.Flags().IntP(fixedTypeWidth, "Y", 0, setScriptVariable("SQLCMDMAXFIXEDTYPEWIDTH"))
 	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 }
 
+func setScriptVariable(v string) string {
+	return localizer.Sprintf("Sets the sqlcmd scripting variable %s", v)
+}
 func normalizeFlags(cmd *cobra.Command) error {
 	//Adding a validator for checking the enum flags
 	var err error
