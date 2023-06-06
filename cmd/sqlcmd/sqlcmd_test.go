@@ -171,8 +171,8 @@ func TestValidateFlags(t *testing.T) {
 	}
 
 	commands := []cmdLineTest{
-		//{[]string{"-a", "100"}, "'-a 100': Packet size has to be a number between 512 and 32767."},
-		//{[]string{"-h-4"}, "'-h -4': header value must be either -1 or a value between 1 and 2147483647"},
+		{[]string{"-a", "100"}, "'-a 100': Packet size has to be a number between 512 and 32767."},
+		{[]string{"-h-4"}, "'-h -4': header value must be either -1 or a value between 1 and 2147483647"},
 		{[]string{"-w", "6"}, "'-w 6': value must be greater than 8 and less than 65536."},
 	}
 
