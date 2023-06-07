@@ -75,7 +75,7 @@ func (c *Query) DefineCommand(...cmdparser.CommandOptions) {
 func (c *Query) run() {
 	endpoint, user := config.CurrentContext()
 
-	s := sql.New(sql.SqlOptions{})
+	s := sql.NewSql(sql.SqlOptions{})
 	if c.text == "" {
 		s.Connect(endpoint, user, sql.ConnectOptions{Database: c.database, Interactive: true})
 	} else {

@@ -25,7 +25,7 @@ func TestInstallEdge(t *testing.T) {
 	cmdparser.TestCmd[*edge.GetTags]()
 	cmdparser.TestCmd[*Edge](
 		fmt.Sprintf(
-			`--accept-eula --user-database foo --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
+			`--accept-eula --database foo --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
 			registry,
 			repo))
 

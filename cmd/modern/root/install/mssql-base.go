@@ -5,9 +5,6 @@ package install
 
 import (
 	"fmt"
-	"net/url"
-	"path"
-	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -15,12 +12,13 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
-	"github.com/microsoft/go-sqlcmd/internal/http"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/mechanism"
 	"github.com/spf13/viper"
 )
 
@@ -55,7 +53,8 @@ type MssqlBase struct {
 
 	port int
 
-	usingDatabaseUrl string
+	useDatabaseUrl string
+	useMechanism   string
 
 	unitTesting bool
 
@@ -101,6 +100,14 @@ func (c *MssqlBase) AddFlags(
 		String:    &c.defaultDatabase,
 		Name:      "user-database",
 		Shorthand: "u",
+		Hidden:    true,
+		Usage:     localizer.Sprintf("[DEPRECATED use --database] Create a user database and set it as the default for login"),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:    &c.defaultDatabase,
+		Name:      "database",
+		Shorthand: "d",
 		Usage:     localizer.Sprintf("Create a user database and set it as the default for login"),
 	})
 
@@ -213,10 +220,25 @@ func (c *MssqlBase) AddFlags(
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.usingDatabaseUrl,
+		String:        &c.useDatabaseUrl,
 		DefaultString: "",
 		Name:          "using",
-		Usage:         localizer.Sprintf("Download (into container) and attach database (.bak) from URL"),
+		Hidden:        true,
+		Usage:         localizer.Sprintf("[DEPRECATED use --use] Download %q and use database", ingest.ValidFileExtensions()),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.useDatabaseUrl,
+		DefaultString: "",
+		Name:          "use",
+		Usage:         localizer.Sprintf("Download %q and use database", ingest.ValidFileExtensions()),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.useMechanism,
+		DefaultString: "",
+		Name:          "use-mechanism",
+		Usage:         localizer.Sprintf("Mechanism to use to bring database online (%s)", strings.Join(mechanism.Mechanisms(), ",")),
 	})
 }
 
@@ -229,9 +251,9 @@ func (c *MssqlBase) AddFlags(
 // If the EULA has not been accepted, it prints an error message with suggestions for how to proceed,
 // and exits the program.
 func (c *MssqlBase) Run() {
-	output := c.Cmd.Output()
-
 	var imageName string
+
+	output := c.Cmd.Output()
 
 	if !c.acceptEula && viper.GetString("ACCEPT_EULA") == "" {
 		output.FatalWithHints(
@@ -240,12 +262,9 @@ func (c *MssqlBase) Run() {
 			localizer.Sprintf("EULA not accepted"))
 	}
 
-	imageName = fmt.Sprintf(
-		"%s/%s:%s",
-		c.registry,
-		c.repo,
-		c.tag)
+	imageName = fmt.Sprintf("%s/%s:%s", c.registry, c.repo, c.tag)
 
+	// If no context name provided, set it to the default (e.g. mssql or edge)
 	if c.contextName == "" {
 		c.contextName = c.defaultContextName
 	}
@@ -253,7 +272,7 @@ func (c *MssqlBase) Run() {
 	c.createContainer(imageName, c.contextName)
 }
 
-// createContainer installs an image for a SQL Server container. The image
+// createContainer creates a SQL Server container for an image. The image
 // is specified by imageName, and the container will be given the name contextName.
 // If the useCached flag is set, the function will skip downloading the image
 // from the internet. The function outputs progress messages to the command-line
@@ -261,77 +280,71 @@ func (c *MssqlBase) Run() {
 // command-line and the program will exit.
 func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	output := c.Cmd.Output()
+	controller := container.NewController()
 	saPassword := c.generatePassword()
-
-	env := []string{
-		"ACCEPT_EULA=Y",
-		fmt.Sprintf("MSSQL_SA_PASSWORD=%s", saPassword),
-		fmt.Sprintf("MSSQL_COLLATION=%s", c.collation),
-	}
 
 	if c.port == 0 {
 		c.port = config.FindFreePortForTds()
 	}
 
 	// Do an early exit if url doesn't exist
-	if c.usingDatabaseUrl != "" {
-		c.validateUsingUrlExists()
+	var useDatabase ingest.Ingest
+	if c.useDatabaseUrl != "" {
+		useDatabase = c.verifyUseSourceFileExists(controller, output)
 	}
 
 	if c.defaultDatabase != "" {
 		if !c.validateDbName(c.defaultDatabase) {
-			output.Fatalf(localizer.Sprintf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))
+			output.Fatalf(localizer.Sprintf("--database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))
 		}
 	}
-
-	controller := container.NewController()
 
 	if !c.useCached {
 		c.downloadImage(imageName, output, controller)
 	}
 
+	runOptions := container.RunOptions{
+		Port:         c.port,
+		Name:         c.name,
+		Hostname:     c.hostname,
+		Architecture: c.architecture,
+		Os:           c.os}
+
+	runOptions.Env = []string{
+		"ACCEPT_EULA=Y",
+		fmt.Sprintf("MSSQL_SA_PASSWORD=%s", saPassword),
+		fmt.Sprintf("MSSQL_COLLATION=%s", c.collation)}
+
 	output.Infof(localizer.Sprintf("Starting %v", imageName))
 	containerId := controller.ContainerRun(
 		imageName,
-		env,
-		c.port,
-		c.name,
-		c.hostname,
-		c.architecture,
-		c.os,
-		[]string{},
-		false,
+		runOptions,
 	)
 	previousContextName := config.CurrentContextName()
 
-	userName := pal.UserName()
-	password := c.generatePassword()
-
 	// Save the config now, so user can uninstall/delete, even if mssql in the container
 	// fails to start
-	config.AddContextWithContainer(
-		contextName,
-		imageName,
-		c.port,
-		containerId,
-		userName,
-		password,
-		c.passwordEncryption,
-	)
+	contextOptions := config.ContextOptions{
+		ImageName:          imageName,
+		PortNumber:         c.port,
+		ContainerId:        containerId,
+		Username:           pal.UserName(),
+		Password:           c.generatePassword(),
+		PasswordEncryption: c.passwordEncryption}
+	config.AddContextWithContainer(contextName, contextOptions)
 
 	output.Infof(
-		localizer.Sprintf("Created context %q in \"%s\", configuring user account...",
+		localizer.Sprintf("Created context %q in \"%s\", configuring user account",
 			config.CurrentContextName(),
 			config.GetConfigFileUsed()))
 
-	controller.ContainerWaitForLogEntry(
-		containerId, c.errorLogEntryToWaitFor)
+	controller.ContainerWaitForLogEntry(containerId, c.errorLogEntryToWaitFor)
 
 	output.Infof(
 		localizer.Sprintf("Disabled %q account (and rotated %q password). Creating user %q",
 			"sa",
 			"sa",
-			userName))
+			contextOptions.Username))
 
 	endpoint, _ := config.CurrentContext()
 
@@ -339,11 +352,11 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	//
 	// For Unit Testing we use the Docker Hello World container, which
 	// starts much faster than the SQL Server container!
+	sqlOptions := sql.SqlOptions{}
 	if c.errorLogEntryToWaitFor == "Hello from Docker!" {
-		c.sql = sql.New(sql.SqlOptions{UnitTesting: true})
-	} else {
-		c.sql = sql.New(sql.SqlOptions{UnitTesting: false})
+		sqlOptions.UnitTesting = true
 	}
+	c.sql = sql.NewSql(sqlOptions)
 
 	saUser := &sqlconfig.User{
 		AuthenticationType: "basic",
@@ -353,17 +366,23 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			Password:           secret.Encode(saPassword, c.passwordEncryption)},
 		Name: "sa"}
 
-	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
+	// Connect to master database on SQL Server in the container as `sa`
+	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master"})
 
-	c.createNonSaUser(userName, password)
+	// Create a new (non-sa) SQL Server user
+	c.createUser(contextOptions.Username, contextOptions.Password)
 
-	// Download and restore DB if asked
-	if c.usingDatabaseUrl != "" {
-		c.downloadAndRestoreDb(
-			controller,
-			containerId,
-			userName,
-		)
+	// Download and restore/attach etc. DB if asked
+	if useDatabase != nil {
+		if useDatabase.IsRemoteUrl() {
+			output.Infof("Downloading %q to container", useDatabase.UrlFilename())
+		} else {
+			output.Infof("Copying %q to container", useDatabase.UrlFilename())
+		}
+		useDatabase.CopyToContainer(containerId)
+
+		output.Infof("Bringing database %q online", useDatabase.DatabaseName())
+		useDatabase.BringOnline(c.sql.Query, contextOptions.Username, contextOptions.Password)
 	}
 
 	hints := [][]string{}
@@ -396,51 +415,47 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	)
 }
 
-func (c *MssqlBase) validateUsingUrlExists() {
-	output := c.Cmd.Output()
-	databaseUrl := extractUrl(c.usingDatabaseUrl)
-	u, err := url.Parse(databaseUrl)
-	c.CheckErr(err)
+func (c *MssqlBase) verifyUseSourceFileExists(
+	controller *container.Controller,
+	output *output.Output,
+) (useDatabase ingest.Ingest) {
+	useDatabase = ingest.NewIngest(c.useDatabaseUrl, controller, ingest.IngestOptions{
+		Mechanism: c.useMechanism,
+	})
 
-	if u.Scheme != "http" && u.Scheme != "https" {
+	if !useDatabase.IsValidFileExtension() {
 		output.FatalfWithHints(
 			[]string{
-				localizer.Sprintf("--using URL must be http or https"),
+				fmt.Sprintf(
+					localizer.Sprintf("--use must be a path to a file with a %q extension"),
+					ingest.ValidFileExtensions(),
+				),
 			},
-			localizer.Sprintf("%q is not a valid URL for --using flag", c.usingDatabaseUrl))
+			localizer.Sprintf("%q is not a valid file extension for --use flag"), useDatabase.UserProvidedFileExt())
 	}
 
-	if u.Path == "" {
+	if useDatabase.IsRemoteUrl() && !useDatabase.IsValidScheme() {
 		output.FatalfWithHints(
 			[]string{
-				localizer.Sprintf("--using URL must have a path to .bak file"),
+				localizer.Sprintf("--use URL must one of %q"),
+				strings.Join(useDatabase.ValidSchemes(), ", "),
 			},
-			localizer.Sprintf("%q is not a valid URL for --using flag", c.usingDatabaseUrl))
+			localizer.Sprintf("%q is not a valid URL for --use flag", c.useDatabaseUrl))
 	}
 
-	// At the moment we only support attaching .bak files, but we should
-	// support .bacpacs and .mdfs in the future
-	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
+	if !useDatabase.SourceFileExists() {
 		output.FatalfWithHints(
-			[]string{
-				localizer.Sprintf("--using file URL must be a .bak file"),
-			},
-			localizer.Sprintf("Invalid --using file type"))
+			[]string{localizer.Sprintf("File does not exist at URL %q", c.useDatabaseUrl)},
+			"Unable to download file")
 	}
-
-	// Verify the url actually exists, and early exit if it doesn't
-	urlExists(databaseUrl, output)
+	return
 }
 
-func (c *MssqlBase) query(commandText string) {
-	c.sql.Query(commandText)
-}
-
-// createNonSaUser creates a user (non-sa) and assigns the sysadmin role
+// createUser creates a user (non-sa) and assigns the sysadmin role
 // to the user. It also creates a default database with the provided name
 // and assigns the default database to the user. Finally, it disables
 // the sa account and rotates the sa password for security reasons.
-func (c *MssqlBase) createNonSaUser(
+func (c *MssqlBase) createUser(
 	userName string,
 	password string,
 ) {
@@ -453,7 +468,7 @@ func (c *MssqlBase) createNonSaUser(
 
 		// Create the default database, if it isn't a downloaded database
 		output.Infof(localizer.Sprintf("Creating default database [%s]", defaultDatabase))
-		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
+		c.sql.Query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
 	const createLogin = `CREATE LOGIN [%s]
@@ -465,137 +480,27 @@ CHECK_POLICY=OFF`
 @loginame = N'%s',
 @rolename = N'sysadmin'`
 
-	c.query(fmt.Sprintf(createLogin, userName, password, defaultDatabase))
-	c.query(fmt.Sprintf(addSrvRoleMember, userName))
+	if c.defaultDatabase != "" {
+		defaultDatabase = c.defaultDatabase
+
+		// Create the default database, if it isn't a downloaded database
+		output.Infof("Creating default database [%s]", defaultDatabase)
+		c.sql.Query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
+	}
+
+	c.sql.Query(fmt.Sprintf(createLogin, userName, password, defaultDatabase))
+	c.sql.Query(fmt.Sprintf(addSrvRoleMember, userName))
 
 	// Correct safety protocol is to rotate the sa password, because the first
 	// sa password has been in the docker environment (as SA_PASSWORD)
-	c.query(fmt.Sprintf("ALTER LOGIN [sa] WITH PASSWORD = N'%s';",
+	c.sql.Query(fmt.Sprintf("ALTER LOGIN [sa] WITH PASSWORD = N'%s';",
 		c.generatePassword()))
-	c.query("ALTER LOGIN [sa] DISABLE")
+	c.sql.Query("ALTER LOGIN [sa] DISABLE")
 
 	if c.defaultDatabase != "" {
-		c.query(fmt.Sprintf("ALTER AUTHORIZATION ON DATABASE::[%s] TO %s",
+		c.sql.Query(fmt.Sprintf("ALTER AUTHORIZATION ON DATABASE::[%s] TO %s",
 			defaultDatabase, userName))
 	}
-}
-
-func getDbNameAsIdentifier(dbName string) string {
-	escapedDbNAme := strings.ReplaceAll(dbName, "'", "''")
-	return strings.ReplaceAll(escapedDbNAme, "]", "]]")
-}
-
-func getDbNameAsNonIdentifier(dbName string) string {
-	return strings.ReplaceAll(dbName, "]", "]]")
-}
-
-// parseDbName returns the databaseName from --using arg
-// It sets database name to the specified database name
-// or in absence of it, it is set to the filename without
-// extension.
-func parseDbName(usingDbUrl string) string {
-	u, _ := url.Parse(usingDbUrl)
-	dbToken := path.Base(u.Path)
-	if dbToken != "." && dbToken != "/" {
-		lastIdx := strings.LastIndex(dbToken, ".bak")
-		if lastIdx != -1 {
-			//Get file name without extension
-			fileName := dbToken[0:lastIdx]
-			lastIdx += 5
-			if lastIdx >= len(dbToken) {
-				return fileName
-			}
-			//Return database name if it was specified
-			return dbToken[lastIdx:]
-		}
-	}
-	return ""
-}
-
-func extractUrl(usingArg string) string {
-	urlEndIdx := strings.LastIndex(usingArg, ".bak")
-	if urlEndIdx != -1 {
-		return usingArg[0:(urlEndIdx + 4)]
-	}
-	return usingArg
-}
-
-func (c *MssqlBase) downloadAndRestoreDb(
-	controller *container.Controller,
-	containerId string,
-	userName string,
-) {
-	output := c.Cmd.Output()
-	databaseName := parseDbName(c.usingDatabaseUrl)
-	databaseUrl := extractUrl(c.usingDatabaseUrl)
-
-	_, file := filepath.Split(databaseUrl)
-
-	// Download file from URL into container
-	output.Infof(localizer.Sprintf("Downloading %s", file))
-
-	temporaryFolder := "/var/opt/mssql/backup"
-
-	controller.DownloadFile(
-		containerId,
-		databaseUrl,
-		temporaryFolder,
-	)
-
-	// Restore database from file
-	output.Infof(localizer.Sprintf("Restoring database %s", databaseName))
-
-	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
-	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
-
-	text := `SET NOCOUNT ON;
-
--- Build a SQL Statement to restore any .bak file to the Linux filesystem
-DECLARE @sql NVARCHAR(max)
-
--- This table definition works since SQL Server 2017, therefore 
--- works for all SQL Server containers (which started in 2017)
-DECLARE @fileListTable TABLE (
-    [LogicalName]           NVARCHAR(128),
-    [PhysicalName]          NVARCHAR(260),
-    [Type]                  CHAR(1),
-    [FileGroupName]         NVARCHAR(128),
-    [Size]                  NUMERIC(20,0),
-    [MaxSize]               NUMERIC(20,0),
-    [FileID]                BIGINT,
-    [CreateLSN]             NUMERIC(25,0),
-    [DropLSN]               NUMERIC(25,0),
-    [UniqueID]              UNIQUEIDENTIFIER,
-    [ReadOnlyLSN]           NUMERIC(25,0),
-    [ReadWriteLSN]          NUMERIC(25,0),
-    [BackupSizeInBytes]     BIGINT,
-    [SourceBlockSize]       INT,
-    [FileGroupID]           INT,
-    [LogGroupGUID]          UNIQUEIDENTIFIER,
-    [DifferentialBaseLSN]   NUMERIC(25,0),
-    [DifferentialBaseGUID]  UNIQUEIDENTIFIER,
-    [IsReadOnly]            BIT,
-    [IsPresent]             BIT,
-    [TDEThumbprint]         VARBINARY(32),
-    [SnapshotURL]           NVARCHAR(360)
-)
-
-INSERT INTO @fileListTable
-EXEC('RESTORE FILELISTONLY FROM DISK = ''%s/%s''')
-SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''%s/%s'' WITH '
-SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
-FROM @fileListTable
-WHERE IsPresent = 1
-SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
-EXEC(@sql)`
-
-	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
-
-	alterDefaultDb := fmt.Sprintf(
-		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
-		userName,
-		dbNameAsNonIdentifier)
-	c.query(alterDefaultDb)
 }
 
 func (c *MssqlBase) downloadImage(
@@ -618,15 +523,6 @@ func (c *MssqlBase) downloadImage(
 				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
 					"\t`podman|docker pull %s`", imageName)},
 			localizer.Sprintf("Unable to download image %s", imageName))
-	}
-}
-
-// Verify the file exists at the URL
-func urlExists(url string, output *output.Output) {
-	if !http.UrlExists(url) {
-		output.FatalfWithHints(
-			[]string{localizer.Sprintf("File does not exist at URL")},
-			localizer.Sprintf("Unable to download file"))
 	}
 }
 
