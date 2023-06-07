@@ -37,6 +37,13 @@ Learn more about how `sqlcmd` is used from a articles/posts written by the commu
 | --------------------- | --------------------- |
 | `brew install sqlcmd` | `brew upgrade sqlcmd` |
 
+##### Apple Silicon Macs (M1/M2)
+Macs running Apple Silicon require [Docker][] Desktop to use Rosetta for x86/amd64 emulation. Follow these steps before creating a SQL Server instance:
+- Open Docker Desktop.
+- Go to the settings/preferences menu.
+- Find the “Features in development” section.
+- Enable the "Use Rosetta for x86/amd64 emulation on Apple Silicon" checkbox.
+
 ### Linux
 
 `sqlcmd` is available via [Linuxbrew][], and as a downloadable .rpm/.deb and .tar from the [releases page][].
