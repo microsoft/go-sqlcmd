@@ -24,6 +24,12 @@ func (l local) ValidSchemes() []string {
 }
 
 func (l local) CopyToContainer(containerId string, destFolder string) {
+	l.controller.RunCmdInContainer(
+		containerId,
+		[]string{"mkdir", "-p", destFolder},
+		container.ExecOptions{},
+	)
+
 	l.controller.CopyFile(
 		containerId,
 		l.uri,
