@@ -29,7 +29,7 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 	// The long flag names are up for debate.
 	commands := []cmdLineTest{
 		{[]string{}, func(args SQLCmdArguments) bool {
-			return args.Server == "" && !args.UseTrustedConnection && args.UserName == ""
+			return args.Server == "" && !args.UseTrustedConnection && args.UserName == "" && args.ScreenWidth == nil && args.ErrorsToStderr == -1 && args.EncryptConnection == "default"
 		}},
 		{[]string{"-c", "MYGO", "-C", "-E", "-i", "file1", "-o", "outfile", "-i", "file2"}, func(args SQLCmdArguments) bool {
 			return args.BatchTerminator == "MYGO" && args.TrustServerCertificate && len(args.InputFile) == 2 && strings.HasSuffix(args.OutputFile, "outfile")
@@ -75,14 +75,14 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"--version"}, func(args SQLCmdArguments) bool {
 			return args.Version
 		}},
-		{[]string{}, func(args SQLCmdArguments) bool {
-			return args.ScreenWidth == nil
-		}},
 		{[]string{"-w", "10"}, func(args SQLCmdArguments) bool {
-			return args.ScreenWidth != nil && *args.ScreenWidth == 10
+			return args.ScreenWidth != nil && *args.ScreenWidth == 10 && args.FixedTypeWidth == nil && args.VariableTypeWidth == nil
 		}},
 		{[]string{"-s", "|", "-w", "10", "-W"}, func(args SQLCmdArguments) bool {
 			return args.TrimSpaces && args.ColumnSeparator == "|" && *args.ScreenWidth == 10
+		}},
+		{[]string{"-y", "100", "-Y", "200", "-P", "placeholder"}, func(args SQLCmdArguments) bool {
+			return *args.FixedTypeWidth == 200 && *args.VariableTypeWidth == 100 && args.Password == "placeholder"
 		}},
 	}
 
@@ -93,8 +93,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 			Short: "A brief description of my command",
 			Long:  "A long description of my command",
 			PreRunE: func(cmd *cobra.Command, argss []string) error {
-				SetScreenWidthFlag(arguments, cmd)
-				return arguments.Validate()
+				SetScreenWidthFlags(arguments, cmd)
+				return arguments.Validate(cmd)
 			},
 			Run: func(cmd *cobra.Command, argss []string) {
 				// Command logic goes here
@@ -103,6 +103,7 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 			SilenceUsage:  true,
 		}
 		cmd.SetOut(new(bytes.Buffer))
+		cmd.SetErr(new(bytes.Buffer))
 		setFlags(cmd, arguments)
 		cmd.SetArgs(test.commandLine)
 		err := cmd.Execute()
@@ -125,8 +126,13 @@ func TestInvalidCommandLine(t *testing.T) {
 	commands := []cmdLineTest{
 		// Issue:341  https://github.com/microsoft/go-sqlcmd/issues/341
 		//{[]string{"-E", "-U", "someuser"}, "--use-trusted-connection and --user-name can't be used together"},
-		{[]string{"-F", "what"}, "--format must be one of \"horiz\",\"horizontal\",\"vert\",\"vertical\" but got \"what\""},
-		{[]string{"-r", "5"}, `--errors-to-stderr must be one of "-1","0","1" but got "5"`},
+		{[]string{"-F", "what"}, "'-F what': Unexpected argument. Argument value has to be one of [horiz horizontal vert vertical]."},
+		{[]string{"-r", "5"}, `'-r 5': Unexpected argument. Argument value has to be one of [0 1].`},
+		{[]string{"-w", "x"}, "'-w x': value must be greater than 8 and less than 65536."},
+		{[]string{"-y", "111111"}, "'-y 111111': value must be greater than or equal to 0 and less than or equal to 8000."},
+		{[]string{"-Y", "-2"}, "'-Y -2': value must be greater than or equal to 0 and less than or equal to 8000."},
+		{[]string{"-P"}, "'-P': Missing argument. Enter '-?' for help."},
+		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
 	}
 
 	for _, test := range commands {
@@ -136,17 +142,25 @@ func TestInvalidCommandLine(t *testing.T) {
 			Short: "A brief description of my command",
 			Long:  "A long description of my command",
 			PreRunE: func(cmd *cobra.Command, argss []string) error {
+				SetScreenWidthFlags(arguments, cmd)
+				if err := arguments.Validate(cmd); err != nil {
+					cmd.SilenceUsage = true
+					return err
+				}
 				return normalizeFlags(cmd)
 			},
 			Run: func(cmd *cobra.Command, argss []string) {
 			},
-			SilenceErrors: true,
-			SilenceUsage:  true,
+			SilenceUsage: true,
 		}
+		buf := &memoryBuffer{buf: new(bytes.Buffer)}
+		cmd.SetErr(buf)
 		setFlags(cmd, arguments)
 		cmd.SetArgs(test.commandLine)
 		err := cmd.Execute()
-		assert.EqualError(t, err, test.errorMessage, "Command line:%v", test.commandLine)
+		assert.EqualError(t, err, test.errorMessage, "Command line:", test.commandLine)
+		errBytes := buf.buf.String()
+		assert.Equalf(t, sqlcmdErrorPrefix, string(errBytes)[:len(sqlcmdErrorPrefix)], "Output error should start with '%s' - %s", sqlcmdErrorPrefix, test.commandLine)
 	}
 }
 
@@ -170,15 +184,15 @@ func TestValidateFlags(t *testing.T) {
 			Short: "A brief description of my command",
 			Long:  "A long description of my command",
 			PreRunE: func(cmd *cobra.Command, argss []string) error {
-				SetScreenWidthFlag(arguments, cmd)
-				return arguments.Validate()
+				SetScreenWidthFlags(arguments, cmd)
+				return arguments.Validate(cmd)
 			},
 			Run: func(cmd *cobra.Command, argss []string) {
 			},
 			SilenceErrors: true,
 			SilenceUsage:  true,
 		}
-
+		cmd.SetErr(new(bytes.Buffer))
 		setFlags(cmd, arguments)
 		cmd.SetArgs(test.commandLine)
 		err := cmd.Execute()
@@ -468,4 +482,17 @@ func canTestAzureAuth() bool {
 	server := os.Getenv(sqlcmd.SQLCMDSERVER)
 	userName := os.Getenv(sqlcmd.SQLCMDUSER)
 	return strings.Contains(server, ".database.windows.net") && userName == ""
+}
+
+// memoryBuffer has both Write and Close methods for use as io.WriteCloser
+type memoryBuffer struct {
+	buf *bytes.Buffer
+}
+
+func (b *memoryBuffer) Write(p []byte) (n int, err error) {
+	return b.buf.Write(p)
+}
+
+func (b *memoryBuffer) Close() error {
+	return nil
 }
