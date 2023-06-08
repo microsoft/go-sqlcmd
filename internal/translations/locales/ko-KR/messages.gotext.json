@@ -2,6 +2,1941 @@
     "language": "ko-KR",
     "messages": [
         {
+            "id": "Install/Create, Query, Uninstall SQL Server",
+            "message": "Install/Create, Query, Uninstall SQL Server",
+            "translation": ""
+        },
+        {
+            "id": "View configuration information and connection strings",
+            "message": "View configuration information and connection strings",
+            "translation": ""
+        },
+        {
+            "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
+            "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "FeedbackUrl",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "feedbackUrl"
+                }
+            ]
+        },
+        {
+            "id": "help for backwards compatibility flags (-S, -U, -E etc.)",
+            "message": "help for backwards compatibility flags (-S, -U, -E etc.)",
+            "translation": ""
+        },
+        {
+            "id": "print version of sqlcmd",
+            "message": "print version of sqlcmd",
+            "translation": ""
+        },
+        {
+            "id": "configuration file",
+            "message": "configuration file",
+            "translation": ""
+        },
+        {
+            "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
+            "message": "log level, error=0, warn=1, info=2, debug=3, trace=4",
+            "translation": ""
+        },
+        {
+            "id": "Modify sqlconfig files using subcommands like \"{UseContextCommand}\"",
+            "message": "Modify sqlconfig files using subcommands like \"{UseContextCommand}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "UseContextCommand",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.UseContextCommand"
+                }
+            ]
+        },
+        {
+            "id": "Add context for existing endpoint and user (use {PasswordEnvVar} or {PasswordEnvVar2})",
+            "message": "Add context for existing endpoint and user (use {PasswordEnvVar} or {PasswordEnvVar2})",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEnvVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEnvVar"
+                },
+                {
+                    "id": "PasswordEnvVar2",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.PasswordEnvVar2"
+                }
+            ]
+        },
+        {
+            "id": "Install/Create SQL Server, Azure SQL, and Tools",
+            "message": "Install/Create SQL Server, Azure SQL, and Tools",
+            "translation": ""
+        },
+        {
+            "id": "Open tools (e.g Azure Data Studio) for current context",
+            "message": "Open tools (e.g Azure Data Studio) for current context",
+            "translation": ""
+        },
+        {
+            "id": "Run a query against the current context",
+            "message": "Run a query against the current context",
+            "translation": ""
+        },
+        {
+            "id": "Run a query",
+            "message": "Run a query",
+            "translation": ""
+        },
+        {
+            "id": "Run a query using [{Master}] database",
+            "message": "Run a query using [{Master}] database",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Master",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"master\""
+                }
+            ]
+        },
+        {
+            "id": "Set new default database",
+            "message": "Set new default database",
+            "translation": ""
+        },
+        {
+            "id": "Command text to run",
+            "message": "Command text to run",
+            "translation": ""
+        },
+        {
+            "id": "Database to use",
+            "message": "Database to use",
+            "translation": ""
+        },
+        {
+            "id": "Start current context",
+            "message": "Start current context",
+            "translation": ""
+        },
+        {
+            "id": "Start the current context",
+            "message": "Start the current context",
+            "translation": ""
+        },
+        {
+            "id": "To view available contexts",
+            "message": "To view available contexts",
+            "translation": ""
+        },
+        {
+            "id": "No current context",
+            "message": "No current context",
+            "translation": ""
+        },
+        {
+            "id": "Starting {Arg_1} for context {Arg_2}",
+            "message": "Starting {Arg_1} for context {Arg_2}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Arg_1",
+                    "string": "%[1]q",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 1
+                },
+                {
+                    "id": "Arg_2",
+                    "string": "%[2]q",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 2
+                }
+            ]
+        },
+        {
+            "id": "Create new context with a sql container",
+            "message": "Create new context with a sql container",
+            "translation": ""
+        },
+        {
+            "id": "Current context does not have a container",
+            "message": "Current context does not have a container",
+            "translation": ""
+        },
+        {
+            "id": "Stop current context",
+            "message": "Stop current context",
+            "translation": ""
+        },
+        {
+            "id": "Stop the current context",
+            "message": "Stop the current context",
+            "translation": ""
+        },
+        {
+            "id": "Stopping {Arg_1} for context {Arg_2}",
+            "message": "Stopping {Arg_1} for context {Arg_2}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Arg_1",
+                    "string": "%[1]q",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 1
+                },
+                {
+                    "id": "Arg_2",
+                    "string": "%[2]q",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 2
+                }
+            ]
+        },
+        {
+            "id": "Create a new context with a SQL Server container",
+            "message": "Create a new context with a SQL Server container",
+            "translation": ""
+        },
+        {
+            "id": "Uninstall/Delete the current context",
+            "message": "Uninstall/Delete the current context",
+            "translation": ""
+        },
+        {
+            "id": "Uninstall/Delete the current context, no user prompt",
+            "message": "Uninstall/Delete the current context, no user prompt",
+            "translation": ""
+        },
+        {
+            "id": "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+            "message": "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+            "translation": ""
+        },
+        {
+            "id": "Quiet mode (do not stop for user input to confirm the operation)",
+            "message": "Quiet mode (do not stop for user input to confirm the operation)",
+            "translation": ""
+        },
+        {
+            "id": "Complete the operation even if non-system (user) database files are present",
+            "message": "Complete the operation even if non-system (user) database files are present",
+            "translation": ""
+        },
+        {
+            "id": "View available contexts",
+            "message": "View available contexts",
+            "translation": ""
+        },
+        {
+            "id": "Create context",
+            "message": "Create context",
+            "translation": ""
+        },
+        {
+            "id": "Create context with SQL Server container",
+            "message": "Create context with SQL Server container",
+            "translation": ""
+        },
+        {
+            "id": "Add a context manually",
+            "message": "Add a context manually",
+            "translation": ""
+        },
+        {
+            "id": "Current context is {CurrentContextName}. Do you want to continue? (Y/N)",
+            "message": "Current context is {CurrentContextName}. Do you want to continue? (Y/N)",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CurrentContextName",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "config.CurrentContextName()"
+                }
+            ]
+        },
+        {
+            "id": "Verifying no user (non-system) database (.mdf) files",
+            "message": "Verifying no user (non-system) database (.mdf) files",
+            "translation": ""
+        },
+        {
+            "id": "To start the container",
+            "message": "To start the container",
+            "translation": ""
+        },
+        {
+            "id": "To override the check, use {__force}",
+            "message": "To override the check, use {__force}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__force",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--force\""
+                }
+            ]
+        },
+        {
+            "id": "Container is not running, unable to verify that user database files do not exist",
+            "message": "Container is not running, unable to verify that user database files do not exist",
+            "translation": ""
+        },
+        {
+            "id": "Removing context {CurrentContextName}",
+            "message": "Removing context {CurrentContextName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CurrentContextName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "config.CurrentContextName()"
+                }
+            ]
+        },
+        {
+            "id": "Container {Id} no longer exists, continuing to remove context...",
+            "message": "Container {Id} no longer exists, continuing to remove context...",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Id",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "id"
+                }
+            ]
+        },
+        {
+            "id": "Current context is now {NewContextName}",
+            "message": "Current context is now {NewContextName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "NewContextName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "newContextName"
+                }
+            ]
+        },
+        {
+            "id": "{Operation_completed_successfully}",
+            "message": "{Operation_completed_successfully}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Operation_completed_successfully",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"Operation completed successfully\""
+                }
+            ]
+        },
+        {
+            "id": "If the database is mounted, run {DropDbQuery}",
+            "message": "If the database is mounted, run {DropDbQuery}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DropDbQuery",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "dropDbQuery"
+                }
+            ]
+        },
+        {
+            "id": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
+            "message": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "__force",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"--force\""
+                }
+            ]
+        },
+        {
+            "id": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
+            "message": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DatabaseFile",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "databaseFile"
+                }
+            ]
+        },
+        {
+            "id": "No endpoints to uninstall",
+            "message": "No endpoints to uninstall",
+            "translation": ""
+        },
+        {
+            "id": "Add a context",
+            "message": "Add a context",
+            "translation": ""
+        },
+        {
+            "id": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
+            "message": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
+            "translation": ""
+        },
+        {
+            "id": "Display name for the context",
+            "message": "Display name for the context",
+            "translation": ""
+        },
+        {
+            "id": "Name of endpoint this context will use",
+            "message": "Name of endpoint this context will use",
+            "translation": ""
+        },
+        {
+            "id": "Name of user this context will use",
+            "message": "Name of user this context will use",
+            "translation": ""
+        },
+        {
+            "id": "View existing endpoints to choose from",
+            "message": "View existing endpoints to choose from",
+            "translation": ""
+        },
+        {
+            "id": "Add a new local endpoint",
+            "message": "Add a new local endpoint",
+            "translation": ""
+        },
+        {
+            "id": "Add an already existing endpoint",
+            "message": "Add an already existing endpoint",
+            "translation": ""
+        },
+        {
+            "id": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
+            "message": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "EndpointName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.endpointName"
+                },
+                {
+                    "id": "EndpointFlag",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.EndpointFlag"
+                }
+            ]
+        },
+        {
+            "id": "View list of users",
+            "message": "View list of users",
+            "translation": ""
+        },
+        {
+            "id": "Add the user",
+            "message": "Add the user",
+            "translation": ""
+        },
+        {
+            "id": "Add an endpoint",
+            "message": "Add an endpoint",
+            "translation": ""
+        },
+        {
+            "id": "User '{UserName}' does not exist",
+            "message": "User '{UserName}' does not exist",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "UserName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.userName"
+                }
+            ]
+        },
+        {
+            "id": "Open in Azure Data Studio",
+            "message": "Open in Azure Data Studio",
+            "translation": ""
+        },
+        {
+            "id": "To start interactive query session",
+            "message": "To start interactive query session",
+            "translation": ""
+        },
+        {
+            "id": "To run a query",
+            "message": "To run a query",
+            "translation": ""
+        },
+        {
+            "id": "Current Context '{Name}'",
+            "message": "Current Context '{Name}'",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "context.Name"
+                }
+            ]
+        },
+        {
+            "id": "Add a default endpoint",
+            "message": "Add a default endpoint",
+            "translation": ""
+        },
+        {
+            "id": "Display name for the endpoint",
+            "message": "Display name for the endpoint",
+            "translation": ""
+        },
+        {
+            "id": "The network address to connect to, e.g. 127.0.0.1 etc.",
+            "message": "The network address to connect to, e.g. 127.0.0.1 etc.",
+            "translation": ""
+        },
+        {
+            "id": "The network port to connect to, e.g. 1433 etc.",
+            "message": "The network port to connect to, e.g. 1433 etc.",
+            "translation": ""
+        },
+        {
+            "id": "Add a context for this endpoint",
+            "message": "Add a context for this endpoint",
+            "translation": ""
+        },
+        {
+            "id": "View endpoint names",
+            "message": "View endpoint names",
+            "translation": ""
+        },
+        {
+            "id": "View endpoint details",
+            "message": "View endpoint details",
+            "translation": ""
+        },
+        {
+            "id": "View all endpoints details",
+            "message": "View all endpoints details",
+            "translation": ""
+        },
+        {
+            "id": "Delete this endpoint",
+            "message": "Delete this endpoint",
+            "translation": ""
+        },
+        {
+            "id": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
+            "message": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "UniqueEndpointName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "uniqueEndpointName"
+                },
+                {
+                    "id": "Address",
+                    "string": "%[2]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "c.address"
+                },
+                {
+                    "id": "Port",
+                    "string": "%[3]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 3,
+                    "expr": "c.port"
+                }
+            ]
+        },
+        {
+            "id": "Add a user (using the SQLCMD_PASSWORD environment variable)",
+            "message": "Add a user (using the SQLCMD_PASSWORD environment variable)",
+            "translation": ""
+        },
+        {
+            "id": "Add a user (using the SQLCMDPASSWORD environment variable)",
+            "message": "Add a user (using the SQLCMDPASSWORD environment variable)",
+            "translation": ""
+        },
+        {
+            "id": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
+            "message": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
+            "translation": ""
+        },
+        {
+            "id": "Add a user",
+            "message": "Add a user",
+            "translation": ""
+        },
+        {
+            "id": "Display name for the user (this is not the username)",
+            "message": "Display name for the user (this is not the username)",
+            "translation": ""
+        },
+        {
+            "id": "Authentication type this user will use (basic | other)",
+            "message": "Authentication type this user will use (basic | other)",
+            "translation": ""
+        },
+        {
+            "id": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
+            "message": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEnvVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEnvVar"
+                },
+                {
+                    "id": "PasswordEnvVar2",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.PasswordEnvVar2"
+                }
+            ]
+        },
+        {
+            "id": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
+            "message": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "EncryptionMethodsForUsage",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "secret.EncryptionMethodsForUsage()"
+                }
+            ]
+        },
+        {
+            "id": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
+            "message": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ModernAuthTypeBasic",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.ModernAuthTypeBasic"
+                },
+                {
+                    "id": "ModernAuthTypeOther",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.ModernAuthTypeOther"
+                }
+            ]
+        },
+        {
+            "id": "Authentication type '' is not valid {AuthType}'",
+            "message": "Authentication type '' is not valid {AuthType}'",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "AuthType",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.authType"
+                }
+            ]
+        },
+        {
+            "id": "Remove the {PasswordEncryptFlag} flag",
+            "message": "Remove the {PasswordEncryptFlag} flag",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEncryptFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEncryptFlag"
+                }
+            ]
+        },
+        {
+            "id": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
+            "message": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "AuthTypeFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.AuthTypeFlag"
+                },
+                {
+                    "id": "ModernAuthTypeBasic",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.ModernAuthTypeBasic"
+                }
+            ]
+        },
+        {
+            "id": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
+            "message": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEncryptFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEncryptFlag"
+                },
+                {
+                    "id": "ModernAuthTypeBasic",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.ModernAuthTypeBasic"
+                }
+            ]
+        },
+        {
+            "id": "Add the {PasswordEncryptFlag} flag",
+            "message": "Add the {PasswordEncryptFlag} flag",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEncryptFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEncryptFlag"
+                }
+            ]
+        },
+        {
+            "id": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
+            "message": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEncryptFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEncryptFlag"
+                },
+                {
+                    "id": "ModernAuthTypeBasic",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.ModernAuthTypeBasic"
+                }
+            ]
+        },
+        {
+            "id": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
+            "message": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEnvVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEnvVar"
+                },
+                {
+                    "id": "PasswordEnvVar2",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.PasswordEnvVar2"
+                }
+            ]
+        },
+        {
+            "id": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
+            "message": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ModernAuthTypeBasic",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.ModernAuthTypeBasic"
+                }
+            ]
+        },
+        {
+            "id": "Provide a username with the {Arg_1} flag",
+            "message": "Provide a username with the {Arg_1} flag",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Arg_1",
+                    "string": "%[1]s",
+                    "type": "",
+                    "underlyingType": "string",
+                    "argNum": 1
+                }
+            ]
+        },
+        {
+            "id": "Username not provided",
+            "message": "Username not provided",
+            "translation": ""
+        },
+        {
+            "id": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
+            "message": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "EncryptionMethodsForUsage",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "secret.EncryptionMethodsForUsage()"
+                },
+                {
+                    "id": "PasswordEncryptFlag",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.PasswordEncryptFlag"
+                }
+            ]
+        },
+        {
+            "id": "Encryption method '{PasswordEncryption}' is not valid",
+            "message": "Encryption method '{PasswordEncryption}' is not valid",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEncryption",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.passwordEncryption"
+                }
+            ]
+        },
+        {
+            "id": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
+            "message": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEnvVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEnvVar"
+                },
+                {
+                    "id": "PasswordEnvVar2",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.PasswordEnvVar2"
+                }
+            ]
+        },
+        {
+            "id": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
+            "message": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PasswordEnvVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PasswordEnvVar"
+                },
+                {
+                    "id": "PasswordEnvVar2",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.PasswordEnvVar2"
+                }
+            ]
+        },
+        {
+            "id": "User '{UniqueUserName}' added",
+            "message": "User '{UniqueUserName}' added",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "UniqueUserName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "uniqueUserName"
+                }
+            ]
+        },
+        {
+            "id": "Display connections strings for the current context",
+            "message": "Display connections strings for the current context",
+            "translation": ""
+        },
+        {
+            "id": "List connection strings for all client drivers",
+            "message": "List connection strings for all client drivers",
+            "translation": ""
+        },
+        {
+            "id": "Database for the connection string (default is taken from the T/SQL login)",
+            "message": "Database for the connection string (default is taken from the T/SQL login)",
+            "translation": ""
+        },
+        {
+            "id": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
+            "message": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ModernAuthTypeBasic",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.ModernAuthTypeBasic"
+                }
+            ]
+        },
+        {
+            "id": "Display the current-context",
+            "message": "Display the current-context",
+            "translation": ""
+        },
+        {
+            "id": "Delete a context",
+            "message": "Delete a context",
+            "translation": ""
+        },
+        {
+            "id": "Delete a context (including its endpoint and user)",
+            "message": "Delete a context (including its endpoint and user)",
+            "translation": ""
+        },
+        {
+            "id": "Delete a context (excluding its endpoint and user)",
+            "message": "Delete a context (excluding its endpoint and user)",
+            "translation": ""
+        },
+        {
+            "id": "Name of context to delete",
+            "message": "Name of context to delete",
+            "translation": ""
+        },
+        {
+            "id": "Delete the context's endpoint and user as well",
+            "message": "Delete the context's endpoint and user as well",
+            "translation": ""
+        },
+        {
+            "id": "Use the {NameFlag} flag to pass in a context name to delete",
+            "message": "Use the {NameFlag} flag to pass in a context name to delete",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "NameFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.NameFlag"
+                }
+            ]
+        },
+        {
+            "id": "Context '{Name}' deleted",
+            "message": "Context '{Name}' deleted",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Context '{Name}' does not exist",
+            "message": "Context '{Name}' does not exist",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Delete an endpoint",
+            "message": "Delete an endpoint",
+            "translation": ""
+        },
+        {
+            "id": "Name of endpoint to delete",
+            "message": "Name of endpoint to delete",
+            "translation": ""
+        },
+        {
+            "id": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
+            "message": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "NameFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.NameFlag"
+                }
+            ]
+        },
+        {
+            "id": "View endpoints",
+            "message": "View endpoints",
+            "translation": ""
+        },
+        {
+            "id": "Endpoint '{Name}' does not exist",
+            "message": "Endpoint '{Name}' does not exist",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Endpoint '{Name}' deleted",
+            "message": "Endpoint '{Name}' deleted",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Delete a user",
+            "message": "Delete a user",
+            "translation": ""
+        },
+        {
+            "id": "Name of user to delete",
+            "message": "Name of user to delete",
+            "translation": ""
+        },
+        {
+            "id": "User name must be provided.  Provide user name with {NameFlag} flag",
+            "message": "User name must be provided.  Provide user name with {NameFlag} flag",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "NameFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.NameFlag"
+                }
+            ]
+        },
+        {
+            "id": "View users",
+            "message": "View users",
+            "translation": ""
+        },
+        {
+            "id": "User {Name} does not exist",
+            "message": "User {Name} does not exist",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "User {Name} deleted",
+            "message": "User {Name} deleted",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Display one or many contexts from the sqlconfig file",
+            "message": "Display one or many contexts from the sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "List all the context names in your sqlconfig file",
+            "message": "List all the context names in your sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "List all the contexts in your sqlconfig file",
+            "message": "List all the contexts in your sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "Describe one context in your sqlconfig file",
+            "message": "Describe one context in your sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "Context name to view details of",
+            "message": "Context name to view details of",
+            "translation": ""
+        },
+        {
+            "id": "Include context details",
+            "message": "Include context details",
+            "translation": ""
+        },
+        {
+            "id": "To view available contexts run `{ContextCommand}`",
+            "message": "To view available contexts run `{ContextCommand}`",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ContextCommand",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.GetContextCommand"
+                }
+            ]
+        },
+        {
+            "id": "error: no context exists with the name: \"{Name}\"",
+            "message": "error: no context exists with the name: \"{Name}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Display one or many endpoints from the sqlconfig file",
+            "message": "Display one or many endpoints from the sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "List all the endpoints in your sqlconfig file",
+            "message": "List all the endpoints in your sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "Describe one endpoint in your sqlconfig file",
+            "message": "Describe one endpoint in your sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "Endpoint name to view details of",
+            "message": "Endpoint name to view details of",
+            "translation": ""
+        },
+        {
+            "id": "Include endpoint details",
+            "message": "Include endpoint details",
+            "translation": ""
+        },
+        {
+            "id": "To view available endpoints run `{EndpointsCommand}`",
+            "message": "To view available endpoints run `{EndpointsCommand}`",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "EndpointsCommand",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.GetEndpointsCommand"
+                }
+            ]
+        },
+        {
+            "id": "error: no endpoint exists with the name: \"{Name}\"",
+            "message": "error: no endpoint exists with the name: \"{Name}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Display one or many users from the sqlconfig file",
+            "message": "Display one or many users from the sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "List all the users in your sqlconfig file",
+            "message": "List all the users in your sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "Describe one user in your sqlconfig file",
+            "message": "Describe one user in your sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "User name to view details of",
+            "message": "User name to view details of",
+            "translation": ""
+        },
+        {
+            "id": "Include user details",
+            "message": "Include user details",
+            "translation": ""
+        },
+        {
+            "id": "To view available users run `{UsersCommand}`",
+            "message": "To view available users run `{UsersCommand}`",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "UsersCommand",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.GetUsersCommand"
+                }
+            ]
+        },
+        {
+            "id": "error: no user exists with the name: \"{Name}\"",
+            "message": "error: no user exists with the name: \"{Name}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Set the current context",
+            "message": "Set the current context",
+            "translation": ""
+        },
+        {
+            "id": "Set the mssql context (endpoint/user) to be the current context",
+            "message": "Set the mssql context (endpoint/user) to be the current context",
+            "translation": ""
+        },
+        {
+            "id": "Name of context to set as current context",
+            "message": "Name of context to set as current context",
+            "translation": ""
+        },
+        {
+            "id": "To run a query:    {RunQueryExample}",
+            "message": "To run a query:    {RunQueryExample}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "RunQueryExample",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.RunQueryExample"
+                }
+            ]
+        },
+        {
+            "id": "To remove:         {UninstallCommand}",
+            "message": "To remove:         {UninstallCommand}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "UninstallCommand",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.UninstallCommand"
+                }
+            ]
+        },
+        {
+            "id": "Switched to context \"{Name}\".",
+            "message": "Switched to context \"{Name}\".",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "No context exists with the name: \"{Name}\"",
+            "message": "No context exists with the name: \"{Name}\"",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.name"
+                }
+            ]
+        },
+        {
+            "id": "Display merged sqlconfig settings or a specified sqlconfig file",
+            "message": "Display merged sqlconfig settings or a specified sqlconfig file",
+            "translation": ""
+        },
+        {
+            "id": "Show sqlconfig settings, with REDACTED authentication data",
+            "message": "Show sqlconfig settings, with REDACTED authentication data",
+            "translation": ""
+        },
+        {
+            "id": "Show sqlconfig settings and raw authentication data",
+            "message": "Show sqlconfig settings and raw authentication data",
+            "translation": ""
+        },
+        {
+            "id": "Display raw byte data",
+            "message": "Display raw byte data",
+            "translation": ""
+        },
+        {
+            "id": "Install Azure Sql Edge",
+            "message": "Install Azure Sql Edge",
+            "translation": ""
+        },
+        {
+            "id": "Install/Create Azure SQL Edge in a container",
+            "message": "Install/Create Azure SQL Edge in a container",
+            "translation": ""
+        },
+        {
+            "id": "Tag to use, use get-tags to see list of tags",
+            "message": "Tag to use, use get-tags to see list of tags",
+            "translation": ""
+        },
+        {
+            "id": "Context name (a default context name will be created if not provided)",
+            "message": "Context name (a default context name will be created if not provided)",
+            "translation": ""
+        },
+        {
+            "id": "Create a user database and set it as the default for login",
+            "message": "Create a user database and set it as the default for login",
+            "translation": ""
+        },
+        {
+            "id": "Accept the SQL Server EULA",
+            "message": "Accept the SQL Server EULA",
+            "translation": ""
+        },
+        {
+            "id": "Generated password length",
+            "message": "Generated password length",
+            "translation": ""
+        },
+        {
+            "id": "Minimum number of special characters",
+            "message": "Minimum number of special characters",
+            "translation": ""
+        },
+        {
+            "id": "Minimum number of numeric characters",
+            "message": "Minimum number of numeric characters",
+            "translation": ""
+        },
+        {
+            "id": "Minimum number of upper characters",
+            "message": "Minimum number of upper characters",
+            "translation": ""
+        },
+        {
+            "id": "Special character set to include in password",
+            "message": "Special character set to include in password",
+            "translation": ""
+        },
+        {
+            "id": "Don't download image.  Use already downloaded image",
+            "message": "Don't download image.  Use already downloaded image",
+            "translation": ""
+        },
+        {
+            "id": "Line in errorlog to wait for before connecting",
+            "message": "Line in errorlog to wait for before connecting",
+            "translation": ""
+        },
+        {
+            "id": "Specify a custom name for the container rather than a randomly generated one",
+            "message": "Specify a custom name for the container rather than a randomly generated one",
+            "translation": ""
+        },
+        {
+            "id": "Explicitly set the container hostname, it defaults to the container ID",
+            "message": "Explicitly set the container hostname, it defaults to the container ID",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the image CPU architecture",
+            "message": "Specifies the image CPU architecture",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the image operating system",
+            "message": "Specifies the image operating system",
+            "translation": ""
+        },
+        {
+            "id": "Port (next available port from 1433 upwards used by default)",
+            "message": "Port (next available port from 1433 upwards used by default)",
+            "translation": ""
+        },
+        {
+            "id": "Download (into container) and attach database (.bak) from URL",
+            "message": "Download (into container) and attach database (.bak) from URL",
+            "translation": ""
+        },
+        {
+            "id": "Either, add the {AcceptEulaFlag} flag to the command-line",
+            "message": "Either, add the {AcceptEulaFlag} flag to the command-line",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "AcceptEulaFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.AcceptEulaFlag"
+                }
+            ]
+        },
+        {
+            "id": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+            "message": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CreateEnvVarKeyword",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "pal.CreateEnvVarKeyword()"
+                },
+                {
+                    "id": "AcceptEulaEnvVar",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.AcceptEulaEnvVar"
+                }
+            ]
+        },
+        {
+            "id": "EULA not accepted",
+            "message": "EULA not accepted",
+            "translation": ""
+        },
+        {
+            "id": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
+            "message": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DefaultDatabase",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.defaultDatabase"
+                }
+            ]
+        },
+        {
+            "id": "Starting {ImageName}",
+            "message": "Starting {ImageName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ImageName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "imageName"
+                }
+            ]
+        },
+        {
+            "id": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
+            "message": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CurrentContextName",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "config.CurrentContextName()"
+                },
+                {
+                    "id": "ConfigFileUsed",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "config.GetConfigFileUsed()"
+                }
+            ]
+        },
+        {
+            "id": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
+            "message": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Sa",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"sa\""
+                },
+                {
+                    "id": "Sa_1",
+                    "string": "%[2]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"sa\""
+                },
+                {
+                    "id": "UserName",
+                    "string": "%[3]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 3,
+                    "expr": "userName"
+                }
+            ]
+        },
+        {
+            "id": "Start interactive session",
+            "message": "Start interactive session",
+            "translation": ""
+        },
+        {
+            "id": "Change current context",
+            "message": "Change current context",
+            "translation": ""
+        },
+        {
+            "id": "View sqlcmd configuration",
+            "message": "View sqlcmd configuration",
+            "translation": ""
+        },
+        {
+            "id": "See connection strings",
+            "message": "See connection strings",
+            "translation": ""
+        },
+        {
+            "id": "Remove",
+            "message": "Remove",
+            "translation": ""
+        },
+        {
+            "id": "Now ready for client connections on port {Port}",
+            "message": "Now ready for client connections on port {Port}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Port",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "c.port"
+                }
+            ]
+        },
+        {
+            "id": "--using URL must be http or https",
+            "message": "--using URL must be http or https",
+            "translation": ""
+        },
+        {
+            "id": "{UsingDatabaseUrl} is not a valid URL for --using flag",
+            "message": "{UsingDatabaseUrl} is not a valid URL for --using flag",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "UsingDatabaseUrl",
+                    "string": "%[1]q",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.usingDatabaseUrl"
+                }
+            ]
+        },
+        {
+            "id": "--using URL must have a path to .bak file",
+            "message": "--using URL must have a path to .bak file",
+            "translation": ""
+        },
+        {
+            "id": "--using file URL must be a .bak file",
+            "message": "--using file URL must be a .bak file",
+            "translation": ""
+        },
+        {
+            "id": "Invalid --using file type",
+            "message": "Invalid --using file type",
+            "translation": ""
+        },
+        {
+            "id": "Creating default database [{DefaultDatabase}]",
+            "message": "Creating default database [{DefaultDatabase}]",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DefaultDatabase",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "defaultDatabase"
+                }
+            ]
+        },
+        {
+            "id": "Downloading {File}",
+            "message": "Downloading {File}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "File",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "file"
+                }
+            ]
+        },
+        {
+            "id": "Restoring database {DatabaseName}",
+            "message": "Restoring database {DatabaseName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DatabaseName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "databaseName"
+                }
+            ]
+        },
+        {
+            "id": "Downloading {ImageName}",
+            "message": "Downloading {ImageName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ImageName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "imageName"
+                }
+            ]
+        },
+        {
+            "id": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
+            "message": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
+            "translation": ""
+        },
+        {
+            "id": "If not, download desktop engine from:",
+            "message": "If not, download desktop engine from:",
+            "translation": ""
+        },
+        {
+            "id": "or",
+            "message": "or",
+            "translation": ""
+        },
+        {
+            "id": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
+            "message": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PodmanPsCommand",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PodmanPsCommand"
+                },
+                {
+                    "id": "DockerPsCommand",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.DockerPsCommand"
+                }
+            ]
+        },
+        {
+            "id": "Unable to download image {ImageName}",
+            "message": "Unable to download image {ImageName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ImageName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "imageName"
+                }
+            ]
+        },
+        {
+            "id": "File does not exist at URL",
+            "message": "File does not exist at URL",
+            "translation": ""
+        },
+        {
+            "id": "Unable to download file",
+            "message": "Unable to download file",
+            "translation": ""
+        },
+        {
+            "id": "Install/Create SQL Server in a container",
+            "message": "Install/Create SQL Server in a container",
+            "translation": ""
+        },
+        {
+            "id": "See all release tags for SQL Server, install previous version",
+            "message": "See all release tags for SQL Server, install previous version",
+            "translation": ""
+        },
+        {
+            "id": "Create SQL Server, download and attach AdventureWorks sample database",
+            "message": "Create SQL Server, download and attach AdventureWorks sample database",
+            "translation": ""
+        },
+        {
+            "id": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
+            "message": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
+            "translation": ""
+        },
+        {
+            "id": "Create SQL Server with an empty user database",
+            "message": "Create SQL Server with an empty user database",
+            "translation": ""
+        },
+        {
+            "id": "Install/Create SQL Server with full logging",
+            "message": "Install/Create SQL Server with full logging",
+            "translation": ""
+        },
+        {
+            "id": "Get tags available for Azure SQL Edge install",
+            "message": "Get tags available for Azure SQL Edge install",
+            "translation": ""
+        },
+        {
+            "id": "List tags",
+            "message": "List tags",
+            "translation": ""
+        },
+        {
+            "id": "Get tags available for mssql install",
+            "message": "Get tags available for mssql install",
+            "translation": ""
+        },
+        {
             "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
             "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
             "translation": "",
@@ -32,24 +1967,563 @@
             ]
         },
         {
-            "id": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "message": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "translation": "'-w {ScreenWidth}': 값은 8보다 크고 65536보다 작아야 합니다.",
+            "id": "Legal docs and information: aka.ms/SqlcmdLegal",
+            "message": "Legal docs and information: aka.ms/SqlcmdLegal",
+            "translation": ""
+        },
+        {
+            "id": "Third party notices: aka.ms/SqlcmdNotices",
+            "message": "Third party notices: aka.ms/SqlcmdNotices",
+            "translation": ""
+        },
+        {
+            "id": "Version {Version}",
+            "message": "Version {Version}",
+            "translation": "",
             "placeholders": [
                 {
-                    "id": "ScreenWidth",
-                    "string": "%[1]d",
-                    "type": "int",
-                    "underlyingType": "int",
+                    "id": "Version",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "*a.ScreenWidth"
+                    "expr": "version"
                 }
             ]
         },
         {
-            "id": "'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.",
-            "message": "'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.",
+            "id": "Flags:",
+            "message": "Flags:",
             "translation": ""
+        },
+        {
+            "id": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
+            "message": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "HelpFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.HelpFlag"
+                }
+            ]
+        },
+        {
+            "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
+            "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "QueryAndExitFlag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.QueryAndExitFlag"
+                },
+                {
+                    "id": "QueryFlag",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.QueryFlag"
+                }
+            ]
+        },
+        {
+            "id": "Identifies the file that receives output from sqlcmd",
+            "message": "Identifies the file that receives output from sqlcmd",
+            "translation": ""
+        },
+        {
+            "id": "Print version information and exit",
+            "message": "Print version information and exit",
+            "translation": ""
+        },
+        {
+            "id": "Implicitly trust the server certificate without validation",
+            "message": "Implicitly trust the server certificate without validation",
+            "translation": ""
+        },
+        {
+            "id": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
+            "message": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DbNameVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.DbNameVar"
+                }
+            ]
+        },
+        {
+            "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
+            "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
+            "message": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "BatchTerminatorGo",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.BatchTerminatorGo"
+                }
+            ]
+        },
+        {
+            "id": "The login name or contained database user name.  For contained database users, you must provide the database name option",
+            "message": "The login name or contained database user name.  For contained database users, you must provide the database name option",
+            "translation": ""
+        },
+        {
+            "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
+            "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
+            "translation": ""
+        },
+        {
+            "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
+            "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
+            "translation": ""
+        },
+        {
+            "id": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
+            "message": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ConnStrPattern",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.ConnStrPattern"
+                },
+                {
+                    "id": "ServerEnvVar",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.ServerEnvVar"
+                }
+            ]
+        },
+        {
+            "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
+            "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
+            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
+            "translation": ""
+        },
+        {
+            "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
+            "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
+            "translation": ""
+        },
+        {
+            "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
+            "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "InsertKeyword",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.InsertKeyword"
+                }
+            ]
+        },
+        {
+            "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
+            "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
+            "translation": ""
+        },
+        {
+            "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
+            "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "PacketSizeVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.PacketSizeVar"
+                },
+                {
+                    "id": "BatchTerminatorGo",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "localizer.BatchTerminatorGo"
+                }
+            ]
+        },
+        {
+            "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
+            "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "LoginTimeOutVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.LoginTimeOutVar"
+                }
+            ]
+        },
+        {
+            "id": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
+            "message": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "WorkstationVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.WorkstationVar"
+                }
+            ]
+        },
+        {
+            "id": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
+            "message": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ApplicationIntentFlagShort",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.ApplicationIntentFlagShort"
+                }
+            ]
+        },
+        {
+            "id": "This switch is used by the client to request an encrypted connection",
+            "message": "This switch is used by the client to request an encrypted connection",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the formatting for results",
+            "message": "Specifies the formatting for results",
+            "translation": ""
+        },
+        {
+            "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
+            "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
+            "translation": ""
+        },
+        {
+            "id": "Level of mssql driver messages to print",
+            "message": "Level of mssql driver messages to print",
+            "translation": ""
+        },
+        {
+            "id": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
+            "message": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DosErrorLevel",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.DosErrorLevel"
+                }
+            ]
+        },
+        {
+            "id": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
+            "message": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "StdoutName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.StdoutName"
+                }
+            ]
+        },
+        {
+            "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
+            "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
+            "translation": ""
+        },
+        {
+            "id": "Specifies that all output files are encoded with little-endian Unicode",
+            "message": "Specifies that all output files are encoded with little-endian Unicode",
+            "translation": ""
+        },
+        {
+            "id": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
+            "message": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ColSeparatorVar",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.ColSeparatorVar"
+                }
+            ]
+        },
+        {
+            "id": "Remove trailing spaces from a column",
+            "message": "Remove trailing spaces from a column",
+            "translation": ""
+        },
+        {
+            "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
+            "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
+            "translation": ""
+        },
+        {
+            "id": "Password",
+            "message": "Password",
+            "translation": ""
+        },
+        {
+            "id": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
+            "message": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ErrorLevel",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "localizer.ErrorLevel"
+                }
+            ]
+        },
+        {
+            "id": "Specifies the screen width for output",
+            "message": "Specifies the screen width for output",
+            "translation": ""
+        },
+        {
+            "id": "Dedicated administrator connection",
+            "message": "Dedicated administrator connection",
+            "translation": ""
+        },
+        {
+            "id": "Sets the sqlcmd scripting variable {V}",
+            "message": "Sets the sqlcmd scripting variable {V}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "V",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "v"
+                }
+            ]
+        },
+        {
+            "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
+            "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Flag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "flag"
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                },
+                {
+                    "id": "Min",
+                    "string": "%#[3]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 3,
+                    "expr": "min"
+                },
+                {
+                    "id": "Max",
+                    "string": "%#[4]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 4,
+                    "expr": "max"
+                }
+            ]
+        },
+        {
+            "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
+            "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Flag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "flag"
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                },
+                {
+                    "id": "Min",
+                    "string": "%#[3]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 3,
+                    "expr": "min"
+                },
+                {
+                    "id": "Max",
+                    "string": "%#[4]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 4,
+                    "expr": "max"
+                }
+            ]
+        },
+        {
+            "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
+            "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Flag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "flag"
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                },
+                {
+                    "id": "AllowedValues0",
+                    "string": "%[3]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 3,
+                    "expr": "allowedValues[0]"
+                }
+            ]
+        },
+        {
+            "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
+            "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Flag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "flag"
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                },
+                {
+                    "id": "AllowedValues",
+                    "string": "%[3]v",
+                    "type": "[]string",
+                    "underlyingType": "[]string",
+                    "argNum": 3,
+                    "expr": "allowedValues"
+                }
+            ]
+        },
+        {
+            "id": "'{P1}': Missing argument. Enter '-?' for help.",
+            "message": "'{P1}': Missing argument. Enter '-?' for help.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "P1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "p[1]"
+                }
+            ]
+        },
+        {
+            "id": "'{P1}': Unknown Option. Enter '-?' for help.",
+            "message": "'{P1}': Unknown Option. Enter '-?' for help.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "P1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "p[1]"
+                }
+            ]
         },
         {
             "id": "invalid batch terminator '{BatchTerminator}'",
