@@ -275,7 +275,7 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 	cmd := []string{"mkdir", "-p", destFolder}
 	c.RunCmdInContainer(id, cmd, ExecOptions{})
 
-	_, file := filepath.Split(src)
+	_, file := filepath.Split(strings.Split(src, "?")[0])
 
 	// Wget the .bak file from the http src, and place it in /var/opt/sql/backup
 	cmd = []string{
