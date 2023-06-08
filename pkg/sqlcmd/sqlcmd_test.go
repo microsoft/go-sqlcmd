@@ -644,9 +644,9 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 	if runtime.GOOS != "windows" || runtime.GOARCH != "amd64" {
 		t.Skip("Only valid on Windows amd64")
 	}
-	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
+	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[2].Protocol(), "lpc should be third protocol")
 	assert.Truef(t, msdsn.ProtocolParsers[1].Hidden(), "Protocol %s should be hidden", msdsn.ProtocolParsers[1].Protocol())
-	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[2].Protocol(), "tcp should be second protocol")
-	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be third protocol")
+	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[0].Protocol(), "tcp should be first protocol")
+	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be fourth protocol")
 
 }
