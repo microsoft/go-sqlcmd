@@ -6,7 +6,7 @@
                 {
                     "SourceFile": "internal\\translations\\locales\\en-US\\out.gotext.json",
                     "CopyOption": "LangIDOnPath",
-                    "Languages": "de-de;fr-fr;it-it;es-es;ja-jp;ko-kr,zh-cn,zh-tw,pt-br,ru-ru",
+                    "Languages": "de-DE;fr-FR;it-IT;es-ES;ja-JP;ko-KR,zh-CN,zh-TW,pt-BR,ru-RU",
                     "LssFiles": ["internal\\translations\\P306PairNamesToProcess.lss"],
                     "LclFile": "internal\\translations\\LCL\\{Lang}\\out.gotext.json.lcl",
                     "OutputPath": "internal\\translations\\locales"
