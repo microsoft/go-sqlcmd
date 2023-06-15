@@ -91,22 +91,27 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 				err = localizer.Errorf("The -L parameter can not be used in combination with other parameters.")
 			}
 		})
-		if err != nil {
-			return
-		}
 	}
-	switch {
-	case a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767):
-		err = localizer.Errorf(`'-a %#v': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
-	// Ignore 0 even though it's technically an invalid input
-	case a.Headers < -1:
-		err = localizer.Errorf(`'-h %#v': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
-	case a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535):
-		err = rangeParameterError("-w", fmt.Sprint(*a.ScreenWidth), 8, 65536, false)
-	case a.FixedTypeWidth != nil && (*a.FixedTypeWidth < 0 || *a.FixedTypeWidth > 8000):
-		err = rangeParameterError("-Y", fmt.Sprint(*a.FixedTypeWidth), 0, 8000, true)
-	case a.VariableTypeWidth != nil && (*a.VariableTypeWidth < 0 || *a.VariableTypeWidth > 8000):
-		err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
+	if err == nil {
+		switch {
+		case len(a.InputFile) > 0 && (len(a.Query) > 0 || len(a.InitialQuery) > 0):
+			err = mutuallyExclusiveError("i", `-Q/-q`)
+		case a.UseTrustedConnection && (len(a.UserName) > 0 || len(a.Password) > 0):
+			err = mutuallyExclusiveError("-E", `-U/-P`)
+		case a.UseAad && len(a.AuthenticationMethod) > 0:
+			err = mutuallyExclusiveError("-G", "--authentication-method")
+		case a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767):
+			err = localizer.Errorf(`'-a %#v': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
+		// Ignore 0 even though it's technically an invalid input
+		case a.Headers < -1:
+			err = localizer.Errorf(`'-h %#v': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
+		case a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535):
+			err = rangeParameterError("-w", fmt.Sprint(*a.ScreenWidth), 8, 65536, false)
+		case a.FixedTypeWidth != nil && (*a.FixedTypeWidth < 0 || *a.FixedTypeWidth > 8000):
+			err = rangeParameterError("-Y", fmt.Sprint(*a.FixedTypeWidth), 0, 8000, true)
+		case a.VariableTypeWidth != nil && (*a.VariableTypeWidth < 0 || *a.VariableTypeWidth > 8000):
+			err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
+		}
 	}
 	if err != nil {
 		c.PrintErrln(sqlcmdErrorPrefix + err.Error())
@@ -389,6 +394,10 @@ func invalidParameterError(flag string, value string, allowedValues ...string) e
 		return localizer.Errorf("'%s %s': Unexpected argument. Argument value has to be %v.", flag, value, allowedValues[0])
 	}
 	return localizer.Errorf("'%s %s': Unexpected argument. Argument value has to be one of %v.", flag, value, allowedValues)
+}
+
+func mutuallyExclusiveError(flag1 string, flag2 string) error {
+	return localizer.Errorf("The %s and the %s options are mutually exclusive.", flag1, flag2)
 }
 
 func flagErrorHandler(c *cobra.Command, err error) (e error) {

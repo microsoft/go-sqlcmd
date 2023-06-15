@@ -124,17 +124,16 @@ func TestInvalidCommandLine(t *testing.T) {
 	}
 
 	commands := []cmdLineTest{
-		// Issue:341  https://github.com/microsoft/go-sqlcmd/issues/341
 		{[]string{"-E", "-U", "someuser"}, "The -E and the -U/-P options are mutually exclusive."},
-		{[]string{"-L", "-q", "select 1"}, "The -L parameter can not be used in combination with other parameters."},
-		{[]string{"-i", "foo.sql", "-q", "select 1"}, "The -i and the -Q/-q options are mutually exclusive."},
-		// {[]string{"-F", "what"}, "'-F what': Unexpected argument. Argument value has to be one of [horiz horizontal vert vertical]."},
-		// {[]string{"-r", "5"}, `'-r 5': Unexpected argument. Argument value has to be one of [0 1].`},
-		// {[]string{"-w", "x"}, "'-w x': value must be greater than 8 and less than 65536."},
-		// {[]string{"-y", "111111"}, "'-y 111111': value must be greater than or equal to 0 and less than or equal to 8000."},
-		// {[]string{"-Y", "-2"}, "'-Y -2': value must be greater than or equal to 0 and less than or equal to 8000."},
-		// {[]string{"-P"}, "'-P': Missing argument. Enter '-?' for help."},
-		// {[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
+		{[]string{"-L", "-q", `"select 1"`}, "The -L parameter can not be used in combination with other parameters."},
+		{[]string{"-i", "foo.sql", "-q", `"select 1"`}, "The i and the -Q/-q options are mutually exclusive."},
+		{[]string{"-F", "what"}, "'-F what': Unexpected argument. Argument value has to be one of [horiz horizontal vert vertical]."},
+		{[]string{"-r", "5"}, `'-r 5': Unexpected argument. Argument value has to be one of [0 1].`},
+		{[]string{"-w", "x"}, "'-w x': value must be greater than 8 and less than 65536."},
+		{[]string{"-y", "111111"}, "'-y 111111': value must be greater than or equal to 0 and less than or equal to 8000."},
+		{[]string{"-Y", "-2"}, "'-Y -2': value must be greater than or equal to 0 and less than or equal to 8000."},
+		{[]string{"-P"}, "'-P': Missing argument. Enter '-?' for help."},
+		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
 	}
 
 	for _, test := range commands {
@@ -162,7 +161,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		err := cmd.Execute()
 		if assert.EqualErrorf(t, err, test.errorMessage, "Command line: %s", test.commandLine) {
 			errBytes := buf.buf.String()
-			assert.Equalf(t, sqlcmdErrorPrefix, string(errBytes)[:len(sqlcmdErrorPrefix)], "Output error should start with '%s' - %s", sqlcmdErrorPrefix, test.commandLine)
+			assert.Equalf(t, sqlcmdErrorPrefix, string(errBytes)[:len(sqlcmdErrorPrefix)], "Output error should start with '%s' but got '%s' - %s", sqlcmdErrorPrefix, string(errBytes), test.commandLine)
 		}
 	}
 }

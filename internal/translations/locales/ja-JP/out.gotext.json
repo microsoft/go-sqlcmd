@@ -2506,6 +2506,29 @@
             ]
         },
         {
+            "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+            "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Flag1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "flag1"
+                },
+                {
+                    "id": "Flag2",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "flag2"
+                }
+            ]
+        },
+        {
             "id": "'{P1}': Missing argument. Enter '-?' for help.",
             "message": "'{P1}': Missing argument. Enter '-?' for help.",
             "translation": "",
