@@ -11,12 +11,12 @@ for /f %%i in ('"git describe --tags --abbrev=0"') do set sqlcmdVersion=%%i
 
 setlocal
 SET     RED=%ESC%[1;31m
-echo %RED%
+@echo %RED%
 REM run the custom sqlcmd linter for code style enforcement
 REM using for/do instead of running it directly so the status code isn't checked by the shell.
 REM Once we are prepared to block the build with the linter we will move this step into a pipeline
-for /F  "usebackq"  %%l in (`go run cmd\sqlcmd-linter\main.go -test %~dp0../...`) DO echo %%l
-echo %ESC%[0m
+@for /F  "usebackq"  %%l in (`go run cmd\sqlcmd-linter\main.go -test %~dp0../...`) DO echo %%l
+@echo %ESC%[0m
 
 if not exist %gopath%\bin\go-winres.exe (
     go install github.com/tc-hib/go-winres@latest
@@ -30,13 +30,17 @@ del %~dp0..\cmd\modern\*.syso
 
 REM generates translations file and resources
 go generate %~dp0../... 2> %~dp0generate.txt
+if NOT ERRORLEVEL 0 (
+    type %~dp0generate.txt
+    goto :end
+) else (
 echo Fix any conflicting localizable strings:
-echo %RED%
-findstr conflicting "%~dp0generate.txt"
-echo %ESC%[0m
+@echo %RED%
+@findstr conflicting "%~dp0generate.txt"
+@echo %ESC%[0m
+)
 endlocal
 
-if not %errorlevel% == 0 goto :end
 REM Generates sqlcmd.exe in the root dir of the repo
 go build -o %~dp0..\sqlcmd.exe -ldflags="-X main.version=%sqlcmdVersion%" %~dp0..\cmd\modern
 

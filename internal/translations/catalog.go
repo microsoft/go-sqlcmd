@@ -52,23 +52,23 @@ var messageKeyToIndex = map[string]int{
 	"\tIf not, download desktop engine from:":                                                                212,
 	"%q is not a valid URL for --using flag":                                                                 203,
 	"%s Error occurred while opening or operating on file %s (Reason: %s).":                                  9,
-	"%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.": 243,
+	"%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.": 245,
 	"%sSyntax error at line %d":                                                                              10,
 	"%v":                                                                                                     56,
-	"'%s %s': Unexpected argument. Argument value has to be %v.":                                             271,
-	"'%s %s': Unexpected argument. Argument value has to be one of %v.":                                      272,
-	"'%s %s': value must be greater than %#v and less than %#v.":                                             270,
-	"'%s %s': value must be greater than or equal to %#v and less than or equal to %#v.":                     269,
+	"'%s %s': Unexpected argument. Argument value has to be %v.":                                             273,
+	"'%s %s': Unexpected argument. Argument value has to be one of %v.":                                      274,
+	"'%s %s': value must be greater than %#v and less than %#v.":                                             272,
+	"'%s %s': value must be greater than or equal to %#v and less than or equal to %#v.":                     271,
 	"'%s' scripting variable not defined.":                                                                   6,
-	"'%s': Missing argument. Enter '-?' for help.":                                                           273,
-	"'%s': Unknown Option. Enter '-?' for help.":                                                             274,
-	"'-a %d': Packet size has to be a number between 512 and 32767.":                                         227,
-	"'-h %d': header value must be either -1 or a value between 1 and 2147483647":                            0,
+	"'%s': Missing argument. Enter '-?' for help.":                                                           276,
+	"'%s': Unknown Option. Enter '-?' for help.":                                                             277,
+	"'-a %#v': Packet size has to be a number between 512 and 32767.":                                        228,
+	"'-h %#v': header value must be either -1 or a value between 1 and 2147483647":                           0,
 	"--user-database %q contains non-ASCII chars and/or quotes":                                              192,
 	"--using URL must be http or https":                                                                      202,
 	"--using URL must have a path to .bak file":                                                              204,
 	"--using file URL must be a .bak file":                                                                   205,
-	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help":                                  232,
+	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help":                                  234,
 	"Accept the SQL Server EULA":                                                                             175,
 	"Add a context":                                                                                          61,
 	"Add a context for a local instance of SQL Server on port 1433 using trusted authentication":             62,
@@ -90,7 +90,7 @@ var messageKeyToIndex = map[string]int{
 	"Authentication type must be '%s' or '%s'":                                                               96,
 	"Authentication type this user will use (basic | other)":                                                 93,
 	"Both environment variables %s and %s are set. ":                                                         110,
-	"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)": 247,
+	"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)": 249,
 	"Change current context": 197,
 	"Command text to run":    26,
 	"Complete the operation even if non-system (user) database files are present":      43,
@@ -101,9 +101,9 @@ var messageKeyToIndex = map[string]int{
 	"Context '%v' does not exist": 124,
 	"Context name (a default context name will be created if not provided)":                                                            173,
 	"Context name to view details of":                                                                                                  141,
-	"Controls the severity level that is used to set the %s variable on exit":                                                          265,
-	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent":     258,
-	"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent": 255,
+	"Controls the severity level that is used to set the %s variable on exit":                                                          267,
+	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent":     260,
+	"Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent": 257,
 	"Create SQL Server with an empty user database":                                                                                    222,
 	"Create SQL Server, download and attach AdventureWorks sample database":                                                            220,
 	"Create SQL Server, download and attach AdventureWorks sample database with different database name":                               221,
@@ -113,7 +113,7 @@ var messageKeyToIndex = map[string]int{
 	"Create context with SQL Server container":                  46,
 	"Create new context with a sql container ":                  33,
 	"Created context %q in \"%s\", configuring user account...": 194,
-	"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits": 248,
+	"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits": 250,
 	"Creating default database [%s]":                                             207,
 	"Current Context '%v'":                                                       77,
 	"Current context does not have a container":                                  34,
@@ -121,8 +121,8 @@ var messageKeyToIndex = map[string]int{
 	"Current context is now %s":                                                  55,
 	"Database for the connection string (default is taken from the T/SQL login)": 114,
 	"Database to use":                                                            27,
-	"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group": 252,
-	"Dedicated administrator connection":                              267,
+	"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group": 254,
+	"Dedicated administrator connection":                              269,
 	"Delete a context":                                                117,
 	"Delete a context (excluding its endpoint and user)":              119,
 	"Delete a context (including its endpoint and user)":              118,
@@ -134,7 +134,7 @@ var messageKeyToIndex = map[string]int{
 	"Describe one endpoint in your sqlconfig file":                    147,
 	"Describe one user in your sqlconfig file":                        154,
 	"Disabled %q account (and rotated %q password). Creating user %q": 195,
-	"Disables commands that might compromise system security. Sqlcmd issues a warning and continues": 244,
+	"Disables commands that might compromise system security. Sqlcmd issues a warning and continues": 246,
 	"Display connections strings for the current context":                                            112,
 	"Display merged sqlconfig settings or a specified sqlconfig file":                                166,
 	"Display name for the context":                                                                   63,
@@ -159,18 +159,18 @@ var messageKeyToIndex = map[string]int{
 	"Endpoint name must be provided.  Provide endpoint name with %s flag":           127,
 	"Endpoint name to view details of":                                              148,
 	"Endpoint required to add context.  Endpoint '%v' does not exist.  Use %s flag": 69,
-	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed":                             242,
-	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed": 241,
+	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed":                             244,
+	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed": 243,
 	"Explicitly set the container hostname, it defaults to the container ID":                                                                                  184,
 	"File does not exist at URL": 216,
-	"Flags:":                     231,
+	"Flags:":                     233,
 	"Generated password length":  176,
 	"Get tags available for Azure SQL Edge install": 224,
 	"Get tags available for mssql install":          226,
-	"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s": 233,
-	"Identifies the file that receives output from sqlcmd":                      234,
+	"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s": 235,
+	"Identifies the file that receives output from sqlcmd":                      236,
 	"If the database is mounted, run %s":                                        57,
-	"Implicitly trust the server certificate without validation":                236,
+	"Implicitly trust the server certificate without validation":                238,
 	"Include context details":                                                   142,
 	"Include endpoint details":                                                  149,
 	"Include user details":                                                      156,
@@ -181,12 +181,12 @@ var messageKeyToIndex = map[string]int{
 	"Install/Create SQL Server, Azure SQL, and Tools":                           20,
 	"Install/Create, Query, Uninstall SQL Server":                               11,
 	"Invalid --using file type":                                                 206,
-	"Invalid variable identifier %s":                                            275,
-	"Invalid variable value %s":                                                 276,
+	"Invalid variable identifier %s":                                            278,
+	"Invalid variable value %s":                                                 279,
 	"Is a container runtime installed on this machine (e.g. Podman or Docker)?": 211,
 	"Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)": 214,
-	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       228,
-	"Level of mssql driver messages to print":                                                              256,
+	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       230,
+	"Level of mssql driver messages to print":                                                              258,
 	"Line in errorlog to wait for before connecting":                                                       182,
 	"List all the context names in your sqlconfig file":                                                    138,
 	"List all the contexts in your sqlconfig file":                                                         139,
@@ -213,44 +213,45 @@ var messageKeyToIndex = map[string]int{
 	"Or, set the environment variable i.e. %s %s=YES ":       190,
 	"Pass in the %s %s":                                      99,
 	"Pass in the flag %s to override this safety check for user (non-system) databases": 58,
-	"Password": 264,
+	"Password": 266,
 	"Password encryption method (%s) in sqlconfig file":                                                                      95,
 	"Port (next available port from 1433 upwards used by default)":                                                           187,
-	"Print version information and exit":                                                                                     235,
+	"Print version information and exit":                                                                                     237,
 	"Provide a username with the %s flag":                                                                                    105,
 	"Provide a valid encryption method (%s) with the %s flag":                                                                107,
 	"Provide password in the %s (or %s) environment variable":                                                                103,
-	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster": 263,
+	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster": 265,
 	"Quiet mode (do not stop for user input to confirm the operation)":                                                       42,
 	"Remove":                               200,
 	"Remove the %s flag":                   98,
-	"Remove trailing spaces from a column": 262,
+	"Remove trailing spaces from a column": 264,
 	"Removing context %s":                  53,
-	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size": 249,
-	"Restoring database %s":                                                   209,
-	"Run a query":                                                             23,
-	"Run a query against the current context":                                 22,
-	"Run a query using [%s] database":                                         24,
-	"See all release tags for SQL Server, install previous version":           219,
-	"See connection strings":                                                  199,
-	"Set new default database":                                                25,
-	"Set the current context":                                                 159,
+	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size": 251,
+	"Restoring database %s":                                         209,
+	"Run a query":                                                   23,
+	"Run a query against the current context":                       22,
+	"Run a query using [%s] database":                               24,
+	"See all release tags for SQL Server, install previous version": 219,
+	"See connection strings":                                        199,
+	"Servers:":                                                      229,
+	"Set new default database":                                      25,
+	"Set the current context":                                       159,
 	"Set the mssql context (endpoint/user) to be the current context":         160,
-	"Sets the sqlcmd scripting variable %s":                                   268,
+	"Sets the sqlcmd scripting variable %s":                                   270,
 	"Show sqlconfig settings and raw authentication data":                     168,
 	"Show sqlconfig settings, with REDACTED authentication data":              167,
 	"Special character set to include in password":                            180,
-	"Specifies that all output files are encoded with little-endian Unicode":  260,
-	"Specifies that sqlcmd exits and returns a %s value when an error occurs": 257,
-	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword": 245,
-	"Specifies the batch terminator. The default value is %s":         239,
-	"Specifies the column separator character. Sets the %s variable.": 261,
-	"Specifies the formatting for results":                            254,
+	"Specifies that all output files are encoded with little-endian Unicode":  262,
+	"Specifies that sqlcmd exits and returns a %s value when an error occurs": 259,
+	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword": 247,
+	"Specifies the batch terminator. The default value is %s":         241,
+	"Specifies the column separator character. Sets the %s variable.": 263,
+	"Specifies the formatting for results":                            256,
 	"Specifies the image CPU architecture":                            185,
 	"Specifies the image operating system":                            186,
-	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed":                                                                                                         259,
-	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite": 250,
-	"Specifies the screen width for output":                                        266,
+	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed":                                                                                                         261,
+	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite": 252,
+	"Specifies the screen width for output":                                        268,
 	"Specify a custom name for the container rather than a randomly generated one": 183,
 	"Sqlcmd: Error: ":                              2,
 	"Sqlcmd: Warning: ":                            3,
@@ -265,19 +266,21 @@ var messageKeyToIndex = map[string]int{
 	"Switched to context \"%v\".":                  164,
 	"Syntax error at line %d near command '%s'.":   8,
 	"Tag to use, use get-tags to see list of tags": 172,
-	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used": 246,
+	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used": 248,
+	"The %s and the %s options are mutually exclusive.":                                                                        275,
 	"The %s flag can only be used when authentication type is '%s'":                                                            100,
 	"The %s flag must be set when authentication type is '%s'":                                                                 102,
+	"The -L parameter can not be used in combination with other parameters.":                                                   227,
 	"The environment variable: '%s' has invalid value: '%s'.":                                                                  7,
-	"The login name or contained database user name.  For contained database users, you must provide the database name option": 240,
+	"The login name or contained database user name.  For contained database users, you must provide the database name option": 242,
 	"The network address to connect to, e.g. 127.0.0.1 etc.":                                                                   80,
 	"The network port to connect to, e.g. 1433 etc.":                                                                           81,
 	"The scripting variable: '%s' is read-only":                                                                                5,
 	"The username (provide password in %s or %s environment variable)":                                                         94,
-	"Third party notices: aka.ms/SqlcmdNotices":                                                                                229,
-	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions": 251,
-	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits":                                                                                                     237,
-	"This switch is used by the client to request an encrypted connection": 253,
+	"Third party notices: aka.ms/SqlcmdNotices":                                                                                231,
+	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions": 253,
+	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits":                                                                                                     239,
+	"This switch is used by the client to request an encrypted connection": 255,
 	"To override the check, use %s":                                        51,
 	"To remove:         %s":                                                163,
 	"To run a query":                                                       76,
@@ -303,9 +306,9 @@ var messageKeyToIndex = map[string]int{
 	"User name must be provided.  Provide user name with %s flag": 133,
 	"User name to view details of":                                155,
 	"Username not provided":                                       106,
-	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password": 238,
+	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password": 240,
 	"Verifying no user (non-system) database (.mdf) files": 49,
-	"Version %v\n":               230,
+	"Version %v\n":               232,
 	"View all endpoints details": 85,
 	"View available contexts":    44,
 	"View configuration information and connection strings":    12,
@@ -327,91 +330,92 @@ var messageKeyToIndex = map[string]int{
 	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  %s": 13,
 }
 
-var de_DEIndex = []uint32{ // 278 elements
+var de_DEIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x0000005a, 0x00000084, 0x00000099,
-	0x000000af, 0x00000103, 0x00000134, 0x00000164,
-	0x000001ae, 0x000001eb, 0x00000238, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
+	0x00000000, 0x0000005b, 0x00000085, 0x0000009a,
+	0x000000b0, 0x00000104, 0x00000135, 0x00000165,
+	0x000001af, 0x000001ec, 0x00000239, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	// Entry 20 - 3F
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	// Entry 40 - 5F
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	// Entry 60 - 7F
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	// Entry 80 - 9F
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	// Entry A0 - BF
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	// Entry C0 - DF
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	// Entry E0 - FF
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	// Entry 100 - 11F
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259, 0x00000259, 0x00000259,
-	0x00000259, 0x00000259,
-} // Size: 1136 bytes
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
+	0x0000025a,
+} // Size: 1148 bytes
 
-const de_DEData string = "" + // Size: 601 bytes
-	"\x02'-h %[1]d': Der Headerwert muss entweder -1 oder ein Wert zwischen -" +
-	"1 und 2147483647 sein\x02Ungültiges Batchabschlusszeichen '%[1]s'\x04" +
+const de_DEData string = "" + // Size: 602 bytes
+	"\x02'-h %#[1]v': Der Headerwert muss entweder -1 oder ein Wert zwischen " +
+	"-1 und 2147483647 sein\x02Ungültiges Batchabschlusszeichen '%[1]s'\x04" +
 	"\x00\x01 \x10\x02Sqlcmd: Fehler:\x04\x00\x01 \x11\x02Sqlcmd: Warnung:" +
 	"\x02Die Befehle ED und !!<command>, Startskript und Umgebungsvariablen s" +
 	"ind deaktiviert\x02Die '%[1]s'-Skriptvariable ist schreibgeschützt\x02Di" +
@@ -421,125 +425,126 @@ const de_DEData string = "" + // Size: 601 bytes
 	"r Verarbeiten von Datei %[2]s (Ursache: %[3]s).\x02%[1]sSyntaxfehler in " +
 	"Zeile %[2]d"
 
-var en_USIndex = []uint32{ // 278 elements
+var en_USIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x0000004f, 0x00000070, 0x00000084,
-	0x0000009a, 0x000000ee, 0x0000011b, 0x00000143,
-	0x00000181, 0x000001b2, 0x00000201, 0x00000221,
-	0x0000024d, 0x00000283, 0x000002d4, 0x0000030d,
-	0x00000325, 0x00000338, 0x0000036d, 0x000003a3,
-	0x000003e3, 0x00000413, 0x0000044a, 0x00000472,
-	0x0000047e, 0x000004a1, 0x000004ba, 0x000004ce,
-	0x000004de, 0x000004f4, 0x0000050e, 0x00000529,
+	0x00000000, 0x00000050, 0x00000071, 0x00000085,
+	0x0000009b, 0x000000ef, 0x0000011c, 0x00000144,
+	0x00000182, 0x000001b3, 0x00000202, 0x00000222,
+	0x0000024e, 0x00000284, 0x000002d5, 0x0000030e,
+	0x00000326, 0x00000339, 0x0000036e, 0x000003a4,
+	0x000003e4, 0x00000414, 0x0000044b, 0x00000473,
+	0x0000047f, 0x000004a2, 0x000004bb, 0x000004cf,
+	0x000004df, 0x000004f5, 0x0000050f, 0x0000052a,
 	// Entry 20 - 3F
-	0x0000053c, 0x0000055d, 0x0000058a, 0x000005b4,
-	0x000005c9, 0x000005e2, 0x00000603, 0x00000639,
-	0x0000065e, 0x00000693, 0x000006f5, 0x00000736,
-	0x00000782, 0x0000079a, 0x000007a9, 0x000007d2,
-	0x000007e9, 0x00000822, 0x00000857, 0x0000086e,
-	0x0000088f, 0x000008e0, 0x000008f7, 0x00000939,
-	0x00000956, 0x0000095c, 0x00000982, 0x000009d7,
-	0x00000a1b, 0x00000a35, 0x00000a43, 0x00000a9e,
+	0x0000053d, 0x0000055e, 0x0000058b, 0x000005b5,
+	0x000005ca, 0x000005e3, 0x00000604, 0x0000063a,
+	0x0000065f, 0x00000694, 0x000006f6, 0x00000737,
+	0x00000783, 0x0000079b, 0x000007aa, 0x000007d3,
+	0x000007ea, 0x00000823, 0x00000858, 0x0000086f,
+	0x00000890, 0x000008e1, 0x000008f8, 0x0000093a,
+	0x00000957, 0x0000095d, 0x00000983, 0x000009d8,
+	0x00000a1c, 0x00000a36, 0x00000a44, 0x00000a9f,
 	// Entry 40 - 5F
-	0x00000abb, 0x00000ae2, 0x00000b05, 0x00000b2c,
-	0x00000b45, 0x00000b66, 0x00000bba, 0x00000bcd,
-	0x00000bda, 0x00000bea, 0x00000c06, 0x00000c20,
-	0x00000c43, 0x00000c52, 0x00000c6a, 0x00000c81,
-	0x00000c9f, 0x00000cd6, 0x00000d05, 0x00000d25,
-	0x00000d39, 0x00000d4f, 0x00000d6a, 0x00000d7f,
-	0x00000db8, 0x00000df4, 0x00000e2f, 0x00000e7d,
-	0x00000e88, 0x00000ebd, 0x00000ef4, 0x00000f3b,
+	0x00000abc, 0x00000ae3, 0x00000b06, 0x00000b2d,
+	0x00000b46, 0x00000b67, 0x00000bbb, 0x00000bce,
+	0x00000bdb, 0x00000beb, 0x00000c07, 0x00000c21,
+	0x00000c44, 0x00000c53, 0x00000c6b, 0x00000c82,
+	0x00000ca0, 0x00000cd7, 0x00000d06, 0x00000d26,
+	0x00000d3a, 0x00000d50, 0x00000d6b, 0x00000d80,
+	0x00000db9, 0x00000df5, 0x00000e30, 0x00000e7e,
+	0x00000e89, 0x00000ebe, 0x00000ef5, 0x00000f3c,
 	// Entry 60 - 7F
-	0x00000f70, 0x00000f9f, 0x00000fca, 0x00000fe0,
-	0x00000ff8, 0x0000103c, 0x0000104f, 0x0000108e,
-	0x000010cc, 0x000010fc, 0x00001123, 0x00001139,
-	0x00001177, 0x0000119e, 0x000011d4, 0x0000120d,
-	0x00001220, 0x00001254, 0x00001283, 0x000012ce,
-	0x00001304, 0x00001320, 0x00001331, 0x00001364,
-	0x00001397, 0x000013b1, 0x000013e0, 0x00001417,
-	0x0000142f, 0x0000144e, 0x00001461, 0x0000147c,
+	0x00000f71, 0x00000fa0, 0x00000fcb, 0x00000fe1,
+	0x00000ff9, 0x0000103d, 0x00001050, 0x0000108f,
+	0x000010cd, 0x000010fd, 0x00001124, 0x0000113a,
+	0x00001178, 0x0000119f, 0x000011d5, 0x0000120e,
+	0x00001221, 0x00001255, 0x00001284, 0x000012cf,
+	0x00001305, 0x00001321, 0x00001332, 0x00001365,
+	0x00001398, 0x000013b2, 0x000013e1, 0x00001418,
+	0x00001430, 0x0000144f, 0x00001462, 0x0000147d,
 	// Entry 80 - 9F
-	0x000014c3, 0x000014d2, 0x000014f2, 0x0000150b,
-	0x00001519, 0x00001530, 0x0000156f, 0x0000157a,
-	0x00001594, 0x000015a7, 0x000015dc, 0x0000160e,
-	0x0000163b, 0x00001667, 0x00001687, 0x0000169f,
-	0x000016c6, 0x000016f6, 0x0000172c, 0x0000175a,
-	0x00001787, 0x000017a8, 0x000017c1, 0x000017e9,
-	0x0000181a, 0x0000184c, 0x00001876, 0x0000189f,
-	0x000018bc, 0x000018d1, 0x000018f5, 0x00001922,
+	0x000014c4, 0x000014d3, 0x000014f3, 0x0000150c,
+	0x0000151a, 0x00001531, 0x00001570, 0x0000157b,
+	0x00001595, 0x000015a8, 0x000015dd, 0x0000160f,
+	0x0000163c, 0x00001668, 0x00001688, 0x000016a0,
+	0x000016c7, 0x000016f7, 0x0000172d, 0x0000175b,
+	0x00001788, 0x000017a9, 0x000017c2, 0x000017ea,
+	0x0000181b, 0x0000184d, 0x00001877, 0x000018a0,
+	0x000018bd, 0x000018d2, 0x000018f6, 0x00001923,
 	// Entry A0 - BF
-	0x0000193a, 0x0000197a, 0x000019a4, 0x000019bd,
-	0x000019d6, 0x000019f3, 0x00001a1c, 0x00001a5c,
-	0x00001a97, 0x00001acb, 0x00001ae1, 0x00001af8,
-	0x00001b25, 0x00001b52, 0x00001b98, 0x00001bd3,
-	0x00001bee, 0x00001c08, 0x00001c2d, 0x00001c52,
-	0x00001c75, 0x00001ca2, 0x00001cd6, 0x00001d05,
-	0x00001d52, 0x00001d99, 0x00001dbe, 0x00001de3,
-	0x00001e20, 0x00001e5e, 0x00001e8d, 0x00001ec8,
+	0x0000193b, 0x0000197b, 0x000019a5, 0x000019be,
+	0x000019d7, 0x000019f4, 0x00001a1d, 0x00001a5d,
+	0x00001a98, 0x00001acc, 0x00001ae2, 0x00001af9,
+	0x00001b26, 0x00001b53, 0x00001b99, 0x00001bd4,
+	0x00001bef, 0x00001c09, 0x00001c2e, 0x00001c53,
+	0x00001c76, 0x00001ca3, 0x00001cd7, 0x00001d06,
+	0x00001d53, 0x00001d9a, 0x00001dbf, 0x00001de4,
+	0x00001e21, 0x00001e5f, 0x00001e8e, 0x00001ec9,
 	// Entry C0 - DF
-	0x00001eda, 0x00001f17, 0x00001f26, 0x00001f64,
-	0x00001fad, 0x00001fc7, 0x00001fde, 0x00001ff8,
-	0x0000200f, 0x00002016, 0x00002045, 0x00002067,
-	0x00002091, 0x000020bb, 0x000020e0, 0x000020fa,
-	0x0000211c, 0x0000212e, 0x00002147, 0x00002159,
-	0x000021a3, 0x000021ce, 0x000021d7, 0x00002242,
-	0x00002261, 0x0000227c, 0x00002294, 0x000022bd,
-	0x000022fb, 0x00002341, 0x000023a4, 0x000023d2,
+	0x00001edb, 0x00001f18, 0x00001f27, 0x00001f65,
+	0x00001fae, 0x00001fc8, 0x00001fdf, 0x00001ff9,
+	0x00002010, 0x00002017, 0x00002046, 0x00002068,
+	0x00002092, 0x000020bc, 0x000020e1, 0x000020fb,
+	0x0000211d, 0x0000212f, 0x00002148, 0x0000215a,
+	0x000021a4, 0x000021cf, 0x000021d8, 0x00002243,
+	0x00002262, 0x0000227d, 0x00002295, 0x000022be,
+	0x000022fc, 0x00002342, 0x000023a5, 0x000023d3,
 	// Entry E0 - FF
-	0x000023fe, 0x0000242c, 0x00002436, 0x0000245b,
-	0x0000249d, 0x000024cc, 0x000024f6, 0x00002509,
-	0x00002510, 0x00002559, 0x000025f7, 0x0000262c,
-	0x0000264f, 0x0000268a, 0x00002775, 0x00002819,
-	0x00002854, 0x000028cd, 0x00002965, 0x000029e1,
-	0x00002a4e, 0x00002aad, 0x00002bbb, 0x00002cab,
-	0x00002d80, 0x00002e9d, 0x00003038, 0x00003116,
-	0x00003265, 0x0000335f, 0x000033a4, 0x000033c9,
+	0x000023ff, 0x0000242d, 0x00002437, 0x0000245c,
+	0x000024a3, 0x000024e6, 0x000024ef, 0x0000251e,
+	0x00002548, 0x0000255b, 0x00002562, 0x000025ab,
+	0x00002649, 0x0000267e, 0x000026a1, 0x000026dc,
+	0x000027c7, 0x0000286b, 0x000028a6, 0x0000291f,
+	0x000029b7, 0x00002a33, 0x00002aa0, 0x00002aff,
+	0x00002c0d, 0x00002cfd, 0x00002dd2, 0x00002eef,
+	0x0000308a, 0x00003168, 0x000032b7, 0x000033b1,
 	// Entry 100 - 11F
-	0x0000344a, 0x00003472, 0x000034bd, 0x0000353d,
-	0x000035b0, 0x000035f7, 0x0000363a, 0x0000365f,
-	0x000036d6, 0x000036df, 0x0000372a, 0x00003750,
-	0x00003773, 0x0000379c, 0x000037fb, 0x00003842,
-	0x00003886, 0x000038d1, 0x00003901, 0x0000392f,
-	0x00003951, 0x0000396e,
-} // Size: 1136 bytes
+	0x000033f6, 0x0000341b, 0x0000349c, 0x000034c4,
+	0x0000350f, 0x0000358f, 0x00003602, 0x00003649,
+	0x0000368c, 0x000036b1, 0x00003728, 0x00003731,
+	0x0000377c, 0x000037a2, 0x000037c5, 0x000037ee,
+	0x0000384d, 0x00003894, 0x000038d8, 0x00003923,
+	0x0000395b, 0x0000398b, 0x000039b9, 0x000039db,
+	0x000039f8,
+} // Size: 1148 bytes
 
-const en_USData string = "" + // Size: 14702 bytes
-	"\x02'-h %[1]d': header value must be either -1 or a value between 1 and " +
-	"2147483647\x02invalid batch terminator '%[1]s'\x04\x00\x01 \x0f\x02Sqlcm" +
-	"d: Error:\x04\x00\x01 \x11\x02Sqlcmd: Warning:\x02ED and !!<command> com" +
-	"mands, startup script, and environment variables are disabled\x02The scr" +
-	"ipting variable: '%[1]s' is read-only\x02'%[1]s' scripting variable not " +
-	"defined.\x02The environment variable: '%[1]s' has invalid value: '%[2]s'" +
-	".\x02Syntax error at line %[1]d near command '%[2]s'.\x02%[1]s Error occ" +
-	"urred while opening or operating on file %[2]s (Reason: %[3]s).\x02%[1]s" +
-	"Syntax error at line %[2]d\x02Install/Create, Query, Uninstall SQL Serve" +
-	"r\x02View configuration information and connection strings\x02sqlcmd: In" +
-	"stall/Create/Query SQL Server, Azure SQL, and Tools\x0a\x0aFeedback:\x0a" +
-	"  %[1]s\x02help for backwards compatibility flags (-S, -U, -E etc.)\x02p" +
-	"rint version of sqlcmd\x02configuration file\x02log level, error=0, warn" +
-	"=1, info=2, debug=3, trace=4\x02Modify sqlconfig files using subcommands" +
-	" like \x22%[1]s\x22\x02Add context for existing endpoint and user (use %" +
-	"[1]s or %[2]s)\x02Install/Create SQL Server, Azure SQL, and Tools\x02Ope" +
-	"n tools (e.g Azure Data Studio) for current context\x02Run a query again" +
-	"st the current context\x02Run a query\x02Run a query using [%[1]s] datab" +
-	"ase\x02Set new default database\x02Command text to run\x02Database to us" +
-	"e\x02Start current context\x02Start the current context\x02To view avail" +
-	"able contexts\x02No current context\x02Starting %[1]q for context %[2]q" +
-	"\x04\x00\x01 (\x02Create new context with a sql container\x02Current con" +
-	"text does not have a container\x02Stop current context\x02Stop the curre" +
-	"nt context\x02Stopping %[1]q for context %[2]q\x04\x00\x01 1\x02Create a" +
-	" new context with a SQL Server container\x02Uninstall/Delete the current" +
-	" context\x02Uninstall/Delete the current context, no user prompt\x02Unin" +
-	"stall/Delete the current context, no user prompt and override safety che" +
-	"ck for user databases\x02Quiet mode (do not stop for user input to confi" +
-	"rm the operation)\x02Complete the operation even if non-system (user) da" +
-	"tabase files are present\x02View available contexts\x02Create context" +
-	"\x02Create context with SQL Server container\x02Add a context manually" +
-	"\x02Current context is %[1]q. Do you want to continue? (Y/N)\x02Verifyin" +
-	"g no user (non-system) database (.mdf) files\x02To start the container" +
-	"\x02To override the check, use %[1]s\x02Container is not running, unable" +
-	" to verify that user database files do not exist\x02Removing context %[1" +
-	"]s\x02Container %[1]q no longer exists, continuing to remove context..." +
+const en_USData string = "" + // Size: 14840 bytes
+	"\x02'-h %#[1]v': header value must be either -1 or a value between 1 and" +
+	" 2147483647\x02invalid batch terminator '%[1]s'\x04\x00\x01 \x0f\x02Sqlc" +
+	"md: Error:\x04\x00\x01 \x11\x02Sqlcmd: Warning:\x02ED and !!<command> co" +
+	"mmands, startup script, and environment variables are disabled\x02The sc" +
+	"ripting variable: '%[1]s' is read-only\x02'%[1]s' scripting variable not" +
+	" defined.\x02The environment variable: '%[1]s' has invalid value: '%[2]s" +
+	"'.\x02Syntax error at line %[1]d near command '%[2]s'.\x02%[1]s Error oc" +
+	"curred while opening or operating on file %[2]s (Reason: %[3]s).\x02%[1]" +
+	"sSyntax error at line %[2]d\x02Install/Create, Query, Uninstall SQL Serv" +
+	"er\x02View configuration information and connection strings\x02sqlcmd: I" +
+	"nstall/Create/Query SQL Server, Azure SQL, and Tools\x0a\x0aFeedback:" +
+	"\x0a  %[1]s\x02help for backwards compatibility flags (-S, -U, -E etc.)" +
+	"\x02print version of sqlcmd\x02configuration file\x02log level, error=0," +
+	" warn=1, info=2, debug=3, trace=4\x02Modify sqlconfig files using subcom" +
+	"mands like \x22%[1]s\x22\x02Add context for existing endpoint and user (" +
+	"use %[1]s or %[2]s)\x02Install/Create SQL Server, Azure SQL, and Tools" +
+	"\x02Open tools (e.g Azure Data Studio) for current context\x02Run a quer" +
+	"y against the current context\x02Run a query\x02Run a query using [%[1]s" +
+	"] database\x02Set new default database\x02Command text to run\x02Databas" +
+	"e to use\x02Start current context\x02Start the current context\x02To vie" +
+	"w available contexts\x02No current context\x02Starting %[1]q for context" +
+	" %[2]q\x04\x00\x01 (\x02Create new context with a sql container\x02Curre" +
+	"nt context does not have a container\x02Stop current context\x02Stop the" +
+	" current context\x02Stopping %[1]q for context %[2]q\x04\x00\x01 1\x02Cr" +
+	"eate a new context with a SQL Server container\x02Uninstall/Delete the c" +
+	"urrent context\x02Uninstall/Delete the current context, no user prompt" +
+	"\x02Uninstall/Delete the current context, no user prompt and override sa" +
+	"fety check for user databases\x02Quiet mode (do not stop for user input " +
+	"to confirm the operation)\x02Complete the operation even if non-system (" +
+	"user) database files are present\x02View available contexts\x02Create co" +
+	"ntext\x02Create context with SQL Server container\x02Add a context manua" +
+	"lly\x02Current context is %[1]q. Do you want to continue? (Y/N)\x02Verif" +
+	"ying no user (non-system) database (.mdf) files\x02To start the containe" +
+	"r\x02To override the check, use %[1]s\x02Container is not running, unabl" +
+	"e to verify that user database files do not exist\x02Removing context %[" +
+	"1]s\x02Container %[1]q no longer exists, continuing to remove context..." +
 	"\x02Current context is now %[1]s\x02%[1]v\x02If the database is mounted," +
 	" run %[1]s\x02Pass in the flag %[1]s to override this safety check for u" +
 	"ser (non-system) databases\x02Unable to continue, a user (non-system) da" +
@@ -644,266 +649,270 @@ const en_USData string = "" + // Size: 14702 bytes
 	"er, download and attach AdventureWorks sample database with different da" +
 	"tabase name\x02Create SQL Server with an empty user database\x02Install/" +
 	"Create SQL Server with full logging\x02Get tags available for Azure SQL " +
-	"Edge install\x02List tags\x02Get tags available for mssql install\x02'-a" +
-	" %[1]d': Packet size has to be a number between 512 and 32767.\x02Legal " +
-	"docs and information: aka.ms/SqlcmdLegal\x02Third party notices: aka.ms/" +
-	"SqlcmdNotices\x04\x00\x01\x0a\x0e\x02Version %[1]v\x02Flags:\x02-? shows" +
-	" this syntax summary, %[1]s shows modern sqlcmd sub-command help\x02Iden" +
-	"tifies one or more files that contain batches of SQL statements. If one " +
-	"or more files do not exist, sqlcmd will exit. Mutually exclusive with %[" +
-	"1]s/%[2]s\x02Identifies the file that receives output from sqlcmd\x02Pri" +
-	"nt version information and exit\x02Implicitly trust the server certifica" +
-	"te without validation\x02This option sets the sqlcmd scripting variable " +
-	"%[1]s. This parameter specifies the initial database. The default is you" +
-	"r login's default-database property. If the database does not exist, an " +
-	"error message is generated and sqlcmd exits\x02Uses a trusted connection" +
-	" instead of using a user name and password to sign in to SQL Server, ign" +
-	"oring any environment variables that define user name and password\x02Sp" +
-	"ecifies the batch terminator. The default value is %[1]s\x02The login na" +
-	"me or contained database user name.  For contained database users, you m" +
-	"ust provide the database name option\x02Executes a query when sqlcmd sta" +
-	"rts, but does not exit sqlcmd when the query has finished running. Multi" +
-	"ple-semicolon-delimited queries can be executed\x02Executes a query when" +
-	" sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-del" +
-	"imited queries can be executed\x02%[1]s Specifies the instance of SQL Se" +
-	"rver to which to connect. It sets the sqlcmd scripting variable %[2]s." +
-	"\x02Disables commands that might compromise system security. Sqlcmd issu" +
-	"es a warning and continues\x02Specifies the SQL authentication method to" +
-	" use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, A" +
-	"ctiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryIntera" +
-	"ctive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, " +
-	"SqlPassword\x02Tells sqlcmd to use ActiveDirectory authentication. If no" +
-	" user name is provided, authentication method ActiveDirectoryDefault is " +
-	"used. If a password is provided, ActiveDirectoryPassword is used. Otherw" +
-	"ise ActiveDirectoryInteractive is used\x02Causes sqlcmd to ignore script" +
-	"ing variables. This parameter is useful when a script contains many %[1]" +
-	"s statements that may contain strings that have the same format as regul" +
-	"ar variables, such as $(variable_name)\x02Creates a sqlcmd scripting var" +
-	"iable that can be used in a sqlcmd script. Enclose the value in quotatio" +
-	"n marks if the value contains spaces. You can specify multiple var=value" +
-	"s values. If there are errors in any of the values specified, sqlcmd gen" +
-	"erates an error message and then exits\x02Requests a packet of a differe" +
-	"nt size. This option sets the sqlcmd scripting variable %[1]s. packet_si" +
-	"ze must be a value between 512 and 32767. The default = 4096. A larger p" +
-	"acket size can enhance performance for execution of scripts that have lo" +
-	"ts of SQL statements between %[2]s commands. You can request a larger pa" +
-	"cket size. However, if the request is denied, sqlcmd uses the server def" +
-	"ault for packet size\x02Specifies the number of seconds before a sqlcmd " +
-	"login to the go-mssqldb driver times out when you try to connect to a se" +
-	"rver. This option sets the sqlcmd scripting variable %[1]s. The default " +
-	"value is 30. 0 means infinite\x02This option sets the sqlcmd scripting v" +
-	"ariable %[1]s. The workstation name is listed in the hostname column of " +
-	"the sys.sysprocesses catalog view and can be returned using the stored p" +
-	"rocedure sp_who. If this option is not specified, the default is the cur" +
-	"rent computer name. This name can be used to identify different sqlcmd s" +
-	"essions\x02Declares the application workload type when connecting to a s" +
-	"erver. The only currently supported value is ReadOnly. If %[1]s is not s" +
-	"pecified, the sqlcmd utility will not support connectivity to a secondar" +
-	"y replica in an Always On availability group\x02This switch is used by t" +
-	"he client to request an encrypted connection\x02Specifies the formatting" +
-	" for results\x02Controls which error messages are sent to stdout. Messag" +
-	"es that have severity level greater than or equal to this level are sent" +
-	"\x02Level of mssql driver messages to print\x02Specifies that sqlcmd exi" +
-	"ts and returns a %[1]s value when an error occurs\x02Controls which erro" +
-	"r messages are sent to %[1]s. Messages that have severity level greater " +
-	"than or equal to this level are sent\x02Specifies the number of rows to " +
-	"print between the column headings. Use -h-1 to specify that headers not " +
-	"be printed\x02Specifies that all output files are encoded with little-en" +
-	"dian Unicode\x02Specifies the column separator character. Sets the %[1]s" +
-	" variable.\x02Remove trailing spaces from a column\x02Provided for backw" +
-	"ard compatibility. Sqlcmd always optimizes detection of the active repli" +
-	"ca of a SQL Failover Cluster\x02Password\x02Controls the severity level " +
-	"that is used to set the %[1]s variable on exit\x02Specifies the screen w" +
-	"idth for output\x02Dedicated administrator connection\x02Sets the sqlcmd" +
-	" scripting variable %[1]s\x02'%[1]s %[2]s': value must be greater than o" +
-	"r equal to %#[3]v and less than or equal to %#[4]v.\x02'%[1]s %[2]s': va" +
-	"lue must be greater than %#[3]v and less than %#[4]v.\x02'%[1]s %[2]s': " +
-	"Unexpected argument. Argument value has to be %[3]v.\x02'%[1]s %[2]s': U" +
-	"nexpected argument. Argument value has to be one of %[3]v.\x02'%[1]s': M" +
-	"issing argument. Enter '-?' for help.\x02'%[1]s': Unknown Option. Enter " +
-	"'-?' for help.\x02Invalid variable identifier %[1]s\x02Invalid variable " +
-	"value %[1]s"
+	"Edge install\x02List tags\x02Get tags available for mssql install\x02The" +
+	" -L parameter can not be used in combination with other parameters.\x02'" +
+	"-a %#[1]v': Packet size has to be a number between 512 and 32767.\x02Ser" +
+	"vers:\x02Legal docs and information: aka.ms/SqlcmdLegal\x02Third party n" +
+	"otices: aka.ms/SqlcmdNotices\x04\x00\x01\x0a\x0e\x02Version %[1]v\x02Fla" +
+	"gs:\x02-? shows this syntax summary, %[1]s shows modern sqlcmd sub-comma" +
+	"nd help\x02Identifies one or more files that contain batches of SQL stat" +
+	"ements. If one or more files do not exist, sqlcmd will exit. Mutually ex" +
+	"clusive with %[1]s/%[2]s\x02Identifies the file that receives output fro" +
+	"m sqlcmd\x02Print version information and exit\x02Implicitly trust the s" +
+	"erver certificate without validation\x02This option sets the sqlcmd scri" +
+	"pting variable %[1]s. This parameter specifies the initial database. The" +
+	" default is your login's default-database property. If the database does" +
+	" not exist, an error message is generated and sqlcmd exits\x02Uses a tru" +
+	"sted connection instead of using a user name and password to sign in to " +
+	"SQL Server, ignoring any environment variables that define user name and" +
+	" password\x02Specifies the batch terminator. The default value is %[1]s" +
+	"\x02The login name or contained database user name.  For contained datab" +
+	"ase users, you must provide the database name option\x02Executes a query" +
+	" when sqlcmd starts, but does not exit sqlcmd when the query has finishe" +
+	"d running. Multiple-semicolon-delimited queries can be executed\x02Execu" +
+	"tes a query when sqlcmd starts and then immediately exits sqlcmd. Multip" +
+	"le-semicolon-delimited queries can be executed\x02%[1]s Specifies the in" +
+	"stance of SQL Server to which to connect. It sets the sqlcmd scripting v" +
+	"ariable %[2]s.\x02Disables commands that might compromise system securit" +
+	"y. Sqlcmd issues a warning and continues\x02Specifies the SQL authentica" +
+	"tion method to use to connect to Azure SQL Database. One of: ActiveDirec" +
+	"toryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveD" +
+	"irectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServ" +
+	"icePrincipal, SqlPassword\x02Tells sqlcmd to use ActiveDirectory authent" +
+	"ication. If no user name is provided, authentication method ActiveDirect" +
+	"oryDefault is used. If a password is provided, ActiveDirectoryPassword i" +
+	"s used. Otherwise ActiveDirectoryInteractive is used\x02Causes sqlcmd to" +
+	" ignore scripting variables. This parameter is useful when a script cont" +
+	"ains many %[1]s statements that may contain strings that have the same f" +
+	"ormat as regular variables, such as $(variable_name)\x02Creates a sqlcmd" +
+	" scripting variable that can be used in a sqlcmd script. Enclose the val" +
+	"ue in quotation marks if the value contains spaces. You can specify mult" +
+	"iple var=values values. If there are errors in any of the values specifi" +
+	"ed, sqlcmd generates an error message and then exits\x02Requests a packe" +
+	"t of a different size. This option sets the sqlcmd scripting variable %[" +
+	"1]s. packet_size must be a value between 512 and 32767. The default = 40" +
+	"96. A larger packet size can enhance performance for execution of script" +
+	"s that have lots of SQL statements between %[2]s commands. You can reque" +
+	"st a larger packet size. However, if the request is denied, sqlcmd uses " +
+	"the server default for packet size\x02Specifies the number of seconds be" +
+	"fore a sqlcmd login to the go-mssqldb driver times out when you try to c" +
+	"onnect to a server. This option sets the sqlcmd scripting variable %[1]s" +
+	". The default value is 30. 0 means infinite\x02This option sets the sqlc" +
+	"md scripting variable %[1]s. The workstation name is listed in the hostn" +
+	"ame column of the sys.sysprocesses catalog view and can be returned usin" +
+	"g the stored procedure sp_who. If this option is not specified, the defa" +
+	"ult is the current computer name. This name can be used to identify diff" +
+	"erent sqlcmd sessions\x02Declares the application workload type when con" +
+	"necting to a server. The only currently supported value is ReadOnly. If " +
+	"%[1]s is not specified, the sqlcmd utility will not support connectivity" +
+	" to a secondary replica in an Always On availability group\x02This switc" +
+	"h is used by the client to request an encrypted connection\x02Specifies " +
+	"the formatting for results\x02Controls which error messages are sent to " +
+	"stdout. Messages that have severity level greater than or equal to this " +
+	"level are sent\x02Level of mssql driver messages to print\x02Specifies t" +
+	"hat sqlcmd exits and returns a %[1]s value when an error occurs\x02Contr" +
+	"ols which error messages are sent to %[1]s. Messages that have severity " +
+	"level greater than or equal to this level are sent\x02Specifies the numb" +
+	"er of rows to print between the column headings. Use -h-1 to specify tha" +
+	"t headers not be printed\x02Specifies that all output files are encoded " +
+	"with little-endian Unicode\x02Specifies the column separator character. " +
+	"Sets the %[1]s variable.\x02Remove trailing spaces from a column\x02Prov" +
+	"ided for backward compatibility. Sqlcmd always optimizes detection of th" +
+	"e active replica of a SQL Failover Cluster\x02Password\x02Controls the s" +
+	"everity level that is used to set the %[1]s variable on exit\x02Specifie" +
+	"s the screen width for output\x02Dedicated administrator connection\x02S" +
+	"ets the sqlcmd scripting variable %[1]s\x02'%[1]s %[2]s': value must be " +
+	"greater than or equal to %#[3]v and less than or equal to %#[4]v.\x02'%[" +
+	"1]s %[2]s': value must be greater than %#[3]v and less than %#[4]v.\x02'" +
+	"%[1]s %[2]s': Unexpected argument. Argument value has to be %[3]v.\x02'%" +
+	"[1]s %[2]s': Unexpected argument. Argument value has to be one of %[3]v." +
+	"\x02The %[1]s and the %[2]s options are mutually exclusive.\x02'%[1]s': " +
+	"Missing argument. Enter '-?' for help.\x02'%[1]s': Unknown Option. Enter" +
+	" '-?' for help.\x02Invalid variable identifier %[1]s\x02Invalid variable" +
+	" value %[1]s"
 
-var es_ESIndex = []uint32{ // 278 elements
+var es_ESIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x00000050, 0x00000076, 0x0000008a,
-	0x000000a4, 0x00000108, 0x00000139, 0x00000167,
-	0x000001aa, 0x000001ea, 0x00000232, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
+	0x00000000, 0x00000051, 0x00000077, 0x0000008b,
+	0x000000a5, 0x00000109, 0x0000013a, 0x00000168,
+	0x000001ab, 0x000001eb, 0x00000233, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	// Entry 20 - 3F
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	// Entry 40 - 5F
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	// Entry 60 - 7F
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	// Entry 80 - 9F
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	// Entry A0 - BF
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	// Entry C0 - DF
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	// Entry E0 - FF
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	// Entry 100 - 11F
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c, 0x0000025c, 0x0000025c,
-	0x0000025c, 0x0000025c,
-} // Size: 1136 bytes
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
+	0x0000025d,
+} // Size: 1148 bytes
 
-const es_ESData string = "" + // Size: 604 bytes
-	"\x02'-h %[1]d': el valor de encabezado debe ser -1 o un valor entre -1 y" +
-	" 2147483647\x02terminador de lote no válido '%[1]s'\x04\x00\x01 \x0f\x02" +
-	"Sqlcmd: error:\x04\x00\x01 \x15\x02Sqlcmd: advertencia:\x02los comandos " +
-	"ED y !!<comando>, el script de inicio y las variables de entorno están d" +
-	"eshabilitados\x02la variable de script '%[1]s' es de solo lectura\x02No " +
-	"se definió la variable de script '%[1]s'.\x02la variable de entorno '%[1" +
-	"]s' tiene un valor no válido: '%[2]s'.\x02error de sintaxis en la línea " +
-	"%[1]d cerca del comando '%[2]s'.\x02%[1]s no se pudo abrir o actuar sobr" +
-	"e el archivo %[2]s (motivo: %[3]s).\x02%[1]serror de sintaxis en la líne" +
-	"a %[2]d"
+const es_ESData string = "" + // Size: 605 bytes
+	"\x02'-h %#[1]v': el valor de encabezado debe ser -1 o un valor entre -1 " +
+	"y 2147483647\x02terminador de lote no válido '%[1]s'\x04\x00\x01 \x0f" +
+	"\x02Sqlcmd: error:\x04\x00\x01 \x15\x02Sqlcmd: advertencia:\x02los coman" +
+	"dos ED y !!<comando>, el script de inicio y las variables de entorno est" +
+	"án deshabilitados\x02la variable de script '%[1]s' es de solo lectura" +
+	"\x02No se definió la variable de script '%[1]s'.\x02la variable de entor" +
+	"no '%[1]s' tiene un valor no válido: '%[2]s'.\x02error de sintaxis en la" +
+	" línea %[1]d cerca del comando '%[2]s'.\x02%[1]s no se pudo abrir o actu" +
+	"ar sobre el archivo %[2]s (motivo: %[3]s).\x02%[1]serror de sintaxis en " +
+	"la línea %[2]d"
 
-var fr_FRIndex = []uint32{ // 278 elements
+var fr_FRIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x00000060, 0x0000008a, 0x000000a3,
-	0x000000c2, 0x0000013a, 0x00000173, 0x000001ab,
-	0x00000206, 0x00000252, 0x000002be, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
+	0x00000000, 0x00000061, 0x0000008b, 0x000000a4,
+	0x000000c3, 0x0000013b, 0x00000174, 0x000001ac,
+	0x00000207, 0x00000253, 0x000002bf, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	// Entry 20 - 3F
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	// Entry 40 - 5F
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	// Entry 60 - 7F
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	// Entry 80 - 9F
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	// Entry A0 - BF
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	// Entry C0 - DF
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	// Entry E0 - FF
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	// Entry 100 - 11F
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2, 0x000002e2, 0x000002e2,
-	0x000002e2, 0x000002e2,
-} // Size: 1136 bytes
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
+	0x000002e3,
+} // Size: 1148 bytes
 
-const fr_FRData string = "" + // Size: 738 bytes
-	"\x02'-h %[1]d': la valeur d'en-tête doit être\u00a0-1 ou une valeur comp" +
-	"rise entre\u00a0-1 et\u00a02147483647\x02terminateur de lot non valide «" +
-	" %[1]s »\x04\x00\x01 \x14\x02Sqlcmd\u00a0: erreur\u00a0:\x04\x00\x01 " +
+const fr_FRData string = "" + // Size: 739 bytes
+	"\x02'-h %#[1]v': la valeur d'en-tête doit être\u00a0-1 ou une valeur com" +
+	"prise entre\u00a0-1 et\u00a02147483647\x02terminateur de lot non valide " +
+	"« %[1]s »\x04\x00\x01 \x14\x02Sqlcmd\u00a0: erreur\u00a0:\x04\x00\x01 " +
 	"\x1a\x02Sqlcmd\u00a0: avertissement\u00a0\x02les commandes ED et !!<comm" +
 	"ande>, ainsi que le script de démarrage et les variables d'environnement" +
 	" sont désactivées\x02la variable de script «\u00a0%[1]s\u00a0» est en le" +
@@ -914,462 +923,467 @@ const fr_FRData string = "" + // Size: 738 bytes
 	"'est produite lors de l'ouverture ou de l'utilisation du fichier %[2]s (" +
 	"Raison\u00a0: %[3]s).\x02erreur de syntaxe à la ligne %[2]d"
 
-var it_ITIndex = []uint32{ // 278 elements
+var it_ITIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x0000005e, 0x00000086, 0x0000009b,
-	0x000000b0, 0x0000010c, 0x00000141, 0x0000016e,
-	0x000001b1, 0x000001f8, 0x00000245, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
+	0x00000000, 0x0000005f, 0x00000087, 0x0000009c,
+	0x000000b1, 0x0000010d, 0x00000142, 0x0000016f,
+	0x000001b2, 0x000001f9, 0x00000246, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	// Entry 20 - 3F
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	// Entry 40 - 5F
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	// Entry 60 - 7F
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	// Entry 80 - 9F
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	// Entry A0 - BF
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	// Entry C0 - DF
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	// Entry E0 - FF
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	// Entry 100 - 11F
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d, 0x0000026d, 0x0000026d,
-	0x0000026d, 0x0000026d,
-} // Size: 1136 bytes
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
+	0x0000026e,
+} // Size: 1148 bytes
 
-const it_ITData string = "" + // Size: 621 bytes
-	"\x02'-h %[1]d': il valore di intestazione deve essere -1 o un valore com" +
-	"preso tra -1 e 2147483647\x02terminatore di batch non valido '%[1]s'\x04" +
-	"\x00\x01 \x10\x02Sqlcmd: errore:\x04\x00\x01 \x10\x02Sqlcmd: avviso:\x02" +
-	"i comandi ED e !!<command>, lo script di avvio e le variabili di ambient" +
-	"e sono disabilitati\x02la variabile di scripting '%[1]s' è di sola lettu" +
-	"ra\x02Variabile di scripting '%[1]s' non definita.\x02la variabile di am" +
-	"biente '%[1]s' ha un valore non valido: '%[2]s'.\x02errore di sintassi a" +
-	"lla riga %[1]d in prossimità del comando '%[2]s'.\x02%[1]s errore durant" +
-	"e l'apertura o l'utilizzo del file %[2]s (motivo: %[3]s).\x02%[1]serrore" +
-	" di sintassi alla riga %[2]d"
+const it_ITData string = "" + // Size: 622 bytes
+	"\x02'-h %#[1]v': il valore di intestazione deve essere -1 o un valore co" +
+	"mpreso tra -1 e 2147483647\x02terminatore di batch non valido '%[1]s'" +
+	"\x04\x00\x01 \x10\x02Sqlcmd: errore:\x04\x00\x01 \x10\x02Sqlcmd: avviso:" +
+	"\x02i comandi ED e !!<command>, lo script di avvio e le variabili di amb" +
+	"iente sono disabilitati\x02la variabile di scripting '%[1]s' è di sola l" +
+	"ettura\x02Variabile di scripting '%[1]s' non definita.\x02la variabile d" +
+	"i ambiente '%[1]s' ha un valore non valido: '%[2]s'.\x02errore di sintas" +
+	"si alla riga %[1]d in prossimità del comando '%[2]s'.\x02%[1]s errore du" +
+	"rante l'apertura o l'utilizzo del file %[2]s (motivo: %[3]s).\x02%[1]ser" +
+	"rore di sintassi alla riga %[2]d"
 
-var ja_JPIndex = []uint32{ // 278 elements
+var ja_JPIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x00000069, 0x0000009e, 0x000000b6,
-	0x000000cb, 0x00000145, 0x0000018a, 0x000001c9,
-	0x0000020c, 0x00000259, 0x000002da, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
+	0x00000000, 0x0000006a, 0x0000009f, 0x000000b7,
+	0x000000cc, 0x00000146, 0x0000018b, 0x000001ca,
+	0x0000020d, 0x0000025a, 0x000002db, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	// Entry 20 - 3F
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	// Entry 40 - 5F
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	// Entry 60 - 7F
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	// Entry 80 - 9F
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	// Entry A0 - BF
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	// Entry C0 - DF
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	// Entry E0 - FF
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	// Entry 100 - 11F
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e, 0x0000030e, 0x0000030e,
-	0x0000030e, 0x0000030e,
-} // Size: 1136 bytes
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
+	0x0000030f,
+} // Size: 1148 bytes
 
-const ja_JPData string = "" + // Size: 782 bytes
-	"\x02'-h %[1]d': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください\x02バッチ ターミネ" +
-	"ータ '%[1]s' は無効です\x04\x00\x01 \x13\x02Sqlcmd: エラー:\x04\x00\x01 \x10\x02" +
-	"Sqlcmd: 警告:\x02ED コマンド、!!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です\x02エラ" +
-	"ー: スクリプト変数 '%[1]s' は読み取り専用です\x02'%[1]s' スクリプト変数が定義されていません。\x02環境変数 '%[" +
-	"1]s' には無効な値 '%[2]s' があります。\x02行 %[1]d のコマンド '%[2]s' 付近に構文エラーがあります。\x02%[" +
-	"1]s ファイル %[2]s を開くときか、このファイルの処理中にエラーが発生しました (理由: %[3]s)。\x02%[1]s行 %[2]d" +
-	" に構文エラーがあります。"
+const ja_JPData string = "" + // Size: 783 bytes
+	"\x02'-h %#[1]v': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください\x02バッチ ターミ" +
+	"ネータ '%[1]s' は無効です\x04\x00\x01 \x13\x02Sqlcmd: エラー:\x04\x00\x01 \x10" +
+	"\x02Sqlcmd: 警告:\x02ED コマンド、!!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です" +
+	"\x02エラー: スクリプト変数 '%[1]s' は読み取り専用です\x02'%[1]s' スクリプト変数が定義されていません。\x02環境変数" +
+	" '%[1]s' には無効な値 '%[2]s' があります。\x02行 %[1]d のコマンド '%[2]s' 付近に構文エラーがあります。" +
+	"\x02%[1]s ファイル %[2]s を開くときか、このファイルの処理中にエラーが発生しました (理由: %[3]s)。\x02%[1]s行" +
+	" %[2]d に構文エラーがあります。"
 
-var ko_KRIndex = []uint32{ // 278 elements
+var ko_KRIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x0000005b, 0x00000087, 0x0000009c,
-	0x000000b1, 0x0000010f, 0x0000014a, 0x00000187,
-	0x000001c8, 0x00000216, 0x0000028a, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
+	0x00000000, 0x0000005c, 0x00000088, 0x0000009d,
+	0x000000b2, 0x00000110, 0x0000014b, 0x00000188,
+	0x000001c9, 0x00000217, 0x0000028b, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	// Entry 20 - 3F
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	// Entry 40 - 5F
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	// Entry 60 - 7F
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	// Entry 80 - 9F
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	// Entry A0 - BF
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	// Entry C0 - DF
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	// Entry E0 - FF
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	// Entry 100 - 11F
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3, 0x000002c3, 0x000002c3,
-	0x000002c3, 0x000002c3,
-} // Size: 1136 bytes
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
+	0x000002c4,
+} // Size: 1148 bytes
 
-const ko_KRData string = "" + // Size: 707 bytes
-	"\x02'-h %[1]d': 헤더 값은 -1이거나 -1에서 2147483647 사이의 값이어야 합니다\x02잘못된 일괄 처리 종결" +
-	"자 ''%[1]s''\x04\x00\x01 \x10\x02Sqlcmd: 오류:\x04\x00\x01 \x10\x02Sqlcmd" +
-	": 경고:\x02ED 및 !!<명령> 명령, 시작 스크립트 및 환경 변수는 사용할 수 없습니다\x02스크립팅 변수 '%[1]s'은" +
-	"(는) 읽기 전용입니다\x02'%[1]s' 스크립팅 변수가 정의되지 않았습니다.\x02환경 변수 '%[1]s'에 잘못된 값이 있습" +
-	"니다: '%[2]s'.\x02명령 '%[2]s' 근처의 줄 %[1]d에서 구문 오류가 발생했습니다.\x02%[1]s 파일 %[" +
-	"2]s을(를) 열거나 해당 작업을 수행하는 중 오류가 발생했습니다(원인: %[3]s).\x02%[1]s줄 %[2]d에서 구문 오류" +
-	"가 발생했습니다"
+const ko_KRData string = "" + // Size: 708 bytes
+	"\x02'-h %#[1]v': 헤더 값은 -1이거나 -1에서 2147483647 사이의 값이어야 합니다\x02잘못된 일괄 처리 종" +
+	"결자 ''%[1]s''\x04\x00\x01 \x10\x02Sqlcmd: 오류:\x04\x00\x01 \x10\x02Sqlcm" +
+	"d: 경고:\x02ED 및 !!<명령> 명령, 시작 스크립트 및 환경 변수는 사용할 수 없습니다\x02스크립팅 변수 '%[1]s'" +
+	"은(는) 읽기 전용입니다\x02'%[1]s' 스크립팅 변수가 정의되지 않았습니다.\x02환경 변수 '%[1]s'에 잘못된 값이" +
+	" 있습니다: '%[2]s'.\x02명령 '%[2]s' 근처의 줄 %[1]d에서 구문 오류가 발생했습니다.\x02%[1]s 파일 %" +
+	"[2]s을(를) 열거나 해당 작업을 수행하는 중 오류가 발생했습니다(원인: %[3]s).\x02%[1]s줄 %[2]d에서 구문 오" +
+	"류가 발생했습니다"
 
-var pt_BRIndex = []uint32{ // 278 elements
+var pt_BRIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x0000004f, 0x00000074, 0x00000087,
-	0x0000009b, 0x00000106, 0x00000139, 0x00000164,
-	0x000001a6, 0x000001e2, 0x0000022d, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
+	0x00000000, 0x00000050, 0x00000075, 0x00000088,
+	0x0000009c, 0x00000107, 0x0000013a, 0x00000165,
+	0x000001a7, 0x000001e3, 0x0000022e, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	// Entry 20 - 3F
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	// Entry 40 - 5F
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	// Entry 60 - 7F
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	// Entry 80 - 9F
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	// Entry A0 - BF
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	// Entry C0 - DF
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	// Entry E0 - FF
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	// Entry 100 - 11F
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251, 0x00000251, 0x00000251,
-	0x00000251, 0x00000251,
-} // Size: 1136 bytes
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252, 0x00000252, 0x00000252, 0x00000252,
+	0x00000252,
+} // Size: 1148 bytes
 
-const pt_BRData string = "" + // Size: 593 bytes
-	"\x02'-h %[1]d': o valor do cabeçalho deve ser -1 ou um valor entre 1 e 2" +
-	"147483647\x02terminador de lote inválido '%[1]s'\x04\x00\x01 \x0e\x02Sql" +
-	"cmd: erro:\x04\x00\x01 \x0f\x02Sqlcmd: aviso:\x02os comandos ED e !!<com" +
-	"ando>, o script de inicialização e as variáveis de ambiente estão desabi" +
-	"litados\x02a variável de script: '%[1]s' é somente leitura.\x02Variável " +
-	"de script '%[1]s' não definida.\x02a variável de ambiente: '%[1]s' possu" +
-	"i valor inválido: '%[2]s'.\x02erro de sintaxe na linha %[1]d próximo ao " +
-	"comando '%[2]s'.\x02%[1]s ocorreu um erro ao abrir ou operar no arquivo " +
-	"%[2]s (Motivo: %[3]s).\x02%[1]serro de sintaxe na linha %[2]d"
+const pt_BRData string = "" + // Size: 594 bytes
+	"\x02'-h %#[1]v': o valor do cabeçalho deve ser -1 ou um valor entre 1 e " +
+	"2147483647\x02terminador de lote inválido '%[1]s'\x04\x00\x01 \x0e\x02Sq" +
+	"lcmd: erro:\x04\x00\x01 \x0f\x02Sqlcmd: aviso:\x02os comandos ED e !!<co" +
+	"mando>, o script de inicialização e as variáveis de ambiente estão desab" +
+	"ilitados\x02a variável de script: '%[1]s' é somente leitura.\x02Variável" +
+	" de script '%[1]s' não definida.\x02a variável de ambiente: '%[1]s' poss" +
+	"ui valor inválido: '%[2]s'.\x02erro de sintaxe na linha %[1]d próximo ao" +
+	" comando '%[2]s'.\x02%[1]s ocorreu um erro ao abrir ou operar no arquivo" +
+	" %[2]s (Motivo: %[3]s).\x02%[1]serro de sintaxe na linha %[2]d"
 
-var ru_RUIndex = []uint32{ // 278 elements
+var ru_RUIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x0000007f, 0x000000c7, 0x000000e3,
-	0x00000102, 0x00000182, 0x000001e1, 0x00000228,
-	0x00000290, 0x00000304, 0x00000373, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
+	0x00000000, 0x00000080, 0x000000c8, 0x000000e4,
+	0x00000103, 0x00000183, 0x000001e2, 0x00000229,
+	0x00000291, 0x00000305, 0x00000374, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	// Entry 20 - 3F
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	// Entry 40 - 5F
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	// Entry 60 - 7F
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	// Entry 80 - 9F
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	// Entry A0 - BF
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	// Entry C0 - DF
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	// Entry E0 - FF
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	// Entry 100 - 11F
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8, 0x000003b8, 0x000003b8,
-	0x000003b8, 0x000003b8,
-} // Size: 1136 bytes
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
+	0x000003b9,
+} // Size: 1148 bytes
 
-const ru_RUData string = "" + // Size: 952 bytes
-	"\x02'-h %[1]d': значением заголовка может быть или -1, или число между -" +
-	"1 и 2147483647\x02недопустимый признак конца пакета '%[1]s'\x04\x00\x01 " +
-	"\x17\x02Sqlcmd: ошибка -\x04\x00\x01 \x1a\x02Sqlcmd: внимание!\x02ED, а " +
-	"также команды !!<command>, скрипт запуска и переменные среды отключены" +
+const ru_RUData string = "" + // Size: 953 bytes
+	"\x02'-h %#[1]v': значением заголовка может быть или -1, или число между " +
+	"-1 и 2147483647\x02недопустимый признак конца пакета '%[1]s'\x04\x00\x01" +
+	" \x17\x02Sqlcmd: ошибка -\x04\x00\x01 \x1a\x02Sqlcmd: внимание!\x02ED, а" +
+	" также команды !!<command>, скрипт запуска и переменные среды отключены" +
 	"\x02переменная скрипта: '%[1]s' доступна только для чтения\x02Переменная" +
 	" скрипта '%[1]s' не определена.\x02переменная среды: '%[1]s' имеет недоп" +
 	"устимое значение: '%[2]s'.\x02синтаксическая ошибка в строке %[1]d при " +
@@ -1377,182 +1391,184 @@ const ru_RUData string = "" + // Size: 952 bytes
 	"файла %[2]s (причина: %[3]s).\x02%[1]sсинтаксическая ошибка в строке %[" +
 	"2]d"
 
-var zh_CNIndex = []uint32{ // 278 elements
+var zh_CNIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x0000004d, 0x00000070, 0x00000085,
-	0x0000009a, 0x000000da, 0x000000fd, 0x0000011d,
-	0x00000145, 0x0000017e, 0x000001c8, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
+	0x00000000, 0x0000004e, 0x00000071, 0x00000086,
+	0x0000009b, 0x000000db, 0x000000fe, 0x0000011e,
+	0x00000146, 0x0000017f, 0x000001c9, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	// Entry 20 - 3F
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	// Entry 40 - 5F
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	// Entry 60 - 7F
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	// Entry 80 - 9F
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	// Entry A0 - BF
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	// Entry C0 - DF
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	// Entry E0 - FF
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	// Entry 100 - 11F
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed, 0x000001ed, 0x000001ed,
-	0x000001ed, 0x000001ed,
-} // Size: 1136 bytes
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
+	0x000001ee,
+} // Size: 1148 bytes
 
-const zh_CNData string = "" + // Size: 493 bytes
-	"\x02'-h %[1]d': 标头值必须是 -1 或是介于 1 和 2147483647 之间的值\x02无效的批处理终止符'%[1]s'" +
+const zh_CNData string = "" + // Size: 494 bytes
+	"\x02'-h %#[1]v': 标头值必须是 -1 或是介于 1 和 2147483647 之间的值\x02无效的批处理终止符'%[1]s'" +
 	"\x04\x00\x01 \x10\x02Sqlcmd: 错误:\x04\x00\x01 \x10\x02Sqlcmd: 警告:\x02ED 和" +
 	" !!<命令> 命令、启动脚本和环境变量被禁用\x02脚本变量'%[1]s'是只读的。\x02未定义'%[1]s'脚本变量。\x02环境变量'%" +
 	"[1]s'的值无效:'%[2]s'\x02命令'%[2]s'附近的第 %[1]d 行存在语法错误。\x02%[1]s 打开文件 %[2]s 或对" +
 	"其执行操作时出错(原因: %[3]s)。\x02%[1]s第 %[2]d 行存在语法错误"
 
-var zh_TWIndex = []uint32{ // 278 elements
+var zh_TWIndex = []uint32{ // 281 elements
 	// Entry 0 - 1F
-	0x00000000, 0x0000004b, 0x0000006d, 0x00000082,
-	0x00000097, 0x000000dc, 0x000000ff, 0x00000124,
-	0x00000153, 0x0000018e, 0x000001d3, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
+	0x00000000, 0x0000004c, 0x0000006e, 0x00000083,
+	0x00000098, 0x000000dd, 0x00000100, 0x00000125,
+	0x00000154, 0x0000018f, 0x000001d4, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	// Entry 20 - 3F
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	// Entry 40 - 5F
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	// Entry 60 - 7F
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	// Entry 80 - 9F
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	// Entry A0 - BF
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	// Entry C0 - DF
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	// Entry E0 - FF
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	// Entry 100 - 11F
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8, 0x000001f8, 0x000001f8,
-	0x000001f8, 0x000001f8,
-} // Size: 1136 bytes
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
+	0x000001f9,
+} // Size: 1148 bytes
 
-const zh_TWData string = "" + // Size: 504 bytes
-	"\x02'-h %[1]d': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值\x02批次結束字元 '%[1]s' 無效" +
+const zh_TWData string = "" + // Size: 505 bytes
+	"\x02'-h %#[1]v': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值\x02批次結束字元 '%[1]s' 無效" +
 	"\x04\x00\x01 \x10\x02Sqlcmd: 錯誤:\x04\x00\x01 \x10\x02Sqlcmd: 警告:\x02已停用 " +
 	"ED 和 !!<command> 命令、啟動指令碼和環境變數\x02指令碼變數: '%[1]s' 為唯讀\x02未定義 '%[1]s' 指令碼變" +
 	"數。\x02環境變數: '%[1]s' 有無效值: '%[2]s'。\x02第 %[1]d 行接近命令 '%[2]s' 之處有語法錯誤。" +
 	"\x02%[1]s 開啟或操作檔案 %[2]s 時發生錯誤 (原因: %[3]s)。\x02%[1]s第 %[2]d 行有語法錯誤。"
 
-	// Total table size 33793 bytes (33KiB); checksum: 40444E17
+	// Total table size 34073 bytes (33KiB); checksum: 87DD1035

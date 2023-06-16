@@ -1937,13 +1937,18 @@
             "translation": ""
         },
         {
+            "id": "The -L parameter can not be used in combination with other parameters.",
+            "message": "The -L parameter can not be used in combination with other parameters.",
+            "translation": ""
+        },
+        {
             "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
             "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
             "translation": "",
             "placeholders": [
                 {
                     "id": "PacketSize",
-                    "string": "%[1]d",
+                    "string": "%#[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
@@ -1958,13 +1963,18 @@
             "placeholders": [
                 {
                     "id": "Headers",
-                    "string": "%[1]d",
+                    "string": "%#[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
                     "expr": "a.Headers"
                 }
             ]
+        },
+        {
+            "id": "Servers:",
+            "message": "Servers:",
+            "translation": ""
         },
         {
             "id": "Legal docs and information: aka.ms/SqlcmdLegal",
@@ -2492,6 +2502,29 @@
                     "underlyingType": "[]string",
                     "argNum": 3,
                     "expr": "allowedValues"
+                }
+            ]
+        },
+        {
+            "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+            "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Flag1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "flag1"
+                },
+                {
+                    "id": "Flag2",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "flag2"
                 }
             ]
         },

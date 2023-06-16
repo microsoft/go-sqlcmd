@@ -67,6 +67,7 @@ type SQLCmdArguments struct {
 	MultiSubnetFailover         bool
 	Password                    string
 	DedicatedAdminConnection    bool
+	ListServers                 bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -84,18 +85,33 @@ const (
 
 // Validate arguments for settings not describe
 func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
-	switch {
-	case a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767):
-		err = localizer.Errorf(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
-	// Ignore 0 even though it's technically an invalid input
-	case a.Headers < -1:
-		err = localizer.Errorf(`'-h %d': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
-	case a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535):
-		err = rangeParameterError("-w", fmt.Sprint(*a.ScreenWidth), 8, 65536, false)
-	case a.FixedTypeWidth != nil && (*a.FixedTypeWidth < 0 || *a.FixedTypeWidth > 8000):
-		err = rangeParameterError("-Y", fmt.Sprint(*a.FixedTypeWidth), 0, 8000, true)
-	case a.VariableTypeWidth != nil && (*a.VariableTypeWidth < 0 || *a.VariableTypeWidth > 8000):
-		err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
+	if a.ListServers {
+		c.Flags().Visit(func(f *pflag.Flag) {
+			if f.Shorthand != "L" {
+				err = localizer.Errorf("The -L parameter can not be used in combination with other parameters.")
+			}
+		})
+	}
+	if err == nil {
+		switch {
+		case len(a.InputFile) > 0 && (len(a.Query) > 0 || len(a.InitialQuery) > 0):
+			err = mutuallyExclusiveError("i", `-Q/-q`)
+		case a.UseTrustedConnection && (len(a.UserName) > 0 || len(a.Password) > 0):
+			err = mutuallyExclusiveError("-E", `-U/-P`)
+		case a.UseAad && len(a.AuthenticationMethod) > 0:
+			err = mutuallyExclusiveError("-G", "--authentication-method")
+		case a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767):
+			err = localizer.Errorf(`'-a %#v': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
+		// Ignore 0 even though it's technically an invalid input
+		case a.Headers < -1:
+			err = localizer.Errorf(`'-h %#v': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
+		case a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535):
+			err = rangeParameterError("-w", fmt.Sprint(*a.ScreenWidth), 8, 65536, false)
+		case a.FixedTypeWidth != nil && (*a.FixedTypeWidth < 0 || *a.FixedTypeWidth > 8000):
+			err = rangeParameterError("-Y", fmt.Sprint(*a.FixedTypeWidth), 0, 8000, true)
+		case a.VariableTypeWidth != nil && (*a.VariableTypeWidth < 0 || *a.VariableTypeWidth > 8000):
+			err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
+		}
 	}
 	if err != nil {
 		c.PrintErrln(sqlcmdErrorPrefix + err.Error())
@@ -154,6 +170,13 @@ func Execute(version string) {
 			return nil
 		},
 		Run: func(cmd *cobra.Command, argss []string) {
+			// emulate -L returning no servers
+			if args.ListServers {
+				fmt.Println()
+				fmt.Println(localizer.Sprintf("Servers:"))
+				fmt.Println("    ;UID:Login ID=?;PWD:Password=?;Trusted_Connection:Use Integrated Security=?;*APP:AppName=?;*WSID:WorkStation ID=?;")
+				os.Exit(0)
+			}
 			if len(argss) > 0 {
 				fmt.Printf("%s'%s': Unknown command. Enter '--help' for command help.", sqlcmdErrorPrefix, argss[0])
 				os.Exit(1)
@@ -294,6 +317,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	_ = rootCmd.Flags().IntP(screenWidth, "w", 0, localizer.Sprintf("Specifies the screen width for output"))
 	_ = rootCmd.Flags().IntP(variableTypeWidth, "y", 256, setScriptVariable("SQLCMDMAXVARTYPEWIDTH"))
 	_ = rootCmd.Flags().IntP(fixedTypeWidth, "Y", 0, setScriptVariable("SQLCMDMAXFIXEDTYPEWIDTH"))
+	rootCmd.Flags().BoolVarP(&args.ListServers, "list-servers", "L", false, "List servers")
 	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 }
 
@@ -370,6 +394,10 @@ func invalidParameterError(flag string, value string, allowedValues ...string) e
 		return localizer.Errorf("'%s %s': Unexpected argument. Argument value has to be %v.", flag, value, allowedValues[0])
 	}
 	return localizer.Errorf("'%s %s': Unexpected argument. Argument value has to be one of %v.", flag, value, allowedValues)
+}
+
+func mutuallyExclusiveError(flag1 string, flag2 string) error {
+	return localizer.Errorf("The %s and the %s options are mutually exclusive.", flag1, flag2)
 }
 
 func flagErrorHandler(c *cobra.Command, err error) (e error) {
