@@ -24,7 +24,7 @@
             "request": "launch",
             "mode" : "auto",
             "program": "${workspaceFolder}/cmd/modern",
-            "args" : ["-Q", "EXIT(select net_transport from sys.dm_exec_connections)"],    
+            "args" : ["-Q", "EXIT(select net_transport from sys.dm_exec_connections)"],
         },
         {
             "name" : "Run file query",

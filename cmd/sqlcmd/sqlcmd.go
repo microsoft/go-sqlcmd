@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -60,30 +61,63 @@ type SQLCmdArguments struct {
 	Version                     bool
 	ColumnSeparator             string
 	ScreenWidth                 *int
+	VariableTypeWidth           *int
+	FixedTypeWidth              *int
 	TrimSpaces                  bool
 	MultiSubnetFailover         bool
 	Password                    string
 	DedicatedAdminConnection    bool
+	ListServers                 bool
 	// Keep Help at the end of the list
 	Help bool
 }
 
-// Validate arguments for settings not described by Kong attributes
-func (a *SQLCmdArguments) Validate() error {
-	if a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767) {
-		return localizer.Errorf(`'-a %d': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
+const (
+	sqlcmdErrorPrefix = "Sqlcmd: "
+	applicationIntent = "application-intent"
+	errorsToStderr    = "errors-to-stderr"
+	format            = "format"
+	encryptConnection = "encrypt-connection"
+	screenWidth       = "screen-width"
+	fixedTypeWidth    = "fixed-type-width"
+	variableTypeWidth = "variable-type-width"
+)
+
+// Validate arguments for settings not describe
+func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
+	if a.ListServers {
+		c.Flags().Visit(func(f *pflag.Flag) {
+			if f.Shorthand != "L" {
+				err = localizer.Errorf("The -L parameter can not be used in combination with other parameters.")
+			}
+		})
 	}
-	// Ignore 0 even though it's technically an invalid input
-	if a.Headers < -1 {
-		return localizer.Errorf(`'-h %d': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
+	if err == nil {
+		switch {
+		case len(a.InputFile) > 0 && (len(a.Query) > 0 || len(a.InitialQuery) > 0):
+			err = mutuallyExclusiveError("i", `-Q/-q`)
+		case a.UseTrustedConnection && (len(a.UserName) > 0 || len(a.Password) > 0):
+			err = mutuallyExclusiveError("-E", `-U/-P`)
+		case a.UseAad && len(a.AuthenticationMethod) > 0:
+			err = mutuallyExclusiveError("-G", "--authentication-method")
+		case a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767):
+			err = localizer.Errorf(`'-a %#v': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
+		// Ignore 0 even though it's technically an invalid input
+		case a.Headers < -1:
+			err = localizer.Errorf(`'-h %#v': header value must be either -1 or a value between 1 and 2147483647`, a.Headers)
+		case a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535):
+			err = rangeParameterError("-w", fmt.Sprint(*a.ScreenWidth), 8, 65536, false)
+		case a.FixedTypeWidth != nil && (*a.FixedTypeWidth < 0 || *a.FixedTypeWidth > 8000):
+			err = rangeParameterError("-Y", fmt.Sprint(*a.FixedTypeWidth), 0, 8000, true)
+		case a.VariableTypeWidth != nil && (*a.VariableTypeWidth < 0 || *a.VariableTypeWidth > 8000):
+			err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
+		}
 	}
-	if a.ScreenWidth != nil && (*a.ScreenWidth < 9 || *a.ScreenWidth > 65535) {
-		return localizer.Errorf(`'-w %d': value must be greater than 8 and less than 65536.`, *a.ScreenWidth)
+	if err != nil {
+		c.PrintErrln(sqlcmdErrorPrefix + err.Error())
+		c.SilenceErrors = true
 	}
-	if a.Password != "" {
-		return localizer.Errorf(`'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.`)
-	}
-	return nil
+	return
 }
 
 // newArguments constructs a SQLCmdArguments instance with default values
@@ -96,7 +130,7 @@ func newArguments() SQLCmdArguments {
 
 // Breaking changes in command line are listed here.
 // Any switch not listed in breaking changes and not also included in SqlCmdArguments just has not been implemented yet
-// 1. -P: Passwords have to be provided through SQLCMDPASSWORD environment variable or typed when prompted
+// 1. -v: to specify multiple variables. use either "-v var1=v -v var2=v2" or "-v var1=v,var2=v2"
 // 2. -R: Go runtime doesn't expose user locale information and syscall would only enable it on Windows, so we won't try to implement it
 
 var args SQLCmdArguments
@@ -124,8 +158,8 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 func Execute(version string) {
 	rootCmd := &cobra.Command{
 		PreRunE: func(cmd *cobra.Command, argss []string) error {
-			SetScreenWidthFlag(&args, cmd)
-			if err := args.Validate(); err != nil {
+			SetScreenWidthFlags(&args, cmd)
+			if err := args.Validate(cmd); err != nil {
 				cmd.SilenceUsage = true
 				return err
 			}
@@ -136,8 +170,15 @@ func Execute(version string) {
 			return nil
 		},
 		Run: func(cmd *cobra.Command, argss []string) {
+			// emulate -L returning no servers
+			if args.ListServers {
+				fmt.Println()
+				fmt.Println(localizer.Sprintf("Servers:"))
+				fmt.Println("    ;UID:Login ID=?;PWD:Password=?;Trusted_Connection:Use Integrated Security=?;*APP:AppName=?;*WSID:WorkStation ID=?;")
+				os.Exit(0)
+			}
 			if len(argss) > 0 {
-				fmt.Printf("Sqlcmd: '%s': Unknown command. Enter '--help' for command help.", argss[0])
+				fmt.Printf("%s'%s': Unknown command. Enter '--help' for command help.", sqlcmdErrorPrefix, argss[0])
 				os.Exit(1)
 			}
 
@@ -201,27 +242,31 @@ func formatDescription(description string, maxWidth, indentWidth int) string {
 	return strings.Join(lines, "\n")
 }
 
-func SetScreenWidthFlag(args *SQLCmdArguments, rootCmd *cobra.Command) {
-	screenWidth := rootCmd.Flags().Lookup("screen-width")
-	if screenWidth == nil {
-		return
-	}
-	value := screenWidth.Value.String()
-	if value != screenWidth.DefValue {
-		args.ScreenWidth = new(int)
-
-		screenWidthValue, err := strconv.Atoi(value)
-		if err != nil {
-			fmt.Println(localizer.Sprintf("Error converting screen width: %s", err.Error()))
+// returns -1 if the parameter has a non-integer value
+func getOptionalIntArgument(cmd *cobra.Command, name string) (i *int) {
+	i = nil
+	val := cmd.Flags().Lookup(name)
+	if val != nil && val.Changed {
+		i = new(int)
+		value := val.Value.String()
+		v, e := strconv.Atoi(value)
+		if e != nil {
+			*i = -1
 			return
 		}
-		args.ScreenWidth = &screenWidthValue
-	} else {
-		args.ScreenWidth = nil
+		*i = v
 	}
+	return
+}
+
+func SetScreenWidthFlags(args *SQLCmdArguments, rootCmd *cobra.Command) {
+	args.ScreenWidth = getOptionalIntArgument(rootCmd, screenWidth)
+	args.FixedTypeWidth = getOptionalIntArgument(rootCmd, fixedTypeWidth)
+	args.VariableTypeWidth = getOptionalIntArgument(rootCmd, variableTypeWidth)
 }
 
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
+	rootCmd.SetFlagErrorFunc(flagErrorHandler)
 	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, localizer.Sprintf("-? shows this syntax summary, %s shows modern sqlcmd sub-command help", localizer.HelpFlag))
 	var inputfiles []string
 	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, localizer.Sprintf("Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s", localizer.QueryAndExitFlag, localizer.QueryFlag))
@@ -245,11 +290,13 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().IntVarP(&args.LoginTimeout, "login-timeOut", "l", -1, localizer.Sprintf("Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite", localizer.LoginTimeOutVar))
 	rootCmd.Flags().StringVarP(&args.WorkstationName, "workstation-name", "H", "", localizer.Sprintf("This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions", localizer.WorkstationVar))
 
-	rootCmd.Flags().StringVarP(&args.ApplicationIntent, "application-intent", "K", "default", localizer.Sprintf("Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group", localizer.ApplicationIntentFlagShort))
-	rootCmd.Flags().StringVarP(&args.EncryptConnection, "encrypt-connection", "N", "default", localizer.Sprintf("This switch is used by the client to request an encrypted connection"))
-	rootCmd.Flags().StringVarP(&args.Format, "format", "F", "horiz", localizer.Sprintf("Specifies the formatting for results"))
-	rootCmd.Flags().IntVarP(&args.ErrorsToStderr, "errors-to-stderr", "r", -1, localizer.Sprintf("Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent"))
-
+	rootCmd.Flags().StringVarP(&args.ApplicationIntent, applicationIntent, "K", "default", localizer.Sprintf("Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group", localizer.ApplicationIntentFlagShort))
+	rootCmd.Flags().StringVarP(&args.EncryptConnection, encryptConnection, "N", "default", localizer.Sprintf("This switch is used by the client to request an encrypted connection"))
+	// Can't use NoOptDefVal until this fix: https://github.com/spf13/cobra/issues/866
+	//rootCmd.Flags().Lookup(encryptConnection).NoOptDefVal = "true"
+	rootCmd.Flags().StringVarP(&args.Format, format, "F", "horiz", localizer.Sprintf("Specifies the formatting for results"))
+	rootCmd.Flags().IntVarP(&args.ErrorsToStderr, errorsToStderr, "r", -1, localizer.Sprintf("Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent"))
+	//rootCmd.Flags().Lookup(errorsToStderr).NoOptDefVal = "0"
 	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, localizer.Sprintf("Level of mssql driver messages to print"))
 	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, localizer.Sprintf("Specifies that sqlcmd exits and returns a %s value when an error occurs", localizer.DosErrorLevel))
 	rootCmd.Flags().IntVarP(&args.ErrorLevel, "error-level", "m", 0, localizer.Sprintf("Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent", localizer.StdoutName))
@@ -262,66 +309,135 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.TrimSpaces, "trim-spaces", "W", false, localizer.Sprintf("Remove trailing spaces from a column"))
 	rootCmd.Flags().BoolVarP(&args.MultiSubnetFailover, "multi-subnet-failover", "M", false, localizer.Sprintf("Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster"))
 
-	rootCmd.Flags().StringVarP(&args.Password, "password", "P", "", localizer.Sprintf("Obsolete. The initial passwords must be set using the %s environment variable or entered at the password prompt", localizer.PasswordEnvVar2))
+	rootCmd.Flags().StringVarP(&args.Password, "password", "P", "", localizer.Sprintf("Password"))
 
 	// Using PersistentFlags() for ErrorSeverityLevel due to data type uint8 , which is not supported in Flags()
 	rootCmd.PersistentFlags().Uint8VarP(&args.ErrorSeverityLevel, "error-severity-level", "V", 0, localizer.Sprintf("Controls the severity level that is used to set the %s variable on exit", localizer.ErrorLevel))
 
-	var screenWidth int
-	screenWidthPtr := &screenWidth
-	rootCmd.Flags().IntVarP(screenWidthPtr, "screen-width", "w", 0, localizer.Sprintf("Specifies the screen width for output"))
+	_ = rootCmd.Flags().IntP(screenWidth, "w", 0, localizer.Sprintf("Specifies the screen width for output"))
+	_ = rootCmd.Flags().IntP(variableTypeWidth, "y", 256, setScriptVariable("SQLCMDMAXVARTYPEWIDTH"))
+	_ = rootCmd.Flags().IntP(fixedTypeWidth, "Y", 0, setScriptVariable("SQLCMDMAXFIXEDTYPEWIDTH"))
+	rootCmd.Flags().BoolVarP(&args.ListServers, "list-servers", "L", false, "List servers")
 	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 }
 
-func normalizeFlags(rootCmd *cobra.Command) error {
+func setScriptVariable(v string) string {
+	return localizer.Sprintf("Sets the sqlcmd scripting variable %s", v)
+}
+func normalizeFlags(cmd *cobra.Command) error {
 	//Adding a validator for checking the enum flags
 	var err error
-	rootCmd.Flags().SetNormalizeFunc(func(f *pflag.FlagSet, name string) pflag.NormalizedName {
+	cmd.Flags().SetNormalizeFunc(func(f *pflag.FlagSet, name string) pflag.NormalizedName {
+		v := getFlagValueByName(f, name)
+		if v == "" {
+			return pflag.NormalizedName("")
+		}
 		switch name {
-		case "application-intent":
-			value := strings.ToLower(getFlagValueByName(f, name))
+		case applicationIntent:
+			value := strings.ToLower(v)
 			switch value {
-			case "default", "readonly":
+			case "readonly":
 				return pflag.NormalizedName(name)
 			default:
-				err = localizer.Errorf("--application-intent must be one of %s but got \"%s\"", localizer.AppIntentValues, value)
+				err = invalidParameterError(localizer.ApplicationIntentFlagShort, v, "readonly")
 				return pflag.NormalizedName("")
 			}
-		case "encrypt-connection":
-			value := strings.ToLower(getFlagValueByName(f, name))
+		case encryptConnection:
+			value := strings.ToLower(v)
 			switch value {
-			case "default", "false", "true", "disable":
+			case "false", "true", "disable":
 				return pflag.NormalizedName(name)
 			default:
-				err = localizer.Errorf("--encrypt-connection must be one of %s but got \"%s\"", localizer.EncryptConnValues, value)
+				err = invalidParameterError("-N", v, "false", "true", "disable")
 				return pflag.NormalizedName("")
 			}
-		case "format":
-			value := strings.ToLower(getFlagValueByName(f, name))
+		case format:
+			value := strings.ToLower(v)
 			switch value {
 			case "horiz", "horizontal", "vert", "vertical":
 				return pflag.NormalizedName(name)
 			default:
-				err = fmt.Errorf(localizer.Sprintf("--format must be one of %s but got \"%s\"", localizer.FormatValues, value))
+				err = invalidParameterError("-F", v, "horiz", "horizontal", "vert", "vertical")
 				return pflag.NormalizedName("")
 			}
-		case "errors-to-stderr":
-			value := getFlagValueByName(f, name)
-			switch value {
-			case "-1", "0", "1":
+		case errorsToStderr:
+			switch v {
+			case "0", "1":
 				return pflag.NormalizedName(name)
 			default:
-				err = fmt.Errorf(localizer.Sprintf("--errors-to-stderr must be one of %s but got \"%s\"", localizer.ErrToStderrValues, value))
+				err = invalidParameterError("-r", v, "0", "1")
 				return pflag.NormalizedName("")
 			}
 		}
 		return pflag.NormalizedName(name)
 	})
+	if err != nil {
+		cmd.PrintErrln(sqlcmdErrorPrefix, err.Error())
+		cmd.SilenceErrors = true
+	}
 	return err
 }
+
+var invalidArgRegexp = regexp.MustCompile(`invalid argument \"(.*)\" for \"(-.), (--.*)\"`)
+var missingArgRegexp = regexp.MustCompile(`flag needs an argument: '.' in (-.)`)
+var unknownArgRegexp = regexp.MustCompile(`unknown shorthand flag: '(.)' in -.`)
+
+func rangeParameterError(flag string, value string, min int, max int, inclusive bool) error {
+	if inclusive {
+		return localizer.Errorf(`'%s %s': value must be greater than or equal to %#v and less than or equal to %#v.`, flag, value, min, max)
+	}
+	return localizer.Errorf(`'%s %s': value must be greater than %#v and less than %#v.`, flag, value, min, max)
+}
+
+func invalidParameterError(flag string, value string, allowedValues ...string) error {
+	if len(allowedValues) == 1 {
+		return localizer.Errorf("'%s %s': Unexpected argument. Argument value has to be %v.", flag, value, allowedValues[0])
+	}
+	return localizer.Errorf("'%s %s': Unexpected argument. Argument value has to be one of %v.", flag, value, allowedValues)
+}
+
+func mutuallyExclusiveError(flag1 string, flag2 string) error {
+	return localizer.Errorf("The %s and the %s options are mutually exclusive.", flag1, flag2)
+}
+
+func flagErrorHandler(c *cobra.Command, err error) (e error) {
+	c.SilenceUsage = true
+	c.SilenceErrors = true
+	e = nil
+	p := invalidArgRegexp.FindStringSubmatch(err.Error())
+	if len(p) == 4 {
+		f := p[2]
+		v := p[1]
+		switch f {
+		case "-y", "-Y":
+			e = rangeParameterError(f, v, 0, 8000, true)
+		case "-w":
+			e = rangeParameterError(f, v, 8, 65536, false)
+		}
+	}
+	if e == nil {
+		p = missingArgRegexp.FindStringSubmatch(err.Error())
+		if len(p) == 2 {
+			e = localizer.Errorf(`'%s': Missing argument. Enter '-?' for help.`, p[1])
+		}
+	}
+	if e == nil {
+		p = unknownArgRegexp.FindStringSubmatch(err.Error())
+		if len(p) == 2 {
+			e = localizer.Errorf(`'%s': Unknown Option. Enter '-?' for help.`, p[1])
+		}
+	}
+	if e == nil {
+		e = err
+	}
+	c.PrintErrln(sqlcmdErrorPrefix, e.Error())
+	return
+}
+
+// Returns the value of the flag if it was provided, empty string if it was not provided
 func getFlagValueByName(flagSet *pflag.FlagSet, name string) string {
 	var value string
-	flagSet.VisitAll(func(f *pflag.Flag) {
+	flagSet.Visit(func(f *pflag.Flag) {
 		if f.Name == name {
 			value = f.Value.String()
 			return
@@ -376,9 +492,19 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			}
 			return ""
 		},
-		sqlcmd.SQLCMDMAXVARTYPEWIDTH:   func(a *SQLCmdArguments) string { return "" },
-		sqlcmd.SQLCMDMAXFIXEDTYPEWIDTH: func(a *SQLCmdArguments) string { return "" },
-		sqlcmd.SQLCMDFORMAT:            func(a *SQLCmdArguments) string { return a.Format },
+		sqlcmd.SQLCMDMAXVARTYPEWIDTH: func(a *SQLCmdArguments) string {
+			if a.VariableTypeWidth != nil {
+				return fmt.Sprint(*a.VariableTypeWidth)
+			}
+			return ""
+		},
+		sqlcmd.SQLCMDMAXFIXEDTYPEWIDTH: func(a *SQLCmdArguments) string {
+			if a.FixedTypeWidth != nil {
+				return fmt.Sprint(*a.FixedTypeWidth)
+			}
+			return ""
+		},
+		sqlcmd.SQLCMDFORMAT: func(a *SQLCmdArguments) string { return a.Format },
 	}
 	for varname, set := range varmap {
 		val := set(args)
@@ -395,7 +521,9 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 
 func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sqlcmd.Variables) {
 	connect.ApplicationName = "sqlcmd"
-	if !args.DisableCmdAndWarn {
+	if len(args.Password) > 0 {
+		connect.Password = args.Password
+	} else if !args.DisableCmdAndWarn {
 		connect.Password = os.Getenv(sqlcmd.SQLCMDPASSWORD)
 	}
 	connect.ServerName = args.Server
