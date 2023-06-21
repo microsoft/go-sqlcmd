@@ -2351,6 +2351,16 @@
             "translation": ""
         },
         {
+            "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+            "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+            "translation": ""
+        },
+        {
+            "id": "Provided for backward compatibility. Client regional settings are not used",
+            "message": "Provided for backward compatibility. Client regional settings are not used",
+            "translation": ""
+        },
+        {
             "id": "Sets the sqlcmd scripting variable {V}",
             "message": "Sets the sqlcmd scripting variable {V}",
             "translation": "",
