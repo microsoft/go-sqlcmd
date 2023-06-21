@@ -181,8 +181,8 @@ var messageKeyToIndex = map[string]int{
 	"Install/Create SQL Server, Azure SQL, and Tools":                           20,
 	"Install/Create, Query, Uninstall SQL Server":                               11,
 	"Invalid --using file type":                                                 206,
-	"Invalid variable identifier %s":                                            278,
-	"Invalid variable value %s":                                                 279,
+	"Invalid variable identifier %s":                                            280,
+	"Invalid variable value %s":                                                 281,
 	"Is a container runtime installed on this machine (e.g. Podman or Docker)?": 211,
 	"Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)": 214,
 	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       230,
@@ -193,25 +193,27 @@ var messageKeyToIndex = map[string]int{
 	"List all the endpoints in your sqlconfig file":                                                        146,
 	"List all the users in your sqlconfig file":                                                            153,
 	"List connection strings for all client drivers":                                                       113,
-	"List tags":                                              225,
-	"Minimum number of numeric characters":                   178,
-	"Minimum number of special characters":                   177,
-	"Minimum number of upper characters":                     179,
-	"Modify sqlconfig files using subcommands like \"%s\"":   18,
-	"Name of context to delete":                              120,
-	"Name of context to set as current context":              161,
-	"Name of endpoint this context will use":                 64,
-	"Name of endpoint to delete":                             126,
-	"Name of user this context will use":                     65,
-	"Name of user to delete":                                 132,
-	"No context exists with the name: \"%v\"":                165,
-	"No current context":                                     31,
-	"No endpoints to uninstall":                              60,
-	"Now ready for client connections on port %d":            201,
-	"Open in Azure Data Studio":                              74,
-	"Open tools (e.g Azure Data Studio) for current context": 21,
-	"Or, set the environment variable i.e. %s %s=YES ":       190,
-	"Pass in the %s %s":                                      99,
+	"List tags":                                                                         225,
+	"Minimum number of numeric characters":                                              178,
+	"Minimum number of special characters":                                              177,
+	"Minimum number of upper characters":                                                179,
+	"Modify sqlconfig files using subcommands like \"%s\"":                              18,
+	"Msg %#v, Level %d, State %d, Server %s, Line %#v%s":                                279,
+	"Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s":                  278,
+	"Name of context to delete":                                                         120,
+	"Name of context to set as current context":                                         161,
+	"Name of endpoint this context will use":                                            64,
+	"Name of endpoint to delete":                                                        126,
+	"Name of user this context will use":                                                65,
+	"Name of user to delete":                                                            132,
+	"No context exists with the name: \"%v\"":                                           165,
+	"No current context":                                                                31,
+	"No endpoints to uninstall":                                                         60,
+	"Now ready for client connections on port %d":                                       201,
+	"Open in Azure Data Studio":                                                         74,
+	"Open tools (e.g Azure Data Studio) for current context":                            21,
+	"Or, set the environment variable i.e. %s %s=YES ":                                  190,
+	"Pass in the %s %s":                                                                 99,
 	"Pass in the flag %s to override this safety check for user (non-system) databases": 58,
 	"Password": 266,
 	"Password encryption method (%s) in sqlconfig file":                                                                      95,
@@ -330,7 +332,7 @@ var messageKeyToIndex = map[string]int{
 	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  %s": 13,
 }
 
-var de_DEIndex = []uint32{ // 281 elements
+var de_DEIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005b, 0x00000085, 0x0000009a,
 	0x000000b0, 0x00000104, 0x00000135, 0x00000165,
@@ -410,8 +412,8 @@ var de_DEIndex = []uint32{ // 281 elements
 	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
 	0x0000025a, 0x0000025a, 0x0000025a, 0x0000025a,
-	0x0000025a,
-} // Size: 1148 bytes
+	0x0000025a, 0x0000025a, 0x0000025a,
+} // Size: 1156 bytes
 
 const de_DEData string = "" + // Size: 602 bytes
 	"\x02'-h %#[1]v': Der Headerwert muss entweder -1 oder ein Wert zwischen " +
@@ -425,7 +427,7 @@ const de_DEData string = "" + // Size: 602 bytes
 	"r Verarbeiten von Datei %[2]s (Ursache: %[3]s).\x02%[1]sSyntaxfehler in " +
 	"Zeile %[2]d"
 
-var en_USIndex = []uint32{ // 281 elements
+var en_USIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000050, 0x00000071, 0x00000085,
 	0x0000009b, 0x000000ef, 0x0000011c, 0x00000144,
@@ -504,11 +506,11 @@ var en_USIndex = []uint32{ // 281 elements
 	0x0000368c, 0x000036b1, 0x00003728, 0x00003731,
 	0x0000377c, 0x000037a2, 0x000037c5, 0x000037ee,
 	0x0000384d, 0x00003894, 0x000038d8, 0x00003923,
-	0x0000395b, 0x0000398b, 0x000039b9, 0x000039db,
-	0x000039f8,
-} // Size: 1148 bytes
+	0x0000395b, 0x0000398b, 0x000039b9, 0x00003a0f,
+	0x00003a54, 0x00003a76, 0x00003a93,
+} // Size: 1156 bytes
 
-const en_USData string = "" + // Size: 14840 bytes
+const en_USData string = "" + // Size: 14995 bytes
 	"\x02'-h %#[1]v': header value must be either -1 or a value between 1 and" +
 	" 2147483647\x02invalid batch terminator '%[1]s'\x04\x00\x01 \x0f\x02Sqlc" +
 	"md: Error:\x04\x00\x01 \x11\x02Sqlcmd: Warning:\x02ED and !!<command> co" +
@@ -728,10 +730,12 @@ const en_USData string = "" + // Size: 14840 bytes
 	"[1]s %[2]s': Unexpected argument. Argument value has to be one of %[3]v." +
 	"\x02The %[1]s and the %[2]s options are mutually exclusive.\x02'%[1]s': " +
 	"Missing argument. Enter '-?' for help.\x02'%[1]s': Unknown Option. Enter" +
-	" '-?' for help.\x02Invalid variable identifier %[1]s\x02Invalid variable" +
-	" value %[1]s"
+	" '-?' for help.\x02Msg %#[1]v, Level %[2]d, State %[3]d, Server %[4]s, P" +
+	"rocedure %[5]s, Line %#[6]v%[7]s\x02Msg %#[1]v, Level %[2]d, State %[3]d" +
+	", Server %[4]s, Line %#[5]v%[6]s\x02Invalid variable identifier %[1]s" +
+	"\x02Invalid variable value %[1]s"
 
-var es_ESIndex = []uint32{ // 281 elements
+var es_ESIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000051, 0x00000077, 0x0000008b,
 	0x000000a5, 0x00000109, 0x0000013a, 0x00000168,
@@ -811,8 +815,8 @@ var es_ESIndex = []uint32{ // 281 elements
 	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
 	0x0000025d, 0x0000025d, 0x0000025d, 0x0000025d,
-	0x0000025d,
-} // Size: 1148 bytes
+	0x0000025d, 0x0000025d, 0x0000025d,
+} // Size: 1156 bytes
 
 const es_ESData string = "" + // Size: 605 bytes
 	"\x02'-h %#[1]v': el valor de encabezado debe ser -1 o un valor entre -1 " +
@@ -826,7 +830,7 @@ const es_ESData string = "" + // Size: 605 bytes
 	"ar sobre el archivo %[2]s (motivo: %[3]s).\x02%[1]serror de sintaxis en " +
 	"la línea %[2]d"
 
-var fr_FRIndex = []uint32{ // 281 elements
+var fr_FRIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000061, 0x0000008b, 0x000000a4,
 	0x000000c3, 0x0000013b, 0x00000174, 0x000001ac,
@@ -906,8 +910,8 @@ var fr_FRIndex = []uint32{ // 281 elements
 	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
 	0x000002e3, 0x000002e3, 0x000002e3, 0x000002e3,
-	0x000002e3,
-} // Size: 1148 bytes
+	0x000002e3, 0x000002e3, 0x000002e3,
+} // Size: 1156 bytes
 
 const fr_FRData string = "" + // Size: 739 bytes
 	"\x02'-h %#[1]v': la valeur d'en-tête doit être\u00a0-1 ou une valeur com" +
@@ -923,7 +927,7 @@ const fr_FRData string = "" + // Size: 739 bytes
 	"'est produite lors de l'ouverture ou de l'utilisation du fichier %[2]s (" +
 	"Raison\u00a0: %[3]s).\x02erreur de syntaxe à la ligne %[2]d"
 
-var it_ITIndex = []uint32{ // 281 elements
+var it_ITIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005f, 0x00000087, 0x0000009c,
 	0x000000b1, 0x0000010d, 0x00000142, 0x0000016f,
@@ -1003,8 +1007,8 @@ var it_ITIndex = []uint32{ // 281 elements
 	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
 	0x0000026e, 0x0000026e, 0x0000026e, 0x0000026e,
-	0x0000026e,
-} // Size: 1148 bytes
+	0x0000026e, 0x0000026e, 0x0000026e,
+} // Size: 1156 bytes
 
 const it_ITData string = "" + // Size: 622 bytes
 	"\x02'-h %#[1]v': il valore di intestazione deve essere -1 o un valore co" +
@@ -1018,7 +1022,7 @@ const it_ITData string = "" + // Size: 622 bytes
 	"rante l'apertura o l'utilizzo del file %[2]s (motivo: %[3]s).\x02%[1]ser" +
 	"rore di sintassi alla riga %[2]d"
 
-var ja_JPIndex = []uint32{ // 281 elements
+var ja_JPIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000006a, 0x0000009f, 0x000000b7,
 	0x000000cc, 0x00000146, 0x0000018b, 0x000001ca,
@@ -1098,8 +1102,8 @@ var ja_JPIndex = []uint32{ // 281 elements
 	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
 	0x0000030f, 0x0000030f, 0x0000030f, 0x0000030f,
-	0x0000030f,
-} // Size: 1148 bytes
+	0x0000030f, 0x0000030f, 0x0000030f,
+} // Size: 1156 bytes
 
 const ja_JPData string = "" + // Size: 783 bytes
 	"\x02'-h %#[1]v': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください\x02バッチ ターミ" +
@@ -1110,7 +1114,7 @@ const ja_JPData string = "" + // Size: 783 bytes
 	"\x02%[1]s ファイル %[2]s を開くときか、このファイルの処理中にエラーが発生しました (理由: %[3]s)。\x02%[1]s行" +
 	" %[2]d に構文エラーがあります。"
 
-var ko_KRIndex = []uint32{ // 281 elements
+var ko_KRIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000005c, 0x00000088, 0x0000009d,
 	0x000000b2, 0x00000110, 0x0000014b, 0x00000188,
@@ -1190,8 +1194,8 @@ var ko_KRIndex = []uint32{ // 281 elements
 	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
 	0x000002c4, 0x000002c4, 0x000002c4, 0x000002c4,
-	0x000002c4,
-} // Size: 1148 bytes
+	0x000002c4, 0x000002c4, 0x000002c4,
+} // Size: 1156 bytes
 
 const ko_KRData string = "" + // Size: 708 bytes
 	"\x02'-h %#[1]v': 헤더 값은 -1이거나 -1에서 2147483647 사이의 값이어야 합니다\x02잘못된 일괄 처리 종" +
@@ -1202,7 +1206,7 @@ const ko_KRData string = "" + // Size: 708 bytes
 	"[2]s을(를) 열거나 해당 작업을 수행하는 중 오류가 발생했습니다(원인: %[3]s).\x02%[1]s줄 %[2]d에서 구문 오" +
 	"류가 발생했습니다"
 
-var pt_BRIndex = []uint32{ // 281 elements
+var pt_BRIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000050, 0x00000075, 0x00000088,
 	0x0000009c, 0x00000107, 0x0000013a, 0x00000165,
@@ -1282,8 +1286,8 @@ var pt_BRIndex = []uint32{ // 281 elements
 	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	0x00000252, 0x00000252, 0x00000252, 0x00000252,
 	0x00000252, 0x00000252, 0x00000252, 0x00000252,
-	0x00000252,
-} // Size: 1148 bytes
+	0x00000252, 0x00000252, 0x00000252,
+} // Size: 1156 bytes
 
 const pt_BRData string = "" + // Size: 594 bytes
 	"\x02'-h %#[1]v': o valor do cabeçalho deve ser -1 ou um valor entre 1 e " +
@@ -1296,7 +1300,7 @@ const pt_BRData string = "" + // Size: 594 bytes
 	" comando '%[2]s'.\x02%[1]s ocorreu um erro ao abrir ou operar no arquivo" +
 	" %[2]s (Motivo: %[3]s).\x02%[1]serro de sintaxe na linha %[2]d"
 
-var ru_RUIndex = []uint32{ // 281 elements
+var ru_RUIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000080, 0x000000c8, 0x000000e4,
 	0x00000103, 0x00000183, 0x000001e2, 0x00000229,
@@ -1376,8 +1380,8 @@ var ru_RUIndex = []uint32{ // 281 elements
 	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
 	0x000003b9, 0x000003b9, 0x000003b9, 0x000003b9,
-	0x000003b9,
-} // Size: 1148 bytes
+	0x000003b9, 0x000003b9, 0x000003b9,
+} // Size: 1156 bytes
 
 const ru_RUData string = "" + // Size: 953 bytes
 	"\x02'-h %#[1]v': значением заголовка может быть или -1, или число между " +
@@ -1391,7 +1395,7 @@ const ru_RUData string = "" + // Size: 953 bytes
 	"файла %[2]s (причина: %[3]s).\x02%[1]sсинтаксическая ошибка в строке %[" +
 	"2]d"
 
-var zh_CNIndex = []uint32{ // 281 elements
+var zh_CNIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004e, 0x00000071, 0x00000086,
 	0x0000009b, 0x000000db, 0x000000fe, 0x0000011e,
@@ -1471,8 +1475,8 @@ var zh_CNIndex = []uint32{ // 281 elements
 	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
 	0x000001ee, 0x000001ee, 0x000001ee, 0x000001ee,
-	0x000001ee,
-} // Size: 1148 bytes
+	0x000001ee, 0x000001ee, 0x000001ee,
+} // Size: 1156 bytes
 
 const zh_CNData string = "" + // Size: 494 bytes
 	"\x02'-h %#[1]v': 标头值必须是 -1 或是介于 1 和 2147483647 之间的值\x02无效的批处理终止符'%[1]s'" +
@@ -1481,7 +1485,7 @@ const zh_CNData string = "" + // Size: 494 bytes
 	"[1]s'的值无效:'%[2]s'\x02命令'%[2]s'附近的第 %[1]d 行存在语法错误。\x02%[1]s 打开文件 %[2]s 或对" +
 	"其执行操作时出错(原因: %[3]s)。\x02%[1]s第 %[2]d 行存在语法错误"
 
-var zh_TWIndex = []uint32{ // 281 elements
+var zh_TWIndex = []uint32{ // 283 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004c, 0x0000006e, 0x00000083,
 	0x00000098, 0x000000dd, 0x00000100, 0x00000125,
@@ -1561,8 +1565,8 @@ var zh_TWIndex = []uint32{ // 281 elements
 	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
 	0x000001f9, 0x000001f9, 0x000001f9, 0x000001f9,
-	0x000001f9,
-} // Size: 1148 bytes
+	0x000001f9, 0x000001f9, 0x000001f9,
+} // Size: 1156 bytes
 
 const zh_TWData string = "" + // Size: 505 bytes
 	"\x02'-h %#[1]v': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值\x02批次結束字元 '%[1]s' 無效" +
@@ -1571,4 +1575,4 @@ const zh_TWData string = "" + // Size: 505 bytes
 	"數。\x02環境變數: '%[1]s' 有無效值: '%[2]s'。\x02第 %[1]d 行接近命令 '%[2]s' 之處有語法錯誤。" +
 	"\x02%[1]s 開啟或操作檔案 %[2]s 時發生錯誤 (原因: %[3]s)。\x02%[1]s第 %[2]d 行有語法錯誤。"
 
-	// Total table size 34073 bytes (33KiB); checksum: 87DD1035
+	// Total table size 34316 bytes (33KiB); checksum: 43366AE
