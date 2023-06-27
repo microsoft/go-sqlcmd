@@ -7,7 +7,7 @@ type SqlOptions struct {
 	UnitTesting bool
 }
 
-func New(options SqlOptions) Sql {
+func NewSql(options SqlOptions) Sql {
 	if options.UnitTesting {
 		return &mock{}
 	} else {

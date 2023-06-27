@@ -27,7 +27,7 @@ type Root struct {
 // It also provides usage examples for sqlcmd.
 func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	// Example usage steps
-	steps := []string{"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak"}
+	steps := []string{"sqlcmd create mssql --accept-eula --use https://aka.ms/AdventureWorksLT.bak"}
 
 	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 		steps = append(steps, "sqlcmd open ads")
@@ -69,6 +69,7 @@ func (c *Root) SubCommands() []cmdparser.Command {
 		cmdparser.New[*root.Query](dependencies),
 		cmdparser.New[*root.Start](dependencies),
 		cmdparser.New[*root.Stop](dependencies),
+		cmdparser.New[*root.Use](dependencies),
 		cmdparser.New[*root.Uninstall](dependencies),
 	}
 

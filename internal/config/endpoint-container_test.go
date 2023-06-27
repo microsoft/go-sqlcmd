@@ -11,14 +11,14 @@ import (
 	"testing"
 )
 
-// TestCurrentContextEndpointHasContainer verifies the function panics when
+// TestCurrentContextEndpointHasContainer verifies the function returns false when
 // no current context
 func TestCurrentContextEndpointHasContainer(t *testing.T) {
 	SetFileName(pal.FilenameInUserHomeDotDirectory(
 		".sqlcmd", "sqlconfig-TestCurrentContextEndpointHasContainer"))
 	Clean()
 
-	assert.Panics(t, func() { CurrentContextEndpointHasContainer() })
+	assert.False(t, CurrentContextEndpointHasContainer())
 }
 
 func TestGetContainerId(t *testing.T) {

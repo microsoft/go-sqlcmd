@@ -13,20 +13,19 @@ type AlternativeForFlagOptions struct {
 	Value *string
 }
 
-// FlagOptions type represents options for defining a flag for a command-line
-// interface. The Name and Shorthand fields specify the long and short names
-// for the flag, respectively. The Usage field is a string that describes how the
-// flag should be used. The String, DefaultString, Int, DefaultInt, Bool, and
-// DefaultBool fields are used to specify the type and default value of the flag,
-// if it is a string, int, or bool type. The String and Int fields should be pointers
-// to the variables that will store the flag's value, and the Bool field should be
-// a pointer to a bool variable that will be set to true if the flag is present. The
-// DefaultString, DefaultInt, and DefaultBool fields are the default values to
-// use if the flag is not provided by the user.
+// FlagOptions type represents options for defining a flag for a CLI. The Name
+// and Shorthand fields specify the long and short names for the flag, respectively.
+// The Usage field is a string that describes how the flag should be used. If you
+// want the flag hidden from the --help, see the Hidden field to true.
+// The String, DefaultString, Int, DefaultInt, Bool, and  DefaultBool fields are
+// used to specify the type and default value of the flag, use only one of these pairs
+// (the one that match the type for the flag value).
 type FlagOptions struct {
-	Name      string
-	Shorthand string
-	Usage     string
+	Name      string // e.g. --database
+	Shorthand string // e.g. -d
+	Usage     string // e.g. "The database to connect to"
+
+	Hidden bool // hide the flag from help (use for deprecated flags)
 
 	String        *string
 	DefaultString string

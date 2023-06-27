@@ -43,7 +43,7 @@ func CurrentContextEndpointHasContainer() (exists bool) {
 	currentContextName := config.CurrentContext
 
 	if currentContextName == "" {
-		panic("currentContextName must not be empty")
+		return false
 	}
 
 	for _, c := range config.Contexts {

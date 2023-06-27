@@ -33,17 +33,16 @@ func TestController_EnsureImage(t *testing.T) {
 	c := NewController()
 	err := c.EnsureImage(imageName)
 	checkErr(err)
-	id := c.ContainerRun(
-		imageName,
-		[]string{},
-		port,
-		"",
-		"",
-		"amd64",
-		"linux",
-		[]string{"ash", "-c", "echo 'Hello World'; sleep 3"},
-		false,
-	)
+
+	runOptions := RunOptions{
+		Env:          []string{},
+		Port:         port,
+		Architecture: "amd64",
+		Os:           "linux",
+		Command:      []string{"ash", "-c", "echo 'Hello World'; sleep 3"},
+	}
+
+	id := c.ContainerRun(imageName, runOptions)
 	c.ContainerRunning(id)
 	c.ContainerWaitForLogEntry(id, "Hello World")
 	c.ContainerExists(id)
@@ -79,19 +78,13 @@ func TestController_ContainerRunFailure(t *testing.T) {
 
 	c := NewController()
 
-	assert.Panics(t, func() {
-		c.ContainerRun(
-			imageName,
-			[]string{},
-			0,
-			"",
-			"",
-			"amd64",
-			"linux",
-			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-			false,
-		)
-	})
+	runOptions := RunOptions{
+		Architecture: "amd64",
+		Os:           "linux",
+		Command:      []string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+	}
+
+	assert.Panics(t, func() { c.ContainerRun(imageName, runOptions) })
 }
 
 func TestController_ContainerRunFailureCleanup(t *testing.T) {
@@ -107,19 +100,13 @@ func TestController_ContainerRunFailureCleanup(t *testing.T) {
 
 	c := NewController()
 
-	assert.Panics(t, func() {
-		c.ContainerRun(
-			imageName,
-			[]string{},
-			0,
-			"",
-			"",
-			"amd64",
-			"linux",
-			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-			true,
-		)
-	})
+	runOptions := RunOptions{
+		Architecture:    "amd64",
+		Os:              "linux",
+		Command:         []string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+		UnitTestFailure: true,
+	}
+	assert.Panics(t, func() { c.ContainerRun(imageName, runOptions) })
 }
 
 func TestController_ContainerStopNeg2(t *testing.T) {

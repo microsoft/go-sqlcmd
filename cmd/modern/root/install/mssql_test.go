@@ -25,7 +25,7 @@ func TestInstallMssql(t *testing.T) {
 	cmdparser.TestCmd[*mssql.GetTags]()
 	cmdparser.TestCmd[*Mssql](
 		fmt.Sprintf(
-			`--accept-eula --user-database foo --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
+			`--accept-eula --database foo --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
 			registry,
 			repo))
 
@@ -54,34 +54,34 @@ func TestNegInstallMssql2(t *testing.T) {
 func TestNegInstallMssql3(t *testing.T) {
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestCmd[*Mssql]("--accept-eula --using https://does/not/exist.bak")
+		cmdparser.TestCmd[*Mssql]("--accept-eula --use https://does/not/exist.bak")
 	})
 }
 
 func TestNegInstallMssql4(t *testing.T) {
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestCmd[*Mssql]("--accept-eula --user-database bad'name")
+		cmdparser.TestCmd[*Mssql]("--accept-eula --database bad'name")
 	})
 }
 
 func TestNegInstallMssql5(t *testing.T) {
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestCmd[*Mssql]("--accept-eula --using https://not/bak/file")
+		cmdparser.TestCmd[*Mssql]("--accept-eula --use https://not/bak/file")
 	})
 }
 
 func TestNegInstallMssql6(t *testing.T) {
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestCmd[*Mssql]("--accept-eula --using file://not/http")
+		cmdparser.TestCmd[*Mssql]("--accept-eula --use file://not/http")
 	})
 }
 
 func TestNegInstallMssql7(t *testing.T) {
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestCmd[*Mssql]("--accept-eula --using https://aka.ms/AdventureWorksLT")
+		cmdparser.TestCmd[*Mssql]("--accept-eula --use https://aka.ms/AdventureWorksLT")
 	})
 }

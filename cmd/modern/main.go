@@ -20,6 +20,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
+	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
 	"path"
@@ -95,9 +96,7 @@ func initializeEnvVars() {
 				os.Setenv("SQLCMDPASSWORD", password)
 			}
 		}
-
 	}
-
 }
 
 // isFirstArgModernCliSubCommand is TEMPORARY code, to be removed when
@@ -132,6 +131,10 @@ func initializeCallback() {
 			HintHandler:  displayHints,
 			LineBreak:    sqlcmd.SqlcmdEol,
 		})
+	mssqlcontainer.Initialize(mssqlcontainer.InitializeOptions{
+		ErrorHandler: checkErr,
+		TraceHandler: outputter.Tracef,
+	})
 	config.SetFileName(rootCmd.configFilename)
 	config.Load()
 }
