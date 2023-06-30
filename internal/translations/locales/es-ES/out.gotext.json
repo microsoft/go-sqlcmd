@@ -2351,6 +2351,16 @@
             "translation": ""
         },
         {
+            "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+            "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+            "translation": ""
+        },
+        {
+            "id": "Provided for backward compatibility. Client regional settings are not used",
+            "message": "Provided for backward compatibility. Client regional settings are not used",
+            "translation": ""
+        },
+        {
             "id": "Sets the sqlcmd scripting variable {V}",
             "message": "Sets the sqlcmd scripting variable {V}",
             "translation": "",
@@ -2715,6 +2725,124 @@
                     "underlyingType": "uint",
                     "argNum": 2,
                     "expr": "lineNumber"
+                }
+            ]
+        },
+        {
+            "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+            "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Number",
+                    "string": "%#[1]v",
+                    "type": "int32",
+                    "underlyingType": "int32",
+                    "argNum": 1,
+                    "expr": "e.Number"
+                },
+                {
+                    "id": "Class",
+                    "string": "%[2]d",
+                    "type": "uint8",
+                    "underlyingType": "uint8",
+                    "argNum": 2,
+                    "expr": "e.Class"
+                },
+                {
+                    "id": "State",
+                    "string": "%[3]d",
+                    "type": "uint8",
+                    "underlyingType": "uint8",
+                    "argNum": 3,
+                    "expr": "e.State"
+                },
+                {
+                    "id": "ServerName",
+                    "string": "%[4]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 4,
+                    "expr": "e.ServerName"
+                },
+                {
+                    "id": "ProcName",
+                    "string": "%[5]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 5,
+                    "expr": "e.ProcName"
+                },
+                {
+                    "id": "LineNo",
+                    "string": "%#[6]v",
+                    "type": "int32",
+                    "underlyingType": "int32",
+                    "argNum": 6,
+                    "expr": "e.LineNo"
+                },
+                {
+                    "id": "SqlcmdEol",
+                    "string": "%[7]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 7,
+                    "expr": "SqlcmdEol"
+                }
+            ]
+        },
+        {
+            "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+            "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Number",
+                    "string": "%#[1]v",
+                    "type": "int32",
+                    "underlyingType": "int32",
+                    "argNum": 1,
+                    "expr": "e.Number"
+                },
+                {
+                    "id": "Class",
+                    "string": "%[2]d",
+                    "type": "uint8",
+                    "underlyingType": "uint8",
+                    "argNum": 2,
+                    "expr": "e.Class"
+                },
+                {
+                    "id": "State",
+                    "string": "%[3]d",
+                    "type": "uint8",
+                    "underlyingType": "uint8",
+                    "argNum": 3,
+                    "expr": "e.State"
+                },
+                {
+                    "id": "ServerName",
+                    "string": "%[4]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 4,
+                    "expr": "e.ServerName"
+                },
+                {
+                    "id": "LineNo",
+                    "string": "%#[5]v",
+                    "type": "int32",
+                    "underlyingType": "int32",
+                    "argNum": 5,
+                    "expr": "e.LineNo"
+                },
+                {
+                    "id": "SqlcmdEol",
+                    "string": "%[6]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 6,
+                    "expr": "SqlcmdEol"
                 }
             ]
         },

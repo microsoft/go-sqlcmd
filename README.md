@@ -116,8 +116,8 @@ The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to t
 
 The following switches have different behavior in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`.
 - `-r` requires a 0 or 1 argument
-- `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
-- `-I` switch will be removed. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
+- `-R` switch is ignored. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
+- `-I` switch is ignored; quoted identifiers are always set on. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
 - `-N` now takes a string value that can be one of `true`, `false`, or `disable` to specify the encryption choice. 
   - If `-N` and `-C` are not provided, sqlcmd will negotiate authentication with the server without validating the server certificate.
   - If `-N` is provided but `-C` is not, sqlcmd will require validation of the server certificate. Note that a `false` value for encryption could still lead to encryption of the login packet.
@@ -128,6 +128,7 @@ The following switches have different behavior in this version of `sqlcmd` compa
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 - `-i` now requires multiple arguments for the switch to be separated by `,`.
 - `-v` requires multiple variable setters to be comma-separated. eg: `-v var1=v1,var2=v2 -v "var3=v 3"`
+- `-M` switch is ignored. Sqlcmd always enables multi-subnet failover.
 
 ### Switches not available in the new sqlcmd (go-sqlcmd) yet
 
