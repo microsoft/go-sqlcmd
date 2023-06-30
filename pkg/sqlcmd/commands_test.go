@@ -151,7 +151,7 @@ func TestListCommand(t *testing.T) {
 	s.SetOutput(buf)
 
 	// insert test batch
-	s.batch.Reset([]rune("select 1"))
+	s.batch.Reset([]rune("select 1" + SqlcmdEol + "select 2" + SqlcmdEol + SqlcmdEol + "select 3"))
 	_, _, err = s.batch.Next()
 	assert.NoError(t, err, "Inserting test batch")
 
@@ -160,7 +160,7 @@ func TestListCommand(t *testing.T) {
 	assert.NoError(t, err, "Executing :list command")
 	s.SetOutput(nil)
 	o := buf.buf.String()
-	assert.Equal(t, o, "select 1"+SqlcmdEol, ":list output not equal to batch")
+	assert.Equal(t, o, "select 1"+SqlcmdEol+"select 2"+SqlcmdEol+SqlcmdEol+"select 3"+SqlcmdEol, ":list output not equal to batch")
 }
 
 func TestListCommandUsesColorizer(t *testing.T) {
@@ -261,7 +261,7 @@ func TestErrorCommand(t *testing.T) {
 	s.SetError(nil)
 	errText, err := os.ReadFile(file.Name())
 	if assert.NoError(t, err, "ReadFile") {
-		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents")
+		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents: "+string(errText))
 	}
 }
 
