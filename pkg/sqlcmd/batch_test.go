@@ -204,6 +204,10 @@ func TestBatchNextVarMap(t *testing.T) {
 			15:                    "var2",
 			40 + 2*len(SqlcmdEol): "var3"},
 		},
+		{"\n$(var1)\n\n$(var2)", map[int]string{
+			len(SqlcmdEol):       "var1",
+			6 + 3*len(SqlcmdEol): "var2",
+		}},
 	}
 loop:
 	for _, test := range tests {

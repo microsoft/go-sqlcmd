@@ -26,9 +26,6 @@ import (
 	"golang.org/x/text/transform"
 )
 
-// Note: The order of includes above matters for namedpipe and sharedmemory.
-// init() swaps shared memory protocol with tcp so it gets priority when dialing.
-
 var (
 	// ErrExitRequested tells the hosting application to exit immediately
 	ErrExitRequested = errors.New("exit")

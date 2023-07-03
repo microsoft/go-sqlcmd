@@ -1937,13 +1937,18 @@
             "translation": ""
         },
         {
+            "id": "The -L parameter can not be used in combination with other parameters.",
+            "message": "The -L parameter can not be used in combination with other parameters.",
+            "translation": ""
+        },
+        {
             "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
             "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
             "translation": "",
             "placeholders": [
                 {
                     "id": "PacketSize",
-                    "string": "%[1]d",
+                    "string": "%#[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
@@ -1958,7 +1963,7 @@
             "placeholders": [
                 {
                     "id": "Headers",
-                    "string": "%[1]d",
+                    "string": "%#[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
@@ -1967,23 +1972,8 @@
             ]
         },
         {
-            "id": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "message": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "translation": "'-w {ScreenWidth}': 값은 8보다 크고 65536보다 작아야 합니다.",
-            "placeholders": [
-                {
-                    "id": "ScreenWidth",
-                    "string": "%[1]d",
-                    "type": "int",
-                    "underlyingType": "int",
-                    "argNum": 1,
-                    "expr": "*a.ScreenWidth"
-                }
-            ]
-        },
-        {
-            "id": "'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.",
-            "message": "'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.",
+            "id": "Servers:",
+            "message": "Servers:",
             "translation": ""
         },
         {
@@ -1997,19 +1987,24 @@
             "translation": ""
         },
         {
-            "id": "Error converting screen width: {Error}",
-            "message": "Error converting screen width: {Error}",
+            "id": "Version {Version}",
+            "message": "Version {Version}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "Error",
-                    "string": "%[1]s",
+                    "id": "Version",
+                    "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "err.Error()"
+                    "expr": "version"
                 }
             ]
+        },
+        {
+            "id": "Flags:",
+            "message": "Flags:",
+            "translation": ""
         },
         {
             "id": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
@@ -2027,8 +2022,8 @@
             ]
         },
         {
-            "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}.",
-            "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}.",
+            "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
+            "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
             "translation": "",
             "placeholders": [
                 {
@@ -2050,8 +2045,8 @@
             ]
         },
         {
-            "id": "Identifies the file that receives output from sqlcmd.",
-            "message": "Identifies the file that receives output from sqlcmd.",
+            "id": "Identifies the file that receives output from sqlcmd",
+            "message": "Identifies the file that receives output from sqlcmd",
             "translation": ""
         },
         {
@@ -2060,13 +2055,13 @@
             "translation": ""
         },
         {
-            "id": "Implicitly trust the server certificate without validation.",
-            "message": "Implicitly trust the server certificate without validation.",
+            "id": "Implicitly trust the server certificate without validation",
+            "message": "Implicitly trust the server certificate without validation",
             "translation": ""
         },
         {
-            "id": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits.",
-            "message": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits.",
+            "id": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
+            "message": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
             "translation": "",
             "placeholders": [
                 {
@@ -2080,8 +2075,8 @@
             ]
         },
         {
-            "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password.",
-            "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password.",
+            "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
+            "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
             "translation": ""
         },
         {
@@ -2105,13 +2100,13 @@
             "translation": ""
         },
         {
-            "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.",
-            "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed.",
+            "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
+            "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
             "translation": ""
         },
         {
-            "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.",
-            "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed.",
+            "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
+            "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
             "translation": ""
         },
         {
@@ -2138,23 +2133,23 @@
             ]
         },
         {
-            "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues.",
-            "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues.",
+            "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
+            "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
             "translation": ""
         },
         {
-            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword",
-            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of:ActiveDirectoryDefault,ActiveDirectoryIntegrated,ActiveDirectoryPassword,ActiveDirectoryInteractive,ActiveDirectoryManagedIdentity,ActiveDirectoryServicePrincipal,SqlPassword",
+            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
+            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
             "translation": ""
         },
         {
-            "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.",
-            "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used.",
+            "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
+            "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
             "translation": ""
         },
         {
-            "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name).",
-            "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name).",
+            "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
+            "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
             "translation": "",
             "placeholders": [
                 {
@@ -2173,8 +2168,8 @@
             "translation": ""
         },
         {
-            "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.",
-            "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size.",
+            "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
+            "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
             "translation": "",
             "placeholders": [
                 {
@@ -2196,8 +2191,8 @@
             ]
         },
         {
-            "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite.",
-            "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite.",
+            "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
+            "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
             "translation": "",
             "placeholders": [
                 {
@@ -2211,8 +2206,8 @@
             ]
         },
         {
-            "id": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.",
-            "message": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions.",
+            "id": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
+            "message": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
             "translation": "",
             "placeholders": [
                 {
@@ -2241,28 +2236,28 @@
             ]
         },
         {
-            "id": "This switch is used by the client to request an encrypted connection.",
-            "message": "This switch is used by the client to request an encrypted connection.",
+            "id": "This switch is used by the client to request an encrypted connection",
+            "message": "This switch is used by the client to request an encrypted connection",
             "translation": ""
         },
         {
-            "id": "Specifies the formatting for results.",
-            "message": "Specifies the formatting for results.",
+            "id": "Specifies the formatting for results",
+            "message": "Specifies the formatting for results",
             "translation": ""
         },
         {
-            "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.",
-            "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent.",
+            "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
+            "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
             "translation": ""
         },
         {
-            "id": "Level of mssql driver messages to print.",
-            "message": "Level of mssql driver messages to print.",
+            "id": "Level of mssql driver messages to print",
+            "message": "Level of mssql driver messages to print",
             "translation": ""
         },
         {
-            "id": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs.",
-            "message": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs.",
+            "id": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
+            "message": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
             "translation": "",
             "placeholders": [
                 {
@@ -2276,8 +2271,8 @@
             ]
         },
         {
-            "id": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent.",
-            "message": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent.",
+            "id": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
+            "message": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
             "translation": "",
             "placeholders": [
                 {
@@ -2291,8 +2286,8 @@
             ]
         },
         {
-            "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.",
-            "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed.",
+            "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
+            "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
             "translation": ""
         },
         {
@@ -2316,33 +2311,23 @@
             ]
         },
         {
-            "id": "Remove trailing spaces from a column.",
-            "message": "Remove trailing spaces from a column.",
+            "id": "Remove trailing spaces from a column",
+            "message": "Remove trailing spaces from a column",
             "translation": ""
         },
         {
-            "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.",
-            "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster.",
+            "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
+            "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
             "translation": ""
         },
         {
-            "id": "Obsolete. The initial passwords must be set using the {PasswordEnvVar2} environment variable or entered at the password prompt.",
-            "message": "Obsolete. The initial passwords must be set using the {PasswordEnvVar2} environment variable or entered at the password prompt.",
-            "translation": "",
-            "placeholders": [
-                {
-                    "id": "PasswordEnvVar2",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "localizer.PasswordEnvVar2"
-                }
-            ]
+            "id": "Password",
+            "message": "Password",
+            "translation": ""
         },
         {
-            "id": "Controls the severity level that is used to set the {ErrorLevel} variable on exit.",
-            "message": "Controls the severity level that is used to set the {ErrorLevel} variable on exit.",
+            "id": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
+            "message": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
             "translation": "",
             "placeholders": [
                 {
@@ -2361,40 +2346,47 @@
             "translation": ""
         },
         {
-            "id": "--application-intent must be one of {AppIntentValues} but got \"{Value}\"",
-            "message": "--application-intent must be one of {AppIntentValues} but got \"{Value}\"",
+            "id": "Dedicated administrator connection",
+            "message": "Dedicated administrator connection",
+            "translation": ""
+        },
+        {
+            "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+            "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+            "translation": ""
+        },
+        {
+            "id": "Provided for backward compatibility. Client regional settings are not used",
+            "message": "Provided for backward compatibility. Client regional settings are not used",
+            "translation": ""
+        },
+        {
+            "id": "Sets the sqlcmd scripting variable {V}",
+            "message": "Sets the sqlcmd scripting variable {V}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "AppIntentValues",
+                    "id": "V",
                     "string": "%[1]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "localizer.AppIntentValues"
-                },
-                {
-                    "id": "Value",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "value"
+                    "expr": "v"
                 }
             ]
         },
         {
-            "id": "--encrypt-connection must be one of {EncryptConnValues} but got \"{Value}\"",
-            "message": "--encrypt-connection must be one of {EncryptConnValues} but got \"{Value}\"",
+            "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
+            "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "EncryptConnValues",
+                    "id": "Flag",
                     "string": "%[1]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "localizer.EncryptConnValues"
+                    "expr": "flag"
                 },
                 {
                     "id": "Value",
@@ -2403,21 +2395,37 @@
                     "underlyingType": "string",
                     "argNum": 2,
                     "expr": "value"
+                },
+                {
+                    "id": "Min",
+                    "string": "%#[3]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 3,
+                    "expr": "min"
+                },
+                {
+                    "id": "Max",
+                    "string": "%#[4]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 4,
+                    "expr": "max"
                 }
             ]
         },
         {
-            "id": "--format must be one of {FormatValues} but got \"{Value}\"",
-            "message": "--format must be one of {FormatValues} but got \"{Value}\"",
+            "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
+            "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "FormatValues",
+                    "id": "Flag",
                     "string": "%[1]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "localizer.FormatValues"
+                    "expr": "flag"
                 },
                 {
                     "id": "Value",
@@ -2426,21 +2434,37 @@
                     "underlyingType": "string",
                     "argNum": 2,
                     "expr": "value"
+                },
+                {
+                    "id": "Min",
+                    "string": "%#[3]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 3,
+                    "expr": "min"
+                },
+                {
+                    "id": "Max",
+                    "string": "%#[4]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 4,
+                    "expr": "max"
                 }
             ]
         },
         {
-            "id": "--errors-to-stderr must be one of {ErrToStderrValues} but got \"{Value}\"",
-            "message": "--errors-to-stderr must be one of {ErrToStderrValues} but got \"{Value}\"",
+            "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
+            "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "ErrToStderrValues",
+                    "id": "Flag",
                     "string": "%[1]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "localizer.ErrToStderrValues"
+                    "expr": "flag"
                 },
                 {
                     "id": "Value",
@@ -2449,6 +2473,98 @@
                     "underlyingType": "string",
                     "argNum": 2,
                     "expr": "value"
+                },
+                {
+                    "id": "AllowedValues0",
+                    "string": "%[3]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 3,
+                    "expr": "allowedValues[0]"
+                }
+            ]
+        },
+        {
+            "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
+            "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Flag",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "flag"
+                },
+                {
+                    "id": "Value",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "value"
+                },
+                {
+                    "id": "AllowedValues",
+                    "string": "%[3]v",
+                    "type": "[]string",
+                    "underlyingType": "[]string",
+                    "argNum": 3,
+                    "expr": "allowedValues"
+                }
+            ]
+        },
+        {
+            "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+            "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Flag1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "flag1"
+                },
+                {
+                    "id": "Flag2",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "flag2"
+                }
+            ]
+        },
+        {
+            "id": "'{P1}': Missing argument. Enter '-?' for help.",
+            "message": "'{P1}': Missing argument. Enter '-?' for help.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "P1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "p[1]"
+                }
+            ]
+        },
+        {
+            "id": "'{P1}': Unknown Option. Enter '-?' for help.",
+            "message": "'{P1}': Unknown Option. Enter '-?' for help.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "P1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "p[1]"
                 }
             ]
         },
@@ -2609,6 +2725,124 @@
                     "underlyingType": "uint",
                     "argNum": 2,
                     "expr": "lineNumber"
+                }
+            ]
+        },
+        {
+            "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+            "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Number",
+                    "string": "%#[1]v",
+                    "type": "int32",
+                    "underlyingType": "int32",
+                    "argNum": 1,
+                    "expr": "e.Number"
+                },
+                {
+                    "id": "Class",
+                    "string": "%[2]d",
+                    "type": "uint8",
+                    "underlyingType": "uint8",
+                    "argNum": 2,
+                    "expr": "e.Class"
+                },
+                {
+                    "id": "State",
+                    "string": "%[3]d",
+                    "type": "uint8",
+                    "underlyingType": "uint8",
+                    "argNum": 3,
+                    "expr": "e.State"
+                },
+                {
+                    "id": "ServerName",
+                    "string": "%[4]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 4,
+                    "expr": "e.ServerName"
+                },
+                {
+                    "id": "ProcName",
+                    "string": "%[5]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 5,
+                    "expr": "e.ProcName"
+                },
+                {
+                    "id": "LineNo",
+                    "string": "%#[6]v",
+                    "type": "int32",
+                    "underlyingType": "int32",
+                    "argNum": 6,
+                    "expr": "e.LineNo"
+                },
+                {
+                    "id": "SqlcmdEol",
+                    "string": "%[7]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 7,
+                    "expr": "SqlcmdEol"
+                }
+            ]
+        },
+        {
+            "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+            "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Number",
+                    "string": "%#[1]v",
+                    "type": "int32",
+                    "underlyingType": "int32",
+                    "argNum": 1,
+                    "expr": "e.Number"
+                },
+                {
+                    "id": "Class",
+                    "string": "%[2]d",
+                    "type": "uint8",
+                    "underlyingType": "uint8",
+                    "argNum": 2,
+                    "expr": "e.Class"
+                },
+                {
+                    "id": "State",
+                    "string": "%[3]d",
+                    "type": "uint8",
+                    "underlyingType": "uint8",
+                    "argNum": 3,
+                    "expr": "e.State"
+                },
+                {
+                    "id": "ServerName",
+                    "string": "%[4]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 4,
+                    "expr": "e.ServerName"
+                },
+                {
+                    "id": "LineNo",
+                    "string": "%#[5]v",
+                    "type": "int32",
+                    "underlyingType": "int32",
+                    "argNum": 5,
+                    "expr": "e.LineNo"
+                },
+                {
+                    "id": "SqlcmdEol",
+                    "string": "%[6]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 6,
+                    "expr": "SqlcmdEol"
                 }
             ]
         },

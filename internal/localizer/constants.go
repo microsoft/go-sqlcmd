@@ -37,8 +37,7 @@ const (
 	StdoutName                 = "stdout"
 	ColSeparatorVar            = "SQLCMDCOLSEP"
 	ErrorLevel                 = "ERRORLEVEL"
-	AppIntentValues            = "\"default\",\"readonly\""
-	EncryptConnValues          = "\"default\",\"false\",\"true\",\"disable\""
+	AppIntentValues            = `"readonly"`
 	FormatValues               = "\"horiz\",\"horizontal\",\"vert\",\"vertical\""
 	ErrToStderrValues          = "\"-1\",\"0\",\"1\""
 )
