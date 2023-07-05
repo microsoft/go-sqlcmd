@@ -2871,9 +2871,23 @@
       "fuzzy": true
     },
     {
+      "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translation": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Client regional settings are not used",
+      "message": "Provided for backward compatibility. Client regional settings are not used",
+      "translation": "Provided for backward compatibility. Client regional settings are not used",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Sets the sqlcmd scripting variable {V}",
       "message": "Sets the sqlcmd scripting variable {V}",
-      "translation": "sqlcmd 스크립팅 변수 {V}을(를) 설정합니다.",
+      "translation": "Sets the sqlcmd scripting variable {V}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2890,7 +2904,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
-      "translation": "'{Flag} {Value}': 값은 {Min}보다 크거나 같고 {Max}보다 작거나 같아야 합니다.",
+      "translation": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2931,7 +2945,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
-      "translation": "'{Flag} {Value}': 값은 {Min}보다 크고 {Max}보다 작아야 합니다.",
+      "translation": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2972,7 +2986,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
-      "translation": "'{Flag} {Value}': 예기치 않은 인수입니다. 인수 값은 {AllowedValues0}이어야 합니다.",
+      "translation": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3005,7 +3019,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
-      "translation": "'{Flag} {Value}': 예기치 않은 인수입니다. 인수 값은 {AllowedValues} 중 하나여야 합니다.",
+      "translation": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3038,7 +3052,7 @@
     {
       "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
       "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
-      "translation": "{Flag1} 및 {Flag2} 옵션은 상호 배타적입니다.",
+      "translation": "The {Flag1} and the {Flag2} options are mutually exclusive.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3063,7 +3077,7 @@
     {
       "id": "'{P1}': Missing argument. Enter '-?' for help.",
       "message": "'{P1}': Missing argument. Enter '-?' for help.",
-      "translation": "'{P1}': 인수가 없습니다. 도움말을 보려면 '-?'를 입력하세요.",
+      "translation": "'{P1}': Missing argument. Enter '-?' for help.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3080,7 +3094,7 @@
     {
       "id": "'{P1}': Unknown Option. Enter '-?' for help.",
       "message": "'{P1}': Unknown Option. Enter '-?' for help.",
-      "translation": "'{P1}': 알 수 없는 옵션입니다. 도움말을 보려면 '-?'를 입력하세요.",
+      "translation": "'{P1}': Unknown Option. Enter '-?' for help.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3097,7 +3111,7 @@
     {
       "id": "invalid batch terminator '{BatchTerminator}'",
       "message": "invalid batch terminator '{BatchTerminator}'",
-      "translation": "잘못된 일괄 처리 종결자 '{BatchTerminator}'",
+      "translation": "invalid batch terminator '{BatchTerminator}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3114,28 +3128,28 @@
     {
       "id": "Sqlcmd: Error:",
       "message": "Sqlcmd: Error:",
-      "translation": "Sqlcmd: 오류:",
+      "translation": "Sqlcmd: Error:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sqlcmd: Warning:",
       "message": "Sqlcmd: Warning:",
-      "translation": "Sqlcmd: 경고:",
+      "translation": "Sqlcmd: Warning:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-      "translation": "ED 및 !!<command> 명령, 시작 스크립트 및 환경 변수가 비활성화됩니다.",
+      "translation": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The scripting variable: '{Variable}' is read-only",
       "message": "The scripting variable: '{Variable}' is read-only",
-      "translation": "스크립팅 변수: '{Variable}'은(는) 읽기 전용입니다.",
+      "translation": "The scripting variable: '{Variable}' is read-only",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3152,7 +3166,7 @@
     {
       "id": "'{Variable}' scripting variable not defined.",
       "message": "'{Variable}' scripting variable not defined.",
-      "translation": "'{Variable}' 스크립팅 변수가 정의되지 않았습니다.",
+      "translation": "'{Variable}' scripting variable not defined.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3169,7 +3183,7 @@
     {
       "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
       "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-      "translation": "환경 변수 '{Variable}'에 잘못된 값 '{EnvVal}'이(가) 있습니다.",
+      "translation": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3194,7 +3208,7 @@
     {
       "id": "Syntax error at line {LineNumber} near command '{Command}'.",
       "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-      "translation": "'{Command}' 명령 근처의 {LineNumber} 줄에 구문 오류가 있습니다.",
+      "translation": "Syntax error at line {LineNumber} near command '{Command}'.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3219,7 +3233,7 @@
     {
       "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
       "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-      "translation": "{ErrorPrefix} {Filepath} 파일을 열거나 작업하는 동안 오류가 발생했습니다(이유: {Error}).",
+      "translation": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3252,7 +3266,7 @@
     {
       "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-      "translation": "{ErrorPrefix}{LineNumber}행의 구문 오류",
+      "translation": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3275,9 +3289,131 @@
       "fuzzy": true
     },
     {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "ProcName",
+          "string": "%[5]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 5,
+          "expr": "e.ProcName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[6]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 6,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[7]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 7,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[5]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 5,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[6]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 6,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
       "id": "Invalid variable identifier {Name}",
       "message": "Invalid variable identifier {Name}",
-      "translation": "잘못된 변수 식별자 {이름}",
+      "translation": "Invalid variable identifier {Name}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3294,7 +3430,7 @@
     {
       "id": "Invalid variable value {Val}",
       "message": "Invalid variable value {Val}",
-      "translation": "잘못된 변수 값 {Val}",
+      "translation": "Invalid variable value {Val}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
