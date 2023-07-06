@@ -615,7 +615,7 @@ func (c *MssqlBase) downloadImage(
 					localizer.Sprintf("\t\tor") + pal.LineBreak() +
 					"\t\thttps://docs.docker.com/get-docker/",
 				localizer.Sprintf("Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)", localizer.PodmanPsCommand, localizer.DockerPsCommand),
-				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
+				localizer.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
 					"\t`podman|docker pull %s`", imageName)},
 			localizer.Sprintf("Unable to download image %s", imageName))
 	}

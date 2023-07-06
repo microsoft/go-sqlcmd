@@ -197,24 +197,26 @@
             "fuzzy": true
         },
         {
-            "id": "Starting {Arg_1} for context {Arg_2}",
-            "message": "Starting {Arg_1} for context {Arg_2}",
-            "translation": "Starting {Arg_1} for context {Arg_2}",
+            "id": "Starting {Image} for context {CurrentContextName}",
+            "message": "Starting {Image} for context {CurrentContextName}",
+            "translation": "Starting {Image} for context {CurrentContextName}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "Arg_1",
+                    "id": "Image",
                     "string": "%[1]q",
-                    "type": "",
+                    "type": "string",
                     "underlyingType": "string",
-                    "argNum": 1
+                    "argNum": 1,
+                    "expr": "endpoint.ContainerDetails.Image"
                 },
                 {
-                    "id": "Arg_2",
+                    "id": "CurrentContextName",
                     "string": "%[2]q",
-                    "type": "",
+                    "type": "string",
                     "underlyingType": "string",
-                    "argNum": 2
+                    "argNum": 2,
+                    "expr": "config.CurrentContextName()"
                 }
             ],
             "fuzzy": true
@@ -248,24 +250,26 @@
             "fuzzy": true
         },
         {
-            "id": "Stopping {Arg_1} for context {Arg_2}",
-            "message": "Stopping {Arg_1} for context {Arg_2}",
-            "translation": "Stopping {Arg_1} for context {Arg_2}",
+            "id": "Stopping {Image} for context {CurrentContextName}",
+            "message": "Stopping {Image} for context {CurrentContextName}",
+            "translation": "Stopping {Image} for context {CurrentContextName}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "Arg_1",
+                    "id": "Image",
                     "string": "%[1]q",
-                    "type": "",
+                    "type": "string",
                     "underlyingType": "string",
-                    "argNum": 1
+                    "argNum": 1,
+                    "expr": "endpoint.ContainerDetails.Image"
                 },
                 {
-                    "id": "Arg_2",
+                    "id": "CurrentContextName",
                     "string": "%[2]q",
-                    "type": "",
+                    "type": "string",
                     "underlyingType": "string",
-                    "argNum": 2
+                    "argNum": 2,
+                    "expr": "config.CurrentContextName()"
                 }
             ],
             "fuzzy": true
@@ -408,6 +412,23 @@
                     "underlyingType": "string",
                     "argNum": 1,
                     "expr": "config.CurrentContextName()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Stopping {Image}",
+            "message": "Stopping {Image}",
+            "translation": "Stopping {Image}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Image",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "endpoint.ContainerDetails.Image"
                 }
             ],
             "fuzzy": true

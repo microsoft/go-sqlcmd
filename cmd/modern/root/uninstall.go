@@ -116,10 +116,7 @@ func (c *Uninstall) run() {
 			output.Infof(localizer.Sprintf("Removing context %s", config.CurrentContextName()))
 
 			if controller.ContainerExists(id) {
-				output.Infof(
-					"Stopping %s",
-					endpoint.ContainerDetails.Image,
-				)
+				output.Infof(localizer.Sprintf("Stopping %s", endpoint.ContainerDetails.Image))
 				err := controller.ContainerStop(id)
 				c.CheckErr(err)
 				err = controller.ContainerRemove(id)
