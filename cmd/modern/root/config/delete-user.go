@@ -51,7 +51,7 @@ func (c *DeleteUser) run() {
 	if config.UserNameExists(c.name) {
 		config.DeleteUser(c.name)
 	} else {
-		output.FatalfWithHintExamples([][]string{
+		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("View users"), "sqlcmd config get-users"},
 		},
 			localizer.Sprintf("User %q does not exist", c.name))

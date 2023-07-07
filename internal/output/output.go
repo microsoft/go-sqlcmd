@@ -27,19 +27,29 @@ import (
 )
 
 func (o Output) Debugf(format string, a ...any) {
+	msg := fmt.Sprintf(format, a...)
+	o.Debug(msg)
+}
+
+func (o Output) Debug(msg string) {
 	if o.loggingLevel >= verbosity.Debug {
-		format = o.ensureEol(format)
-		o.printf("DEBUG: "+format, a...)
+		msg = o.ensureEol(msg)
+		o.printf("DEBUG: " + msg)
 	}
 }
 
 func (o Output) Errorf(format string, a ...any) {
+	msg := fmt.Sprintf(format, a...)
+	o.Error(msg)
+}
+
+func (o Output) Error(msg string) {
 	if o.loggingLevel >= verbosity.Error {
-		format = o.ensureEol(format)
+		msg = o.ensureEol(msg)
 		if o.loggingLevel >= verbosity.Debug {
-			format = "ERROR: " + format
+			msg = "ERROR: " + msg
 		}
-		o.printf(format, a...)
+		o.print(msg)
 	}
 }
 
@@ -55,9 +65,13 @@ func (o Output) Fatalf(format string, a ...any) {
 }
 
 func (o Output) FatalfErrorWithHints(err error, hints []string, format string, a ...any) {
-	o.hintCallback(hints)
 	s := fmt.Sprintf(format, a...)
-	o.errorCallback(fmt.Errorf(s+": %w", err))
+	o.FatalErrorWithHints(err, hints, s)
+}
+
+func (o Output) FatalErrorWithHints(err error, hints []string, msg string) {
+	o.hintCallback(hints)
+	o.errorCallback(fmt.Errorf(msg+": %w", err))
 }
 
 func (o Output) FatalfWithHints(hints []string, format string, a ...any) {
@@ -65,7 +79,12 @@ func (o Output) FatalfWithHints(hints []string, format string, a ...any) {
 }
 
 func (o Output) FatalfWithHintExamples(hintExamples [][]string, format string, a ...any) {
-	err := errors.New(fmt.Sprintf(format, a...))
+	msg := fmt.Sprintf(format, a...)
+	o.FatalWithHintExamples(hintExamples, msg)
+}
+
+func (o Output) FatalWithHintExamples(hintExamples [][]string, msg string) {
+	err := errors.New(msg)
 	o.displayHintExamples(hintExamples)
 	o.errorCallback(err)
 }
@@ -89,19 +108,29 @@ func (o Output) Infof(format string, a ...any) {
 }
 
 func (o Output) InfofWithHints(hints []string, format string, a ...any) {
-	o.infofWithHints(hints, format, a...)
+	msg := fmt.Sprintf(format, a...)
+	o.InfoWithHints(hints, msg)
+}
+
+func (o Output) InfoWithHints(hints []string, msg string) {
+	o.infoWithHints(hints, msg)
 }
 
 // InfofWithHintExamples logs an info-level message with a given format and
 // arguments. It also displays additional hints with example usage in the
 // output.
 func (o Output) InfofWithHintExamples(hintExamples [][]string, format string, a ...any) {
+	text := fmt.Sprintf(format, a...)
+	o.InfoWithHintExamples(hintExamples, text)
+}
+
+func (o Output) InfoWithHintExamples(hintExamples [][]string, msg string) {
 	if o.loggingLevel >= verbosity.Info {
-		format = o.ensureEol(format)
+		msg = o.ensureEol(msg)
 		if o.loggingLevel >= verbosity.Debug {
-			format = "INFO:  " + format
+			msg = "INFO:  " + msg
 		}
-		o.printf(format, a...)
+		o.print(msg)
 		o.displayHintExamples(hintExamples)
 	}
 }
@@ -121,9 +150,14 @@ func (o Output) Struct(in interface{}) (bytes []byte) {
 }
 
 func (o Output) Tracef(format string, a ...any) {
+	msg := fmt.Sprintf(format, a...)
+	o.Trace(msg)
+}
+
+func (o Output) Trace(msg string) {
 	if o.loggingLevel >= verbosity.Trace {
-		format = o.ensureEol(format)
-		o.printf("TRACE: "+format, a...)
+		msg = o.ensureEol(msg)
+		o.printf("TRACE: " + msg)
 	}
 }
 
@@ -217,12 +251,17 @@ func (o Output) fatalf(hints []string, format string, a ...any) {
 // or higher, the string "INFO: " is prepended to the message before it is printed.
 // The function also calls the hintCallback function to print the hints, if any are provided.
 func (o Output) infofWithHints(hints []string, format string, a ...any) {
+	msg := fmt.Sprintf(format, a...)
+	o.infoWithHints(hints, msg)
+}
+
+func (o Output) infoWithHints(hints []string, msg string) {
 	if o.loggingLevel >= verbosity.Info {
-		format = o.ensureEol(format)
+		msg = o.ensureEol(msg)
 		if o.loggingLevel >= verbosity.Debug {
-			format = "INFO:  " + format
+			msg = "INFO:  " + msg
 		}
-		o.printf(format, a...)
+		o.print(msg)
 		o.hintCallback(hints)
 	}
 }
@@ -240,9 +279,7 @@ func (o Output) maskSecrets(text string) string {
 
 func (o Output) printf(format string, a ...any) {
 	text := fmt.Sprintf(format, a...)
-	text = o.maskSecrets(text)
-	_, err := o.standardWriteCloser.Write([]byte(text))
-	o.errorCallback(err)
+	o.print(text)
 }
 
 func (o Output) print(msg string) {

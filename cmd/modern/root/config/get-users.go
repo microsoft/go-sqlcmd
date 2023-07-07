@@ -61,7 +61,7 @@ func (c *GetUsers) run() {
 			user := config.GetUser(c.name)
 			output.Struct(user)
 		} else {
-			output.FatalfWithHints(
+			output.FatalWithHints(
 				[]string{localizer.Sprintf("To view available users run `%s`", localizer.GetUsersCommand)},
 				localizer.Sprintf("error: no user exists with the name: \"%v\"", c.name))
 		}

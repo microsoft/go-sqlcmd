@@ -80,7 +80,7 @@ func (c *DeleteContext) run() {
 
 		output.Info(localizer.Sprintf("Context '%v' deleted", c.name))
 	} else {
-		output.FatalfWithHintExamples([][]string{
+		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("View available contexts"), "sqlcmd config get-contexts"},
 		},
 			localizer.Sprintf("Context '%v' does not exist", c.name))

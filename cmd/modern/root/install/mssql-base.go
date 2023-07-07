@@ -390,7 +390,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
 	hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
 
-	output.InfofWithHintExamples(hints,
+	output.InfoWithHintExamples(hints,
 		localizer.Sprintf("Now ready for client connections on port %d",
 			c.port),
 	)
@@ -403,7 +403,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	c.CheckErr(err)
 
 	if u.Scheme != "http" && u.Scheme != "https" {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{
 				localizer.Sprintf("--using URL must be http or https"),
 			},
@@ -411,7 +411,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	}
 
 	if u.Path == "" {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{
 				localizer.Sprintf("--using URL must have a path to .bak file"),
 			},
@@ -421,7 +421,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
 	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{
 				localizer.Sprintf("--using file URL must be a .bak file"),
 			},
@@ -606,7 +606,7 @@ func (c *MssqlBase) downloadImage(
 	output.Info(localizer.Sprintf("Downloading %v", imageName))
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {
-		output.FatalfErrorWithHints(
+		output.FatalErrorWithHints(
 			err,
 			[]string{
 				localizer.Sprintf("Is a container runtime installed on this machine (e.g. Podman or Docker)?") + pal.LineBreak() +
@@ -624,7 +624,7 @@ func (c *MssqlBase) downloadImage(
 // Verify the file exists at the URL
 func urlExists(url string, output *output.Output) {
 	if !http.UrlExists(url) {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{localizer.Sprintf("File does not exist at URL")},
 			localizer.Sprintf("Unable to download file"))
 	}

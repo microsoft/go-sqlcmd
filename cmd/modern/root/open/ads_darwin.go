@@ -28,9 +28,9 @@ func (c *Ads) persistCredentialForAds(hostname string, endpoint sqlconfig.Endpoi
 func (c *Ads) displayPreLaunchInfo() {
 	output := c.Output()
 
-	output.Infof("Temporary: To view connection information run:")
-	output.Infof("")
-	output.Infof("\tsqlcmd config connection-strings")
-	output.Infof("")
-	output.Infof("(see issue for more information: https://github.com/microsoft/go-sqlcmd/issues/257)")
+	output.Info(localizer.Sprintf("Temporary: To view connection information run:"))
+	output.Info("")
+	output.Info("\tsqlcmd config connection-strings")
+	output.Info("")
+	output.Info("(see issue for more information: https://github.com/microsoft/go-sqlcmd/issues/257)")
 }

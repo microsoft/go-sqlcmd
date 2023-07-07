@@ -5,9 +5,11 @@ package open
 
 import (
 	"fmt"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/credman"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 )
 
@@ -25,7 +27,7 @@ type Ads struct {
 func (c *Ads) displayPreLaunchInfo() {
 	output := c.Output()
 
-	output.Infof("Press Ctrl+C to exit this process...")
+	output.Info(localizer.Sprintf("Press Ctrl+C to exit this process..."))
 }
 
 // persistCredentialForAds stores a SQL password in the Windows Credential Manager
@@ -92,9 +94,9 @@ func (c *Ads) writeCredential() {
 
 	err := credman.WriteCredential(&c.credential, credman.CredTypeGeneric)
 	if err != nil {
-		output.FatalfErrorWithHints(
+		output.FatalErrorWithHints(
 			err,
-			[]string{"A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager"},
-			"Failed to write credential to Windows Credential Manager")
+			[]string{localizer.Sprintf("A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager")},
+			localizer.Sprintf("Failed to write credential to Windows Credential Manager"))
 	}
 }

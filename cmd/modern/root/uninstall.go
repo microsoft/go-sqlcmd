@@ -76,7 +76,7 @@ func (c *Uninstall) run() {
 	output := c.Output()
 
 	if config.CurrentContextName() == "" {
-		output.FatalfWithHintExamples([][]string{
+		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("View available contexts"), "sqlcmd config get-contexts"},
 			{localizer.Sprintf("Create context"), "sqlcmd create --help"},
 			{localizer.Sprintf("Create context with SQL Server container"), "sqlcmd create mssql"},
@@ -105,7 +105,7 @@ func (c *Uninstall) run() {
 			if controller.ContainerExists(id) && !c.force {
 				output.Info(localizer.Sprintf("Verifying no user (non-system) database (.mdf) files"))
 				if !controller.ContainerRunning(id) {
-					output.FatalfWithHintExamples([][]string{
+					output.FatalWithHintExamples([][]string{
 						{localizer.Sprintf("To start the container"), "sqlcmd start"},
 						{localizer.Sprintf("To override the check, use %s", "--force"), "sqlcmd delete --force"},
 					}, localizer.Sprintf("Container is not running, unable to verify that user database files do not exist"))
@@ -157,7 +157,7 @@ func (c *Uninstall) userDatabaseSafetyCheck(controller *container.Controller, id
 
 			if !isSystemDatabase {
 				const dropDbQuery = "`sqlcmd query \"use master; DROP DATABASE [<database_name>]\"`"
-				output.FatalfWithHints([]string{
+				output.FatalWithHints([]string{
 					localizer.Sprintf(
 						"If the database is mounted, run %s", dropDbQuery),
 					localizer.Sprintf("Pass in the flag %s to override this safety check for user (non-system) databases", "--force")},

@@ -33,7 +33,7 @@ func (c *Start) run() {
 	output := c.Output()
 
 	if config.CurrentContextName() == "" {
-		output.FatalfWithHintExamples([][]string{
+		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("To view available contexts"), "sqlcmd config get-contexts"},
 		}, localizer.Sprintf("No current context"))
 	}
@@ -46,7 +46,7 @@ func (c *Start) run() {
 		err := controller.ContainerStart(id)
 		c.CheckErr(err)
 	} else {
-		output.FatalfWithHintExamples([][]string{
+		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("Create new context with a sql container "), "sqlcmd create mssql"},
 		}, localizer.Sprintf("Current context does not have a container"))
 	}

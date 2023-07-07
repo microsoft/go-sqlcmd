@@ -1956,6 +1956,31 @@
             "translation": ""
         },
         {
+            "id": "sqlcmd start",
+            "message": "sqlcmd start",
+            "translation": ""
+        },
+        {
+            "id": "Container is not running",
+            "message": "Container is not running",
+            "translation": ""
+        },
+        {
+            "id": "Press Ctrl+C to exit this process...",
+            "message": "Press Ctrl+C to exit this process...",
+            "translation": ""
+        },
+        {
+            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "translation": ""
+        },
+        {
+            "id": "Failed to write credential to Windows Credential Manager",
+            "message": "Failed to write credential to Windows Credential Manager",
+            "translation": ""
+        },
+        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": ""
