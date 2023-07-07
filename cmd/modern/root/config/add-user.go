@@ -168,5 +168,5 @@ func (c *AddUser) run() {
 	}
 
 	uniqueUserName := config.AddUser(user)
-	output.Infof(localizer.Sprintf("User '%v' added", uniqueUserName))
+	output.Info(localizer.Sprintf("User '%v' added", uniqueUserName))
 }

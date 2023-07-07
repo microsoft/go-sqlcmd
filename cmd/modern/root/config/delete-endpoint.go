@@ -60,5 +60,5 @@ func (c *DeleteEndpoint) run() {
 			localizer.Sprintf("Endpoint '%v' does not exist", c.name))
 	}
 
-	output.Infof(localizer.Sprintf("Endpoint '%v' deleted", c.name))
+	output.Info(localizer.Sprintf("Endpoint '%v' deleted", c.name))
 }

@@ -91,7 +91,7 @@ func (c *Uninstall) run() {
 
 			var input string
 			if !c.yes {
-				output.Infof(
+				output.Info(
 					localizer.Sprintf("Current context is %q. Do you want to continue? (Y/N)",
 						config.CurrentContextName(),
 					))
@@ -103,7 +103,7 @@ func (c *Uninstall) run() {
 				}
 			}
 			if controller.ContainerExists(id) && !c.force {
-				output.Infof(localizer.Sprintf("Verifying no user (non-system) database (.mdf) files"))
+				output.Info(localizer.Sprintf("Verifying no user (non-system) database (.mdf) files"))
 				if !controller.ContainerRunning(id) {
 					output.FatalfWithHintExamples([][]string{
 						{localizer.Sprintf("To start the container"), "sqlcmd start"},
@@ -113,16 +113,16 @@ func (c *Uninstall) run() {
 				c.userDatabaseSafetyCheck(controller, id)
 			}
 
-			output.Infof(localizer.Sprintf("Removing context %s", config.CurrentContextName()))
+			output.Info(localizer.Sprintf("Removing context %s", config.CurrentContextName()))
 
 			if controller.ContainerExists(id) {
-				output.Infof(localizer.Sprintf("Stopping %s", endpoint.ContainerDetails.Image))
+				output.Info(localizer.Sprintf("Stopping %s", endpoint.ContainerDetails.Image))
 				err := controller.ContainerStop(id)
 				c.CheckErr(err)
 				err = controller.ContainerRemove(id)
 				c.CheckErr(err)
 			} else {
-				output.Warnf(localizer.Sprintf("Container %q no longer exists, continuing to remove context...", id))
+				output.Warn(localizer.Sprintf("Container %q no longer exists, continuing to remove context...", id))
 			}
 		}
 
@@ -131,9 +131,9 @@ func (c *Uninstall) run() {
 
 		newContextName := config.CurrentContextName()
 		if newContextName != "" {
-			output.Infof(localizer.Sprintf("Current context is now %s", newContextName))
+			output.Info(localizer.Sprintf("Current context is now %s", newContextName))
 		} else {
-			output.Infof(localizer.Sprintf("%v", "Operation completed successfully"))
+			output.Info(localizer.Sprintf("%v", "Operation completed successfully"))
 		}
 	}
 }

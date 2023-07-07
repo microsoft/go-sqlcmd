@@ -57,5 +57,5 @@ func (c *DeleteUser) run() {
 			localizer.Sprintf("User %q does not exist", c.name))
 	}
 
-	output.Infof(localizer.Sprintf("User %q deleted", c.name))
+	output.Info(localizer.Sprintf("User %q deleted", c.name))
 }

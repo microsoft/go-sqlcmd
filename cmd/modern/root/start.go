@@ -42,7 +42,7 @@ func (c *Start) run() {
 		id := config.ContainerId()
 		endpoint, _ := config.CurrentContext()
 
-		output.Infof(localizer.Sprintf("Starting %q for context %q", endpoint.ContainerDetails.Image, config.CurrentContextName()))
+		output.Info(localizer.Sprintf("Starting %q for context %q", endpoint.ContainerDetails.Image, config.CurrentContextName()))
 		err := controller.ContainerStart(id)
 		c.CheckErr(err)
 	} else {

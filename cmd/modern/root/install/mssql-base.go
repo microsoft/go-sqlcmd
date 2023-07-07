@@ -290,7 +290,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.downloadImage(imageName, output, controller)
 	}
 
-	output.Infof(localizer.Sprintf("Starting %v", imageName))
+	output.Info(localizer.Sprintf("Starting %v", imageName))
 	containerId := controller.ContainerRun(
 		imageName,
 		env,
@@ -319,7 +319,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.passwordEncryption,
 	)
 
-	output.Infof(
+	output.Info(
 		localizer.Sprintf("Created context %q in \"%s\", configuring user account...",
 			config.CurrentContextName(),
 			config.GetConfigFileUsed()))
@@ -327,7 +327,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	controller.ContainerWaitForLogEntry(
 		containerId, c.errorLogEntryToWaitFor)
 
-	output.Infof(
+	output.Info(
 		localizer.Sprintf("Disabled %q account (and rotated %q password). Creating user %q",
 			"sa",
 			"sa",
@@ -452,7 +452,7 @@ func (c *MssqlBase) createNonSaUser(
 		defaultDatabase = c.defaultDatabase
 
 		// Create the default database, if it isn't a downloaded database
-		output.Infof(localizer.Sprintf("Creating default database [%s]", defaultDatabase))
+		output.Info(localizer.Sprintf("Creating default database [%s]", defaultDatabase))
 		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
@@ -532,7 +532,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	_, file := filepath.Split(databaseUrl)
 
 	// Download file from URL into container
-	output.Infof(localizer.Sprintf("Downloading %s", file))
+	output.Info(localizer.Sprintf("Downloading %s", file))
 
 	temporaryFolder := "/var/opt/mssql/backup"
 
@@ -543,7 +543,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	)
 
 	// Restore database from file
-	output.Infof(localizer.Sprintf("Restoring database %s", databaseName))
+	output.Info(localizer.Sprintf("Restoring database %s", databaseName))
 
 	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
 	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
@@ -603,7 +603,7 @@ func (c *MssqlBase) downloadImage(
 	output *output.Output,
 	controller *container.Controller,
 ) {
-	output.Infof(localizer.Sprintf("Downloading %v", imageName))
+	output.Info(localizer.Sprintf("Downloading %v", imageName))
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {
 		output.FatalfErrorWithHints(

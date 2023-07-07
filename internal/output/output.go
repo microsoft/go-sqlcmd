@@ -18,11 +18,12 @@ package output
 
 import (
 	"fmt"
+	"regexp"
+	"strings"
+
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/pkg/errors"
-	"regexp"
-	"strings"
 )
 
 func (o Output) Debugf(format string, a ...any) {
@@ -71,6 +72,16 @@ func (o Output) FatalfWithHintExamples(hintExamples [][]string, format string, a
 
 func (o Output) FatalWithHints(hints []string, a ...any) {
 	o.fatal(hints, a...)
+}
+
+func (o Output) Info(msg string) {
+	if o.loggingLevel >= verbosity.Info {
+		msg = o.ensureEol(msg)
+		if o.loggingLevel >= verbosity.Debug {
+			msg = "INFO:  " + msg
+		}
+		o.print(msg)
+	}
 }
 
 func (o Output) Infof(format string, a ...any) {
@@ -123,6 +134,16 @@ func (o Output) Warnf(format string, a ...any) {
 			format = "WARN:  " + format
 		}
 		o.printf(format, a...)
+	}
+}
+
+func (o Output) Warn(msg string) {
+	if o.loggingLevel >= verbosity.Warn {
+		msg = o.ensureEol(msg)
+		if o.loggingLevel >= verbosity.Debug {
+			msg = "WARN:  " + msg
+		}
+		o.print(msg)
 	}
 }
 
@@ -220,6 +241,12 @@ func (o Output) maskSecrets(text string) string {
 func (o Output) printf(format string, a ...any) {
 	text := fmt.Sprintf(format, a...)
 	text = o.maskSecrets(text)
+	_, err := o.standardWriteCloser.Write([]byte(text))
+	o.errorCallback(err)
+}
+
+func (o Output) print(msg string) {
+	text := o.maskSecrets(msg)
 	_, err := o.standardWriteCloser.Write([]byte(text))
 	o.errorCallback(err)
 }

@@ -42,7 +42,7 @@ func (c *Stop) run() {
 		id := config.ContainerId()
 		endpoint, _ := config.CurrentContext()
 
-		output.Infof(localizer.Sprintf("Stopping %q for context %q", endpoint.ContainerDetails.Image, config.CurrentContextName()))
+		output.Info(localizer.Sprintf("Stopping %q for context %q", endpoint.ContainerDetails.Image, config.CurrentContextName()))
 		err := controller.ContainerStop(id)
 		c.CheckErr(err)
 	} else {
