@@ -106,7 +106,7 @@ func (c *AddUser) run() {
 
 	if c.authType != "basic" &&
 		c.authType != "other" {
-		output.FatalfWithHints([]string{localizer.Sprintf("Authentication type must be '%s' or '%s'", localizer.ModernAuthTypeBasic, localizer.ModernAuthTypeOther)},
+		output.FatalWithHints([]string{localizer.Sprintf("Authentication type must be '%s' or '%s'", localizer.ModernAuthTypeBasic, localizer.ModernAuthTypeOther)},
 			localizer.Sprintf("Authentication type '' is not valid %v'", c.authType))
 	}
 
@@ -136,7 +136,7 @@ func (c *AddUser) run() {
 		}
 
 		if c.username == "" {
-			output.FatalfWithHintExamples([][]string{
+			output.FatalWithHintExamples([][]string{
 				{localizer.Sprintf("Provide a username with the %s flag"),
 					"sqlcmd config add-user --username sa"},
 			},
@@ -144,7 +144,7 @@ func (c *AddUser) run() {
 		}
 
 		if !secret.IsValidEncryptionMethod(c.passwordEncryption) {
-			output.FatalfWithHints([]string{
+			output.FatalWithHints([]string{
 				localizer.Sprintf("Provide a valid encryption method (%s) with the %s flag", secret.EncryptionMethodsForUsage(), localizer.PasswordEncryptFlag)},
 				localizer.Sprintf("Encryption method '%v' is not valid", c.passwordEncryption))
 		}
@@ -168,5 +168,5 @@ func (c *AddUser) run() {
 	}
 
 	uniqueUserName := config.AddUser(user)
-	output.Infof(localizer.Sprintf("User '%v' added", uniqueUserName))
+	output.Info(localizer.Sprintf("User '%v' added", uniqueUserName))
 }

@@ -42,12 +42,12 @@ func (c *UseContext) run() {
 
 	if config.ContextExists(c.name) {
 		config.SetCurrentContextName(c.name)
-		output.InfofWithHints([]string{
+		output.InfoWithHints([]string{
 			localizer.Sprintf("To run a query:    %s", localizer.RunQueryExample),
 			localizer.Sprintf("To remove:         %s", localizer.UninstallCommand)},
 			localizer.Sprintf("Switched to context \"%v\".", c.name))
 	} else {
-		output.FatalfWithHints([]string{localizer.Sprintf("To view available contexts run `%s`", localizer.GetContextCommand)},
+		output.FatalWithHints([]string{localizer.Sprintf("To view available contexts run `%s`", localizer.GetContextCommand)},
 			localizer.Sprintf("No context exists with the name: \"%v\"", c.name))
 	}
 }
