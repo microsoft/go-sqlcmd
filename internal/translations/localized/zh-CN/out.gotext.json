@@ -197,24 +197,26 @@
       "fuzzy": true
     },
     {
-      "id": "Starting {Arg_1} for context {Arg_2}",
-      "message": "Starting {Arg_1} for context {Arg_2}",
-      "translation": "正在启动上下文 {Arg_2} 的 {Arg_1}",
+      "id": "Starting {Image} for context {CurrentContextName}",
+      "message": "Starting {Image} for context {CurrentContextName}",
+      "translation": "Starting {Image} for context {CurrentContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -248,24 +250,26 @@
       "fuzzy": true
     },
     {
-      "id": "Stopping {Arg_1} for context {Arg_2}",
-      "message": "Stopping {Arg_1} for context {Arg_2}",
-      "translation": "正在停止上下文 {Arg_2} 的 {Arg_1}",
+      "id": "Stopping {Image} for context {CurrentContextName}",
+      "message": "Stopping {Image} for context {CurrentContextName}",
+      "translation": "Stopping {Image} for context {CurrentContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -413,9 +417,26 @@
       "fuzzy": true
     },
     {
+      "id": "Stopping {Image}",
+      "message": "Stopping {Image}",
+      "translation": "Stopping {Image}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
       "id": "Container {Id} no longer exists, continuing to remove context...",
       "message": "Container {Id} no longer exists, continuing to remove context...",
-      "translation": "容器 {Id} 已不存在，正在继续删除上下文...",
+      "translation": "Container {Id} no longer exists, continuing to remove context...",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -432,7 +453,7 @@
     {
       "id": "Current context is now {NewContextName}",
       "message": "Current context is now {NewContextName}",
-      "translation": "当前上下文现在使用 {NewContextName}",
+      "translation": "Current context is now {NewContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -466,7 +487,7 @@
     {
       "id": "If the database is mounted, run {DropDbQuery}",
       "message": "If the database is mounted, run {DropDbQuery}",
-      "translation": "如果已装载数据库，请运行 {DropDbQuery}",
+      "translation": "If the database is mounted, run {DropDbQuery}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -483,7 +504,7 @@
     {
       "id": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
       "message": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
-      "translation": "传入标志 {__force} 以替代此用户(非系统)数据库的安全检查",
+      "translation": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -500,7 +521,7 @@
     {
       "id": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
       "message": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
-      "translation": "无法继续，存在用户(非系统)数据库 ({DatabaseFile})",
+      "translation": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -517,70 +538,70 @@
     {
       "id": "No endpoints to uninstall",
       "message": "No endpoints to uninstall",
-      "translation": "没有要卸载的终结点",
+      "translation": "No endpoints to uninstall",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add a context",
       "message": "Add a context",
-      "translation": "添加上下文",
+      "translation": "Add a context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
       "message": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
-      "translation": "使用受信任的身份验证在端口 1433 上为 SQL Server 的本地实例添加上下文",
+      "translation": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Display name for the context",
       "message": "Display name for the context",
-      "translation": "上下文的显示名称",
+      "translation": "Display name for the context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Name of endpoint this context will use",
       "message": "Name of endpoint this context will use",
-      "translation": "此上下文将使用的终结点的名称",
+      "translation": "Name of endpoint this context will use",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Name of user this context will use",
       "message": "Name of user this context will use",
-      "translation": "此上下文将使用的用户名",
+      "translation": "Name of user this context will use",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "View existing endpoints to choose from",
       "message": "View existing endpoints to choose from",
-      "translation": "查看要从中选择的现有终结点",
+      "translation": "View existing endpoints to choose from",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add a new local endpoint",
       "message": "Add a new local endpoint",
-      "translation": "添加新的本地终结点",
+      "translation": "Add a new local endpoint",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add an already existing endpoint",
       "message": "Add an already existing endpoint",
-      "translation": "添加已存在的终结点",
+      "translation": "Add an already existing endpoint",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
       "message": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
-      "translation": "添加上下文所需的终结点。终结点 \"{EndpointName}\" 不存在。请使用 {EndpointFlag} 标志",
+      "translation": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -605,28 +626,28 @@
     {
       "id": "View list of users",
       "message": "View list of users",
-      "translation": "查看用户列表",
+      "translation": "View list of users",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add the user",
       "message": "Add the user",
-      "translation": "添加用户",
+      "translation": "Add the user",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add an endpoint",
       "message": "Add an endpoint",
-      "translation": "添加终结点",
+      "translation": "Add an endpoint",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "User '{UserName}' does not exist",
       "message": "User '{UserName}' does not exist",
-      "translation": "用户 \"{UserName}\" 不存在",
+      "translation": "User '{UserName}' does not exist",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -643,28 +664,28 @@
     {
       "id": "Open in Azure Data Studio",
       "message": "Open in Azure Data Studio",
-      "translation": "在 Azure Data Studio 中打开",
+      "translation": "Open in Azure Data Studio",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "To start interactive query session",
       "message": "To start interactive query session",
-      "translation": "启动交互式查询会话",
+      "translation": "To start interactive query session",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "To run a query",
       "message": "To run a query",
-      "translation": "运行查询",
+      "translation": "To run a query",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Current Context '{Name}'",
       "message": "Current Context '{Name}'",
-      "translation": "当前上下文 \"{Name}\"",
+      "translation": "Current Context '{Name}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -681,70 +702,70 @@
     {
       "id": "Add a default endpoint",
       "message": "Add a default endpoint",
-      "translation": "添加默认终结点",
+      "translation": "Add a default endpoint",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Display name for the endpoint",
       "message": "Display name for the endpoint",
-      "translation": "终结点的显示名称",
+      "translation": "Display name for the endpoint",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The network address to connect to, e.g. 127.0.0.1 etc.",
       "message": "The network address to connect to, e.g. 127.0.0.1 etc.",
-      "translation": "要连接到的网络地址，例如 127.0.0.1 等。",
+      "translation": "The network address to connect to, e.g. 127.0.0.1 etc.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The network port to connect to, e.g. 1433 etc.",
       "message": "The network port to connect to, e.g. 1433 etc.",
-      "translation": "要连接到的网络端口，例如 1433 等。",
+      "translation": "The network port to connect to, e.g. 1433 etc.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add a context for this endpoint",
       "message": "Add a context for this endpoint",
-      "translation": "为此终结点添加上下文",
+      "translation": "Add a context for this endpoint",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "View endpoint names",
       "message": "View endpoint names",
-      "translation": "查看终结点名称",
+      "translation": "View endpoint names",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "View endpoint details",
       "message": "View endpoint details",
-      "translation": "查看终结点详细信息",
+      "translation": "View endpoint details",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "View all endpoints details",
       "message": "View all endpoints details",
-      "translation": "查看所有终结点详细信息",
+      "translation": "View all endpoints details",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Delete this endpoint",
       "message": "Delete this endpoint",
-      "translation": "删除此终结点",
+      "translation": "Delete this endpoint",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
       "message": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
-      "translation": "已添加终结点 \"{UniqueEndpointName}\"(地址: \"{Address}\"，端口: \"{Port}\")",
+      "translation": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -777,49 +798,49 @@
     {
       "id": "Add a user (using the SQLCMD_PASSWORD environment variable)",
       "message": "Add a user (using the SQLCMD_PASSWORD environment variable)",
-      "translation": "添加用户(使用 SQLCMD_PASSWORD 环境变量)",
+      "translation": "Add a user (using the SQLCMD_PASSWORD environment variable)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add a user (using the SQLCMDPASSWORD environment variable)",
       "message": "Add a user (using the SQLCMDPASSWORD environment variable)",
-      "translation": "添加用户(使用 SQLCMDPASSWORD 环境变量)",
+      "translation": "Add a user (using the SQLCMDPASSWORD environment variable)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
       "message": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
-      "translation": "使用 Windows 数据保护 API 添加用户以加密 sqlconfig 中的密码",
+      "translation": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Add a user",
       "message": "Add a user",
-      "translation": "添加用户",
+      "translation": "Add a user",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Display name for the user (this is not the username)",
       "message": "Display name for the user (this is not the username)",
-      "translation": "用户的显示名称(这不是用户名)",
+      "translation": "Display name for the user (this is not the username)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Authentication type this user will use (basic | other)",
       "message": "Authentication type this user will use (basic | other)",
-      "translation": "此用户将使用的身份验证类型(基本 | 其他)",
+      "translation": "Authentication type this user will use (basic | other)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
       "message": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
-      "translation": "用户名(在 {PasswordEnvVar} (或 {PasswordEnvVar2})环境变量中提供密码)",
+      "translation": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -844,7 +865,7 @@
     {
       "id": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
       "message": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
-      "translation": "sqlconfig 文件中的密码加密方法({EncryptionMethodsForUsage})",
+      "translation": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -861,7 +882,7 @@
     {
       "id": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
       "message": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
-      "translation": "身份验证类型必须是 \"{ModernAuthTypeBasic}\" 或 \"{ModernAuthTypeOther}\"",
+      "translation": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -886,7 +907,7 @@
     {
       "id": "Authentication type '' is not valid {AuthType}'",
       "message": "Authentication type '' is not valid {AuthType}'",
-      "translation": "身份验证类型 \"{AuthType}\" 无效",
+      "translation": "Authentication type '' is not valid {AuthType}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -903,7 +924,7 @@
     {
       "id": "Remove the {PasswordEncryptFlag} flag",
       "message": "Remove the {PasswordEncryptFlag} flag",
-      "translation": "删除 {PasswordEncryptFlag} 标志",
+      "translation": "Remove the {PasswordEncryptFlag} flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -920,7 +941,7 @@
     {
       "id": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
       "message": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
-      "translation": "传入 {AuthTypeFlag} {ModernAuthTypeBasic}",
+      "translation": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -945,7 +966,7 @@
     {
       "id": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
       "message": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
-      "translation": "只有在身份验证类型为 \"{ModernAuthTypeBasic}\" 时，才能使用 {PasswordEncryptFlag} 标志",
+      "translation": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -970,7 +991,7 @@
     {
       "id": "Add the {PasswordEncryptFlag} flag",
       "message": "Add the {PasswordEncryptFlag} flag",
-      "translation": "添加 {PasswordEncryptFlag} 标志",
+      "translation": "Add the {PasswordEncryptFlag} flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -987,7 +1008,7 @@
     {
       "id": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
       "message": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
-      "translation": "身份验证类型为 \"{ModernAuthTypeBasic}\" 时，必须使用 {PasswordEncryptFlag} 标志",
+      "translation": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1012,7 +1033,7 @@
     {
       "id": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
       "message": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
-      "translation": "在 {PasswordEnvVar} (或 {PasswordEnvVar2})环境变量中提供密码",
+      "translation": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1037,7 +1058,7 @@
     {
       "id": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
       "message": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
-      "translation": "身份验证类型 \"{ModernAuthTypeBasic}\" 需要密码",
+      "translation": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1054,7 +1075,7 @@
     {
       "id": "Provide a username with the {Arg_1} flag",
       "message": "Provide a username with the {Arg_1} flag",
-      "translation": "提供具有 {Arg_1} 标志的用户名",
+      "translation": "Provide a username with the {Arg_1} flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1070,14 +1091,14 @@
     {
       "id": "Username not provided",
       "message": "Username not provided",
-      "translation": "未提供用户名",
+      "translation": "Username not provided",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
       "message": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
-      "translation": "使用 {PasswordEncryptFlag} 标志提供有效的加密方法({EncryptionMethodsForUsage})",
+      "translation": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1102,7 +1123,7 @@
     {
       "id": "Encryption method '{PasswordEncryption}' is not valid",
       "message": "Encryption method '{PasswordEncryption}' is not valid",
-      "translation": "加密方法 \"{PasswordEncryption}\" 无效",
+      "translation": "Encryption method '{PasswordEncryption}' is not valid",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1119,7 +1140,7 @@
     {
       "id": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
       "message": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
-      "translation": "取消设置 {PasswordEnvVar} 或 {PasswordEnvVar2} 中的一个环境变量",
+      "translation": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1144,7 +1165,7 @@
     {
       "id": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
       "message": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
-      "translation": "同时设置了环境变量 {PasswordEnvVar} 和 {PasswordEnvVar2}。",
+      "translation": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1169,7 +1190,7 @@
     {
       "id": "User '{UniqueUserName}' added",
       "message": "User '{UniqueUserName}' added",
-      "translation": "已添加用户 \"{UniqueUserName}\"",
+      "translation": "User '{UniqueUserName}' added",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1186,28 +1207,28 @@
     {
       "id": "Display connections strings for the current context",
       "message": "Display connections strings for the current context",
-      "translation": "显示当前上下文的连接字符串",
+      "translation": "Display connections strings for the current context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "List connection strings for all client drivers",
       "message": "List connection strings for all client drivers",
-      "translation": "列出所有客户端驱动程序的连接字符串",
+      "translation": "List connection strings for all client drivers",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Database for the connection string (default is taken from the T/SQL login)",
       "message": "Database for the connection string (default is taken from the T/SQL login)",
-      "translation": "连接字符串的数据库(默认来自 T/SQL 登录)",
+      "translation": "Database for the connection string (default is taken from the T/SQL login)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
       "message": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
-      "translation": "仅 {ModernAuthTypeBasic} 身份验证类型支持连接字符串",
+      "translation": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1224,49 +1245,49 @@
     {
       "id": "Display the current-context",
       "message": "Display the current-context",
-      "translation": "显示当前上下文",
+      "translation": "Display the current-context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Delete a context",
       "message": "Delete a context",
-      "translation": "删除上下文",
+      "translation": "Delete a context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Delete a context (including its endpoint and user)",
       "message": "Delete a context (including its endpoint and user)",
-      "translation": "删除上下文(包括其终结点和用户)",
+      "translation": "Delete a context (including its endpoint and user)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Delete a context (excluding its endpoint and user)",
       "message": "Delete a context (excluding its endpoint and user)",
-      "translation": "删除上下文(不包括其终结点和用户)",
+      "translation": "Delete a context (excluding its endpoint and user)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Name of context to delete",
       "message": "Name of context to delete",
-      "translation": "要删除的上下文的名称",
+      "translation": "Name of context to delete",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Delete the context's endpoint and user as well",
       "message": "Delete the context's endpoint and user as well",
-      "translation": "删除上下文的终结点和用户",
+      "translation": "Delete the context's endpoint and user as well",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Use the {NameFlag} flag to pass in a context name to delete",
       "message": "Use the {NameFlag} flag to pass in a context name to delete",
-      "translation": "使用 {NameFlag} 标志传入要删除的上下文名称",
+      "translation": "Use the {NameFlag} flag to pass in a context name to delete",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1283,7 +1304,7 @@
     {
       "id": "Context '{Name}' deleted",
       "message": "Context '{Name}' deleted",
-      "translation": "已删除上下文 \"{Name}\"",
+      "translation": "Context '{Name}' deleted",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1300,7 +1321,7 @@
     {
       "id": "Context '{Name}' does not exist",
       "message": "Context '{Name}' does not exist",
-      "translation": "上下文 \"{Name}\" 不存在",
+      "translation": "Context '{Name}' does not exist",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1317,21 +1338,21 @@
     {
       "id": "Delete an endpoint",
       "message": "Delete an endpoint",
-      "translation": "删除终结点",
+      "translation": "Delete an endpoint",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Name of endpoint to delete",
       "message": "Name of endpoint to delete",
-      "translation": "要删除的终结点的名称",
+      "translation": "Name of endpoint to delete",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
       "message": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
-      "translation": "必须提供终结点名称。请提供带 {NameFlag} 标志的终结点名称",
+      "translation": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1348,14 +1369,14 @@
     {
       "id": "View endpoints",
       "message": "View endpoints",
-      "translation": "查看终结点",
+      "translation": "View endpoints",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Endpoint '{Name}' does not exist",
       "message": "Endpoint '{Name}' does not exist",
-      "translation": "终结点 \"{Name}\" 不存在",
+      "translation": "Endpoint '{Name}' does not exist",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1372,7 +1393,7 @@
     {
       "id": "Endpoint '{Name}' deleted",
       "message": "Endpoint '{Name}' deleted",
-      "translation": "已删除终结点 \"{Name}\"",
+      "translation": "Endpoint '{Name}' deleted",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1389,21 +1410,21 @@
     {
       "id": "Delete a user",
       "message": "Delete a user",
-      "translation": "删除用户",
+      "translation": "Delete a user",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Name of user to delete",
       "message": "Name of user to delete",
-      "translation": "要删除的用户的名称",
+      "translation": "Name of user to delete",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "User name must be provided.  Provide user name with {NameFlag} flag",
       "message": "User name must be provided.  Provide user name with {NameFlag} flag",
-      "translation": "必须提供用户名称。请提供带 {NameFlag} 标志的用户名称",
+      "translation": "User name must be provided.  Provide user name with {NameFlag} flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1420,14 +1441,14 @@
     {
       "id": "View users",
       "message": "View users",
-      "translation": "查看用户",
+      "translation": "View users",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "User {Name} does not exist",
       "message": "User {Name} does not exist",
-      "translation": "名称 {Name} 不存在",
+      "translation": "User {Name} does not exist",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1444,7 +1465,7 @@
     {
       "id": "User {Name} deleted",
       "message": "User {Name} deleted",
-      "translation": "已删除用户 {Name}",
+      "translation": "User {Name} deleted",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1461,49 +1482,49 @@
     {
       "id": "Display one or many contexts from the sqlconfig file",
       "message": "Display one or many contexts from the sqlconfig file",
-      "translation": "显示 sqlconfig 文件中的一个或多个上下文",
+      "translation": "Display one or many contexts from the sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "List all the context names in your sqlconfig file",
       "message": "List all the context names in your sqlconfig file",
-      "translation": "列出 sqlconfig 文件中的所有上下文名称",
+      "translation": "List all the context names in your sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "List all the contexts in your sqlconfig file",
       "message": "List all the contexts in your sqlconfig file",
-      "translation": "列出 sqlconfig 文件中的所有上下文",
+      "translation": "List all the contexts in your sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Describe one context in your sqlconfig file",
       "message": "Describe one context in your sqlconfig file",
-      "translation": "描述 sqlconfig 文件中的一个上下文",
+      "translation": "Describe one context in your sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Context name to view details of",
       "message": "Context name to view details of",
-      "translation": "要查看其详细信息的上下文名称",
+      "translation": "Context name to view details of",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Include context details",
       "message": "Include context details",
-      "translation": "包括上下文详细信息",
+      "translation": "Include context details",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "To view available contexts run `{ContextCommand}`",
       "message": "To view available contexts run `{ContextCommand}`",
-      "translation": "若要查看可用上下文，请运行 \"{ContextCommand}\"",
+      "translation": "To view available contexts run `{ContextCommand}`",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1520,7 +1541,7 @@
     {
       "id": "error: no context exists with the name: \"{Name}\"",
       "message": "error: no context exists with the name: \"{Name}\"",
-      "translation": "错误: 不存在名称为 \"{Name}\" 的上下文",
+      "translation": "error: no context exists with the name: \"{Name}\"",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1537,42 +1558,42 @@
     {
       "id": "Display one or many endpoints from the sqlconfig file",
       "message": "Display one or many endpoints from the sqlconfig file",
-      "translation": "显示 sqlconfig 文件中的一个或多个终结点",
+      "translation": "Display one or many endpoints from the sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "List all the endpoints in your sqlconfig file",
       "message": "List all the endpoints in your sqlconfig file",
-      "translation": "列出 sqlconfig 文件中的所有终结点",
+      "translation": "List all the endpoints in your sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Describe one endpoint in your sqlconfig file",
       "message": "Describe one endpoint in your sqlconfig file",
-      "translation": "描述 sqlconfig 文件中的一个终结点",
+      "translation": "Describe one endpoint in your sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Endpoint name to view details of",
       "message": "Endpoint name to view details of",
-      "translation": "要查看其详细信息的终结点名称",
+      "translation": "Endpoint name to view details of",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Include endpoint details",
       "message": "Include endpoint details",
-      "translation": "包括终结点详细信息",
+      "translation": "Include endpoint details",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "To view available endpoints run `{EndpointsCommand}`",
       "message": "To view available endpoints run `{EndpointsCommand}`",
-      "translation": "若要查看可用终结点，请运行 \"{EndpointsCommand}\"",
+      "translation": "To view available endpoints run `{EndpointsCommand}`",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1589,7 +1610,7 @@
     {
       "id": "error: no endpoint exists with the name: \"{Name}\"",
       "message": "error: no endpoint exists with the name: \"{Name}\"",
-      "translation": "错误: 不存在名称为 \"{Name}\" 的终结点",
+      "translation": "error: no endpoint exists with the name: \"{Name}\"",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1606,42 +1627,42 @@
     {
       "id": "Display one or many users from the sqlconfig file",
       "message": "Display one or many users from the sqlconfig file",
-      "translation": "显示 sqlconfig 文件中的一个或多个用户",
+      "translation": "Display one or many users from the sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "List all the users in your sqlconfig file",
       "message": "List all the users in your sqlconfig file",
-      "translation": "列出 sqlconfig 文件中的所有用户",
+      "translation": "List all the users in your sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Describe one user in your sqlconfig file",
       "message": "Describe one user in your sqlconfig file",
-      "translation": "描述 sqlconfig 文件中的一个用户",
+      "translation": "Describe one user in your sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "User name to view details of",
       "message": "User name to view details of",
-      "translation": "要查看其详细信息的用户名",
+      "translation": "User name to view details of",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Include user details",
       "message": "Include user details",
-      "translation": "包括用户详细信息",
+      "translation": "Include user details",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "To view available users run `{UsersCommand}`",
       "message": "To view available users run `{UsersCommand}`",
-      "translation": "若要查看可用用户，请运行 \"{UsersCommand}\"",
+      "translation": "To view available users run `{UsersCommand}`",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1658,7 +1679,7 @@
     {
       "id": "error: no user exists with the name: \"{Name}\"",
       "message": "error: no user exists with the name: \"{Name}\"",
-      "translation": "错误: 不存在名称为 \"{Name}\" 的用户",
+      "translation": "error: no user exists with the name: \"{Name}\"",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1675,28 +1696,28 @@
     {
       "id": "Set the current context",
       "message": "Set the current context",
-      "translation": "设置当前上下文",
+      "translation": "Set the current context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Set the mssql context (endpoint/user) to be the current context",
       "message": "Set the mssql context (endpoint/user) to be the current context",
-      "translation": "将 mssql 上下文(终结点/用户)设置为当前上下文",
+      "translation": "Set the mssql context (endpoint/user) to be the current context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Name of context to set as current context",
       "message": "Name of context to set as current context",
-      "translation": "要设置为当前上下文的上下文的名称",
+      "translation": "Name of context to set as current context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "To run a query:    {RunQueryExample}",
       "message": "To run a query:    {RunQueryExample}",
-      "translation": "运行查询:    {RunQueryExample}",
+      "translation": "To run a query:    {RunQueryExample}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1713,7 +1734,7 @@
     {
       "id": "To remove:         {UninstallCommand}",
       "message": "To remove:         {UninstallCommand}",
-      "translation": "执行删除操作:         {UninstallCommand}",
+      "translation": "To remove:         {UninstallCommand}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1730,7 +1751,7 @@
     {
       "id": "Switched to context \"{Name}\".",
       "message": "Switched to context \"{Name}\".",
-      "translation": "已切换到上下文 \"{Name}\"。",
+      "translation": "Switched to context \"{Name}\".",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1747,7 +1768,7 @@
     {
       "id": "No context exists with the name: \"{Name}\"",
       "message": "No context exists with the name: \"{Name}\"",
-      "translation": "不存在名称为 \"{Name}\" 的上下文",
+      "translation": "No context exists with the name: \"{Name}\"",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1764,168 +1785,168 @@
     {
       "id": "Display merged sqlconfig settings or a specified sqlconfig file",
       "message": "Display merged sqlconfig settings or a specified sqlconfig file",
-      "translation": "显示合并的 sqlconfig 设置或指定的 sqlconfig 文件",
+      "translation": "Display merged sqlconfig settings or a specified sqlconfig file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Show sqlconfig settings, with REDACTED authentication data",
       "message": "Show sqlconfig settings, with REDACTED authentication data",
-      "translation": "使用 REDACTED 身份验证数据显示 sqlconfig 设置",
+      "translation": "Show sqlconfig settings, with REDACTED authentication data",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Show sqlconfig settings and raw authentication data",
       "message": "Show sqlconfig settings and raw authentication data",
-      "translation": "显示 sqlconfig 设置和原始身份验证数据",
+      "translation": "Show sqlconfig settings and raw authentication data",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Display raw byte data",
       "message": "Display raw byte data",
-      "translation": "显示原始字节数据",
+      "translation": "Display raw byte data",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install Azure Sql Edge",
       "message": "Install Azure Sql Edge",
-      "translation": "安装 Azure Sql Edge",
+      "translation": "Install Azure Sql Edge",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create Azure SQL Edge in a container",
       "message": "Install/Create Azure SQL Edge in a container",
-      "translation": "在容器中安装/创建 Azure SQL Edge",
+      "translation": "Install/Create Azure SQL Edge in a container",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Tag to use, use get-tags to see list of tags",
       "message": "Tag to use, use get-tags to see list of tags",
-      "translation": "要使用的标记，请使用 get-tags 查看标记列表",
+      "translation": "Tag to use, use get-tags to see list of tags",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Context name (a default context name will be created if not provided)",
       "message": "Context name (a default context name will be created if not provided)",
-      "translation": "上下文名称(如果未提供，则将创建默认上下文名称)",
+      "translation": "Context name (a default context name will be created if not provided)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create a user database and set it as the default for login",
       "message": "Create a user database and set it as the default for login",
-      "translation": "创建用户数据库并将其设置为登录的默认数据库",
+      "translation": "Create a user database and set it as the default for login",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Accept the SQL Server EULA",
       "message": "Accept the SQL Server EULA",
-      "translation": "接受 SQL Server EULA",
+      "translation": "Accept the SQL Server EULA",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Generated password length",
       "message": "Generated password length",
-      "translation": "生成的密码长度",
+      "translation": "Generated password length",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of special characters",
       "message": "Minimum number of special characters",
-      "translation": "最小特殊字符数",
+      "translation": "Minimum number of special characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of numeric characters",
       "message": "Minimum number of numeric characters",
-      "translation": "最小数字字符数",
+      "translation": "Minimum number of numeric characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of upper characters",
       "message": "Minimum number of upper characters",
-      "translation": "最小大写字符数",
+      "translation": "Minimum number of upper characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Special character set to include in password",
       "message": "Special character set to include in password",
-      "translation": "要包含在密码中的特殊字符集",
+      "translation": "Special character set to include in password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Don't download image.  Use already downloaded image",
       "message": "Don't download image.  Use already downloaded image",
-      "translation": "不要下载图像。请使用已下载的图像",
+      "translation": "Don't download image.  Use already downloaded image",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Line in errorlog to wait for before connecting",
       "message": "Line in errorlog to wait for before connecting",
-      "translation": "连接前需等待错误日志中的行",
+      "translation": "Line in errorlog to wait for before connecting",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specify a custom name for the container rather than a randomly generated one",
       "message": "Specify a custom name for the container rather than a randomly generated one",
-      "translation": "为容器指定一个自定义名称，而不是随机生成的名称",
+      "translation": "Specify a custom name for the container rather than a randomly generated one",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Explicitly set the container hostname, it defaults to the container ID",
       "message": "Explicitly set the container hostname, it defaults to the container ID",
-      "translation": "显式设置容器主机名，默认为容器 ID",
+      "translation": "Explicitly set the container hostname, it defaults to the container ID",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the image CPU architecture",
       "message": "Specifies the image CPU architecture",
-      "translation": "指定映像 CPU 体系结构",
+      "translation": "Specifies the image CPU architecture",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the image operating system",
       "message": "Specifies the image operating system",
-      "translation": "指定映像操作系统",
+      "translation": "Specifies the image operating system",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Port (next available port from 1433 upwards used by default)",
       "message": "Port (next available port from 1433 upwards used by default)",
-      "translation": "端口(默认情况下使用的从 1433 向上的下一个可用端口)",
+      "translation": "Port (next available port from 1433 upwards used by default)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Download (into container) and attach database (.bak) from URL",
       "message": "Download (into container) and attach database (.bak) from URL",
-      "translation": "通过 URL下载(到容器)并附加数据库(.bak)",
+      "translation": "Download (into container) and attach database (.bak) from URL",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Either, add the {AcceptEulaFlag} flag to the command-line",
       "message": "Either, add the {AcceptEulaFlag} flag to the command-line",
-      "translation": "或者，将 {AcceptEulaFlag} 标志添加到命令行",
+      "translation": "Either, add the {AcceptEulaFlag} flag to the command-line",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1942,7 +1963,7 @@
     {
       "id": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
       "message": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
-      "translation": "或者，设置环境变量，即 {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "translation": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1967,14 +1988,14 @@
     {
       "id": "EULA not accepted",
       "message": "EULA not accepted",
-      "translation": "未接受 EULA",
+      "translation": "EULA not accepted",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
       "message": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
-      "translation": "--user-database {DefaultDatabase} 包含非 ASCII 字符和/或引号",
+      "translation": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1991,7 +2012,7 @@
     {
       "id": "Starting {ImageName}",
       "message": "Starting {ImageName}",
-      "translation": "正在启动 {ImageName}",
+      "translation": "Starting {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2008,7 +2029,7 @@
     {
       "id": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
       "message": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
-      "translation": "已在 \"{ConfigFileUsed}\" 中创建上下文 {CurrentContextName}，正在配置用户帐户...",
+      "translation": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2033,7 +2054,7 @@
     {
       "id": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
       "message": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
-      "translation": "已禁用 {Sa} 帐户(并轮询 {Sa_1} 密码)。正在创建用户 {UserName}",
+      "translation": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2066,42 +2087,42 @@
     {
       "id": "Start interactive session",
       "message": "Start interactive session",
-      "translation": "启动交互式会话",
+      "translation": "Start interactive session",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Change current context",
       "message": "Change current context",
-      "translation": "更改当前上下文",
+      "translation": "Change current context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "View sqlcmd configuration",
       "message": "View sqlcmd configuration",
-      "translation": "查看 sqlcmd 配置",
+      "translation": "View sqlcmd configuration",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "See connection strings",
       "message": "See connection strings",
-      "translation": "查看连接字符串",
+      "translation": "See connection strings",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Remove",
       "message": "Remove",
-      "translation": "删除",
+      "translation": "Remove",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Now ready for client connections on port {Port}",
       "message": "Now ready for client connections on port {Port}",
-      "translation": "现在已准备好在端口 {Port} 上进行客户端连接",
+      "translation": "Now ready for client connections on port {Port}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2118,14 +2139,14 @@
     {
       "id": "--using URL must be http or https",
       "message": "--using URL must be http or https",
-      "translation": "--using URL 必须是 http 或 https",
+      "translation": "--using URL must be http or https",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{UsingDatabaseUrl} is not a valid URL for --using flag",
       "message": "{UsingDatabaseUrl} is not a valid URL for --using flag",
-      "translation": "{UsingDatabaseUrl} 不是 --using 标志的有效 URL",
+      "translation": "{UsingDatabaseUrl} is not a valid URL for --using flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2142,28 +2163,28 @@
     {
       "id": "--using URL must have a path to .bak file",
       "message": "--using URL must have a path to .bak file",
-      "translation": "--using URL 必须具有 .bak 文件的路径",
+      "translation": "--using URL must have a path to .bak file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "--using file URL must be a .bak file",
       "message": "--using file URL must be a .bak file",
-      "translation": "--using 文件 URL 必须是 .bak 文件",
+      "translation": "--using file URL must be a .bak file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Invalid --using file type",
       "message": "Invalid --using file type",
-      "translation": "--using 文件类型无效",
+      "translation": "Invalid --using file type",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Creating default database [{DefaultDatabase}]",
       "message": "Creating default database [{DefaultDatabase}]",
-      "translation": "正在创建默认数据库 [{DefaultDatabase}]",
+      "translation": "Creating default database [{DefaultDatabase}]",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2180,7 +2201,7 @@
     {
       "id": "Downloading {File}",
       "message": "Downloading {File}",
-      "translation": "正在下载 {File}",
+      "translation": "Downloading {File}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2197,7 +2218,7 @@
     {
       "id": "Restoring database {DatabaseName}",
       "message": "Restoring database {DatabaseName}",
-      "translation": "正在恢复数据库 {DatabaseName}",
+      "translation": "Restoring database {DatabaseName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2214,7 +2235,7 @@
     {
       "id": "Downloading {ImageName}",
       "message": "Downloading {ImageName}",
-      "translation": "正在下载 {ImageName}",
+      "translation": "Downloading {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2231,28 +2252,28 @@
     {
       "id": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
       "message": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
-      "translation": "此计算机上是否安装了容器运行时(如 Podman 或 Docker)?",
+      "translation": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "If not, download desktop engine from:",
       "message": "If not, download desktop engine from:",
-      "translation": "如果未下载桌面引擎，请从以下位置下载:",
+      "translation": "If not, download desktop engine from:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "or",
       "message": "or",
-      "translation": "或",
+      "translation": "or",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
       "message": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
-      "translation": "容器运行时是否正在运行? (尝试 \"{PodmanPsCommand}\" 或 \"{DockerPsCommand}\"(列表容器)，是否返回而不出错?",
+      "translation": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2277,7 +2298,7 @@
     {
       "id": "Unable to download image {ImageName}",
       "message": "Unable to download image {ImageName}",
-      "translation": "无法下载映像 {ImageName}",
+      "translation": "Unable to download image {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2294,91 +2315,126 @@
     {
       "id": "File does not exist at URL",
       "message": "File does not exist at URL",
-      "translation": "URL 中不存在文件",
+      "translation": "File does not exist at URL",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Unable to download file",
       "message": "Unable to download file",
-      "translation": "无法下载文件",
+      "translation": "Unable to download file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create SQL Server in a container",
       "message": "Install/Create SQL Server in a container",
-      "translation": "在容器中安装/创建SQL Server",
+      "translation": "Install/Create SQL Server in a container",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "See all release tags for SQL Server, install previous version",
       "message": "See all release tags for SQL Server, install previous version",
-      "translation": "查看 SQL Server 的所有版本标记，安装以前的版本",
+      "translation": "See all release tags for SQL Server, install previous version",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server, download and attach AdventureWorks sample database",
       "message": "Create SQL Server, download and attach AdventureWorks sample database",
-      "translation": "创建 SQL Server、下载并附加 AdventureWorks 示例数据库",
+      "translation": "Create SQL Server, download and attach AdventureWorks sample database",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
       "message": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
-      "translation": "创建 SQL Server、下载并附加具有不同数据库名称的 AdventureWorks 示例数据库",
+      "translation": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server with an empty user database",
       "message": "Create SQL Server with an empty user database",
-      "translation": "使用空用户数据库创建 SQL Server",
+      "translation": "Create SQL Server with an empty user database",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create SQL Server with full logging",
       "message": "Install/Create SQL Server with full logging",
-      "translation": "使用完整记录安装/创建 SQL Server",
+      "translation": "Install/Create SQL Server with full logging",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Get tags available for Azure SQL Edge install",
       "message": "Get tags available for Azure SQL Edge install",
-      "translation": "获取可用于 Azure SQL Edge 安装的标记",
+      "translation": "Get tags available for Azure SQL Edge install",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "List tags",
       "message": "List tags",
-      "translation": "列出标记",
+      "translation": "List tags",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Get tags available for mssql install",
       "message": "Get tags available for mssql install",
-      "translation": "获取可用于 mssql 安装的标记",
+      "translation": "Get tags available for mssql install",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "sqlcmd start",
+      "message": "sqlcmd start",
+      "translation": "sqlcmd start",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running",
+      "message": "Container is not running",
+      "translation": "Container is not running",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Press Ctrl+C to exit this process...",
+      "message": "Press Ctrl+C to exit this process...",
+      "translation": "Press Ctrl+C to exit this process...",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translation": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Failed to write credential to Windows Credential Manager",
+      "message": "Failed to write credential to Windows Credential Manager",
+      "translation": "Failed to write credential to Windows Credential Manager",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The -L parameter can not be used in combination with other parameters.",
       "message": "The -L parameter can not be used in combination with other parameters.",
-      "translation": "-L 参数不能与其他参数结合使用。",
+      "translation": "The -L parameter can not be used in combination with other parameters.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
       "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
-      "translation": "\"-a {PacketSize}\": 数据包大小必须是介于 512 和 32767 之间的数字。",
+      "translation": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2395,7 +2451,7 @@
     {
       "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
       "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-      "translation": "\"-h {Headers}\": 标头值必须是 -1 或介于 -1 和 2147483647 之间的值",
+      "translation": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2412,28 +2468,28 @@
     {
       "id": "Servers:",
       "message": "Servers:",
-      "translation": "服务器:",
+      "translation": "Servers:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Legal docs and information: aka.ms/SqlcmdLegal",
       "message": "Legal docs and information: aka.ms/SqlcmdLegal",
-      "translation": "法律文档和信息: aka.ms/SqlcmdLegal",
+      "translation": "Legal docs and information: aka.ms/SqlcmdLegal",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Third party notices: aka.ms/SqlcmdNotices",
       "message": "Third party notices: aka.ms/SqlcmdNotices",
-      "translation": "第三方通知: aka.ms/SqlcmdNotices",
+      "translation": "Third party notices: aka.ms/SqlcmdNotices",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Version {Version}",
       "message": "Version {Version}",
-      "translation": "版本 {Version}",
+      "translation": "Version {Version}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2450,14 +2506,14 @@
     {
       "id": "Flags:",
       "message": "Flags:",
-      "translation": "标志:",
+      "translation": "Flags:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
       "message": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
-      "translation": "-? 显示此语法摘要，{HelpFlag} 显示新式 sqlcmd 子命令帮助",
+      "translation": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2474,7 +2530,7 @@
     {
       "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
-      "translation": "标识一个或多个包含 SQL 语句批的文件。如果一个或多个文件不存在，sqlcmd 将退出。与 {QueryAndExitFlag}/{QueryFlag} 互斥",
+      "translation": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2499,28 +2555,28 @@
     {
       "id": "Identifies the file that receives output from sqlcmd",
       "message": "Identifies the file that receives output from sqlcmd",
-      "translation": "标识从 sqlcmd 接收输出的文件",
+      "translation": "Identifies the file that receives output from sqlcmd",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Print version information and exit",
       "message": "Print version information and exit",
-      "translation": "打印版本信息并退出",
+      "translation": "Print version information and exit",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Implicitly trust the server certificate without validation",
       "message": "Implicitly trust the server certificate without validation",
-      "translation": "隐式信任服务器证书而不进行验证",
+      "translation": "Implicitly trust the server certificate without validation",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
       "message": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
-      "translation": "此选项设置 sqlcmd 脚本变量 {DbNameVar}。此参数指定初始数据库。默认值是登录名的默认数据库属性。如果数据库不存在，则会生成错误消息并退出 sqlcmd",
+      "translation": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2537,14 +2593,14 @@
     {
       "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
       "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
-      "translation": "使用受信任的连接，而不是使用用户名和密码登录 SQL Server，忽略任何定义用户名和密码的环境变量",
+      "translation": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
       "message": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
-      "translation": "指定批处理终止符。默认值为 {BatchTerminatorGo}",
+      "translation": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2561,28 +2617,28 @@
     {
       "id": "The login name or contained database user name.  For contained database users, you must provide the database name option",
       "message": "The login name or contained database user name.  For contained database users, you must provide the database name option",
-      "translation": "登录名或包含的数据库用户名。对于包含的数据库用户，必须提供数据库名称选项",
+      "translation": "The login name or contained database user name.  For contained database users, you must provide the database name option",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
       "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
-      "translation": "在 sqlcmd 启动时执行查询，但不会在查询完成运行后退出 sqlcmd。可以执行以多个分号分隔的查询",
+      "translation": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
       "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
-      "translation": "在 sqlcmd 启动时执行查询，然后立即退出 sqlcmd。可以执行以多个分号分隔的查询",
+      "translation": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
       "message": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
-      "translation": "{ConnStrPattern} 指定要连接到的 SQL Server 实例。它设置 sqlcmd 脚本变量 {ServerEnvVar}。",
+      "translation": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2607,28 +2663,28 @@
     {
       "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
       "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-      "translation": "禁用可能危害系统安全的命令。Sqlcmd 将发出警告并继续",
+      "translation": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
       "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-      "translation": "指定用于连接到 Azure SQL 数据库的 SQL 身份验证方法。为以下方法之一: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、SqlPassword",
+      "translation": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
       "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
-      "translation": "告知 sqlcmd 使用 ActiveDirectory 身份验证。如果未提供用户名，则使用身份验证方法 ActiveDirectoryDefault。如果提供了密码，则使用 ActiveDirectoryPassword。否则使用 ActiveDirectoryInteractive",
+      "translation": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
       "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
-      "translation": "使 sqlcmd 忽略脚本变量。当脚本包含许多 {InsertKeyword} 语句时，此参数很有用，这些语句可能包含与常规变量具有相同格式的字符串，例如 $(variable_name)",
+      "translation": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2645,14 +2701,14 @@
     {
       "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
-      "translation": "创建可在 sqlcmd 脚本中使用的 sqlcmd 脚本变量。如果值包含空格，则将该值以引号括起。可以指定多个 var=values 值。如果指定的任何值中存在错误，sqlcmd 将生成错误消息，然后退出",
+      "translation": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
       "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
-      "translation": "请求不同大小的数据包。此选项设置 sqlcmd 脚本变量 {PacketSizeVar}。packet_size 必须是介于 512 和 32767 之间的值。默认值 = 4096。数据包大小越大，执行在 {BatchTerminatorGo} 命令之间具有大量 SQL 语句的脚本的性能就越强。你可以请求更大的数据包大小。但是，如果请求被拒绝，sqlcmd将 使用服务器的默认数据包大小",
+      "translation": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2677,7 +2733,7 @@
     {
       "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
       "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
-      "translation": "指定当你尝试连接到服务器时，sqlcmd 登录到 go-mssqldb 驱动程序超时之前的秒数。此选项设置 sqlcmd 脚本变量 {LoginTimeOutVar}。默认值为 30。0 表示无限",
+      "translation": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2694,7 +2750,7 @@
     {
       "id": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
       "message": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
-      "translation": "此选项设置 sqlcmd 脚本变量 {WorkstationVar}。工作站名称列在 sys.sysprocesses 目录视图的主机名列中，可以使用存储程序 sp_who 返回。如果未指定此选项，则默认为当前计算机名。此名称可用于标识不同的 sqlcmd 会话",
+      "translation": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2711,7 +2767,7 @@
     {
       "id": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
       "message": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
-      "translation": "在连接到服务器时声明应用程序工作负载类型。当前唯一受支持的值是 ReadOnly。如果未指定 {ApplicationIntentFlagShort}，sqlcmd 实用工具将不支持连接到 Always On 可用性组中的辅助副本",
+      "translation": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2728,35 +2784,35 @@
     {
       "id": "This switch is used by the client to request an encrypted connection",
       "message": "This switch is used by the client to request an encrypted connection",
-      "translation": "客户端使用此开关请求加密连接",
+      "translation": "This switch is used by the client to request an encrypted connection",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the formatting for results",
       "message": "Specifies the formatting for results",
-      "translation": "指定结果的格式",
+      "translation": "Specifies the formatting for results",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
       "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-      "translation": "控制将哪些错误消息发送到 stdout。将发送严重级别大于或等于此级别的消息",
+      "translation": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Level of mssql driver messages to print",
       "message": "Level of mssql driver messages to print",
-      "translation": "要打印的 mssql 驱动程序消息的级别",
+      "translation": "Level of mssql driver messages to print",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
       "message": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
-      "translation": "指定 sqlcmd 在出错时退出并返回 {DosErrorLevel} 值",
+      "translation": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2773,7 +2829,7 @@
     {
       "id": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
       "message": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
-      "translation": "控制将哪些错误消息发送到 {StdoutName}。将发送严重级别大于或等于此级别的消息",
+      "translation": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2790,21 +2846,21 @@
     {
       "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
       "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
-      "translation": "指定要在列标题之间打印的行数。使用 -h-1 指定不打印标头",
+      "translation": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies that all output files are encoded with little-endian Unicode",
       "message": "Specifies that all output files are encoded with little-endian Unicode",
-      "translation": "指定所有输出文件均使用 little-endian Unicode 进行编码",
+      "translation": "Specifies that all output files are encoded with little-endian Unicode",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
       "message": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
-      "translation": "指定列分隔符字符。设置 {ColSeparatorVar} 变量。",
+      "translation": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2821,28 +2877,28 @@
     {
       "id": "Remove trailing spaces from a column",
       "message": "Remove trailing spaces from a column",
-      "translation": "从列中删除尾随空格",
+      "translation": "Remove trailing spaces from a column",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
       "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
-      "translation": "为实现向后兼容而提供。Sqlcmd 一直在优化 SQL 故障转移群集的活动副本检测",
+      "translation": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Password",
       "message": "Password",
-      "translation": "密码",
+      "translation": "Password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
       "message": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
-      "translation": "控制用于在退出时设置 {ErrorLevel} 变量的严重性级别",
+      "translation": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2859,21 +2915,35 @@
     {
       "id": "Specifies the screen width for output",
       "message": "Specifies the screen width for output",
-      "translation": "指定输出的屏幕宽度",
+      "translation": "Specifies the screen width for output",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Dedicated administrator connection",
       "message": "Dedicated administrator connection",
-      "translation": "专用管理员连接",
+      "translation": "Dedicated administrator connection",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translation": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Client regional settings are not used",
+      "message": "Provided for backward compatibility. Client regional settings are not used",
+      "translation": "Provided for backward compatibility. Client regional settings are not used",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sets the sqlcmd scripting variable {V}",
       "message": "Sets the sqlcmd scripting variable {V}",
-      "translation": "设置 sqlcmd 脚本变量 {V}",
+      "translation": "Sets the sqlcmd scripting variable {V}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2890,7 +2960,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
-      "translation": "\"{Flag} {Value}\": 值必须大于等于 {Min} 且小于或等于 {Max}。",
+      "translation": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2931,7 +3001,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
-      "translation": "\"{Flag} {Value}\": 值必须大于 {Min} 且小于 {Max}。",
+      "translation": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2972,7 +3042,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
-      "translation": "\"{Flag} {Value}\": 意外参数。参数值必须是 {AllowedValues0}。",
+      "translation": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3005,7 +3075,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
-      "translation": "\"{Flag} {Value}\": 意外参数。参数值必须是 {AllowedValues0} 之一。",
+      "translation": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3038,7 +3108,7 @@
     {
       "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
       "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
-      "translation": "{Flag1} 和 {Flag2} 选项互斥。",
+      "translation": "The {Flag1} and the {Flag2} options are mutually exclusive.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3063,7 +3133,7 @@
     {
       "id": "'{P1}': Missing argument. Enter '-?' for help.",
       "message": "'{P1}': Missing argument. Enter '-?' for help.",
-      "translation": "\"{P1}\": 缺少参数。输入 \"-?\" 可查看帮助。",
+      "translation": "'{P1}': Missing argument. Enter '-?' for help.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3080,7 +3150,7 @@
     {
       "id": "'{P1}': Unknown Option. Enter '-?' for help.",
       "message": "'{P1}': Unknown Option. Enter '-?' for help.",
-      "translation": "\"{P1}\": 未知选项。输入 \"-?\" 可查看帮助。",
+      "translation": "'{P1}': Unknown Option. Enter '-?' for help.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3097,7 +3167,7 @@
     {
       "id": "invalid batch terminator '{BatchTerminator}'",
       "message": "invalid batch terminator '{BatchTerminator}'",
-      "translation": "批处理终止符 \"{BatchTerminator}\" 无效",
+      "translation": "invalid batch terminator '{BatchTerminator}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3114,28 +3184,28 @@
     {
       "id": "Sqlcmd: Error:",
       "message": "Sqlcmd: Error:",
-      "translation": "Sqlcmd: 错误:",
+      "translation": "Sqlcmd: Error:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sqlcmd: Warning:",
       "message": "Sqlcmd: Warning:",
-      "translation": "Sqlcmd: 警告:",
+      "translation": "Sqlcmd: Warning:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-      "translation": "ED 和 !!<command> 命令、启动脚本和环境变量被禁用",
+      "translation": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The scripting variable: '{Variable}' is read-only",
       "message": "The scripting variable: '{Variable}' is read-only",
-      "translation": "脚本变量: \"{Variable}\" 为只读项",
+      "translation": "The scripting variable: '{Variable}' is read-only",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3152,7 +3222,7 @@
     {
       "id": "'{Variable}' scripting variable not defined.",
       "message": "'{Variable}' scripting variable not defined.",
-      "translation": "未定义 \"{Variable}\" 脚本变量。",
+      "translation": "'{Variable}' scripting variable not defined.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3169,7 +3239,7 @@
     {
       "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
       "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-      "translation": "环境变量 \"{Variable}\" 具有无效值 \"{EnvVal}\"。",
+      "translation": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3194,7 +3264,7 @@
     {
       "id": "Syntax error at line {LineNumber} near command '{Command}'.",
       "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-      "translation": "命令 \"{Command}\" 附近的行 {LineNumber} 存在语法错误。",
+      "translation": "Syntax error at line {LineNumber} near command '{Command}'.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3219,7 +3289,7 @@
     {
       "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
       "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-      "translation": "{ErrorPrefix} 打开或操作文件 {Filepath} 时出错(原因: {Error})。",
+      "translation": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3252,7 +3322,7 @@
     {
       "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-      "translation": "行 {LineNumber} 存在 {ErrorPrefix} 语法错误",
+      "translation": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3275,9 +3345,131 @@
       "fuzzy": true
     },
     {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "ProcName",
+          "string": "%[5]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 5,
+          "expr": "e.ProcName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[6]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 6,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[7]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 7,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[5]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 5,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[6]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 6,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
       "id": "Invalid variable identifier {Name}",
       "message": "Invalid variable identifier {Name}",
-      "translation": "变量标识符 {Name} 无效",
+      "translation": "Invalid variable identifier {Name}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3294,7 +3486,7 @@
     {
       "id": "Invalid variable value {Val}",
       "message": "Invalid variable value {Val}",
-      "translation": "变量值 {Val} 无效",
+      "translation": "Invalid variable value {Val}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
