@@ -1543,8 +1543,8 @@
       <Item ItemId=";messages[217].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[sqlcmd start]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA['-a {PacketSize}': le dimensioni del pacchetto devono essere costituite da un numero compreso tra 512 e 32767.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[avvio sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
@@ -1555,8 +1555,8 @@
       <Item ItemId=";messages[218].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Container is not running]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA['-h {Headers}': il valore di intestazione deve essere -1 o un valore compreso tra 1 e 2147483647]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Il contenitore non è in esecuzione]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
@@ -1567,8 +1567,8 @@
       <Item ItemId=";messages[219].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Server:]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Premere CTRL+C per uscire dal processo...]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Servers:]]></Val>
@@ -1579,8 +1579,8 @@
       <Item ItemId=";messages[21].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Starting {Image} for context {CurrentContextName}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Avvio di {Arg_1} per il contesto {Arg_2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Avvio di {Image} per il contesto {CurrentContextName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Starting {Arg_1} for context {Arg_2}]]></Val>
@@ -1591,8 +1591,8 @@
       <Item ItemId=";messages[220].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Documenti e informazioni legali: aka.ms/SqlcmdLegal]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Un errore 'Risorse di memoria insufficienti' può essere causato da troppe credenziali già archiviate in Gestione credenziali di Windows]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
@@ -1603,8 +1603,8 @@
       <Item ItemId=";messages[221].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Comunicazioni di terze parti: aka.ms/SqlcmdNotices]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Impossibile scrivere le credenziali in Gestione credenziali di Windows]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
@@ -2227,8 +2227,8 @@
       <Item ItemId=";messages[26].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Stopping {Image} for context {CurrentContextName}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Arresto di {Arg_1} per il contesto {Arg_2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Arresto di {Image} per il contesto {CurrentContextName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Stopping {Arg_1} for context {Arg_2}]]></Val>
@@ -2623,8 +2623,8 @@
       <Item ItemId=";messages[43].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Stopping {Image}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Il contenitore {Id} non esiste più, continuare a rimuovere il contesto...]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Arresto {Image}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Container {Id} no longer exists, continuing to remove context...]]></Val>
