@@ -419,7 +419,7 @@
     {
       "id": "Stopping {Image}",
       "message": "Stopping {Image}",
-      "translation": "Stopping {Image}",
+      "translation": "正在停止 {Image}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
