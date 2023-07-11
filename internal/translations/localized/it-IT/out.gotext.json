@@ -199,7 +199,7 @@
     {
       "id": "Starting {Image} for context {CurrentContextName}",
       "message": "Starting {Image} for context {CurrentContextName}",
-      "translation": "Starting {Image} for context {CurrentContextName}",
+      "translation": "Avvio di {Image} per il contesto {CurrentContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -252,7 +252,7 @@
     {
       "id": "Stopping {Image} for context {CurrentContextName}",
       "message": "Stopping {Image} for context {CurrentContextName}",
-      "translation": "Stopping {Image} for context {CurrentContextName}",
+      "translation": "Arresto di {Image} per il contesto {CurrentContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -419,7 +419,7 @@
     {
       "id": "Stopping {Image}",
       "message": "Stopping {Image}",
-      "translation": "Stopping {Image}",
+      "translation": "Arresto {Image}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2392,35 +2392,35 @@
     {
       "id": "sqlcmd start",
       "message": "sqlcmd start",
-      "translation": "sqlcmd start",
+      "translation": "avvio sqlcmd",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Container is not running",
       "message": "Container is not running",
-      "translation": "Container is not running",
+      "translation": "Il contenitore non è in esecuzione",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Press Ctrl+C to exit this process...",
       "message": "Press Ctrl+C to exit this process...",
-      "translation": "Press Ctrl+C to exit this process...",
+      "translation": "Premere CTRL+C per uscire dal processo...",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
       "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-      "translation": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translation": "Un errore 'Risorse di memoria insufficienti' può essere causato da troppe credenziali già archiviate in Gestione credenziali di Windows",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Failed to write credential to Windows Credential Manager",
       "message": "Failed to write credential to Windows Credential Manager",
-      "translation": "Failed to write credential to Windows Credential Manager",
+      "translation": "Impossibile scrivere le credenziali in Gestione credenziali di Windows",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
