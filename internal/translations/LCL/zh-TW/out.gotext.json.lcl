@@ -1100,7 +1100,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Starting {ImageName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[開始 {ImageName}]]></Val>
+            <Val><![CDATA[正在啟動 {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
@@ -1543,8 +1543,8 @@
       <Item ItemId=";messages[217].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[sqlcmd start]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA['-a {PacketSize}': 封包大小必須是介於 512 到 32767 之間的數字。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[sqlcmd 啟動]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
@@ -1555,8 +1555,8 @@
       <Item ItemId=";messages[218].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Container is not running]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA['-h {Headers}': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[容器未執行]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
@@ -1567,8 +1567,8 @@
       <Item ItemId=";messages[219].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[伺服器:]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[按 Ctrl+C 結束此流程...]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Servers:]]></Val>
@@ -1579,8 +1579,8 @@
       <Item ItemId=";messages[21].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Starting {Image} for context {CurrentContextName}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[正在啟動內容 {Arg_2} 的 {Arg_1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[正在啟動內容 {CurrentContextName} 的 {Image}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Starting {Arg_1} for context {Arg_2}]]></Val>
@@ -1591,8 +1591,8 @@
       <Item ItemId=";messages[220].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[法律文件和資訊: aka.ms/SqlcmdLegal]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[「記憶體資源不足」錯誤可能是由於 Windows 認證管理員中儲存太多認證所致]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
@@ -1603,8 +1603,8 @@
       <Item ItemId=";messages[221].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[協力廠商聲明: aka.ms/SqlcmdNotices]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[無法將認證寫入 Windows 認證管理員]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
@@ -1700,7 +1700,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Flags:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[旗標: ]]></Val>
+            <Val><![CDATA[旗標:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
@@ -2179,8 +2179,8 @@
       <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 非預期的引數。引數值必須是 {AllowedValues} 的其中一個。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[為回溯相容性提供。一律啟用引號識別項]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
@@ -2191,8 +2191,8 @@
       <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[{Flag1} 和 {Flag2} 選項互斥。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[為回溯相容性提供。未使用用戶端地區設定]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
@@ -2227,8 +2227,8 @@
       <Item ItemId=";messages[26].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Stopping {Image} for context {CurrentContextName}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[正在停止內容 {Arg_2} 的 {Arg_1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[正在停止內容 {CurrentContextName} 的 {Image}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Stopping {Arg_1} for context {Arg_2}]]></Val>
@@ -2434,12 +2434,18 @@
       <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、程序 {ProcName}、行 {LineNo}{SqlcmdEol}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、行 {LineNo}{SqlcmdEol}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2617,8 +2623,8 @@
       <Item ItemId=";messages[43].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Stopping {Image}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[容器 {Id} 已不存在，正在繼續移除內容...]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[正在停止 {Image}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Container {Id} no longer exists, continuing to remove context...]]></Val>
@@ -3041,7 +3047,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Delete this endpoint]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[要刪除此端點嗎?]]></Val>
+            <Val><![CDATA[刪除此端點]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')]]></Val>

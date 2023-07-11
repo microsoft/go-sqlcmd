@@ -2623,8 +2623,8 @@
       <Item ItemId=";messages[43].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Stopping {Image}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[容器 {Id} 已不存在，正在继续删除上下文...]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[正在停止 {Image}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Container {Id} no longer exists, continuing to remove context...]]></Val>
