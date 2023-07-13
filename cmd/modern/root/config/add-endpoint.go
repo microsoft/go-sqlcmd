@@ -74,7 +74,7 @@ func (c *AddEndpoint) run() {
 	}
 
 	uniqueEndpointName := config.AddEndpoint(endpoint)
-	output.InfofWithHintExamples([][]string{
+	output.InfoWithHintExamples([][]string{
 		{localizer.Sprintf("Add a context for this endpoint"), fmt.Sprintf("sqlcmd config add-context --endpoint %v", uniqueEndpointName)},
 		{localizer.Sprintf("View endpoint names"), "sqlcmd config get-endpoints"},
 		{localizer.Sprintf("View endpoint details"), fmt.Sprintf("sqlcmd config get-endpoints %v", uniqueEndpointName)},

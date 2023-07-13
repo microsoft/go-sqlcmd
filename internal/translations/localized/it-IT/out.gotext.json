@@ -197,24 +197,26 @@
       "fuzzy": true
     },
     {
-      "id": "Starting {Arg_1} for context {Arg_2}",
-      "message": "Starting {Arg_1} for context {Arg_2}",
-      "translation": "Avvio di {Arg_1} per il contesto {Arg_2}",
+      "id": "Starting {Image} for context {CurrentContextName}",
+      "message": "Starting {Image} for context {CurrentContextName}",
+      "translation": "Avvio di {Image} per il contesto {CurrentContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -248,24 +250,26 @@
       "fuzzy": true
     },
     {
-      "id": "Stopping {Arg_1} for context {Arg_2}",
-      "message": "Stopping {Arg_1} for context {Arg_2}",
-      "translation": "Arresto di {Arg_1} per il contesto {Arg_2}",
+      "id": "Stopping {Image} for context {CurrentContextName}",
+      "message": "Stopping {Image} for context {CurrentContextName}",
+      "translation": "Arresto di {Image} per il contesto {CurrentContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -408,6 +412,23 @@
           "underlyingType": "string",
           "argNum": 1,
           "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Stopping {Image}",
+      "message": "Stopping {Image}",
+      "translation": "Arresto {Image}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         }
       ],
       "fuzzy": true
@@ -2369,6 +2390,41 @@
       "fuzzy": true
     },
     {
+      "id": "sqlcmd start",
+      "message": "sqlcmd start",
+      "translation": "avvio sqlcmd",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running",
+      "message": "Container is not running",
+      "translation": "Il contenitore non è in esecuzione",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Press Ctrl+C to exit this process...",
+      "message": "Press Ctrl+C to exit this process...",
+      "translation": "Premere CTRL+C per uscire dal processo...",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translation": "Un errore 'Risorse di memoria insufficienti' può essere causato da troppe credenziali già archiviate in Gestione credenziali di Windows",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Failed to write credential to Windows Credential Manager",
+      "message": "Failed to write credential to Windows Credential Manager",
+      "translation": "Impossibile scrivere le credenziali in Gestione credenziali di Windows",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "The -L parameter can not be used in combination with other parameters.",
       "message": "The -L parameter can not be used in combination with other parameters.",
       "translation": "Il parametro -L non può essere usato in combinazione con altri parametri.",
@@ -2871,6 +2927,20 @@
       "fuzzy": true
     },
     {
+      "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translation": "Fornito per la compatibilità con le versioni precedenti. Gli identificatori delimitati sono sempre abilitati",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Client regional settings are not used",
+      "message": "Provided for backward compatibility. Client regional settings are not used",
+      "translation": "Fornito per la compatibilità con le versioni precedenti. Le impostazioni locali del client non sono utilizzate",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Sets the sqlcmd scripting variable {V}",
       "message": "Sets the sqlcmd scripting variable {V}",
       "translation": "Imposta la variabile di scripting sqlcmd {V}",
@@ -3270,6 +3340,128 @@
           "underlyingType": "uint",
           "argNum": 2,
           "expr": "lineNumber"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Messaggio {Number}, Livello {Class}, Stato {State}, Server {ServerName}, Procedura {ProcName}, Riga {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "ProcName",
+          "string": "%[5]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 5,
+          "expr": "e.ProcName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[6]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 6,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[7]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 7,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Messaggio {Number}, Livello {Class}, Stato {State}, Server {ServerName}, Riga {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[5]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 5,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[6]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 6,
+          "expr": "SqlcmdEol"
         }
       ],
       "fuzzy": true

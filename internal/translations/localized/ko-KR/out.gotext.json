@@ -197,24 +197,26 @@
       "fuzzy": true
     },
     {
-      "id": "Starting {Arg_1} for context {Arg_2}",
-      "message": "Starting {Arg_1} for context {Arg_2}",
-      "translation": "{Arg_2} 컨텍스트에 대해 {Arg_1} 시작 중",
+      "id": "Starting {Image} for context {CurrentContextName}",
+      "message": "Starting {Image} for context {CurrentContextName}",
+      "translation": "{CurrentContextName} 컨텍스트에 대해 {Image}을(를) 시작하는 중",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -248,24 +250,26 @@
       "fuzzy": true
     },
     {
-      "id": "Stopping {Arg_1} for context {Arg_2}",
-      "message": "Stopping {Arg_1} for context {Arg_2}",
-      "translation": "{Arg_2} 컨텍스트에 대해 {Arg_1} 중지 중",
+      "id": "Stopping {Image} for context {CurrentContextName}",
+      "message": "Stopping {Image} for context {CurrentContextName}",
+      "translation": "{CurrentContextName} 컨텍스트에 대해 {Image}을(를) 중지하는 중",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -408,6 +412,23 @@
           "underlyingType": "string",
           "argNum": 1,
           "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Stopping {Image}",
+      "message": "Stopping {Image}",
+      "translation": "{Image}을(를) 중지하는 중",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         }
       ],
       "fuzzy": true
@@ -580,7 +601,7 @@
     {
       "id": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
       "message": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
-      "translation": "컨텍스트를 추가하는 데 엔드포인트가 필요합니다. 엔드포인트 '{EndpointName}'이(가) 존재하지 않습니다. {EndpointFlag} 플래그 사용",
+      "translation": "컨텍스트를 추가하는 데 엔드포인트가 필요합니다. '{EndpointName}' 엔드포인트가 존재하지 않습니다. {EndpointFlag} 플래그를 사용하세요.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -695,7 +716,7 @@
     {
       "id": "The network address to connect to, e.g. 127.0.0.1 etc.",
       "message": "The network address to connect to, e.g. 127.0.0.1 etc.",
-      "translation": "예를 들어 연결할 네트워크 주소입니다. 127.0.0.1 등",
+      "translation": "연결할 네트워크 주소입니다(예: 127.0.0.1).",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -861,7 +882,7 @@
     {
       "id": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
       "message": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
-      "translation": "인증 유형은 '{ModernAuthTypeBasic}' 또는 '{ModernAuthTypeOther}'여야 합니다.",
+      "translation": "인증 유형은 '{ModernAuthTypeBasic}' 또는 '{ModernAuthTypeOther}'이어야 합니다.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -886,7 +907,7 @@
     {
       "id": "Authentication type '' is not valid {AuthType}'",
       "message": "Authentication type '' is not valid {AuthType}'",
-      "translation": "인증 유형 ''이(가) 유효하지 않습니다. {AuthType}'",
+      "translation": "인증 유형 '{AuthType}'이(가) 유효하지 않습니다.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1102,7 +1123,7 @@
     {
       "id": "Encryption method '{PasswordEncryption}' is not valid",
       "message": "Encryption method '{PasswordEncryption}' is not valid",
-      "translation": "암호화 방법 '{PasswordEncryption}'이(가) 유효하지 않습니다",
+      "translation": "암호화 방법 '{PasswordEncryption}'이(가) 유효하지 않습니다.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1883,7 +1904,7 @@
     {
       "id": "Specify a custom name for the container rather than a randomly generated one",
       "message": "Specify a custom name for the container rather than a randomly generated one",
-      "translation": "임의로 생성된 이름이 아닌 컨테이너의 사용자 정의 이름을 지정하세요.",
+      "translation": "임의로 생성된 이름이 아닌 컨테이너의 사용자 지정 이름을 지정하세요.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2365,6 +2386,41 @@
       "id": "Get tags available for mssql install",
       "message": "Get tags available for mssql install",
       "translation": "mssql 설치에 사용할 수 있는 태그 가져오기",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "sqlcmd start",
+      "message": "sqlcmd start",
+      "translation": "sqlcmd 시작",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running",
+      "message": "Container is not running",
+      "translation": "컨테이너가 실행되고 있지 않습니다.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Press Ctrl+C to exit this process...",
+      "message": "Press Ctrl+C to exit this process...",
+      "translation": "Ctrl+C를 눌러 이 프로세스를 종료합니다...",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translation": "Windows 자격 증명 관리자에 이미 저장된 자격 증명이 너무 많으면 '사용 가능한 메모리 리소스가 부족합니다' 오류가 발생할 수 있습니다.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Failed to write credential to Windows Credential Manager",
+      "message": "Failed to write credential to Windows Credential Manager",
+      "translation": "Windows 자격 증명 관리자에 자격 증명을 쓰지 못했습니다.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2871,6 +2927,20 @@
       "fuzzy": true
     },
     {
+      "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translation": "이전 버전과의 호환성을 위해 제공되었습니다. 따옴표 붙은 식별자를 항상 사용하도록 설정됩니다.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Client regional settings are not used",
+      "message": "Provided for backward compatibility. Client regional settings are not used",
+      "translation": "이전 버전과의 호환성을 위해 제공되었습니다. 클라이언트 국가별 설정이 사용되지 않습니다.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Sets the sqlcmd scripting variable {V}",
       "message": "Sets the sqlcmd scripting variable {V}",
       "translation": "sqlcmd 스크립팅 변수 {V}을(를) 설정합니다.",
@@ -3128,7 +3198,7 @@
     {
       "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-      "translation": "ED 및 !!<command> 명령, 시작 스크립트 및 환경 변수가 비활성화됩니다.",
+      "translation": "ED 및 !!<command> 명령, 시작 스크립트 및 환경 변수를 사용하지 않도록 설정합니다.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3252,7 +3322,7 @@
     {
       "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-      "translation": "{ErrorPrefix}{LineNumber}행의 구문 오류",
+      "translation": "{ErrorPrefix}{LineNumber}행의 구문 오류가 있습니다.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3270,6 +3340,128 @@
           "underlyingType": "uint",
           "argNum": 2,
           "expr": "lineNumber"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "메시지 {Number}, 수준 {Class}, 상태 {State}, 서버 {ServerName}, 프로시저 {ProcName}, 줄 {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "ProcName",
+          "string": "%[5]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 5,
+          "expr": "e.ProcName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[6]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 6,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[7]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 7,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "메시지 {Number}, 수준 {Class}, 상태 {State}, 서버 {ServerName}, 줄 {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[5]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 5,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[6]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 6,
+          "expr": "SqlcmdEol"
         }
       ],
       "fuzzy": true

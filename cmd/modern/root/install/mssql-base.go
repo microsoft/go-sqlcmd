@@ -290,7 +290,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.downloadImage(imageName, output, controller)
 	}
 
-	output.Infof(localizer.Sprintf("Starting %v", imageName))
+	output.Info(localizer.Sprintf("Starting %v", imageName))
 	containerId := controller.ContainerRun(
 		imageName,
 		env,
@@ -319,7 +319,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.passwordEncryption,
 	)
 
-	output.Infof(
+	output.Info(
 		localizer.Sprintf("Created context %q in \"%s\", configuring user account...",
 			config.CurrentContextName(),
 			config.GetConfigFileUsed()))
@@ -327,7 +327,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	controller.ContainerWaitForLogEntry(
 		containerId, c.errorLogEntryToWaitFor)
 
-	output.Infof(
+	output.Info(
 		localizer.Sprintf("Disabled %q account (and rotated %q password). Creating user %q",
 			"sa",
 			"sa",
@@ -390,7 +390,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
 	hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
 
-	output.InfofWithHintExamples(hints,
+	output.InfoWithHintExamples(hints,
 		localizer.Sprintf("Now ready for client connections on port %d",
 			c.port),
 	)
@@ -403,7 +403,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	c.CheckErr(err)
 
 	if u.Scheme != "http" && u.Scheme != "https" {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{
 				localizer.Sprintf("--using URL must be http or https"),
 			},
@@ -411,7 +411,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	}
 
 	if u.Path == "" {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{
 				localizer.Sprintf("--using URL must have a path to .bak file"),
 			},
@@ -421,7 +421,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
 	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{
 				localizer.Sprintf("--using file URL must be a .bak file"),
 			},
@@ -452,7 +452,7 @@ func (c *MssqlBase) createNonSaUser(
 		defaultDatabase = c.defaultDatabase
 
 		// Create the default database, if it isn't a downloaded database
-		output.Infof(localizer.Sprintf("Creating default database [%s]", defaultDatabase))
+		output.Info(localizer.Sprintf("Creating default database [%s]", defaultDatabase))
 		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
@@ -532,7 +532,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	_, file := filepath.Split(databaseUrl)
 
 	// Download file from URL into container
-	output.Infof(localizer.Sprintf("Downloading %s", file))
+	output.Info(localizer.Sprintf("Downloading %s", file))
 
 	temporaryFolder := "/var/opt/mssql/backup"
 
@@ -543,7 +543,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	)
 
 	// Restore database from file
-	output.Infof(localizer.Sprintf("Restoring database %s", databaseName))
+	output.Info(localizer.Sprintf("Restoring database %s", databaseName))
 
 	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
 	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
@@ -603,10 +603,10 @@ func (c *MssqlBase) downloadImage(
 	output *output.Output,
 	controller *container.Controller,
 ) {
-	output.Infof(localizer.Sprintf("Downloading %v", imageName))
+	output.Info(localizer.Sprintf("Downloading %v", imageName))
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {
-		output.FatalfErrorWithHints(
+		output.FatalErrorWithHints(
 			err,
 			[]string{
 				localizer.Sprintf("Is a container runtime installed on this machine (e.g. Podman or Docker)?") + pal.LineBreak() +
@@ -615,7 +615,7 @@ func (c *MssqlBase) downloadImage(
 					localizer.Sprintf("\t\tor") + pal.LineBreak() +
 					"\t\thttps://docs.docker.com/get-docker/",
 				localizer.Sprintf("Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)", localizer.PodmanPsCommand, localizer.DockerPsCommand),
-				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
+				localizer.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
 					"\t`podman|docker pull %s`", imageName)},
 			localizer.Sprintf("Unable to download image %s", imageName))
 	}
@@ -624,7 +624,7 @@ func (c *MssqlBase) downloadImage(
 // Verify the file exists at the URL
 func urlExists(url string, output *output.Output) {
 	if !http.UrlExists(url) {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{localizer.Sprintf("File does not exist at URL")},
 			localizer.Sprintf("Unable to download file"))
 	}

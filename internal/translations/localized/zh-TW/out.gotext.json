@@ -197,24 +197,26 @@
       "fuzzy": true
     },
     {
-      "id": "Starting {Arg_1} for context {Arg_2}",
-      "message": "Starting {Arg_1} for context {Arg_2}",
-      "translation": "正在啟動內容 {Arg_2} 的 {Arg_1}",
+      "id": "Starting {Image} for context {CurrentContextName}",
+      "message": "Starting {Image} for context {CurrentContextName}",
+      "translation": "正在啟動內容 {CurrentContextName} 的 {Image}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -248,24 +250,26 @@
       "fuzzy": true
     },
     {
-      "id": "Stopping {Arg_1} for context {Arg_2}",
-      "message": "Stopping {Arg_1} for context {Arg_2}",
-      "translation": "正在停止內容 {Arg_2} 的 {Arg_1}",
+      "id": "Stopping {Image} for context {CurrentContextName}",
+      "message": "Stopping {Image} for context {CurrentContextName}",
+      "translation": "正在停止內容 {CurrentContextName} 的 {Image}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -408,6 +412,23 @@
           "underlyingType": "string",
           "argNum": 1,
           "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Stopping {Image}",
+      "message": "Stopping {Image}",
+      "translation": "正在停止 {Image}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         }
       ],
       "fuzzy": true
@@ -737,7 +758,7 @@
     {
       "id": "Delete this endpoint",
       "message": "Delete this endpoint",
-      "translation": "要刪除此端點嗎?",
+      "translation": "刪除此端點",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -1991,7 +2012,7 @@
     {
       "id": "Starting {ImageName}",
       "message": "Starting {ImageName}",
-      "translation": "開始 {ImageName}",
+      "translation": "正在啟動 {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2369,6 +2390,41 @@
       "fuzzy": true
     },
     {
+      "id": "sqlcmd start",
+      "message": "sqlcmd start",
+      "translation": "sqlcmd 啟動",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running",
+      "message": "Container is not running",
+      "translation": "容器未執行",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Press Ctrl+C to exit this process...",
+      "message": "Press Ctrl+C to exit this process...",
+      "translation": "按 Ctrl+C 結束此流程...",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translation": "「記憶體資源不足」錯誤可能是由於 Windows 認證管理員中儲存太多認證所致",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Failed to write credential to Windows Credential Manager",
+      "message": "Failed to write credential to Windows Credential Manager",
+      "translation": "無法將認證寫入 Windows 認證管理員",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "The -L parameter can not be used in combination with other parameters.",
       "message": "The -L parameter can not be used in combination with other parameters.",
       "translation": "-L 參數不能與其他參數一起使用。",
@@ -2450,7 +2506,7 @@
     {
       "id": "Flags:",
       "message": "Flags:",
-      "translation": "旗標: ",
+      "translation": "旗標:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2871,6 +2927,20 @@
       "fuzzy": true
     },
     {
+      "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translation": "為回溯相容性提供。一律啟用引號識別項",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Client regional settings are not used",
+      "message": "Provided for backward compatibility. Client regional settings are not used",
+      "translation": "為回溯相容性提供。未使用用戶端地區設定",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Sets the sqlcmd scripting variable {V}",
       "message": "Sets the sqlcmd scripting variable {V}",
       "translation": "設定 sqlcmd 指令碼變數 {V}",
@@ -3270,6 +3340,128 @@
           "underlyingType": "uint",
           "argNum": 2,
           "expr": "lineNumber"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、程序 {ProcName}、行 {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "ProcName",
+          "string": "%[5]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 5,
+          "expr": "e.ProcName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[6]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 6,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[7]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 7,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、行 {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[5]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 5,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[6]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 6,
+          "expr": "SqlcmdEol"
         }
       ],
       "fuzzy": true
