@@ -1688,7 +1688,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Version {Version}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Версия {version}]]></Val>
+            <Val><![CDATA[Версия {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
@@ -2216,7 +2216,7 @@
         <Str Cat="Text">
           <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["{Flag} {Value}": значение должно быть не меньше {Min} и не больше {Max}.]]></Val>
+            <Val><![CDATA['{Flag} {Value}': значение должно быть не меньше {Min} и не больше {Max}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
@@ -2252,7 +2252,7 @@
         <Str Cat="Text">
           <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["{Flag} {Value}": непредвиденный аргумент. Значение аргумента должно быть {AllowedValues0}.]]></Val>
+            <Val><![CDATA['{Flag} {Value}': непредвиденный аргумент. Значение аргумента должно быть {AllowedValues0}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Error:]]></Val>
@@ -2660,7 +2660,7 @@
         <Str Cat="Text">
           <Val><![CDATA[{Operation_completed_successfully}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{Операция_выполнена_успешно}]]></Val>
+            <Val><![CDATA[{Operation_completed_successfully}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[If the database is mounted, run {DropDbQuery}]]></Val>
