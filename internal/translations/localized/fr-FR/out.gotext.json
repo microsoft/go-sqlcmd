@@ -1655,7 +1655,7 @@
     {
       "id": "Include user details",
       "message": "Include user details",
-      "translation": "Inclure les détails de l'utilisateur",
+      "translation": "Inclure les détailms de l’utilisateur",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2201,7 +2201,7 @@
     {
       "id": "Downloading {File}",
       "message": "Downloading {File}",
-      "translation": "Téléchargement de {Fichier}",
+      "translation": "Téléchargement de {File}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2701,7 +2701,7 @@
     {
       "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
-      "translation": "Crée une variable de script sqlcmd qui peut être utilisée dans un script sqlcmd. Placez la valeur entre guillemets si la valeur contient des espaces. Vous pouvez spécifier plusieurs valeurs var=values. S'il y a des erreurs dans l'une des valeurs spécifiées, sqlcmd génère un message d'erreur, puis quitte",
+      "translation": "Crée une variable de script sqlcmd qui peut être utilisée dans un script sqlcmd. Placez la valeur entre guillemets si la valeur contient des espaces. Vous pouvez spécifier plusieurs valeurs var=values. S’il y a des erreurs dans l’une des valeurs spécifiées, sqlcmd génère un message d’erreur, puis quitte",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2960,7 +2960,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
-      "translation": "'{Flag} {Valeur}' : la valeur doit être supérieure ou égale à {Min} et inférieure ou égale à {Max}.",
+      "translation": "'{Flag} {Value}' : la valeur doit être supérieure ou égale à {Min} et inférieure ou égale à {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3042,7 +3042,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
-      "translation": "'{Flag} {Valeur}' : Argument inattendu. La valeur de l'argument doit être {AllowedValues0}.",
+      "translation": "'{Flag} {Value}' : Argument inattendu. La valeur de l’argument doit être {AllowedValues0}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
