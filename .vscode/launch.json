@@ -24,7 +24,7 @@
             "request": "launch",
             "mode" : "auto",
             "program": "${workspaceFolder}/cmd/modern",
-            "args" : ["-Q", "EXIT(select net_transport from sys.dm_exec_connections)"],
+            "args" : ["-S", "davidshi-2022", "-g", "-Q", "select nvarcharcol from encrypt.dbo.encrypted", "--driver-logging-level=65"],
         },
         {
             "name" : "Run file query",

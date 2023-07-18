@@ -67,6 +67,7 @@ type SQLCmdArguments struct {
 	Password                    string
 	DedicatedAdminConnection    bool
 	ListServers                 bool
+	EnableColumnEnryption       bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -320,6 +321,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 	_ = rootCmd.Flags().BoolP("enable-quoted-identifiers", "I", true, localizer.Sprintf("Provided for backward compatibility. Quoted identifiers are always enabled"))
 	_ = rootCmd.Flags().BoolP("client-regional-setting", "R", false, localizer.Sprintf("Provided for backward compatibility. Client regional settings are not used"))
+	rootCmd.Flags().BoolVarP(&args.EnableColumnEnryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
 }
 
 func setScriptVariable(v string) string {
@@ -553,6 +555,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.ExitOnError = args.ExitOnError
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 	connect.DedicatedAdminConnection = args.DedicatedAdminConnection
+	connect.EnableColumnEnryption = args.EnableColumnEnryption
 }
 
 func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {

@@ -73,4 +73,7 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gotest.tools/v3 v3.4.0 // indirect
+	software.sslmate.com/src/go-pkcs12 v0.2.0 // indirect
 )
+
+replace github.com/microsoft/go-mssqldb => e:\git\go-mssqldb
