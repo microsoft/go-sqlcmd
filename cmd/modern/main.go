@@ -12,10 +12,8 @@
 package main
 
 import (
+	"os"
 	"path"
-
-	"fmt"
-	"time"
 
 	"github.com/microsoft/go-sqlcmd/internal"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -28,9 +26,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
 
-	"os"
-
-	"github.com/microsoft/ApplicationInsights-Go/appinsights"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 
 	legacyCmd "github.com/microsoft/go-sqlcmd/cmd/sqlcmd"
 )
@@ -45,43 +41,31 @@ var version = "local-build" // overridden in pipeline builds with: -ldflags="-X 
 // executed. Otherwise, the legacy CLI is executed.
 func main() {
 
-	client := initializeAppInsights()
+	// appinsights.NewDiagnosticsMessageListener(func(msg string) error {
+	// 	fmt.Printf("[%s] %s\n", time.Now().Format(time.UnixDate), msg)
+	// 	return nil
+	// })
 
-	defer client.Channel().Close()
-	appinsights.NewDiagnosticsMessageListener(func(msg string) error {
-		fmt.Printf("[%s] %s\n", time.Now().Format(time.UnixDate), msg)
-		return nil
-	})
-
-	// Example telemetry tracking
+	telemetry.InitializeAppInsights()
+	defer telemetry.FlushTelemetry()
 
 	dependencies := dependency.Options{
 		Output: output.New(output.Options{
 			StandardWriter: os.Stdout,
 			ErrorHandler:   checkErr,
-			HintHandler:    displayHints})}
+			HintHandler:    displayHints}),
+	}
 	rootCmd = cmdparser.New[*Root](dependencies)
 	if isFirstArgModernCliSubCommand() {
 		cmdparser.Initialize(initializeCallback)
-		event := appinsights.NewEventTelemetry("sqlcmd")
-		event.Properties["sqlcmd"] = "modern"
-		client.Track(event)
+		telemetry.TrackEvent("modern")
 		rootCmd.Execute()
 	} else {
 		initializeEnvVars()
-		event := appinsights.NewEventTelemetry("sqlcmd")
-		event.Properties["sqlcmd"] = "legacy"
-		client.Track(event)
+		telemetry.TrackEvent("legacy")
 		legacyCmd.Execute(version)
 	}
-	client.Channel().Flush()
-}
-
-func initializeAppInsights() appinsights.TelemetryClient {
-	instrumentationKey := "7d1a32e5-4dbb-4b11-ae2d-b8591bcf4cba"
-	config := appinsights.NewTelemetryConfiguration(instrumentationKey)
-	client := appinsights.NewTelemetryClientFromConfig(config)
-	return client
+	//telemetry.FlushTelemetry()
 }
 
 // initializeEnvVars intializes SQLCMDSERVER, SQLCMDUSER and SQLCMDPASSWORD
