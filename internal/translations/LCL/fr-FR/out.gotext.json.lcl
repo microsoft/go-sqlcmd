@@ -986,7 +986,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Downloading {File}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Téléchargement de {Fichier}]]></Val>
+            <Val><![CDATA[Téléchargement de {File}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
