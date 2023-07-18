@@ -470,7 +470,7 @@
     {
       "id": "{Operation_completed_successfully}",
       "message": "{Operation_completed_successfully}",
-      "translation": "{Операция_выполнена_успешно}",
+      "translation": "{Operation_completed_successfully}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2489,7 +2489,7 @@
     {
       "id": "Version {Version}",
       "message": "Version {Version}",
-      "translation": "Версия {version}",
+      "translation": "Версия {Version}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2960,7 +2960,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
-      "translation": "\"{Flag} {Value}\": значение должно быть не меньше {Min} и не больше {Max}.",
+      "translation": "'{Flag} {Value}': значение должно быть не меньше {Min} и не больше {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3042,7 +3042,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
-      "translation": "\"{Flag} {Value}\": непредвиденный аргумент. Значение аргумента должно быть {AllowedValues0}.",
+      "translation": "'{Flag} {Value}': непредвиденный аргумент. Значение аргумента должно быть {AllowedValues0}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {

@@ -2489,7 +2489,7 @@
     {
       "id": "Version {Version}",
       "message": "Version {Version}",
-      "translation": "版本 {version}",
+      "translation": "版本 {Version}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3469,7 +3469,7 @@
     {
       "id": "Invalid variable identifier {Name}",
       "message": "Invalid variable identifier {Name}",
-      "translation": "不正確變數識別碼 {Name}",
+      "translation": "無效的變數識別碼 {Name}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
