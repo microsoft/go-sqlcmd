@@ -1688,7 +1688,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Version {Version}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[版本 {version}]]></Val>
+            <Val><![CDATA[版本 {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
@@ -2453,7 +2453,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[不正確變數識別碼 {Name}]]></Val>
+            <Val><![CDATA[無效的變數識別碼 {Name}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

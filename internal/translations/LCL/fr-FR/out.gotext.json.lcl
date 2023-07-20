@@ -620,7 +620,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Include user details]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Inclure les détails de l'utilisateur]]></Val>
+            <Val><![CDATA[Inclure les détailms de l’utilisateur]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[To view available users run `{UsersCommand}`]]></Val>
@@ -1289,7 +1289,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Downloading {File}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Téléchargement de {Fichier}]]></Val>
+            <Val><![CDATA[Téléchargement de {File}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
@@ -1922,7 +1922,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Crée une variable de script sqlcmd qui peut être utilisée dans un script sqlcmd. Placez la valeur entre guillemets si la valeur contient des espaces. Vous pouvez spécifier plusieurs valeurs var=values. S'il y a des erreurs dans l'une des valeurs spécifiées, sqlcmd génère un message d'erreur, puis quitte]]></Val>
+            <Val><![CDATA[Crée une variable de script sqlcmd qui peut être utilisée dans un script sqlcmd. Placez la valeur entre guillemets si la valeur contient des espaces. Vous pouvez spécifier plusieurs valeurs var=values. S’il y a des erreurs dans l’une des valeurs spécifiées, sqlcmd génère un message d’erreur, puis quitte]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the formatting for results]]></Val>
@@ -2216,7 +2216,7 @@
         <Str Cat="Text">
           <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Valeur}' : la valeur doit être supérieure ou égale à {Min} et inférieure ou égale à {Max}.]]></Val>
+            <Val><![CDATA['{Flag} {Value}' : la valeur doit être supérieure ou égale à {Min} et inférieure ou égale à {Max}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
@@ -2252,7 +2252,7 @@
         <Str Cat="Text">
           <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Valeur}' : Argument inattendu. La valeur de l'argument doit être {AllowedValues0}.]]></Val>
+            <Val><![CDATA['{Flag} {Value}' : Argument inattendu. La valeur de l’argument doit être {AllowedValues0}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Error:]]></Val>

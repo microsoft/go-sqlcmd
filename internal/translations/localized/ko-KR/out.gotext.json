@@ -2701,7 +2701,7 @@
     {
       "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
-      "translation": "sqlcmd 스크립트에서 사용할 수 있는 sqlcmd 스크립팅 변수를 만듭니다. 값에 공백이 포함된 경우 값을 따옴표로 묶습니다. 여러 var=values 값을 지정할 수 있습니다. 지정된 값에 오류가 있으면 sqlcmd는 오류 메시지를 생성한 다음 종료합니다.",
+      "translation": "sqlcmd 스크립트에서 사용할 수 있는 sqlcmd 스크립팅 변수를 만듭니다. 값에 공백이 포함된 경우 값을 따옴표로 묶습니다. 여러 개의 var=values 값을 지정할 수 있습니다. 지정된 값에 오류가 있으면 sqlcmd는 오류 메시지를 생성한 다음 종료합니다.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3322,7 +3322,7 @@
     {
       "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-      "translation": "{ErrorPrefix}{LineNumber}행의 구문 오류가 있습니다.",
+      "translation": "{ErrorPrefix}{LineNumber}행에 구문 오류가 있습니다.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3469,7 +3469,7 @@
     {
       "id": "Invalid variable identifier {Name}",
       "message": "Invalid variable identifier {Name}",
-      "translation": "잘못된 변수 식별자 {이름}",
+      "translation": "잘못된 변수 식별자 {Name}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
