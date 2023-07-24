@@ -18,7 +18,7 @@ type Telemetry struct {
 }
 
 func InitializeAppInsights() {
-	instrumentationKey := "7d1a32e5-4dbb-4b11-ae2d-b8591bcf4cba"
+	instrumentationKey := "5587abc4-2843-4455-b7dd-c3eb1f2e45f6"
 	config := appinsights.NewTelemetryConfiguration(instrumentationKey)
 	telemetryClient = appinsights.NewTelemetryClientFromConfig(config)
 	SetTelemetryClient(telemetryClient)
@@ -34,7 +34,6 @@ func TrackCommand(command string) {
 	event := appinsights.NewEventTelemetry("command")
 	event.Properties["command"] = command
 	telemetryClient.Track(event)
-	FlushTelemetry()
 }
 
 // TrackSubCommand tracks a sub-command execution event
@@ -43,7 +42,6 @@ func TrackSubCommand(command, subCommand string) {
 	event.Properties["command"] = command
 	event.Properties["sub-command"] = subCommand
 	telemetryClient.Track(event)
-	FlushTelemetry()
 }
 
 func TrackEvent(eventName string) {
@@ -52,13 +50,12 @@ func TrackEvent(eventName string) {
 	telemetryClient.Track(event)
 }
 
+func CloseTelemetry() {
+	telemetryClient.Channel().Close()
+}
 func FlushTelemetry() {
 	telemetryClient.Channel().Flush()
 }
-
-// func SetTelemetryClient(client appinsights.TelemetryClient) {
-// 	telemetryClient = client
-// }
 
 func LogMessage(msg string) error {
 	fmt.Printf("[%s] %s\n", time.Now().Format(time.UnixDate), msg)

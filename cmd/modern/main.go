@@ -40,14 +40,7 @@ var version = "local-build" // overridden in pipeline builds with: -ldflags="-X 
 // If the first argument is a modern CLI subcommand, the modern CLI is
 // executed. Otherwise, the legacy CLI is executed.
 func main() {
-
-	// appinsights.NewDiagnosticsMessageListener(func(msg string) error {
-	// 	fmt.Printf("[%s] %s\n", time.Now().Format(time.UnixDate), msg)
-	// 	return nil
-	// })
-
 	telemetry.InitializeAppInsights()
-	defer telemetry.FlushTelemetry()
 
 	dependencies := dependency.Options{
 		Output: output.New(output.Options{
@@ -65,7 +58,8 @@ func main() {
 		telemetry.TrackEvent("legacy")
 		legacyCmd.Execute(version)
 	}
-	//telemetry.FlushTelemetry()
+	telemetry.FlushTelemetry()
+	telemetry.CloseTelemetry()
 }
 
 // initializeEnvVars intializes SQLCMDSERVER, SQLCMDUSER and SQLCMDPASSWORD
