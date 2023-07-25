@@ -1376,7 +1376,7 @@
     {
       "id": "Endpoint '{Name}' does not exist",
       "message": "Endpoint '{Name}' does not exist",
-      "translation": "{package_name} 不存在",
+      "translation": "{Name} 不存在",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {

@@ -3075,7 +3075,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
-      "translation": "\"{Flag} {Value}\": 意外参数。参数值必须是 {AllowedValues0} 之一。",
+      "translation": "\"{Flag} {Value}\": 意外参数。参数值必须是 {AllowedValues} 之一。",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
