@@ -18,7 +18,7 @@ type Telemetry struct {
 }
 
 func InitializeAppInsights() {
-	instrumentationKey := "5587abc4-2843-4455-b7dd-c3eb1f2e45f6"
+	instrumentationKey := "3fdeec77-2951-456f-bcb2-9f003b512a3f"
 	config := appinsights.NewTelemetryConfiguration(instrumentationKey)
 	telemetryClient = appinsights.NewTelemetryClientFromConfig(config)
 	SetTelemetryClient(telemetryClient)

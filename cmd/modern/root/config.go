@@ -10,7 +10,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
-	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 )
 
 // Config defines the `sqlcmd config` sub-commands
@@ -39,7 +38,6 @@ func (c *Config) DefineCommand(...cmdparser.CommandOptions) {
 	}
 
 	c.Cmd.DefineCommand(options)
-	telemetry.TrackEvent("config")
 }
 
 // SubCommands sets up all the sub-commands for `sqlcmd config`

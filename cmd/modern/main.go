@@ -23,10 +23,9 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
-
-	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 
 	legacyCmd "github.com/microsoft/go-sqlcmd/cmd/sqlcmd"
 )
@@ -115,6 +114,8 @@ func isFirstArgModernCliSubCommand() (isNewCliCommand bool) {
 	if len(os.Args) > 1 {
 		if rootCmd.IsValidSubCommand(os.Args[1]) {
 			isNewCliCommand = true
+			command := os.Args[1]
+			telemetry.TrackCommand(command)
 		}
 	}
 	return
