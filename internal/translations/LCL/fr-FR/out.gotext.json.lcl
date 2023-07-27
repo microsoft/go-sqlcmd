@@ -2240,7 +2240,7 @@
         <Str Cat="Text">
           <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Valeur}' : la valeur doit être supérieure à {Min} et inférieure à {Max}.]]></Val>
+            <Val><![CDATA['{Flag} {Value}' : la valeur doit être supérieure à {Min} et inférieure à {Max}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>

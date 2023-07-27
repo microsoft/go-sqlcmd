@@ -3001,7 +3001,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
-      "translation": "'{Flag} {Valeur}' : la valeur doit être supérieure à {Min} et inférieure à {Max}.",
+      "translation": "'{Flag} {Value}' : la valeur doit être supérieure à {Min} et inférieure à {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
