@@ -197,24 +197,26 @@
       "fuzzy": true
     },
     {
-      "id": "Starting {Arg_1} for context {Arg_2}",
-      "message": "Starting {Arg_1} for context {Arg_2}",
-      "translation": "Démarrage de {Arg_1} pour le contexte {Arg_2}",
+      "id": "Starting {Image} for context {CurrentContextName}",
+      "message": "Starting {Image} for context {CurrentContextName}",
+      "translation": "Démarrage de {Image} pour le contexte {CurrentContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -248,24 +250,26 @@
       "fuzzy": true
     },
     {
-      "id": "Stopping {Arg_1} for context {Arg_2}",
-      "message": "Stopping {Arg_1} for context {Arg_2}",
-      "translation": "Arrêt de {Arg_1} pour le contexte {Arg_2}",
+      "id": "Stopping {Image} for context {CurrentContextName}",
+      "message": "Stopping {Image} for context {CurrentContextName}",
+      "translation": "Arrêt de {Image} pour le contexte {CurrentContextName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
-          "id": "Arg_1",
+          "id": "Image",
           "string": "%[1]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 1
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         },
         {
-          "id": "Arg_2",
+          "id": "CurrentContextName",
           "string": "%[2]q",
-          "type": "",
+          "type": "string",
           "underlyingType": "string",
-          "argNum": 2
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
         }
       ],
       "fuzzy": true
@@ -408,6 +412,23 @@
           "underlyingType": "string",
           "argNum": 1,
           "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Stopping {Image}",
+      "message": "Stopping {Image}",
+      "translation": "Arrêt de {Image}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
         }
       ],
       "fuzzy": true
@@ -1634,7 +1655,7 @@
     {
       "id": "Include user details",
       "message": "Include user details",
-      "translation": "Inclure les détails de l'utilisateur",
+      "translation": "Inclure les détailms de l’utilisateur",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2180,7 +2201,7 @@
     {
       "id": "Downloading {File}",
       "message": "Downloading {File}",
-      "translation": "Téléchargement de {Fichier}",
+      "translation": "Téléchargement de {File}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2365,6 +2386,41 @@
       "id": "Get tags available for mssql install",
       "message": "Get tags available for mssql install",
       "translation": "Obtenir les balises disponibles pour l'installation de mssql",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "sqlcmd start",
+      "message": "sqlcmd start",
+      "translation": "démarrage sqlcmd",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running",
+      "message": "Container is not running",
+      "translation": "Le conteneur ne fonctionne pas",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Press Ctrl+C to exit this process...",
+      "message": "Press Ctrl+C to exit this process...",
+      "translation": "Appuyez sur Ctrl+C pour quitter ce processus...",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translation": "Une erreur \"Pas assez de ressources mémoire disponibles\" peut être causée par trop d'informations d'identification déjà stockées dans Windows Credential Manager",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Failed to write credential to Windows Credential Manager",
+      "message": "Failed to write credential to Windows Credential Manager",
+      "translation": "Échec de l'écriture des informations d'identification dans le gestionnaire d'informations d'identification Windows",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2645,7 +2701,7 @@
     {
       "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
-      "translation": "Crée une variable de script sqlcmd qui peut être utilisée dans un script sqlcmd. Placez la valeur entre guillemets si la valeur contient des espaces. Vous pouvez spécifier plusieurs valeurs var=values. S'il y a des erreurs dans l'une des valeurs spécifiées, sqlcmd génère un message d'erreur, puis quitte",
+      "translation": "Crée une variable de script sqlcmd qui peut être utilisée dans un script sqlcmd. Placez la valeur entre guillemets si la valeur contient des espaces. Vous pouvez spécifier plusieurs valeurs var=values. S’il y a des erreurs dans l’une des valeurs spécifiées, sqlcmd génère un message d’erreur, puis quitte",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2871,6 +2927,20 @@
       "fuzzy": true
     },
     {
+      "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translation": "Fourni pour la rétrocompatibilité. Les identifiants entre guillemets sont toujours activés",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Client regional settings are not used",
+      "message": "Provided for backward compatibility. Client regional settings are not used",
+      "translation": "Fourni pour la rétrocompatibilité. Les paramètres régionaux du client ne sont pas utilisés",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Sets the sqlcmd scripting variable {V}",
       "message": "Sets the sqlcmd scripting variable {V}",
       "translation": "Définit la variable de script sqlcmd {V}",
@@ -2890,7 +2960,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
-      "translation": "'{Flag} {Valeur}' : la valeur doit être supérieure ou égale à {Min} et inférieure ou égale à {Max}.",
+      "translation": "'{Flag} {Value}' : la valeur doit être supérieure ou égale à {Min} et inférieure ou égale à {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2931,7 +3001,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
-      "translation": "'{Flag} {Valeur}' : la valeur doit être supérieure à {Min} et inférieure à {Max}.",
+      "translation": "'{Flag} {Value}' : la valeur doit être supérieure à {Min} et inférieure à {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2972,7 +3042,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
-      "translation": "'{Flag} {Valeur}' : Argument inattendu. La valeur de l'argument doit être {AllowedValues0}.",
+      "translation": "'{Flag} {Value}' : Argument inattendu. La valeur de l’argument doit être {AllowedValues0}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3270,6 +3340,128 @@
           "underlyingType": "uint",
           "argNum": 2,
           "expr": "lineNumber"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "ProcName",
+          "string": "%[5]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 5,
+          "expr": "e.ProcName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[6]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 6,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[7]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 7,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[5]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 5,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[6]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 6,
+          "expr": "SqlcmdEol"
         }
       ],
       "fuzzy": true
