@@ -269,7 +269,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Endpoint '{Name}' does not exist]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[终结点 "{Name}" 不存在]]></Val>
+            <Val><![CDATA[终结点 '{Name}' 不存在]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Endpoint '{Name}' deleted]]></Val>
@@ -2264,7 +2264,7 @@
         <Str Cat="Text">
           <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["{Flag} {Value}": 意外参数。参数值必须是 {AllowedValues0} 之一。]]></Val>
+            <Val><![CDATA['{Flag} {Value}': 意外参数。参数值必须是 {AllowedValues} 之一。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Warning:]]></Val>

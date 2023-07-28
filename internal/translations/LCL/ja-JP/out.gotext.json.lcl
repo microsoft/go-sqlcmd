@@ -1688,7 +1688,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Version {Version}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[バージョン {version}]]></Val>
+            <Val><![CDATA[バージョン {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
