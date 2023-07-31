@@ -327,24 +327,26 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	b := s.batch.batchline
 	utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
 	unicodeReader := transform.NewReader(f, utf16bom)
-	scanner := bufio.NewScanner(unicodeReader)
-	buf := make([]byte, maxLineBuffer)
-	scanner.Buffer(buf, maxLineBuffer)
+	scanner := bufio.NewReader(unicodeReader)
 	curLine := s.batch.read
 	echoFileLines := s.echoFileLines
 	s.batch.read = func() (string, error) {
-		if !scanner.Scan() {
-			err := scanner.Err()
-			if err == nil {
-				return "", io.EOF
-			}
-			return "", err
+		var (
+			isPrefix bool  = true
+			err      error = nil
+			line, ln []byte
+		)
+
+		for isPrefix && err == nil {
+			line, isPrefix, err = scanner.ReadLine()
+			ln = append(ln, line...)
 		}
-		t := scanner.Text()
-		if echoFileLines {
-			_, _ = s.GetOutput().Write([]byte(s.Prompt() + t + SqlcmdEol))
+		if err == nil && echoFileLines {
+			_, _ = s.GetOutput().Write([]byte(s.Prompt()))
+			_, _ = s.GetOutput().Write(ln)
+			_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
 		}
-		return t, nil
+		return string(ln), err
 	}
 	err = s.Run(false, processAll)
 	s.batch.read = curLine
