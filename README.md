@@ -121,6 +121,9 @@ The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to t
 
 ### Changes in behavior from the ODBC based sqlcmd
 
+- `/` is not accepted as a flag specifier, only `-`
+- There are new posix-style versions of each flag, such as `--input-file` for `-i`. `sqlcmd -?` will print those parameter names. Those new names do not preserve backward compatibility with ODBC `sqlcmd`. For example, to specify multiple input file names using `--input-file`, the file names must be comma-delimited, not space-delimited.
+
 The following switches have different behavior in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`.
 - `-r` requires a 0 or 1 argument
 - `-R` switch is ignored. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
@@ -133,9 +136,11 @@ The following switches have different behavior in this version of `sqlcmd` compa
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
-- `-i` now requires multiple arguments for the switch to be separated by `,`.
-- `-v` requires multiple variable setters to be comma-separated. eg: `-v var1=v1,var2=v2 -v "var3=v 3"`
+- `-i` doesn't handle a comma `,` in a file name correctly unless the file name argument is triple quoted. For example:
+  `sqlcmd -i """select,100.sql"""` will try to open a file named `sql,100.sql` while `sqlcmd -i "select,100.sql"` will try to open two files `select` and `100.sql`
+- If using a single `-i` flag  to pass multiple file names, there must be a space after the `-i`. Example: `-i file1.sql file2.sql`
 - `-M` switch is ignored. Sqlcmd always enables multi-subnet failover.
+
 
 ### Switches not available in the new sqlcmd (go-sqlcmd) yet
 
@@ -144,8 +149,6 @@ to the original ODBC based `sqlcmd`, discussion [#293](https://github.com/micros
 lists these switches. Please provide feedback in the discussion on which 
 switches are most important to you to have implemented next in the new sqlcmd.
 
-Also, the XML Output command `:XML [On]|[Off]` is not implemented yet
-in the new sqlcmd (go-sqlcmd).
 
 ### Miscellaneous enhancements
 

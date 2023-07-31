@@ -31,6 +31,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{}, func(args SQLCmdArguments) bool {
 			return args.Server == "" && !args.UseTrustedConnection && args.UserName == "" && args.ScreenWidth == nil && args.ErrorsToStderr == -1 && args.EncryptConnection == "default"
 		}},
+		{[]string{"-v", "a=b", "x=y", "-E"}, func(args SQLCmdArguments) bool {
+			return len(args.Variables) == 2 && args.Variables["a"] == "b" && args.Variables["x"] == "y" && args.UseTrustedConnection
+		}},
 		{[]string{"-c", "MYGO", "-C", "-E", "-i", "file1", "-o", "outfile", "-i", "file2"}, func(args SQLCmdArguments) bool {
 			return args.BatchTerminator == "MYGO" && args.TrustServerCertificate && len(args.InputFile) == 2 && strings.HasSuffix(args.OutputFile, "outfile")
 		}},
@@ -84,6 +87,15 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-y", "100", "-Y", "200", "-P", "placeholder"}, func(args SQLCmdArguments) bool {
 			return *args.FixedTypeWidth == 200 && *args.VariableTypeWidth == 100 && args.Password == "placeholder"
 		}},
+		{[]string{"-E", "-v", "a=b", "x=y", "-i", "a.sql", "b.sql", "-v", "f=g", "-i", "c.sql", "-C", "-v", "ab=cd", "ef=hi"}, func(args SQLCmdArguments) bool {
+			return args.UseTrustedConnection && args.Variables["x"] == "y" && len(args.InputFile) == 3 && args.InputFile[0] == "a.sql" && args.TrustServerCertificate
+		}},
+		{[]string{"-i", `comma,text.sql`}, func(args SQLCmdArguments) bool {
+			return args.InputFile[0] == "comma" && args.InputFile[1] == "text.sql"
+		}},
+		{[]string{"-i", `"comma,text.sql"`}, func(args SQLCmdArguments) bool {
+			return args.InputFile[0] == "comma,text.sql"
+		}},
 	}
 
 	for _, test := range commands {
@@ -105,7 +117,7 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		cmd.SetOut(new(bytes.Buffer))
 		cmd.SetErr(new(bytes.Buffer))
 		setFlags(cmd, arguments)
-		cmd.SetArgs(test.commandLine)
+		cmd.SetArgs(convertOsArgs(test.commandLine))
 		err := cmd.Execute()
 		msg := ""
 		if err != nil {
@@ -476,6 +488,33 @@ func TestStartupScript(t *testing.T) {
 	bytes, err := os.ReadFile(o.Name())
 	if assert.NoError(t, err, "os.ReadFile") {
 		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+	}
+}
+
+func TestConvertOsArgs(t *testing.T) {
+	type test struct {
+		name     string
+		in       []string
+		expected []string
+	}
+
+	tests := []test{
+		{
+			"Multiple variables/one switch",
+			[]string{"-E", "-v", "a=b", "x=y", "f=g", "-C"},
+			[]string{"-E", "-v", "a=b", "-v", "x=y", "-v", "f=g", "-C"},
+		},
+		{
+			"Multiple variables and files/multiple switches",
+			[]string{"-E", "-v", "a=b", "x=y", "-i", "a.sql", "b.sql", "-v", "f=g", "-i", "c.sql", "-C", "-v", "ab=cd", "ef=hi"},
+			[]string{"-E", "-v", "a=b", "-v", "x=y", "-i", "a.sql", "-i", "b.sql", "-v", "f=g", "-i", "c.sql", "-C", "-v", "ab=cd", "-v", "ef=hi"},
+		},
+	}
+	for _, c := range tests {
+		t.Run(c.name, func(t *testing.T) {
+			actual := convertOsArgs(c.in)
+			assert.ElementsMatch(t, c.expected, actual, "Incorrect converted args")
+		})
 	}
 }
 
