@@ -218,9 +218,43 @@ func Execute(version string) {
 			fmt.Println()
 		})
 	})
+	rootCmd.SetArgs(convertOsArgs(os.Args[1:]))
 	if err := rootCmd.Execute(); err != nil {
 		os.Exit(1)
 	}
+}
+
+// We need to rewrite the arguments to add -i and -v in front of each space-delimited value to be Cobra-friendly.
+func convertOsArgs(args []string) (cargs []string) {
+	flag := ""
+	first := true
+	for _, a := range args {
+		if flag != "" {
+			// If the user has a file named "-i" the only way they can pass it on the command line
+			// is with triple quotes: sqlcmd -i """-i""" which will convince the flags parser to
+			// inject `"-i"` into the string slice. Same for any file with a comma in its name.
+			if isFlag(a) {
+				flag = ""
+			} else if !first {
+				cargs = append(cargs, flag)
+			}
+			first = false
+		}
+		if isListFlag(a) {
+			flag = a
+			first = true
+		}
+		cargs = append(cargs, a)
+	}
+	return
+}
+
+func isFlag(arg string) bool {
+	return len(arg) == 2 && arg[0] == '-'
+}
+
+func isListFlag(arg string) bool {
+	return arg == "-v" || arg == "-i"
 }
 
 func formatDescription(description string, maxWidth, indentWidth int) string {
