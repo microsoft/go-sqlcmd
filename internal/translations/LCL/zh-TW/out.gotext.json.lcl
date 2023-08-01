@@ -269,7 +269,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Endpoint '{Name}' does not exist]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{package_name} 不存在]]></Val>
+            <Val><![CDATA[端點 '{Name}' 不存在]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Endpoint '{Name}' deleted]]></Val>

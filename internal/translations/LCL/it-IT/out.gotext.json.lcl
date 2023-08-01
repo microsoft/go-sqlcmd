@@ -362,7 +362,7 @@
         <Str Cat="Text">
           <Val><![CDATA[User {Name} deleted]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Utente {name} eliminato]]></Val>
+            <Val><![CDATA[Utente {Name} eliminato]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Display one or many contexts from the sqlconfig file]]></Val>
