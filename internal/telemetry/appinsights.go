@@ -13,6 +13,10 @@ func SetTelemetryClient(client appinsights.TelemetryClient) {
 	telemetryClient = client
 }
 
+func SetTelemetryClientFromInstrumentationKey(instrumentationKey string) {
+	telemetryClient = appinsights.NewTelemetryClient(instrumentationKey)
+}
+
 type Telemetry struct {
 	Client appinsights.TelemetryClient
 }
