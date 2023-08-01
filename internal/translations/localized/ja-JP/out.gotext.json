@@ -2489,7 +2489,7 @@
     {
       "id": "Version {Version}",
       "message": "Version {Version}",
-      "translation": "バージョン {version}",
+      "translation": "バージョン {Version}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
