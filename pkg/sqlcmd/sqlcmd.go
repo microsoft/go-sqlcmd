@@ -39,8 +39,6 @@ var (
 	}
 )
 
-const maxLineBuffer = 2 * 1024 * 1024 // 2Mb
-
 // Console defines methods used for console input and output
 type Console interface {
 	// Readline returns the next line of input.
@@ -330,11 +328,12 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	scanner := bufio.NewReader(unicodeReader)
 	curLine := s.batch.read
 	echoFileLines := s.echoFileLines
+	ln := make([]byte, 0, 2*1024*1024)
 	s.batch.read = func() (string, error) {
 		var (
 			isPrefix bool  = true
 			err      error = nil
-			line, ln []byte
+			line     []byte
 		)
 
 		for isPrefix && err == nil {
@@ -346,7 +345,9 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 			_, _ = s.GetOutput().Write(ln)
 			_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
 		}
-		return string(ln), err
+		t := string(ln)
+		ln = ln[:0]
+		return t, err
 	}
 	err = s.Run(false, processAll)
 	s.batch.read = curLine
