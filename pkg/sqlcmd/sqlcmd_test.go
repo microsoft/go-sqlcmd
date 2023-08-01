@@ -549,6 +549,22 @@ func TestSqlCmdOutputAndError(t *testing.T) {
 	}
 }
 
+func TestVeryLongLineInFile(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	val := strings.Repeat("a1b", (3*1024*1024)/3)
+	line := "set nocount on" + SqlcmdEol + "select('" + val + "')"
+	file, err := os.CreateTemp("", "sqlcmdlongline")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(file.Name())
+	_, err = file.WriteString(line)
+	assert.NoError(t, err, "Unable to write temp file")
+	err = s.IncludeFile(file.Name(), true)
+	if assert.NoError(t, err, "runSqlCmd") {
+		actual := strings.TrimRight(buf.buf.String(), "\r\n")
+		assert.Equal(t, val, actual, "Query result")
+	}
+}
+
 // runSqlCmd uses lines as input for sqlcmd instead of relying on file or console input
 func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
 	t.Helper()
