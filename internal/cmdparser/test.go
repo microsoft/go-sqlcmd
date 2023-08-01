@@ -4,15 +4,17 @@
 package cmdparser
 
 import (
+	"regexp"
+	"testing"
+
 	"github.com/microsoft/go-sqlcmd/internal"
 	"github.com/microsoft/go-sqlcmd/internal/buffer"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
-	"regexp"
-	"testing"
 )
 
 // Test.go contains functions useful for creating compact unit tests for the
@@ -59,6 +61,8 @@ func TestCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...strin
 }
 
 func testCmd[T PtrAsReceiverWrapper[pointerType], pointerType any](args ...string) (result string, err error) {
+	telemetry.SetTelemetryClientFromInstrumentationKey("")
+
 	buf := buffer.NewMemoryBuffer()
 	defer func() { buf.Close() }()
 	c := New[T](dependency.Options{

@@ -12,6 +12,9 @@
 package main
 
 import (
+	"os"
+	"path"
+
 	"github.com/microsoft/go-sqlcmd/internal"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
@@ -20,11 +23,9 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
-	"path"
-
-	"os"
 
 	legacyCmd "github.com/microsoft/go-sqlcmd/cmd/sqlcmd"
 )
@@ -38,19 +39,26 @@ var version = "local-build" // overridden in pipeline builds with: -ldflags="-X 
 // If the first argument is a modern CLI subcommand, the modern CLI is
 // executed. Otherwise, the legacy CLI is executed.
 func main() {
+	telemetry.InitializeAppInsights()
+
 	dependencies := dependency.Options{
 		Output: output.New(output.Options{
 			StandardWriter: os.Stdout,
 			ErrorHandler:   checkErr,
-			HintHandler:    displayHints})}
+			HintHandler:    displayHints}),
+	}
 	rootCmd = cmdparser.New[*Root](dependencies)
 	if isFirstArgModernCliSubCommand() {
 		cmdparser.Initialize(initializeCallback)
+		telemetry.TrackEvent("modern")
 		rootCmd.Execute()
 	} else {
 		initializeEnvVars()
+		telemetry.TrackEvent("legacy")
 		legacyCmd.Execute(version)
 	}
+	telemetry.FlushTelemetry()
+	telemetry.CloseTelemetry()
 }
 
 // initializeEnvVars intializes SQLCMDSERVER, SQLCMDUSER and SQLCMDPASSWORD
@@ -106,6 +114,8 @@ func isFirstArgModernCliSubCommand() (isNewCliCommand bool) {
 	if len(os.Args) > 1 {
 		if rootCmd.IsValidSubCommand(os.Args[1]) {
 			isNewCliCommand = true
+			command := os.Args[1]
+			telemetry.TrackCommand(command)
 		}
 	}
 	return

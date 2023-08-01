@@ -5,11 +5,13 @@ package cmdparser
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
-	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"strings"
 
+	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
+
 	"github.com/microsoft/go-sqlcmd/internal/output"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 	"github.com/spf13/cobra"
 )
 
@@ -273,6 +275,10 @@ func (c *Cmd) run(_ *cobra.Command, args []string) {
 			if c.options.FirstArgAlternativeForFlag.Value == nil {
 				panic("Must set Value")
 			}
+			// Track telemetry for the sub-command
+			command := c.options.Use
+			subCommand := args[0]
+			telemetry.TrackSubCommand(command, subCommand)
 			*c.options.FirstArgAlternativeForFlag.Value = args[0]
 		}
 	}
@@ -283,6 +289,8 @@ func (c *Cmd) run(_ *cobra.Command, args []string) {
 		err := c.command.Help()
 		c.CheckErr(err)
 	} else {
+		command := c.options.Use
+		telemetry.TrackSubCommand(command, "")
 		c.options.Run()
 	}
 }

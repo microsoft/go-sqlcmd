@@ -5,11 +5,13 @@ package cmdparser
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/output"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestCmd_run(t *testing.T) {
@@ -37,6 +39,7 @@ func TestCmd_run(t *testing.T) {
 		Usage:  "name",
 		String: &s,
 	})
+	telemetry.SetTelemetryClientFromInstrumentationKey("")
 	c.DefineCommand()
 	c.run(nil, []string{"name-value"})
 }

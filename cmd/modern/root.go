@@ -16,7 +16,6 @@ import (
 // all the sub-commands, like install, query, config etc.
 type Root struct {
 	cmdparser.Cmd
-
 	configFilename string
 	loggingLevel   int
 	outputType     string
