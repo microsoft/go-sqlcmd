@@ -30,8 +30,8 @@ func TestLookup(t *testing.T) {
 		},
 		{
 			name:     "existing key",
-			key:      "Sqlcmd: Error: ",
-			expected: "l",
+			key:      "View configuration information and connection strings",
+			expected: "k",
 			ok:       true,
 		},
 	}
