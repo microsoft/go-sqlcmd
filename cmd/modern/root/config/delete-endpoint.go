@@ -54,11 +54,11 @@ func (c *DeleteEndpoint) run() {
 	if config.EndpointExists(c.name) {
 		config.DeleteEndpoint(c.name)
 	} else {
-		output.FatalfWithHintExamples([][]string{
+		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("View endpoints"), "sqlcmd config get-endpoints"},
 		},
 			localizer.Sprintf("Endpoint '%v' does not exist", c.name))
 	}
 
-	output.Infof(localizer.Sprintf("Endpoint '%v' deleted", c.name))
+	output.Info(localizer.Sprintf("Endpoint '%v' deleted", c.name))
 }

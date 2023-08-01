@@ -69,7 +69,7 @@ func (c *AddContext) run() {
 	}
 
 	if c.endpointName == "" || !config.EndpointExists(c.endpointName) {
-		output.FatalfWithHintExamples([][]string{
+		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("View existing endpoints to choose from"), "sqlcmd config get-endpoints"},
 			{localizer.Sprintf("Add a new local endpoint"), "sqlcmd create"},
 			{localizer.Sprintf("Add an already existing endpoint"), "sqlcmd config add-endpoint --address localhost --port 1433"}},
@@ -78,7 +78,7 @@ func (c *AddContext) run() {
 
 	if c.userName != "" {
 		if !config.UserNameExists(c.userName) {
-			output.FatalfWithHintExamples([][]string{
+			output.FatalWithHintExamples([][]string{
 				{localizer.Sprintf("View list of users"), "sqlcmd config get-users"},
 				{localizer.Sprintf("Add the user"), fmt.Sprintf("sqlcmd config add-user --name %v", c.userName)},
 				{localizer.Sprintf("Add an endpoint"), "sqlcmd create"}},
@@ -88,7 +88,7 @@ func (c *AddContext) run() {
 
 	context.Name = config.AddContext(context)
 	config.SetCurrentContextName(context.Name)
-	output.InfofWithHintExamples([][]string{
+	output.InfoWithHintExamples([][]string{
 		{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"},
 		{localizer.Sprintf("To start interactive query session"), "sqlcmd query"},
 		{localizer.Sprintf("To run a query"), "sqlcmd query \"SELECT @@version\""},
