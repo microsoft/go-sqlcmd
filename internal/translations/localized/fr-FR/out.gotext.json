@@ -3075,7 +3075,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
-      "translation": "'{Flag} {Valeur}' : Argument inattendu. La valeur de l'argument doit être l'une des {AllowedValues}.",
+      "translation": "'{Flag} {Value}' : Argument inattendu. La valeur de l'argument doit être l'une des {AllowedValues}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3322,7 +3322,7 @@
     {
       "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-      "translation": "{Error Prefix}Erreur de syntaxe à la ligne {Line Number}",
+      "translation": "{ErrorPrefix}Erreur de syntaxe à la ligne {LineNumber}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {

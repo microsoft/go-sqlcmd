@@ -2264,7 +2264,7 @@
         <Str Cat="Text">
           <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Valeur}' : Argument inattendu. La valeur de l'argument doit être l'une des {AllowedValues}.]]></Val>
+            <Val><![CDATA['{Flag} {Value}' : Argument inattendu. La valeur de l'argument doit être l'une des {AllowedValues}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Warning:]]></Val>
@@ -2426,7 +2426,7 @@
         <Str Cat="Text">
           <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{Error Prefix}Erreur de syntaxe à la ligne {Line Number}]]></Val>
+            <Val><![CDATA[{ErrorPrefix}Erreur de syntaxe à la ligne {LineNumber}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

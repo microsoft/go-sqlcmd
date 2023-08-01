@@ -1465,7 +1465,7 @@
     {
       "id": "User {Name} deleted",
       "message": "User {Name} deleted",
-      "translation": "Utente {name} eliminato",
+      "translation": "Utente {Name} eliminato",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
