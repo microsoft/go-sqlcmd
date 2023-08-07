@@ -41,6 +41,9 @@ var version = "local-build" // overridden in pipeline builds with: -ldflags="-X 
 func main() {
 	telemetry.InitializeAppInsights()
 
+	defer telemetry.FlushTelemetry()
+	defer telemetry.CloseTelemetry()
+
 	dependencies := dependency.Options{
 		Output: output.New(output.Options{
 			StandardWriter: os.Stdout,
@@ -50,15 +53,19 @@ func main() {
 	rootCmd = cmdparser.New[*Root](dependencies)
 	if isFirstArgModernCliSubCommand() {
 		cmdparser.Initialize(initializeCallback)
-		telemetry.TrackEvent("modern")
+		properties := map[string]string{
+			"sqlcmd": "modern",
+		}
+		telemetry.TrackEvent("cli", properties)
 		rootCmd.Execute()
 	} else {
 		initializeEnvVars()
-		telemetry.TrackEvent("legacy")
+		properties := map[string]string{
+			"sqlcmd": "legacy",
+		}
+		telemetry.TrackEvent("cli", properties)
 		legacyCmd.Execute(version)
 	}
-	telemetry.FlushTelemetry()
-	telemetry.CloseTelemetry()
 }
 
 // initializeEnvVars intializes SQLCMDSERVER, SQLCMDUSER and SQLCMDPASSWORD

@@ -48,9 +48,11 @@ func TrackSubCommand(command, subCommand string) {
 	telemetryClient.Track(event)
 }
 
-func TrackEvent(eventName string) {
+func TrackEvent(eventName string, properties map[string]string) {
 	event := appinsights.NewEventTelemetry(eventName)
-	event.Properties["command"] = eventName
+	for key, value := range properties {
+		event.Properties[key] = value
+	}
 	telemetryClient.Track(event)
 }
 

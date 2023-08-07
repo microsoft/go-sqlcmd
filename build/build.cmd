@@ -26,7 +26,7 @@ if not exist %gopath%\bin\gotext.exe (
 )
 
 REM go-winres likes to append instead of overwrite so delete existing resource file
-
+del %~dp0..\cmd\modern\*.syso
 
 REM generates translations file and resources
 go generate %~dp0../... 2> %~dp0generate.txt
