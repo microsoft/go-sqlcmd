@@ -41,8 +41,8 @@ var version = "local-build" // overridden in pipeline builds with: -ldflags="-X 
 func main() {
 	telemetry.InitializeAppInsights()
 
-	defer telemetry.FlushTelemetry()
 	defer telemetry.CloseTelemetry()
+	defer telemetry.FlushTelemetry()
 
 	dependencies := dependency.Options{
 		Output: output.New(output.Options{
