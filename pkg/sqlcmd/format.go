@@ -86,11 +86,12 @@ type sqlCmdFormatterType struct {
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
-func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool) Formatter {
+func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool, ccb ControlCharacterBehavior) Formatter {
 	return &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
 		format:               "horizontal",
 		colorizer:            color.New(false),
+		ccb:                  ccb,
 	}
 }
 
