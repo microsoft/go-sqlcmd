@@ -79,8 +79,10 @@ type Sqlcmd struct {
 	PrintError func(msg string, severity uint8) bool
 	// UnicodeOutputFile is true when UTF16 file output is needed
 	UnicodeOutputFile bool
-	colorizer         color.Colorizer
-	termchan          chan os.Signal
+	// EchoInput tells the GO command to print the batch text before running the query
+	EchoInput bool
+	colorizer color.Colorizer
+	termchan  chan os.Signal
 }
 
 // New creates a new Sqlcmd instance.

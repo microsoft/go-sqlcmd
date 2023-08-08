@@ -68,6 +68,7 @@ type SQLCmdArguments struct {
 	DedicatedAdminConnection    bool
 	ListServers                 string
 	RemoveControlCharacters     *int
+	EchoInput                   bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -416,6 +417,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	_ = rootCmd.Flags().BoolP("enable-quoted-identifiers", "I", true, localizer.Sprintf("Provided for backward compatibility. Quoted identifiers are always enabled"))
 	_ = rootCmd.Flags().BoolP("client-regional-setting", "R", false, localizer.Sprintf("Provided for backward compatibility. Client regional settings are not used"))
 	_ = rootCmd.Flags().IntP(removeControlCharacters, "k", 0, localizer.Sprintf("%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters", "-k [1|2]"))
+	rootCmd.Flags().BoolVarP(&args.EchoInput, "echo-input", "e", false, localizer.Sprintf("Echo input"))
 }
 
 func setScriptVariable(v string) string {
@@ -704,7 +706,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	if args.DisableCmd != nil {
 		s.Cmd.DisableSysCommands(args.errorOnBlockedCmd())
 	}
-
+	s.EchoInput = args.EchoInput
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {

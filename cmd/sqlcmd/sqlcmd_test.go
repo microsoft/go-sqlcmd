@@ -84,8 +84,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-s", "|", "-w", "10", "-W"}, func(args SQLCmdArguments) bool {
 			return args.TrimSpaces && args.ColumnSeparator == "|" && *args.ScreenWidth == 10
 		}},
-		{[]string{"-y", "100", "-Y", "200", "-P", "placeholder"}, func(args SQLCmdArguments) bool {
-			return *args.FixedTypeWidth == 200 && *args.VariableTypeWidth == 100 && args.Password == "placeholder"
+		{[]string{"-y", "100", "-Y", "200", "-P", "placeholder", "-e"}, func(args SQLCmdArguments) bool {
+			return *args.FixedTypeWidth == 200 && *args.VariableTypeWidth == 100 && args.Password == "placeholder" && args.EchoInput
 		}},
 		{[]string{"-E", "-v", "a=b", "x=y", "-i", "a.sql", "b.sql", "-v", "f=g", "-i", "c.sql", "-C", "-v", "ab=cd", "ef=hi"}, func(args SQLCmdArguments) bool {
 			return args.UseTrustedConnection && args.Variables["x"] == "y" && len(args.InputFile) == 3 && args.InputFile[0] == "a.sql" && args.TrustServerCertificate
