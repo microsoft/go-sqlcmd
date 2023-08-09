@@ -81,8 +81,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-w", "10"}, func(args SQLCmdArguments) bool {
 			return args.ScreenWidth != nil && *args.ScreenWidth == 10 && args.FixedTypeWidth == nil && args.VariableTypeWidth == nil
 		}},
-		{[]string{"-s", "|", "-w", "10", "-W"}, func(args SQLCmdArguments) bool {
-			return args.TrimSpaces && args.ColumnSeparator == "|" && *args.ScreenWidth == 10
+		{[]string{"-s", "|", "-w", "10", "-W", "-t", "10"}, func(args SQLCmdArguments) bool {
+			return args.TrimSpaces && args.ColumnSeparator == "|" && *args.ScreenWidth == 10 && args.QueryTimeout == 10
 		}},
 		{[]string{"-y", "100", "-Y", "200", "-P", "placeholder", "-e"}, func(args SQLCmdArguments) bool {
 			return *args.FixedTypeWidth == 200 && *args.VariableTypeWidth == 100 && args.Password == "placeholder" && args.EchoInput
@@ -149,6 +149,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-Y", "-2"}, "'-Y -2': value must be greater than or equal to 0 and less than or equal to 8000."},
 		{[]string{"-P"}, "'-P': Missing argument. Enter '-?' for help."},
 		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
+		{[]string{"-t", "-2"}, "'-t -2': value must be greater than or equal to 0 and less than or equal to 65534."},
 	}
 
 	for _, test := range commands {

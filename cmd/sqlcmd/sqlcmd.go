@@ -69,6 +69,7 @@ type SQLCmdArguments struct {
 	ListServers                 string
 	RemoveControlCharacters     *int
 	EchoInput                   bool
+	QueryTimeout                int
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -144,6 +145,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = rangeParameterError("-Y", fmt.Sprint(*a.FixedTypeWidth), 0, 8000, true)
 		case a.VariableTypeWidth != nil && (*a.VariableTypeWidth < 0 || *a.VariableTypeWidth > 8000):
 			err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
+		case a.QueryTimeout < 0 || a.QueryTimeout > 65534:
+			err = rangeParameterError("-t", fmt.Sprint(a.QueryTimeout), 0, 65534, true)
 		}
 	}
 	if err != nil {
@@ -418,6 +421,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	_ = rootCmd.Flags().BoolP("client-regional-setting", "R", false, localizer.Sprintf("Provided for backward compatibility. Client regional settings are not used"))
 	_ = rootCmd.Flags().IntP(removeControlCharacters, "k", 0, localizer.Sprintf("%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters", "-k [1|2]"))
 	rootCmd.Flags().BoolVarP(&args.EchoInput, "echo-input", "e", false, localizer.Sprintf("Echo input"))
+	rootCmd.Flags().IntVarP(&args.QueryTimeout, "query-timeout", "t", 0, "Query timeout")
 }
 
 func setScriptVariable(v string) string {
@@ -602,7 +606,7 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			return ""
 		},
 		sqlcmd.SQLCMDUSER:        func(a *SQLCmdArguments) string { return a.UserName },
-		sqlcmd.SQLCMDSTATTIMEOUT: func(a *SQLCmdArguments) string { return "" },
+		sqlcmd.SQLCMDSTATTIMEOUT: func(a *SQLCmdArguments) string { return fmt.Sprint(a.QueryTimeout) },
 		sqlcmd.SQLCMDHEADERS:     func(a *SQLCmdArguments) string { return fmt.Sprint(a.Headers) },
 		sqlcmd.SQLCMDCOLSEP: func(a *SQLCmdArguments) string {
 			if a.ColumnSeparator != "" {

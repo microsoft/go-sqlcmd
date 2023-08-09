@@ -17,6 +17,7 @@ import (
 	"sort"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
@@ -415,6 +416,12 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
+	timeout := s.vars.QueryTimeoutSeconds()
+	if timeout > 0 {
+		ct, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+		defer cancel()
+		ctx = ct
+	}
 	retmsg := &sqlexp.ReturnMessage{}
 	rows, qe := s.db.QueryContext(ctx, query, retmsg)
 	if qe != nil {

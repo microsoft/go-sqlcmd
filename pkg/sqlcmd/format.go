@@ -4,7 +4,9 @@
 package sqlcmd
 
 import (
+	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -214,6 +216,9 @@ func (f *sqlCmdFormatterType) AddMessage(msg string) {
 func (f *sqlCmdFormatterType) AddError(err error) {
 	print := true
 	b := new(strings.Builder)
+	if errors.Is(err, context.DeadlineExceeded) {
+		err = localizer.Errorf("Timeout expired")
+	}
 	msg := err.Error()
 	switch e := (err).(type) {
 	case mssql.Error:
