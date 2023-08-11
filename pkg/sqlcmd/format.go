@@ -4,7 +4,9 @@
 package sqlcmd
 
 import (
+	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -86,11 +88,12 @@ type sqlCmdFormatterType struct {
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
-func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool) Formatter {
+func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool, ccb ControlCharacterBehavior) Formatter {
 	return &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
 		format:               "horizontal",
 		colorizer:            color.New(false),
+		ccb:                  ccb,
 	}
 }
 
@@ -213,6 +216,9 @@ func (f *sqlCmdFormatterType) AddMessage(msg string) {
 func (f *sqlCmdFormatterType) AddError(err error) {
 	print := true
 	b := new(strings.Builder)
+	if errors.Is(err, context.DeadlineExceeded) {
+		err = localizer.Errorf("Timeout expired")
+	}
 	msg := err.Error()
 	switch e := (err).(type) {
 	case mssql.Error:

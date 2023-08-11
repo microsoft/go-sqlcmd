@@ -29,7 +29,7 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 	// The long flag names are up for debate.
 	commands := []cmdLineTest{
 		{[]string{}, func(args SQLCmdArguments) bool {
-			return args.Server == "" && !args.UseTrustedConnection && args.UserName == "" && args.ScreenWidth == nil && args.ErrorsToStderr == -1 && args.EncryptConnection == "default"
+			return args.Server == "" && !args.UseTrustedConnection && args.UserName == "" && args.ScreenWidth == nil && args.ErrorsToStderr == nil && args.EncryptConnection == "default"
 		}},
 		{[]string{"-v", "a=b", "x=y", "-E"}, func(args SQLCmdArguments) bool {
 			return len(args.Variables) == 2 && args.Variables["a"] == "b" && args.Variables["x"] == "y" && args.UseTrustedConnection
@@ -50,8 +50,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-S", "tcp:someserver,10245"}, func(args SQLCmdArguments) bool {
 			return args.Server == "tcp:someserver,10245" && !args.DisableVariableSubstitution
 		}},
-		{[]string{"-X", "-x"}, func(args SQLCmdArguments) bool {
-			return args.DisableCmdAndWarn && args.DisableVariableSubstitution
+		{[]string{"-X", "1", "-x"}, func(args SQLCmdArguments) bool {
+			return args.errorOnBlockedCmd() && args.DisableVariableSubstitution
 		}},
 		// Notice no "" around the value with a space in it. It seems quotes get stripped out somewhere before Parse when invoking on a real command line
 		{[]string{"-v", "x=y", "-v", `y=a space`}, func(args SQLCmdArguments) bool {
@@ -67,7 +67,7 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 			return args.Format == "vert"
 		}},
 		{[]string{"-r", "1"}, func(args SQLCmdArguments) bool {
-			return args.ErrorsToStderr == 1
+			return *args.ErrorsToStderr == 1
 		}},
 		{[]string{"-h", "2", "-?"}, func(args SQLCmdArguments) bool {
 			return args.Help && args.Headers == 2
@@ -81,11 +81,11 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-w", "10"}, func(args SQLCmdArguments) bool {
 			return args.ScreenWidth != nil && *args.ScreenWidth == 10 && args.FixedTypeWidth == nil && args.VariableTypeWidth == nil
 		}},
-		{[]string{"-s", "|", "-w", "10", "-W"}, func(args SQLCmdArguments) bool {
-			return args.TrimSpaces && args.ColumnSeparator == "|" && *args.ScreenWidth == 10
+		{[]string{"-s", "|", "-w", "10", "-W", "-t", "10"}, func(args SQLCmdArguments) bool {
+			return args.TrimSpaces && args.ColumnSeparator == "|" && *args.ScreenWidth == 10 && args.QueryTimeout == 10
 		}},
-		{[]string{"-y", "100", "-Y", "200", "-P", "placeholder"}, func(args SQLCmdArguments) bool {
-			return *args.FixedTypeWidth == 200 && *args.VariableTypeWidth == 100 && args.Password == "placeholder"
+		{[]string{"-y", "100", "-Y", "200", "-P", "placeholder", "-e"}, func(args SQLCmdArguments) bool {
+			return *args.FixedTypeWidth == 200 && *args.VariableTypeWidth == 100 && args.Password == "placeholder" && args.EchoInput
 		}},
 		{[]string{"-E", "-v", "a=b", "x=y", "-i", "a.sql", "b.sql", "-v", "f=g", "-i", "c.sql", "-C", "-v", "ab=cd", "ef=hi"}, func(args SQLCmdArguments) bool {
 			return args.UseTrustedConnection && args.Variables["x"] == "y" && len(args.InputFile) == 3 && args.InputFile[0] == "a.sql" && args.TrustServerCertificate
@@ -95,6 +95,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		}},
 		{[]string{"-i", `"comma,text.sql"`}, func(args SQLCmdArguments) bool {
 			return args.InputFile[0] == "comma,text.sql"
+		}},
+		{[]string{"-k", "-X", "-r"}, func(args SQLCmdArguments) bool {
+			return args.warnOnBlockedCmd() && !args.useEnvVars() && args.getControlCharacterBehavior() == sqlcmd.ControlRemove && *args.ErrorsToStderr == 0
 		}},
 	}
 
@@ -146,6 +149,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-Y", "-2"}, "'-Y -2': value must be greater than or equal to 0 and less than or equal to 8000."},
 		{[]string{"-P"}, "'-P': Missing argument. Enter '-?' for help."},
 		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
+		{[]string{"-t", "-2"}, "'-t -2': value must be greater than or equal to 0 and less than or equal to 65534."},
 	}
 
 	for _, test := range commands {
@@ -169,7 +173,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		buf := &memoryBuffer{buf: new(bytes.Buffer)}
 		cmd.SetErr(buf)
 		setFlags(cmd, arguments)
-		cmd.SetArgs(test.commandLine)
+		cmd.SetArgs(convertOsArgs(test.commandLine))
 		err := cmd.Execute()
 		if assert.EqualErrorf(t, err, test.errorMessage, "Command line: %s", test.commandLine) {
 			errBytes := buf.buf.String()
@@ -208,7 +212,7 @@ func TestValidateFlags(t *testing.T) {
 		}
 		cmd.SetErr(new(bytes.Buffer))
 		setFlags(cmd, arguments)
-		cmd.SetArgs(test.commandLine)
+		cmd.SetArgs(convertOsArgs(test.commandLine))
 		err := cmd.Execute()
 		assert.EqualError(t, err, test.errorMessage, "Command line:%v", test.commandLine)
 	}
@@ -226,7 +230,7 @@ func TestRunInputFiles(t *testing.T) {
 	if canTestAzureAuth() {
 		args.UseAad = true
 	}
-	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	setVars(vars, &args)
 
@@ -251,7 +255,7 @@ func TestUnicodeOutput(t *testing.T) {
 	if canTestAzureAuth() {
 		args.UseAad = true
 	}
-	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	setVars(vars, &args)
 
 	exitCode, err := run(vars, &args)
@@ -303,7 +307,7 @@ func TestUnicodeInput(t *testing.T) {
 			if canTestAzureAuth() {
 				args.UseAad = true
 			}
-			vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+			vars := sqlcmd.InitializeVariables(args.useEnvVars())
 			setVars(vars, &args)
 			exitCode, err := run(vars, &args)
 			assert.NoError(t, err, "run")
@@ -333,7 +337,7 @@ func TestQueryAndExit(t *testing.T) {
 	if canTestAzureAuth() {
 		args.UseAad = true
 	}
-	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	vars.Set("VAR1", "100")
 	setVars(vars, &args)
@@ -353,13 +357,14 @@ func TestQueryAndExit(t *testing.T) {
 func TestExitOnError(t *testing.T) {
 	args = newArguments()
 	args.InputFile = []string{"testdata/select100.sql"}
-	args.ErrorsToStderr = 0
+	args.ErrorsToStderr = new(int)
+	*args.ErrorsToStderr = 0
 	args.ExitOnError = true
 	if canTestAzureAuth() {
 		args.UseAad = true
 	}
 
-	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	setVars(vars, &args)
 
 	exitCode, err := run(vars, &args)
@@ -368,7 +373,7 @@ func TestExitOnError(t *testing.T) {
 
 	args.InputFile = []string{"testdata/bad.sql"}
 
-	vars = sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars = sqlcmd.InitializeVariables(args.useEnvVars())
 	setVars(vars, &args)
 
 	exitCode, err = run(vars, &args)
@@ -390,7 +395,7 @@ func TestAzureAuth(t *testing.T) {
 	args.Query = "SELECT 'AZURE'"
 	args.OutputFile = o.Name()
 	args.UseAad = true
-	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	setVars(vars, &args)
 	exitCode, err := run(vars, &args)
@@ -410,7 +415,7 @@ func TestMissingInputFile(t *testing.T) {
 		args.UseAad = true
 	}
 
-	vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	setVars(vars, &args)
 
 	exitCode, err := run(vars, &args)
@@ -453,10 +458,11 @@ func TestConditionsForPasswordPrompt(t *testing.T) {
 	for _, testcase := range tests {
 		t.Log(testcase.authenticationMethod, testcase.inputFile, testcase.username, testcase.pwd, testcase.expectedResult)
 		args := newArguments()
-		args.DisableCmdAndWarn = true
+		args.DisableCmd = new(int)
+		*args.DisableCmd = 1
 		args.InputFile = testcase.inputFile
 		args.UserName = testcase.username
-		vars := sqlcmd.InitializeVariables(!args.DisableCmdAndWarn)
+		vars := sqlcmd.InitializeVariables(args.useEnvVars())
 		setVars(vars, &args)
 		var connectConfig sqlcmd.ConnectSettings
 		setConnect(&connectConfig, &args, vars)
@@ -508,6 +514,11 @@ func TestConvertOsArgs(t *testing.T) {
 			"Multiple variables and files/multiple switches",
 			[]string{"-E", "-v", "a=b", "x=y", "-i", "a.sql", "b.sql", "-v", "f=g", "-i", "c.sql", "-C", "-v", "ab=cd", "ef=hi"},
 			[]string{"-E", "-v", "a=b", "-v", "x=y", "-i", "a.sql", "-i", "b.sql", "-v", "f=g", "-i", "c.sql", "-C", "-v", "ab=cd", "-v", "ef=hi"},
+		},
+		{
+			"Flags with optional arguments",
+			[]string{"-r", "1", "-X", "-k", "-C"},
+			[]string{"-r", "1", "-X", "0", "-k", "0", "-C"},
 		},
 	}
 	for _, c := range tests {

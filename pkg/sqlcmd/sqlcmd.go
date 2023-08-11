@@ -17,6 +17,7 @@ import (
 	"sort"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
@@ -79,8 +80,10 @@ type Sqlcmd struct {
 	PrintError func(msg string, severity uint8) bool
 	// UnicodeOutputFile is true when UTF16 file output is needed
 	UnicodeOutputFile bool
-	colorizer         color.Colorizer
-	termchan          chan os.Signal
+	// EchoInput tells the GO command to print the batch text before running the query
+	EchoInput bool
+	colorizer color.Colorizer
+	termchan  chan os.Signal
 }
 
 // New creates a new Sqlcmd instance.
@@ -413,6 +416,12 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
+	timeout := s.vars.QueryTimeoutSeconds()
+	if timeout > 0 {
+		ct, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+		defer cancel()
+		ctx = ct
+	}
 	retmsg := &sqlexp.ReturnMessage{}
 	rows, qe := s.db.QueryContext(ctx, query, retmsg)
 	if qe != nil {

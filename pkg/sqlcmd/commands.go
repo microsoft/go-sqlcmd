@@ -232,6 +232,12 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 	if err != nil || n < 1 {
 		return InvalidCommandError("GO", line)
 	}
+	if s.EchoInput {
+		err = listCommand(s, []string{}, line)
+	}
+	if err != nil {
+		return InvalidCommandError("GO", line)
+	}
 	query := s.batch.String()
 	if query == "" {
 		return nil

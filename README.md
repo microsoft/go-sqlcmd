@@ -125,7 +125,6 @@ The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to t
 - There are new posix-style versions of each flag, such as `--input-file` for `-i`. `sqlcmd -?` will print those parameter names. Those new names do not preserve backward compatibility with ODBC `sqlcmd`. For example, to specify multiple input file names using `--input-file`, the file names must be comma-delimited, not space-delimited.
 
 The following switches have different behavior in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`.
-- `-r` requires a 0 or 1 argument
 - `-R` switch is ignored. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - `-I` switch is ignored; quoted identifiers are always set on. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
 - `-N` now takes a string value that can be one of `true`, `false`, or `disable` to specify the encryption choice. 
@@ -140,7 +139,6 @@ The following switches have different behavior in this version of `sqlcmd` compa
   `sqlcmd -i """select,100.sql"""` will try to open a file named `sql,100.sql` while `sqlcmd -i "select,100.sql"` will try to open two files `select` and `100.sql`
 - If using a single `-i` flag  to pass multiple file names, there must be a space after the `-i`. Example: `-i file1.sql file2.sql`
 - `-M` switch is ignored. Sqlcmd always enables multi-subnet failover.
-
 
 ### Switches not available in the new sqlcmd (go-sqlcmd) yet
 

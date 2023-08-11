@@ -551,6 +551,7 @@ func TestSqlCmdOutputAndError(t *testing.T) {
 
 func TestVeryLongLineInFile(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
 	val := strings.Repeat("a1b", (3*1024*1024)/3)
 	line := "set nocount on" + SqlcmdEol + "select('" + val + "')"
 	file, err := os.CreateTemp("", "sqlcmdlongline")
@@ -562,6 +563,17 @@ func TestVeryLongLineInFile(t *testing.T) {
 	if assert.NoError(t, err, "runSqlCmd") {
 		actual := strings.TrimRight(buf.buf.String(), "\r\n")
 		assert.Equal(t, val, actual, "Query result")
+	}
+}
+
+func TestQueryTimeout(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.vars.Set(SQLCMDSTATTIMEOUT, "1")
+	i, err := s.runQuery("waitfor delay '00:00:10'")
+	if assert.NoError(t, err, "runQuery returned an error") {
+		assert.Equal(t, -100, i, "return from runQuery")
+		assert.Equal(t, "Timeout expired"+SqlcmdEol, buf.buf.String(), "Query should have timed out")
 	}
 }
 
@@ -586,7 +598,7 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	s.Connect = newConnect(t)
-	s.Format = NewSQLCmdDefaultFormatter(true)
+	s.Format = NewSQLCmdDefaultFormatter(true, ControlIgnore)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
 	err := s.ConnectDb(nil, true)
@@ -600,7 +612,7 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	s.Connect = newConnect(t)
-	s.Format = NewSQLCmdDefaultFormatter(true)
+	s.Format = NewSQLCmdDefaultFormatter(true, ControlIgnore)
 	file, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
 	s.SetOutput(file)
@@ -618,7 +630,7 @@ func setupSqlcmdWithFileErrorOutput(t testing.TB) (*Sqlcmd, *os.File, *os.File) 
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	s.Connect = newConnect(t)
-	s.Format = NewSQLCmdDefaultFormatter(true)
+	s.Format = NewSQLCmdDefaultFormatter(true, ControlIgnore)
 	outfile, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
 	errfile, err := os.CreateTemp("", "sqlcmderr")
