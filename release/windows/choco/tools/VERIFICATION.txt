@@ -3,8 +3,8 @@ Verification is intended to assist the Chocolatey moderators and community
 in verifying that this package's contents are trustworthy.
  
 Download .msi from Microsoft Download Center
-https://download.microsoft.com/download/d/4/4/d4403a51-2ab7-4ea8-b850-d2710c5e1323/sqlcmd_0.8.1-1.msi
+https://github.com/microsoft/go-sqlcmd/releases/download/v1.3.0/sqlcmd-x64_1.3.0-1.msi
 
-Run checksum -t sha256 -f sqlcmd_0.8.1-1.msi
+Run checksum -t sha256 -f sqlcmd-x64_1.3.0-1.msi
 
 We are the software vendor (Microsoft)
