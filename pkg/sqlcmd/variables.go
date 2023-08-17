@@ -198,6 +198,11 @@ func (v Variables) ColorScheme() string {
 	return v[SQLCMDCOLORSCHEME]
 }
 
+// QueryTimeoutSeconds limits the allowed time for a query to complete. Any value <= 0 specifies unlimited
+func (v Variables) QueryTimeoutSeconds() int64 {
+	return mustValue(v[SQLCMDSTATTIMEOUT])
+}
+
 func mustValue(val string) int64 {
 	var n int64
 	_, err := fmt.Sscanf(val, "%d", &n)

@@ -11,7 +11,7 @@ import (
 	"github.com/microsoft/go-mssqldb/azuread"
 )
 
-// ConnectSettings specifies the settings for connections
+// ConnectSettings specifies the settings for SQL connections and queries
 type ConnectSettings struct {
 	// ServerName is the full name including instance and port
 	ServerName string

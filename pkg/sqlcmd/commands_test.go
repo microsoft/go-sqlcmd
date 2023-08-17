@@ -188,7 +188,7 @@ func TestListCommandUsesColorizer(t *testing.T) {
 func TestListColorPrintsStyleSamples(t *testing.T) {
 	vars := InitializeVariables(false)
 	s := New(nil, "", vars)
-	s.Format = NewSQLCmdDefaultFormatter(false)
+	s.Format = NewSQLCmdDefaultFormatter(false, ControlIgnore)
 	// force colorizer on
 	s.colorizer = color.New(true)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
@@ -362,5 +362,16 @@ func TestEditCommand(t *testing.T) {
 	err := runSqlCmd(t, s, c)
 	if assert.NoError(t, err, ":ed should not raise error") {
 		assert.Equal(t, "1> select 5000"+SqlcmdEol+"5000"+SqlcmdEol+SqlcmdEol, buf.buf.String(), "Incorrect output from query after :ed command")
+	}
+}
+
+func TestEchoInput(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.EchoInput = true
+	defer buf.Close()
+	c := []string{"set nocount on", "select 100", "go"}
+	err := runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "go should not raise error") {
+		assert.Equal(t, "set nocount on"+SqlcmdEol+"select 100"+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol, buf.buf.String(), "Incorrect output with echo true")
 	}
 }

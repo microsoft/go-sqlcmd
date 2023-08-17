@@ -17,6 +17,7 @@ import (
 	"sort"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
@@ -39,8 +40,6 @@ var (
 		message: ErrCmdDisabled,
 	}
 )
-
-const maxLineBuffer = 2 * 1024 * 1024 // 2Mb
 
 // Console defines methods used for console input and output
 type Console interface {
@@ -82,8 +81,10 @@ type Sqlcmd struct {
 	PrintError func(msg string, severity uint8) bool
 	// UnicodeOutputFile is true when UTF16 file output is needed
 	UnicodeOutputFile bool
-	colorizer         color.Colorizer
-	termchan          chan os.Signal
+	// EchoInput tells the GO command to print the batch text before running the query
+	EchoInput bool
+	colorizer color.Colorizer
+	termchan  chan os.Signal
 }
 
 // New creates a new Sqlcmd instance.
@@ -328,24 +329,29 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	b := s.batch.batchline
 	utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
 	unicodeReader := transform.NewReader(f, utf16bom)
-	scanner := bufio.NewScanner(unicodeReader)
-	buf := make([]byte, maxLineBuffer)
-	scanner.Buffer(buf, maxLineBuffer)
+	scanner := bufio.NewReader(unicodeReader)
 	curLine := s.batch.read
 	echoFileLines := s.echoFileLines
+	ln := make([]byte, 0, 2*1024*1024)
 	s.batch.read = func() (string, error) {
-		if !scanner.Scan() {
-			err := scanner.Err()
-			if err == nil {
-				return "", io.EOF
-			}
-			return "", err
+		var (
+			isPrefix bool  = true
+			err      error = nil
+			line     []byte
+		)
+
+		for isPrefix && err == nil {
+			line, isPrefix, err = scanner.ReadLine()
+			ln = append(ln, line...)
 		}
-		t := scanner.Text()
-		if echoFileLines {
-			_, _ = s.GetOutput().Write([]byte(s.Prompt() + t + SqlcmdEol))
+		if err == nil && echoFileLines {
+			_, _ = s.GetOutput().Write([]byte(s.Prompt()))
+			_, _ = s.GetOutput().Write(ln)
+			_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
 		}
-		return t, nil
+		t := string(ln)
+		ln = ln[:0]
+		return t, err
 	}
 	err = s.Run(false, processAll)
 	s.batch.read = curLine
@@ -411,6 +417,12 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
+	timeout := s.vars.QueryTimeoutSeconds()
+	if timeout > 0 {
+		ct, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+		defer cancel()
+		ctx = ct
+	}
 	retmsg := &sqlexp.ReturnMessage{}
 	rows, qe := s.db.QueryContext(ctx, query, retmsg)
 	if qe != nil {
