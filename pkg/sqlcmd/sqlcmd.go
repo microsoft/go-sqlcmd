@@ -21,6 +21,8 @@ import (
 
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
+
+	_ "github.com/microsoft/go-mssqldb/aecmk/akv"
 	_ "github.com/microsoft/go-mssqldb/aecmk/localcert"
 	"github.com/microsoft/go-mssqldb/msdsn"
 	"github.com/microsoft/go-sqlcmd/internal/color"
