@@ -375,3 +375,23 @@ func TestEchoInput(t *testing.T) {
 		assert.Equal(t, "set nocount on"+SqlcmdEol+"select 100"+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol, buf.buf.String(), "Incorrect output with echo true")
 	}
 }
+
+func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	c := []string{"set nocount on", "declare @v integer = 2", "select 1", "exit(select @v)"}
+	err := runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "exit should not error") {
+		output := buf.buf.String()
+		assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol+"2"+SqlcmdEol+SqlcmdEol, output, "Incorrect output")
+		assert.Equal(t, 2, s.Exitcode, "exit should set Exitcode")
+	}
+	s, buf1 := setupSqlCmdWithMemoryOutput(t)
+	defer buf1.Close()
+	c = []string{"set nocount on", "select 1", "exit(select @v)"}
+	err = runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "exit should not error") {
+		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
+	}
+
+}
