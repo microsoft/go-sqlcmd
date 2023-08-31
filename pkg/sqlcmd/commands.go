@@ -182,27 +182,33 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 	if !strings.HasPrefix(params, "(") || !strings.HasSuffix(params, ")") {
 		return InvalidCommandError("EXIT", line)
 	}
-	// First we run the current batch
-	query := s.batch.String()
-	if query != "" {
-		query = s.getRunnableQuery(query)
-		if exitCode, err := s.runQuery(query); err != nil {
-			s.Exitcode = exitCode
-			return ErrExitRequested
-		}
+	// First we save the current batch
+	query1 := s.batch.String()
+	if len(query1) > 0 {
+		query1 = s.getRunnableQuery(query1)
 	}
-	query = strings.TrimSpace(params[1 : len(params)-1])
-	if len(query) > 0 {
-		s.batch.Reset([]rune(query))
+	// Now parse the params of EXIT as a batch without commands
+	cmd := s.batch.cmd
+	s.batch.cmd = nil
+	defer func() {
+		s.batch.cmd = cmd
+	}()
+	query2 := strings.TrimSpace(params[1 : len(params)-1])
+	if len(query2) > 0 {
+		s.batch.Reset([]rune(query2))
 		_, _, err := s.batch.Next()
 		if err != nil {
 			return err
 		}
-		query = s.batch.String()
-		if s.batch.String() != "" {
-			query = s.getRunnableQuery(query)
-			s.Exitcode, _ = s.runQuery(query)
+		query2 = s.batch.String()
+		if len(query2) > 0 {
+			query2 = s.getRunnableQuery(query2)
 		}
+	}
+
+	if len(query1) > 0 || len(query2) > 0 {
+		query := query1 + SqlcmdEol + query2
+		s.Exitcode, _ = s.runQuery(query)
 	}
 	return ErrExitRequested
 }
