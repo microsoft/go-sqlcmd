@@ -2661,16 +2661,26 @@
             "fuzzy": true
         },
         {
-            "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-            "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-            "translation": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
+            "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+            "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+            "translation": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
             "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "_X1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"-X[1]\""
+                }
+            ],
             "fuzzy": true
         },
         {
-            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-            "translation": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
+            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+            "translation": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2796,10 +2806,20 @@
             "fuzzy": true
         },
         {
-            "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-            "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-            "translation": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
+            "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "translation": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "_r0__1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"-r[0 | 1]\""
+                }
+            ],
             "fuzzy": true
         },
         {
@@ -2920,6 +2940,31 @@
             "fuzzy": true
         },
         {
+            "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+            "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+            "translation": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "_Lc",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"-L[c]\""
+                },
+                {
+                    "id": "C",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"c\""
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "Dedicated administrator connection",
             "message": "Dedicated administrator connection",
             "translation": "Dedicated administrator connection",
@@ -2937,6 +2982,37 @@
             "id": "Provided for backward compatibility. Client regional settings are not used",
             "message": "Provided for backward compatibility. Client regional settings are not used",
             "translation": "Provided for backward compatibility. Client regional settings are not used",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+            "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+            "translation": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "_k_12",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"-k [1|2]\""
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Echo input",
+            "message": "Echo input",
+            "translation": "Echo input",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Enable column encryption",
+            "message": "Enable column encryption",
+            "translation": "Enable column encryption",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -3342,6 +3418,13 @@
                     "expr": "lineNumber"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Timeout expired",
+            "message": "Timeout expired",
+            "translation": "Timeout expired",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {

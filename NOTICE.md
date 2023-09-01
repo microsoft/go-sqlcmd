@@ -6,8 +6,8 @@ This repository incorporates material as listed below or described in the code.
 ## github.com/Azure/azure-sdk-for-go/sdk/azcore
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azcore
-* Version: v1.6.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.6.0/sdk/azcore/LICENSE.txt)
+* Version: v1.7.1
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.7.1/sdk/azcore/LICENSE.txt)
 
 ```
 MIT License
@@ -96,11 +96,71 @@ SOFTWARE
 
 ```
 
+## github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
+
+* Name: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
+* Version: v1.0.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/azkeys/v1.0.0/sdk/security/keyvault/azkeys/LICENSE.txt)
+
+```
+    MIT License
+
+    Copyright (c) Microsoft Corporation. All rights reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE
+```
+
+## github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
+
+* Name: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
+* Version: v0.8.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/internal/v0.8.0/sdk/security/keyvault/internal/LICENSE.txt)
+
+```
+    MIT License
+
+    Copyright (c) Microsoft Corporation. All rights reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE
+```
+
 ## github.com/AzureAD/microsoft-authentication-library-for-go/apps
 
 * Name: github.com/AzureAD/microsoft-authentication-library-for-go/apps
-* Version: v1.0.0
-* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v1.0.0/LICENSE)
+* Version: v1.1.0
+* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v1.1.0/LICENSE)
 
 ```
     MIT License
@@ -1408,11 +1468,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ```
 
-## github.com/golang-jwt/jwt/v4
+## github.com/golang-jwt/jwt/v5
 
-* Name: github.com/golang-jwt/jwt/v4
-* Version: v4.5.0
-* License: [MIT](https://github.com/golang-jwt/jwt/blob/v4.5.0/LICENSE)
+* Name: github.com/golang-jwt/jwt/v5
+* Version: v5.0.0
+* License: [MIT](https://github.com/golang-jwt/jwt/blob/v5.0.0/LICENSE)
 
 ```
 Copyright (c) 2012 Dave Grijalva
@@ -4683,8 +4743,8 @@ THE SOFTWARE.
 ## golang.org/x/crypto
 
 * Name: golang.org/x/crypto
-* Version: v0.9.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.9.0:LICENSE)
+* Version: v0.12.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.12.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4720,8 +4780,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/net
 
 * Name: golang.org/x/net
-* Version: v0.10.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.10.0:LICENSE)
+* Version: v0.14.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.14.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4757,8 +4817,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/sys
 
 * Name: golang.org/x/sys
-* Version: v0.8.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.8.0:LICENSE)
+* Version: v0.11.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.11.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4794,8 +4854,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/text
 
 * Name: golang.org/x/text
-* Version: v0.9.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.9.0:LICENSE)
+* Version: v0.12.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.12.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
