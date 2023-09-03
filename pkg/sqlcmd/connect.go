@@ -53,6 +53,8 @@ type ConnectSettings struct {
 	ApplicationName string
 	// DedicatedAdminConnection forces the connection to occur over tcp on the dedicated admin port. Requires Browser service access
 	DedicatedAdminConnection bool
+	// EnableColumnEncryption enables support for transparent column encryption
+	EnableColumnEnryption bool
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -151,6 +153,9 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if connect.DedicatedAdminConnection {
 		query.Set("protocol", "admin")
+	}
+	if connect.EnableColumnEnryption {
+		query.Set("columnencryption", "true")
 	}
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil
