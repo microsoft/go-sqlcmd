@@ -450,10 +450,10 @@ func normalizeFlags(cmd *cobra.Command) error {
 		case encryptConnection:
 			value := strings.ToLower(v)
 			switch value {
-			case "false", "true", "disable":
+			case "mandatory", "yes", "1", "t", "true", "disable", "optional", "no", "0", "f", "false", "strict":
 				return pflag.NormalizedName(name)
 			default:
-				err = invalidParameterError("-N", v, "false", "true", "disable")
+				err = invalidParameterError("-N", v, "mandatory", "yes", "1", "t", "true", "disable", "optional", "no", "0", "f", "false", "strict")
 				return pflag.NormalizedName("")
 			}
 		case format:
