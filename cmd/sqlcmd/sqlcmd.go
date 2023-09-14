@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 
+	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
@@ -70,7 +71,9 @@ type SQLCmdArguments struct {
 	RemoveControlCharacters     *int
 	EchoInput                   bool
 	QueryTimeout                int
-	EnableColumnEnryption       bool
+	EnableColumnEncryption      bool
+	ChangePassword              string
+	ChangePasswordAndExit       string
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -423,7 +426,9 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	_ = rootCmd.Flags().IntP(removeControlCharacters, "k", 0, localizer.Sprintf("%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters", "-k [1|2]"))
 	rootCmd.Flags().BoolVarP(&args.EchoInput, "echo-input", "e", false, localizer.Sprintf("Echo input"))
 	rootCmd.Flags().IntVarP(&args.QueryTimeout, "query-timeout", "t", 0, "Query timeout")
-	rootCmd.Flags().BoolVarP(&args.EnableColumnEnryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
+	rootCmd.Flags().BoolVarP(&args.EnableColumnEncryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
+	rootCmd.Flags().StringVarP(&args.ChangePassword, "change-password", "z", "", localizer.Sprintf("New password"))
+	rootCmd.Flags().StringVarP(&args.ChangePasswordAndExit, "change-password-exit", "Z", "", localizer.Sprintf("New password and exit"))
 }
 
 func setScriptVariable(v string) string {
@@ -682,11 +687,17 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.ExitOnError = args.ExitOnError
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 	connect.DedicatedAdminConnection = args.DedicatedAdminConnection
-	connect.EnableColumnEnryption = args.EnableColumnEnryption
+	connect.EnableColumnEncryption = args.EnableColumnEncryption
+	if len(args.ChangePassword) > 0 {
+		connect.ChangePassword = args.ChangePassword
+	}
+	if len(args.ChangePasswordAndExit) > 0 {
+		connect.ChangePassword = args.ChangePasswordAndExit
+	}
 }
 
 func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
-	iactive := args.InputFile == nil && args.Query == ""
+	iactive := args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0
 	return iactive || connect.RequiresPassword()
 }
 
@@ -749,8 +760,23 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	// connect using no overrides
 	err = s.ConnectDb(nil, line == nil)
 	if err != nil {
-		s.WriteError(s.GetError(), err)
-		return 1, err
+		switch e := err.(type) {
+		// 18488 == password must be changed on connection
+		case mssql.Error:
+			if e.Number == 18488 && line != nil && len(args.Password) == 0 && len(args.ChangePassword) == 0 && len(args.ChangePasswordAndExit) == 0 {
+				b, _ := line.ReadPassword(localizer.Sprintf("Enter new password:"))
+				s.Connect.ChangePassword = string(b)
+				err = s.ConnectDb(nil, true)
+			}
+		}
+		if err != nil {
+			s.WriteError(s.GetError(), err)
+			return 1, err
+		}
+	}
+
+	if len(args.ChangePasswordAndExit) > 0 {
+		return 0, nil
 	}
 
 	script := vars.StartupScriptFile()
