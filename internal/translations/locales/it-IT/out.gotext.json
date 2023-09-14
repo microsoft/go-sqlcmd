@@ -3003,6 +3003,16 @@
             "translation": ""
         },
         {
+            "id": "New password",
+            "message": "New password",
+            "translation": ""
+        },
+        {
+            "id": "New password and exit",
+            "message": "New password and exit",
+            "translation": ""
+        },
+        {
             "id": "Sets the sqlcmd scripting variable {V}",
             "message": "Sets the sqlcmd scripting variable {V}",
             "translation": "Imposta la variabile di scripting sqlcmd {V}",
@@ -3242,6 +3252,11 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Enter new password:",
+            "message": "Enter new password:",
+            "translation": ""
         },
         {
             "id": "Sqlcmd: Error:",
@@ -3532,6 +3547,11 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Password:",
+            "message": "Password:",
+            "translation": ""
         },
         {
             "id": "Invalid variable identifier {Name}",
