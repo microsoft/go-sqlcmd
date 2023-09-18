@@ -96,8 +96,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-i", `"comma,text.sql"`}, func(args SQLCmdArguments) bool {
 			return args.InputFile[0] == "comma,text.sql"
 		}},
-		{[]string{"-k", "-X", "-r"}, func(args SQLCmdArguments) bool {
-			return args.warnOnBlockedCmd() && !args.useEnvVars() && args.getControlCharacterBehavior() == sqlcmd.ControlRemove && *args.ErrorsToStderr == 0
+		{[]string{"-k", "-X", "-r", "-z", "something"}, func(args SQLCmdArguments) bool {
+			return args.warnOnBlockedCmd() && !args.useEnvVars() && args.getControlCharacterBehavior() == sqlcmd.ControlRemove && *args.ErrorsToStderr == 0 && args.ChangePassword == "something"
 		}},
 	}
 

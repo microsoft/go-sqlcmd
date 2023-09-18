@@ -165,6 +165,7 @@ var messageKeyToIndex = map[string]int{
 	"Endpoint name must be provided.  Provide endpoint name with %s flag":                 117,
 	"Endpoint name to view details of":                                                    138,
 	"Endpoint required to add context.  Endpoint '%v' does not exist.  Use %s flag":       59,
+	"Enter new password:":                                                                 296,
 	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed":                             240,
 	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed": 239,
 	"Explicitly set the container hostname, it defaults to the container ID":                                                                                  174,
@@ -200,30 +201,33 @@ var messageKeyToIndex = map[string]int{
 	"List all the endpoints in your sqlconfig file":                                                        136,
 	"List all the users in your sqlconfig file":                                                            143,
 	"List connection strings for all client drivers":                                                       103,
-	"List tags":                                                                         215,
-	"Minimum number of numeric characters":                                              168,
-	"Minimum number of special characters":                                              167,
-	"Minimum number of upper characters":                                                169,
-	"Modify sqlconfig files using subcommands like \"%s\"":                              7,
-	"Msg %#v, Level %d, State %d, Server %s, Line %#v%s":                                284,
-	"Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s":                  283,
-	"Name of context to delete":                                                         110,
-	"Name of context to set as current context":                                         151,
-	"Name of endpoint this context will use":                                            54,
-	"Name of endpoint to delete":                                                        116,
-	"Name of user this context will use":                                                55,
-	"Name of user to delete":                                                            122,
-	"No context exists with the name: \"%v\"":                                           155,
-	"No current context":                                                                20,
-	"No endpoints to uninstall":                                                         50,
-	"Now ready for client connections on port %d":                                       191,
-	"Open in Azure Data Studio":                                                         64,
-	"Open tools (e.g Azure Data Studio) for current context":                            10,
-	"Or, set the environment variable i.e. %s %s=YES ":                                  180,
-	"Pass in the %s %s":                                                                 89,
+	"List tags":                                                        215,
+	"Minimum number of numeric characters":                             168,
+	"Minimum number of special characters":                             167,
+	"Minimum number of upper characters":                               169,
+	"Modify sqlconfig files using subcommands like \"%s\"":             7,
+	"Msg %#v, Level %d, State %d, Server %s, Line %#v%s":               284,
+	"Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s": 283,
+	"Name of context to delete":                                        110,
+	"Name of context to set as current context":                        151,
+	"Name of endpoint this context will use":                           54,
+	"Name of endpoint to delete":                                       116,
+	"Name of user this context will use":                               55,
+	"Name of user to delete":                                           122,
+	"New password":                                                     294,
+	"New password and exit":                                            295,
+	"No context exists with the name: \"%v\"":                          155,
+	"No current context":                                               20,
+	"No endpoints to uninstall":                                        50,
+	"Now ready for client connections on port %d":                      191,
+	"Open in Azure Data Studio":                                        64,
+	"Open tools (e.g Azure Data Studio) for current context":           10,
+	"Or, set the environment variable i.e. %s %s=YES ":                 180,
+	"Pass in the %s %s":                                                89,
 	"Pass in the flag %s to override this safety check for user (non-system) databases": 48,
 	"Password": 259,
-	"Password encryption method (%s) in sqlconfig file":                                                                      85,
+	"Password encryption method (%s) in sqlconfig file": 85,
+	"Password:": 298,
 	"Port (next available port from 1433 upwards used by default)":                                                           177,
 	"Press Ctrl+C to exit this process...":                                                                                   219,
 	"Print version information and exit":                                                                                     233,
@@ -294,7 +298,7 @@ var messageKeyToIndex = map[string]int{
 	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions": 247,
 	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits":                                                                                                     235,
 	"This switch is used by the client to request an encrypted connection": 249,
-	"Timeout expired":                                                  294,
+	"Timeout expired":                                                  297,
 	"To override the check, use %s":                                    40,
 	"To remove:         %s":                                            153,
 	"To run a query":                                                   66,
@@ -345,7 +349,7 @@ var messageKeyToIndex = map[string]int{
 	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  %s": 2,
 }
 
-var de_DEIndex = []uint32{ // 296 elements
+var de_DEIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x0000007e, 0x000000d8,
 	0x00000113, 0x0000012b, 0x0000013f, 0x0000018a,
@@ -430,7 +434,8 @@ var de_DEIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x00004975, 0x00004975, 0x00004975, 0x00004975,
 	0x00004975, 0x00004975, 0x00004975, 0x00004975,
-} // Size: 1208 bytes
+	0x00004975, 0x00004975, 0x00004975, 0x00004975,
+} // Size: 1224 bytes
 
 const de_DEData string = "" + // Size: 18805 bytes
 	"\x02SQL Server installieren/erstellen, abfragen, deinstallieren\x02Konfi" +
@@ -707,7 +712,7 @@ const de_DEData string = "" + // Size: 18805 bytes
 	"#[5]v%[6]s\x02Ungültiger Variablenbezeichner %[1]s\x02Ungültiger Variabl" +
 	"enwert %[1]s"
 
-var en_USIndex = []uint32{ // 296 elements
+var en_USIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002c, 0x00000062, 0x000000b3,
 	0x000000ec, 0x00000104, 0x00000117, 0x0000014c,
@@ -791,10 +796,11 @@ var en_USIndex = []uint32{ // 296 elements
 	0x000039d1, 0x00003a16, 0x00003a38, 0x00003a55,
 	// Entry 120 - 13F
 	0x00003ad3, 0x00003c12, 0x00003c89, 0x00003cc3,
-	0x00003d45, 0x00003d50, 0x00003d69, 0x00003d79,
-} // Size: 1208 bytes
+	0x00003d45, 0x00003d50, 0x00003d69, 0x00003d76,
+	0x00003d8c, 0x00003da0, 0x00003db0, 0x00003dba,
+} // Size: 1224 bytes
 
-const en_USData string = "" + // Size: 15737 bytes
+const en_USData string = "" + // Size: 15802 bytes
 	"\x02Install/Create, Query, Uninstall SQL Server\x02View configuration in" +
 	"formation and connection strings\x02sqlcmd: Install/Create/Query SQL Ser" +
 	"ver, Azure SQL, and Tools\x0a\x0aFeedback:\x0a  %[1]s\x02help for backwa" +
@@ -1028,9 +1034,10 @@ const en_USData string = "" + // Size: 15737 bytes
 	"\x02%[1]s List servers. Pass %[2]s to omit 'Servers:' output.\x02%[1]s R" +
 	"emove control characters from output. Pass 1 to substitute a space per c" +
 	"haracter, 2 for a space per consecutive characters\x02Echo input\x02Enab" +
-	"le column encryption\x02Timeout expired"
+	"le column encryption\x02New password\x02New password and exit\x02Enter n" +
+	"ew password:\x02Timeout expired\x02Password:"
 
-var es_ESIndex = []uint32{ // 296 elements
+var es_ESIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000032, 0x00000081, 0x000000de,
 	0x0000012e, 0x0000014f, 0x00000169, 0x000001c1,
@@ -1115,7 +1122,8 @@ var es_ESIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x0000497f, 0x0000497f, 0x0000497f, 0x0000497f,
 	0x0000497f, 0x0000497f, 0x0000497f, 0x0000497f,
-} // Size: 1208 bytes
+	0x0000497f, 0x0000497f, 0x0000497f, 0x0000497f,
+} // Size: 1224 bytes
 
 const es_ESData string = "" + // Size: 18815 bytes
 	"\x02Instalar/Crear, Consultar, Desinstalar SQL Server\x02Visualización d" +
@@ -1393,7 +1401,7 @@ const es_ESData string = "" + // Size: 18815 bytes
 	" Estado %[3]d, Servidor %[4]s, Línea %#[5]v%[6]s\x02Identificador de var" +
 	"iable %[1]s no válido\x02Valor de variable %[1]s no válido"
 
-var fr_FRIndex = []uint32{ // 296 elements
+var fr_FRIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000037, 0x0000007f, 0x000000da,
 	0x0000011e, 0x0000013b, 0x00000154, 0x000001a6,
@@ -1478,7 +1486,8 @@ var fr_FRIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x00004c6a, 0x00004c6a, 0x00004c6a, 0x00004c6a,
 	0x00004c6a, 0x00004c6a, 0x00004c6a, 0x00004c6a,
-} // Size: 1208 bytes
+	0x00004c6a, 0x00004c6a, 0x00004c6a, 0x00004c6a,
+} // Size: 1224 bytes
 
 const fr_FRData string = "" + // Size: 19562 bytes
 	"\x02Installer/créer, interroger, désinstaller SQL Server\x02Afficher les" +
@@ -1765,7 +1774,7 @@ const fr_FRData string = "" + // Size: 19562 bytes
 	"6]s\x02Identifiant de variable invalide %[1]s\x02Valeur de variable inva" +
 	"lide %[1]s"
 
-var it_ITIndex = []uint32{ // 296 elements
+var it_ITIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x00000088, 0x000000e9,
 	0x00000140, 0x0000015d, 0x00000174, 0x000001b3,
@@ -1850,7 +1859,8 @@ var it_ITIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x00004757, 0x00004757, 0x00004757, 0x00004757,
 	0x00004757, 0x00004757, 0x00004757, 0x00004757,
-} // Size: 1208 bytes
+	0x00004757, 0x00004757, 0x00004757, 0x00004757,
+} // Size: 1224 bytes
 
 const it_ITData string = "" + // Size: 18263 bytes
 	"\x02Installare/creare, eseguire query, disinstallare SQL Server\x02Visua" +
@@ -2122,7 +2132,7 @@ const it_ITData string = "" + // Size: 18263 bytes
 	"dentificatore della variabile %[1]s non valido\x02Valore della variabile" +
 	" %[1]s non valido"
 
-var ja_JPIndex = []uint32{ // 296 elements
+var ja_JPIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x00000077, 0x000000f3,
 	0x0000012e, 0x0000014e, 0x00000161, 0x000001a2,
@@ -2207,7 +2217,8 @@ var ja_JPIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x00005929, 0x00005929, 0x00005929, 0x00005929,
 	0x00005929, 0x00005929, 0x00005929, 0x00005929,
-} // Size: 1208 bytes
+	0x00005929, 0x00005929, 0x00005929, 0x00005929,
+} // Size: 1224 bytes
 
 const ja_JPData string = "" + // Size: 22825 bytes
 	"\x02インストール/作成、クエリ、SQL Server のアンインストール\x02構成情報と接続文字列の表示\x02sqlcmd: SQL S" +
@@ -2363,7 +2374,7 @@ const ja_JPData string = "" + // Size: 22825 bytes
 	"ロシージャ %[5]s、行 %#[6]v%[7]s\x02メッセージ %#[1]v、レベル %[2]d、状態 %[3]d、サーバー %[4]" +
 	"s、行 %#[5]v%[6]s\x02変数識別子 %[1]s が無効です\x02変数値の %[1]s が無効です"
 
-var ko_KRIndex = []uint32{ // 296 elements
+var ko_KRIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000029, 0x00000053, 0x000000a8,
 	0x000000f4, 0x0000010c, 0x0000011a, 0x0000015d,
@@ -2448,7 +2459,8 @@ var ko_KRIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x0000494e, 0x0000494e, 0x0000494e, 0x0000494e,
 	0x0000494e, 0x0000494e, 0x0000494e, 0x0000494e,
-} // Size: 1208 bytes
+	0x0000494e, 0x0000494e, 0x0000494e, 0x0000494e,
+} // Size: 1224 bytes
 
 const ko_KRData string = "" + // Size: 18766 bytes
 	"\x02SQL Server 설치/생성, 쿼리, 제거\x02구성 정보 및 연결 문자열 보기\x02sqlcmd: SQL Server," +
@@ -2596,7 +2608,7 @@ const ko_KRData string = "" + // Size: 18766 bytes
 	"#[1]v, 수준 %[2]d, 상태 %[3]d, 서버 %[4]s, 줄 %#[5]v%[6]s\x02잘못된 변수 식별자 %[1]s" +
 	"\x02잘못된 변수 값 %[1]s"
 
-var pt_BRIndex = []uint32{ // 296 elements
+var pt_BRIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000034, 0x00000071, 0x000000d0,
 	0x00000126, 0x00000146, 0x00000161, 0x000001b0,
@@ -2681,7 +2693,8 @@ var pt_BRIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x00004675, 0x00004675, 0x00004675, 0x00004675,
 	0x00004675, 0x00004675, 0x00004675, 0x00004675,
-} // Size: 1208 bytes
+	0x00004675, 0x00004675, 0x00004675, 0x00004675,
+} // Size: 1224 bytes
 
 const pt_BRData string = "" + // Size: 18037 bytes
 	"\x02Instalar/Criar, Consultar, Desinstalar o SQL Server\x02Exibir inform" +
@@ -2947,7 +2960,7 @@ const pt_BRData string = "" + // Size: 18037 bytes
 	"a %#[5]v%[6]s\x02Identificador de variável %[1]s inválido\x02Valor de va" +
 	"riável inválido %[1]s"
 
-var ru_RUIndex = []uint32{ // 296 elements
+var ru_RUIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000056, 0x000000c1, 0x00000156,
 	0x000001bb, 0x000001dc, 0x000001ff, 0x000002a5,
@@ -3032,7 +3045,8 @@ var ru_RUIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x00007901, 0x00007901, 0x00007901, 0x00007901,
 	0x00007901, 0x00007901, 0x00007901, 0x00007901,
-} // Size: 1208 bytes
+	0x00007901, 0x00007901, 0x00007901, 0x00007901,
+} // Size: 1224 bytes
 
 const ru_RUData string = "" + // Size: 30977 bytes
 	"\x02Установка или создание, запрос, удаление SQL Server\x02Просмотреть с" +
@@ -3304,7 +3318,7 @@ const ru_RUData string = "" + // Size: 30977 bytes
 	"ие %[3]d, сервер %[4]s, строка %#[5]v%[6]s\x02Недопустимый идентификато" +
 	"р переменной %[1]s\x02Недопустимое значение переменной %[1]s"
 
-var zh_CNIndex = []uint32{ // 296 elements
+var zh_CNIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002b, 0x00000050, 0x0000009f,
 	0x000000d0, 0x000000e5, 0x000000f2, 0x00000136,
@@ -3389,7 +3403,8 @@ var zh_CNIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x000035d2, 0x000035d2, 0x000035d2, 0x000035d2,
 	0x000035d2, 0x000035d2, 0x000035d2, 0x000035d2,
-} // Size: 1208 bytes
+	0x000035d2, 0x000035d2, 0x000035d2, 0x000035d2,
+} // Size: 1224 bytes
 
 const zh_CNData string = "" + // Size: 13778 bytes
 	"\x02安装/创建、查询、卸载 SQL Server\x02查看配置信息和连接字符串\x02sqlcmd: 安装/创建/查询 SQL Serve" +
@@ -3504,7 +3519,7 @@ const zh_CNData string = "" + // Size: 13778 bytes
 	"s，过程 %[5]s，行 %#[6]v%[7]s\x02Msg %#[1]v，级别 %[2]d，状态 %[3]d，服务器 %[4]s，行 %#[" +
 	"5]v%[6]s\x02变量标识符 %[1]s 无效\x02变量值 %[1]s 无效"
 
-var zh_TWIndex = []uint32{ // 296 elements
+var zh_TWIndex = []uint32{ // 300 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000031, 0x00000053, 0x000000a8,
 	0x000000db, 0x000000f2, 0x000000fc, 0x00000140,
@@ -3589,7 +3604,8 @@ var zh_TWIndex = []uint32{ // 296 elements
 	// Entry 120 - 13F
 	0x00003624, 0x00003624, 0x00003624, 0x00003624,
 	0x00003624, 0x00003624, 0x00003624, 0x00003624,
-} // Size: 1208 bytes
+	0x00003624, 0x00003624, 0x00003624, 0x00003624,
+} // Size: 1224 bytes
 
 const zh_TWData string = "" + // Size: 13860 bytes
 	"\x02安裝/建立、查詢、解除安裝 SQL Server\x02檢視組態資訊和連接字串\x02sqlcmd: 安裝/建立/查詢 SQL Serv" +
@@ -3701,4 +3717,4 @@ const zh_TWData string = "" + // Size: 13860 bytes
 	"]s、程序 %[5]s、行 %#[6]v%[7]s\x02訊息 %#[1]v、層級 %[2]d、狀態 %[3]d、伺服器 %[4]s、行 %#[" +
 	"5]v%[6]s\x02無效的變數識別碼 %[1]s\x02變數值 %[1]s 無效"
 
-	// Total table size 222713 bytes (217KiB); checksum: 4532551A
+	// Total table size 222954 bytes (217KiB); checksum: 9AF0EDE6
