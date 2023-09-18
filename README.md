@@ -127,9 +127,10 @@ The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to t
 The following switches have different behavior in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`.
 - `-R` switch is ignored. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
 - `-I` switch is ignored; quoted identifiers are always set on. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
-- `-N` now takes a string value that can be one of `true`, `false`, or `disable` to specify the encryption choice. 
+- `-N` now takes a string value that can be one of `strict`,`true`,`mandatory`,`yes`,`1`,`t`, `optional`, `no`, `0`, `f`, `false`, or `disable` to specify the encryption choice. 
   - If `-N` and `-C` are not provided, sqlcmd will negotiate authentication with the server without validating the server certificate.
   - If `-N` is provided but `-C` is not, sqlcmd will require validation of the server certificate. Note that a `false` value for encryption could still lead to encryption of the login packet.
+  - `-C` has no effect when `strict` value is specified for `-N`.
   - If both `-N` and `-C` are provided, sqlcmd will use their values for encryption negotiation.
   - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.

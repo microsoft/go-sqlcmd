@@ -150,6 +150,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-P"}, "'-P': Missing argument. Enter '-?' for help."},
 		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
 		{[]string{"-t", "-2"}, "'-t -2': value must be greater than or equal to 0 and less than or equal to 65534."},
+		{[]string{"-N", "invalid"}, "'-N invalid': Unexpected argument. Argument value has to be one of [mandatory yes 1 t true disable optional no 0 f false strict]."},
 	}
 
 	for _, test := range commands {
