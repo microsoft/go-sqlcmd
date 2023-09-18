@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 
+	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
@@ -70,6 +71,9 @@ type SQLCmdArguments struct {
 	RemoveControlCharacters     *int
 	EchoInput                   bool
 	QueryTimeout                int
+	EnableColumnEncryption      bool
+	ChangePassword              string
+	ChangePasswordAndExit       string
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -382,7 +386,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.Query, "query", "Q", "", localizer.Sprintf("Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed"))
 	rootCmd.Flags().StringVarP(&args.Server, "server", "S", "", localizer.Sprintf("%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.", localizer.ConnStrPattern, localizer.ServerEnvVar))
 	_ = rootCmd.Flags().IntP(disableCmdAndWarn, "X", 0, localizer.Sprintf("%s Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.", "-X[1]"))
-	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", localizer.Sprintf("Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword"))
+	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", localizer.Sprintf("Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword"))
 	rootCmd.Flags().BoolVarP(&args.UseAad, "use-aad", "G", false, localizer.Sprintf("Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used"))
 	rootCmd.Flags().BoolVarP(&args.DisableVariableSubstitution, "disable-variable-substitution", "x", false, localizer.Sprintf("Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)", localizer.InsertKeyword))
 	var variables map[string]string
@@ -424,6 +428,9 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	_ = rootCmd.Flags().IntP(removeControlCharacters, "k", 0, localizer.Sprintf("%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters", "-k [1|2]"))
 	rootCmd.Flags().BoolVarP(&args.EchoInput, "echo-input", "e", false, localizer.Sprintf("Echo input"))
 	rootCmd.Flags().IntVarP(&args.QueryTimeout, "query-timeout", "t", 0, "Query timeout")
+	rootCmd.Flags().BoolVarP(&args.EnableColumnEncryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
+	rootCmd.Flags().StringVarP(&args.ChangePassword, "change-password", "z", "", localizer.Sprintf("New password"))
+	rootCmd.Flags().StringVarP(&args.ChangePasswordAndExit, "change-password-exit", "Z", "", localizer.Sprintf("New password and exit"))
 }
 
 func setScriptVariable(v string) string {
@@ -682,10 +689,17 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.ExitOnError = args.ExitOnError
 	connect.ErrorSeverityLevel = args.ErrorSeverityLevel
 	connect.DedicatedAdminConnection = args.DedicatedAdminConnection
+	connect.EnableColumnEncryption = args.EnableColumnEncryption
+	if len(args.ChangePassword) > 0 {
+		connect.ChangePassword = args.ChangePassword
+	}
+	if len(args.ChangePasswordAndExit) > 0 {
+		connect.ChangePassword = args.ChangePasswordAndExit
+	}
 }
 
 func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
-	iactive := args.InputFile == nil && args.Query == ""
+	iactive := args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0
 	return iactive || connect.RequiresPassword()
 }
 
@@ -748,8 +762,23 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	// connect using no overrides
 	err = s.ConnectDb(nil, line == nil)
 	if err != nil {
-		s.WriteError(s.GetError(), err)
-		return 1, err
+		switch e := err.(type) {
+		// 18488 == password must be changed on connection
+		case mssql.Error:
+			if e.Number == 18488 && line != nil && len(args.Password) == 0 && len(args.ChangePassword) == 0 && len(args.ChangePasswordAndExit) == 0 {
+				b, _ := line.ReadPassword(localizer.Sprintf("Enter new password:"))
+				s.Connect.ChangePassword = string(b)
+				err = s.ConnectDb(nil, true)
+			}
+		}
+		if err != nil {
+			s.WriteError(s.GetError(), err)
+			return 1, err
+		}
+	}
+
+	if len(args.ChangePasswordAndExit) > 0 {
+		return 0, nil
 	}
 
 	script := vars.StartupScriptFile()

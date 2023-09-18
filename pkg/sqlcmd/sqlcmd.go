@@ -21,8 +21,12 @@ import (
 
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
+
+	_ "github.com/microsoft/go-mssqldb/aecmk/akv"
+	_ "github.com/microsoft/go-mssqldb/aecmk/localcert"
 	"github.com/microsoft/go-mssqldb/msdsn"
 	"github.com/microsoft/go-sqlcmd/internal/color"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -309,7 +313,7 @@ func (s *Sqlcmd) promptPassword() (string, error) {
 	if s.lineIo == nil {
 		return "", nil
 	}
-	pwd, err := s.lineIo.ReadPassword("Password:")
+	pwd, err := s.lineIo.ReadPassword(localizer.Sprintf("Password:"))
 	if err != nil {
 		return "", err
 	}
