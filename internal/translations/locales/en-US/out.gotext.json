@@ -3017,6 +3017,20 @@
             "fuzzy": true
         },
         {
+            "id": "New password",
+            "message": "New password",
+            "translation": "New password",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "New password and exit",
+            "message": "New password and exit",
+            "translation": "New password and exit",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Sets the sqlcmd scripting variable {V}",
             "message": "Sets the sqlcmd scripting variable {V}",
             "translation": "Sets the sqlcmd scripting variable {V}",
@@ -3255,6 +3269,13 @@
                     "expr": "args.BatchTerminator"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Enter new password:",
+            "message": "Enter new password:",
+            "translation": "Enter new password:",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
@@ -3547,6 +3568,13 @@
                     "expr": "SqlcmdEol"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Password:",
+            "message": "Password:",
+            "translation": "Password:",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
