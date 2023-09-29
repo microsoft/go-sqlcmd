@@ -246,6 +246,7 @@ func TestGetRunnableQuery(t *testing.T) {
 		{"$ (var2)", "$ (var2)"},
 		{"select '$(VAR1) $(VAR2)' as  c", "select 'v1 variable2' as  c"},
 		{" $(VAR1) ' $(VAR2) ' as  $(VAR1)", " v1 ' variable2 ' as  v1"},
+		{"í $(VAR1)", "í v1"},
 	}
 	s := New(nil, "", v)
 	for _, test := range tests {
