@@ -1873,8 +1873,8 @@
       <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[停用可能會危害系統安全性的命令。Sqlcmd 發出警告並繼續]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_X1} 停用可能會危害系統安全性的命令。傳遞 1 會告訴 sqlcmd 在執行停用的命令時結束。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Disables commands that might compromise system security. Sqlcmd issues a warning and continues]]></Val>
@@ -1885,8 +1885,8 @@
       <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[指定要用來連接到 Azure SQL Database 的 SQL 驗證方法。下列其中一項: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、SqlPassword]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[指定要用來連接到 Azure SQL Database 的 SQL 驗證方法。下列其中一項: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、ActiveDirectoryDeviceCode、SqlPassword]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword]]></Val>
@@ -2014,8 +2014,8 @@
       <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[控制要將哪些錯誤訊息傳送到 stdout。會傳送嚴重性層級大於或等於此層級的訊息]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_r0__1} 將嚴重性為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent]]></Val>
@@ -2167,8 +2167,8 @@
       <Item ItemId=";messages[265].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[專用管理員連線]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_Lc} 列出伺服器。傳遞 {C} 以省略 'Servers:' 輸出。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Dedicated administrator connection]]></Val>
@@ -2180,7 +2180,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Dedicated administrator connection]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[專用管理員連線]]></Val>
+            <Val><![CDATA[專用系統管理員連線]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
@@ -2215,8 +2215,8 @@
       <Item ItemId=";messages[269].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 值必須大於或等於 {Min} 且小於或等於 {Max}。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_k_12} 從輸出移除控制字元。傳遞 1 以取代每個字元的空格，2 表示每個連續字元一個空格]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
@@ -2239,8 +2239,8 @@
       <Item ItemId=";messages[270].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Echo input]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 值必須大於 {Min} 且小於 {Max}。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[回音輸入]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
@@ -2251,8 +2251,8 @@
       <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Enable column encryption]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 非預期的引數。引數值必須是 {AllowedValues0}。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[啟用資料行加密]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
@@ -2275,8 +2275,8 @@
       <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[New password and exit]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[{Flag1} 和 {Flag2} 選項互斥。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[新增密碼並結束]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
@@ -2404,8 +2404,8 @@
       <Item ItemId=";messages[283].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Enter new password:]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[接近命令 '{Command}' 的行 {LineNumber} 語法錯誤。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[輸入新密碼:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
@@ -2525,7 +2525,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Timeout expired]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已超過逾時]]></Val>
+            <Val><![CDATA[逾時已過期]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
