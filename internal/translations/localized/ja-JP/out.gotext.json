@@ -2661,16 +2661,26 @@
       "fuzzy": true
     },
     {
-      "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-      "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-      "translation": "システム セキュリティを侵害する可能性のあるコマンドを無効にします。Sqlcmd は警告を発行して続行します",
+      "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "translation": "{_X1} システム セキュリティを侵害する可能性のあるコマンドを無効にします。1 を渡すと、無効なコマンドの実行時に sqlcmd が終了するように指示されます。",
       "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_X1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-X[1]\""
+        }
+      ],
       "fuzzy": true
     },
     {
-      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-      "translation": "Azure SQL データベースへの接続に使用する SQL 認証方法を指定します。次のうちの 1 つ: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、SqlPassword",
+      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "translation": "Azure SQL Database への接続に使用する SQL 認証方法を指定します。次のうちの 1 つ: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、 ActiveDirectoryDeviceCode、SqlPassword",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2796,10 +2806,20 @@
       "fuzzy": true
     },
     {
-      "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-      "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-      "translation": "stdout に送信するエラー メッセージを制御します。このレベル以上の重大度レベルのメッセージが送信されます",
+      "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "translation": "{_r0__1} 重大度 >= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。",
       "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_r0__1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-r[0 | 1]\""
+        }
+      ],
       "fuzzy": true
     },
     {
@@ -2920,6 +2940,31 @@
       "fuzzy": true
     },
     {
+      "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "translation": "{_Lc} サーバーを一覧表示します。{C} を渡すと、'Servers:' 出力を省略します。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_Lc",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-L[c]\""
+        },
+        {
+          "id": "C",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"c\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
       "id": "Dedicated administrator connection",
       "message": "Dedicated administrator connection",
       "translation": "専用管理者接続",
@@ -2937,6 +2982,51 @@
       "id": "Provided for backward compatibility. Client regional settings are not used",
       "message": "Provided for backward compatibility. Client regional settings are not used",
       "translation": "下位互換性のために提供されます。クライアントの地域設定は使用されていません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "translation": "{_k_12} 出力から制御文字を削除します。1 を渡すと、1 文字につきスペース 1 つに置き換え、2 では連続する文字ごとにスペース 1 つに置き換えます",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_k_12",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-k [1|2]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Echo input",
+      "message": "Echo input",
+      "translation": "エコー入力",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Enable column encryption",
+      "message": "Enable column encryption",
+      "translation": "列暗号化を有効にする",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password",
+      "message": "New password",
+      "translation": "新しいパスワード",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password and exit",
+      "message": "New password and exit",
+      "translation": "新しいパスワードと終了",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3182,6 +3272,13 @@
       "fuzzy": true
     },
     {
+      "id": "Enter new password:",
+      "message": "Enter new password:",
+      "translation": "新しいパスワードの入力:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Sqlcmd: Error:",
       "message": "Sqlcmd: Error:",
       "translation": "Sqlcmd: エラー:",
@@ -3345,6 +3442,13 @@
       "fuzzy": true
     },
     {
+      "id": "Timeout expired",
+      "message": "Timeout expired",
+      "translation": "タイムアウトになりました",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "translation": "メッセージ {Number}、レベル {Class}、状態 {State}、サーバー {ServerName}、プロシージャ {ProcName}、行 {LineNo}{SqlcmdEol}",
@@ -3464,6 +3568,13 @@
           "expr": "SqlcmdEol"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Password:",
+      "message": "Password:",
+      "translation": "パスワード:",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
