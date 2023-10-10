@@ -6,8 +6,8 @@ This repository incorporates material as listed below or described in the code.
 ## github.com/Azure/azure-sdk-for-go/sdk/azcore
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azcore
-* Version: v1.1.2
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.1.2/sdk/azcore/LICENSE.txt)
+* Version: v1.7.1
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.7.1/sdk/azcore/LICENSE.txt)
 
 ```
 MIT License
@@ -37,8 +37,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azidentity
-* Version: v1.1.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.1.0/sdk/azidentity/LICENSE.txt)
+* Version: v1.3.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.3.0/sdk/azidentity/LICENSE.txt)
 
 ```
 MIT License
@@ -68,8 +68,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/internal
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/internal
-* Version: v1.0.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/internal/v1.0.0/sdk/internal/LICENSE.txt)
+* Version: v1.3.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/internal/v1.3.0/sdk/internal/LICENSE.txt)
 
 ```
 MIT License
@@ -96,11 +96,71 @@ SOFTWARE
 
 ```
 
+## github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
+
+* Name: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
+* Version: v1.0.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/azkeys/v1.0.0/sdk/security/keyvault/azkeys/LICENSE.txt)
+
+```
+    MIT License
+
+    Copyright (c) Microsoft Corporation. All rights reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE
+```
+
+## github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
+
+* Name: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
+* Version: v0.8.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/internal/v0.8.0/sdk/security/keyvault/internal/LICENSE.txt)
+
+```
+    MIT License
+
+    Copyright (c) Microsoft Corporation. All rights reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE
+```
+
 ## github.com/AzureAD/microsoft-authentication-library-for-go/apps
 
 * Name: github.com/AzureAD/microsoft-authentication-library-for-go/apps
-* Version: v0.5.1
-* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v0.5.1/LICENSE)
+* Version: v1.1.0
+* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v1.1.0/LICENSE)
 
 ```
     MIT License
@@ -159,14 +219,14 @@ SOFTWARE.
 
 ```
 
-## github.com/alecthomas/kong
+## github.com/alecthomas/chroma/v2
 
-* Name: github.com/alecthomas/kong
-* Version: v0.6.2-0.20220922001058-c62bf25854a0
-* License: [MIT](https://github.com/alecthomas/kong/blob/c62bf25854a0/COPYING)
+* Name: github.com/alecthomas/chroma/v2
+* Version: v2.5.0
+* License: [MIT](https://github.com/alecthomas/chroma/blob/v2.5.0/COPYING)
 
 ```
-Copyright (C) 2018 Alec Thomas
+Copyright (C) 2017 Alec Thomas
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -249,11 +309,74 @@ SOFTWARE.
 
 ```
 
+## github.com/cespare/xxhash/v2
+
+* Name: github.com/cespare/xxhash/v2
+* Version: v2.1.1
+* License: [MIT](https://github.com/cespare/xxhash/blob/v2.1.1/LICENSE.txt)
+
+```
+Copyright (c) 2016 Caleb Spare
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+```
+
+## github.com/dlclark/regexp2
+
+* Name: github.com/dlclark/regexp2
+* Version: v1.4.0
+* License: [MIT](https://github.com/dlclark/regexp2/blob/v1.4.0/LICENSE)
+
+```
+The MIT License (MIT)
+
+Copyright (c) Doug Clark
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+```
+
 ## github.com/docker/distribution
 
 * Name: github.com/docker/distribution
-* Version: v2.8.1
-* License: [Apache-2.0](https://github.com/docker/distribution/blob/v2.8.1/LICENSE)
+* Version: v2.8.2
+* License: [Apache-2.0](https://github.com/docker/distribution/blob/v2.8.2/LICENSE)
 
 ```
 Apache License
@@ -464,8 +587,8 @@ Apache License
 ## github.com/docker/docker
 
 * Name: github.com/docker/docker
-* Version: v20.10.21
-* License: [Apache-2.0](https://github.com/docker/docker/blob/v20.10.21/LICENSE)
+* Version: v20.10.24
+* License: [Apache-2.0](https://github.com/docker/docker/blob/v20.10.24/LICENSE)
 
 ```
 
@@ -1345,11 +1468,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ```
 
-## github.com/golang-jwt/jwt
+## github.com/golang-jwt/jwt/v5
 
-* Name: github.com/golang-jwt/jwt
-* Version: v3.2.2
-* License: [MIT](https://github.com/golang-jwt/jwt/blob/v3.2.2/LICENSE)
+* Name: github.com/golang-jwt/jwt/v5
+* Version: v5.0.0
+* License: [MIT](https://github.com/golang-jwt/jwt/blob/v5.0.0/LICENSE)
 
 ```
 Copyright (c) 2012 Dave Grijalva
@@ -1367,8 +1490,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ## github.com/golang-sql/civil
 
 * Name: github.com/golang-sql/civil
-* Version: v0.0.0-20190719163853-cb61b32ac6fe
-* License: [Apache-2.0](https://github.com/golang-sql/civil/blob/cb61b32ac6fe/LICENSE)
+* Version: v0.0.0-20220223132316-b832511892a9
+* License: [Apache-2.0](https://github.com/golang-sql/civil/blob/b832511892a9/LICENSE)
 
 ```
 
@@ -1612,9 +1735,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ```
 
-## github.com/golang/protobuf/proto
+## github.com/golang/protobuf
 
-* Name: github.com/golang/protobuf/proto
+* Name: github.com/golang/protobuf
 * Version: v1.5.2
 * License: [BSD-3-Clause](https://github.com/golang/protobuf/blob/v1.5.2/LICENSE)
 
@@ -3352,8 +3475,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## github.com/prometheus/client_golang/prometheus
 
 * Name: github.com/prometheus/client_golang/prometheus
-* Version: v1.1.0
-* License: [Apache-2.0](https://github.com/prometheus/client_golang/blob/v1.1.0/LICENSE)
+* Version: v1.11.1
+* License: [Apache-2.0](https://github.com/prometheus/client_golang/blob/v1.11.1/LICENSE)
 
 ```
                                  Apache License
@@ -3563,8 +3686,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## github.com/prometheus/client_model/go
 
 * Name: github.com/prometheus/client_model/go
-* Version: v0.0.0-20190812154241-14fe0d1b01d4
-* License: [Apache-2.0](https://github.com/prometheus/client_model/blob/14fe0d1b01d4/LICENSE)
+* Version: v0.2.0
+* License: [Apache-2.0](https://github.com/prometheus/client_model/blob/v0.2.0/LICENSE)
 
 ```
                                  Apache License
@@ -3774,8 +3897,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## github.com/prometheus/common
 
 * Name: github.com/prometheus/common
-* Version: v0.6.0
-* License: [Apache-2.0](https://github.com/prometheus/common/blob/v0.6.0/LICENSE)
+* Version: v0.26.0
+* License: [Apache-2.0](https://github.com/prometheus/common/blob/v0.26.0/LICENSE)
 
 ```
                                  Apache License
@@ -3985,8 +4108,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
 
 * Name: github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
-* Version: v0.6.0
-* License: [BSD-3-Clause](https://github.com/prometheus/common/blob/v0.6.0/internal\bitbucket.org\ww\goautoneg\README.txt)
+* Version: v0.26.0
+* License: [BSD-3-Clause](https://github.com/prometheus/common/blob/v0.26.0/internal\bitbucket.org\ww\goautoneg\README.txt)
 
 ```
 PACKAGE
@@ -4620,8 +4743,8 @@ THE SOFTWARE.
 ## golang.org/x/crypto
 
 * Name: golang.org/x/crypto
-* Version: v0.0.0-20220622213112-05595931fe9d
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/05595931:LICENSE)
+* Version: v0.12.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.12.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4657,8 +4780,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/net
 
 * Name: golang.org/x/net
-* Version: v0.0.0-20221014081412-f15817d10f9b
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/f15817d1:LICENSE)
+* Version: v0.14.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.14.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4694,8 +4817,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/sys
 
 * Name: golang.org/x/sys
-* Version: v0.0.0-20220908164124-27713097b956
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/27713097:LICENSE)
+* Version: v0.11.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.11.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4731,8 +4854,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/text
 
 * Name: golang.org/x/text
-* Version: v0.4.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.4.0:LICENSE)
+* Version: v0.12.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.12.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -5001,23 +5124,6 @@ third-party archives.
    See the License for the specific language governing permissions and
    limitations under the License.
 
-```
-
-## gopkg.in/natefinch/npipe.v2
-
-* Name: gopkg.in/natefinch/npipe.v2
-* Version: v2.0.0-20160621034901-c1b8fa8bdcce
-* License: [MIT](https://github.com/natefinch/npipe/blob/c1b8fa8bdcce/LICENSE.txt)
-
-```
-The MIT License (MIT)
-Copyright (c) 2013 npipe authors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
 ## gopkg.in/yaml.v2

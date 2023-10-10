@@ -4,7 +4,9 @@
 package sqlcmd
 
 import (
+	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -12,6 +14,8 @@ import (
 
 	"github.com/google/uuid"
 	mssql "github.com/microsoft/go-mssqldb"
+	"github.com/microsoft/go-sqlcmd/internal/color"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 const (
@@ -35,6 +39,10 @@ type Formatter interface {
 	AddMessage(string)
 	// AddError is called for each error encountered during batch execution
 	AddError(err error)
+	// XmlMode enables or disables XML rendering mode
+	XmlMode(enable bool)
+	// IsXmlMode returns whether XML mode is enabled
+	IsXmlMode() bool
 }
 
 // ControlCharacterBehavior specifies the text handling required for control characters in the output
@@ -75,32 +83,36 @@ type sqlCmdFormatterType struct {
 	writepos             int64
 	format               string
 	maxColNameLen        int
+	colorizer            color.Colorizer
+	xml                  bool
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
-func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool) Formatter {
+func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool, ccb ControlCharacterBehavior) Formatter {
 	return &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
 		format:               "horizontal",
+		colorizer:            color.New(false),
+		ccb:                  ccb,
 	}
 }
 
 // Adds the given string to the current line, wrapping it based on the screen width setting
-func (f *sqlCmdFormatterType) writeOut(s string) {
+func (f *sqlCmdFormatterType) writeOut(s string, t color.TextType) {
 	w := f.vars.ScreenWidth()
 	if w == 0 {
-		f.mustWriteOut(s)
+		f.mustWriteOut(s, t)
 		return
 	}
 
 	r := []rune(s)
 	for i := 0; true; {
 		if i == len(r) {
-			f.mustWriteOut(string(r))
+			f.mustWriteOut(string(r), t)
 			return
 		} else if f.writepos == w {
-			f.mustWriteOut(string(r[:i]))
-			f.mustWriteOut(SqlcmdEol)
+			f.mustWriteOut(string(r[:i]), t)
+			f.mustWriteOut(SqlcmdEol, color.TextTypeNormal)
 			r = []rune(string(r[i:]))
 			f.writepos = 0
 			i = 0
@@ -116,7 +128,7 @@ func (f *sqlCmdFormatterType) writeOut(s string) {
 	}
 }
 
-// Stores the settings to use for processing the current batch
+// BeginBatch stores the settings to use for processing the current batch
 // TODO: add a third io.Writer for messages when we add -r support
 func (f *sqlCmdFormatterType) BeginBatch(_ string, vars *Variables, out io.Writer, err io.Writer) {
 	f.out = out
@@ -135,17 +147,19 @@ func (f *sqlCmdFormatterType) EndBatch() {
 func (f *sqlCmdFormatterType) BeginResultSet(cols []*sql.ColumnType) {
 	f.rowcount = 0
 	f.columnDetails, f.maxColNameLen = calcColumnDetails(cols, f.vars.MaxFixedColumnWidth(), f.vars.MaxVarColumnWidth())
-	if f.vars.RowsBetweenHeaders() > -1 && f.format == "horizontal" {
+	if f.vars.RowsBetweenHeaders() > -1 && f.format == "horizontal" && !f.xml {
 		f.printColumnHeadings()
 	}
 }
 
-// Writes a blank line to the designated output writer
+// EndResultSet writes a blank line to the designated output writer
 func (f *sqlCmdFormatterType) EndResultSet() {
-	f.writeOut(SqlcmdEol)
+	if !f.xml {
+		f.writeOut(SqlcmdEol, color.TextTypeNormal)
+	}
 }
 
-// Writes the current row to the designated output writer
+// AddRow writes the current row to the designated output writer
 func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) string {
 	retval := ""
 	values, err := f.scanRow(row)
@@ -154,26 +168,27 @@ func (f *sqlCmdFormatterType) AddRow(row *sql.Rows) string {
 		return retval
 	}
 	retval = values[0]
-	if f.format == "horizontal" {
+	if f.xml {
+		f.printColumnValue(retval, 0)
+	} else if f.format == "horizontal" {
 		// values are the full values, look at the displaywidth of each column and truncate accordingly
 		for i, v := range values {
 			if i > 0 {
-				f.writeOut(f.vars.ColumnSeparator())
+				f.writeOut(f.vars.ColumnSeparator(), color.TextTypeSeparator)
 			}
 			f.printColumnValue(v, i)
 		}
 		f.rowcount++
 		gap := f.vars.RowsBetweenHeaders()
 		if gap > 0 && (int64(f.rowcount)%gap == 0) {
-			f.writeOut(SqlcmdEol)
+			f.writeOut(SqlcmdEol, color.TextTypeNormal)
 			f.printColumnHeadings()
 		}
 	} else {
 		f.addVerticalRow(values)
 	}
-	f.writeOut(SqlcmdEol)
+	f.writeOut(SqlcmdEol, color.TextTypeNormal)
 	return retval
-
 }
 
 func (f *sqlCmdFormatterType) addVerticalRow(values []string) {
@@ -183,27 +198,36 @@ func (f *sqlCmdFormatterType) addVerticalRow(values []string) {
 			name := f.columnDetails[i].col.Name()
 			builder.WriteString(name)
 			builder = padRight(builder, int64(f.maxColNameLen-len(name)+1), " ")
-			f.writeOut(builder.String())
+			f.writeOut(builder.String(), color.TextTypeHeader)
 		}
 		f.printColumnValue(v, i)
-		f.writeOut(SqlcmdEol)
+		f.writeOut(SqlcmdEol, color.TextTypeNormal)
 	}
 }
 
-// Writes a non-error message to the designated message writer
+// AddMessage writes a non-error message to the designated message writer
 func (f *sqlCmdFormatterType) AddMessage(msg string) {
-	f.mustWriteOut(msg + SqlcmdEol)
+	if !f.xml {
+		f.mustWriteOut(msg+SqlcmdEol, color.TextTypeWarning)
+	}
 }
 
-// Writes an error to the designated err Writer
+// AddError writes an error to the designated err Writer
 func (f *sqlCmdFormatterType) AddError(err error) {
 	print := true
 	b := new(strings.Builder)
+	if errors.Is(err, context.DeadlineExceeded) {
+		err = localizer.Errorf("Timeout expired")
+	}
 	msg := err.Error()
 	switch e := (err).(type) {
 	case mssql.Error:
 		if print = f.vars.ErrorLevel() <= 0 || e.Class >= uint8(f.vars.ErrorLevel()); print {
-			b.WriteString(fmt.Sprintf("Msg %d, Level %d, State %d, Server %s, Line %d%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
+			if len(e.ProcName) > 0 {
+				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.ProcName, e.LineNo, SqlcmdEol))
+			} else {
+				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
+			}
 			msg = strings.TrimPrefix(msg, "mssql: ")
 		}
 	}
@@ -212,6 +236,16 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 		b.WriteString(SqlcmdEol)
 		f.mustWriteErr(fitToScreen(b, f.vars.ScreenWidth()).String())
 	}
+}
+
+// XmlMode enables or disables XML mode
+func (f *sqlCmdFormatterType) XmlMode(enable bool) {
+	f.xml = enable
+}
+
+// IsXmlMode returns whether XML mode is enabled
+func (f *sqlCmdFormatterType) IsXmlMode() bool {
+	return f.xml
 }
 
 // Prints column headings based on columnDetail, variables, and command line arguments
@@ -251,8 +285,8 @@ func (f *sqlCmdFormatterType) printColumnHeadings() {
 	sep.WriteString(SqlcmdEol)
 	names = fitToScreen(names, f.vars.ScreenWidth())
 	sep = fitToScreen(sep, f.vars.ScreenWidth())
-	f.mustWriteOut(names.String())
-	f.mustWriteOut(sep.String())
+	f.mustWriteOut(names.String(), color.TextTypeHeader)
+	f.mustWriteOut(sep.String(), color.TextTypeSeparator)
 }
 
 // Wraps the input string every width characters when width > 0
@@ -532,7 +566,7 @@ func (f *sqlCmdFormatterType) printColumnValue(val string, col int) {
 
 	s.WriteString(val)
 	r := []rune(val)
-	if f.format == "horizontal" {
+	if !f.xml && f.format == "horizontal" {
 		if !f.removeTrailingSpaces {
 			if f.vars.MaxVarColumnWidth() != 0 || !isLargeVariableType(&c.col) {
 				padding := c.displayWidth - min64(c.displayWidth, int64(len(r)))
@@ -548,22 +582,26 @@ func (f *sqlCmdFormatterType) printColumnValue(val string, col int) {
 
 		r = []rune(s.String())
 	}
-	if c.displayWidth > 0 && int64(len(r)) > c.displayWidth {
+	if !f.xml && (c.displayWidth > 0 && int64(len(r)) > c.displayWidth) {
 		s.Reset()
 		s.WriteString(string(r[:c.displayWidth]))
 	}
-	f.writeOut(s.String())
+	clr := color.TextTypeCell
+	if f.xml {
+		clr = color.TextTypeXml
+	}
+	f.writeOut(s.String(), clr)
 }
 
-func (f *sqlCmdFormatterType) mustWriteOut(s string) {
-	_, err := f.out.Write([]byte(s))
+func (f *sqlCmdFormatterType) mustWriteOut(s string, t color.TextType) {
+	err := f.colorizer.Write(f.out, s, f.vars.ColorScheme(), t)
 	if err != nil {
 		panic(err)
 	}
 }
 
 func (f *sqlCmdFormatterType) mustWriteErr(s string) {
-	_, err := f.err.Write([]byte(s))
+	err := f.colorizer.Write(f.err, s, f.vars.ColorScheme(), color.TextTypeError)
 	if err != nil {
 		panic(err)
 	}

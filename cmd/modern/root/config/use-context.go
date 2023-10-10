@@ -6,6 +6,7 @@ package config
 import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 // UseContext implements the `sqlcmd config use-context` command
@@ -18,9 +19,9 @@ type UseContext struct {
 func (c *UseContext) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "use-context",
-		Short: "Set the current context",
+		Short: localizer.Sprintf("Set the current context"),
 		Examples: []cmdparser.ExampleOptions{{
-			Description: "Set the mssql context (endpoint/user) to be the current context",
+			Description: localizer.Sprintf("Set the mssql context (endpoint/user) to be the current context"),
 			Steps:       []string{"sqlcmd config use-context mssql"}}},
 		Aliases: []string{"use", "change-context", "set-context"},
 		Run:     c.run,
@@ -33,7 +34,7 @@ func (c *UseContext) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.name,
 		Name:   "name",
-		Usage:  "Name of context to set as current context"})
+		Usage:  localizer.Sprintf("Name of context to set as current context")})
 }
 
 func (c *UseContext) run() {
@@ -41,12 +42,12 @@ func (c *UseContext) run() {
 
 	if config.ContextExists(c.name) {
 		config.SetCurrentContextName(c.name)
-		output.InfofWithHints([]string{
-			"To run a query:    sqlcmd query \"SELECT @@SERVERNAME\"",
-			"To remove:         sqlcmd uninstall"},
-			"Switched to context \"%v\".", c.name)
+		output.InfoWithHints([]string{
+			localizer.Sprintf("To run a query:    %s", localizer.RunQueryExample),
+			localizer.Sprintf("To remove:         %s", localizer.UninstallCommand)},
+			localizer.Sprintf("Switched to context \"%v\".", c.name))
 	} else {
-		output.FatalfWithHints([]string{"To view available contexts run `sqlcmd config get-contexts`"},
-			"No context exists with the name: \"%v\"", c.name)
+		output.FatalWithHints([]string{localizer.Sprintf("To view available contexts run `%s`", localizer.GetContextCommand)},
+			localizer.Sprintf("No context exists with the name: \"%v\"", c.name))
 	}
 }

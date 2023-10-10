@@ -7,6 +7,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/install/mssql"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 )
 
@@ -21,19 +22,29 @@ func (c *Mssql) DefineCommand(...cmdparser.CommandOptions) {
 
 	options := cmdparser.CommandOptions{
 		Use:   "mssql",
-		Short: "Install/Create SQL Server in a container",
+		Short: localizer.Sprintf("Install/Create SQL Server in a container"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: "Install/Create SQL Server in a container",
+				Description: localizer.Sprintf("Install/Create SQL Server in a container"),
 				Steps:       []string{"sqlcmd create mssql"}},
 			{
-				Description: "Create SQL Server, download and attach AdventureWorks sample database",
+				Description: localizer.Sprintf("See all release tags for SQL Server, install previous version"),
+				Steps: []string{
+					"sqlcmd create mssql get-tags",
+					"sqlcmd create mssql --tag 2019-latest",
+				},
+			},
+			{
+				Description: localizer.Sprintf("Create SQL Server, download and attach AdventureWorks sample database"),
 				Steps:       []string{"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak"}},
 			{
-				Description: "Create SQL Server with an empty user database",
+				Description: localizer.Sprintf("Create SQL Server, download and attach AdventureWorks sample database with different database name"),
+				Steps:       []string{"sqlcmd create mssql --using https://aka.ms/AdventureWorksLT.bak,adventureworks"}},
+			{
+				Description: localizer.Sprintf("Create SQL Server with an empty user database"),
 				Steps:       []string{"sqlcmd create mssql --user-database db1"}},
 			{
-				Description: "Install/Create SQL Server with full logging",
+				Description: localizer.Sprintf("Install/Create SQL Server with full logging"),
 				Steps:       []string{"sqlcmd create mssql --verbosity 4"}},
 		},
 		Run:         c.MssqlBase.Run,

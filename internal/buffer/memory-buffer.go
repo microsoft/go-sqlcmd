@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-package test
+package buffer
 
 import "bytes"
 
@@ -16,6 +16,8 @@ func (b *MemoryBuffer) Write(p []byte) (n int, err error) {
 }
 
 func (b *MemoryBuffer) Close() error {
+	b.buf = nil
+
 	return nil
 }
 

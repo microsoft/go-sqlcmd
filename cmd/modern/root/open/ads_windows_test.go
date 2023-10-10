@@ -22,9 +22,9 @@ func TestPersistCredentialForAds(t *testing.T) {
 
 	user := &sqlconfig.User{
 		BasicAuth: &sqlconfig.BasicAuthDetails{
-			Username:          "testuser",
-			Password:          "testpass",
-			PasswordEncrypted: false,
+			Username:           "testuser",
+			Password:           "testpass",
+			PasswordEncryption: "none",
 		},
 	}
 	ads.persistCredentialForAds("localhost", sqlconfig.Endpoint{
@@ -39,7 +39,7 @@ func TestPersistCredentialForAds(t *testing.T) {
 	assert.Equal(t, ads.credential.UserName, user.BasicAuth.Username, "Expected username to be %s, got %s", user.BasicAuth.Username, ads.credential.UserName)
 
 	// Test if the password is decoded correctly
-	decodedPassword := secret.DecodeAsUtf16(user.BasicAuth.Password, user.BasicAuth.PasswordEncrypted)
+	decodedPassword := secret.DecodeAsUtf16(user.BasicAuth.Password, user.BasicAuth.PasswordEncryption)
 	assert.Equal(
 		t,
 		ads.credential.CredentialBlob,

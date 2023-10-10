@@ -35,6 +35,7 @@ const (
 	SQLCMDMAXFIXEDTYPEWIDTH = "SQLCMDMAXFIXEDTYPEWIDTH"
 	SQLCMDEDITOR            = "SQLCMDEDITOR"
 	SQLCMDUSEAAD            = "SQLCMDUSEAAD"
+	SQLCMDCOLORSCHEME       = "SQLCMDCOLORSCHEME"
 )
 
 // builtinVariables are the predefined SQLCMD variables. Their values are printed first by :listvar
@@ -56,6 +57,7 @@ var builtinVariables = []string{
 	SQLCMDUSEAAD,
 	SQLCMDUSER,
 	SQLCMDWORKSTATION,
+	SQLCMDCOLORSCHEME,
 }
 
 // readonlyVariables are variables that can't be changed via :setvar
@@ -191,6 +193,16 @@ func (v Variables) TextEditor() string {
 	return v[SQLCMDEDITOR]
 }
 
+// ColorScheme is the name of the console output color scheme
+func (v Variables) ColorScheme() string {
+	return v[SQLCMDCOLORSCHEME]
+}
+
+// QueryTimeoutSeconds limits the allowed time for a query to complete. Any value <= 0 specifies unlimited
+func (v Variables) QueryTimeoutSeconds() int64 {
+	return mustValue(v[SQLCMDSTATTIMEOUT])
+}
+
 func mustValue(val string) int64 {
 	var n int64
 	_, err := fmt.Sscanf(val, "%d", &n)
@@ -233,6 +245,7 @@ func InitializeVariables(fromEnvironment bool) *Variables {
 		SQLCMDSTATTIMEOUT:       defaultVariables[SQLCMDSTATTIMEOUT],
 		SQLCMDUSER:              "",
 		SQLCMDUSEAAD:            "",
+		SQLCMDCOLORSCHEME:       "",
 	}
 	hostname, _ := os.Hostname()
 	variables.Set(SQLCMDWORKSTATION, hostname)

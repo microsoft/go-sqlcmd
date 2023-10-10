@@ -1,0 +1,9 @@
+# top-most EditorConfig file
+root = true
+
+[*.go]
+indent_style = tab
+# (Please don't specify an indent_size here; that has too many unintended consequences.)
+
+# IDE0073: File header
+file_header_template = Copyright (c) Microsoft Corporation.\nLicensed under the MIT license.

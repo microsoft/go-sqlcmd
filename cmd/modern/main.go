@@ -16,10 +16,13 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
+	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
+	"path"
 
 	"os"
 
@@ -56,19 +59,45 @@ func main() {
 // than env variables and env variables take higher precedence over config
 // file info.
 func initializeEnvVars() {
+	home, err := os.UserHomeDir()
+
+	// Special case, some shells don't have any home dir env var set, see:
+	//   https://github.com/microsoft/go-sqlcmd/issues/279
+	//  in this case, we early exit here and don't initialize anything, there is nothing
+	//  else we can do
+	if err != nil {
+		return
+	}
+
+	// The only place we can check for the existence of the sqlconfig file is in the
+	// default location, because this code path is only used for the legacy kong CLI,
+	// if the sqlconfig file doesn't exist at the default location we just return so
+	// because the initializeCallback() function below will create the sqlconfig file,
+	// which legacy sqlcmd users might not want.
+	if !file.Exists(path.Join(home, ".sqlcmd", "sqlconfig")) {
+		return
+	}
+
 	initializeCallback()
 	if config.CurrentContextName() != "" {
 		server, username, password := config.GetCurrentContextInfo()
 		if os.Getenv("SQLCMDSERVER") == "" {
 			os.Setenv("SQLCMDSERVER", server)
 		}
-		if os.Getenv("SQLCMDUSER") == "" {
-			os.Setenv("SQLCMDUSER", username)
+
+		// Username and password should come together, either from the environment
+		// variables set by the user before the sqlcmd process started, or from the sqlconfig
+		// for the current context, but if just the environment variable SQLCMDPASSWORD
+		// is set before the process starts we do not use it, if the user and password is set in sqlconfig.
+		if username != "" && password != "" { // If not trusted auth
+			if os.Getenv("SQLCMDUSER") == "" {
+				os.Setenv("SQLCMDUSER", username)
+				os.Setenv("SQLCMDPASSWORD", password)
+			}
 		}
-		if os.Getenv("SQLCMDPASSWORD") == "" {
-			os.Setenv("SQLCMDPASSWORD", password)
-		}
+
 	}
+
 }
 
 // isFirstArgModernCliSubCommand is TEMPORARY code, to be removed when
@@ -114,7 +143,7 @@ func initializeCallback() {
 // To aid debugging issues, if the logging level is > 2 (e.g. --verbosity 3 or --verbosity 4), we
 // panic which outputs a stacktrace.
 func checkErr(err error) {
-	if rootCmd.loggingLevel > 2 {
+	if rootCmd != nil && rootCmd.loggingLevel > 2 {
 		if err != nil {
 			panic(err)
 		}
@@ -127,7 +156,7 @@ func checkErr(err error) {
 // to make progress.  displayHints is injected into dependencies (helpers etc.)
 func displayHints(hints []string) {
 	if len(hints) > 0 {
-		outputter.Infof("%vHINT:", sqlcmd.SqlcmdEol)
+		outputter.Infof("%vHINT:", pal.LineBreak())
 		for i, hint := range hints {
 			outputter.Infof("  %d. %v", i+1, hint)
 		}

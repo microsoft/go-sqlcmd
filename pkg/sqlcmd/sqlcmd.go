@@ -17,16 +17,19 @@ import (
 	"sort"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
+
+	_ "github.com/microsoft/go-mssqldb/aecmk/akv"
+	_ "github.com/microsoft/go-mssqldb/aecmk/localcert"
 	"github.com/microsoft/go-mssqldb/msdsn"
+	"github.com/microsoft/go-sqlcmd/internal/color"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
-
-// Note: The order of includes above matters for namedpipe and sharedmemory.
-// init() swaps shared memory protocol with tcp so it gets priority when dialing.
 
 var (
 	// ErrExitRequested tells the hosting application to exit immediately
@@ -40,8 +43,6 @@ var (
 		message: ErrCmdDisabled,
 	}
 )
-
-const maxLineBuffer = 2 * 1024 * 1024 // 2Mb
 
 // Console defines methods used for console input and output
 type Console interface {
@@ -70,17 +71,28 @@ type Sqlcmd struct {
 	echoFileLines    bool
 	// Exitcode is returned to the operating system when the process exits
 	Exitcode int
-	Connect  *ConnectSettings
-	vars     *Variables
-	Format   Formatter
-	Query    string
-	Cmd      Commands
+	// Connect controls how Sqlcmd connects to the database
+	Connect *ConnectSettings
+	vars    *Variables
+	// Format renders the query output
+	Format Formatter
+	// Query is the TSQL query to run
+	Query string
+	// Cmd provides the implementation of commands like :list and GO
+	Cmd Commands
 	// PrintError allows the host to redirect errors away from the default output. Returns false if the error is not redirected by the host.
-	PrintError        func(msg string, severity uint8) bool
+	PrintError func(msg string, severity uint8) bool
+	// UnicodeOutputFile is true when UTF16 file output is needed
 	UnicodeOutputFile bool
+	// EchoInput tells the GO command to print the batch text before running the query
+	EchoInput bool
+	colorizer color.Colorizer
+	termchan  chan os.Signal
 }
 
-// New creates a new Sqlcmd instance
+// New creates a new Sqlcmd instance.
+// The Console instane must be non-nil for Sqlcmd to run in interactive mode.
+// The hosting application is responsible for calling Close() on the Console instance before process exit.
 func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 	s := &Sqlcmd{
 		lineIo:           l,
@@ -88,6 +100,7 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 		vars:             vars,
 		Cmd:              newCommands(),
 		Connect:          &ConnectSettings{},
+		colorizer:        color.New(false),
 	}
 	s.batch = NewBatch(s.scanNext, s.Cmd)
 	mssql.SetContextLogger(s)
@@ -104,8 +117,9 @@ func (s *Sqlcmd) scanNext() (string, error) {
 // Run processes all available batches.
 // When once is true it stops after the first query runs.
 // When processAll is true it executes any remaining batch content when reaching EOF
+// The error returned from Run is mainly of informational value. Its Message will have been printed
+// before Run returns.
 func (s *Sqlcmd) Run(once bool, processAll bool) error {
-	setupCloseHandler(s)
 	iactive := s.lineIo != nil
 	var lastError error
 	for {
@@ -157,8 +171,10 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 			}
 		}
 
+		// Some Console implementations catch the ctrl-c so s.termchan isn't signalled
 		if err == ErrCtrlC {
-			os.Exit(0)
+			s.Exitcode = 0
+			return err
 		}
 		if err != nil && err != io.EOF && (s.Connect.ExitOnError && !s.Connect.IgnoreError) {
 			// If the error were due to a SQL error, the GO command handler
@@ -297,7 +313,7 @@ func (s *Sqlcmd) promptPassword() (string, error) {
 	if s.lineIo == nil {
 		return "", nil
 	}
-	pwd, err := s.lineIo.ReadPassword("Password:")
+	pwd, err := s.lineIo.ReadPassword(localizer.Sprintf("Password:"))
 	if err != nil {
 		return "", err
 	}
@@ -316,24 +332,29 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	b := s.batch.batchline
 	utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
 	unicodeReader := transform.NewReader(f, utf16bom)
-	scanner := bufio.NewScanner(unicodeReader)
-	buf := make([]byte, maxLineBuffer)
-	scanner.Buffer(buf, maxLineBuffer)
+	scanner := bufio.NewReader(unicodeReader)
 	curLine := s.batch.read
 	echoFileLines := s.echoFileLines
+	ln := make([]byte, 0, 2*1024*1024)
 	s.batch.read = func() (string, error) {
-		if !scanner.Scan() {
-			err := scanner.Err()
-			if err == nil {
-				return "", io.EOF
-			}
-			return "", err
+		var (
+			isPrefix bool  = true
+			err      error = nil
+			line     []byte
+		)
+
+		for isPrefix && err == nil {
+			line, isPrefix, err = scanner.ReadLine()
+			ln = append(ln, line...)
 		}
-		t := scanner.Text()
-		if echoFileLines {
-			_, _ = s.GetOutput().Write([]byte(s.Prompt() + t + SqlcmdEol))
+		if err == nil && echoFileLines {
+			_, _ = s.GetOutput().Write([]byte(s.Prompt()))
+			_, _ = s.GetOutput().Write(ln)
+			_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
 		}
-		return t, nil
+		t := string(ln)
+		ln = ln[:0]
+		return t, err
 	}
 	err = s.Run(false, processAll)
 	s.batch.read = curLine
@@ -389,16 +410,6 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	return b.String()
 }
 
-func setupCloseHandler(s *Sqlcmd) {
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		<-c
-		s.WriteError(s.GetOutput(), ErrCtrlC)
-		os.Exit(0)
-	}()
-}
-
 // runQuery runs the query and prints the results
 // The return value is based on the first cell of the last column of the last result set.
 // If it's numeric, it will be converted to int
@@ -409,6 +420,12 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
+	timeout := s.vars.QueryTimeoutSeconds()
+	if timeout > 0 {
+		ct, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+		defer cancel()
+		ctx = ct
+	}
 	retmsg := &sqlexp.ReturnMessage{}
 	rows, qe := s.db.QueryContext(ctx, query, retmsg)
 	if qe != nil {
@@ -536,4 +553,27 @@ func (s *Sqlcmd) handleError(retcode *int, err error) error {
 func (s Sqlcmd) Log(_ context.Context, _ msdsn.Log, msg string) {
 	_, _ = s.GetOutput().Write([]byte("DRIVER:" + msg))
 	_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
+}
+
+// SetupCloseHandler subscribes to the os.Signal channel for SIGTERM.
+// When it receives the event due to the user pressing ctrl-c or ctrl-break
+// that isn't handled directly by the Console or hosting application,
+// it will call Close() on the Console and exit the application.
+// Use StopCloseHandler to remove the subscription
+func (s *Sqlcmd) SetupCloseHandler() {
+	s.termchan = make(chan os.Signal, 1)
+	signal.Notify(s.termchan, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-s.termchan
+		s.WriteError(s.GetOutput(), ErrCtrlC)
+		if s.lineIo != nil {
+			s.lineIo.Close()
+		}
+		os.Exit(0)
+	}()
+}
+
+// StopCloseHandler unsubscribes the Sqlcmd from the SIGTERM signal
+func (s *Sqlcmd) StopCloseHandler() {
+	signal.Stop(s.termchan)
 }

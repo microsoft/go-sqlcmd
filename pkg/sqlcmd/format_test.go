@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -136,5 +137,24 @@ func BenchmarkDecodeBinary(b *testing.B) {
 			b.Fatalf("Incorrect length of returned string. Should be 20k, was %d", len(s))
 		}
 	}
+}
 
+func TestFormatterColorizer(t *testing.T) {
+
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.vars.Set(SQLCMDCOLORSCHEME, "emacs")
+	s.Format.(*sqlCmdFormatterType).colorizer = color.New(true)
+	err := runSqlCmd(t, s, []string{"select 'name' as name", "GO"})
+	assert.NoError(t, err, "runSqlCmd returned error")
+	assert.Equal(t, "\x1b[38;2;0;128;0mname\x1b[0m"+SqlcmdEol+SqlcmdEol+"\x1b[3m(1 row affected)"+SqlcmdEol+"\x1b[0m", buf.buf.String())
+}
+
+func TestFormatterXmlMode(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.Format.XmlMode(true)
+	err := runSqlCmd(t, s, []string{"select name from sys.databases where name='master' for xml auto ", "GO"})
+	assert.NoError(t, err, "runSqlCmd returned error")
+	assert.Equal(t, `<sys.databases name="master"/>`+SqlcmdEol, buf.buf.String())
 }

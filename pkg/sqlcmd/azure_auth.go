@@ -39,6 +39,7 @@ func GetTokenBasedConnection(connstr string, authenticationMethod string) (drive
 	case azuread.ActiveDirectoryServicePrincipal, azuread.ActiveDirectoryApplication:
 		query.Set("clientcertpath", os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"))
 	case azuread.ActiveDirectoryInteractive:
+	case azuread.ActiveDirectoryDeviceCode:
 		loginTimeout := query.Get("connection timeout")
 		loginTimeoutSeconds := 0
 		if loginTimeout != "" {

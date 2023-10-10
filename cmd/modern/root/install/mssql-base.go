@@ -5,20 +5,23 @@ package install
 
 import (
 	"fmt"
+	"net/url"
+	"path"
+	"path/filepath"
+	"runtime"
+	"strings"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/http"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"github.com/spf13/viper"
-	"net/url"
-	"path/filepath"
-	"runtime"
-	"strings"
 )
 
 // MssqlBase provide base support for installing SQL Server and all of its
@@ -38,15 +41,17 @@ type MssqlBase struct {
 	passwordMinNumber      int
 	passwordMinUpper       int
 	passwordSpecialCharSet string
-	encryptPassword        bool
+	passwordEncryption     string
 
 	useCached              bool
 	errorLogEntryToWaitFor string
 	defaultContextName     string
 	collation              string
 
-	name     string
-	hostname string
+	name         string
+	hostname     string
+	architecture string
+	os           string
 
 	port int
 
@@ -82,70 +87,76 @@ func (c *MssqlBase) AddFlags(
 		String:        &c.tag,
 		Name:          "tag",
 		DefaultString: "latest",
-		Usage:         "Tag to use, use get-tags to see list of tags",
+		Usage:         localizer.Sprintf("Tag to use, use get-tags to see list of tags"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		String:    &c.contextName,
 		Name:      "context-name",
 		Shorthand: "c",
-		Usage:     "Context name (a default context name will be created if not provided)",
+		Usage:     localizer.Sprintf("Context name (a default context name will be created if not provided)"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		String:    &c.defaultDatabase,
 		Name:      "user-database",
 		Shorthand: "u",
-		Usage:     "Create a user database and set it as the default for login",
+		Usage:     localizer.Sprintf("Create a user database and set it as the default for login"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		Bool:  &c.acceptEula,
 		Name:  "accept-eula",
-		Usage: "Accept the SQL Server EULA",
+		Usage: localizer.Sprintf("Accept the SQL Server EULA"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		Int:        &c.passwordLength,
 		DefaultInt: 50,
 		Name:       "password-length",
-		Usage:      "Generated password length",
+		Usage:      localizer.Sprintf("Generated password length"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		Int:        &c.passwordMinSpecial,
 		DefaultInt: 10,
 		Name:       "password-min-special",
-		Usage:      "Minimum number of special characters",
+		Usage:      localizer.Sprintf("Minimum number of special characters"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		Int:        &c.passwordMinNumber,
 		DefaultInt: 10,
 		Name:       "password-min-number",
-		Usage:      "Minimum number of numeric characters",
+		Usage:      localizer.Sprintf("Minimum number of numeric characters"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		Int:        &c.passwordMinUpper,
 		DefaultInt: 10,
 		Name:       "password-min-upper",
-		Usage:      "Minimum number of upper characters",
+		Usage:      localizer.Sprintf("Minimum number of upper characters"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.passwordSpecialCharSet,
 		DefaultString: "!@#$%&*",
 		Name:          "password-special-chars",
-		Usage:         "Special character set to include in password",
+		Usage:         localizer.Sprintf("Special character set to include in password"),
 	})
 
-	c.encryptPasswordFlag(addFlag)
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.passwordEncryption,
+		DefaultString: "none",
+		Name:          "password-encryption",
+		Usage: localizer.Sprintf("Password encryption method (%s) in sqlconfig file",
+			secret.EncryptionMethodsForUsage()),
+	})
 
 	addFlag(cmdparser.FlagOptions{
 		Bool:  &c.useCached,
 		Name:  "cached",
-		Usage: "Don't download image.  Use already downloaded image",
+		Usage: localizer.Sprintf("Don't download image.  Use already downloaded image"),
 	})
 
 	// BUG(stuartpa): SQL Server bug: "SQL Server is now ready for client connections", oh no it isn't!!
@@ -156,21 +167,35 @@ func (c *MssqlBase) AddFlags(
 		String:        &c.errorLogEntryToWaitFor,
 		DefaultString: "The default language",
 		Name:          "errorlog-wait-line",
-		Usage:         "Line in errorlog to wait for before connecting to disable 'sa' account",
+		Usage:         localizer.Sprintf("Line in errorlog to wait for before connecting"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.name,
 		DefaultString: "",
 		Name:          "name",
-		Usage:         "Specify a custom name for the container rather than a randomly generated one",
+		Usage:         localizer.Sprintf("Specify a custom name for the container rather than a randomly generated one"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.hostname,
 		DefaultString: "",
 		Name:          "hostname",
-		Usage:         "Explicitly set the container hostname, it defaults to the container ID",
+		Usage:         localizer.Sprintf("Explicitly set the container hostname, it defaults to the container ID"),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.architecture,
+		DefaultString: "amd64",
+		Name:          "architecture",
+		Usage:         localizer.Sprintf("Specifies the image CPU architecture"),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.os,
+		DefaultString: "linux",
+		Name:          "os",
+		Usage:         localizer.Sprintf("Specifies the image operating system"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
@@ -184,14 +209,14 @@ func (c *MssqlBase) AddFlags(
 		Int:        &c.port,
 		DefaultInt: 0,
 		Name:       "port",
-		Usage:      "Port (next available port from 1433 upwards used by default)",
+		Usage:      localizer.Sprintf("Port (next available port from 1433 upwards used by default)"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.usingDatabaseUrl,
 		DefaultString: "",
 		Name:          "using",
-		Usage:         "Download (into container) and attach database (.bak) from URL",
+		Usage:         localizer.Sprintf("Download (into container) and attach database (.bak) from URL"),
 	})
 }
 
@@ -210,9 +235,9 @@ func (c *MssqlBase) Run() {
 
 	if !c.acceptEula && viper.GetString("ACCEPT_EULA") == "" {
 		output.FatalWithHints(
-			[]string{"Either, add the --accept-eula flag to the command-line",
-				fmt.Sprintf("Or, set the environment variable i.e. %s SQLCMD_ACCEPT_EULA=YES ", pal.CreateEnvVarKeyword())},
-			"EULA not accepted")
+			[]string{localizer.Sprintf("Either, add the %s flag to the command-line", localizer.AcceptEulaFlag),
+				localizer.Sprintf("Or, set the environment variable i.e. %s %s=YES ", pal.CreateEnvVarKeyword(), localizer.AcceptEulaEnvVar)},
+			localizer.Sprintf("EULA not accepted"))
 	}
 
 	imageName = fmt.Sprintf(
@@ -255,7 +280,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	if c.defaultDatabase != "" {
 		if !c.validateDbName(c.defaultDatabase) {
-			output.Fatalf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase)
+			output.Fatalf(localizer.Sprintf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))
 		}
 	}
 
@@ -265,13 +290,15 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.downloadImage(imageName, output, controller)
 	}
 
-	output.Infof("Starting %v", imageName)
+	output.Info(localizer.Sprintf("Starting %v", imageName))
 	containerId := controller.ContainerRun(
 		imageName,
 		env,
 		c.port,
 		c.name,
 		c.hostname,
+		c.architecture,
+		c.os,
 		[]string{},
 		false,
 	)
@@ -289,22 +316,22 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		containerId,
 		userName,
 		password,
-		c.encryptPassword,
+		c.passwordEncryption,
 	)
 
-	output.Infof(
-		"Created context %q in \"%s\", configuring user account...",
-		config.CurrentContextName(),
-		config.GetConfigFileUsed())
+	output.Info(
+		localizer.Sprintf("Created context %q in \"%s\", configuring user account...",
+			config.CurrentContextName(),
+			config.GetConfigFileUsed()))
 
 	controller.ContainerWaitForLogEntry(
 		containerId, c.errorLogEntryToWaitFor)
 
-	output.Infof(
-		"Disabled %q account (and rotated %q password). Creating user %q",
-		"sa",
-		"sa",
-		userName)
+	output.Info(
+		localizer.Sprintf("Disabled %q account (and rotated %q password). Creating user %q",
+			"sa",
+			"sa",
+			userName))
 
 	endpoint, _ := config.CurrentContext()
 
@@ -321,12 +348,12 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	saUser := &sqlconfig.User{
 		AuthenticationType: "basic",
 		BasicAuth: &sqlconfig.BasicAuthDetails{
-			Username:          "sa",
-			PasswordEncrypted: c.encryptPassword,
-			Password:          secret.Encode(saPassword, c.encryptPassword)},
+			Username:           "sa",
+			PasswordEncryption: c.passwordEncryption,
+			Password:           secret.Encode(saPassword, c.passwordEncryption)},
 		Name: "sa"}
 
-	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Interactive: false})
+	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
 
 	c.createNonSaUser(userName, password)
 
@@ -343,57 +370,66 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	// TODO: sqlcmd open ads only support on Windows right now, add Mac support
 	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		hints = append(hints, []string{"Open in Azure Data Studio", "sqlcmd open ads"})
+		hints = append(hints, []string{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"})
 	}
 
-	hints = append(hints, []string{"Run a query", "sqlcmd query \"SELECT @@version\""})
-	hints = append(hints, []string{"Start interactive session", "sqlcmd query"})
+	hints = append(hints, []string{localizer.Sprintf("Run a query"), "sqlcmd query \"SELECT @@version\""})
+	hints = append(hints, []string{localizer.Sprintf("Start interactive session"), "sqlcmd query"})
 
 	if previousContextName != "" {
 		hints = append(
 			hints,
-			[]string{"Change current context", fmt.Sprintf(
+			[]string{localizer.Sprintf("Change current context"), fmt.Sprintf(
 				"sqlcmd config use-context %v",
 				previousContextName,
 			)},
 		)
 	}
 
-	hints = append(hints, []string{"View sqlcmd configuration", "sqlcmd config view"})
-	hints = append(hints, []string{"See connection strings", "sqlcmd config connection-strings"})
-	hints = append(hints, []string{"Remove", "sqlcmd delete"})
+	hints = append(hints, []string{localizer.Sprintf("View sqlcmd configuration"), "sqlcmd config view"})
+	hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
+	hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
 
-	output.InfofWithHintExamples(hints,
-		"Now ready for client connections on port %d",
-		c.port,
+	output.InfoWithHintExamples(hints,
+		localizer.Sprintf("Now ready for client connections on port %d",
+			c.port),
 	)
 }
 
 func (c *MssqlBase) validateUsingUrlExists() {
 	output := c.Cmd.Output()
-	u, err := url.Parse(c.usingDatabaseUrl)
+	databaseUrl := extractUrl(c.usingDatabaseUrl)
+	u, err := url.Parse(databaseUrl)
 	c.CheckErr(err)
 
 	if u.Scheme != "http" && u.Scheme != "https" {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{
-				"--using URL must be http or https",
+				localizer.Sprintf("--using URL must be http or https"),
 			},
-			"%q is not a valid URL for --using flag", c.usingDatabaseUrl)
+			localizer.Sprintf("%q is not a valid URL for --using flag", c.usingDatabaseUrl))
+	}
+
+	if u.Path == "" {
+		output.FatalWithHints(
+			[]string{
+				localizer.Sprintf("--using URL must have a path to .bak file"),
+			},
+			localizer.Sprintf("%q is not a valid URL for --using flag", c.usingDatabaseUrl))
 	}
 
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
-	if _, file := filepath.Split(c.usingDatabaseUrl); filepath.Ext(file) != ".bak" {
-		output.FatalfWithHints(
+	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
+		output.FatalWithHints(
 			[]string{
-				"--using file URL must be a .bak file",
+				localizer.Sprintf("--using file URL must be a .bak file"),
 			},
-			"Invalid --using file type")
+			localizer.Sprintf("Invalid --using file type"))
 	}
 
 	// Verify the url actually exists, and early exit if it doesn't
-	urlExists(c.usingDatabaseUrl, output)
+	urlExists(databaseUrl, output)
 }
 
 func (c *MssqlBase) query(commandText string) {
@@ -416,7 +452,7 @@ func (c *MssqlBase) createNonSaUser(
 		defaultDatabase = c.defaultDatabase
 
 		// Create the default database, if it isn't a downloaded database
-		output.Infof("Creating default database [%s]", defaultDatabase)
+		output.Info(localizer.Sprintf("Creating default database [%s]", defaultDatabase))
 		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
@@ -444,31 +480,73 @@ CHECK_POLICY=OFF`
 	}
 }
 
+func getDbNameAsIdentifier(dbName string) string {
+	escapedDbNAme := strings.ReplaceAll(dbName, "'", "''")
+	return strings.ReplaceAll(escapedDbNAme, "]", "]]")
+}
+
+func getDbNameAsNonIdentifier(dbName string) string {
+	return strings.ReplaceAll(dbName, "]", "]]")
+}
+
+// parseDbName returns the databaseName from --using arg
+// It sets database name to the specified database name
+// or in absence of it, it is set to the filename without
+// extension.
+func parseDbName(usingDbUrl string) string {
+	u, _ := url.Parse(usingDbUrl)
+	dbToken := path.Base(u.Path)
+	if dbToken != "." && dbToken != "/" {
+		lastIdx := strings.LastIndex(dbToken, ".bak")
+		if lastIdx != -1 {
+			//Get file name without extension
+			fileName := dbToken[0:lastIdx]
+			lastIdx += 5
+			if lastIdx >= len(dbToken) {
+				return fileName
+			}
+			//Return database name if it was specified
+			return dbToken[lastIdx:]
+		}
+	}
+	return ""
+}
+
+func extractUrl(usingArg string) string {
+	urlEndIdx := strings.LastIndex(usingArg, ".bak")
+	if urlEndIdx != -1 {
+		return usingArg[0:(urlEndIdx + 4)]
+	}
+	return usingArg
+}
+
 func (c *MssqlBase) downloadAndRestoreDb(
 	controller *container.Controller,
 	containerId string,
 	userName string,
 ) {
 	output := c.Cmd.Output()
+	databaseName := parseDbName(c.usingDatabaseUrl)
+	databaseUrl := extractUrl(c.usingDatabaseUrl)
 
-	u, err := url.Parse(c.usingDatabaseUrl)
-	c.CheckErr(err)
-	_, file := filepath.Split(c.usingDatabaseUrl)
-	fileNameWithNoExt := strings.TrimSuffix(file, filepath.Ext(file))
+	_, file := filepath.Split(databaseUrl)
 
 	// Download file from URL into container
-	output.Infof("Downloading %s from %s", file, u.Hostname())
+	output.Info(localizer.Sprintf("Downloading %s", file))
 
 	temporaryFolder := "/var/opt/mssql/backup"
 
 	controller.DownloadFile(
 		containerId,
-		c.usingDatabaseUrl,
+		databaseUrl,
 		temporaryFolder,
 	)
 
 	// Restore database from file
-	output.Infof("Restoring database %s", fileNameWithNoExt)
+	output.Info(localizer.Sprintf("Restoring database %s", databaseName))
+
+	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
+	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
 
 	text := `SET NOCOUNT ON;
 
@@ -511,12 +589,12 @@ WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
 EXEC(@sql)`
 
-	c.query(fmt.Sprintf(text, temporaryFolder, file, fileNameWithNoExt, temporaryFolder, file))
+	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
 
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
 		userName,
-		fileNameWithNoExt)
+		dbNameAsNonIdentifier)
 	c.query(alterDefaultDb)
 }
 
@@ -525,30 +603,30 @@ func (c *MssqlBase) downloadImage(
 	output *output.Output,
 	controller *container.Controller,
 ) {
-	output.Infof("Downloading %v", imageName)
+	output.Info(localizer.Sprintf("Downloading %v", imageName))
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {
-		output.FatalfErrorWithHints(
+		output.FatalErrorWithHints(
 			err,
 			[]string{
-				"Is a container runtime installed on this machine (e.g. Podman or Docker)?" + pal.LineBreak() +
-					"\tIf not, download desktop engine from:" + pal.LineBreak() +
+				localizer.Sprintf("Is a container runtime installed on this machine (e.g. Podman or Docker)?") + pal.LineBreak() +
+					localizer.Sprintf("\tIf not, download desktop engine from:") + pal.LineBreak() +
 					"\t\thttps://podman-desktop.io/" + pal.LineBreak() +
-					"\t\tor" + pal.LineBreak() +
+					localizer.Sprintf("\t\tor") + pal.LineBreak() +
 					"\t\thttps://docs.docker.com/get-docker/",
-				"Is a container runtime running?  (Try `podman ps` or `docker ps` (list containers), does it return without error?)",
-				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
+				localizer.Sprintf("Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)", localizer.PodmanPsCommand, localizer.DockerPsCommand),
+				localizer.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
 					"\t`podman|docker pull %s`", imageName)},
-			"Unable to download image %s", imageName)
+			localizer.Sprintf("Unable to download image %s", imageName))
 	}
 }
 
 // Verify the file exists at the URL
 func urlExists(url string, output *output.Output) {
 	if !http.UrlExists(url) {
-		output.FatalfWithHints(
-			[]string{"File does not exist at URL"},
-			"Unable to download file")
+		output.FatalWithHints(
+			[]string{localizer.Sprintf("File does not exist at URL")},
+			localizer.Sprintf("Unable to download file"))
 	}
 }
 

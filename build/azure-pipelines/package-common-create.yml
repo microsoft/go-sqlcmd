@@ -2,6 +2,8 @@ parameters:
 - name: OS
   type: string
   default:
+- name: Architecture
+  type: string
 - name: Type
   type: string
 
@@ -41,7 +43,8 @@ steps:
     msbuildArgs: '/p:Configuration=Release'
   env:
     CLI_VERSION: $(VERSION_TAG)
-- task: EsrpCodeSigning@1
+    ARCHITECTURE: ${{ parameters.Architecture }}
+- task: EsrpCodeSigning@2
   condition: eq(variables.OS, 'windows')
   inputs:
     ConnectedServiceName: 'Code Signing'
@@ -100,7 +103,7 @@ steps:
   inputs:
    targetType: 'inline'
    script: |
-      mv "$(Build.SourcesDirectory)/release/windows/msi/bin/Release/sqlcmd.msi" "$(Build.SourcesDirectory)/release/windows/msi/bin/Release/sqlcmd_${CLI_VERSION}-${CLI_VERSION_REVISION}.msi"
+      mv "$(Build.SourcesDirectory)/release/windows/msi/bin/Release/sqlcmd.msi" "$(Build.SourcesDirectory)/release/windows/msi/bin/Release/sqlcmd-${{ parameters.ARCHITECTURE }}_${CLI_VERSION}-${CLI_VERSION_REVISION}.msi"
   env:
     CLI_VERSION: $(VERSION_TAG)
     CLI_VERSION_REVISION: 1
@@ -111,7 +114,7 @@ steps:
     sourceFolder: $(Build.SourcesDirectory)/release/windows/msi/bin/Release
     contents: '?(*.msi|*.md)'
     TargetFolder: $(Build.ArtifactStagingDirectory)
-- task: EsrpCodeSigning@1
+- task: EsrpCodeSigning@2
   condition: and(eq(variables.OS, 'linux'), ne(variables.Type, 'docker'))
   inputs:
     ConnectedServiceName: 'Code Signing'
@@ -132,7 +135,7 @@ steps:
     MaxConcurrency: '50'
     MaxRetryAttempts: '20'
 - task: PublishPipelineArtifact@0
-  displayName: 'Publish Artifact: ${{ parameters.Type }}'
+  displayName: 'Publish Artifact: ${{ parameters.Type }} ${{ parameters.Architecture }}'
   inputs:
     targetPath: $(Build.ArtifactStagingDirectory)
-    artifactName: ${{ parameters.Type }}
+    artifactName: ${{ parameters.Type }} ${{ parameters.Architecture }}

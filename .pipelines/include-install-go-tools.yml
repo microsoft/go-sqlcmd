@@ -8,8 +8,7 @@ steps:
       command: 'get'
       arguments: '-d'
       workingDirectory: '$(Build.SourcesDirectory)/cmd/sqlcmd'
-  
-  
+
   - task: Go@0
     displayName: 'Go: install gotest.tools/gotestsum'
     inputs:

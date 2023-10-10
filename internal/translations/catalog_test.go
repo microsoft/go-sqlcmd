@@ -4,8 +4,9 @@
 package translations
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // TestLookup tests the Lookup method of the dictionary type.
@@ -29,7 +30,7 @@ func TestLookup(t *testing.T) {
 		},
 		{
 			name:     "existing key",
-			key:      "'-w %d': value must be greater than 8 and less than 65536.",
+			key:      "View configuration information and connection strings",
 			expected: "k",
 			ok:       true,
 		},

@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"regexp"
@@ -11,7 +12,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/alecthomas/kong"
+	"github.com/microsoft/go-sqlcmd/internal/color"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -107,6 +108,11 @@ func newCommands() Commands {
 			action: onerrorCommand,
 			name:   "ONERROR",
 		},
+		"XML": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:XML(?:[ \t]+(.*$)|$)`),
+			action: xmlCommand,
+			name:   "XML",
+		},
 	}
 }
 
@@ -176,27 +182,33 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 	if !strings.HasPrefix(params, "(") || !strings.HasSuffix(params, ")") {
 		return InvalidCommandError("EXIT", line)
 	}
-	// First we run the current batch
-	query := s.batch.String()
-	if query != "" {
-		query = s.getRunnableQuery(query)
-		if exitCode, err := s.runQuery(query); err != nil {
-			s.Exitcode = exitCode
-			return ErrExitRequested
-		}
+	// First we save the current batch
+	query1 := s.batch.String()
+	if len(query1) > 0 {
+		query1 = s.getRunnableQuery(query1)
 	}
-	query = strings.TrimSpace(params[1 : len(params)-1])
-	if len(query) > 0 {
-		s.batch.Reset([]rune(query))
+	// Now parse the params of EXIT as a batch without commands
+	cmd := s.batch.cmd
+	s.batch.cmd = nil
+	defer func() {
+		s.batch.cmd = cmd
+	}()
+	query2 := strings.TrimSpace(params[1 : len(params)-1])
+	if len(query2) > 0 {
+		s.batch.Reset([]rune(query2))
 		_, _, err := s.batch.Next()
 		if err != nil {
 			return err
 		}
-		query = s.batch.String()
-		if s.batch.String() != "" {
-			query = s.getRunnableQuery(query)
-			s.Exitcode, _ = s.runQuery(query)
+		query2 = s.batch.String()
+		if len(query2) > 0 {
+			query2 = s.getRunnableQuery(query2)
 		}
+	}
+
+	if len(query1) > 0 || len(query2) > 0 {
+		query := query1 + SqlcmdEol + query2
+		s.Exitcode, _ = s.runQuery(query)
 	}
 	return ErrExitRequested
 }
@@ -224,6 +236,12 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 		}
 	}
 	if err != nil || n < 1 {
+		return InvalidCommandError("GO", line)
+	}
+	if s.EchoInput {
+		err = listCommand(s, []string{}, line)
+	}
+	if err != nil {
 		return InvalidCommandError("GO", line)
 	}
 	query := s.batch.String()
@@ -355,49 +373,70 @@ func resetCommand(s *Sqlcmd, args []string, line uint) error {
 }
 
 // listCommand displays statements currently in  the statement cache
-func listCommand(s *Sqlcmd, args []string, line uint) error {
-	if s.batch != nil && s.batch.String() != "" {
-		fmt.Fprintf(s.GetOutput(), `%s%s`, []byte(s.batch.String()), SqlcmdEol)
+func listCommand(s *Sqlcmd, args []string, line uint) (err error) {
+	cmd := ""
+	if args != nil {
+		if len(args) > 0 {
+			cmd = strings.ToLower(strings.TrimSpace(args[0]))
+			if len(args) > 1 || (cmd != "color" && cmd != "") {
+				return InvalidCommandError("LIST", line)
+			}
+		}
+	}
+	output := s.GetOutput()
+	if cmd == "color" {
+		sample := "select 'literal' as literal, 100 as number from [sys].[tables]"
+		clr := color.TextTypeTSql
+		if s.Format.IsXmlMode() {
+			sample = `<node att="attValue"/><node>value</node>`
+			clr = color.TextTypeXml
+		}
+		// ignoring errors since it's not critical output
+		for _, style := range s.colorizer.Styles() {
+			_, _ = output.Write([]byte(style + ": "))
+			_ = s.colorizer.Write(output, sample, style, clr)
+			_, _ = output.Write([]byte(SqlcmdEol))
+		}
+		return
+	}
+	if s.batch == nil || s.batch.String() == "" {
+		return
 	}
 
-	return nil
-}
+	if err = s.colorizer.Write(output, s.batch.String(), s.vars.ColorScheme(), color.TextTypeTSql); err == nil {
+		_, err = output.Write([]byte(SqlcmdEol))
+	}
 
-type connectData struct {
-	Server               string `arg:""`
-	Database             string `short:"D"`
-	Username             string `short:"U"`
-	Password             string `short:"P"`
-	LoginTimeout         string `short:"l"`
-	AuthenticationMethod string `short:"G"`
+	return
 }
 
 func connectCommand(s *Sqlcmd, args []string, line uint) error {
-
 	if len(args) == 0 {
 		return InvalidCommandError("CONNECT", line)
 	}
-	cmdLine := strings.TrimSpace(args[0])
-	if cmdLine == "" {
-		return InvalidCommandError("CONNECT", line)
-	}
-	arguments := &connectData{}
-	parser, err := kong.New(arguments)
+
+	commandArgs := strings.Fields(args[0])
+
+	// Parse flags
+	flags := flag.NewFlagSet("connect", flag.ContinueOnError)
+	database := flags.String("D", "", "database name")
+	username := flags.String("U", "", "user name")
+	password := flags.String("P", "", "password")
+	loginTimeout := flags.String("l", "", "login timeout")
+	authenticationMethod := flags.String("G", "", "authentication method")
+
+	err := flags.Parse(commandArgs[1:])
+	//err := flags.Parse(args[1:])
 	if err != nil {
 		return InvalidCommandError("CONNECT", line)
 	}
 
-	// Fields removes extra whitespace.
-	// Note :connect doesn't support passwords with spaces
-	if _, err = parser.Parse(strings.Fields(cmdLine)); err != nil {
-		return InvalidCommandError("CONNECT", line)
-	}
-
 	connect := *s.Connect
-	connect.UserName, _ = resolveArgumentVariables(s, []rune(arguments.Username), false)
-	connect.Password, _ = resolveArgumentVariables(s, []rune(arguments.Password), false)
-	connect.ServerName, _ = resolveArgumentVariables(s, []rune(arguments.Server), false)
-	timeout, _ := resolveArgumentVariables(s, []rune(arguments.LoginTimeout), false)
+	connect.UserName, _ = resolveArgumentVariables(s, []rune(*username), false)
+	connect.Password, _ = resolveArgumentVariables(s, []rune(*password), false)
+	connect.Database, _ = resolveArgumentVariables(s, []rune(*database), false)
+
+	timeout, _ := resolveArgumentVariables(s, []rune(*loginTimeout), false)
 	if timeout != "" {
 		if timeoutSeconds, err := strconv.ParseInt(timeout, 10, 32); err == nil {
 			if timeoutSeconds < 0 {
@@ -406,9 +445,17 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 			connect.LoginTimeoutSeconds = int(timeoutSeconds)
 		}
 	}
-	connect.AuthenticationMethod = arguments.AuthenticationMethod
+
+	connect.AuthenticationMethod = *authenticationMethod
+
+	// Set server name as the first positional argument
+	if len(commandArgs) > 0 {
+		connect.ServerName, _ = resolveArgumentVariables(s, []rune(commandArgs[0]), false)
+	}
+
 	// If no user name is provided we switch to integrated auth
 	_ = s.ConnectDb(&connect, s.lineIo == nil)
+
 	// ConnectDb prints connection errors already, and failure to connect is not fatal even with -b option
 	return nil
 }
@@ -479,6 +526,22 @@ func onerrorCommand(s *Sqlcmd, args []string, line uint) error {
 		s.Connect.ExitOnError = false
 	} else {
 		return InvalidCommandError("ON ERROR", line)
+	}
+	return nil
+}
+
+func xmlCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) != 1 || args[0] == "" {
+		return InvalidCommandError("XML", line)
+	}
+	params := strings.TrimSpace(args[0])
+	// "OFF" and "ON" are documented as the allowed values.
+	// ODBC sqlcmd treats any value other than "ON" the same as "OFF".
+	// So we will too.
+	if strings.EqualFold(params, "on") {
+		s.Format.XmlMode(true)
+	} else {
+		s.Format.XmlMode(false)
 	}
 	return nil
 }

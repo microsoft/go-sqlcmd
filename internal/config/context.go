@@ -101,12 +101,12 @@ func CurrentContext() (endpoint Endpoint, user *User) {
 func GetCurrentContextInfo() (server string, username string, password string) {
 	endpoint, user := CurrentContext()
 	server = fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port)
-	if user != nil {
+	if user != nil && user.AuthenticationType == "basic" {
 		username = user.BasicAuth.Username
 		if user.AuthenticationType == "basic" {
 			password = decryptCallback(
 				user.BasicAuth.Password,
-				user.BasicAuth.PasswordEncrypted,
+				user.BasicAuth.PasswordEncryption,
 			)
 		}
 	}

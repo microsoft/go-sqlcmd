@@ -5,8 +5,11 @@ package sql
 
 import (
 	"fmt"
-	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"os"
+	"strings"
+
+	"github.com/microsoft/go-sqlcmd/internal/buffer"
+	"github.com/microsoft/go-sqlcmd/pkg/console"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
@@ -29,13 +32,17 @@ func (m *mssql) Connect(
 		m.console = nil
 	}
 	m.sqlcmd = sqlcmd.New(m.console, "", v)
-	m.sqlcmd.Format = sqlcmd.NewSQLCmdDefaultFormatter(false)
+	m.sqlcmd.Format = sqlcmd.NewSQLCmdDefaultFormatter(false, sqlcmd.ControlIgnore)
 	connect := sqlcmd.ConnectSettings{
 		ServerName: fmt.Sprintf(
 			"%s,%d",
 			endpoint.EndpointDetails.Address,
 			endpoint.EndpointDetails.Port),
 		ApplicationName: "sqlcmd",
+	}
+
+	if options.Database != "" {
+		connect.Database = options.Database
 	}
 
 	if user == nil {
@@ -46,7 +53,7 @@ func (m *mssql) Connect(
 			connect.UserName = user.BasicAuth.Username
 			connect.Password = decryptCallback(
 				user.BasicAuth.Password,
-				user.BasicAuth.PasswordEncrypted,
+				user.BasicAuth.PasswordEncryption,
 			)
 		} else {
 			panic("Authentication not supported")
@@ -73,7 +80,26 @@ func (m *mssql) Query(text string) {
 		err := m.sqlcmd.Run(true, false)
 		checkErr(err)
 	} else {
+		// sqlcmd prints the ErrCtrlC message before returning
+		// In modern mode we do not exit the process on ctrl-c during interactive mode
 		err := m.sqlcmd.Run(false, true)
-		checkErr(err)
+		if err != sqlcmd.ErrCtrlC {
+			checkErr(err)
+		}
 	}
+}
+
+func (m *mssql) ScalarString(query string) string {
+	buf := buffer.NewMemoryBuffer()
+	defer func() { _ = buf.Close() }()
+
+	m.sqlcmd.Query = query
+	m.sqlcmd.SetOutput(buf)
+	m.sqlcmd.SetError(os.Stderr)
+
+	trace("Running query: %v", query)
+	err := m.sqlcmd.Run(true, false)
+	checkErr(err)
+
+	return strings.TrimRight(buf.String(), "\r\n")
 }

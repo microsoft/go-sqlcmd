@@ -1,0 +1,3615 @@
+{
+  "language": "ru-RU",
+  "messages": [
+    {
+      "id": "Install/Create, Query, Uninstall SQL Server",
+      "message": "Install/Create, Query, Uninstall SQL Server",
+      "translation": "Установка или создание, запрос, удаление SQL Server",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View configuration information and connection strings",
+      "message": "View configuration information and connection strings",
+      "translation": "Просмотреть сведения о конфигурации и строки подключения",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
+      "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
+      "translation": "sqlcmd: установка, создание и запрос SQL Server, Azure SQL и инструментов\n\nОбратная связь:\n  {FeedbackUrl}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "FeedbackUrl",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "feedbackUrl"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "help for backwards compatibility flags (-S, -U, -E etc.)",
+      "message": "help for backwards compatibility flags (-S, -U, -E etc.)",
+      "translation": "справка по флагам обратной совместимости (-S, -U, -E и т. д.)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "print version of sqlcmd",
+      "message": "print version of sqlcmd",
+      "translation": "печать версии sqlcmd",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "configuration file",
+      "message": "configuration file",
+      "translation": "файл конфигурации:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
+      "message": "log level, error=0, warn=1, info=2, debug=3, trace=4",
+      "translation": "уровень занесения в журнал, ошибка=0, предупреждение=1, информация=2, отладка=3, трассировка=4",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Modify sqlconfig files using subcommands like \"{UseContextCommand}\"",
+      "message": "Modify sqlconfig files using subcommands like \"{UseContextCommand}\"",
+      "translation": "Измените файлы sqlconfig с помощью таких подкоманд, как \"{UseContextCommand}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UseContextCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.UseContextCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Add context for existing endpoint and user (use {PasswordEnvVar} or {PasswordEnvVar2})",
+      "message": "Add context for existing endpoint and user (use {PasswordEnvVar} or {PasswordEnvVar2})",
+      "translation": "Добавить контекст для существующей конечной точки и пользователя (используйте {PasswordEnvVar} или {PasswordEnvVar2})",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Install/Create SQL Server, Azure SQL, and Tools",
+      "message": "Install/Create SQL Server, Azure SQL, and Tools",
+      "translation": "Установка и создание SQL Server, Azure SQL и инструментов",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Open tools (e.g Azure Data Studio) for current context",
+      "message": "Open tools (e.g Azure Data Studio) for current context",
+      "translation": "Открыть инструменты (например, Azure Data Studio) для текущего контекста",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Run a query against the current context",
+      "message": "Run a query against the current context",
+      "translation": "Запустить запрос на текущем контексте",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Run a query",
+      "message": "Run a query",
+      "translation": "Выполнить запрос",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Run a query using [{Master}] database",
+      "message": "Run a query using [{Master}] database",
+      "translation": "Выполнить запрос на базе данных [{Master}]",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Master",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"master\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Set new default database",
+      "message": "Set new default database",
+      "translation": "Задать новую базу данных по умолчанию",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Command text to run",
+      "message": "Command text to run",
+      "translation": "Текст команды для выполнения",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Database to use",
+      "message": "Database to use",
+      "translation": "База данных, которую следует использовать",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Start current context",
+      "message": "Start current context",
+      "translation": "Запустить текущий контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Start the current context",
+      "message": "Start the current context",
+      "translation": "Запустить текущий контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To view available contexts",
+      "message": "To view available contexts",
+      "translation": "Для просмотра доступных контекстов",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "No current context",
+      "message": "No current context",
+      "translation": "Текущий контекст отсутствует",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Starting {Image} for context {CurrentContextName}",
+      "message": "Starting {Image} for context {CurrentContextName}",
+      "translation": "Запуск {Image} для контекста {CurrentContextName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
+        },
+        {
+          "id": "CurrentContextName",
+          "string": "%[2]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Create new context with a sql container",
+      "message": "Create new context with a sql container",
+      "translation": "Создать новый контекст с контейнером SQL",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Current context does not have a container",
+      "message": "Current context does not have a container",
+      "translation": "У текущего контекста нет контейнера",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Stop current context",
+      "message": "Stop current context",
+      "translation": "Остановить текущий контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Stop the current context",
+      "message": "Stop the current context",
+      "translation": "Остановить текущий контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Stopping {Image} for context {CurrentContextName}",
+      "message": "Stopping {Image} for context {CurrentContextName}",
+      "translation": "Остановка {Image} для контекста {CurrentContextName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
+        },
+        {
+          "id": "CurrentContextName",
+          "string": "%[2]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Create a new context with a SQL Server container",
+      "message": "Create a new context with a SQL Server container",
+      "translation": "Создать новый контекст с контейнером SQL Server",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Uninstall/Delete the current context",
+      "message": "Uninstall/Delete the current context",
+      "translation": "Удалить текущий контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Uninstall/Delete the current context, no user prompt",
+      "message": "Uninstall/Delete the current context, no user prompt",
+      "translation": "Удалить текущий контекст без запроса подтверждения у пользователя",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+      "message": "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+      "translation": "Удалить текущий контекст без запроса пользователя, переопределить проверку безопасности для пользовательских баз данных",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Quiet mode (do not stop for user input to confirm the operation)",
+      "message": "Quiet mode (do not stop for user input to confirm the operation)",
+      "translation": "Тихий режим (не останавливаться, чтобы запросить у пользователя подтверждение операции)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Complete the operation even if non-system (user) database files are present",
+      "message": "Complete the operation even if non-system (user) database files are present",
+      "translation": "Завершить операцию, даже если имеются несистемные (пользовательские) файлы базы данных",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View available contexts",
+      "message": "View available contexts",
+      "translation": "Просмотреть доступные контексты",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create context",
+      "message": "Create context",
+      "translation": "Создать контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create context with SQL Server container",
+      "message": "Create context with SQL Server container",
+      "translation": "Создать контекст с контейнером SQL Server",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a context manually",
+      "message": "Add a context manually",
+      "translation": "Добавить контекст вручную",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Current context is {CurrentContextName}. Do you want to continue? (Y/N)",
+      "message": "Current context is {CurrentContextName}. Do you want to continue? (Y/N)",
+      "translation": "Текущий контекст - {CurrentContextName}. Продолжить? (Д/Н)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "CurrentContextName",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Verifying no user (non-system) database (.mdf) files",
+      "message": "Verifying no user (non-system) database (.mdf) files",
+      "translation": "Производится проверка на отсутствие файлов пользовательских (несистемных) баз данных (MDF)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To start the container",
+      "message": "To start the container",
+      "translation": "Для запуска контейнера",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To override the check, use {__force}",
+      "message": "To override the check, use {__force}",
+      "translation": "Чтобы отменить проверку, используйте {__force}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "__force",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"--force\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running, unable to verify that user database files do not exist",
+      "message": "Container is not running, unable to verify that user database files do not exist",
+      "translation": "Контейнер не запущен, не удалось проверить, что пользовательские файлы базы данных не существуют",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Removing context {CurrentContextName}",
+      "message": "Removing context {CurrentContextName}",
+      "translation": "Производится удаление контекста {CurrentContextName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "CurrentContextName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Stopping {Image}",
+      "message": "Stopping {Image}",
+      "translation": "Остановка {Image}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Container {Id} no longer exists, continuing to remove context...",
+      "message": "Container {Id} no longer exists, continuing to remove context...",
+      "translation": "Контейнер {Id} больше не существует, продолжается удаление контекста...",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Id",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "id"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Current context is now {NewContextName}",
+      "message": "Current context is now {NewContextName}",
+      "translation": "Теперь текущим контекстом является {NewContextName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "NewContextName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "newContextName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "{Operation_completed_successfully}",
+      "message": "{Operation_completed_successfully}",
+      "translation": "{Operation_completed_successfully}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Operation_completed_successfully",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"Operation completed successfully\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "If the database is mounted, run {DropDbQuery}",
+      "message": "If the database is mounted, run {DropDbQuery}",
+      "translation": "Если база данных подключена, выполните {DropDbQuery}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DropDbQuery",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "dropDbQuery"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
+      "message": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
+      "translation": "Передайте флаг {__force}, чтобы отменить эту проверку безопасности на наличие пользовательских (несистемных) баз данных",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "__force",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"--force\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
+      "message": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
+      "translation": "Невозможно продолжить работу, присутствует пользовательская (несистемная) база данных ({DatabaseFile})",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DatabaseFile",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "databaseFile"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "No endpoints to uninstall",
+      "message": "No endpoints to uninstall",
+      "translation": "Нет конечных точек для удаления",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a context",
+      "message": "Add a context",
+      "translation": "Добавить контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
+      "message": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
+      "translation": "Добавьте контекст для локального экземпляра службы SQL Server на порте 1433 с помощью доверенной проверки подлинности",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Display name for the context",
+      "message": "Display name for the context",
+      "translation": "Видимое имя контекста",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of endpoint this context will use",
+      "message": "Name of endpoint this context will use",
+      "translation": "Имя конечной точки, которая будет использоваться этим контекстом",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of user this context will use",
+      "message": "Name of user this context will use",
+      "translation": "Имя пользователя, которое будет использоваться этим контекстом",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View existing endpoints to choose from",
+      "message": "View existing endpoints to choose from",
+      "translation": "Просмотреть существующие конечные точки для выбора",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a new local endpoint",
+      "message": "Add a new local endpoint",
+      "translation": "Добавить новую локальную конечную точку",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add an already existing endpoint",
+      "message": "Add an already existing endpoint",
+      "translation": "Добавить уже существующую конечную точку",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
+      "message": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
+      "translation": "Для добавления контекста требуется конечная точка.  Конечной точки с именем \"{EndpointName}\" не существует.  Используйте флаг {EndpointFlag}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "EndpointName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.endpointName"
+        },
+        {
+          "id": "EndpointFlag",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.EndpointFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "View list of users",
+      "message": "View list of users",
+      "translation": "Просмотреть список пользователей",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add the user",
+      "message": "Add the user",
+      "translation": "Добавить этого пользователя",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add an endpoint",
+      "message": "Add an endpoint",
+      "translation": "Добавить конечную точку",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "User '{UserName}' does not exist",
+      "message": "User '{UserName}' does not exist",
+      "translation": "Пользователя \"{UserName}\" не существует",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UserName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.userName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Open in Azure Data Studio",
+      "message": "Open in Azure Data Studio",
+      "translation": "Открыть в Azure Data Studio",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To start interactive query session",
+      "message": "To start interactive query session",
+      "translation": "Для запуска сеанса интерактивного запроса",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To run a query",
+      "message": "To run a query",
+      "translation": "Для выполнения запроса",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Current Context '{Name}'",
+      "message": "Current Context '{Name}'",
+      "translation": "Текущий контекст \"{Name}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "context.Name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Add a default endpoint",
+      "message": "Add a default endpoint",
+      "translation": "Добавить конечную точку по умолчанию",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Display name for the endpoint",
+      "message": "Display name for the endpoint",
+      "translation": "Видимое имя конечной точки",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The network address to connect to, e.g. 127.0.0.1 etc.",
+      "message": "The network address to connect to, e.g. 127.0.0.1 etc.",
+      "translation": "Сетевой порт для подключения, например 127.0.0.1 и т. д.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The network port to connect to, e.g. 1433 etc.",
+      "message": "The network port to connect to, e.g. 1433 etc.",
+      "translation": "Сетевой порт для подключения, например 1433 и т. д.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a context for this endpoint",
+      "message": "Add a context for this endpoint",
+      "translation": "Добавить контекст для этой конечной точки",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View endpoint names",
+      "message": "View endpoint names",
+      "translation": "Просмотреть имена конечных точек",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View endpoint details",
+      "message": "View endpoint details",
+      "translation": "Просмотреть сведения о конечной точке",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View all endpoints details",
+      "message": "View all endpoints details",
+      "translation": "Просмотреть все сведения о конечных точках",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete this endpoint",
+      "message": "Delete this endpoint",
+      "translation": "Удалить эту конечную точку",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
+      "message": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
+      "translation": "Добавлена конечная точка \"{UniqueEndpointName}\" (адрес: \"{Address}\", порт: \"{Port}\")",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UniqueEndpointName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "uniqueEndpointName"
+        },
+        {
+          "id": "Address",
+          "string": "%[2]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "c.address"
+        },
+        {
+          "id": "Port",
+          "string": "%[3]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 3,
+          "expr": "c.port"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Add a user (using the SQLCMD_PASSWORD environment variable)",
+      "message": "Add a user (using the SQLCMD_PASSWORD environment variable)",
+      "translation": "Добавить пользователя (с помощью переменной среды SQLCMD_PASSWORD)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a user (using the SQLCMDPASSWORD environment variable)",
+      "message": "Add a user (using the SQLCMDPASSWORD environment variable)",
+      "translation": "Добавить пользователя (с помощью переменной среды SQLCMDPASSWORD)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
+      "message": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
+      "translation": "Добавьте пользователя с помощью API защиты данных Windows для шифрования пароля в sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a user",
+      "message": "Add a user",
+      "translation": "Добавить пользователя",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Display name for the user (this is not the username)",
+      "message": "Display name for the user (this is not the username)",
+      "translation": "Видимое имя пользователя (не то же самое, что имя пользователя для входа в систему)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Authentication type this user will use (basic | other)",
+      "message": "Authentication type this user will use (basic | other)",
+      "translation": "Тип проверки подлинности, который будет использовать этот пользователь (базовый | другой)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
+      "message": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
+      "translation": "Имя пользователя (укажите пароль в переменной среды {PasswordEnvVar} или {PasswordEnvVar2})",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
+      "message": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
+      "translation": "Метод шифрования пароля ({EncryptionMethodsForUsage}) в файле sqlconfig",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "EncryptionMethodsForUsage",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "secret.EncryptionMethodsForUsage()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
+      "message": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
+      "translation": "Тип проверки подлинности должен быть \"{ModernAuthTypeBasic}\" или \"{ModernAuthTypeOther}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ModernAuthTypeBasic"
+        },
+        {
+          "id": "ModernAuthTypeOther",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ModernAuthTypeOther"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Authentication type '' is not valid {AuthType}'",
+      "message": "Authentication type '' is not valid {AuthType}'",
+      "translation": "Тип проверки подлинности \"\" недопустим {AuthType}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "AuthType",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.authType"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Remove the {PasswordEncryptFlag} flag",
+      "message": "Remove the {PasswordEncryptFlag} flag",
+      "translation": "Удалить флаг {PasswordEncryptFlag}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEncryptFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
+      "message": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
+      "translation": "Передать параметр {AuthTypeFlag} {ModernAuthTypeBasic}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "AuthTypeFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.AuthTypeFlag"
+        },
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
+      "message": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
+      "translation": "Флаг {PasswordEncryptFlag} может использоваться только с типом проверки подлинности \"{ModernAuthTypeBasic}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEncryptFlag"
+        },
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Add the {PasswordEncryptFlag} flag",
+      "message": "Add the {PasswordEncryptFlag} flag",
+      "translation": "Добавить флаг {PasswordEncryptFlag}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEncryptFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
+      "message": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
+      "translation": "Флаг {PasswordEncryptFlag} обязательно должен указываться с типом проверки подлинности \"{ModernAuthTypeBasic}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEncryptFlag"
+        },
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
+      "message": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
+      "translation": "Укажите пароль в переменной среды {PasswordEnvVar} (или {PasswordEnvVar2})",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
+      "message": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
+      "translation": "Для типа проверки подлинности \"{ModernAuthTypeBasic}\" требуется пароль",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Provide a username with the {Arg_1} flag",
+      "message": "Provide a username with the {Arg_1} flag",
+      "translation": "Укажите имя пользователя с флагом {Arg_1}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Arg_1",
+          "string": "%[1]s",
+          "type": "",
+          "underlyingType": "string",
+          "argNum": 1
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Username not provided",
+      "message": "Username not provided",
+      "translation": "Имя пользователя не указано",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
+      "message": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
+      "translation": "Укажите допустимый метод шифрования ({EncryptionMethodsForUsage}) с флагом {PasswordEncryptFlag}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "EncryptionMethodsForUsage",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "secret.EncryptionMethodsForUsage()"
+        },
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEncryptFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Encryption method '{PasswordEncryption}' is not valid",
+      "message": "Encryption method '{PasswordEncryption}' is not valid",
+      "translation": "Недопустимый метод шифрования \"{PasswordEncryption}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryption",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.passwordEncryption"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
+      "message": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
+      "translation": "Отменить задание значения одной из переменных среды {PasswordEnvVar} или {PasswordEnvVar2}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
+      "message": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
+      "translation": "Заданы обе переменные среды {PasswordEnvVar} и {PasswordEnvVar2}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "User '{UniqueUserName}' added",
+      "message": "User '{UniqueUserName}' added",
+      "translation": "Пользователь \"{UniqueUserName}\" добавлен",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UniqueUserName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "uniqueUserName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display connections strings for the current context",
+      "message": "Display connections strings for the current context",
+      "translation": "Показывать строки подключения для текущего контекста",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List connection strings for all client drivers",
+      "message": "List connection strings for all client drivers",
+      "translation": "Перечислите строки подключения для всех драйверов клиента",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Database for the connection string (default is taken from the T/SQL login)",
+      "message": "Database for the connection string (default is taken from the T/SQL login)",
+      "translation": "База данных для строки подключения (значение по умолчанию берется из имени для входа в T/SQL)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
+      "message": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
+      "translation": "Строки подключения поддерживаются только для проверки подлинности типа {ModernAuthTypeBasic}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display the current-context",
+      "message": "Display the current-context",
+      "translation": "Показать текущий контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete a context",
+      "message": "Delete a context",
+      "translation": "Удалить контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete a context (including its endpoint and user)",
+      "message": "Delete a context (including its endpoint and user)",
+      "translation": "Удалить контекст (включая его конечную точку и пользователя)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete a context (excluding its endpoint and user)",
+      "message": "Delete a context (excluding its endpoint and user)",
+      "translation": "Удалить контекст (не удаляя его конечную точку и пользователя)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of context to delete",
+      "message": "Name of context to delete",
+      "translation": "Имя контекста, подлежащего удалению",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete the context's endpoint and user as well",
+      "message": "Delete the context's endpoint and user as well",
+      "translation": "Удалить также конечную точку и пользователя контекста",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Use the {NameFlag} flag to pass in a context name to delete",
+      "message": "Use the {NameFlag} flag to pass in a context name to delete",
+      "translation": "Используйте флаг {NameFlag} для передачи имени контекста, которое следует удалить",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "NameFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.NameFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Context '{Name}' deleted",
+      "message": "Context '{Name}' deleted",
+      "translation": "Контекст \"{Name}\" удален",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Context '{Name}' does not exist",
+      "message": "Context '{Name}' does not exist",
+      "translation": "Контекста \"{Name}\" не существует",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Delete an endpoint",
+      "message": "Delete an endpoint",
+      "translation": "Удалить конечную точку",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of endpoint to delete",
+      "message": "Name of endpoint to delete",
+      "translation": "Имя конечной точки, подлежащей удалению",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
+      "message": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
+      "translation": "Необходимо указать имя конечной точки.  Укажите имя конечной точки с флагом {NameFlag}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "NameFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.NameFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "View endpoints",
+      "message": "View endpoints",
+      "translation": "Просмотреть конечные точки",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint '{Name}' does not exist",
+      "message": "Endpoint '{Name}' does not exist",
+      "translation": "Конечной точки \"{Name}\" не существует",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint '{Name}' deleted",
+      "message": "Endpoint '{Name}' deleted",
+      "translation": "Конечная точка \"{Name}\" удалена",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Delete a user",
+      "message": "Delete a user",
+      "translation": "Удалить пользователя",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of user to delete",
+      "message": "Name of user to delete",
+      "translation": "Имя пользователя, подлежащего удалению",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "User name must be provided.  Provide user name with {NameFlag} flag",
+      "message": "User name must be provided.  Provide user name with {NameFlag} flag",
+      "translation": "Необходимо указать имя пользователя.  Укажите имя пользователя с флагом {NameFlag}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "NameFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.NameFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "View users",
+      "message": "View users",
+      "translation": "Просмотреть пользователей",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "User {Name} does not exist",
+      "message": "User {Name} does not exist",
+      "translation": "Пользователя {Name} не существует",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "User {Name} deleted",
+      "message": "User {Name} deleted",
+      "translation": "Пользователь {Name} удален",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display one or many contexts from the sqlconfig file",
+      "message": "Display one or many contexts from the sqlconfig file",
+      "translation": "Показать один или несколько контекстов из файла sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List all the context names in your sqlconfig file",
+      "message": "List all the context names in your sqlconfig file",
+      "translation": "Перечислите все имена контекстов в файле sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List all the contexts in your sqlconfig file",
+      "message": "List all the contexts in your sqlconfig file",
+      "translation": "Перечислите все контексты в файле sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Describe one context in your sqlconfig file",
+      "message": "Describe one context in your sqlconfig file",
+      "translation": "Опишите один контекст в файле sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Context name to view details of",
+      "message": "Context name to view details of",
+      "translation": "Имя контекста, сведения о котором нужно просмотреть",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Include context details",
+      "message": "Include context details",
+      "translation": "Включить сведения о контексте",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To view available contexts run `{ContextCommand}`",
+      "message": "To view available contexts run `{ContextCommand}`",
+      "translation": "Чтобы просмотреть доступные контексты, выполните команду \"{ContextCommand}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ContextCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.GetContextCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "error: no context exists with the name: \"{Name}\"",
+      "message": "error: no context exists with the name: \"{Name}\"",
+      "translation": "ошибка: не существует контекста с именем: \"{Name}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display one or many endpoints from the sqlconfig file",
+      "message": "Display one or many endpoints from the sqlconfig file",
+      "translation": "Показать одну или несколько конечных точек из файла sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List all the endpoints in your sqlconfig file",
+      "message": "List all the endpoints in your sqlconfig file",
+      "translation": "Перечислите все конечные точки в файле sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Describe one endpoint in your sqlconfig file",
+      "message": "Describe one endpoint in your sqlconfig file",
+      "translation": "Опишите одну конечную точку в файле sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint name to view details of",
+      "message": "Endpoint name to view details of",
+      "translation": "Имя конечной точки, сведения о которой нужно просмотреть",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Include endpoint details",
+      "message": "Include endpoint details",
+      "translation": "Включить сведения о конечной точке",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To view available endpoints run `{EndpointsCommand}`",
+      "message": "To view available endpoints run `{EndpointsCommand}`",
+      "translation": "Чтобы просмотреть доступные конечные точки, введите команду \"{EndpointsCommand}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "EndpointsCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.GetEndpointsCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "error: no endpoint exists with the name: \"{Name}\"",
+      "message": "error: no endpoint exists with the name: \"{Name}\"",
+      "translation": "ошибка: не существует конечной точки с именем: \"{Name}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display one or many users from the sqlconfig file",
+      "message": "Display one or many users from the sqlconfig file",
+      "translation": "Показать одного или нескольких пользователей из файла sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List all the users in your sqlconfig file",
+      "message": "List all the users in your sqlconfig file",
+      "translation": "Перечислите всех пользователей в файле sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Describe one user in your sqlconfig file",
+      "message": "Describe one user in your sqlconfig file",
+      "translation": "Опишите одного пользователя в файле sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "User name to view details of",
+      "message": "User name to view details of",
+      "translation": "Имя пользователя, сведения о котором нужно просмотреть",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Include user details",
+      "message": "Include user details",
+      "translation": "Включить сведения о пользователе",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To view available users run `{UsersCommand}`",
+      "message": "To view available users run `{UsersCommand}`",
+      "translation": "Чтобы просмотреть доступных пользователей, введите команду \"{UsersCommand}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UsersCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.GetUsersCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "error: no user exists with the name: \"{Name}\"",
+      "message": "error: no user exists with the name: \"{Name}\"",
+      "translation": "ошибка: пользователя с именем: \"{Name}\" не существует",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Set the current context",
+      "message": "Set the current context",
+      "translation": "Задать текущий контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Set the mssql context (endpoint/user) to be the current context",
+      "message": "Set the mssql context (endpoint/user) to be the current context",
+      "translation": "Задайте контекст mssql (конечную точку или пользователя) в качестве текущего контекста",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of context to set as current context",
+      "message": "Name of context to set as current context",
+      "translation": "Имя контекста, который будет задан в качестве текущего",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To run a query:    {RunQueryExample}",
+      "message": "To run a query:    {RunQueryExample}",
+      "translation": "Для выполнения запроса: {RunQueryExample}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "RunQueryExample",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.RunQueryExample"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "To remove:         {UninstallCommand}",
+      "message": "To remove:         {UninstallCommand}",
+      "translation": "Для удаления:         {UninstallCommand}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UninstallCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.UninstallCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Switched to context \"{Name}\".",
+      "message": "Switched to context \"{Name}\".",
+      "translation": "Произведено переключение на контекст \"{Name}\".",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "No context exists with the name: \"{Name}\"",
+      "message": "No context exists with the name: \"{Name}\"",
+      "translation": "Не существует контекста с именем: \"{Name}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display merged sqlconfig settings or a specified sqlconfig file",
+      "message": "Display merged sqlconfig settings or a specified sqlconfig file",
+      "translation": "Показать объединенные параметры sqlconfig или указанный файл sqlconfig",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Show sqlconfig settings, with REDACTED authentication data",
+      "message": "Show sqlconfig settings, with REDACTED authentication data",
+      "translation": "Показать параметры sqlconfig с ИЗЪЯТЫМИ данными проверки подлинности",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Show sqlconfig settings and raw authentication data",
+      "message": "Show sqlconfig settings and raw authentication data",
+      "translation": "Показать параметры sqlconfig и необработанные данные проверки подлинности",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Display raw byte data",
+      "message": "Display raw byte data",
+      "translation": "Показать необработанные байтовые данные",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Install Azure Sql Edge",
+      "message": "Install Azure Sql Edge",
+      "translation": "SQL Azure для пограничных вычислений",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Install/Create Azure SQL Edge in a container",
+      "message": "Install/Create Azure SQL Edge in a container",
+      "translation": "Установить или создать SQL Azure для пограничных вычислений в контейнере",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Tag to use, use get-tags to see list of tags",
+      "message": "Tag to use, use get-tags to see list of tags",
+      "translation": "Тег для использования. Используйте команду get-tags, чтобы просмотреть список тегов",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Context name (a default context name will be created if not provided)",
+      "message": "Context name (a default context name will be created if not provided)",
+      "translation": "Имя контекста (если не указать, будет использовано имя контекста по умолчанию)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create a user database and set it as the default for login",
+      "message": "Create a user database and set it as the default for login",
+      "translation": "Создать пользовательскую базу данных и установить ее для входа по умолчанию",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Accept the SQL Server EULA",
+      "message": "Accept the SQL Server EULA",
+      "translation": "Принять условия лицензионного пользовательского соглашения SQL Server",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Generated password length",
+      "message": "Generated password length",
+      "translation": "Длина сгенерированного пароля",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Minimum number of special characters",
+      "message": "Minimum number of special characters",
+      "translation": "Число специальных символов должно быть не менее",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Minimum number of numeric characters",
+      "message": "Minimum number of numeric characters",
+      "translation": "Число цифр должно быть не менее",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Minimum number of upper characters",
+      "message": "Minimum number of upper characters",
+      "translation": "Минимальное число символов верхнего регистра",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Special character set to include in password",
+      "message": "Special character set to include in password",
+      "translation": "Набор спецсимволов, которые следует включить в пароль",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Don't download image.  Use already downloaded image",
+      "message": "Don't download image.  Use already downloaded image",
+      "translation": "Не скачивать изображение.  Использовать уже загруженное изображение",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Line in errorlog to wait for before connecting",
+      "message": "Line in errorlog to wait for before connecting",
+      "translation": "Строка в журнале ошибок для ожидания перед подключением",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specify a custom name for the container rather than a randomly generated one",
+      "message": "Specify a custom name for the container rather than a randomly generated one",
+      "translation": "Задать для контейнера пользовательское имя вместо сгенерированного случайным образом",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Explicitly set the container hostname, it defaults to the container ID",
+      "message": "Explicitly set the container hostname, it defaults to the container ID",
+      "translation": "Явно задайте имя узла контейнера, по умолчанию используется идентификатор контейнера",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the image CPU architecture",
+      "message": "Specifies the image CPU architecture",
+      "translation": "Задает архитектуру ЦП образа",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the image operating system",
+      "message": "Specifies the image operating system",
+      "translation": "Указывает операционную систему образа",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Port (next available port from 1433 upwards used by default)",
+      "message": "Port (next available port from 1433 upwards used by default)",
+      "translation": "Порт (по умолчанию используется следующий доступный порт начиная от 1433 и выше)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Download (into container) and attach database (.bak) from URL",
+      "message": "Download (into container) and attach database (.bak) from URL",
+      "translation": "Скачать (в контейнер) и присоединить базу данных (.bak) с URL-адреса",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Either, add the {AcceptEulaFlag} flag to the command-line",
+      "message": "Either, add the {AcceptEulaFlag} flag to the command-line",
+      "translation": "Либо добавьте флажок {AcceptEulaFlag} в командную строку",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "AcceptEulaFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.AcceptEulaFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "message": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "translation": "Или задайте переменную среды, например {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "CreateEnvVarKeyword",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "pal.CreateEnvVarKeyword()"
+        },
+        {
+          "id": "AcceptEulaEnvVar",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.AcceptEulaEnvVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "EULA not accepted",
+      "message": "EULA not accepted",
+      "translation": "Условия лицензионного соглашения не приняты",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
+      "message": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
+      "translation": "--user-database {DefaultDatabase} содержит отличные от ASCII символы и (или) кавычки",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DefaultDatabase",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.defaultDatabase"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Starting {ImageName}",
+      "message": "Starting {ImageName}",
+      "translation": "Производится запуск {ImageName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ImageName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "imageName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
+      "message": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
+      "translation": "Создан контекст {CurrentContextName} с использованием \"{ConfigFileUsed}\", производится настройка учетной записи пользователя...",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "CurrentContextName",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "config.CurrentContextName()"
+        },
+        {
+          "id": "ConfigFileUsed",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "config.GetConfigFileUsed()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
+      "message": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
+      "translation": "Отключена учетная запись {Sa} и произведена смена пароля {Sa_1}. Производится создание пользователя {UserName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Sa",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"sa\""
+        },
+        {
+          "id": "Sa_1",
+          "string": "%[2]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"sa\""
+        },
+        {
+          "id": "UserName",
+          "string": "%[3]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 3,
+          "expr": "userName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Start interactive session",
+      "message": "Start interactive session",
+      "translation": "Запустить интерактивный сеанс",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Change current context",
+      "message": "Change current context",
+      "translation": "Изменить текущий контекст",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View sqlcmd configuration",
+      "message": "View sqlcmd configuration",
+      "translation": "Просмотреть конфигурацию sqlcmd",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "See connection strings",
+      "message": "See connection strings",
+      "translation": "Просмотреть строки подключения",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Remove",
+      "message": "Remove",
+      "translation": "Удалить",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Now ready for client connections on port {Port}",
+      "message": "Now ready for client connections on port {Port}",
+      "translation": "Теперь готово для клиентских подключений через порт {Port}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Port",
+          "string": "%[1]d",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 1,
+          "expr": "c.port"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "--using URL must be http or https",
+      "message": "--using URL must be http or https",
+      "translation": "--using: URL-адрес должен иметь тип http или https",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{UsingDatabaseUrl} is not a valid URL for --using flag",
+      "message": "{UsingDatabaseUrl} is not a valid URL for --using flag",
+      "translation": "{UsingDatabaseUrl} не является допустимым URL-адресом для флага --using",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UsingDatabaseUrl",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.usingDatabaseUrl"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "--using URL must have a path to .bak file",
+      "message": "--using URL must have a path to .bak file",
+      "translation": "--using: URL-адрес должен содержать путь к .bak-файлу",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "--using file URL must be a .bak file",
+      "message": "--using file URL must be a .bak file",
+      "translation": "--using: файл, находящийся по URL-адресу, должен иметь расширение .bak",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Invalid --using file type",
+      "message": "Invalid --using file type",
+      "translation": "Недопустимый тип файла в параметре флага --using",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Creating default database [{DefaultDatabase}]",
+      "message": "Creating default database [{DefaultDatabase}]",
+      "translation": "Производится создание базы данных по умолчанию [{DefaultDatabase}]",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DefaultDatabase",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "defaultDatabase"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Downloading {File}",
+      "message": "Downloading {File}",
+      "translation": "Скачивание {File}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "File",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "file"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Restoring database {DatabaseName}",
+      "message": "Restoring database {DatabaseName}",
+      "translation": "Идет восстановление базы данных {DatabaseName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DatabaseName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "databaseName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Downloading {ImageName}",
+      "message": "Downloading {ImageName}",
+      "translation": "Скачивание {ImageName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ImageName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "imageName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
+      "message": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
+      "translation": "Установлена ли на этом компьютере среда выполнения контейнера (например, Podman или Docker)?",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "If not, download desktop engine from:",
+      "message": "If not, download desktop engine from:",
+      "translation": "Если нет, скачайте подсистему рабочего стола по адресу:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "or",
+      "message": "or",
+      "translation": "или",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
+      "message": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
+      "translation": "Запущена ли среда выполнения контейнера?  (Попробуйте ввести \"{PodmanPsCommand}\" или \"{DockerPsCommand}\" (список контейнеров). Не возвращает ли эта команда ошибку?)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PodmanPsCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PodmanPsCommand"
+        },
+        {
+          "id": "DockerPsCommand",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.DockerPsCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Unable to download image {ImageName}",
+      "message": "Unable to download image {ImageName}",
+      "translation": "Не удалось скачать образ {ImageName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ImageName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "imageName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "File does not exist at URL",
+      "message": "File does not exist at URL",
+      "translation": "Файл по URL-адресу не существует",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Unable to download file",
+      "message": "Unable to download file",
+      "translation": "Не удалось скачать файл",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Install/Create SQL Server in a container",
+      "message": "Install/Create SQL Server in a container",
+      "translation": "Установить или создать SQL Server в контейнере",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "See all release tags for SQL Server, install previous version",
+      "message": "See all release tags for SQL Server, install previous version",
+      "translation": "Просмотреть все теги выпуска для SQL Server, установить предыдущую версию",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create SQL Server, download and attach AdventureWorks sample database",
+      "message": "Create SQL Server, download and attach AdventureWorks sample database",
+      "translation": "Создайте SQL Server, скачайте и присоедините пример базы данных AdventureWorks",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
+      "message": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
+      "translation": "Создайте SQL Server, скачайте и присоедините пример базы данных AdventureWorks с другим именем",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create SQL Server with an empty user database",
+      "message": "Create SQL Server with an empty user database",
+      "translation": "Создать SQL Server с пустой пользовательской базой данных",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Install/Create SQL Server with full logging",
+      "message": "Install/Create SQL Server with full logging",
+      "translation": "Установить или создать SQL Server с полным ведением журнала",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Get tags available for Azure SQL Edge install",
+      "message": "Get tags available for Azure SQL Edge install",
+      "translation": "Получить теги, доступные для установки SQL Azure для пограничных вычислений",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List tags",
+      "message": "List tags",
+      "translation": "Перечислить теги",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Get tags available for mssql install",
+      "message": "Get tags available for mssql install",
+      "translation": "Получить теги, доступные для установки mssql",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "sqlcmd start",
+      "message": "sqlcmd start",
+      "translation": "Запуск sqlcmd",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running",
+      "message": "Container is not running",
+      "translation": "Контейнер не запущен",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Press Ctrl+C to exit this process...",
+      "message": "Press Ctrl+C to exit this process...",
+      "translation": "Нажмите клавиши CTRL+C, чтобы выйти из этого процесса...",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translation": "Ошибка \"Недостаточно ресурсов памяти\" может быть вызвана слишком большим количеством учетных данных, которые уже хранятся в диспетчере учетных данных Windows",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Failed to write credential to Windows Credential Manager",
+      "message": "Failed to write credential to Windows Credential Manager",
+      "translation": "Не удалось записать учетные данные в диспетчер учетных данных Windows",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The -L parameter can not be used in combination with other parameters.",
+      "message": "The -L parameter can not be used in combination with other parameters.",
+      "translation": "Нельзя использовать параметр -L в сочетании с другими параметрами.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
+      "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
+      "translation": "\"-a {PacketSize}\": размер пакета должен быть числом от 512 до 32767.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PacketSize",
+          "string": "%#[1]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 1,
+          "expr": "a.PacketSize"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
+      "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
+      "translation": "\"-h {Headers}\": значение заголовка должно быть либо -1 , либо величиной в интервале между 1 и 2147483647",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Headers",
+          "string": "%#[1]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 1,
+          "expr": "a.Headers"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Servers:",
+      "message": "Servers:",
+      "translation": "Серверы:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Legal docs and information: aka.ms/SqlcmdLegal",
+      "message": "Legal docs and information: aka.ms/SqlcmdLegal",
+      "translation": "Юридические документы и сведения: aka.ms/SqlcmdLegal",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Third party notices: aka.ms/SqlcmdNotices",
+      "message": "Third party notices: aka.ms/SqlcmdNotices",
+      "translation": "Уведомления третьих лиц: aka.ms/SqlcmdNotices",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Version {Version}",
+      "message": "Version {Version}",
+      "translation": "Версия {Version}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Version",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "version"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Flags:",
+      "message": "Flags:",
+      "translation": "Флаги:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
+      "message": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
+      "translation": "-? показывает краткую справку по синтаксису, {HelpFlag} выводит современную справку по подкомандам sqlcmd",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "HelpFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.HelpFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
+      "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
+      "translation": "Задает один или несколько файлов, содержащих пакеты операторов SQL. Если одного или нескольких файлов не существует, sqlcmd завершит работу. Этот параметр является взаимоисключающим с {QueryAndExitFlag}/{QueryFlag}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "QueryAndExitFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.QueryAndExitFlag"
+        },
+        {
+          "id": "QueryFlag",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.QueryFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Identifies the file that receives output from sqlcmd",
+      "message": "Identifies the file that receives output from sqlcmd",
+      "translation": "Определяет файл, который получает выходные данные из sqlcmd",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Print version information and exit",
+      "message": "Print version information and exit",
+      "translation": "Печать сведений о версии и выход",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Implicitly trust the server certificate without validation",
+      "message": "Implicitly trust the server certificate without validation",
+      "translation": "Неявно доверять сертификату сервера без проверки",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
+      "message": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
+      "translation": "Этот параметр задает переменную скрипта sqlcmd {DbNameVar}. Этот параметр указывает исходную базу данных. По умолчанию используется свойство \"база данных по умолчанию\". Если базы данных не существует, выдается сообщение об ошибке и sqlcmd завершает работу",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DbNameVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.DbNameVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
+      "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
+      "translation": "Использует доверенное подключение (вместо имени пользователя и пароля) для входа в SQL Server, игнорируя все переменные среды, определяющие имя пользователя и пароль",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
+      "message": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
+      "translation": "Задает завершающее значение пакета. Значение по умолчанию — {BatchTerminatorGo}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "BatchTerminatorGo",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.BatchTerminatorGo"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The login name or contained database user name.  For contained database users, you must provide the database name option",
+      "message": "The login name or contained database user name.  For contained database users, you must provide the database name option",
+      "translation": "Имя для входа или имя пользователя контейнированной базы данных.  При использовании имени пользователя контейнированной базы данных необходимо указать параметр имени базы данных",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
+      "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
+      "translation": "Выполняет запрос при запуске sqlcmd, но не завершает работу sqlcmd по завершении выполнения запроса. Может выполнять несколько запросов, разделенных точками с запятой",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
+      "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
+      "translation": "Выполняет запрос при запуске sqlcmd, а затем немедленно завершает работу sqlcmd. Можно выполнять сразу несколько запросов, разделенных точками с запятой",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
+      "message": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
+      "translation": "{ConnStrPattern} Указывает экземпляр SQL Server, к которому нужно подключиться. Задает переменную скриптов sqlcmd {ServerEnvVar}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ConnStrPattern",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ConnStrPattern"
+        },
+        {
+          "id": "ServerEnvVar",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ServerEnvVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "translation": "{_X1} Отключение команд, которые могут скомпрометировать безопасность системы. Передача 1 сообщает sqlcmd о необходимости выхода при выполнении отключенных команд.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_X1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-X[1]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "translation": "Указывает метод проверки подлинности SQL, используемый для подключения к базе данных SQL Azure. Метод выбирается из следующего списка: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
+      "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
+      "translation": "Указывает sqlcmd, что следует использовать проверку подлинности ActiveDirectory. Если имя пользователя не указано, используется метод проверки подлинности ActiveDirectoryDefault. Если указан пароль, используется ActiveDirectoryPassword. В противном случае используется ActiveDirectoryInteractive",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
+      "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
+      "translation": "Сообщает sqlcmd, что следует игнорировать переменные скрипта. Этот параметр полезен, если сценарий содержит множество инструкций {InsertKeyword}, в которых могут содержаться строки, совпадающие по формату с обычными переменными, например $(variable_name)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "InsertKeyword",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.InsertKeyword"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
+      "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
+      "translation": "Создает переменную скрипта sqlcmd, которую можно использовать в скрипте sqlcmd. Если значение содержит пробелы, его следует заключить в кавычки. Можно указать несколько значений var=values. Если в любом из указанных значений имеются ошибки, sqlcmd генерирует сообщение об ошибке, а затем завершает работу",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
+      "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
+      "translation": "Запрашивает пакет другого размера. Этот параметр задает переменную скрипта sqlcmd {PacketSizeVar}. packet_size должно быть значением от 512 до 32767. Значение по умолчанию = 4096. Более крупный размер пакета может повысить производительность выполнения сценариев, содержащих много инструкций SQL вперемешку с командами {BatchTerminatorGo}. Можно запросить больший размер пакета. Однако если запрос отклонен, sqlcmd использует для размера пакета значение по умолчанию",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PacketSizeVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PacketSizeVar"
+        },
+        {
+          "id": "BatchTerminatorGo",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.BatchTerminatorGo"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
+      "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
+      "translation": "Указывает время ожидания входа sqlcmd в драйвер go-mssqldb в секундах при попытке подключения к серверу. Этот параметр задает переменную скрипта sqlcmd {LoginTimeOutVar}. Значение по умолчанию — 30. 0 означает бесконечное значение.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "LoginTimeOutVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.LoginTimeOutVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
+      "message": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
+      "translation": "Этот параметр задает переменную скрипта sqlcmd {WorkstationVar}. Имя рабочей станции указано в столбце hostname (\"Имя узла\") представления каталога sys.sysprocesses. Его можно получить с помощью хранимой процедуры sp_who. Если этот параметр не указан, по умолчанию используется имя используемого в данный момент компьютера. Это имя можно использовать для идентификации различных сеансов sqlcmd",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "WorkstationVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.WorkstationVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
+      "message": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
+      "translation": "Объявляет тип рабочей нагрузки приложения при подключении к серверу. Сейчас поддерживается только значение ReadOnly. Если параметр {ApplicationIntentFlagShort} не задан, служебная программа sqlcmd не поддерживает подключение к вторичному серверу репликации в группе доступности Always On.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ApplicationIntentFlagShort",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ApplicationIntentFlagShort"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "This switch is used by the client to request an encrypted connection",
+      "message": "This switch is used by the client to request an encrypted connection",
+      "translation": "Этот переключатель используется клиентом для запроса зашифрованного подключения",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the formatting for results",
+      "message": "Specifies the formatting for results",
+      "translation": "Задает форматирование результатов",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "translation": "{_r0__1} Перенаправление сообщений об ошибках с выходными данными уровня серьезности >= 11 в stderr. Передайте 1, чтобы перенаправлять все ошибки, включая PRINT.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_r0__1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-r[0 | 1]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Level of mssql driver messages to print",
+      "message": "Level of mssql driver messages to print",
+      "translation": "Уровень сообщений драйвера mssql для печати",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
+      "message": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
+      "translation": "Указывает, что при возникновении ошибки sqlcmd завершает работу и возвращает {DosErrorLevel}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DosErrorLevel",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.DosErrorLevel"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
+      "message": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
+      "translation": "Определяет, какие сообщения об ошибках следует отправлять в {StdoutName}. Отправляются сообщения, уровень серьезности которых не меньше указанного",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "StdoutName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.StdoutName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
+      "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
+      "translation": "Указывает число строк для печати между заголовками столбцов. Используйте -h-1, чтобы заголовки не печатались",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies that all output files are encoded with little-endian Unicode",
+      "message": "Specifies that all output files are encoded with little-endian Unicode",
+      "translation": "Указывает, что все выходные файлы имеют кодировку Юникод с прямым порядком",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
+      "message": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
+      "translation": "Указывает символ разделителя столбцов. Задает значение переменной {ColSeparatorVar}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ColSeparatorVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ColSeparatorVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Remove trailing spaces from a column",
+      "message": "Remove trailing spaces from a column",
+      "translation": "Удалить конечные пробелы из столбца",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
+      "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
+      "translation": "Предоставлено для обратной совместимости. Sqlcmd всегда оптимизирует обнаружение активной реплики кластера отработки отказа SQL",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Password",
+      "message": "Password",
+      "translation": "Пароль",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
+      "message": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
+      "translation": "Управляет уровнем серьезности, используемым для задания переменной {ErrorLevel} при выходе",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ErrorLevel",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ErrorLevel"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the screen width for output",
+      "message": "Specifies the screen width for output",
+      "translation": "Задает ширину экрана для вывода",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "translation": "{_Lc} Перечисление серверов. Передайте {C} для пропуска выходных данных \"Servers:\".",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_Lc",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-L[c]\""
+        },
+        {
+          "id": "C",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"c\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Dedicated administrator connection",
+      "message": "Dedicated administrator connection",
+      "translation": "Выделенное административное соединение",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translation": "Предоставлено для обратной совместимости. Нестандартные идентификаторы всегда включены",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Client regional settings are not used",
+      "message": "Provided for backward compatibility. Client regional settings are not used",
+      "translation": "Предоставлено для обратной совместимости. Региональные параметры клиента не используются",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "translation": "{_k_12} Удалить управляющие символы из выходных данных. Передайте 1, чтобы заменить пробел для каждого символа, и 2 с целью замены пробела для последовательных символов",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_k_12",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-k [1|2]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Echo input",
+      "message": "Echo input",
+      "translation": "Вывод на экран входных данных",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Enable column encryption",
+      "message": "Enable column encryption",
+      "translation": "Включить шифрование столбцов",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password",
+      "message": "New password",
+      "translation": "Новый пароль",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password and exit",
+      "message": "New password and exit",
+      "translation": "Новый пароль и выход",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Sets the sqlcmd scripting variable {V}",
+      "message": "Sets the sqlcmd scripting variable {V}",
+      "translation": "Задает переменную скриптов sqlcmd {V}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "V",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "v"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
+      "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
+      "translation": "'{Flag} {Value}': значение должно быть не меньше {Min} и не больше {Max}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag"
+        },
+        {
+          "id": "Value",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "value"
+        },
+        {
+          "id": "Min",
+          "string": "%#[3]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 3,
+          "expr": "min"
+        },
+        {
+          "id": "Max",
+          "string": "%#[4]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 4,
+          "expr": "max"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
+      "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
+      "translation": "\"{Flag} {Value}\": значение должно быть больше {Min} и меньше {Max}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag"
+        },
+        {
+          "id": "Value",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "value"
+        },
+        {
+          "id": "Min",
+          "string": "%#[3]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 3,
+          "expr": "min"
+        },
+        {
+          "id": "Max",
+          "string": "%#[4]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 4,
+          "expr": "max"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
+      "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
+      "translation": "'{Flag} {Value}': непредвиденный аргумент. Значение аргумента должно быть {AllowedValues0}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag"
+        },
+        {
+          "id": "Value",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "value"
+        },
+        {
+          "id": "AllowedValues0",
+          "string": "%[3]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 3,
+          "expr": "allowedValues[0]"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
+      "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
+      "translation": "\"{Flag} {Value}\": непредвиденный аргумент. Значение аргумента должно быть одним из следующих: {AllowedValues}.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag"
+        },
+        {
+          "id": "Value",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "value"
+        },
+        {
+          "id": "AllowedValues",
+          "string": "%[3]v",
+          "type": "[]string",
+          "underlyingType": "[]string",
+          "argNum": 3,
+          "expr": "allowedValues"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+      "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+      "translation": "Параметры {Flag1} и {Flag2} являются взаимоисключающими.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag1"
+        },
+        {
+          "id": "Flag2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "flag2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{P1}': Missing argument. Enter '-?' for help.",
+      "message": "'{P1}': Missing argument. Enter '-?' for help.",
+      "translation": "\"{P1}\": аргумент отсутствует. Для справки введите \"-?\".",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "P1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "p[1]"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{P1}': Unknown Option. Enter '-?' for help.",
+      "message": "'{P1}': Unknown Option. Enter '-?' for help.",
+      "translation": "\"{P1}\": неизвестный параметр. Введите \"?\" для получения справки.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "P1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "p[1]"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "invalid batch terminator '{BatchTerminator}'",
+      "message": "invalid batch terminator '{BatchTerminator}'",
+      "translation": "недопустимый код конца пакета \"{BatchTerminator}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "BatchTerminator",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "args.BatchTerminator"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Enter new password:",
+      "message": "Enter new password:",
+      "translation": "Введите новый пароль:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Sqlcmd: Error:",
+      "message": "Sqlcmd: Error:",
+      "translation": "Sqlcmd: Ошибка:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Sqlcmd: Warning:",
+      "message": "Sqlcmd: Warning:",
+      "translation": "Sqlcmd: Предупреждение:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
+      "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
+      "translation": "ED, а также команды !!<command>, скрипт запуска и переменные среды отключены",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The scripting variable: '{Variable}' is read-only",
+      "message": "The scripting variable: '{Variable}' is read-only",
+      "translation": "Переменная скрипта \"{Variable}\" доступна только для чтения",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Variable",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "variable"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Variable}' scripting variable not defined.",
+      "message": "'{Variable}' scripting variable not defined.",
+      "translation": "Переменная скрипта \"{Variable}\" не определена.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Variable",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "variable"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
+      "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
+      "translation": "Переменная среды \"{Variable}\" имеет недопустимое значение \"{EnvVal}\".",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Variable",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "variable"
+        },
+        {
+          "id": "EnvVal",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "envVal"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Syntax error at line {LineNumber} near command '{Command}'.",
+      "message": "Syntax error at line {LineNumber} near command '{Command}'.",
+      "translation": "Синтаксическая ошибка в строке {LineNumber} рядом с командой \"{Command}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "LineNumber",
+          "string": "%[1]d",
+          "type": "uint",
+          "underlyingType": "uint",
+          "argNum": 1,
+          "expr": "e.LineNumber"
+        },
+        {
+          "id": "Command",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "e.Command"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
+      "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
+      "translation": "{ErrorPrefix} Произошла ошибка при открытии или использовании файла {Filepath} (причина: {Error}).",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ErrorPrefix",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "ErrorPrefix"
+        },
+        {
+          "id": "Filepath",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "filepath"
+        },
+        {
+          "id": "Error",
+          "string": "%[3]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 3,
+          "expr": "err.Error()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
+      "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
+      "translation": "{ErrorPrefix}Синтаксическая ошибка в строке {LineNumber}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ErrorPrefix",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "ErrorPrefix"
+        },
+        {
+          "id": "LineNumber",
+          "string": "%[2]d",
+          "type": "uint",
+          "underlyingType": "uint",
+          "argNum": 2,
+          "expr": "lineNumber"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Timeout expired",
+      "message": "Timeout expired",
+      "translation": "Время ожидания истекло",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, процедура {ProcName}, строка {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "ProcName",
+          "string": "%[5]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 5,
+          "expr": "e.ProcName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[6]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 6,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[7]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 7,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, строка {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[5]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 5,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[6]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 6,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Password:",
+      "message": "Password:",
+      "translation": "Пароль:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Invalid variable identifier {Name}",
+      "message": "Invalid variable identifier {Name}",
+      "translation": "Недопустимый идентификатор переменной {Name}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Invalid variable value {Val}",
+      "message": "Invalid variable value {Val}",
+      "translation": "Недопустимое значение переменной {Val}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Val",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "val"
+        }
+      ],
+      "fuzzy": true
+    }
+  ]
+}

@@ -9,9 +9,10 @@ import (
 	"strings"
 
 	"github.com/microsoft/go-mssqldb/azuread"
+	"github.com/microsoft/go-mssqldb/msdsn"
 )
 
-// ConnectSettings specifies the settings for connections
+// ConnectSettings specifies the settings for SQL connections and queries
 type ConnectSettings struct {
 	// ServerName is the full name including instance and port
 	ServerName string
@@ -51,6 +52,12 @@ type ConnectSettings struct {
 	Database string
 	// ApplicationName is the name of the application to be included in the connection string
 	ApplicationName string
+	// DedicatedAdminConnection forces the connection to occur over tcp on the dedicated admin port. Requires Browser service access
+	DedicatedAdminConnection bool
+	// EnableColumnEncryption enables support for transparent column encryption
+	EnableColumnEncryption bool
+	// ChangePassword is the new password for the user to set during login
+	ChangePassword string
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -109,7 +116,7 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 			return "", &InvalidServerName
 		}
 		serverName = pipeParts[0]
-		query.Add("pipe", pipeParts[2])
+		query.Add(msdsn.Pipe, pipeParts[2])
 	}
 	if port > 0 {
 		connectionURL.Host = fmt.Sprintf("%s:%d", serverName, port)
@@ -117,35 +124,44 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 		connectionURL.Host = serverName
 	}
 	if connect.Database != "" {
-		query.Add("database", connect.Database)
+		query.Add(msdsn.Database, connect.Database)
 	}
 
 	if connect.TrustServerCertificate {
-		query.Add("trustservercertificate", "true")
+		query.Add(msdsn.TrustServerCertificate, "true")
 	}
 	if connect.ApplicationIntent != "" && connect.ApplicationIntent != "default" {
-		query.Add("applicationintent", connect.ApplicationIntent)
+		query.Add(msdsn.ApplicationIntent, connect.ApplicationIntent)
 	}
 	if connect.LoginTimeoutSeconds > 0 {
-		query.Add("dial timeout", fmt.Sprint(connect.LoginTimeoutSeconds))
+		query.Add(msdsn.DialTimeout, fmt.Sprint(connect.LoginTimeoutSeconds))
 	}
 	if connect.PacketSize > 0 {
-		query.Add("packet size", fmt.Sprint(connect.PacketSize))
+		query.Add(msdsn.PacketSize, fmt.Sprint(connect.PacketSize))
 	}
 	if connect.WorkstationName != "" {
-		query.Add("workstation id", connect.WorkstationName)
+		query.Add(msdsn.WorkstationID, connect.WorkstationName)
 	}
 	if connect.Encrypt != "" && connect.Encrypt != "default" {
-		query.Add("encrypt", connect.Encrypt)
+		query.Add(msdsn.Encrypt, connect.Encrypt)
 	}
 	if connect.LogLevel > 0 {
-		query.Add("log", fmt.Sprint(connect.LogLevel))
+		query.Add(msdsn.LogParam, fmt.Sprint(connect.LogLevel))
 	}
 	if protocol != "" {
-		query.Add("protocol", protocol)
+		query.Add(msdsn.Protocol, protocol)
 	}
 	if connect.ApplicationName != "" {
-		query.Add(`app name`, connect.ApplicationName)
+		query.Add(msdsn.AppName, connect.ApplicationName)
+	}
+	if connect.DedicatedAdminConnection {
+		query.Set(msdsn.Protocol, "admin")
+	}
+	if connect.EnableColumnEncryption {
+		query.Set("columnencryption", "true")
+	}
+	if connect.ChangePassword != "" {
+		query.Set(msdsn.ChangePassword, connect.ChangePassword)
 	}
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil

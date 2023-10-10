@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/microsoft/go-mssqldb/azuread"
+	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -50,6 +51,7 @@ func TestCommandParsing(t *testing.T) {
 		{`:!!notepad`, "EXEC", []string{"notepad"}},
 		{` !! dir c:\`, "EXEC", []string{` dir c:\`}},
 		{`!!dir c:\`, "EXEC", []string{`dir c:\`}},
+		{`:XML ON `, "XML", []string{`ON `}},
 	}
 
 	for _, test := range commands {
@@ -149,7 +151,7 @@ func TestListCommand(t *testing.T) {
 	s.SetOutput(buf)
 
 	// insert test batch
-	s.batch.Reset([]rune("select 1"))
+	s.batch.Reset([]rune("select 1" + SqlcmdEol + "select 2" + SqlcmdEol + SqlcmdEol + "select 3"))
 	_, _, err = s.batch.Next()
 	assert.NoError(t, err, "Inserting test batch")
 
@@ -158,7 +160,44 @@ func TestListCommand(t *testing.T) {
 	assert.NoError(t, err, "Executing :list command")
 	s.SetOutput(nil)
 	o := buf.buf.String()
-	assert.Equal(t, o, "select 1"+SqlcmdEol, ":list output not equal to batch")
+	assert.Equal(t, o, "select 1"+SqlcmdEol+"select 2"+SqlcmdEol+SqlcmdEol+"select 3"+SqlcmdEol, ":list output not equal to batch")
+}
+
+func TestListCommandUsesColorizer(t *testing.T) {
+	vars := InitializeVariables(false)
+	vars.Set(SQLCMDCOLORSCHEME, "emacs")
+	s := New(nil, "", vars)
+	// force colorizer on
+	s.colorizer = color.New(true)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+
+	// insert test batch
+	s.batch.Reset([]rune("select top (1) name from sys.tables"))
+	_, _, err := s.batch.Next()
+	assert.NoError(t, err, "Inserting test batch")
+
+	// execute list command and verify results
+	err = listCommand(s, nil, 1)
+	assert.NoError(t, err, "Executing :list command")
+	s.SetOutput(nil)
+	o := buf.buf.String()
+	assert.Equal(t, "\x1b[1m\x1b[38;2;170;34;255mselect\x1b[0m\x1b[38;2;187;187;187m \x1b[0m\x1b[1m\x1b[38;2;170;34;255mtop\x1b[0m\x1b[38;2;187;187;187m \x1b[0m(\x1b[38;2;102;102;102m1\x1b[0m)\x1b[38;2;187;187;187m \x1b[0mname\x1b[38;2;187;187;187m \x1b[0m\x1b[1m\x1b[38;2;170;34;255mfrom\x1b[0m\x1b[38;2;187;187;187m \x1b[0msys.tables"+SqlcmdEol, o, ":list output not equal to batch")
+}
+
+func TestListColorPrintsStyleSamples(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	s.Format = NewSQLCmdDefaultFormatter(false, ControlIgnore)
+	// force colorizer on
+	s.colorizer = color.New(true)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	err := runSqlCmd(t, s, []string{":list color"})
+	assert.NoError(t, err, ":list color returned error")
+	s.SetOutput(nil)
+	o := buf.buf.String()[:600]
+	assert.Containsf(t, o, "algol_nu: \x1b[1mselect\x1b[0m \x1b[3m\x1b[38;2;102;102;102m'literal'\x1b[0m \x1b[1mas\x1b[0m literal, 100 \x1b[1mas\x1b[0m number \x1b[1mfrom\x1b[0m [sys].[tables]", "expected entry not found for algol_nu %s", o)
 }
 
 func TestConnectCommand(t *testing.T) {
@@ -199,7 +238,7 @@ func TestConnectCommand(t *testing.T) {
 		// not using assert to avoid printing passwords in the log
 		assert.NotContains(t, buf.buf.String(), "$(servername)", "ConnectDB should have succeeded")
 		if s.Connect.UserName != c.UserName || c.Password != s.Connect.Password || s.Connect.LoginTimeoutSeconds != 111 {
-			t.Fatalf("After connect, sqlCmd.Connect is not updated %+v", s.Connect)
+			assert.Fail(t, fmt.Sprintf("After connect, sqlCmd.Connect is not updated %+v", s.Connect))
 		}
 	}
 }
@@ -222,7 +261,7 @@ func TestErrorCommand(t *testing.T) {
 	s.SetError(nil)
 	errText, err := os.ReadFile(file.Name())
 	if assert.NoError(t, err, "ReadFile") {
-		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents")
+		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents: "+string(errText))
 	}
 }
 
@@ -324,4 +363,35 @@ func TestEditCommand(t *testing.T) {
 	if assert.NoError(t, err, ":ed should not raise error") {
 		assert.Equal(t, "1> select 5000"+SqlcmdEol+"5000"+SqlcmdEol+SqlcmdEol, buf.buf.String(), "Incorrect output from query after :ed command")
 	}
+}
+
+func TestEchoInput(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.EchoInput = true
+	defer buf.Close()
+	c := []string{"set nocount on", "select 100", "go"}
+	err := runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "go should not raise error") {
+		assert.Equal(t, "set nocount on"+SqlcmdEol+"select 100"+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol, buf.buf.String(), "Incorrect output with echo true")
+	}
+}
+
+func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	c := []string{"set nocount on", "declare @v integer = 2", "select 1", "exit(select @v)"}
+	err := runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "exit should not error") {
+		output := buf.buf.String()
+		assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol+"2"+SqlcmdEol+SqlcmdEol, output, "Incorrect output")
+		assert.Equal(t, 2, s.Exitcode, "exit should set Exitcode")
+	}
+	s, buf1 := setupSqlCmdWithMemoryOutput(t)
+	defer buf1.Close()
+	c = []string{"set nocount on", "select 1", "exit(select @v)"}
+	err = runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "exit should not error") {
+		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
+	}
+
 }
