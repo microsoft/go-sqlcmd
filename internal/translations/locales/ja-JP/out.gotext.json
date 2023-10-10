@@ -2663,7 +2663,8 @@
         {
             "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
             "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
-            "translation": "",
+            "translation": "{_X1} システム セキュリティを侵害する可能性のあるコマンドを無効にします。1 を渡すと、無効なコマンドの実行時に sqlcmd が終了するように指示されます。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_X1",
@@ -2673,12 +2674,15 @@
                     "argNum": 1,
                     "expr": "\"-X[1]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
             "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "translation": ""
+            "translation": "Azure SQL Database への接続に使用する SQL 認証方法を指定します。次のうちの 1 つ: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、 ActiveDirectoryDeviceCode、SqlPassword",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
@@ -2804,7 +2808,8 @@
         {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "",
+            "translation": "{_r0__1} 重大度 \u003e= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_r0__1",
@@ -2814,7 +2819,8 @@
                     "argNum": 1,
                     "expr": "\"-r[0 | 1]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Level of mssql driver messages to print",
@@ -2936,7 +2942,8 @@
         {
             "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
             "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
-            "translation": "",
+            "translation": "{_Lc} サーバーを一覧表示します。{C} を渡すと、'Servers:' 出力を省略します。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_Lc",
@@ -2954,7 +2961,8 @@
                     "argNum": 2,
                     "expr": "\"c\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Dedicated administrator connection",
@@ -2980,7 +2988,8 @@
         {
             "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
             "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
-            "translation": "",
+            "translation": "{_k_12} 出力から制御文字を削除します。1 を渡すと、1 文字につきスペース 1 つに置き換え、2 では連続する文字ごとにスペース 1 つに置き換えます",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_k_12",
@@ -2990,27 +2999,36 @@
                     "argNum": 1,
                     "expr": "\"-k [1|2]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Echo input",
             "message": "Echo input",
-            "translation": ""
+            "translation": "エコー入力",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Enable column encryption",
             "message": "Enable column encryption",
-            "translation": ""
+            "translation": "列暗号化を有効にする",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "New password",
             "message": "New password",
-            "translation": ""
+            "translation": "新しいパスワード",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "New password and exit",
             "message": "New password and exit",
-            "translation": ""
+            "translation": "新しいパスワードと終了",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Sets the sqlcmd scripting variable {V}",
@@ -3256,7 +3274,9 @@
         {
             "id": "Enter new password:",
             "message": "Enter new password:",
-            "translation": ""
+            "translation": "新しいパスワードの入力:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Sqlcmd: Error:",
@@ -3424,7 +3444,9 @@
         {
             "id": "Timeout expired",
             "message": "Timeout expired",
-            "translation": ""
+            "translation": "タイムアウトになりました",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
@@ -3551,7 +3573,9 @@
         {
             "id": "Password:",
             "message": "Password:",
-            "translation": ""
+            "translation": "パスワード:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Invalid variable identifier {Name}",

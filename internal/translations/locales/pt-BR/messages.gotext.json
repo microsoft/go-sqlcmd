@@ -2661,16 +2661,26 @@
       "fuzzy": true
     },
     {
-      "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-      "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-      "translation": "Desabilita comandos que podem comprometer a segurança do sistema. O Sqlcmd emite um aviso e continua",
+      "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "translation": "{_X1} Desabilita comandos que podem comprometer a segurança do sistema. Passar 1 informa ao sqlcmd para sair quando comandos desabilitados são executados.",
       "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_X1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-X[1]\""
+        }
+      ],
       "fuzzy": true
     },
     {
-      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-      "translation": "Especifica o método de autenticação SQL a ser usado para se conectar ao Banco de Dados SQL do Azure. Um de: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
+      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "translation": "Especifica o método de autenticação SQL a ser usado para se conectar ao Banco de Dados SQL do Azure. Um de: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2796,10 +2806,20 @@
       "fuzzy": true
     },
     {
-      "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-      "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-      "translation": "Controla quais mensagens de erro são enviadas para stdout. As mensagens que têm nível de severidade maior ou igual a esse nível são enviadas",
+      "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "translation": "{_r0__1} Redireciona mensagens de erro com gravidade >= 11 saída para stderr. Passe 1 para redirecionar todos os erros, incluindo PRINT.",
       "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_r0__1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-r[0 | 1]\""
+        }
+      ],
       "fuzzy": true
     },
     {
@@ -2920,6 +2940,31 @@
       "fuzzy": true
     },
     {
+      "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "translation": "{_Lc} Lista servidores. Passe {C} para omitir a saída 'Servers:'.",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_Lc",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-L[c]\""
+        },
+        {
+          "id": "C",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"c\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
       "id": "Dedicated administrator connection",
       "message": "Dedicated administrator connection",
       "translation": "Conexão de administrador dedicada",
@@ -2937,6 +2982,51 @@
       "id": "Provided for backward compatibility. Client regional settings are not used",
       "message": "Provided for backward compatibility. Client regional settings are not used",
       "translation": "Fornecido para compatibilidade com versões anteriores. As configurações regionais do cliente não são usadas",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "translation": "{_k_12} Remova caracteres de controle da saída. Passe 1 para substituir um espaço por caractere, 2 por um espaço por caracteres consecutivos",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_k_12",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-k [1|2]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Echo input",
+      "message": "Echo input",
+      "translation": "Entrada de eco",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Enable column encryption",
+      "message": "Enable column encryption",
+      "translation": "Habilitar criptografia de coluna",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password",
+      "message": "New password",
+      "translation": "Nova senha",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password and exit",
+      "message": "New password and exit",
+      "translation": "Nova senha e sair",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3182,6 +3272,13 @@
       "fuzzy": true
     },
     {
+      "id": "Enter new password:",
+      "message": "Enter new password:",
+      "translation": "Digite a nova senha:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Sqlcmd: Error:",
       "message": "Sqlcmd: Error:",
       "translation": "Sqlcmd: Erro:",
@@ -3191,7 +3288,7 @@
     {
       "id": "Sqlcmd: Warning:",
       "message": "Sqlcmd: Warning:",
-      "translation": "SQLcmd: Aviso:",
+      "translation": "Sqlcmd: Aviso:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3345,6 +3442,13 @@
       "fuzzy": true
     },
     {
+      "id": "Timeout expired",
+      "message": "Timeout expired",
+      "translation": "Tempo limite expirado",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "translation": "Msg {Number}, Nível {Class}, Estado {State}, Servidor {ServerName}, Procedimento {ProcName}, Linha {LineNo}{SqlcmdEol}",
@@ -3464,6 +3568,13 @@
           "expr": "SqlcmdEol"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Password:",
+      "message": "Password:",
+      "translation": "Senha:",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
