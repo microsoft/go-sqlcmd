@@ -389,6 +389,8 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	}
 	b := new(strings.Builder)
 	b.Grow(len(q))
+	// The varmap index is rune based not byte based
+	r := []rune(q)
 	keys := make([]int, 0, len(s.batch.varmap))
 	for k := range s.batch.varmap {
 		keys = append(keys, k)
@@ -396,7 +398,7 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	sort.Ints(keys)
 	last := 0
 	for _, i := range keys {
-		b.WriteString(q[last:i])
+		b.WriteString(string(r[last:i]))
 		v := s.batch.varmap[i]
 		if val, ok := s.resolveVariable(v); ok {
 			b.WriteString(val)
@@ -404,9 +406,9 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 			_, _ = fmt.Fprintf(s.GetError(), "'%s' scripting variable not defined.%s", v, SqlcmdEol)
 			b.WriteString(fmt.Sprintf("$(%s)", v))
 		}
-		last = i + len(v) + 3
+		last = i + len([]rune(v)) + 3
 	}
-	b.WriteString(q[last:])
+	b.WriteString(string(r[last:]))
 	return b.String()
 }
 
