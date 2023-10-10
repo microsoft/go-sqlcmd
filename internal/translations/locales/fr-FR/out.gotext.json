@@ -2663,7 +2663,8 @@
         {
             "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
             "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
-            "translation": "",
+            "translation": "{_X1} Désactive les commandes susceptibles de compromettre la sécurité du système. La passe 1 indique à sqlcmd de quitter lorsque des commandes désactivées sont exécutées.",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_X1",
@@ -2673,12 +2674,15 @@
                     "argNum": 1,
                     "expr": "\"-X[1]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
             "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "translation": ""
+            "translation": "Spécifie la méthode d'authentification SQL à utiliser pour se connecter à Azure SQL Database. L'un des suivants : ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
@@ -2804,7 +2808,8 @@
         {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "",
+            "translation": "{_r0__1} Redirige les messages d’erreur avec la gravité \u003e= 11 sortie vers stderr. Passez 1 pour rediriger toutes les erreurs, y compris PRINT.",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_r0__1",
@@ -2814,7 +2819,8 @@
                     "argNum": 1,
                     "expr": "\"-r[0 | 1]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Level of mssql driver messages to print",
@@ -2936,7 +2942,8 @@
         {
             "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
             "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
-            "translation": "",
+            "translation": "{_Lc} Répertorie les serveurs. Passez {C} pour omettre la sortie « Serveurs : ».",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_Lc",
@@ -2954,7 +2961,8 @@
                     "argNum": 2,
                     "expr": "\"c\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Dedicated administrator connection",
@@ -2980,7 +2988,8 @@
         {
             "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
             "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
-            "translation": "",
+            "translation": "{_k_12} Supprimer les caractères de contrôle de la sortie. Passer 1 pour remplacer un espace par caractère, 2 pour un espace par caractères consécutifs",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_k_12",
@@ -2990,27 +2999,36 @@
                     "argNum": 1,
                     "expr": "\"-k [1|2]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Echo input",
             "message": "Echo input",
-            "translation": ""
+            "translation": "Entrée d’écho",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Enable column encryption",
             "message": "Enable column encryption",
-            "translation": ""
+            "translation": "Activer le chiffrement de colonne",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "New password",
             "message": "New password",
-            "translation": ""
+            "translation": "Nouveau mot de passe",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "New password and exit",
             "message": "New password and exit",
-            "translation": ""
+            "translation": "Nouveau mot de passe et sortie",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Sets the sqlcmd scripting variable {V}",
@@ -3256,7 +3274,9 @@
         {
             "id": "Enter new password:",
             "message": "Enter new password:",
-            "translation": ""
+            "translation": "Nouveau mot de passe :",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Sqlcmd: Error:",
@@ -3268,7 +3288,7 @@
         {
             "id": "Sqlcmd: Warning:",
             "message": "Sqlcmd: Warning:",
-            "translation": "Sqlcmd : Attention :",
+            "translation": "Sqlcmd : Avertissement :",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -3424,7 +3444,9 @@
         {
             "id": "Timeout expired",
             "message": "Timeout expired",
-            "translation": ""
+            "translation": "Délai expiré",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
@@ -3551,7 +3573,9 @@
         {
             "id": "Password:",
             "message": "Password:",
-            "translation": ""
+            "translation": "Mot de passe :",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Invalid variable identifier {Name}",
