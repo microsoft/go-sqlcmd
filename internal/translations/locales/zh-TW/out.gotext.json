@@ -2663,7 +2663,8 @@
         {
             "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
             "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
-            "translation": "",
+            "translation": "{_X1} 停用可能會危害系統安全性的命令。傳遞 1 會告訴 sqlcmd 在執行停用的命令時結束。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_X1",
@@ -2673,12 +2674,15 @@
                     "argNum": 1,
                     "expr": "\"-X[1]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
             "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "translation": ""
+            "translation": "指定要用來連接到 Azure SQL Database 的 SQL 驗證方法。下列其中一項: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、ActiveDirectoryDeviceCode、SqlPassword",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
@@ -2804,7 +2808,8 @@
         {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "",
+            "translation": "{_r0__1} 將嚴重性為 \u003e= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_r0__1",
@@ -2814,7 +2819,8 @@
                     "argNum": 1,
                     "expr": "\"-r[0 | 1]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Level of mssql driver messages to print",
@@ -2936,7 +2942,8 @@
         {
             "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
             "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
-            "translation": "",
+            "translation": "{_Lc} 列出伺服器。傳遞 {C} 以省略 'Servers:' 輸出。",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_Lc",
@@ -2954,12 +2961,13 @@
                     "argNum": 2,
                     "expr": "\"c\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Dedicated administrator connection",
             "message": "Dedicated administrator connection",
-            "translation": "專用管理員連線",
+            "translation": "專用系統管理員連線",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2980,7 +2988,8 @@
         {
             "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
             "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
-            "translation": "",
+            "translation": "{_k_12} 從輸出移除控制字元。傳遞 1 以取代每個字元的空格，2 表示每個連續字元一個空格",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "_k_12",
@@ -2990,27 +2999,36 @@
                     "argNum": 1,
                     "expr": "\"-k [1|2]\""
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Echo input",
             "message": "Echo input",
-            "translation": ""
+            "translation": "回音輸入",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Enable column encryption",
             "message": "Enable column encryption",
-            "translation": ""
+            "translation": "啟用資料行加密",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "New password",
             "message": "New password",
-            "translation": ""
+            "translation": "新密碼",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "New password and exit",
             "message": "New password and exit",
-            "translation": ""
+            "translation": "新增密碼並結束",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Sets the sqlcmd scripting variable {V}",
@@ -3256,7 +3274,9 @@
         {
             "id": "Enter new password:",
             "message": "Enter new password:",
-            "translation": ""
+            "translation": "輸入新密碼:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Sqlcmd: Error:",
@@ -3424,7 +3444,9 @@
         {
             "id": "Timeout expired",
             "message": "Timeout expired",
-            "translation": ""
+            "translation": "逾時已過期",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
@@ -3551,7 +3573,9 @@
         {
             "id": "Password:",
             "message": "Password:",
-            "translation": ""
+            "translation": "密碼:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Invalid variable identifier {Name}",

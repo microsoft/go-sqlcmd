@@ -34,7 +34,7 @@ func readMultilineComment(r []rune, i, end int) (int, bool) {
 func readCommand(c Commands, r []rune, i, end int) (*Command, []string, int) {
 	for ; i < end; i++ {
 		next := grab(r, i, end)
-		if next == 0 || unicode.IsControl(next) {
+		if next == 0 || (unicode.IsControl(next) && next != '\t') {
 			break
 		}
 	}

@@ -2661,16 +2661,26 @@
       "fuzzy": true
     },
     {
-      "id": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-      "message": "Disables commands that might compromise system security. Sqlcmd issues a warning and continues",
-      "translation": "停用可能會危害系統安全性的命令。Sqlcmd 發出警告並繼續",
+      "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "translation": "{_X1} 停用可能會危害系統安全性的命令。傳遞 1 會告訴 sqlcmd 在執行停用的命令時結束。",
       "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_X1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-X[1]\""
+        }
+      ],
       "fuzzy": true
     },
     {
-      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword",
-      "translation": "指定要用來連接到 Azure SQL Database 的 SQL 驗證方法。下列其中一項: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、SqlPassword",
+      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "translation": "指定要用來連接到 Azure SQL Database 的 SQL 驗證方法。下列其中一項: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、ActiveDirectoryDeviceCode、SqlPassword",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2796,10 +2806,20 @@
       "fuzzy": true
     },
     {
-      "id": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-      "message": "Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent",
-      "translation": "控制要將哪些錯誤訊息傳送到 stdout。會傳送嚴重性層級大於或等於此層級的訊息",
+      "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "translation": "{_r0__1} 將嚴重性為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。",
       "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_r0__1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-r[0 | 1]\""
+        }
+      ],
       "fuzzy": true
     },
     {
@@ -2920,9 +2940,34 @@
       "fuzzy": true
     },
     {
+      "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "translation": "{_Lc} 列出伺服器。傳遞 {C} 以省略 'Servers:' 輸出。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_Lc",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-L[c]\""
+        },
+        {
+          "id": "C",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"c\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
       "id": "Dedicated administrator connection",
       "message": "Dedicated administrator connection",
-      "translation": "專用管理員連線",
+      "translation": "專用系統管理員連線",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2937,6 +2982,51 @@
       "id": "Provided for backward compatibility. Client regional settings are not used",
       "message": "Provided for backward compatibility. Client regional settings are not used",
       "translation": "為回溯相容性提供。未使用用戶端地區設定",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "translation": "{_k_12} 從輸出移除控制字元。傳遞 1 以取代每個字元的空格，2 表示每個連續字元一個空格",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_k_12",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-k [1|2]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Echo input",
+      "message": "Echo input",
+      "translation": "回音輸入",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Enable column encryption",
+      "message": "Enable column encryption",
+      "translation": "啟用資料行加密",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password",
+      "message": "New password",
+      "translation": "新密碼",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password and exit",
+      "message": "New password and exit",
+      "translation": "新增密碼並結束",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3182,6 +3272,13 @@
       "fuzzy": true
     },
     {
+      "id": "Enter new password:",
+      "message": "Enter new password:",
+      "translation": "輸入新密碼:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Sqlcmd: Error:",
       "message": "Sqlcmd: Error:",
       "translation": "Sqlcmd: 錯誤:",
@@ -3345,6 +3442,13 @@
       "fuzzy": true
     },
     {
+      "id": "Timeout expired",
+      "message": "Timeout expired",
+      "translation": "逾時已過期",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "translation": "訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、程序 {ProcName}、行 {LineNo}{SqlcmdEol}",
@@ -3464,6 +3568,13 @@
           "expr": "SqlcmdEol"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Password:",
+      "message": "Password:",
+      "translation": "密碼:",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
