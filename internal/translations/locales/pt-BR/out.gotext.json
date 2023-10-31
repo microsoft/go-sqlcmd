@@ -16,10 +16,9 @@
             "fuzzy": true
         },
         {
-            "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
-            "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
-            "translation": "sqlcmd: Instalar/Criar/Consultar SQL Server, SQL do Azure e Ferramentas\n\nComentários:\n  {FeedbackUrl}",
-            "translatorComment": "Copied from source.",
+            "id": "Feedback:\n  {FeedbackUrl}",
+            "message": "Feedback:\n  {FeedbackUrl}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "FeedbackUrl",
@@ -29,8 +28,7 @@
                     "argNum": 1,
                     "expr": "feedbackUrl"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "help for backwards compatibility flags (-S, -U, -E etc.)",
@@ -3277,6 +3275,11 @@
             "translation": "Digite a nova senha:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+            "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+            "translation": ""
         },
         {
             "id": "Sqlcmd: Error:",

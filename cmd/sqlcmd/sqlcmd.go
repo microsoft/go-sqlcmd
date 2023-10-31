@@ -228,8 +228,10 @@ func Execute(version string) {
 			setVars(vars, &args)
 
 			if args.Version {
-				fmt.Println(localizer.Sprintf("sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools"))
-				fmt.Printf("%v\n", version)
+				fmt.Println(localizer.ProductBanner())
+				fmt.Println()
+				fmt.Printf("Version: %v\n", version)
+				fmt.Println()
 				fmt.Println(localizer.Sprintf("Legal docs and information: aka.ms/SqlcmdLegal"))
 				fmt.Println(localizer.Sprintf("Third party notices: aka.ms/SqlcmdNotices"))
 				os.Exit(0)
@@ -247,9 +249,9 @@ func Execute(version string) {
 	}
 	setFlags(rootCmd, &args)
 	rootCmd.SetHelpFunc(func(cmd *cobra.Command, argss []string) {
-		fmt.Println(cmd.Long)
-		fmt.Println(localizer.Sprintf("sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools"))
-		fmt.Println(localizer.Sprintf("Version %v\n", version))
+		fmt.Println(localizer.ProductBanner())
+		fmt.Println()
+		fmt.Println(localizer.Sprintf("Version: %v\n", version))
 		cmd.Flags().SetInterspersed(false)
 		fmt.Println(localizer.Sprintf("Flags:"))
 		cmd.Flags().VisitAll(func(flag *pflag.Flag) {
