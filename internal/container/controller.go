@@ -7,6 +7,11 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"io"
+	"path/filepath"
+	"strconv"
+	"strings"
+
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
@@ -14,10 +19,6 @@ import (
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/go-connections/nat"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
-	"io"
-	"path/filepath"
-	"strconv"
-	"strings"
 )
 
 type Controller struct {
@@ -165,7 +166,7 @@ func (c Controller) ContainerStop(id string) (err error) {
 		panic("Must pass in non-empty id")
 	}
 
-	err = c.cli.ContainerStop(context.Background(), id, nil)
+	err = c.cli.ContainerStop(context.Background(), id, container.StopOptions{})
 	return
 }
 
