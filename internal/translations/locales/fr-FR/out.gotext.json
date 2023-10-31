@@ -16,10 +16,9 @@
             "fuzzy": true
         },
         {
-            "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
-            "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
-            "translation": "sqlcmd : installer/créer/interroger SQL Server, Azure SQL et les outils\n\nRetour:\n   {FeedbackUrl}",
-            "translatorComment": "Copied from source.",
+            "id": "Feedback:\n  {FeedbackUrl}",
+            "message": "Feedback:\n  {FeedbackUrl}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "FeedbackUrl",
@@ -29,8 +28,7 @@
                     "argNum": 1,
                     "expr": "feedbackUrl"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "help for backwards compatibility flags (-S, -U, -E etc.)",
@@ -2487,10 +2485,9 @@
             "fuzzy": true
         },
         {
-            "id": "Version {Version}",
-            "message": "Version {Version}",
-            "translation": "Version {Version}",
-            "translatorComment": "Copied from source.",
+            "id": "Version: {Version}",
+            "message": "Version: {Version}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "Version",
@@ -2500,8 +2497,7 @@
                     "argNum": 1,
                     "expr": "version"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Flags:",
@@ -3277,6 +3273,11 @@
             "translation": "Nouveau mot de passe :",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+            "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+            "translation": ""
         },
         {
             "id": "Sqlcmd: Error:",
