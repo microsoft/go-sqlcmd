@@ -2487,9 +2487,9 @@
             "fuzzy": true
         },
         {
-            "id": "Version {Version}",
-            "message": "Version {Version}",
-            "translation": "Version {Version}",
+            "id": "Version: {Version}",
+            "message": "Version: {Version}",
+            "translation": "Version: {Version}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
