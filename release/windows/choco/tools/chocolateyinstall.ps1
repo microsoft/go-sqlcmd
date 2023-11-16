@@ -1,7 +1,7 @@
 ﻿$ErrorActionPreference = 'Stop';
 
 $toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-$url64      = 'https://github.com/microsoft/go-sqlcmd/releases/download/v1.4.0/sqlcmd-x64_1.4.0-1.msi'
+$url64      = 'https://github.com/microsoft/go-sqlcmd/releases/download/v1.5.0/sqlcmd-x64_1.5.0-1.msi'
 
 $packageArgs = @{
   packageName   = $env:ChocolateyPackageName
@@ -9,7 +9,7 @@ $packageArgs = @{
   fileType      = 'MSI'
   url64bit      = $url64
   softwareName  = 'sqlcmd*'
-  checksum64    = '0b6cd48765439668a1de6e6ed6537227d902b34e6ea863c1f4667b43c540151b'
+  checksum64    = 'fe1a7045fd6c78d33666b17b12b86b4b1ee414cb49fc093130aa8b1294aadf10'
   checksumType64= 'sha256'
 
   silentArgs    = "/qn /norestart /l*v `"$($env:TEMP)\$($packageName).$($env:chocolateyPackageVersion).MsiInstall.log`""
