@@ -1686,12 +1686,12 @@
       </Item>
       <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Version {Version}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[Version: {Version}]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[버전 {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
+            <Val><![CDATA[Version {Version}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2415,72 +2415,72 @@
       </Item>
       <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Error:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[Sqlcmd: 오류:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+            <Val><![CDATA[Sqlcmd: Error:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
+          <Val><![CDATA[Sqlcmd: Error:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: 경고:]]></Val>
+            <Val><![CDATA[Sqlcmd: 오류:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+            <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ED 및 !!<command> 명령, 시작 스크립트 및 환경 변수를 사용하지 않도록 설정합니다.]]></Val>
+            <Val><![CDATA[Sqlcmd: 경고:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
+          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[스크립팅 변수: '{Variable}'은(는) 읽기 전용입니다.]]></Val>
+            <Val><![CDATA[ED 및 !!<command> 명령, 시작 스크립트 및 환경 변수를 사용하지 않도록 설정합니다.]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
+          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Variable}' 스크립팅 변수가 정의되지 않았습니다.]]></Val>
+            <Val><![CDATA[스크립팅 변수: '{Variable}'은(는) 읽기 전용입니다.]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+            <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[환경 변수 '{Variable}'에 잘못된 값 '{EnvVal}'이(가) 있습니다.]]></Val>
+            <Val><![CDATA['{Variable}' 스크립팅 변수가 정의되지 않았습니다.]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable value {Val}]]></Val>
+            <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2496,77 +2496,113 @@
       </Item>
       <Item ItemId=";messages[290].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Command}' 명령 근처의 {LineNumber} 줄에 구문 오류가 있습니다.]]></Val>
+            <Val><![CDATA[환경 변수 '{Variable}'에 잘못된 값 '{EnvVal}'이(가) 있습니다.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix} {Filepath} 파일을 열거나 작업하는 동안 오류가 발생했습니다(이유: {Error}).]]></Val>
+            <Val><![CDATA['{Command}' 명령 근처의 {LineNumber} 줄에 구문 오류가 있습니다.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix}{LineNumber}행에 구문 오류가 있습니다.]]></Val>
+            <Val><![CDATA[{ErrorPrefix} {Filepath} 파일을 열거나 작업하는 동안 오류가 발생했습니다(이유: {Error}).]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Timeout expired]]></Val>
+          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[시간 제한이 만료되었습니다.]]></Val>
+            <Val><![CDATA[{ErrorPrefix}{LineNumber}행에 구문 오류가 있습니다.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Timeout expired]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[Timeout expired]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[메시지 {Number}, 수준 {Class}, 상태 {State}, 서버 {ServerName}, 프로시저 {ProcName}, 줄 {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[시간 제한이 만료되었습니다.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[메시지 {Number}, 수준 {Class}, 상태 {State}, 서버 {ServerName}, 줄 {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[메시지 {Number}, 수준 {Class}, 상태 {State}, 서버 {ServerName}, 프로시저 {ProcName}, 줄 {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password:]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[암호:]]></Val>
+            <Val><![CDATA[메시지 {Number}, 수준 {Class}, 상태 {State}, 서버 {ServerName}, 줄 {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Password:]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Val><![CDATA[Password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[잘못된 변수 식별자 {Name}]]></Val>
+            <Val><![CDATA[암호:]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[잘못된 변수 식별자 {Name}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid variable value {Val}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid variable value {Val}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -2586,10 +2622,13 @@
       </Item>
       <Item ItemId=";messages[2].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]A;]A;Feedback:]A;  {FeedbackUrl}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[Feedback:]A;  {FeedbackUrl}]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[sqlcmd: SQL Server, Azure SQL 및 도구 설치/만들기/쿼리]A;]A;피드백:]A;  {FeedbackUrl}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]A;]A;Feedback:]A;  {FeedbackUrl}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

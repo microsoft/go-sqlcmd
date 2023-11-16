@@ -1686,12 +1686,12 @@
       </Item>
       <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Version {Version}]]></Val>
+          <Val><![CDATA[Version: {Version}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Версия {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
+            <Val><![CDATA[Version {Version}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2415,72 +2415,72 @@
       </Item>
       <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Error:]]></Val>
+          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: Ошибка:]]></Val>
+            <Val><![CDATA[sqlcmd: установка, создание и запрос SQL Server, Azure SQL и инструментов]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+            <Val><![CDATA[Sqlcmd: Error:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
+          <Val><![CDATA[Sqlcmd: Error:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: Предупреждение:]]></Val>
+            <Val><![CDATA[Sqlcmd: ошибка:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+            <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ED, а также команды !!<command>, скрипт запуска и переменные среды отключены]]></Val>
+            <Val><![CDATA[Sqlcmd: предупреждение:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
+          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Переменная скрипта "{Variable}" доступна только для чтения]]></Val>
+            <Val><![CDATA[ED, а также команды !!<command>, скрипт запуска и переменные среды отключены]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
+          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Переменная скрипта "{Variable}" не определена.]]></Val>
+            <Val><![CDATA[Переменная скрипта "{Variable}" доступна только для чтения]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+            <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Переменная среды "{Variable}" имеет недопустимое значение "{EnvVal}".]]></Val>
+            <Val><![CDATA[Переменная скрипта "{Variable}" не определена.]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable value {Val}]]></Val>
+            <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2496,77 +2496,113 @@
       </Item>
       <Item ItemId=";messages[290].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Синтаксическая ошибка в строке {LineNumber} рядом с командой "{Command}"]]></Val>
+            <Val><![CDATA[Переменная среды "{Variable}" имеет недопустимое значение "{EnvVal}".]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix} Произошла ошибка при открытии или использовании файла {Filepath} (причина: {Error}).]]></Val>
+            <Val><![CDATA[Синтаксическая ошибка в строке {LineNumber} рядом с командой "{Command}"]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix}Синтаксическая ошибка в строке {LineNumber}]]></Val>
+            <Val><![CDATA[{ErrorPrefix} Произошла ошибка при открытии или использовании файла {Filepath} (причина: {Error}).]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Timeout expired]]></Val>
+          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Время ожидания истекло]]></Val>
+            <Val><![CDATA[{ErrorPrefix}Синтаксическая ошибка в строке {LineNumber}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Timeout expired]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[Timeout expired]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, процедура {ProcName}, строка {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[Время ожидания истекло]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, строка {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, процедура {ProcName}, строка {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password:]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Пароль:]]></Val>
+            <Val><![CDATA[Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, строка {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Password:]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Val><![CDATA[Password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Недопустимый идентификатор переменной {Name}]]></Val>
+            <Val><![CDATA[Пароль:]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Недопустимый идентификатор переменной {Name}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid variable value {Val}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid variable value {Val}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -2586,10 +2622,13 @@
       </Item>
       <Item ItemId=";messages[2].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]A;]A;Feedback:]A;  {FeedbackUrl}]]></Val>
+          <Val><![CDATA[Feedback:]A;  {FeedbackUrl}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd: установка, создание и запрос SQL Server, Azure SQL и инструментов]A;]A;Обратная связь:]A;  {FeedbackUrl}]]></Val>
+            <Val><![CDATA[Обратная связь:]A;  {FeedbackUrl}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]A;]A;Feedback:]A;  {FeedbackUrl}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

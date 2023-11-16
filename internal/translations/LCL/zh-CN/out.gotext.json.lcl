@@ -1686,12 +1686,12 @@
       </Item>
       <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Version {Version}]]></Val>
+          <Val><![CDATA[Version: {Version}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[版本 {Version}]]></Val>
+            <Val><![CDATA[版本: {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
+            <Val><![CDATA[Version {Version}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2415,72 +2415,72 @@
       </Item>
       <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Error:]]></Val>
+          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: 错误:]]></Val>
+            <Val><![CDATA[sqlcmd: 安装/创建/查询 SQL Server、Azure SQL 和工具]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+            <Val><![CDATA[Sqlcmd: Error:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
+          <Val><![CDATA[Sqlcmd: Error:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: 警告:]]></Val>
+            <Val><![CDATA[Sqlcmd: 错误:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+            <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ED 和 !!<command> 命令、启动脚本和环境变量被禁用]]></Val>
+            <Val><![CDATA[Sqlcmd: 警告:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
+          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[脚本变量: "{Variable}" 为只读项]]></Val>
+            <Val><![CDATA[ED 和 !!<command> 命令、启动脚本和环境变量被禁用]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
+          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未定义 "{Variable}" 脚本变量。]]></Val>
+            <Val><![CDATA[脚本变量: "{Variable}" 为只读项]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+            <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[环境变量 "{Variable}" 具有无效值 "{EnvVal}"。]]></Val>
+            <Val><![CDATA[未定义 "{Variable}" 脚本变量。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable value {Val}]]></Val>
+            <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2496,77 +2496,113 @@
       </Item>
       <Item ItemId=";messages[290].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[命令 "{Command}" 附近的行 {LineNumber} 存在语法错误。]]></Val>
+            <Val><![CDATA[环境变量 "{Variable}" 具有无效值 "{EnvVal}"。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix} 打开或操作文件 {Filepath} 时出错(原因: {Error})。]]></Val>
+            <Val><![CDATA[命令 "{Command}" 附近的行 {LineNumber} 存在语法错误。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[行 {LineNumber} 存在 {ErrorPrefix} 语法错误]]></Val>
+            <Val><![CDATA[{ErrorPrefix} 打开或操作文件 {Filepath} 时出错(原因: {Error})。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Timeout expired]]></Val>
+          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[超时时间已到]]></Val>
+            <Val><![CDATA[行 {LineNumber} 存在 {ErrorPrefix} 语法错误]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Timeout expired]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[Timeout expired]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Msg {Number}，级别 {Class}，状态 {State}，服务器 {ServerName}，过程 {ProcName}，行 {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[超时时间已到]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Msg {Number}，级别 {Class}，状态 {State}，服务器 {ServerName}，行 {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[Msg {Number}，级别 {Class}，状态 {State}，服务器 {ServerName}，过程 {ProcName}，行 {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password:]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[密码:]]></Val>
+            <Val><![CDATA[Msg {Number}，级别 {Class}，状态 {State}，服务器 {ServerName}，行 {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Password:]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Val><![CDATA[Password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[变量标识符 {Name} 无效]]></Val>
+            <Val><![CDATA[密码:]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[变量标识符 {Name} 无效]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid variable value {Val}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid variable value {Val}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -2586,10 +2622,13 @@
       </Item>
       <Item ItemId=";messages[2].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]A;]A;Feedback:]A;  {FeedbackUrl}]]></Val>
+          <Val><![CDATA[Feedback:]A;  {FeedbackUrl}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd: 安装/创建/查询 SQL Server、Azure SQL 和工具]A;]A;反馈:]A;  {FeedbackUrl}]]></Val>
+            <Val><![CDATA[反馈:]A; {FeedbackUrl}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]A;]A;Feedback:]A;  {FeedbackUrl}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
