@@ -1687,8 +1687,8 @@
       <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Version: {Version}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Version {Version}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Version : {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Version {Version}]]></Val>
@@ -2416,8 +2416,8 @@
       <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Sqlcmd : Erreur :]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[sqlcmd : installer/créer/interroger SQL Server, Azure SQL et les outils]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Error:]]></Val>
@@ -2441,7 +2441,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd : Avertissement :]]></Val>
+            <Val><![CDATA[Sqlcmd : Attention :]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
@@ -2623,8 +2623,8 @@
       <Item ItemId=";messages[2].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Feedback:]A;  {FeedbackUrl}]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[sqlcmd : installer/créer/interroger SQL Server, Azure SQL et les outils]A;]A;Retour:]A;   {FeedbackUrl}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Commentaires :]A;  {FeedbackUrl}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]A;]A;Feedback:]A;  {FeedbackUrl}]]></Val>
