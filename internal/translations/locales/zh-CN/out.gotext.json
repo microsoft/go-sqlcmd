@@ -18,7 +18,8 @@
         {
             "id": "Feedback:\n  {FeedbackUrl}",
             "message": "Feedback:\n  {FeedbackUrl}",
-            "translation": "",
+            "translation": "反馈:\n {FeedbackUrl}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "FeedbackUrl",
@@ -28,7 +29,8 @@
                     "argNum": 1,
                     "expr": "feedbackUrl"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "help for backwards compatibility flags (-S, -U, -E etc.)",
@@ -2487,7 +2489,8 @@
         {
             "id": "Version: {Version}",
             "message": "Version: {Version}",
-            "translation": "",
+            "translation": "版本: {Version}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Version",
@@ -2497,7 +2500,8 @@
                     "argNum": 1,
                     "expr": "version"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Flags:",
@@ -3277,7 +3281,9 @@
         {
             "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
             "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
-            "translation": ""
+            "translation": "sqlcmd: 安装/创建/查询 SQL Server、Azure SQL 和工具",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Sqlcmd: Error:",
