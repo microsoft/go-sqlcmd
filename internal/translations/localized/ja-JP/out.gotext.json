@@ -16,9 +16,9 @@
       "fuzzy": true
     },
     {
-      "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
-      "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\n\nFeedback:\n  {FeedbackUrl}",
-      "translation": "sqlcmd: SQL Server、Azure SQL、およびツールのインストール/作成/クエリ\n\nフィードバック：\n  {FeedbackUrl}",
+      "id": "Feedback:\n  {FeedbackUrl}",
+      "message": "Feedback:\n  {FeedbackUrl}",
+      "translation": "フィードバック：\n {FeedbackUrl}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2487,9 +2487,9 @@
       "fuzzy": true
     },
     {
-      "id": "Version {Version}",
-      "message": "Version {Version}",
-      "translation": "バージョン {Version}",
+      "id": "Version: {Version}",
+      "message": "Version: {Version}",
+      "translation": "バージョン: {Version}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3275,6 +3275,13 @@
       "id": "Enter new password:",
       "message": "Enter new password:",
       "translation": "新しいパスワードの入力:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+      "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+      "translation": "sqlcmd: インストール/作成/SQL Server、Azure SQL、およびツールのクエリ",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
