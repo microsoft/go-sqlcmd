@@ -58,11 +58,11 @@ func (c *ConnectionStrings) run() {
 
 	// connectionStringFormats borrowed from "portal.azure.com" "connection strings" pane
 	var connectionStringFormats = map[string]string{
-		"ADO.NET": "Server=tcp:%s,%d;Initial Catalog=%s;Persist Security Info=False;User ID=%s;Password=%s;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=%s;Connection Timeout=30;",
-		"JDBC":    "jdbc:sqlserver://%s:%d;database=%s;user=%s;password=%s;encrypt=true;trustServerCertificate=%s;loginTimeout=30;",
-		"ODBC":    "Driver={ODBC Driver 18 for SQL Server};Server=tcp:%s,%d;Database=%s;Uid=%s;Pwd=%s;Encrypt=yes;TrustServerCertificate=%s;Connection Timeout=30;",
+		"ADO.NET": "Server=tcp:%s,%#v;Initial Catalog=%s;Persist Security Info=False;User ID=%s;Password=%s;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=%s;Connection Timeout=30;",
+		"JDBC":    "jdbc:sqlserver://%s:%#v;database=%s;user=%s;password=%s;encrypt=true;trustServerCertificate=%s;loginTimeout=30;",
+		"ODBC":    "Driver={ODBC Driver 18 for SQL Server};Server=tcp:%s,%#v;Database=%s;Uid=%s;Pwd=%s;Encrypt=yes;TrustServerCertificate=%s;Connection Timeout=30;",
 		"GO":      "sqlserver://%s:%s@%s,%d?database=%s;encrypt=true;trustServerCertificate=%s;dial+timeout=30",
-		"SQLCMD":  "sqlcmd -S %s,%d -U %s",
+		"SQLCMD":  "sqlcmd -S %s,%#v -U %s",
 	}
 
 	endpoint, user := config.CurrentContext()

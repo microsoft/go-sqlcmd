@@ -39,7 +39,7 @@ func (c *Ads) persistCredentialForAds(
 ) {
 	// Create the target name that ADS will look for
 	targetName := c.adsKey(
-		fmt.Sprintf("%s,%d", hostname, rune(endpoint.Port)),
+		fmt.Sprintf("%s,%#v", hostname, rune(endpoint.Port)),
 		"", // The default database is set on the user login
 		"SqlLogin",
 		user.BasicAuth.Username)

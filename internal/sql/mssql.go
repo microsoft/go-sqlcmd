@@ -35,7 +35,7 @@ func (m *mssql) Connect(
 	m.sqlcmd.Format = sqlcmd.NewSQLCmdDefaultFormatter(false, sqlcmd.ControlIgnore)
 	connect := sqlcmd.ConnectSettings{
 		ServerName: fmt.Sprintf(
-			"%s,%d",
+			"%s,%#v",
 			endpoint.EndpointDetails.Address,
 			endpoint.EndpointDetails.Port),
 		ApplicationName: "sqlcmd",
