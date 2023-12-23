@@ -25,7 +25,7 @@ func TestInstallMssql(t *testing.T) {
 	cmdparser.TestCmd[*mssql.GetTags]()
 	cmdparser.TestCmd[*Mssql](
 		fmt.Sprintf(
-			`--accept-eula --user-database foo --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
+			`--accept-eula --database foo --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
 			registry,
 			repo))
 
@@ -61,7 +61,7 @@ func TestNegInstallMssql3(t *testing.T) {
 func TestNegInstallMssql4(t *testing.T) {
 	cmdparser.TestSetup(t)
 	assert.Panics(t, func() {
-		cmdparser.TestCmd[*Mssql]("--accept-eula --user-database bad'name")
+		cmdparser.TestCmd[*Mssql]("--accept-eula --database bad'name")
 	})
 }
 

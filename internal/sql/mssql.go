@@ -89,6 +89,14 @@ func (m *mssql) Query(text string) {
 	}
 }
 
+func (m *mssql) ExecuteSqlFile(filename string) {
+	m.sqlcmd.SetOutput(os.Stdout)
+	m.sqlcmd.SetError(os.Stderr)
+	trace("Executing .sql file: %v", filename)
+	err := m.sqlcmd.IncludeFile(filename, true)
+	checkErr(err)
+}
+
 func (m *mssql) ScalarString(query string) string {
 	buf := buffer.NewMemoryBuffer()
 	defer func() { _ = buf.Close() }()

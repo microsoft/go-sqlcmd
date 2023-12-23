@@ -68,9 +68,7 @@ func CurrentContextEndpointHasContainer() (exists bool) {
 // number that is not currently in use by any of the endpoints in the
 // configuration. It also checks that the port is available on the local machine.
 // If no available port is found after trying up to port number 5000, the function panics.
-func FindFreePortForTds() (portNumber int) {
-	const startingPortNumber = 1433
-
+func FindFreePortForTds(startingPortNumber int) (portNumber int) {
 	portNumber = startingPortNumber
 
 	for {
@@ -91,7 +89,7 @@ func FindFreePortForTds() (portNumber int) {
 
 		portNumber++
 
-		if portNumber == 5000 {
+		if portNumber == startingPortNumber+2000 {
 			panic("Did not find an available port")
 		}
 	}

@@ -64,29 +64,54 @@ func (c Controller) EnsureImage(image string) (err error) {
 	return
 }
 
+func (c Controller) NetworkCreate(name string) string {
+	resp, err := c.cli.NetworkCreate(context.Background(), name, types.NetworkCreate{})
+	checkErr(err)
+
+	return resp.ID
+}
+
+func (c Controller) NetworkExists(name string) bool {
+	networks, err := c.cli.NetworkList(context.Background(), types.NetworkListOptions{})
+	checkErr(err)
+
+	for _, network := range networks {
+		if network.Name == name {
+			return true
+		}
+	}
+
+	return false
+}
+
 // ContainerRun creates a new container using the provided image and env values
-// and binds it to the specified port number. It then starts the container and returns
-// the ID of the container.
+// and binds the internal port to the specified external port number. It then starts
+// the container and returns the ID of the container.
 func (c Controller) ContainerRun(
 	image string,
 	env []string,
+	volumeMappings []string,
+	portInternal int,
 	port int,
 	name string,
 	hostname string,
 	architecture string,
 	os string,
+	networkMode string,
 	command []string,
 	unitTestFailure bool,
 ) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
-			nat.Port("1433/tcp"): []nat.PortBinding{
+			nat.Port(strconv.Itoa(portInternal) + "/tcp"): []nat.PortBinding{
 				{
 					HostIP:   "0.0.0.0",
 					HostPort: strconv.Itoa(port),
 				},
 			},
 		},
+		NetworkMode: container.NetworkMode(networkMode),
+		Binds:       volumeMappings,
 	}
 
 	platform := specs.Platform{
@@ -100,6 +125,9 @@ func (c Controller) ContainerRun(
 		Cmd:      command,
 		Env:      env,
 		Hostname: hostname,
+		ExposedPorts: nat.PortSet{
+			nat.Port(strconv.Itoa(portInternal) + "/tcp"): {},
+		},
 	}, hostConfig, nil, &platform, name)
 	checkErr(err)
 
@@ -119,6 +147,16 @@ func (c Controller) ContainerRun(
 	checkErr(err)
 
 	return resp.ID
+}
+
+func (c Controller) ContainerName(containerID string) string {
+	// Inspect the container to get details
+	containerInfo, err := c.cli.ContainerInspect(context.Background(), containerID)
+	checkErr(err)
+
+	// Access the container name from the inspect result
+	containerName := containerInfo.Name[1:] // Removing the leading '/'
+	return containerName
 }
 
 // ContainerWaitForLogEntry is used to wait for a specific string to be written
@@ -256,10 +294,22 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		src,
 	}
 
-	c.runCmdInContainer(id, cmd)
+	_, _, exitCode := c.runCmdInContainer(id, cmd)
+
+	if exitCode != 0 {
+		cmd = []string{
+			"curl",
+			"-o",
+			destFolder + "/" + file, // not using filepath.Join here, this is in the *nix container. always /
+			"-L",
+			src,
+		}
+
+		c.runCmdInContainer(id, cmd)
+	}
 }
 
-func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) {
+func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte, int) {
 	trace("Running command in container: " + strings.Join(cmd, " "))
 
 	response, err := c.cli.ContainerExecCreate(
@@ -301,7 +351,13 @@ func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) 
 	trace("Stdout: " + string(stdout))
 	trace("Stderr: " + string(stderr))
 
-	return stdout, stderr
+	// Get the exit code
+	execInspect, err := c.cli.ContainerExecInspect(context.Background(), response.ID)
+	checkErr(err)
+
+	trace("ExitCode: %d", execInspect.ExitCode)
+
+	return stdout, stderr, execInspect.ExitCode
 }
 
 // ContainerRunning returns true if the container with the given ID is running.

@@ -39,6 +39,44 @@ func AddContext(context Context) string {
 	return context.Name
 }
 
+func AddAddOn(
+	contextName, addOnName string,
+	ContainerId string,
+	Image string,
+	address string,
+	port int,
+) {
+
+	containerDetails := ContainerDetails{
+		Id:    ContainerId,
+		Image: Image}
+
+	assetDetails := AssetDetails{
+		ContainerDetails: &containerDetails}
+
+	endpoint := Endpoint{
+		AssetDetails: &assetDetails,
+		EndpointDetails: EndpointDetails{
+			Address: address,
+			Port:    port},
+		Name: addOnName + "@" + contextName,
+	}
+
+	uniqueEndpointName := AddEndpoint(endpoint)
+
+	for i, c := range config.Contexts {
+		if contextName == c.Name {
+			config.Contexts[i].AddOns = append(config.Contexts[i].AddOns, AddOn{
+				AddOnsDetails: AddOnsDetails{
+					Type:     addOnName,
+					Endpoint: uniqueEndpointName}})
+			break
+		}
+	}
+
+	Save()
+}
+
 // CurrentContextName returns the name of the current context in the configuration.
 // The current context is the one that is currently active and used by the application.
 func CurrentContextName() string {
@@ -91,6 +129,19 @@ func CurrentContext() (endpoint Endpoint, user *User) {
 			"Context '%v' has no endpoint.  Every context must have an endpoint",
 			currentContextName,
 		))
+	}
+
+	return
+}
+
+func CurrentContextAddOns() (addOns []AddOn) {
+	currentContextName := GetCurrentContextOrFatal()
+
+	for _, c := range config.Contexts {
+		if c.Name == currentContextName {
+			addOns = c.AddOns
+			break
+		}
 	}
 
 	return

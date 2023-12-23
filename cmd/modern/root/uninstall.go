@@ -122,7 +122,23 @@ func (c *Uninstall) run() {
 				err = controller.ContainerRemove(id)
 				c.CheckErr(err)
 			} else {
-				output.Warn(localizer.Sprintf("Container %q no longer exists, continuing to remove context...", id))
+				output.Warn(localizer.Sprintf("Container %q (for endpoint %q) no longer exists, continuing to remove context...", id, endpoint.Name))
+			}
+
+			addOns := config.CurrentContextAddOns()
+			for _, a := range addOns {
+				e := config.GetEndpoint(a.Endpoint)
+				if controller.ContainerExists(e.ContainerDetails.Id) {
+					output.Info(localizer.Sprintf("Stopping %s", e.ContainerDetails.Image))
+					err := controller.ContainerStop(e.ContainerDetails.Id)
+					c.CheckErr(err)
+					err = controller.ContainerRemove(e.ContainerDetails.Id)
+					c.CheckErr(err)
+				} else {
+					output.Warn(localizer.Sprintf("Container %q (for endpoint %q) no longer exists, continuing to remove context...", e.ContainerDetails.Id, a.Endpoint))
+				}
+
+				config.DeleteEndpoint(a.Endpoint)
 			}
 		}
 

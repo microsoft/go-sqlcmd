@@ -83,7 +83,7 @@ func TestConfig(t *testing.T) {
 			GetEndpoint("endpoint")
 			OutputEndpoints(o.Struct, true)
 			OutputEndpoints(o.Struct, false)
-			FindFreePortForTds()
+			FindFreePortForTds(0)
 			DeleteEndpoint("endpoint2")
 			DeleteEndpoint("endpoint3")
 

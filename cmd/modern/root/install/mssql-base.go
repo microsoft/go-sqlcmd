@@ -56,6 +56,9 @@ type MssqlBase struct {
 	port int
 
 	usingDatabaseUrl string
+	network          string
+	addOn            string
+	addOnUse         string
 
 	unitTesting bool
 
@@ -99,8 +102,8 @@ func (c *MssqlBase) AddFlags(
 
 	addFlag(cmdparser.FlagOptions{
 		String:    &c.defaultDatabase,
-		Name:      "user-database",
-		Shorthand: "u",
+		Name:      "database",
+		Shorthand: "d",
 		Usage:     localizer.Sprintf("Create a user database and set it as the default for login"),
 	})
 
@@ -215,9 +218,31 @@ func (c *MssqlBase) AddFlags(
 	addFlag(cmdparser.FlagOptions{
 		String:        &c.usingDatabaseUrl,
 		DefaultString: "",
-		Name:          "using",
+		Name:          "use",
 		Usage:         localizer.Sprintf("Download (into container) and attach database (.bak) from URL"),
 	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.network,
+		DefaultString: "",
+		Name:          "network",
+		Usage:         localizer.Sprintf("Container network name (defaults to 'container-network' if --add-on specified)"),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.addOn,
+		DefaultString: "",
+		Name:          "add-on",
+		Usage:         localizer.Sprintf("Create add-on container"),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.addOnUse,
+		DefaultString: "",
+		Name:          "add-on-use",
+		Usage:         localizer.Sprintf("File to use for add-on container"),
+	})
+
 }
 
 // Run checks that the end-user license agreement has been accepted,
@@ -270,7 +295,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	if c.port == 0 {
-		c.port = config.FindFreePortForTds()
+		c.port = config.FindFreePortForTds(1433)
 	}
 
 	// Do an early exit if url doesn't exist
@@ -280,11 +305,23 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	if c.defaultDatabase != "" {
 		if !c.validateDbName(c.defaultDatabase) {
-			output.Fatalf(localizer.Sprintf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))
+			output.Fatalf(localizer.Sprintf("--database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))
 		}
 	}
 
 	controller := container.NewController()
+
+	// If an add-on is specified, and no network name, then set a default network name
+	if c.addOn != "" && c.network == "" {
+		c.network = "container-network"
+	}
+
+	if c.network != "" {
+		// Create a docker network
+		if !controller.NetworkExists(c.network) {
+			controller.NetworkCreate("library-network")
+		}
+	}
 
 	if !c.useCached {
 		c.downloadImage(imageName, output, controller)
@@ -294,11 +331,14 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	containerId := controller.ContainerRun(
 		imageName,
 		env,
+		nil,
+		1433,
 		c.port,
 		c.name,
 		c.hostname,
 		c.architecture,
 		c.os,
+		c.network,
 		[]string{},
 		false,
 	)
@@ -353,7 +393,11 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			Password:           secret.Encode(saPassword, c.passwordEncryption)},
 		Name: "sa"}
 
-	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
+	c.sql.Connect(
+		endpoint,
+		saUser,
+		sql.ConnectOptions{Database: "master", Interactive: false},
+	)
 
 	c.createNonSaUser(userName, password)
 
@@ -366,15 +410,81 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		)
 	}
 
+	dabPort := 0
+	if c.addOn == "dab" {
+		dabImageName := "mcr.microsoft.com/azure-databases/data-api-builder"
+
+		if !c.useCached {
+			c.downloadImage(dabImageName, output, controller)
+		}
+
+		dabEnv := []string{
+			fmt.Sprintf("CONN_STRING=Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
+				controller.ContainerName(containerId),
+				c.defaultDatabase,
+				userName,
+				password),
+		}
+
+		dabConfigFile := "https://aka.ms/dab-config.json"
+
+		dabPort = config.FindFreePortForTds(5001)
+
+		// dabVolumeMapping := []string{"./DAB-Config:/App/configs"}
+
+		addOnContainerId := controller.ContainerRun(
+			dabImageName,
+			dabEnv,
+			nil,
+			5000,
+			dabPort,
+			"",
+			"",
+			c.architecture,
+			c.os,
+			c.network,
+			[]string{},
+			false,
+		)
+
+		contextName := config.CurrentContextName()
+
+		// Save add-on details to config file now, so it can be deleted even
+		// if something below fails
+		config.AddAddOn(
+			contextName,
+			"dab",
+			addOnContainerId,
+			dabImageName,
+			"127.0.0.1",
+			dabPort)
+
+		controller.DownloadFile(
+			addOnContainerId,
+			dabConfigFile,
+			"/App",
+		)
+
+		controller.ContainerStop(addOnContainerId)
+		controller.ContainerStart(addOnContainerId)
+	}
+
 	hints := [][]string{}
 
-	// TODO: sqlcmd open ads only support on Windows right now, add Mac support
+	// TODO: sqlcmd open ads only support on Windows and Mac right now, add Linux support
 	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 		hints = append(hints, []string{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"})
 	}
 
 	hints = append(hints, []string{localizer.Sprintf("Run a query"), "sqlcmd query \"SELECT @@version\""})
 	hints = append(hints, []string{localizer.Sprintf("Start interactive session"), "sqlcmd query"})
+
+	if c.addOn == "dab" {
+		hints = append(hints, []string{
+			localizer.Sprintf("See Data API Builder (DAB) Health Status"),
+			fmt.Sprintf("curl -s http://localhost:%d", dabPort),
+		})
+	}
 
 	if previousContextName != "" {
 		hints = append(
@@ -390,10 +500,16 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
 	hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
 
+	if c.addOn == "dab" {
+		output.Info(localizer.Sprintf("Now ready for DAB connections on port %d",
+			dabPort),
+		)
+	}
 	output.InfoWithHintExamples(hints,
-		localizer.Sprintf("Now ready for client connections on port %d",
+		localizer.Sprintf("Now ready for SQL connections on port %d",
 			c.port),
 	)
+
 }
 
 func (c *MssqlBase) validateUsingUrlExists() {
@@ -420,7 +536,7 @@ func (c *MssqlBase) validateUsingUrlExists() {
 
 	// At the moment we only support attaching .bak files, but we should
 	// support .bacpacs and .mdfs in the future
-	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" {
+	if _, file := filepath.Split(u.Path); filepath.Ext(file) != ".bak" && filepath.Ext(file) != ".sql" {
 		output.FatalWithHints(
 			[]string{
 				localizer.Sprintf("--using file URL must be a .bak file"),
@@ -542,13 +658,18 @@ func (c *MssqlBase) downloadAndRestoreDb(
 		temporaryFolder,
 	)
 
-	// Restore database from file
-	output.Info(localizer.Sprintf("Restoring database %s", databaseName))
+	if filepath.Ext(file) == ".sql" {
+		output.Info(localizer.Sprintf("Executing .sql file %s", c.usingDatabaseUrl))
+		c.sql.ExecuteSqlFile("c:\\temp\\SQLQuery_1.sql")
+	} else {
 
-	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
-	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
+		// Restore database from file
+		output.Info(localizer.Sprintf("Restoring database %s", databaseName))
 
-	text := `SET NOCOUNT ON;
+		dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
+		dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
+
+		text := `SET NOCOUNT ON;
 
 -- Build a SQL Statement to restore any .bak file to the Linux filesystem
 DECLARE @sql NVARCHAR(max)
@@ -589,13 +710,14 @@ WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
 EXEC(@sql)`
 
-	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
+		c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
 
-	alterDefaultDb := fmt.Sprintf(
-		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
-		userName,
-		dbNameAsNonIdentifier)
-	c.query(alterDefaultDb)
+		alterDefaultDb := fmt.Sprintf(
+			"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
+			userName,
+			dbNameAsNonIdentifier)
+		c.query(alterDefaultDb)
+	}
 }
 
 func (c *MssqlBase) downloadImage(

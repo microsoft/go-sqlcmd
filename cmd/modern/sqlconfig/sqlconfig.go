@@ -23,6 +23,15 @@ type AssetDetails struct {
 	*ContainerDetails `mapstructure:"container,omitempty" yaml:"container,omitempty"`
 }
 
+type AddOn struct {
+	AddOnsDetails `mapstructure:"addon" yaml:"addon,omitempty"`
+}
+
+type AddOnsDetails struct {
+	Type     string `mapstructure:"type"`
+	Endpoint string `mapstructure:"endpoint"`
+}
+
 type Endpoint struct {
 	*AssetDetails   `mapstructure:"asset,omitempty" yaml:"asset,omitempty"`
 	EndpointDetails `mapstructure:"endpoint" yaml:"endpoint"`
@@ -32,6 +41,7 @@ type Endpoint struct {
 type ContextDetails struct {
 	Endpoint string  `mapstructure:"endpoint"`
 	User     *string `mapstructure:"user,omitempty" yaml:"user,omitempty"`
+	AddOns   []AddOn `mapstructure:"addons"`
 }
 
 type Context struct {
