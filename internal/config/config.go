@@ -91,13 +91,14 @@ func IsEmpty() (isEmpty bool) {
 // contextName and username are unique, and it encrypts the password if
 // requested. The updated configuration is saved to file.
 func AddContextWithContainer(
-	contextName string,
 	imageName string,
+	contextName string,
 	portNumber int,
 	containerId string,
 	username string,
 	password string,
 	passwordEncryption string,
+	network string,
 ) {
 	if containerId == "" {
 		panic("containerId must be provided")
@@ -137,12 +138,21 @@ func AddContextWithContainer(
 		Name: endPointName,
 	})
 
+	contextDetails := ContextDetails{
+		Endpoint: endPointName,
+	}
+
+	if userName != "" {
+		contextDetails.User = &userName
+	}
+
+	if network != "" {
+		contextDetails.Network = &network
+	}
+
 	config.Contexts = append(config.Contexts, Context{
-		ContextDetails: ContextDetails{
-			Endpoint: endPointName,
-			User:     &userName,
-		},
-		Name: contextName,
+		ContextDetails: contextDetails,
+		Name:           contextName,
 	})
 
 	user := User{
@@ -156,7 +166,6 @@ func AddContextWithContainer(
 	}
 
 	config.Users = append(config.Users, user)
-
 	Save()
 }
 

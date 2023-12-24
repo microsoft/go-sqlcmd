@@ -5,6 +5,7 @@ package sql
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
@@ -89,10 +90,24 @@ func (m *mssql) Query(text string) {
 	}
 }
 
+type discardCloser struct {
+	io.Writer
+}
+
+func (discardCloser) Close() error {
+	return nil
+}
+
 func (m *mssql) ExecuteSqlFile(filename string) {
-	m.sqlcmd.SetOutput(os.Stdout)
-	m.sqlcmd.SetError(os.Stderr)
-	trace("Executing .sql file: %v", filename)
+	if traceLogging {
+		m.sqlcmd.SetOutput(os.Stdout)
+		m.sqlcmd.SetError(os.Stderr)
+	} else {
+		m.sqlcmd.SetOutput(discardCloser{Writer: io.Discard})
+		m.sqlcmd.SetError(discardCloser{Writer: io.Discard})
+	}
+
+	trace("Executing .sql file: %q", filename)
 	err := m.sqlcmd.IncludeFile(filename, true)
 	checkErr(err)
 }

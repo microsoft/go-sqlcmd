@@ -66,7 +66,7 @@ func AddAddOn(
 
 	for i, c := range config.Contexts {
 		if contextName == c.Name {
-			config.Contexts[i].AddOns = append(config.Contexts[i].AddOns, AddOn{
+			config.Contexts[i].AddOns = append(c.AddOns, AddOn{
 				AddOnsDetails: AddOnsDetails{
 					Type:     addOnName,
 					Endpoint: uniqueEndpointName}})
@@ -140,6 +140,19 @@ func CurrentContextAddOns() (addOns []AddOn) {
 	for _, c := range config.Contexts {
 		if c.Name == currentContextName {
 			addOns = c.AddOns
+			break
+		}
+	}
+
+	return
+}
+
+func CurrentContextNetwork() (network *string) {
+	currentContextName := GetCurrentContextOrFatal()
+
+	for _, c := range config.Contexts {
+		if c.Name == currentContextName {
+			network = c.Network
 			break
 		}
 	}

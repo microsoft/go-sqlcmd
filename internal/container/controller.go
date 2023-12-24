@@ -71,6 +71,11 @@ func (c Controller) NetworkCreate(name string) string {
 	return resp.ID
 }
 
+func (c Controller) NetworkDelete(name string) {
+	err := c.cli.NetworkRemove(context.Background(), name)
+	checkErr(err)
+}
+
 func (c Controller) NetworkExists(name string) bool {
 	networks, err := c.cli.NetworkList(context.Background(), types.NetworkListOptions{})
 	checkErr(err)
@@ -87,6 +92,9 @@ func (c Controller) NetworkExists(name string) bool {
 // ContainerRun creates a new container using the provided image and env values
 // and binds the internal port to the specified external port number. It then starts
 // the container and returns the ID of the container.
+// Volume mappings are specified as a slice of strings in the format:
+//
+//	volumeMapping := []string{"./DAB-Config:/App/configs"}
 func (c Controller) ContainerRun(
 	image string,
 	env []string,
@@ -385,7 +393,7 @@ func (c Controller) ContainerExists(id string) (exists bool) {
 	)
 	resp, err := c.cli.ContainerList(
 		context.Background(),
-		types.ContainerListOptions{Filters: f},
+		types.ContainerListOptions{Filters: f, All: true},
 	)
 	checkErr(err)
 	if len(resp) > 0 {

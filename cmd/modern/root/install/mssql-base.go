@@ -286,7 +286,12 @@ func (c *MssqlBase) Run() {
 // command-line and the program will exit.
 func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	output := c.Cmd.Output()
+
 	saPassword := c.generatePassword()
+	userName := pal.UserName()
+	password := c.generatePassword()
+
+	contextName = config.FindUniqueContextName(contextName, userName)
 
 	env := []string{
 		"ACCEPT_EULA=Y",
@@ -295,7 +300,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	if c.port == 0 {
-		c.port = config.FindFreePortForTds(1433)
+		c.port = config.FindFreePort(1433)
 	}
 
 	// Do an early exit if url doesn't exist
@@ -313,21 +318,30 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	// If an add-on is specified, and no network name, then set a default network name
 	if c.addOn != "" && c.network == "" {
-		c.network = "container-network"
+		c.network = "sqlcmd-" + contextName + "-network"
 	}
 
 	if c.network != "" {
 		// Create a docker network
 		if !controller.NetworkExists(c.network) {
-			controller.NetworkCreate("library-network")
+			output.Info(localizer.Sprintf("Creating %q, to enable cross container communication for add-ons", c.network))
+			controller.NetworkCreate(c.network)
 		}
+	}
+
+	// Very strange issue that we need to work here.  If we are using add-on containers
+	// we have to specify the name of the mssql container!
+	// Details in this bug/DCR here:
+	//		https://github.com/moby/moby/issues/45183
+	if c.name == "" {
+		c.name = contextName + "-container"
 	}
 
 	if !c.useCached {
 		c.downloadImage(imageName, output, controller)
 	}
 
-	output.Info(localizer.Sprintf("Starting %v", imageName))
+	output.Info(localizer.Sprintf("Starting %q", imageName))
 	containerId := controller.ContainerRun(
 		imageName,
 		env,
@@ -344,19 +358,17 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	)
 	previousContextName := config.CurrentContextName()
 
-	userName := pal.UserName()
-	password := c.generatePassword()
-
 	// Save the config now, so user can uninstall/delete, even if mssql in the container
 	// fails to start
 	config.AddContextWithContainer(
-		contextName,
 		imageName,
+		contextName,
 		c.port,
 		containerId,
 		userName,
 		password,
 		c.passwordEncryption,
+		c.network,
 	)
 
 	output.Info(
@@ -420,17 +432,13 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 		dabEnv := []string{
 			fmt.Sprintf("CONN_STRING=Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
-				controller.ContainerName(containerId),
+				c.name,
 				c.defaultDatabase,
 				userName,
 				password),
 		}
 
-		dabConfigFile := "https://aka.ms/dab-config.json"
-
-		dabPort = config.FindFreePortForTds(5001)
-
-		// dabVolumeMapping := []string{"./DAB-Config:/App/configs"}
+		dabPort = config.FindFreePort(5001)
 
 		addOnContainerId := controller.ContainerRun(
 			dabImageName,
@@ -461,30 +469,24 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 		controller.DownloadFile(
 			addOnContainerId,
-			dabConfigFile,
+			c.addOnUse,
 			"/App",
 		)
 
+		// Restart the container, now that the dab-config file is there
 		controller.ContainerStop(addOnContainerId)
 		controller.ContainerStart(addOnContainerId)
 	}
 
 	hints := [][]string{}
 
-	// TODO: sqlcmd open ads only support on Windows and Mac right now, add Linux support
+	// TODO: sqlcmd open ads only supported on Windows and Mac right now, add Linux support
 	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 		hints = append(hints, []string{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"})
 	}
 
 	hints = append(hints, []string{localizer.Sprintf("Run a query"), "sqlcmd query \"SELECT @@version\""})
 	hints = append(hints, []string{localizer.Sprintf("Start interactive session"), "sqlcmd query"})
-
-	if c.addOn == "dab" {
-		hints = append(hints, []string{
-			localizer.Sprintf("See Data API Builder (DAB) Health Status"),
-			fmt.Sprintf("curl -s http://localhost:%d", dabPort),
-		})
-	}
 
 	if previousContextName != "" {
 		hints = append(
@@ -501,6 +503,13 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
 
 	if c.addOn == "dab" {
+		hints = append(hints, []string{
+			localizer.Sprintf("Data API Builder (DAB) Health Status"),
+			fmt.Sprintf("curl -s http://localhost:%d", dabPort),
+		})
+	}
+
+	if c.addOn == "dab" {
 		output.Info(localizer.Sprintf("Now ready for DAB connections on port %d",
 			dabPort),
 		)
@@ -509,7 +518,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		localizer.Sprintf("Now ready for SQL connections on port %d",
 			c.port),
 	)
-
 }
 
 func (c *MssqlBase) validateUsingUrlExists() {
@@ -568,7 +576,7 @@ func (c *MssqlBase) createNonSaUser(
 		defaultDatabase = c.defaultDatabase
 
 		// Create the default database, if it isn't a downloaded database
-		output.Info(localizer.Sprintf("Creating default database [%s]", defaultDatabase))
+		output.Info(localizer.Sprintf("Creating default database %q", defaultDatabase))
 		c.query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
@@ -648,7 +656,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	_, file := filepath.Split(databaseUrl)
 
 	// Download file from URL into container
-	output.Info(localizer.Sprintf("Downloading %s", file))
+	output.Info(localizer.Sprintf("Downloading %q", file))
 
 	temporaryFolder := "/var/opt/mssql/backup"
 
@@ -725,7 +733,7 @@ func (c *MssqlBase) downloadImage(
 	output *output.Output,
 	controller *container.Controller,
 ) {
-	output.Info(localizer.Sprintf("Downloading %v", imageName))
+	output.Info(localizer.Sprintf("Downloading %q", imageName))
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {
 		output.FatalErrorWithHints(

@@ -41,7 +41,8 @@ type Endpoint struct {
 type ContextDetails struct {
 	Endpoint string  `mapstructure:"endpoint"`
 	User     *string `mapstructure:"user,omitempty" yaml:"user,omitempty"`
-	AddOns   []AddOn `mapstructure:"addons"`
+	Network  *string `mapstructure:"network,omitempty" yaml:"network,omitempty"`
+	AddOns   []AddOn `mapstructure:"addons,omitempty" yaml:"addons,omitempty"`
 }
 
 type Context struct {

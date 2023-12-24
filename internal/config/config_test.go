@@ -83,7 +83,7 @@ func TestConfig(t *testing.T) {
 			GetEndpoint("endpoint")
 			OutputEndpoints(o.Struct, true)
 			OutputEndpoints(o.Struct, false)
-			FindFreePortForTds(0)
+			FindFreePort(0)
 			DeleteEndpoint("endpoint2")
 			DeleteEndpoint("endpoint3")
 
@@ -131,7 +131,7 @@ func TestConfig(t *testing.T) {
 			ContainerId()
 			RemoveCurrentContext()
 			RemoveCurrentContext()
-			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", "none")
+			AddContextWithContainer("imageName", "context", 1433, "containerId", "user", "password", "none", "")
 			RemoveCurrentContext()
 			DeleteEndpoint("endpoint")
 			DeleteContext("context")
@@ -324,7 +324,7 @@ func TestAddContextWithContainerPanic(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Panics(t, func() {
-				AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.passwordEncryption)
+				AddContextWithContainer(tt.args.imageName, tt.args.contextName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.passwordEncryption, "")
 			})
 		})
 	}

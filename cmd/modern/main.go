@@ -131,6 +131,7 @@ func initializeCallback() {
 			TraceHandler: outputter.Tracef,
 			HintHandler:  displayHints,
 			LineBreak:    sqlcmd.SqlcmdEol,
+			LoggingLevel: verbosity.Level(rootCmd.loggingLevel),
 		})
 	config.SetFileName(rootCmd.configFilename)
 	config.Load()
