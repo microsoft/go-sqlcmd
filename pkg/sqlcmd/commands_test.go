@@ -43,10 +43,11 @@ func TestCommandParsing(t *testing.T) {
 		{`:Setvar A1 "some value" `, "SETVAR", []string{`A1 "some value" `}},
 		{` :Listvar`, "LISTVAR", []string{""}},
 		{`:EXIT (select 100 as count)`, "EXIT", []string{" (select 100 as count)"}},
+		{"\t:EXIT (select 100 as count)", "EXIT", []string{" (select 100 as count)"}},
 		{`:EXIT ( )`, "EXIT", []string{" ( )"}},
 		{`EXIT `, "EXIT", []string{" "}},
 		{`:Connect someserver -U someuser`, "CONNECT", []string{"someserver -U someuser"}},
-		{`:r c:\$(var)\file.sql`, "READFILE", []string{`c:\$(var)\file.sql`}},
+		{":r\tc:\\$(var)\\file.sql", "READFILE", []string{`c:\$(var)\file.sql`}},
 		{`:!! notepad`, "EXEC", []string{" notepad"}},
 		{`:!!notepad`, "EXEC", []string{"notepad"}},
 		{` !! dir c:\`, "EXEC", []string{` dir c:\`}},
@@ -151,7 +152,7 @@ func TestListCommand(t *testing.T) {
 	s.SetOutput(buf)
 
 	// insert test batch
-	s.batch.Reset([]rune("select 1"))
+	s.batch.Reset([]rune("select 1" + SqlcmdEol + "select 2" + SqlcmdEol + SqlcmdEol + "select 3"))
 	_, _, err = s.batch.Next()
 	assert.NoError(t, err, "Inserting test batch")
 
@@ -160,7 +161,7 @@ func TestListCommand(t *testing.T) {
 	assert.NoError(t, err, "Executing :list command")
 	s.SetOutput(nil)
 	o := buf.buf.String()
-	assert.Equal(t, o, "select 1"+SqlcmdEol, ":list output not equal to batch")
+	assert.Equal(t, o, "select 1"+SqlcmdEol+"select 2"+SqlcmdEol+SqlcmdEol+"select 3"+SqlcmdEol, ":list output not equal to batch")
 }
 
 func TestListCommandUsesColorizer(t *testing.T) {
@@ -188,7 +189,7 @@ func TestListCommandUsesColorizer(t *testing.T) {
 func TestListColorPrintsStyleSamples(t *testing.T) {
 	vars := InitializeVariables(false)
 	s := New(nil, "", vars)
-	s.Format = NewSQLCmdDefaultFormatter(false)
+	s.Format = NewSQLCmdDefaultFormatter(false, ControlIgnore)
 	// force colorizer on
 	s.colorizer = color.New(true)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
@@ -261,7 +262,7 @@ func TestErrorCommand(t *testing.T) {
 	s.SetError(nil)
 	errText, err := os.ReadFile(file.Name())
 	if assert.NoError(t, err, "ReadFile") {
-		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents")
+		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents: "+string(errText))
 	}
 }
 
@@ -363,4 +364,35 @@ func TestEditCommand(t *testing.T) {
 	if assert.NoError(t, err, ":ed should not raise error") {
 		assert.Equal(t, "1> select 5000"+SqlcmdEol+"5000"+SqlcmdEol+SqlcmdEol, buf.buf.String(), "Incorrect output from query after :ed command")
 	}
+}
+
+func TestEchoInput(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.EchoInput = true
+	defer buf.Close()
+	c := []string{"set nocount on", "select 100", "go"}
+	err := runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "go should not raise error") {
+		assert.Equal(t, "set nocount on"+SqlcmdEol+"select 100"+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol, buf.buf.String(), "Incorrect output with echo true")
+	}
+}
+
+func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	c := []string{"set nocount on", "declare @v integer = 2", "select 1", "exit(select @v)"}
+	err := runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "exit should not error") {
+		output := buf.buf.String()
+		assert.Equal(t, "1"+SqlcmdEol+SqlcmdEol+"2"+SqlcmdEol+SqlcmdEol, output, "Incorrect output")
+		assert.Equal(t, 2, s.Exitcode, "exit should set Exitcode")
+	}
+	s, buf1 := setupSqlCmdWithMemoryOutput(t)
+	defer buf1.Close()
+	c = []string{"set nocount on", "select 1", "exit(select @v)"}
+	err = runSqlCmd(t, s, c)
+	if assert.NoError(t, err, "exit should not error") {
+		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
+	}
+
 }

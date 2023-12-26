@@ -1,245 +1,3622 @@
 {
-    "language": "ja-JP",
-    "messages": [
+  "language": "ja-JP",
+  "messages": [
+    {
+      "id": "Install/Create, Query, Uninstall SQL Server",
+      "message": "Install/Create, Query, Uninstall SQL Server",
+      "translation": "インストール/作成、クエリ、SQL Server のアンインストール",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View configuration information and connection strings",
+      "message": "View configuration information and connection strings",
+      "translation": "構成情報と接続文字列の表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Feedback:\n  {FeedbackUrl}",
+      "message": "Feedback:\n  {FeedbackUrl}",
+      "translation": "フィードバック：\n {FeedbackUrl}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
         {
-            "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
-            "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
-            "translation": "",
-            "placeholders": [
-                {
-                    "id": "PacketSize",
-                    "string": "%[1]d",
-                    "type": "int",
-                    "underlyingType": "int",
-                    "argNum": 1,
-                    "expr": "a.PacketSize"
-                }
-            ]
-        },
-        {
-            "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-            "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-            "translation": "'-h {Headers}': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください",
-            "placeholders": [
-                {
-                    "id": "Headers",
-                    "string": "%[1]d",
-                    "type": "int",
-                    "underlyingType": "int",
-                    "argNum": 1,
-                    "expr": "a.Headers"
-                }
-            ]
-        },
-        {
-            "id": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "message": "'-w {ScreenWidth}': value must be greater than 8 and less than 65536.",
-            "translation": "'-w {ScreenWidth}': 値には 8 より大きく 65536 より小さい値を指定する必要があります。",
-            "placeholders": [
-                {
-                    "id": "ScreenWidth",
-                    "string": "%[1]d",
-                    "type": "int",
-                    "underlyingType": "int",
-                    "argNum": 1,
-                    "expr": "*a.ScreenWidth"
-                }
-            ]
-        },
-        {
-            "id": "'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.",
-            "message": "'-P' is obsolete. The initial passwords must be set using the SQLCMDPASSWORD environment variable or entered at the password prompt.",
-            "translation": ""
-        },
-        {
-            "id": "invalid batch terminator '{BatchTerminator}'",
-            "message": "invalid batch terminator '{BatchTerminator}'",
-            "translation": "バッチ ターミネータ '{BatchTerminator}' は無効です",
-            "placeholders": [
-                {
-                    "id": "BatchTerminator",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "args.BatchTerminator"
-                }
-            ]
-        },
-        {
-            "id": "Sqlcmd: Error:",
-            "message": "Sqlcmd: Error:",
-            "translation": "Sqlcmd: エラー:"
-        },
-        {
-            "id": "Sqlcmd: Warning:",
-            "message": "Sqlcmd: Warning:",
-            "translation": "Sqlcmd: 警告:"
-        },
-        {
-            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
-            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
-            "translation": "ED コマンド、!!\u003ccommand\u003e コマンド、スタートアップ スクリプト、および環境変数が無効です"
-        },
-        {
-            "id": "The scripting variable: '{Variable}' is read-only",
-            "message": "The scripting variable: '{Variable}' is read-only",
-            "translation": "エラー: スクリプト変数 '{Variable}' は読み取り専用です",
-            "placeholders": [
-                {
-                    "id": "Variable",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "variable"
-                }
-            ]
-        },
-        {
-            "id": "'{Variable}' scripting variable not defined.",
-            "message": "'{Variable}' scripting variable not defined.",
-            "translation": "'{Variable}' スクリプト変数が定義されていません。",
-            "placeholders": [
-                {
-                    "id": "Variable",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "variable"
-                }
-            ]
-        },
-        {
-            "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-            "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-            "translation": "環境変数 '{Variable}' には無効な値 '{EnvVal}' があります。",
-            "placeholders": [
-                {
-                    "id": "Variable",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "variable"
-                },
-                {
-                    "id": "EnvVal",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "envVal"
-                }
-            ]
-        },
-        {
-            "id": "Syntax error at line {LineNumber} near command '{Command}'.",
-            "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-            "translation": "行 {LineNumber} のコマンド '{Command}' 付近に構文エラーがあります。",
-            "placeholders": [
-                {
-                    "id": "LineNumber",
-                    "string": "%[1]d",
-                    "type": "uint",
-                    "underlyingType": "uint",
-                    "argNum": 1,
-                    "expr": "e.LineNumber"
-                },
-                {
-                    "id": "Command",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "e.Command"
-                }
-            ]
-        },
-        {
-            "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-            "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-            "translation": "{ErrorPrefix} ファイル {Filepath} を開くときか、このファイルの処理中にエラーが発生しました (理由: {Error})。",
-            "placeholders": [
-                {
-                    "id": "ErrorPrefix",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "ErrorPrefix"
-                },
-                {
-                    "id": "Filepath",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "filepath"
-                },
-                {
-                    "id": "Error",
-                    "string": "%[3]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 3,
-                    "expr": "err.Error()"
-                }
-            ]
-        },
-        {
-            "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
-            "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-            "translation": "{ErrorPrefix}行 {LineNumber} に構文エラーがあります。",
-            "placeholders": [
-                {
-                    "id": "ErrorPrefix",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "ErrorPrefix"
-                },
-                {
-                    "id": "LineNumber",
-                    "string": "%[2]d",
-                    "type": "uint",
-                    "underlyingType": "uint",
-                    "argNum": 2,
-                    "expr": "lineNumber"
-                }
-            ]
-        },
-        {
-            "id": "Invalid variable identifier {Name}",
-            "message": "Invalid variable identifier {Name}",
-            "translation": "",
-            "placeholders": [
-                {
-                    "id": "Name",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "name"
-                }
-            ]
-        },
-        {
-            "id": "Invalid variable value {Val}",
-            "message": "Invalid variable value {Val}",
-            "translation": "",
-            "placeholders": [
-                {
-                    "id": "Val",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "val"
-                }
-            ]
+          "id": "FeedbackUrl",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "feedbackUrl"
         }
-    ]
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "help for backwards compatibility flags (-S, -U, -E etc.)",
+      "message": "help for backwards compatibility flags (-S, -U, -E etc.)",
+      "translation": "下位互換性フラグのヘルプ (-S、-U、-E など)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "print version of sqlcmd",
+      "message": "print version of sqlcmd",
+      "translation": "sqlcmd の印刷バージョン",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "configuration file",
+      "message": "configuration file",
+      "translation": "構成ファイル",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
+      "message": "log level, error=0, warn=1, info=2, debug=3, trace=4",
+      "translation": "ログ レベル、error=0、warn=1、info=2、debug=3、trace=4",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Modify sqlconfig files using subcommands like \"{UseContextCommand}\"",
+      "message": "Modify sqlconfig files using subcommands like \"{UseContextCommand}\"",
+      "translation": "\"{UseContextCommand}\" などのサブコマンドを使用して sqlconfig ファイルを変更する",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UseContextCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.UseContextCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Add context for existing endpoint and user (use {PasswordEnvVar} or {PasswordEnvVar2})",
+      "message": "Add context for existing endpoint and user (use {PasswordEnvVar} or {PasswordEnvVar2})",
+      "translation": "既存のエンドポイントとユーザーのコンテキストを追加する ({PasswordEnvVar}ま たは {PasswordEnvVar2} を使用)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Install/Create SQL Server, Azure SQL, and Tools",
+      "message": "Install/Create SQL Server, Azure SQL, and Tools",
+      "translation": "SQL Server、Azure SQL、ツールのインストール/作成",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Open tools (e.g Azure Data Studio) for current context",
+      "message": "Open tools (e.g Azure Data Studio) for current context",
+      "translation": "現在のコンテキストのツール (Azure Data Studio など) を開きます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Run a query against the current context",
+      "message": "Run a query against the current context",
+      "translation": "現在のコンテキストに対してクエリを実行します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Run a query",
+      "message": "Run a query",
+      "translation": "クエリの実行",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Run a query using [{Master}] database",
+      "message": "Run a query using [{Master}] database",
+      "translation": "[{Master}] データベースを使用してクエリを実行します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Master",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"master\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Set new default database",
+      "message": "Set new default database",
+      "translation": "新しい既定のデータベースを設定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Command text to run",
+      "message": "Command text to run",
+      "translation": "実行するコマンド テキスト",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Database to use",
+      "message": "Database to use",
+      "translation": "使用するデータベース",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Start current context",
+      "message": "Start current context",
+      "translation": "現在のコンテキストの開始",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Start the current context",
+      "message": "Start the current context",
+      "translation": "現在のコンテキストを開始する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To view available contexts",
+      "message": "To view available contexts",
+      "translation": "使用可能なコンテキストを表示するには",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "No current context",
+      "message": "No current context",
+      "translation": "現在のコンテキストがありません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Starting {Image} for context {CurrentContextName}",
+      "message": "Starting {Image} for context {CurrentContextName}",
+      "translation": "コンテキスト {CurrentContextName} の {Image} を開始しています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
+        },
+        {
+          "id": "CurrentContextName",
+          "string": "%[2]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Create new context with a sql container",
+      "message": "Create new context with a sql container",
+      "translation": "SQL コンテナーを使用して新しいコンテキストを作成する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Current context does not have a container",
+      "message": "Current context does not have a container",
+      "translation": "現在のコンテキストにはコンテナーがありません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Stop current context",
+      "message": "Stop current context",
+      "translation": "現在のコンテキストを停止する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Stop the current context",
+      "message": "Stop the current context",
+      "translation": "現在のコンテキストを停止します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Stopping {Image} for context {CurrentContextName}",
+      "message": "Stopping {Image} for context {CurrentContextName}",
+      "translation": "コンテキスト {CurrentContextName} の {Image} を停止しています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
+        },
+        {
+          "id": "CurrentContextName",
+          "string": "%[2]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Create a new context with a SQL Server container",
+      "message": "Create a new context with a SQL Server container",
+      "translation": "SQL Server コンテナーを使用して新しいコンテキストを作成する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Uninstall/Delete the current context",
+      "message": "Uninstall/Delete the current context",
+      "translation": "現在のコンテキストのアンインストール/削除",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Uninstall/Delete the current context, no user prompt",
+      "message": "Uninstall/Delete the current context, no user prompt",
+      "translation": "現在のコンテキストをアンインストールまたは削除します。ユーザー プロンプトはありません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+      "message": "Uninstall/Delete the current context, no user prompt and override safety check for user databases",
+      "translation": "現在のコンテキストをアンインストールまたは削除します。ユーザー プロンプトは表示されません。ユーザー データベースの安全性チェックをオーバーライドします",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Quiet mode (do not stop for user input to confirm the operation)",
+      "message": "Quiet mode (do not stop for user input to confirm the operation)",
+      "translation": "サイレント モード (ユーザー入力が操作を確認するために停止しない)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Complete the operation even if non-system (user) database files are present",
+      "message": "Complete the operation even if non-system (user) database files are present",
+      "translation": "システム (ユーザー) 以外のデータベース ファイルが存在する場合でも操作を完了します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View available contexts",
+      "message": "View available contexts",
+      "translation": "使用可能なコンテキストの表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create context",
+      "message": "Create context",
+      "translation": "コンテキストの作成",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create context with SQL Server container",
+      "message": "Create context with SQL Server container",
+      "translation": "SQL Server コンテナーを使用してコンテキストを作成します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a context manually",
+      "message": "Add a context manually",
+      "translation": "コンテキストを手動で追加する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Current context is {CurrentContextName}. Do you want to continue? (Y/N)",
+      "message": "Current context is {CurrentContextName}. Do you want to continue? (Y/N)",
+      "translation": "現在のコンテキストは {CurrentContextName}。続行しますか? (Y/N)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "CurrentContextName",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Verifying no user (non-system) database (.mdf) files",
+      "message": "Verifying no user (non-system) database (.mdf) files",
+      "translation": "ユーザー (システム以外) データベース (.mdf) ファイルがないことを確認しています",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To start the container",
+      "message": "To start the container",
+      "translation": "コンテナーを開始するには",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To override the check, use {__force}",
+      "message": "To override the check, use {__force}",
+      "translation": "チェックをオーバーライドするには、{__force} を使用します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "__force",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"--force\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running, unable to verify that user database files do not exist",
+      "message": "Container is not running, unable to verify that user database files do not exist",
+      "translation": "コンテナーが実行されていないため、ユーザー データベース ファイルが存在しないことを確認できません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Removing context {CurrentContextName}",
+      "message": "Removing context {CurrentContextName}",
+      "translation": "コンテキスト {CurrentContextName} を削除しています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "CurrentContextName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "config.CurrentContextName()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Stopping {Image}",
+      "message": "Stopping {Image}",
+      "translation": "{Image} を停止しています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Image",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "endpoint.ContainerDetails.Image"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Container {Id} no longer exists, continuing to remove context...",
+      "message": "Container {Id} no longer exists, continuing to remove context...",
+      "translation": "コンテナー {Id} は存在しません。コンテキストの削除を続行しています...",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Id",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "id"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Current context is now {NewContextName}",
+      "message": "Current context is now {NewContextName}",
+      "translation": "現在のコンテキストは現在 {NewContextName}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "NewContextName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "newContextName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "{Operation_completed_successfully}",
+      "message": "{Operation_completed_successfully}",
+      "translation": "{Operation_completed_successfully}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Operation_completed_successfully",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"Operation completed successfully\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "If the database is mounted, run {DropDbQuery}",
+      "message": "If the database is mounted, run {DropDbQuery}",
+      "translation": "データベースがマウントされている場合は、{DropDbQuery} を実行します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DropDbQuery",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "dropDbQuery"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
+      "message": "Pass in the flag {__force} to override this safety check for user (non-system) databases",
+      "translation": "フラグ {__force} を渡して、ユーザー (非システム) データベースのこの安全性チェックをオーバーライドします",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "__force",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"--force\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
+      "message": "Unable to continue, a user (non-system) database ({DatabaseFile}) is present",
+      "translation": "続行できません。ユーザー (システム以外) データベース ({DatabaseFile}) が存在します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DatabaseFile",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "databaseFile"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "No endpoints to uninstall",
+      "message": "No endpoints to uninstall",
+      "translation": "アンインストールするエンドポイントがありません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a context",
+      "message": "Add a context",
+      "translation": "コンテキストの追加",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
+      "message": "Add a context for a local instance of SQL Server on port 1433 using trusted authentication",
+      "translation": "信頼された認証を使用して、ポート 1433 で SQL Server のローカル インスタンスのコンテキストを追加します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Display name for the context",
+      "message": "Display name for the context",
+      "translation": "コンテキストの表示名",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of endpoint this context will use",
+      "message": "Name of endpoint this context will use",
+      "translation": "このコンテキストが使用するエンドポイントの名前",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of user this context will use",
+      "message": "Name of user this context will use",
+      "translation": "このコンテキストが使用するユーザーの名前",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View existing endpoints to choose from",
+      "message": "View existing endpoints to choose from",
+      "translation": "選択する既存のエンドポイントの表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a new local endpoint",
+      "message": "Add a new local endpoint",
+      "translation": "新しいローカル エンドポイントの追加",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add an already existing endpoint",
+      "message": "Add an already existing endpoint",
+      "translation": "既存のエンドポイントの追加",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
+      "message": "Endpoint required to add context.  Endpoint '{EndpointName}' does not exist.  Use {EndpointFlag} flag",
+      "translation": "コンテキストを追加するにはエンドポイントが必要です。 エンドポイント '{EndpointName}' が存在しません。 {EndpointFlag} フラグを使用します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "EndpointName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.endpointName"
+        },
+        {
+          "id": "EndpointFlag",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.EndpointFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "View list of users",
+      "message": "View list of users",
+      "translation": "ユーザーのリストの表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add the user",
+      "message": "Add the user",
+      "translation": "ユーザーを追加する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add an endpoint",
+      "message": "Add an endpoint",
+      "translation": "エンドポイントの追加",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "User '{UserName}' does not exist",
+      "message": "User '{UserName}' does not exist",
+      "translation": "ユーザー '{UserName}' が存在しません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UserName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.userName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Open in Azure Data Studio",
+      "message": "Open in Azure Data Studio",
+      "translation": "Azure Data Studio で開く",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To start interactive query session",
+      "message": "To start interactive query session",
+      "translation": "対話型クエリ セッションを開始するには",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To run a query",
+      "message": "To run a query",
+      "translation": "クエリを実行するには",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Current Context '{Name}'",
+      "message": "Current Context '{Name}'",
+      "translation": "現在のコンテキスト '{Name}'",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "context.Name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Add a default endpoint",
+      "message": "Add a default endpoint",
+      "translation": "既定のエンドポイントを追加する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Display name for the endpoint",
+      "message": "Display name for the endpoint",
+      "translation": "エンドポイントの表示名",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The network address to connect to, e.g. 127.0.0.1 etc.",
+      "message": "The network address to connect to, e.g. 127.0.0.1 etc.",
+      "translation": "接続先のネットワーク アドレス (例: 127.0.0.1 など)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The network port to connect to, e.g. 1433 etc.",
+      "message": "The network port to connect to, e.g. 1433 etc.",
+      "translation": "接続先のネットワーク ポート (例: 1433 など)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a context for this endpoint",
+      "message": "Add a context for this endpoint",
+      "translation": "このエンドポイントのコンテキストを追加します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View endpoint names",
+      "message": "View endpoint names",
+      "translation": "エンドポイント名の表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View endpoint details",
+      "message": "View endpoint details",
+      "translation": "エンドポイントの詳細の表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View all endpoints details",
+      "message": "View all endpoints details",
+      "translation": "すべてのエンドポイントの詳細を表示する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete this endpoint",
+      "message": "Delete this endpoint",
+      "translation": "このエンドポイントを削除する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
+      "message": "Endpoint '{UniqueEndpointName}' added (address: '{Address}', port: '{Port}')",
+      "translation": "エンドポイント '{UniqueEndpointName}' 追加されました (アドレス: '{Address}'、ポート: '{Port}')",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UniqueEndpointName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "uniqueEndpointName"
+        },
+        {
+          "id": "Address",
+          "string": "%[2]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "c.address"
+        },
+        {
+          "id": "Port",
+          "string": "%[3]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 3,
+          "expr": "c.port"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Add a user (using the SQLCMD_PASSWORD environment variable)",
+      "message": "Add a user (using the SQLCMD_PASSWORD environment variable)",
+      "translation": "ユーザーの追加 (SQLCMD_PASSWORD 環境変数を使用)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a user (using the SQLCMDPASSWORD environment variable)",
+      "message": "Add a user (using the SQLCMDPASSWORD environment variable)",
+      "translation": "ユーザーの追加 (SQLCMDPASSWORD 環境変数を使用)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
+      "message": "Add a user using Windows Data Protection API to encrypt password in sqlconfig",
+      "translation": "Sqlconfig で Windows Data Protection API を使用してパスワードを暗号化するユーザーを追加します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Add a user",
+      "message": "Add a user",
+      "translation": "ユーザーの追加",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Display name for the user (this is not the username)",
+      "message": "Display name for the user (this is not the username)",
+      "translation": "ユーザーの表示名 (これはユーザー名ではありません)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Authentication type this user will use (basic | other)",
+      "message": "Authentication type this user will use (basic | other)",
+      "translation": "このユーザーが使用する認証の種類 (基本 | その他)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
+      "message": "The username (provide password in {PasswordEnvVar} or {PasswordEnvVar2} environment variable)",
+      "translation": "ユーザー名 ({PasswordEnvVar} でパスワードを指定、または {PasswordEnvVar2} 環境変数)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
+      "message": "Password encryption method ({EncryptionMethodsForUsage}) in sqlconfig file",
+      "translation": "sqlconfig ファイル内のパスワード暗号化方法 ({EncryptionMethodsForUsage})",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "EncryptionMethodsForUsage",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "secret.EncryptionMethodsForUsage()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
+      "message": "Authentication type must be '{ModernAuthTypeBasic}' or '{ModernAuthTypeOther}'",
+      "translation": "認証の種類は '{ModernAuthTypeBasic}' または '{ModernAuthTypeOther}' である必要があります",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ModernAuthTypeBasic"
+        },
+        {
+          "id": "ModernAuthTypeOther",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ModernAuthTypeOther"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Authentication type '' is not valid {AuthType}'",
+      "message": "Authentication type '' is not valid {AuthType}'",
+      "translation": "認証の種類 '' は有効な {AuthType}' ではありません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "AuthType",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.authType"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Remove the {PasswordEncryptFlag} flag",
+      "message": "Remove the {PasswordEncryptFlag} flag",
+      "translation": "{PasswordEncryptFlag} フラグの削除",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEncryptFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
+      "message": "Pass in the {AuthTypeFlag} {ModernAuthTypeBasic}",
+      "translation": "{AuthTypeFlag} {ModernAuthTypeBasic} を渡す",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "AuthTypeFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.AuthTypeFlag"
+        },
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
+      "message": "The {PasswordEncryptFlag} flag can only be used when authentication type is '{ModernAuthTypeBasic}'",
+      "translation": "{PasswordEncryptFlag} フラグは、認証の種類が '{ModernAuthTypeBasic}' の場合にのみ使用できます",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEncryptFlag"
+        },
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Add the {PasswordEncryptFlag} flag",
+      "message": "Add the {PasswordEncryptFlag} flag",
+      "translation": "{PasswordEncryptFlag} フラグの追加",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEncryptFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
+      "message": "The {PasswordEncryptFlag} flag must be set when authentication type is '{ModernAuthTypeBasic}'",
+      "translation": "認証の種類が '{ModernAuthTypeBasic}' の場合は、{PasswordEncryptFlag} フラグを設定する必要があります",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEncryptFlag"
+        },
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
+      "message": "Provide password in the {PasswordEnvVar} (or {PasswordEnvVar2}) environment variable",
+      "translation": "{PasswordEnvVar} (または {PasswordEnvVar2}) 環境変数にパスワードを指定してください",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
+      "message": "Authentication Type '{ModernAuthTypeBasic}' requires a password",
+      "translation": "認証の種類 '{ModernAuthTypeBasic}' にはパスワードが必要です",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Provide a username with the {Arg_1} flag",
+      "message": "Provide a username with the {Arg_1} flag",
+      "translation": "{Arg_1} フラグを使用してユーザー名を指定します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Arg_1",
+          "string": "%[1]s",
+          "type": "",
+          "underlyingType": "string",
+          "argNum": 1
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Username not provided",
+      "message": "Username not provided",
+      "translation": "ユーザー名が指定されていません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
+      "message": "Provide a valid encryption method ({EncryptionMethodsForUsage}) with the {PasswordEncryptFlag} flag",
+      "translation": "{PasswordEncryptFlag} フラグを含む有効な暗号化方法 ({EncryptionMethodsForUsage}) を指定してください",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "EncryptionMethodsForUsage",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "secret.EncryptionMethodsForUsage()"
+        },
+        {
+          "id": "PasswordEncryptFlag",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEncryptFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Encryption method '{PasswordEncryption}' is not valid",
+      "message": "Encryption method '{PasswordEncryption}' is not valid",
+      "translation": "暗号化方法 '{PasswordEncryption}' が無効です",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEncryption",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.passwordEncryption"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
+      "message": "Unset one of the environment variables {PasswordEnvVar} or {PasswordEnvVar2}",
+      "translation": "{PasswordEnvVar} または {PasswordEnvVar2} のいずれかの環境変数を設定解除します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
+      "message": "Both environment variables {PasswordEnvVar} and {PasswordEnvVar2} are set.",
+      "translation": "環境変数 {PasswordEnvVar} と {PasswordEnvVar2} の両方が設定されています。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PasswordEnvVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PasswordEnvVar"
+        },
+        {
+          "id": "PasswordEnvVar2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.PasswordEnvVar2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "User '{UniqueUserName}' added",
+      "message": "User '{UniqueUserName}' added",
+      "translation": "ユーザー '{UniqueUserName}' が追加されました",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UniqueUserName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "uniqueUserName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display connections strings for the current context",
+      "message": "Display connections strings for the current context",
+      "translation": "現在のコンテキストの接続文字列を表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List connection strings for all client drivers",
+      "message": "List connection strings for all client drivers",
+      "translation": "すべてのクライアント ドライバーの接続文字列を一覧表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Database for the connection string (default is taken from the T/SQL login)",
+      "message": "Database for the connection string (default is taken from the T/SQL login)",
+      "translation": "接続文字列のデータベース (既定は T/SQL ログインから取得されます)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
+      "message": "Connection Strings only supported for {ModernAuthTypeBasic} Auth type",
+      "translation": "接続文字列は、{ModernAuthTypeBasic} 認証の種類でのみサポートされています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ModernAuthTypeBasic",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ModernAuthTypeBasic"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display the current-context",
+      "message": "Display the current-context",
+      "translation": "現在のコンテキストを表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete a context",
+      "message": "Delete a context",
+      "translation": "コンテキストの削除",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete a context (including its endpoint and user)",
+      "message": "Delete a context (including its endpoint and user)",
+      "translation": "コンテキスト (エンドポイントとユーザーを含む) を削除します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete a context (excluding its endpoint and user)",
+      "message": "Delete a context (excluding its endpoint and user)",
+      "translation": "コンテキスト (エンドポイントとユーザーを除く) を削除します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of context to delete",
+      "message": "Name of context to delete",
+      "translation": "削除するコンテキストの名前",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Delete the context's endpoint and user as well",
+      "message": "Delete the context's endpoint and user as well",
+      "translation": "コンテキストのエンドポイントとユーザーも削除します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Use the {NameFlag} flag to pass in a context name to delete",
+      "message": "Use the {NameFlag} flag to pass in a context name to delete",
+      "translation": "コンテキスト名を渡して削除するには、{NameFlag} フラグを使用します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "NameFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.NameFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Context '{Name}' deleted",
+      "message": "Context '{Name}' deleted",
+      "translation": "コンテキスト '{Name}' が削除されました",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Context '{Name}' does not exist",
+      "message": "Context '{Name}' does not exist",
+      "translation": "コンテキスト '{Name}' が存在しません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Delete an endpoint",
+      "message": "Delete an endpoint",
+      "translation": "エンドポイントの削除",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of endpoint to delete",
+      "message": "Name of endpoint to delete",
+      "translation": "削除するエンドポイントの名前",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
+      "message": "Endpoint name must be provided.  Provide endpoint name with {NameFlag} flag",
+      "translation": "エンドポイント名を指定する必要があります。 {NameFlag} フラグ付きのエンドポイント名を指定してください",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "NameFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.NameFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "View endpoints",
+      "message": "View endpoints",
+      "translation": "エンドポイントの表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint '{Name}' does not exist",
+      "message": "Endpoint '{Name}' does not exist",
+      "translation": "エンドポイント '{Name}' は存在しません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint '{Name}' deleted",
+      "message": "Endpoint '{Name}' deleted",
+      "translation": "エンドポイント '{Name}' が削除されました",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Delete a user",
+      "message": "Delete a user",
+      "translation": "ユーザーを削除する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of user to delete",
+      "message": "Name of user to delete",
+      "translation": "削除するユーザーの名前",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "User name must be provided.  Provide user name with {NameFlag} flag",
+      "message": "User name must be provided.  Provide user name with {NameFlag} flag",
+      "translation": "ユーザー名を指定する必要があります。 {NameFlag} フラグ付きのユーザー名を指定してください",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "NameFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.NameFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "View users",
+      "message": "View users",
+      "translation": "ユーザーの表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "User {Name} does not exist",
+      "message": "User {Name} does not exist",
+      "translation": "ユーザー {Name} は存在しません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "User {Name} deleted",
+      "message": "User {Name} deleted",
+      "translation": "ユーザー {Name} が削除されました",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display one or many contexts from the sqlconfig file",
+      "message": "Display one or many contexts from the sqlconfig file",
+      "translation": "sqlconfig ファイルから 1 個以上のコンテキストを表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List all the context names in your sqlconfig file",
+      "message": "List all the context names in your sqlconfig file",
+      "translation": "sqlconfig ファイル内のすべてのコンテキスト名を一覧表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List all the contexts in your sqlconfig file",
+      "message": "List all the contexts in your sqlconfig file",
+      "translation": "sqlconfig ファイル内のすべてのコンテキストを一覧表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Describe one context in your sqlconfig file",
+      "message": "Describe one context in your sqlconfig file",
+      "translation": "sqlconfig ファイル内の 1 つのコンテキストを説明します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Context name to view details of",
+      "message": "Context name to view details of",
+      "translation": "詳細を表示するコンテキスト名",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Include context details",
+      "message": "Include context details",
+      "translation": "コンテキストの詳細を含めます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To view available contexts run `{ContextCommand}`",
+      "message": "To view available contexts run `{ContextCommand}`",
+      "translation": "使用可能なコンテキストを表示するには、 `{ContextCommand}` を実行します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ContextCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.GetContextCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "error: no context exists with the name: \"{Name}\"",
+      "message": "error: no context exists with the name: \"{Name}\"",
+      "translation": "エラー: 次の名前のコンテキストは存在しません: \"{Name}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display one or many endpoints from the sqlconfig file",
+      "message": "Display one or many endpoints from the sqlconfig file",
+      "translation": "sqlconfig ファイルから 1 個以上のエンドポイントを表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List all the endpoints in your sqlconfig file",
+      "message": "List all the endpoints in your sqlconfig file",
+      "translation": "sqlconfig ファイル内のすべてのエンドポイントを一覧表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Describe one endpoint in your sqlconfig file",
+      "message": "Describe one endpoint in your sqlconfig file",
+      "translation": "sqlconfig ファイルに 1 つのエンドポイントを記述します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Endpoint name to view details of",
+      "message": "Endpoint name to view details of",
+      "translation": "詳細を表示するエンドポイント名",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Include endpoint details",
+      "message": "Include endpoint details",
+      "translation": "プライベート エンドポイントの詳細を含めます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To view available endpoints run `{EndpointsCommand}`",
+      "message": "To view available endpoints run `{EndpointsCommand}`",
+      "translation": "使用可能なエンドポイントを表示するには、 `{EndpointsCommand}` を実行します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "EndpointsCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.GetEndpointsCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "error: no endpoint exists with the name: \"{Name}\"",
+      "message": "error: no endpoint exists with the name: \"{Name}\"",
+      "translation": "エラー: 次の名前のエンドポイントは存在しません: \"{Name}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display one or many users from the sqlconfig file",
+      "message": "Display one or many users from the sqlconfig file",
+      "translation": "sqlconfig ファイルから 1 人以上のユーザーを表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List all the users in your sqlconfig file",
+      "message": "List all the users in your sqlconfig file",
+      "translation": "sqlconfig ファイル内のすべてのユーザーを一覧表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Describe one user in your sqlconfig file",
+      "message": "Describe one user in your sqlconfig file",
+      "translation": "sqlconfig ファイル内の 1 人のユーザーについて説明します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "User name to view details of",
+      "message": "User name to view details of",
+      "translation": "詳細を表示するユーザー名",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Include user details",
+      "message": "Include user details",
+      "translation": "ユーザーの詳細を含めます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To view available users run `{UsersCommand}`",
+      "message": "To view available users run `{UsersCommand}`",
+      "translation": "利用可能なユーザーを表示するには、 `{UsersCommand}` を実行します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UsersCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.GetUsersCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "error: no user exists with the name: \"{Name}\"",
+      "message": "error: no user exists with the name: \"{Name}\"",
+      "translation": "エラー: 次の名前のユーザーは存在しません: \"{Name}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Set the current context",
+      "message": "Set the current context",
+      "translation": "現在のコンテキストを設定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Set the mssql context (endpoint/user) to be the current context",
+      "message": "Set the mssql context (endpoint/user) to be the current context",
+      "translation": "mssql コンテキスト (エンドポイント/ユーザー) を現在のコンテキストに設定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Name of context to set as current context",
+      "message": "Name of context to set as current context",
+      "translation": "現在のコンテキストとして設定するコンテキストの名前",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "To run a query:    {RunQueryExample}",
+      "message": "To run a query:    {RunQueryExample}",
+      "translation": "クエリを実行するには:    {RunQueryExample}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "RunQueryExample",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.RunQueryExample"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "To remove:         {UninstallCommand}",
+      "message": "To remove:         {UninstallCommand}",
+      "translation": "削除するには:         {UninstallCommand}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UninstallCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.UninstallCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Switched to context \"{Name}\".",
+      "message": "Switched to context \"{Name}\".",
+      "translation": "コンテキスト \"{Name}\" に切り替えました。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "No context exists with the name: \"{Name}\"",
+      "message": "No context exists with the name: \"{Name}\"",
+      "translation": "次の名前のコンテキストは存在しません: \"{Name}\"",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Display merged sqlconfig settings or a specified sqlconfig file",
+      "message": "Display merged sqlconfig settings or a specified sqlconfig file",
+      "translation": "マージされた sqlconfig 設定または指定された sqlconfig ファイルを表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Show sqlconfig settings, with REDACTED authentication data",
+      "message": "Show sqlconfig settings, with REDACTED authentication data",
+      "translation": "REDACTED 認証データを含む sqlconfig 設定を表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Show sqlconfig settings and raw authentication data",
+      "message": "Show sqlconfig settings and raw authentication data",
+      "translation": "sqlconfig の設定と生の認証データを表示します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Display raw byte data",
+      "message": "Display raw byte data",
+      "translation": "生バイト データの表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Install Azure Sql Edge",
+      "message": "Install Azure Sql Edge",
+      "translation": "Azure Sql Edge のインストール",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Install/Create Azure SQL Edge in a container",
+      "message": "Install/Create Azure SQL Edge in a container",
+      "translation": "コンテナー内 Azure SQL Edge のインストール/作成",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Tag to use, use get-tags to see list of tags",
+      "message": "Tag to use, use get-tags to see list of tags",
+      "translation": "使用するタグ、タグの一覧を表示するには get-tags を使用します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Context name (a default context name will be created if not provided)",
+      "message": "Context name (a default context name will be created if not provided)",
+      "translation": "コンテキスト名 (指定されていない場合、既定のコンテキスト名が作成されます)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create a user database and set it as the default for login",
+      "message": "Create a user database and set it as the default for login",
+      "translation": "ユーザー データベースを作成し、ログインの既定値として設定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Accept the SQL Server EULA",
+      "message": "Accept the SQL Server EULA",
+      "translation": "SQL Server EULA に同意します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Generated password length",
+      "message": "Generated password length",
+      "translation": "生成されたパスワードの長さ",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Minimum number of special characters",
+      "message": "Minimum number of special characters",
+      "translation": "最低限必要な特殊文字の数",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Minimum number of numeric characters",
+      "message": "Minimum number of numeric characters",
+      "translation": "最低限必要な数字の数",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Minimum number of upper characters",
+      "message": "Minimum number of upper characters",
+      "translation": "最低限必要な大文字の数",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Special character set to include in password",
+      "message": "Special character set to include in password",
+      "translation": "パスワードに含める特殊文字セット",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Don't download image.  Use already downloaded image",
+      "message": "Don't download image.  Use already downloaded image",
+      "translation": "画像をダウンロードしません。 ダウンロード済みの画像を使用します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Line in errorlog to wait for before connecting",
+      "message": "Line in errorlog to wait for before connecting",
+      "translation": "接続前に待機するエラー ログの行",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specify a custom name for the container rather than a randomly generated one",
+      "message": "Specify a custom name for the container rather than a randomly generated one",
+      "translation": "ランダムに生成される名前ではなく、コンテナーのカスタム名を指定してください",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Explicitly set the container hostname, it defaults to the container ID",
+      "message": "Explicitly set the container hostname, it defaults to the container ID",
+      "translation": "コンテナーのホスト名を明示的に設定します。既定ではコンテナー ID が使用されます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the image CPU architecture",
+      "message": "Specifies the image CPU architecture",
+      "translation": "イメージ CPU アーキテクチャを指定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the image operating system",
+      "message": "Specifies the image operating system",
+      "translation": "イメージ オペレーティング システムを指定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Port (next available port from 1433 upwards used by default)",
+      "message": "Port (next available port from 1433 upwards used by default)",
+      "translation": "ポート (次に使用可能な 1433 以上のポートが既定で使用されます)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Download (into container) and attach database (.bak) from URL",
+      "message": "Download (into container) and attach database (.bak) from URL",
+      "translation": "URL から (コンテナーに) ダウンロードしてデータベース (.bak) をアタッチします",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Either, add the {AcceptEulaFlag} flag to the command-line",
+      "message": "Either, add the {AcceptEulaFlag} flag to the command-line",
+      "translation": "コマンド ラインに {AcceptEulaFlag} フラグを追加するか",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "AcceptEulaFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.AcceptEulaFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "message": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "translation": "または、環境変数を設定します。つまり、{CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "CreateEnvVarKeyword",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "pal.CreateEnvVarKeyword()"
+        },
+        {
+          "id": "AcceptEulaEnvVar",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.AcceptEulaEnvVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "EULA not accepted",
+      "message": "EULA not accepted",
+      "translation": "EULA が受け入れされていません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
+      "message": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
+      "translation": "--user-database {DefaultDatabase} に ASCII 以外の文字または引用符が含まれています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DefaultDatabase",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.defaultDatabase"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Starting {ImageName}",
+      "message": "Starting {ImageName}",
+      "translation": "{ImageName} を開始しています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ImageName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "imageName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
+      "message": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
+      "translation": "\"{ConfigFileUsed}\" にコンテキスト {CurrentContextName} を作成し、ユーザー アカウントを構成しています...",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "CurrentContextName",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "config.CurrentContextName()"
+        },
+        {
+          "id": "ConfigFileUsed",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "config.GetConfigFileUsed()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
+      "message": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
+      "translation": "アカウント {Sa} を無効にしました (パスワード {Sa_1} をローテーションしました)。ユーザー {UserName} を作成しています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Sa",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"sa\""
+        },
+        {
+          "id": "Sa_1",
+          "string": "%[2]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"sa\""
+        },
+        {
+          "id": "UserName",
+          "string": "%[3]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 3,
+          "expr": "userName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Start interactive session",
+      "message": "Start interactive session",
+      "translation": "対話型セッションの開始",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Change current context",
+      "message": "Change current context",
+      "translation": "現在のコンテキストを変更します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "View sqlcmd configuration",
+      "message": "View sqlcmd configuration",
+      "translation": "sqlcmd 構成の表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "See connection strings",
+      "message": "See connection strings",
+      "translation": "接続文字列を参照する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Remove",
+      "message": "Remove",
+      "translation": "削除",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Now ready for client connections on port {Port}",
+      "message": "Now ready for client connections on port {Port}",
+      "translation": "ポート {Port} でクライアント接続の準備ができました",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Port",
+          "string": "%[1]d",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 1,
+          "expr": "c.port"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "--using URL must be http or https",
+      "message": "--using URL must be http or https",
+      "translation": "--using URL は http または https でなければなりません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{UsingDatabaseUrl} is not a valid URL for --using flag",
+      "message": "{UsingDatabaseUrl} is not a valid URL for --using flag",
+      "translation": "{UsingDatabaseUrl} は --using フラグの有効な URL ではありません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "UsingDatabaseUrl",
+          "string": "%[1]q",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "c.usingDatabaseUrl"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "--using URL must have a path to .bak file",
+      "message": "--using URL must have a path to .bak file",
+      "translation": "--using URL には .bak ファイルへのパスが必要です",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "--using file URL must be a .bak file",
+      "message": "--using file URL must be a .bak file",
+      "translation": "--using ファイルの URL は .bak ファイルである必要があります",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Invalid --using file type",
+      "message": "Invalid --using file type",
+      "translation": "無効な --using ファイルの種類",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Creating default database [{DefaultDatabase}]",
+      "message": "Creating default database [{DefaultDatabase}]",
+      "translation": "既定のデータベース [{DefaultDatabase}] を作成しています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DefaultDatabase",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "defaultDatabase"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Downloading {File}",
+      "message": "Downloading {File}",
+      "translation": "{File} をダウンロードしています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "File",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "file"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Restoring database {DatabaseName}",
+      "message": "Restoring database {DatabaseName}",
+      "translation": "データベース {DatabaseName} を復元しています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DatabaseName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "databaseName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Downloading {ImageName}",
+      "message": "Downloading {ImageName}",
+      "translation": "{ImageName} をダウンロードしています",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ImageName",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "imageName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
+      "message": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
+      "translation": "このマシンにはコンテナー ランタイム (Podman や Docker など) がインストールされていますか?",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "If not, download desktop engine from:",
+      "message": "If not, download desktop engine from:",
+      "translation": "ない場合は、次からデスクトップ エンジンをダウンロードします:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "or",
+      "message": "or",
+      "translation": "または",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
+      "message": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
+      "translation": "コンテナー ランタイムは実行されていますか? (`{PodmanPsCommand}` または `{DockerPsCommand}` (コンテナーの一覧表示) をお試しください。エラーなく戻りますか?)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PodmanPsCommand",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PodmanPsCommand"
+        },
+        {
+          "id": "DockerPsCommand",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.DockerPsCommand"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Unable to download image {ImageName}",
+      "message": "Unable to download image {ImageName}",
+      "translation": "イメージ {ImageName} をダウンロードできません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ImageName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "imageName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "File does not exist at URL",
+      "message": "File does not exist at URL",
+      "translation": "URL にファイルが存在しません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Unable to download file",
+      "message": "Unable to download file",
+      "translation": "ファイルをダウンロードできません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Install/Create SQL Server in a container",
+      "message": "Install/Create SQL Server in a container",
+      "translation": "コンテナーに SQL Server をインストール/作成する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "See all release tags for SQL Server, install previous version",
+      "message": "See all release tags for SQL Server, install previous version",
+      "translation": "SQL Server のすべてのリリース タグを表示し、以前のバージョンをインストールする",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create SQL Server, download and attach AdventureWorks sample database",
+      "message": "Create SQL Server, download and attach AdventureWorks sample database",
+      "translation": "SQL Server を作成し、AdventureWorks サンプル データベースをダウンロードしてアタッチします",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
+      "message": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
+      "translation": "異なるデータベース名で SQL Server を作成し、AdventureWorks サンプル データベースをダウンロードしてアタッチします",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Create SQL Server with an empty user database",
+      "message": "Create SQL Server with an empty user database",
+      "translation": "空のユーザー データベースを使用して SQL Server を作成する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Install/Create SQL Server with full logging",
+      "message": "Install/Create SQL Server with full logging",
+      "translation": "フル ログを使用して SQL Server をインストール/作成する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Get tags available for Azure SQL Edge install",
+      "message": "Get tags available for Azure SQL Edge install",
+      "translation": "Azure SQL Edge のインストールに使用できるタグを取得する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List tags",
+      "message": "List tags",
+      "translation": "タグの一覧表示",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Get tags available for mssql install",
+      "message": "Get tags available for mssql install",
+      "translation": "mssql インストールで使用可能なタグを取得する",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "sqlcmd start",
+      "message": "sqlcmd start",
+      "translation": "sqlcmd の開始",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Container is not running",
+      "message": "Container is not running",
+      "translation": "コンテナーが実行されていません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Press Ctrl+C to exit this process...",
+      "message": "Press Ctrl+C to exit this process...",
+      "translation": "Ctrl + C を押して、このプロセスを終了します...",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+      "translation": "Windows 資格情報マネージャーに既に格納されている資格情報が多すぎるため、'十分なメモリ リソースがありません' というエラーが発生した可能性があります",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Failed to write credential to Windows Credential Manager",
+      "message": "Failed to write credential to Windows Credential Manager",
+      "translation": "Windows 資格情報マネージャーに資格情報を書き込めませんでした",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The -L parameter can not be used in combination with other parameters.",
+      "message": "The -L parameter can not be used in combination with other parameters.",
+      "translation": "-L パラメーターを他のパラメーターと組み合わせて使用することはできません。",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
+      "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
+      "translation": "'-a {PacketSize}': パケット サイズは 512 から 32767 の間の数値である必要があります。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PacketSize",
+          "string": "%#[1]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 1,
+          "expr": "a.PacketSize"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
+      "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
+      "translation": "'-h {Headers}': ヘッダーには -1 または -1 から 2147483647 までの値を指定してください",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Headers",
+          "string": "%#[1]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 1,
+          "expr": "a.Headers"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Servers:",
+      "message": "Servers:",
+      "translation": "サーバー:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Legal docs and information: aka.ms/SqlcmdLegal",
+      "message": "Legal docs and information: aka.ms/SqlcmdLegal",
+      "translation": "法的なドキュメントと情報: aka.ms/SqlcmdLegal",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Third party notices: aka.ms/SqlcmdNotices",
+      "message": "Third party notices: aka.ms/SqlcmdNotices",
+      "translation": "サード パーティ通知: aka.ms/SqlcmdNotices",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Version: {Version}",
+      "message": "Version: {Version}",
+      "translation": "バージョン: {Version}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Version",
+          "string": "%[1]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "version"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Flags:",
+      "message": "Flags:",
+      "translation": "フラグ:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
+      "message": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
+      "translation": "-? この構文の概要を表示します。{HelpFlag} には最新の sqlcmd サブコマンド ヘルプが表示されます",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "HelpFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.HelpFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
+      "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
+      "translation": "SQL ステートメントのバッチを含む 1 つ以上のファイルを識別します。1 つ以上のファイルが存在しない場合、sqlcmd は終了します。{QueryAndExitFlag}/{QueryFlag} と同時に使用することはできません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "QueryAndExitFlag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.QueryAndExitFlag"
+        },
+        {
+          "id": "QueryFlag",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.QueryFlag"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Identifies the file that receives output from sqlcmd",
+      "message": "Identifies the file that receives output from sqlcmd",
+      "translation": "sqlcmd から出力を受け取るファイルを識別します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Print version information and exit",
+      "message": "Print version information and exit",
+      "translation": "バージョン情報を印刷して終了",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Implicitly trust the server certificate without validation",
+      "message": "Implicitly trust the server certificate without validation",
+      "translation": "検証なしでサーバー証明書を暗黙的に信頼します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
+      "message": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
+      "translation": "このオプションは、sqlcmd スクリプト変数 {DbNameVar} を設定します。このパラメーターは、初期データベースを指定します。既定はログインの default-database プロパティです。データベースが存在しない場合は、エラー メッセージが生成され、sqlcmd が終了します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DbNameVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.DbNameVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
+      "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
+      "translation": "ユーザー名とパスワードを使用せず、信頼された接続を使用してSQL Server にサインインします。ユーザー名とパスワードを定義する環境変数は無視されます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
+      "message": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
+      "translation": "バッチ ターミネータを指定します。既定値は{BatchTerminatorGo}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "BatchTerminatorGo",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.BatchTerminatorGo"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The login name or contained database user name.  For contained database users, you must provide the database name option",
+      "message": "The login name or contained database user name.  For contained database users, you must provide the database name option",
+      "translation": "ログイン名または含まれているデータベース ユーザー名。 包含データベース ユーザーの場合は、データベース名オプションを指定する必要があります",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
+      "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
+      "translation": "sqlcmd の開始時にクエリを実行しますが、クエリの実行が完了しても sqlcmd を終了しません。複数のセミコロンで区切られたクエリを実行できます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
+      "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
+      "translation": "sqlcmd が開始してから sqlcmd を直ちに終了するときにクエリを実行します。複数のセミコロンで区切られたクエリを実行できます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
+      "message": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
+      "translation": "{ConnStrPattern} 接続先の SQL Server のインスタンスを指定します。sqlcmd スクリプト変数 {ServerEnvVar} を設定します。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ConnStrPattern",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ConnStrPattern"
+        },
+        {
+          "id": "ServerEnvVar",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.ServerEnvVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
+      "translation": "{_X1} システム セキュリティを侵害する可能性のあるコマンドを無効にします。1 を渡すと、無効なコマンドの実行時に sqlcmd が終了するように指示されます。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_X1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-X[1]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+      "translation": "Azure SQL Database への接続に使用する SQL 認証方法を指定します。次のうちの 1 つ: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、 ActiveDirectoryDeviceCode、SqlPassword",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
+      "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
+      "translation": "ActiveDirectory 認証を使用するように sqlcmd に指示します。ユーザー名が指定されていない場合、認証方法 ActiveDirectoryDefault が使用されます。パスワードを指定すると、ActiveDirectoryPassword が使用されます。それ以外の場合は ActiveDirectoryInteractive が使用されます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
+      "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
+      "translation": "sqlcmd がスクリプト変数を無視するようにします。このパラメーターは、$(variable_name) などの通常の変数と同じ形式の文字列を含む {InsertKeyword} ステートメントがスクリプトに多数含まれている場合に便利です",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "InsertKeyword",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.InsertKeyword"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
+      "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
+      "translation": "sqlcmd スクリプトで使用できる sqlcmd スクリプト変数を作成します。値にスペースが含まれている場合は、値を引用符で囲ってください。複数の var=values 値を指定できます。指定された値のいずれかにエラーがある場合、sqlcmd はエラー メッセージを生成して終了します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
+      "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
+      "translation": "サイズの異なるパケットを要求します。このオプションは、sqlcmd スクリプト変数 {PacketSizeVar} を設定します。packet_size は 512 から 32767 の間の値である必要があります。既定値 = 4096。パケット サイズを大きくすると、{BatchTerminatorGo} コマンド間に多数の SQL ステートメントを含むスクリプトの実行のパフォーマンスを向上させることができます。より大きいパケット サイズを要求できます。しかし、要求が拒否された場合、sqlcmd はサーバーのパケット サイズの既定値を使用します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "PacketSizeVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.PacketSizeVar"
+        },
+        {
+          "id": "BatchTerminatorGo",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "localizer.BatchTerminatorGo"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
+      "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
+      "translation": "サーバーに接続しようとしたときに、go-mssqldb ドライバーへの sqlcmd ログインがタイムアウトするまでの秒数を指定します。このオプションは、sqlcmd スクリプト変数{LoginTimeOutVar} を設定します。既定値は 30 です。0 は無限を意味します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "LoginTimeOutVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.LoginTimeOutVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
+      "message": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
+      "translation": "このオプションは、sqlcmd スクリプト変数 {WorkstationVar} を設定します。ワークステーション名は sys.sysprocesses カタログ ビューのホスト名列に一覧表示されており、ストアド プロシージャ sp_who を使用して返すことができます。このオプションを指定しない場合、既定値は現在のコンピューター名です。この名前は、さまざまな sqlcmd セッションを識別するために使用できます",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "WorkstationVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.WorkstationVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
+      "message": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
+      "translation": "サーバーに接続するときに、アプリケーション ワークロードの種類を宣言します。現在サポートされている値は ReadOnly のみです。{ApplicationIntentFlagShort} が指定されていない場合、sqlcmd ユーティリティは、Always On 可用性グループ内のセカンダリ レプリカへの接続をサポートしません",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ApplicationIntentFlagShort",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ApplicationIntentFlagShort"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "This switch is used by the client to request an encrypted connection",
+      "message": "This switch is used by the client to request an encrypted connection",
+      "translation": "このスイッチは、暗号化された接続を要求するためにクライアントによって使用されます",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the formatting for results",
+      "message": "Specifies the formatting for results",
+      "translation": "結果の書式を指定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+      "translation": "{_r0__1} 重大度 >= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_r0__1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-r[0 | 1]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Level of mssql driver messages to print",
+      "message": "Level of mssql driver messages to print",
+      "translation": "印刷する mssql ドライバー メッセージのレベル",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
+      "message": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
+      "translation": "sqlcmd が終了し、エラーが発生したときに {DosErrorLevel} 値を返すように指定します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "DosErrorLevel",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.DosErrorLevel"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
+      "message": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
+      "translation": "{StdoutName} に送信するエラー メッセージを制御します。このレベル以上の重大度レベルのメッセージが送信されます",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "StdoutName",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.StdoutName"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
+      "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
+      "translation": "列見出し間で印刷する行数を指定します。-h-1 を使用して、ヘッダーを印刷しないように指定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies that all output files are encoded with little-endian Unicode",
+      "message": "Specifies that all output files are encoded with little-endian Unicode",
+      "translation": "すべての出力ファイルをリトル エンディアン Unicode でエンコードすることを指定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
+      "message": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
+      "translation": "列の区切り文字を指定します。{ColSeparatorVar} 変数を設定します。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ColSeparatorVar",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ColSeparatorVar"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Remove trailing spaces from a column",
+      "message": "Remove trailing spaces from a column",
+      "translation": "列から末尾のスペースを削除します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
+      "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
+      "translation": "下位互換性のために提供されます。Sqlcmd は、SQL フェールオーバー クラスターのアクティブなレプリカの検出を常に最適化します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Password",
+      "message": "Password",
+      "translation": "パスワード",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
+      "message": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
+      "translation": "終了時に {ErrorLevel} 変数を設定するために使用される重大度レベルを制御します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ErrorLevel",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "localizer.ErrorLevel"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the screen width for output",
+      "message": "Specifies the screen width for output",
+      "translation": "出力の画面の幅を指定します",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
+      "translation": "{_Lc} サーバーを一覧表示します。{C} を渡すと、'Servers:' 出力を省略します。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_Lc",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-L[c]\""
+        },
+        {
+          "id": "C",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"c\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Dedicated administrator connection",
+      "message": "Dedicated administrator connection",
+      "translation": "専用管理者接続",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
+      "translation": "下位互換性のために提供されます。引用符で囲まれた識別子は常に有効です",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Provided for backward compatibility. Client regional settings are not used",
+      "message": "Provided for backward compatibility. Client regional settings are not used",
+      "translation": "下位互換性のために提供されます。クライアントの地域設定は使用されていません",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
+      "translation": "{_k_12} 出力から制御文字を削除します。1 を渡すと、1 文字につきスペース 1 つに置き換え、2 では連続する文字ごとにスペース 1 つに置き換えます",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "_k_12",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "\"-k [1|2]\""
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Echo input",
+      "message": "Echo input",
+      "translation": "エコー入力",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Enable column encryption",
+      "message": "Enable column encryption",
+      "translation": "列暗号化を有効にする",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password",
+      "message": "New password",
+      "translation": "新しいパスワード",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "New password and exit",
+      "message": "New password and exit",
+      "translation": "新しいパスワードと終了",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Sets the sqlcmd scripting variable {V}",
+      "message": "Sets the sqlcmd scripting variable {V}",
+      "translation": "sqlcmd スクリプト変数 {V} を設定します",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "V",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "v"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
+      "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
+      "translation": "'{Flag} {Value}': 値は {Min} 以上 {Max} 以下である必要があります。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag"
+        },
+        {
+          "id": "Value",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "value"
+        },
+        {
+          "id": "Min",
+          "string": "%#[3]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 3,
+          "expr": "min"
+        },
+        {
+          "id": "Max",
+          "string": "%#[4]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 4,
+          "expr": "max"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
+      "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
+      "translation": "'{Flag} {Value}': 値は {Min} より大きく、{Max} 未満である必要があります。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag"
+        },
+        {
+          "id": "Value",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "value"
+        },
+        {
+          "id": "Min",
+          "string": "%#[3]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 3,
+          "expr": "min"
+        },
+        {
+          "id": "Max",
+          "string": "%#[4]v",
+          "type": "int",
+          "underlyingType": "int",
+          "argNum": 4,
+          "expr": "max"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
+      "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
+      "translation": "'{Flag} {Value}': 予期しない引数です。引数の値を {AllowedValues0} する必要があります。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag"
+        },
+        {
+          "id": "Value",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "value"
+        },
+        {
+          "id": "AllowedValues0",
+          "string": "%[3]v",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 3,
+          "expr": "allowedValues[0]"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
+      "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
+      "translation": "'{Flag} {Value}': 予期しない引数です。引数の値は {AllowedValues} のいずれかである必要があります。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag"
+        },
+        {
+          "id": "Value",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "value"
+        },
+        {
+          "id": "AllowedValues",
+          "string": "%[3]v",
+          "type": "[]string",
+          "underlyingType": "[]string",
+          "argNum": 3,
+          "expr": "allowedValues"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+      "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
+      "translation": "{Flag1} と {Flag2} オプションは相互に排他的です。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Flag1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "flag1"
+        },
+        {
+          "id": "Flag2",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "flag2"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{P1}': Missing argument. Enter '-?' for help.",
+      "message": "'{P1}': Missing argument. Enter '-?' for help.",
+      "translation": "'{P1}': 引数がありません。ヘルプを表示するには、「-?」と入力してください。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "P1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "p[1]"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{P1}': Unknown Option. Enter '-?' for help.",
+      "message": "'{P1}': Unknown Option. Enter '-?' for help.",
+      "translation": "'{P1}': 不明なオプションです。ヘルプを表示するには、「-?」と入力してください。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "P1",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "p[1]"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "invalid batch terminator '{BatchTerminator}'",
+      "message": "invalid batch terminator '{BatchTerminator}'",
+      "translation": "バッチ ターミネータ '{BatchTerminator}' が無効です",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "BatchTerminator",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "args.BatchTerminator"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Enter new password:",
+      "message": "Enter new password:",
+      "translation": "新しいパスワードの入力:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+      "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
+      "translation": "sqlcmd: インストール/作成/SQL Server、Azure SQL、およびツールのクエリ",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Sqlcmd: Error:",
+      "message": "Sqlcmd: Error:",
+      "translation": "Sqlcmd: エラー:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Sqlcmd: Warning:",
+      "message": "Sqlcmd: Warning:",
+      "translation": "Sqlcmd: 警告:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
+      "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
+      "translation": "ED および !!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です。",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "The scripting variable: '{Variable}' is read-only",
+      "message": "The scripting variable: '{Variable}' is read-only",
+      "translation": "スクリプト変数: '{Variable}' は読み取り専用です",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Variable",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "variable"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "'{Variable}' scripting variable not defined.",
+      "message": "'{Variable}' scripting variable not defined.",
+      "translation": "'{Variable}' スクリプト変数が定義されていません。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Variable",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "variable"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
+      "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
+      "translation": "環境変数 '{Variable}' に無効な値が含まれています: '{EnvVal}'。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Variable",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "variable"
+        },
+        {
+          "id": "EnvVal",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "envVal"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Syntax error at line {LineNumber} near command '{Command}'.",
+      "message": "Syntax error at line {LineNumber} near command '{Command}'.",
+      "translation": "コマンド '{Command}' 付近 {LineNumber} 行に構文エラーがあります。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "LineNumber",
+          "string": "%[1]d",
+          "type": "uint",
+          "underlyingType": "uint",
+          "argNum": 1,
+          "expr": "e.LineNumber"
+        },
+        {
+          "id": "Command",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "e.Command"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
+      "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
+      "translation": "{ErrorPrefix} ファイル {Filepath} を開いているか、操作中にエラーが発生しました (理由: {Error})。",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ErrorPrefix",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "ErrorPrefix"
+        },
+        {
+          "id": "Filepath",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "filepath"
+        },
+        {
+          "id": "Error",
+          "string": "%[3]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 3,
+          "expr": "err.Error()"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
+      "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
+      "translation": "{ErrorPrefix} 行 {LineNumber} で構文エラー",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ErrorPrefix",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "ErrorPrefix"
+        },
+        {
+          "id": "LineNumber",
+          "string": "%[2]d",
+          "type": "uint",
+          "underlyingType": "uint",
+          "argNum": 2,
+          "expr": "lineNumber"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Timeout expired",
+      "message": "Timeout expired",
+      "translation": "タイムアウトになりました",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "メッセージ {Number}、レベル {Class}、状態 {State}、サーバー {ServerName}、プロシージャ {ProcName}、行 {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "ProcName",
+          "string": "%[5]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 5,
+          "expr": "e.ProcName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[6]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 6,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[7]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 7,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
+      "translation": "メッセージ {Number}、レベル {Class}、状態 {State}、サーバー {ServerName}、行 {LineNo}{SqlcmdEol}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Number",
+          "string": "%#[1]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 1,
+          "expr": "e.Number"
+        },
+        {
+          "id": "Class",
+          "string": "%[2]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 2,
+          "expr": "e.Class"
+        },
+        {
+          "id": "State",
+          "string": "%[3]d",
+          "type": "uint8",
+          "underlyingType": "uint8",
+          "argNum": 3,
+          "expr": "e.State"
+        },
+        {
+          "id": "ServerName",
+          "string": "%[4]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 4,
+          "expr": "e.ServerName"
+        },
+        {
+          "id": "LineNo",
+          "string": "%#[5]v",
+          "type": "int32",
+          "underlyingType": "int32",
+          "argNum": 5,
+          "expr": "e.LineNo"
+        },
+        {
+          "id": "SqlcmdEol",
+          "string": "%[6]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 6,
+          "expr": "SqlcmdEol"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Password:",
+      "message": "Password:",
+      "translation": "パスワード:",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Invalid variable identifier {Name}",
+      "message": "Invalid variable identifier {Name}",
+      "translation": "変数識別子 {Name} が無効です",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Name",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "name"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "Invalid variable value {Val}",
+      "message": "Invalid variable value {Val}",
+      "translation": "変数値の {Val} が無効です",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Val",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "val"
+        }
+      ],
+      "fuzzy": true
+    }
+  ]
 }

@@ -6,8 +6,8 @@ This repository incorporates material as listed below or described in the code.
 ## github.com/Azure/azure-sdk-for-go/sdk/azcore
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azcore
-* Version: v1.1.2
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.1.2/sdk/azcore/LICENSE.txt)
+* Version: v1.7.1
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.7.1/sdk/azcore/LICENSE.txt)
 
 ```
 MIT License
@@ -37,8 +37,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azidentity
-* Version: v1.2.1
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.2.1/sdk/azidentity/LICENSE.txt)
+* Version: v1.3.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.3.0/sdk/azidentity/LICENSE.txt)
 
 ```
 MIT License
@@ -68,8 +68,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/internal
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/internal
-* Version: v1.0.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/internal/v1.0.0/sdk/internal/LICENSE.txt)
+* Version: v1.3.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/internal/v1.3.0/sdk/internal/LICENSE.txt)
 
 ```
 MIT License
@@ -96,11 +96,71 @@ SOFTWARE
 
 ```
 
+## github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
+
+* Name: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
+* Version: v1.0.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/azkeys/v1.0.0/sdk/security/keyvault/azkeys/LICENSE.txt)
+
+```
+    MIT License
+
+    Copyright (c) Microsoft Corporation. All rights reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE
+```
+
+## github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
+
+* Name: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
+* Version: v0.8.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/internal/v0.8.0/sdk/security/keyvault/internal/LICENSE.txt)
+
+```
+    MIT License
+
+    Copyright (c) Microsoft Corporation. All rights reserved.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE
+```
+
 ## github.com/AzureAD/microsoft-authentication-library-for-go/apps
 
 * Name: github.com/AzureAD/microsoft-authentication-library-for-go/apps
-* Version: v0.8.1
-* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v0.8.1/LICENSE)
+* Version: v1.1.0
+* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v1.1.0/LICENSE)
 
 ```
     MIT License
@@ -527,8 +587,8 @@ Apache License
 ## github.com/docker/docker
 
 * Name: github.com/docker/docker
-* Version: v20.10.24
-* License: [Apache-2.0](https://github.com/docker/docker/blob/v20.10.24/LICENSE)
+* Version: v24.0.6
+* License: [Apache-2.0](https://github.com/docker/docker/blob/v24.0.6/LICENSE)
 
 ```
 
@@ -1408,11 +1468,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ```
 
-## github.com/golang-jwt/jwt/v4
+## github.com/golang-jwt/jwt/v5
 
-* Name: github.com/golang-jwt/jwt/v4
-* Version: v4.4.2
-* License: [MIT](https://github.com/golang-jwt/jwt/blob/v4.4.2/LICENSE)
+* Name: github.com/golang-jwt/jwt/v5
+* Version: v5.0.0
+* License: [MIT](https://github.com/golang-jwt/jwt/blob/v5.0.0/LICENSE)
 
 ```
 Copyright (c) 2012 Dave Grijalva
@@ -1430,8 +1490,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ## github.com/golang-sql/civil
 
 * Name: github.com/golang-sql/civil
-* Version: v0.0.0-20190719163853-cb61b32ac6fe
-* License: [Apache-2.0](https://github.com/golang-sql/civil/blob/cb61b32ac6fe/LICENSE)
+* Version: v0.0.0-20220223132316-b832511892a9
+* License: [Apache-2.0](https://github.com/golang-sql/civil/blob/b832511892a9/LICENSE)
 
 ```
 
@@ -4122,37 +4182,6 @@ SUBDIRECTORIES
 
 ```
 
-## github.com/sirupsen/logrus
-
-* Name: github.com/sirupsen/logrus
-* Version: v1.9.0
-* License: [MIT](https://github.com/sirupsen/logrus/blob/v1.9.0/LICENSE)
-
-```
-The MIT License (MIT)
-
-Copyright (c) 2014 Simon Eskildsen
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-```
-
 ## github.com/spf13/afero
 
 * Name: github.com/spf13/afero
@@ -4683,8 +4712,8 @@ THE SOFTWARE.
 ## golang.org/x/crypto
 
 * Name: golang.org/x/crypto
-* Version: v0.0.0-20220622213112-05595931fe9d
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/05595931:LICENSE)
+* Version: v0.14.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.14.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4720,8 +4749,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/net
 
 * Name: golang.org/x/net
-* Version: v0.7.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.7.0:LICENSE)
+* Version: v0.17.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.17.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4754,11 +4783,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ```
 
-## golang.org/x/sys
+## golang.org/x/sys/windows
 
-* Name: golang.org/x/sys
-* Version: v0.5.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.5.0:LICENSE)
+* Name: golang.org/x/sys/windows
+* Version: v0.13.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.13.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4794,8 +4823,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/text
 
 * Name: golang.org/x/text
-* Version: v0.7.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.7.0:LICENSE)
+* Version: v0.13.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.13.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -5064,23 +5093,6 @@ third-party archives.
    See the License for the specific language governing permissions and
    limitations under the License.
 
-```
-
-## gopkg.in/natefinch/npipe.v2
-
-* Name: gopkg.in/natefinch/npipe.v2
-* Version: v2.0.0-20160621034901-c1b8fa8bdcce
-* License: [MIT](https://github.com/natefinch/npipe/blob/c1b8fa8bdcce/LICENSE.txt)
-
-```
-The MIT License (MIT)
-Copyright (c) 2013 npipe authors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
 ## gopkg.in/yaml.v2

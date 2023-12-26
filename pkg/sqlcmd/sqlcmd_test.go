@@ -246,6 +246,7 @@ func TestGetRunnableQuery(t *testing.T) {
 		{"$ (var2)", "$ (var2)"},
 		{"select '$(VAR1) $(VAR2)' as  c", "select 'v1 variable2' as  c"},
 		{" $(VAR1) ' $(VAR2) ' as  $(VAR1)", " v1 ' variable2 ' as  v1"},
+		{"í $(VAR1)", "í v1"},
 	}
 	s := New(nil, "", v)
 	for _, test := range tests {
@@ -549,6 +550,34 @@ func TestSqlCmdOutputAndError(t *testing.T) {
 	}
 }
 
+func TestVeryLongLineInFile(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	val := strings.Repeat("a1b", (3*1024*1024)/3)
+	line := "set nocount on" + SqlcmdEol + "select('" + val + "')"
+	file, err := os.CreateTemp("", "sqlcmdlongline")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(file.Name())
+	_, err = file.WriteString(line)
+	assert.NoError(t, err, "Unable to write temp file")
+	err = s.IncludeFile(file.Name(), true)
+	if assert.NoError(t, err, "runSqlCmd") {
+		actual := strings.TrimRight(buf.buf.String(), "\r\n")
+		assert.Equal(t, val, actual, "Query result")
+	}
+}
+
+func TestQueryTimeout(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.vars.Set(SQLCMDSTATTIMEOUT, "1")
+	i, err := s.runQuery("waitfor delay '00:00:10'")
+	if assert.NoError(t, err, "runQuery returned an error") {
+		assert.Equal(t, -100, i, "return from runQuery")
+		assert.Equal(t, "Timeout expired"+SqlcmdEol, buf.buf.String(), "Query should have timed out")
+	}
+}
+
 // runSqlCmd uses lines as input for sqlcmd instead of relying on file or console input
 func runSqlCmd(t testing.TB, s *Sqlcmd, lines []string) error {
 	t.Helper()
@@ -570,7 +599,7 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	s.Connect = newConnect(t)
-	s.Format = NewSQLCmdDefaultFormatter(true)
+	s.Format = NewSQLCmdDefaultFormatter(true, ControlIgnore)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
 	err := s.ConnectDb(nil, true)
@@ -584,7 +613,7 @@ func setupSqlcmdWithFileOutput(t testing.TB) (*Sqlcmd, *os.File) {
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	s.Connect = newConnect(t)
-	s.Format = NewSQLCmdDefaultFormatter(true)
+	s.Format = NewSQLCmdDefaultFormatter(true, ControlIgnore)
 	file, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
 	s.SetOutput(file)
@@ -602,7 +631,7 @@ func setupSqlcmdWithFileErrorOutput(t testing.TB) (*Sqlcmd, *os.File, *os.File) 
 	v.Set(SQLCMDMAXVARTYPEWIDTH, "0")
 	s := New(nil, "", v)
 	s.Connect = newConnect(t)
-	s.Format = NewSQLCmdDefaultFormatter(true)
+	s.Format = NewSQLCmdDefaultFormatter(true, ControlIgnore)
 	outfile, err := os.CreateTemp("", "sqlcmdout")
 	assert.NoError(t, err, "os.CreateTemp")
 	errfile, err := os.CreateTemp("", "sqlcmderr")
@@ -644,9 +673,9 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 	if runtime.GOOS != "windows" || runtime.GOARCH != "amd64" {
 		t.Skip("Only valid on Windows amd64")
 	}
-	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[0].Protocol(), "lpc should be first protocol")
+	assert.EqualValuesf(t, "lpc", msdsn.ProtocolParsers[2].Protocol(), "lpc should be third protocol")
 	assert.Truef(t, msdsn.ProtocolParsers[1].Hidden(), "Protocol %s should be hidden", msdsn.ProtocolParsers[1].Protocol())
-	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[2].Protocol(), "tcp should be second protocol")
-	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be third protocol")
+	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[0].Protocol(), "tcp should be first protocol")
+	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be fourth protocol")
 
 }

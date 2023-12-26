@@ -12,6 +12,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
 )
 
@@ -57,9 +58,9 @@ func (c *Ads) ensureContainerIsRunning(endpoint sqlconfig.Endpoint) {
 	output := c.Output()
 	controller := container.NewController()
 	if !controller.ContainerRunning(endpoint.AssetDetails.ContainerDetails.Id) {
-		output.FatalfWithHintExamples([][]string{
-			{"To start the container", "sqlcmd start"},
-		}, "Container is not running")
+		output.FatalWithHintExamples([][]string{
+			{localizer.Sprintf("To start the container"), localizer.Sprintf("sqlcmd start")},
+		}, localizer.Sprintf("Container is not running"))
 	}
 }
 

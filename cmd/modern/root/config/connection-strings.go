@@ -120,7 +120,7 @@ func (c *ConnectionStrings) run() {
 			output.Infof("%-8s %s", k+":", v)
 		}
 	} else {
-		output.Infof(localizer.Sprintf("Connection Strings only supported for %s Auth type", localizer.ModernAuthTypeBasic))
+		output.Info(localizer.Sprintf("Connection Strings only supported for %s Auth type", localizer.ModernAuthTypeBasic))
 	}
 }
 

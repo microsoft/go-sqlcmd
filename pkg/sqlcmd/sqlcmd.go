@@ -17,17 +17,19 @@ import (
 	"sort"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/golang-sql/sqlexp"
 	mssql "github.com/microsoft/go-mssqldb"
+
+	_ "github.com/microsoft/go-mssqldb/aecmk/akv"
+	_ "github.com/microsoft/go-mssqldb/aecmk/localcert"
 	"github.com/microsoft/go-mssqldb/msdsn"
 	"github.com/microsoft/go-sqlcmd/internal/color"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
-
-// Note: The order of includes above matters for namedpipe and sharedmemory.
-// init() swaps shared memory protocol with tcp so it gets priority when dialing.
 
 var (
 	// ErrExitRequested tells the hosting application to exit immediately
@@ -41,8 +43,6 @@ var (
 		message: ErrCmdDisabled,
 	}
 )
-
-const maxLineBuffer = 2 * 1024 * 1024 // 2Mb
 
 // Console defines methods used for console input and output
 type Console interface {
@@ -84,8 +84,10 @@ type Sqlcmd struct {
 	PrintError func(msg string, severity uint8) bool
 	// UnicodeOutputFile is true when UTF16 file output is needed
 	UnicodeOutputFile bool
-	colorizer         color.Colorizer
-	termchan          chan os.Signal
+	// EchoInput tells the GO command to print the batch text before running the query
+	EchoInput bool
+	colorizer color.Colorizer
+	termchan  chan os.Signal
 }
 
 // New creates a new Sqlcmd instance.
@@ -311,7 +313,7 @@ func (s *Sqlcmd) promptPassword() (string, error) {
 	if s.lineIo == nil {
 		return "", nil
 	}
-	pwd, err := s.lineIo.ReadPassword("Password:")
+	pwd, err := s.lineIo.ReadPassword(localizer.Sprintf("Password:"))
 	if err != nil {
 		return "", err
 	}
@@ -330,24 +332,29 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	b := s.batch.batchline
 	utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
 	unicodeReader := transform.NewReader(f, utf16bom)
-	scanner := bufio.NewScanner(unicodeReader)
-	buf := make([]byte, maxLineBuffer)
-	scanner.Buffer(buf, maxLineBuffer)
+	scanner := bufio.NewReader(unicodeReader)
 	curLine := s.batch.read
 	echoFileLines := s.echoFileLines
+	ln := make([]byte, 0, 2*1024*1024)
 	s.batch.read = func() (string, error) {
-		if !scanner.Scan() {
-			err := scanner.Err()
-			if err == nil {
-				return "", io.EOF
-			}
-			return "", err
+		var (
+			isPrefix bool  = true
+			err      error = nil
+			line     []byte
+		)
+
+		for isPrefix && err == nil {
+			line, isPrefix, err = scanner.ReadLine()
+			ln = append(ln, line...)
 		}
-		t := scanner.Text()
-		if echoFileLines {
-			_, _ = s.GetOutput().Write([]byte(s.Prompt() + t + SqlcmdEol))
+		if err == nil && echoFileLines {
+			_, _ = s.GetOutput().Write([]byte(s.Prompt()))
+			_, _ = s.GetOutput().Write(ln)
+			_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
 		}
-		return t, nil
+		t := string(ln)
+		ln = ln[:0]
+		return t, err
 	}
 	err = s.Run(false, processAll)
 	s.batch.read = curLine
@@ -382,6 +389,8 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	}
 	b := new(strings.Builder)
 	b.Grow(len(q))
+	// The varmap index is rune based not byte based
+	r := []rune(q)
 	keys := make([]int, 0, len(s.batch.varmap))
 	for k := range s.batch.varmap {
 		keys = append(keys, k)
@@ -389,7 +398,7 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	sort.Ints(keys)
 	last := 0
 	for _, i := range keys {
-		b.WriteString(q[last:i])
+		b.WriteString(string(r[last:i]))
 		v := s.batch.varmap[i]
 		if val, ok := s.resolveVariable(v); ok {
 			b.WriteString(val)
@@ -397,9 +406,9 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 			_, _ = fmt.Fprintf(s.GetError(), "'%s' scripting variable not defined.%s", v, SqlcmdEol)
 			b.WriteString(fmt.Sprintf("$(%s)", v))
 		}
-		last = i + len(v) + 3
+		last = i + len([]rune(v)) + 3
 	}
-	b.WriteString(q[last:])
+	b.WriteString(string(r[last:]))
 	return b.String()
 }
 
@@ -413,6 +422,12 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
+	timeout := s.vars.QueryTimeoutSeconds()
+	if timeout > 0 {
+		ct, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+		defer cancel()
+		ctx = ct
+	}
 	retmsg := &sqlexp.ReturnMessage{}
 	rows, qe := s.db.QueryContext(ctx, query, retmsg)
 	if qe != nil {

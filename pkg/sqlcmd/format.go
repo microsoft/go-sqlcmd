@@ -4,7 +4,9 @@
 package sqlcmd
 
 import (
+	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -13,6 +15,7 @@ import (
 	"github.com/google/uuid"
 	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-sqlcmd/internal/color"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 const (
@@ -85,11 +88,12 @@ type sqlCmdFormatterType struct {
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
-func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool) Formatter {
+func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool, ccb ControlCharacterBehavior) Formatter {
 	return &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
 		format:               "horizontal",
 		colorizer:            color.New(false),
+		ccb:                  ccb,
 	}
 }
 
@@ -212,11 +216,18 @@ func (f *sqlCmdFormatterType) AddMessage(msg string) {
 func (f *sqlCmdFormatterType) AddError(err error) {
 	print := true
 	b := new(strings.Builder)
+	if errors.Is(err, context.DeadlineExceeded) {
+		err = localizer.Errorf("Timeout expired")
+	}
 	msg := err.Error()
 	switch e := (err).(type) {
 	case mssql.Error:
 		if print = f.vars.ErrorLevel() <= 0 || e.Class >= uint8(f.vars.ErrorLevel()); print {
-			b.WriteString(fmt.Sprintf("Msg %d, Level %d, State %d, Server %s, Line %d%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
+			if len(e.ProcName) > 0 {
+				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.ProcName, e.LineNo, SqlcmdEol))
+			} else {
+				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
+			}
 			msg = strings.TrimPrefix(msg, "mssql: ")
 		}
 	}

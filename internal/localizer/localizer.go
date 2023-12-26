@@ -57,3 +57,8 @@ func Errorf(format string, a ...any) error {
 func Sprintf(key message.Reference, args ...interface{}) string {
 	return Translator.Sprintf(key, args...)
 }
+
+// ProductBanner() returns the localized product banner string
+func ProductBanner() string {
+	return Sprintf("sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools")
+}

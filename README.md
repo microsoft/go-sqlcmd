@@ -1,6 +1,8 @@
 # SQLCMD CLI
 
-This repo contains the `sqlcmd` command line tool and go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.
+This repo contains the `sqlcmd` command line tool and Go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.  
+
+Learn more about how `sqlcmd` is used from a articles/posts written by the community: [Community Buzz][].
 
 ## Installation
 
@@ -34,6 +36,13 @@ This repo contains the `sqlcmd` command line tool and go packages for working wi
 | Install:              | Upgrade:              |
 | --------------------- | --------------------- |
 | `brew install sqlcmd` | `brew upgrade sqlcmd` |
+
+##### Apple Silicon Macs (M1/M2)
+Macs running Apple Silicon require [Docker][] Desktop to use Rosetta for x86/amd64 emulation. Follow these steps before creating a SQL Server instance:
+- Open Docker Desktop.
+- Go to the settings/preferences menu.
+- Find the “Features in development” section.
+- Enable the "Use Rosetta for x86/amd64 emulation on Apple Silicon" checkbox.
 
 ### Linux
 
@@ -112,25 +121,25 @@ The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to t
 
 ### Changes in behavior from the ODBC based sqlcmd
 
+- `/` is not accepted as a flag specifier, only `-`
+- There are new posix-style versions of each flag, such as `--input-file` for `-i`. `sqlcmd -?` will print those parameter names. Those new names do not preserve backward compatibility with ODBC `sqlcmd`. For example, to specify multiple input file names using `--input-file`, the file names must be comma-delimited, not space-delimited.
+
 The following switches have different behavior in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`.
-
-- `-P` switch will be removed. Passwords for SQL authentication can only be provided through these mechanisms:
-
-    - The `SQLCMDPASSWORD` environment variable
-    - The `:CONNECT` command
-    - When prompted, the user can type the password to complete a connection
-- `-r` requires a 0 or 1 argument
-- `-R` switch will be removed. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
-- `-I` switch will be removed. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
-- `-N` now takes a string value that can be one of `true`, `false`, or `disable` to specify the encryption choice. (`default` is the same as omitting the parameter)
+- `-R` switch is ignored. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
+- `-I` switch is ignored; quoted identifiers are always set on. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
+- `-N` now takes a string value that can be one of `strict`,`true`,`mandatory`,`yes`,`1`,`t`, `optional`, `no`, `0`, `f`, `false`, or `disable` to specify the encryption choice. 
   - If `-N` and `-C` are not provided, sqlcmd will negotiate authentication with the server without validating the server certificate.
   - If `-N` is provided but `-C` is not, sqlcmd will require validation of the server certificate. Note that a `false` value for encryption could still lead to encryption of the login packet.
+  - `-C` has no effect when `strict` value is specified for `-N`.
   - If both `-N` and `-C` are provided, sqlcmd will use their values for encryption negotiation.
   - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
-- `-i` now requires multiple arguments for the switch to be separated by `,`.
+- `-i` doesn't handle a comma `,` in a file name correctly unless the file name argument is triple quoted. For example:
+  `sqlcmd -i """select,100.sql"""` will try to open a file named `sql,100.sql` while `sqlcmd -i "select,100.sql"` will try to open two files `select` and `100.sql`
+- If using a single `-i` flag  to pass multiple file names, there must be a space after the `-i`. Example: `-i file1.sql file2.sql`
+- `-M` switch is ignored. Sqlcmd always enables multi-subnet failover.
 
 ### Switches not available in the new sqlcmd (go-sqlcmd) yet
 
@@ -139,8 +148,6 @@ to the original ODBC based `sqlcmd`, discussion [#293](https://github.com/micros
 lists these switches. Please provide feedback in the discussion on which 
 switches are most important to you to have implemented next in the new sqlcmd.
 
-Also, the XML Output command `:XML [On]|[Off]` is not implemented yet
-in the new sqlcmd (go-sqlcmd).
 
 ### Miscellaneous enhancements
 
@@ -305,6 +312,7 @@ trademarks or logos is subject to and must follow
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
 
+[Community Buzz]: https://github.com/microsoft/go-sqlcmd/discussions/367
 [Homebrew]: https://formulae.brew.sh/formula/sqlcmd
 [Linuxbrew]: https://docs.brew.sh/Homebrew-on-Linux
 [Winget]: https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/Sqlcmd

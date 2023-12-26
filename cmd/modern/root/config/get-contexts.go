@@ -61,7 +61,7 @@ func (c *GetContexts) run() {
 			context := config.GetContext(c.name)
 			output.Struct(context)
 		} else {
-			output.FatalfWithHints(
+			output.FatalWithHints(
 				[]string{localizer.Sprintf("To view available contexts run `%s`", localizer.GetContextCommand)},
 				localizer.Sprintf("error: no context exists with the name: \"%v\"", c.name))
 		}

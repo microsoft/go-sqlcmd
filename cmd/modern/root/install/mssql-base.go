@@ -336,6 +336,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		fmt.Sprintf("MSSQL_COLLATION=%s", c.collation)}
 
 	output.Infof(localizer.Sprintf("Starting %v", imageName))
+
 	containerId := controller.ContainerRun(
 		imageName,
 		runOptions,
@@ -360,7 +361,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	controller.ContainerWaitForLogEntry(containerId, c.errorLogEntryToWaitFor)
 
-	output.Infof(
+	output.Info(
 		localizer.Sprintf("Disabled %q account (and rotated %q password). Creating user %q",
 			"sa",
 			"sa",
@@ -479,14 +480,13 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 func (c *MssqlBase) verifyUseSourceFileExists(
 	controller *container.Controller,
-	output *output.Output,
-) (useDatabase ingest.Ingest) {
+	output *output.Output) (useDatabase ingest.Ingest) {
 	useDatabase = ingest.NewIngest(c.useDatabaseUrl, controller, ingest.IngestOptions{
 		Mechanism: c.useMechanism,
 	})
 
 	if !useDatabase.IsValidFileExtension() {
-		output.FatalfWithHints(
+		output.FatalWithHints(
 			[]string{
 				fmt.Sprintf(
 					localizer.Sprintf("--use must be a path to a file with a %q extension"),
@@ -512,7 +512,7 @@ func (c *MssqlBase) verifyUseSourceFileExists(
 			[]string{localizer.Sprintf("File does not exist at URL %q", c.useDatabaseUrl)},
 			"Unable to download file")
 	}
-	return
+	return useDatabase
 }
 
 // createUser creates a user (non-sa) and assigns the sysadmin role
@@ -572,10 +572,10 @@ func (c *MssqlBase) downloadImage(
 	output *output.Output,
 	controller *container.Controller,
 ) {
-	output.Infof(localizer.Sprintf("Downloading %v", imageName))
+	output.Info(localizer.Sprintf("Downloading %v", imageName))
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {
-		output.FatalfErrorWithHints(
+		output.FatalErrorWithHints(
 			err,
 			[]string{
 				localizer.Sprintf("Is a container runtime installed on this machine (e.g. Podman or Docker)?") + pal.LineBreak() +
@@ -584,7 +584,7 @@ func (c *MssqlBase) downloadImage(
 					localizer.Sprintf("\t\tor") + pal.LineBreak() +
 					"\t\thttps://docs.docker.com/get-docker/",
 				localizer.Sprintf("Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)", localizer.PodmanPsCommand, localizer.DockerPsCommand),
-				fmt.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
+				localizer.Sprintf("If `podman ps` or `docker ps` works, try downloading the image with:"+pal.LineBreak()+
 					"\t`podman|docker pull %s`", imageName)},
 			localizer.Sprintf("Unable to download image %s", imageName))
 	}

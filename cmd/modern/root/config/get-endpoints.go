@@ -57,7 +57,7 @@ func (c *GetEndpoints) run() {
 			context := config.GetEndpoint(c.name)
 			output.Struct(context)
 		} else {
-			output.FatalfWithHints(
+			output.FatalWithHints(
 				[]string{localizer.Sprintf("To view available endpoints run `%s`", localizer.GetEndpointsCommand)},
 				localizer.Sprintf("error: no endpoint exists with the name: \"%v\"", c.name))
 		}
