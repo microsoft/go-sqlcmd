@@ -404,7 +404,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		PortNumber:         c.port,
 		ContainerId:        containerId,
 		Username:           pal.UserName(),
-		Password:           c.generatePassword(),
+		Password:           password,
 		PasswordEncryption: c.passwordEncryption,
 		Network:            c.network}
 	config.AddContextWithContainer(contextName, contextOptions)
