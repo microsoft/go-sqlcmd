@@ -36,7 +36,7 @@ func (m *dacfx) BringOnline(
 	m.installSqlPackage()
 	m.setDefaultDatabaseToMaster(options.Username, query)
 
-	_, stderr := m.RunCommand([]string{
+	_, stderr, _ := m.RunCommand([]string{
 		"/home/mssql/.dotnet/tools/sqlpackage",
 		"/Diagnostics:true",
 		"/Action:import",
@@ -70,7 +70,7 @@ func (m *dacfx) installSqlPackage() {
 	m.installDotNet()
 
 	// Check if sqlpackage is installed, if not, install it
-	_, stderr := m.RunCommand([]string{"/home/mssql/.dotnet/tools/sqlpackage", "/version"})
+	_, stderr, _ := m.RunCommand([]string{"/home/mssql/.dotnet/tools/sqlpackage", "/version"})
 	if len(stderr) > 0 {
 		m.RunCommand([]string{"/opt/dotnet/dotnet", "tool", "install", "-g", "microsoft.sqlpackage"})
 	}
@@ -78,7 +78,7 @@ func (m *dacfx) installSqlPackage() {
 
 func (m *dacfx) installDotNet() {
 	// Check if dotnet is installed, if not, install it
-	_, stderr := m.RunCommand([]string{"/opt/dotnet/dotnet", "--version"})
+	_, stderr, _ := m.RunCommand([]string{"/opt/dotnet/dotnet", "--version"})
 	if len(stderr) > 0 {
 		// Download dotnet-install.sh and run it
 		m.RunCommand([]string{"wget", "https://dot.net/v1/dotnet-install.sh", "-O", "/tmp/dotnet-install.sh"})
@@ -102,17 +102,17 @@ func (m *dacfx) installDotNet() {
 	}
 }
 
-func (m *dacfx) AddTextLineToFile(text string, file string) ([]byte, []byte) {
+func (m *dacfx) AddTextLineToFile(text string, file string) ([]byte, []byte, int) {
 	return m.RunCommand([]string{"/bin/bash", "-c", fmt.Sprintf("echo '%v' >> %v", text, file)})
 }
 
-func (m *dacfx) RunCommand(s []string) ([]byte, []byte) {
+func (m *dacfx) RunCommand(s []string) ([]byte, []byte, int) {
 	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{
 		Env: []string{"DOTNET_ROOT=/opt/dotnet"},
 	})
 }
 
-func (m *dacfx) RunCommandAsRoot(s []string) ([]byte, []byte) {
+func (m *dacfx) RunCommandAsRoot(s []string) ([]byte, []byte, int) {
 	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{
 		User: "root",
 	})

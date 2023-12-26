@@ -62,6 +62,10 @@ type MssqlBase struct {
 	openTool string
 	openFile string
 
+	network  string
+	addOn    string
+	addOnUse string
+
 	unitTesting bool
 
 	sql sql.Sql
@@ -260,6 +264,28 @@ func (c *MssqlBase) AddFlags(
 		Name:          "open-file",
 		Usage:         localizer.Sprintf("Open file in tool e.g. https://aks.ms/adventureworks-demo.sql"),
 	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.network,
+		DefaultString: "",
+		Name:          "network",
+		Usage:         localizer.Sprintf("Container network name (defaults to 'container-network' if --add-on specified)"),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.addOn,
+		DefaultString: "",
+		Name:          "add-on",
+		Usage:         localizer.Sprintf("Create add-on container"),
+	})
+
+	addFlag(cmdparser.FlagOptions{
+		String:        &c.addOnUse,
+		DefaultString: "",
+		Name:          "add-on-use",
+		Usage:         localizer.Sprintf("File to use for add-on container"),
+	})
+
 }
 
 // Run checks that the end-user license agreement has been accepted,
@@ -302,9 +328,13 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	output := c.Cmd.Output()
 	controller := container.NewController()
 	saPassword := c.generatePassword()
+	userName := pal.UserName()
+	password := c.generatePassword()
+
+	contextName = config.FindUniqueContextName(contextName, userName)
 
 	if c.port == 0 {
-		c.port = config.FindFreePortForTds()
+		c.port = config.FindFreePort(1433)
 	}
 
 	// Do an early exit if url doesn't exist
@@ -319,23 +349,47 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		}
 	}
 
+	// If an add-on is specified, and no network name, then set a default network name
+	if c.addOn != "" && c.network == "" {
+		c.network = "sqlcmd-" + contextName + "-network"
+	}
+
+	if c.network != "" {
+		// Create a docker network
+		if !controller.NetworkExists(c.network) {
+			output.Info(localizer.Sprintf("Creating %q, for add-on cross container communication", c.network))
+			controller.NetworkCreate(c.network)
+		}
+	}
+
+	// Very strange issue that we need to work here.  If we are using add-on containers
+	// we have to specify the name of the mssql container!
+	// Details in this bug/DCR here:
+	//		https://github.com/moby/moby/issues/45183
+	if c.name == "" {
+		c.name = contextName + "-container"
+	}
+
 	if !c.useCached {
 		c.downloadImage(imageName, output, controller)
 	}
 
 	runOptions := container.RunOptions{
+		PortInternal: 1433,
 		Port:         c.port,
 		Name:         c.name,
 		Hostname:     c.hostname,
 		Architecture: c.architecture,
-		Os:           c.os}
+		Os:           c.os,
+		Network:      c.network,
+	}
 
 	runOptions.Env = []string{
 		"ACCEPT_EULA=Y",
 		fmt.Sprintf("MSSQL_SA_PASSWORD=%s", saPassword),
 		fmt.Sprintf("MSSQL_COLLATION=%s", c.collation)}
 
-	output.Infof(localizer.Sprintf("Starting %v", imageName))
+	output.Info(localizer.Sprintf("Starting %q", imageName))
 
 	containerId := controller.ContainerRun(
 		imageName,
@@ -351,7 +405,8 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		ContainerId:        containerId,
 		Username:           pal.UserName(),
 		Password:           c.generatePassword(),
-		PasswordEncryption: c.passwordEncryption}
+		PasswordEncryption: c.passwordEncryption,
+		Network:            c.network}
 	config.AddContextWithContainer(contextName, contextOptions)
 
 	output.Infof(
@@ -388,7 +443,11 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		Name: "sa"}
 
 	// Connect to master database on SQL Server in the container as `sa`
-	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master"})
+	c.sql.Connect(
+		endpoint,
+		saUser,
+		sql.ConnectOptions{Database: "master", Interactive: false},
+	)
 
 	// Create a new (non-sa) SQL Server user
 	c.createUser(contextOptions.Username, contextOptions.Password)
@@ -407,39 +466,92 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			useDatabase.Extract()
 		}
 
-		output.Infof("Bringing database %q online", useDatabase.DatabaseName())
-		useDatabase.BringOnline(c.sql.Query, contextOptions.Username, contextOptions.Password)
+		output.Infof("Bringing database %q online (%s)", useDatabase.DatabaseName(), useDatabase.OnlineMethod())
+
+		// Connect to master, unless a default database was specified (at this point the default database
+		// has not been set yet, so we need to specify it in the -d statement
+		databaseToConnectTo := "master"
+		if c.defaultDatabase != "" {
+			databaseToConnectTo = c.defaultDatabase
+		}
+		if useDatabase.OnlineMethod() == "script" {
+			runSqlcmdInContainer := func(query string) {
+				cmd := []string{
+					"/opt/mssql-tools/bin/sqlcmd",
+					"-S",
+					"localhost",
+					"-U",
+					contextOptions.Username,
+					"-P",
+					contextOptions.Password,
+					"-d",
+					databaseToConnectTo,
+					"-i",
+					"/var/opt/mssql/backup/" + useDatabase.UrlFilename(),
+				}
+
+				controller.RunCmdInContainer(containerId, cmd, container.ExecOptions{})
+			}
+			useDatabase.BringOnline(runSqlcmdInContainer, contextOptions.Username, contextOptions.Password)
+		} else {
+			useDatabase.BringOnline(c.sql.Query, contextOptions.Username, contextOptions.Password)
+		}
 	}
 
-	if c.openTool == "" {
-		hints := [][]string{}
+	dabPort := 0
+	if c.addOn == "dab" {
+		dabImageName := "mcr.microsoft.com/azure-databases/data-api-builder"
 
-		// TODO: sqlcmd open ads only support on Windows right now, add Mac support
-		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-			hints = append(hints, []string{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"})
+		if !c.useCached {
+			c.downloadImage(dabImageName, output, controller)
 		}
 
-		hints = append(hints, []string{localizer.Sprintf("Run a query"), "sqlcmd query \"SELECT @@version\""})
-		hints = append(hints, []string{localizer.Sprintf("Start interactive session"), "sqlcmd query"})
-
-		if previousContextName != "" {
-			hints = append(
-				hints,
-				[]string{localizer.Sprintf("Change current context"), fmt.Sprintf(
-					"sqlcmd config use-context %v",
-					previousContextName,
-				)},
-			)
+		dabEnv := []string{
+			fmt.Sprintf("CONN_STRING=Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
+				c.name,
+				c.defaultDatabase,
+				userName,
+				password),
 		}
 
-		hints = append(hints, []string{localizer.Sprintf("View sqlcmd configuration"), "sqlcmd config view"})
-		hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
-		hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
+		dabPort = config.FindFreePort(5001)
 
-		output.InfofWithHintExamples(hints,
-			localizer.Sprintf("Now ready for client connections on port %d",
-				c.port),
+		dabRunOptions := container.RunOptions{
+			Env:          dabEnv,
+			PortInternal: 5000,
+			Port:         dabPort,
+			Architecture: c.architecture,
+			Os:           c.os,
+			Network:      c.network,
+		}
+
+		addOnContainerId := controller.ContainerRun(
+			dabImageName,
+			dabRunOptions,
 		)
+
+		contextName := config.CurrentContextName()
+
+		// Save add-on details to config file now, so it can be deleted even
+		// if something below fails
+		config.AddAddOn(
+			contextName,
+			"dab",
+			addOnContainerId,
+			dabImageName,
+			"127.0.0.1",
+			dabPort)
+
+		// Download the dab-config file to the container
+		controller.DownloadFile(
+			addOnContainerId,
+			c.addOnUse,
+			"/App",
+		)
+
+		// Restart the container, now that the dab-config file is there
+		controller.ContainerStop(addOnContainerId)
+		controller.ContainerStart(addOnContainerId)
 	}
 
 	if c.openTool == "ads" {
@@ -473,8 +585,55 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			output.Fatalf(tool.HowToInstall())
 		}
 
+		// BUGBUG: This should come from: displayPreLaunchInfo
+		output.Info(localizer.Sprintf("Press Ctrl+C to exit this process..."))
+
 		_, err := tool.Run(args)
 		c.CheckErr(err)
+	}
+
+	if c.openTool == "" {
+		hints := [][]string{}
+
+		// TODO: sqlcmd open ads only supported on Windows and Mac right now, add Linux support
+		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+			hints = append(hints, []string{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"})
+		}
+
+		hints = append(hints, []string{localizer.Sprintf("Run a query"), "sqlcmd query \"SELECT @@version\""})
+		hints = append(hints, []string{localizer.Sprintf("Start interactive session"), "sqlcmd query"})
+
+		if previousContextName != "" {
+			hints = append(
+				hints,
+				[]string{localizer.Sprintf("Change current context"), fmt.Sprintf(
+					"sqlcmd config use-context %v",
+					previousContextName,
+				)},
+			)
+		}
+
+		hints = append(hints, []string{localizer.Sprintf("View sqlcmd configuration"), "sqlcmd config view"})
+		hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
+		hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
+
+		if c.addOn == "dab" {
+			hints = append(hints, []string{
+				localizer.Sprintf("Data API Builder (DAB) Health Status"),
+				fmt.Sprintf("curl -s http://localhost:%d", dabPort),
+			})
+		}
+
+		if c.addOn == "dab" {
+			output.Info(localizer.Sprintf("Now ready for DAB connections on port %d",
+				dabPort),
+			)
+		}
+
+		output.InfofWithHintExamples(hints,
+			localizer.Sprintf("Now ready for SQL connections on port %d",
+				c.port),
+		)
 	}
 }
 
@@ -523,18 +682,6 @@ func (c *MssqlBase) createUser(
 	userName string,
 	password string,
 ) {
-	output := c.Cmd.Output()
-
-	defaultDatabase := "master"
-
-	if c.defaultDatabase != "" {
-		defaultDatabase = c.defaultDatabase
-
-		// Create the default database, if it isn't a downloaded database
-		output.Infof(localizer.Sprintf("Creating default database [%s]", defaultDatabase))
-		c.sql.Query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
-	}
-
 	const createLogin = `CREATE LOGIN [%s]
 WITH PASSWORD=N'%s',
 DEFAULT_DATABASE=[%s],
@@ -544,11 +691,14 @@ CHECK_POLICY=OFF`
 @loginame = N'%s',
 @rolename = N'sysadmin'`
 
+	output := c.Cmd.Output()
+	defaultDatabase := "master"
+
 	if c.defaultDatabase != "" {
 		defaultDatabase = c.defaultDatabase
 
 		// Create the default database, if it isn't a downloaded database
-		output.Infof("Creating default database [%s]", defaultDatabase)
+		output.Infof(localizer.Sprintf("Creating default database %q", defaultDatabase))
 		c.sql.Query(fmt.Sprintf("CREATE DATABASE [%s]", defaultDatabase))
 	}
 
@@ -572,7 +722,7 @@ func (c *MssqlBase) downloadImage(
 	output *output.Output,
 	controller *container.Controller,
 ) {
-	output.Info(localizer.Sprintf("Downloading %v", imageName))
+	output.Info(localizer.Sprintf("Downloading %q", imageName))
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {
 		output.FatalErrorWithHints(

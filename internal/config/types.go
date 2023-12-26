@@ -7,4 +7,5 @@ type ContextOptions struct {
 	Username           string
 	Password           string
 	PasswordEncryption string
+	Network            string
 }

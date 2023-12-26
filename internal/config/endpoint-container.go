@@ -63,14 +63,11 @@ func CurrentContextEndpointHasContainer() (exists bool) {
 	return
 }
 
-// FindFreePortForTds is used to find a free port number to use for the TDS
-// protocol. It starts at port number 1433 and continues until it finds a port
+// FindFreePort is used to find a free port number to use for the TDS
+// protocol. It starts at port number startingPortNumber and continues until it finds a port
 // number that is not currently in use by any of the endpoints in the
 // configuration. It also checks that the port is available on the local machine.
-// If no available port is found after trying up to port number 5000, the function panics.
-func FindFreePortForTds() (portNumber int) {
-	const startingPortNumber = 1433
-
+func FindFreePort(startingPortNumber int) (portNumber int) {
 	portNumber = startingPortNumber
 
 	for {
@@ -91,7 +88,7 @@ func FindFreePortForTds() (portNumber int) {
 
 		portNumber++
 
-		if portNumber == 5000 {
+		if portNumber == startingPortNumber+2000 {
 			panic("Did not find an available port")
 		}
 	}

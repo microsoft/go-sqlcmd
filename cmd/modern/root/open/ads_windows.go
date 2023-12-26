@@ -65,7 +65,6 @@ func (c *Ads) adsKey(instance, database, authType, user string) string {
 		"Microsoft.SqlTools|"+
 			"itemtype:Profile|"+
 			"id:providerName:MSSQL|"+
-			"applicationName:azdata|"+
 			"authenticationType:%s|"+
 			"database:%s|"+
 			"server:%s|"+

@@ -4,6 +4,7 @@ var mechanisms = []Mechanism{
 	&attach{},
 	&dacfx{},
 	&restore{},
+	&script{},
 }
 
 func FileTypes() []string {

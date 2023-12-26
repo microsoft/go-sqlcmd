@@ -5,7 +5,7 @@ import (
 )
 
 func NewMechanism(fileExtension string, name string, controller *container.Controller) Mechanism {
-	trace("NewMechanism: fileExtension = %q, name = %q"+fileExtension, name)
+	trace("NewMechanism: fileExtension = %q, name = %q", fileExtension, name)
 	for _, m := range mechanisms {
 		if m.Name() == name {
 			m.Initialize(controller)

@@ -63,6 +63,6 @@ func (m *attach) setFilePermissions(filename string) {
 	m.RunCommand([]string{"chmod", "-o-r-u+rw-g+r", filename})
 }
 
-func (m *attach) RunCommand(s []string) ([]byte, []byte) {
+func (m *attach) RunCommand(s []string) ([]byte, []byte, int) {
 	return m.controller.RunCmdInContainer(m.containerId, s, container.ExecOptions{})
 }

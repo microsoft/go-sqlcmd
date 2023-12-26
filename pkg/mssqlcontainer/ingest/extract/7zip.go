@@ -34,7 +34,7 @@ func (e *sevenZip) Extract(srcFile string, destFolder string) (string, string) {
 		"/var/opt/mssql/backup/" + srcFile,
 	}, container.ExecOptions{})
 
-	stdout, _ := e.controller.RunCmdInContainer(e.containerId, []string{
+	stdout, _, _ := e.controller.RunCmdInContainer(e.containerId, []string{
 		"./opt/7-zip/7zz",
 		"l",
 		"-ba",

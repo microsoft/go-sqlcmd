@@ -132,12 +132,21 @@ func AddContextWithContainer(
 		Name: endPointName,
 	})
 
+	contextDetails := ContextDetails{
+		Endpoint: endPointName,
+	}
+
+	if userName != "" {
+		contextDetails.User = &userName
+	}
+
+	if options.Network != "" {
+		contextDetails.Network = &options.Network
+	}
+
 	config.Contexts = append(config.Contexts, Context{
-		ContextDetails: ContextDetails{
-			Endpoint: endPointName,
-			User:     &userName,
-		},
-		Name: contextName,
+		ContextDetails: contextDetails,
+		Name:           contextName,
 	})
 
 	user := User{
@@ -151,7 +160,6 @@ func AddContextWithContainer(
 	}
 
 	config.Users = append(config.Users, user)
-
 	Save()
 }
 

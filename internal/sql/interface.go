@@ -10,6 +10,7 @@ import (
 type Sql interface {
 	Connect(endpoint Endpoint, user *User, options ConnectOptions)
 	Query(text string)
+	ExecuteSqlFile(filename string)
 	ScalarString(query string) string
 }
 

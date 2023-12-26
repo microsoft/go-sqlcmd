@@ -113,16 +113,40 @@ func (c *Uninstall) run() {
 				c.userDatabaseSafetyCheck(controller, id)
 			}
 
-			output.Info(localizer.Sprintf("Removing context %s", config.CurrentContextName()))
+			output.Info(localizer.Sprintf("Removing context %q", config.CurrentContextName()))
 
 			if controller.ContainerExists(id) {
-				output.Info(localizer.Sprintf("Stopping %s", endpoint.ContainerDetails.Image))
+				output.Info(localizer.Sprintf("Stopping %q", endpoint.ContainerDetails.Image))
 				err := controller.ContainerStop(id)
 				c.CheckErr(err)
 				err = controller.ContainerRemove(id)
 				c.CheckErr(err)
 			} else {
-				output.Warn(localizer.Sprintf("Container %q no longer exists, continuing to remove context...", id))
+				output.Warn(localizer.Sprintf("Container %q (for endpoint %q) no longer exists, continuing to remove context...", id, endpoint.Name))
+			}
+
+			addOns := config.CurrentContextAddOns()
+			for _, a := range addOns {
+				e := config.GetEndpoint(a.Endpoint)
+				if controller.ContainerExists(e.ContainerDetails.Id) {
+					output.Info(localizer.Sprintf("Stopping %q", e.ContainerDetails.Image))
+					err := controller.ContainerStop(e.ContainerDetails.Id)
+					c.CheckErr(err)
+					err = controller.ContainerRemove(e.ContainerDetails.Id)
+					c.CheckErr(err)
+				} else {
+					output.Warn(localizer.Sprintf("Container %q (for endpoint %q) no longer exists, continuing to remove context...", e.ContainerDetails.Id, a.Endpoint))
+				}
+
+				config.DeleteEndpoint(a.Endpoint)
+			}
+
+			network := config.CurrentContextNetwork()
+			if network != nil {
+				if controller.NetworkExists(*network) {
+					output.Info(localizer.Sprintf("Removing container network %q", *network))
+					controller.NetworkDelete(*network)
+				}
 			}
 		}
 
