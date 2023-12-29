@@ -9,4 +9,6 @@ import (
 
 var tools = []tool.Tool{
 	&tool.AzureDataStudio{},
+	&tool.SqlServerManagementStudio{},
+	&tool.VisualStudioCode{},
 }

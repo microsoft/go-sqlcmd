@@ -277,6 +277,8 @@ func (c Controller) CopyFile(id string, src string, destFolder string) {
 		panic("Must pass in non-empty destFolder")
 	}
 
+	trace("Copying file %s to %s", src, destFolder)
+
 	_, f := filepath.Split(src)
 	h, err := os.ReadFile(src)
 	checkErr(err)

@@ -86,6 +86,26 @@ func (c *Cmd) AddFlag(options FlagOptions) {
 		}
 	}
 
+	if options.StringArray != nil {
+		if options.Bool != nil || options.Int != nil || options.String != nil {
+			panic("Only provide one type")
+		}
+		if options.Shorthand == "" {
+			c.command.PersistentFlags().StringArrayVar(
+				options.StringArray,
+				options.Name,
+				[]string{},
+				options.Usage)
+		} else {
+			c.command.PersistentFlags().StringArrayVarP(
+				options.StringArray,
+				options.Name,
+				options.Shorthand,
+				[]string{},
+				options.Usage)
+		}
+	}
+
 	if options.Hidden {
 		c.command.PersistentFlags().MarkHidden(options.Name)
 	}

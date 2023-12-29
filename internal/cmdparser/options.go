@@ -38,6 +38,8 @@ type FlagOptions struct {
 
 	Bool        *bool
 	DefaultBool bool
+
+	StringArray *[]string
 }
 
 // CommandOptions is a struct that allows the caller to specify options for a Command.

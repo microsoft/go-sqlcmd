@@ -6,6 +6,7 @@ package install
 import (
 	"fmt"
 	"runtime"
+	"strconv"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
@@ -63,8 +64,8 @@ type MssqlBase struct {
 	openFile string
 
 	network  string
-	addOn    string
-	addOnUse string
+	addOn    []string
+	addOnUse []string
 
 	unitTesting bool
 
@@ -273,19 +274,18 @@ func (c *MssqlBase) AddFlags(
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.addOn,
+		StringArray:   &c.addOn,
 		DefaultString: "",
 		Name:          "add-on",
-		Usage:         localizer.Sprintf("Create add-on container"),
+		Usage:         localizer.Sprintf("Create add-on container (i.e. dab, fleet-manager)"),
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.addOnUse,
+		StringArray:   &c.addOnUse,
 		DefaultString: "",
 		Name:          "add-on-use",
 		Usage:         localizer.Sprintf("File to use for add-on container"),
 	})
-
 }
 
 // Run checks that the end-user license agreement has been accepted,
@@ -350,7 +350,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	// If an add-on is specified, and no network name, then set a default network name
-	if c.addOn != "" && c.network == "" {
+	if len(c.addOn) > 0 && c.network == "" {
 		c.network = "sqlcmd-" + contextName + "-network"
 	}
 
@@ -499,59 +499,99 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	dabPort := 0
-	if c.addOn == "dab" {
-		dabImageName := "mcr.microsoft.com/azure-databases/data-api-builder"
+	fleetManagerPort := 0
+	for i, addOn := range c.addOn {
 
-		if !c.useCached {
-			c.downloadImage(dabImageName, output, controller)
+		if addOn == "fleet-manager" {
+			dabImageName := "fleet-manager"
+
+			if !c.useCached {
+				c.downloadImage(dabImageName, output, controller)
+			}
+
+			fleetManagerPort = config.FindFreePort(8080)
+
+			fleetManagerRunOptions := container.RunOptions{
+				PortInternal: 80,
+				Port:         fleetManagerPort,
+				Architecture: c.architecture,
+				Os:           c.os,
+				Network:      c.network,
+			}
+
+			addOnContainerId := controller.ContainerRun(
+				dabImageName,
+				fleetManagerRunOptions,
+			)
+
+			contextName := config.CurrentContextName()
+
+			// Save add-on details to config file now, so it can be deleted even
+			// if something below fails
+			config.AddAddOn(
+				contextName,
+				"fleet-manager",
+				addOnContainerId,
+				dabImageName,
+				"127.0.0.1",
+				fleetManagerPort)
 		}
 
-		dabEnv := []string{
-			fmt.Sprintf("CONN_STRING=Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
-				c.name,
-				c.defaultDatabase,
-				userName,
-				password),
+		if addOn == "dab" {
+			dabImageName := "mcr.microsoft.com/azure-databases/data-api-builder"
+
+			if !c.useCached {
+				c.downloadImage(dabImageName, output, controller)
+			}
+
+			dabEnv := []string{
+				fmt.Sprintf("CONN_STRING=Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
+					c.name,
+					c.defaultDatabase,
+					userName,
+					password),
+			}
+
+			dabPort = config.FindFreePort(5001)
+
+			dabRunOptions := container.RunOptions{
+				Env:          dabEnv,
+				PortInternal: 5000,
+				Port:         dabPort,
+				Architecture: c.architecture,
+				Os:           c.os,
+				Network:      c.network,
+			}
+
+			addOnContainerId := controller.ContainerRun(
+				dabImageName,
+				dabRunOptions,
+			)
+
+			contextName := config.CurrentContextName()
+
+			// Save add-on details to config file now, so it can be deleted even
+			// if something below fails
+			config.AddAddOn(
+				contextName,
+				"dab",
+				addOnContainerId,
+				dabImageName,
+				"127.0.0.1",
+				dabPort)
+
+			// Download the dab-config file to the container
+			controller.DownloadFile(
+				addOnContainerId,
+				c.addOnUse[i],
+				"/App",
+			)
+
+			// Restart the container, now that the dab-config file is there
+			controller.ContainerStop(addOnContainerId)
+			controller.ContainerStart(addOnContainerId)
 		}
 
-		dabPort = config.FindFreePort(5001)
-
-		dabRunOptions := container.RunOptions{
-			Env:          dabEnv,
-			PortInternal: 5000,
-			Port:         dabPort,
-			Architecture: c.architecture,
-			Os:           c.os,
-			Network:      c.network,
-		}
-
-		addOnContainerId := controller.ContainerRun(
-			dabImageName,
-			dabRunOptions,
-		)
-
-		contextName := config.CurrentContextName()
-
-		// Save add-on details to config file now, so it can be deleted even
-		// if something below fails
-		config.AddAddOn(
-			contextName,
-			"dab",
-			addOnContainerId,
-			dabImageName,
-			"127.0.0.1",
-			dabPort)
-
-		// Download the dab-config file to the container
-		controller.DownloadFile(
-			addOnContainerId,
-			c.addOnUse,
-			"/App",
-		)
-
-		// Restart the container, now that the dab-config file is there
-		controller.ContainerStop(addOnContainerId)
-		controller.ContainerStart(addOnContainerId)
 	}
 
 	if c.openTool == "ads" {
@@ -617,22 +657,37 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
 		hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
 
-		if c.addOn == "dab" {
-			hints = append(hints, []string{
-				localizer.Sprintf("Data API Builder (DAB) Health Status"),
-				fmt.Sprintf("curl -s http://localhost:%d", dabPort),
-			})
-		}
+		for _, addOn := range c.addOn {
+			if addOn == "fleet-manager" {
+				hints = append(hints, []string{
+					localizer.Sprintf("Fleet Manager (Renzo) API UI"),
+					fmt.Sprintf("http://localhost:%d/swagger/index.html", fleetManagerPort),
+				})
+			}
 
-		if c.addOn == "dab" {
-			output.Info(localizer.Sprintf("Now ready for DAB connections on port %d",
-				dabPort),
-			)
+			if addOn == "dab" {
+				hints = append(hints, []string{
+					localizer.Sprintf("Data API Builder (DAB) Health Status"),
+					fmt.Sprintf("http://localhost:%d", dabPort),
+				})
+			}
+
+			if addOn == "fleet-manager" {
+				output.Info(localizer.Sprintf("Now ready for Fleet Manager connections on port %v",
+					strconv.Itoa(fleetManagerPort)),
+				)
+			}
+
+			if addOn == "dab" {
+				output.Info(localizer.Sprintf("Now ready for DAB connections on port %v",
+					strconv.Itoa(dabPort)),
+				)
+			}
 		}
 
 		output.InfofWithHintExamples(hints,
-			localizer.Sprintf("Now ready for SQL connections on port %d",
-				c.port),
+			localizer.Sprintf("Now ready for SQL connections on port %v",
+				strconv.Itoa(c.port)),
 		)
 	}
 }
