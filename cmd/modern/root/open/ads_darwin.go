@@ -16,7 +16,7 @@ type Ads struct {
 	cmdparser.Cmd
 }
 
-func (c *Ads) persistCredentialForAds(hostname string, endpoint sqlconfig.Endpoint, user *sqlconfig.User) {
+func (c *Ads) PersistCredentialForAds(hostname string, endpoint sqlconfig.Endpoint, user *sqlconfig.User) {
 	// UNDONE: See - https://github.com/microsoft/go-sqlcmd/issues/257
 }
 
