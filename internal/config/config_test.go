@@ -83,7 +83,7 @@ func TestConfig(t *testing.T) {
 			GetEndpoint("endpoint")
 			OutputEndpoints(o.Struct, true)
 			OutputEndpoints(o.Struct, false)
-			FindFreePortForTds()
+			FindFreePort(0)
 			DeleteEndpoint("endpoint2")
 			DeleteEndpoint("endpoint3")
 
@@ -131,7 +131,20 @@ func TestConfig(t *testing.T) {
 			ContainerId()
 			RemoveCurrentContext()
 			RemoveCurrentContext()
-			AddContextWithContainer("context", "imageName", 1433, "containerId", "user", "password", "none")
+<<<<<<< HEAD
+
+			options := ContextOptions{
+				ImageName:          "imageName",
+				PortNumber:         1433,
+				ContainerId:        "containerId",
+				Username:           "user",
+				Password:           "password",
+				PasswordEncryption: "none",
+			}
+			AddContextWithContainer("context", options)
+=======
+			AddContextWithContainer("imageName", "context", 1433, "containerId", "user", "password", "none", "")
+>>>>>>> stuartpa/add-ons
 			RemoveCurrentContext()
 			DeleteEndpoint("endpoint")
 			DeleteContext("context")
@@ -324,7 +337,19 @@ func TestAddContextWithContainerPanic(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Panics(t, func() {
-				AddContextWithContainer(tt.args.contextName, tt.args.imageName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.passwordEncryption)
+<<<<<<< HEAD
+				options := ContextOptions{
+					ImageName:          tt.args.imageName,
+					PortNumber:         tt.args.portNumber,
+					ContainerId:        tt.args.containerId,
+					Username:           tt.args.username,
+					Password:           tt.args.password,
+					PasswordEncryption: tt.args.passwordEncryption,
+				}
+				AddContextWithContainer(tt.args.contextName, options)
+=======
+				AddContextWithContainer(tt.args.imageName, tt.args.contextName, tt.args.portNumber, tt.args.containerId, tt.args.username, tt.args.password, tt.args.passwordEncryption, "")
+>>>>>>> stuartpa/add-ons
 			})
 		})
 	}

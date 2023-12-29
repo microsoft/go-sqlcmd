@@ -47,7 +47,7 @@ func (c *Ads) run() {
 	// If basic auth is used, we need to persist the password in the OS in a way
 	// that ADS can access it.  The method used is OS specific.
 	if user != nil && user.AuthenticationType == "basic" {
-		c.persistCredentialForAds(endpoint.EndpointDetails.Address, endpoint, user)
+		c.PersistCredentialForAds(endpoint.EndpointDetails.Address, endpoint, user)
 		c.launchAds(endpoint.EndpointDetails.Address, endpoint.EndpointDetails.Port, user.BasicAuth.Username)
 	} else {
 		c.launchAds(endpoint.EndpointDetails.Address, endpoint.EndpointDetails.Port, "")
@@ -76,6 +76,7 @@ func (c *Ads) launchAds(host string, port int, username string) {
 				port)),
 	}
 
+	// If a username is specified, use that (basic auth), otherwise use integrated auth
 	if username != "" {
 
 		// Here's a fun SQL Server behavior  - it allows you to create database

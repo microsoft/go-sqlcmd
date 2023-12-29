@@ -4,6 +4,7 @@
 package container
 
 import (
+	"archive/tar"
 	"bufio"
 	"bytes"
 	"context"
@@ -19,6 +20,7 @@ import (
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/go-connections/nat"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
+	"os"
 )
 
 type Controller struct {
@@ -64,43 +66,65 @@ func (c Controller) EnsureImage(image string) (err error) {
 	return
 }
 
+func (c Controller) NetworkCreate(name string) string {
+	resp, err := c.cli.NetworkCreate(context.Background(), name, types.NetworkCreate{})
+	checkErr(err)
+
+	return resp.ID
+}
+
+func (c Controller) NetworkDelete(name string) {
+	err := c.cli.NetworkRemove(context.Background(), name)
+	checkErr(err)
+}
+
+func (c Controller) NetworkExists(name string) bool {
+	networks, err := c.cli.NetworkList(context.Background(), types.NetworkListOptions{})
+	checkErr(err)
+
+	for _, network := range networks {
+		if network.Name == name {
+			return true
+		}
+	}
+
+	return false
+}
+
 // ContainerRun creates a new container using the provided image and env values
-// and binds it to the specified port number. It then starts the container and returns
-// the ID of the container.
+// and binds the internal port to the specified external port number. It then starts
+// the container and returns the ID of the container.
 func (c Controller) ContainerRun(
 	image string,
-	env []string,
-	port int,
-	name string,
-	hostname string,
-	architecture string,
-	os string,
-	command []string,
-	unitTestFailure bool,
+	options RunOptions,
 ) string {
 	hostConfig := &container.HostConfig{
 		PortBindings: nat.PortMap{
-			nat.Port("1433/tcp"): []nat.PortBinding{
+			nat.Port(strconv.Itoa(options.PortInternal) + "/tcp"): []nat.PortBinding{
 				{
 					HostIP:   "0.0.0.0",
-					HostPort: strconv.Itoa(port),
+					HostPort: strconv.Itoa(options.Port),
 				},
 			},
 		},
+		NetworkMode: container.NetworkMode(options.Network),
 	}
 
 	platform := specs.Platform{
-		Architecture: architecture,
-		OS:           os,
+		Architecture: options.Architecture,
+		OS:           options.Os,
 	}
 
 	resp, err := c.cli.ContainerCreate(context.Background(), &container.Config{
 		Tty:      true,
 		Image:    image,
-		Cmd:      command,
-		Env:      env,
-		Hostname: hostname,
-	}, hostConfig, nil, &platform, name)
+		Cmd:      options.Command,
+		Env:      options.Env,
+		Hostname: options.Hostname,
+		ExposedPorts: nat.PortSet{
+			nat.Port(strconv.Itoa(options.PortInternal) + "/tcp"): {},
+		},
+	}, hostConfig, nil, &platform, options.Name)
 	checkErr(err)
 
 	err = c.cli.ContainerStart(
@@ -108,7 +132,7 @@ func (c Controller) ContainerRun(
 		resp.ID,
 		types.ContainerStartOptions{},
 	)
-	if err != nil || unitTestFailure {
+	if err != nil || options.UnitTestFailure {
 		// Remove the container, because we haven't persisted to config yet, so
 		// uninstall won't work yet
 		if resp.ID != "" {
@@ -119,6 +143,16 @@ func (c Controller) ContainerRun(
 	checkErr(err)
 
 	return resp.ID
+}
+
+func (c Controller) ContainerName(containerID string) string {
+	// Inspect the container to get details
+	containerInfo, err := c.cli.ContainerInspect(context.Background(), containerID)
+	checkErr(err)
+
+	// Access the container name from the inspect result
+	containerName := containerInfo.Name[1:] // Removing the leading '/'
+	return containerName
 }
 
 // ContainerWaitForLogEntry is used to wait for a specific string to be written
@@ -232,6 +266,43 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	return strings.Split(string(stdout), "\n")
 }
 
+func (c Controller) CopyFile(id string, src string, destFolder string) {
+	if id == "" {
+		panic("Must pass in non-empty id")
+	}
+	if src == "" {
+		panic("Must pass in non-empty src")
+	}
+	if destFolder == "" {
+		panic("Must pass in non-empty destFolder")
+	}
+
+	trace("Copying file %s to %s", src, destFolder)
+
+	_, f := filepath.Split(src)
+	h, err := os.ReadFile(src)
+	checkErr(err)
+
+	// Create and add some files to the archive.
+	var buf bytes.Buffer
+	tw := tar.NewWriter(&buf)
+	defer func() {
+		checkErr(tw.Close())
+	}()
+	hdr := &tar.Header{
+		Name: f,
+		Mode: 0600,
+		Size: int64(len(h)),
+	}
+	err = tw.WriteHeader(hdr)
+	checkErr(err)
+	_, err = tw.Write([]byte(h))
+	checkErr(err)
+
+	err = c.cli.CopyToContainer(context.Background(), id, destFolder, &buf, types.CopyToContainerOptions{})
+	checkErr(err)
+}
+
 func (c Controller) DownloadFile(id string, src string, destFolder string) {
 	if id == "" {
 		panic("Must pass in non-empty id")
@@ -243,10 +314,12 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		panic("Must pass in non-empty destFolder")
 	}
 
-	cmd := []string{"mkdir", destFolder}
-	c.runCmdInContainer(id, cmd)
+	trace("Downloading file %s to %s (will try wget first, and curl if wget fails", src, destFolder)
 
-	_, file := filepath.Split(src)
+	cmd := []string{"mkdir", "-p", destFolder}
+	c.RunCmdInContainer(id, cmd, ExecOptions{})
+
+	_, file := filepath.Split(strings.Split(src, "?")[0])
 
 	// Wget the .bak file from the http src, and place it in /var/opt/sql/backup
 	cmd = []string{
@@ -256,19 +329,41 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		src,
 	}
 
-	c.runCmdInContainer(id, cmd)
+	_, _, exitCode := c.RunCmdInContainer(id, cmd, ExecOptions{})
+	trace("wget exit code: %d", exitCode)
+
+	if exitCode == 126 {
+		trace("wget was not found in container, trying curl")
+		cmd = []string{
+			"curl",
+			"-o",
+			destFolder + "/" + file, // not using filepath.Join here, this is in the *nix container. always /
+			"-L",
+			src,
+		}
+
+		_, _, exitCode = c.RunCmdInContainer(id, cmd, ExecOptions{})
+		trace("curl exit code: %d", exitCode)
+	}
 }
 
-func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) {
-	trace("Running command in container: " + strings.Join(cmd, " "))
+type ExecOptions struct {
+	User string
+	Env  []string
+}
+
+func (c Controller) RunCmdInContainer(id string, cmd []string, options ExecOptions) ([]byte, []byte, int) {
+	trace("Running command in container: " + strings.Replace(strings.Join(cmd, " "), "%", "%%", -1))
 
 	response, err := c.cli.ContainerExecCreate(
 		context.Background(),
 		id,
 		types.ExecConfig{
+			User:         options.User,
 			AttachStderr: true,
 			AttachStdout: true,
 			Cmd:          cmd,
+			Env:          options.Env,
 		},
 	)
 	checkErr(err)
@@ -298,10 +393,16 @@ func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) 
 	stderr, err := io.ReadAll(&errBuf)
 	checkErr(err)
 
-	trace("Stdout: " + string(stdout))
-	trace("Stderr: " + string(stderr))
+	trace("Stdout: " + strings.Replace(string(stdout), "%", "%%%%", -1))
+	trace("Stderr: " + strings.Replace(string(stderr), "%", "%%%%", -1))
 
-	return stdout, stderr
+	// Get the exit code
+	execInspect, err := c.cli.ContainerExecInspect(context.Background(), response.ID)
+	checkErr(err)
+
+	trace("ExitCode: %d", execInspect.ExitCode)
+
+	return stdout, stderr, execInspect.ExitCode
 }
 
 // ContainerRunning returns true if the container with the given ID is running.
@@ -329,7 +430,7 @@ func (c Controller) ContainerExists(id string) (exists bool) {
 	)
 	resp, err := c.cli.ContainerList(
 		context.Background(),
-		types.ContainerListOptions{Filters: f},
+		types.ContainerListOptions{Filters: f, All: true},
 	)
 	checkErr(err)
 	if len(resp) > 0 {

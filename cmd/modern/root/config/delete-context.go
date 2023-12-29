@@ -74,6 +74,10 @@ func (c *DeleteContext) run() {
 			if config.UserExists(context) {
 				config.DeleteUser(*context.ContextDetails.User)
 			}
+
+			for _, c := range context.AddOns {
+				config.DeleteEndpoint(c.Endpoint)
+			}
 		}
 
 		config.DeleteContext(c.name)

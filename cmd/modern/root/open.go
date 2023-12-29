@@ -31,5 +31,7 @@ func (c *Open) SubCommands() []cmdparser.Command {
 
 	return []cmdparser.Command{
 		cmdparser.New[*open.Ads](dependencies),
+		cmdparser.New[*open.Ssms](dependencies),
+		cmdparser.New[*open.Vscode](dependencies),
 	}
 }

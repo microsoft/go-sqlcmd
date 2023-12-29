@@ -33,17 +33,20 @@ func TestController_EnsureImage(t *testing.T) {
 	c := NewController()
 	err := c.EnsureImage(imageName)
 	checkErr(err)
-	id := c.ContainerRun(
-		imageName,
-		[]string{},
-		port,
-		"",
-		"",
-		"amd64",
-		"linux",
-		[]string{"ash", "-c", "echo 'Hello World'; sleep 3"},
-		false,
-	)
+<<<<<<< HEAD
+
+	runOptions := RunOptions{
+		Env:          []string{},
+		Port:         port,
+		Architecture: "amd64",
+		Os:           "linux",
+		Command:      []string{"ash", "-c", "echo 'Hello World'; sleep 3"},
+	}
+
+	id := c.ContainerRun(imageName, runOptions)
+=======
+	id := c.ContainerRun(imageName, []string{}, nil, 1433, port, "", "", "amd64", "linux", "", []string{"ash", "-c", "echo 'Hello World'; sleep 3"}, false)
+>>>>>>> stuartpa/add-ons
 	c.ContainerRunning(id)
 	c.ContainerWaitForLogEntry(id, "Hello World")
 	c.ContainerExists(id)
@@ -79,19 +82,19 @@ func TestController_ContainerRunFailure(t *testing.T) {
 
 	c := NewController()
 
+<<<<<<< HEAD
+	runOptions := RunOptions{
+		Architecture: "amd64",
+		Os:           "linux",
+		Command:      []string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+	}
+
+	assert.Panics(t, func() { c.ContainerRun(imageName, runOptions) })
+=======
 	assert.Panics(t, func() {
-		c.ContainerRun(
-			imageName,
-			[]string{},
-			0,
-			"",
-			"",
-			"amd64",
-			"linux",
-			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-			false,
-		)
+		c.ContainerRun(imageName, []string{}, nil, 0, 0, "", "", "amd64", "linux", "", []string{"ash", "-c", "echo 'Hello World'; sleep 1"}, false)
 	})
+>>>>>>> stuartpa/add-ons
 }
 
 func TestController_ContainerRunFailureCleanup(t *testing.T) {
@@ -107,19 +110,19 @@ func TestController_ContainerRunFailureCleanup(t *testing.T) {
 
 	c := NewController()
 
+<<<<<<< HEAD
+	runOptions := RunOptions{
+		Architecture:    "amd64",
+		Os:              "linux",
+		Command:         []string{"ash", "-c", "echo 'Hello World'; sleep 1"},
+		UnitTestFailure: true,
+	}
+	assert.Panics(t, func() { c.ContainerRun(imageName, runOptions) })
+=======
 	assert.Panics(t, func() {
-		c.ContainerRun(
-			imageName,
-			[]string{},
-			0,
-			"",
-			"",
-			"amd64",
-			"linux",
-			[]string{"ash", "-c", "echo 'Hello World'; sleep 1"},
-			true,
-		)
+		c.ContainerRun(imageName, []string{}, nil, 0, 0, "", "", "amd64", "linux", "", []string{"ash", "-c", "echo 'Hello World'; sleep 1"}, true)
 	})
+>>>>>>> stuartpa/add-ons
 }
 
 func TestController_ContainerStopNeg2(t *testing.T) {

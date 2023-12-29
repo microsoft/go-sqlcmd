@@ -67,7 +67,7 @@ Use `sqlcmd` to create SQL Server and Azure SQL Edge instances using a local con
 To create a local SQL Server instance with the AdventureWorksLT database restored, query it, and connect to it using Azure Data Studio, run:
 
 ```
-sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak
+sqlcmd create mssql --accept-eula --use https://aka.ms/AdventureWorksLT.bak
 sqlcmd query "SELECT DB_NAME()"
 sqlcmd open ads
 ```

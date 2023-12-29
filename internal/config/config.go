@@ -92,71 +92,74 @@ func IsEmpty() (isEmpty bool) {
 // requested. The updated configuration is saved to file.
 func AddContextWithContainer(
 	contextName string,
-	imageName string,
-	portNumber int,
-	containerId string,
-	username string,
-	password string,
-	passwordEncryption string,
+	options ContextOptions,
 ) {
-	if containerId == "" {
+	if options.ContainerId == "" {
 		panic("containerId must be provided")
 	}
-	if imageName == "" {
+	if options.ImageName == "" {
 		panic("imageName must be provided")
 	}
-	if portNumber == 0 {
+	if options.PortNumber == 0 {
 		panic("portNumber must be non-zero")
 	}
-	if username == "" {
+	if options.Username == "" {
 		panic("username must be provided")
 	}
-	if password == "" {
+	if options.Password == "" {
 		panic("password must be provided")
 	}
 	if contextName == "" {
 		panic("contextName must be provided")
 	}
 
-	contextName = FindUniqueContextName(contextName, username)
+	contextName = FindUniqueContextName(contextName, options.Username)
 	endPointName := FindUniqueEndpointName(contextName)
-	userName := username + "@" + contextName
+	userName := options.Username + "@" + contextName
 
 	config.CurrentContext = contextName
 
 	config.Endpoints = append(config.Endpoints, Endpoint{
 		AssetDetails: &AssetDetails{
 			ContainerDetails: &ContainerDetails{
-				Id:    containerId,
-				Image: imageName},
+				Id:    options.ContainerId,
+				Image: options.ImageName},
 		},
 		EndpointDetails: EndpointDetails{
 			Address: "127.0.0.1",
-			Port:    portNumber,
+			Port:    options.PortNumber,
 		},
 		Name: endPointName,
 	})
 
+	contextDetails := ContextDetails{
+		Endpoint: endPointName,
+	}
+
+	if userName != "" {
+		contextDetails.User = &userName
+	}
+
+	if options.Network != "" {
+		contextDetails.Network = &options.Network
+	}
+
 	config.Contexts = append(config.Contexts, Context{
-		ContextDetails: ContextDetails{
-			Endpoint: endPointName,
-			User:     &userName,
-		},
-		Name: contextName,
+		ContextDetails: contextDetails,
+		Name:           contextName,
 	})
 
 	user := User{
 		AuthenticationType: "basic",
 		BasicAuth: &BasicAuthDetails{
-			Username:           username,
-			PasswordEncryption: passwordEncryption,
-			Password:           encryptCallback(password, passwordEncryption),
+			Username:           options.Username,
+			PasswordEncryption: options.PasswordEncryption,
+			Password:           encryptCallback(options.Password, options.PasswordEncryption),
 		},
 		Name: userName,
 	}
 
 	config.Users = append(config.Users, user)
-
 	Save()
 }
 
