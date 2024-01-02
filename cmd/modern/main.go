@@ -12,6 +12,8 @@
 package main
 
 import (
+	"path"
+
 	"github.com/microsoft/go-sqlcmd/internal"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
@@ -20,9 +22,9 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/output/verbosity"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
-	"path"
 
 	"os"
 
@@ -38,6 +40,8 @@ var version = "local-build" // overridden in pipeline builds with: -ldflags="-X 
 // If the first argument is a modern CLI subcommand, the modern CLI is
 // executed. Otherwise, the legacy CLI is executed.
 func main() {
+	telemetry.InitializeAppInsights()
+	telemetry.TrackEvent("sqlcmd.version", map[string]string{"version": version})
 	dependencies := dependency.Options{
 		Output: output.New(output.Options{
 			StandardWriter: os.Stdout,

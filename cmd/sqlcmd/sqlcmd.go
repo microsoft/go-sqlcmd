@@ -19,6 +19,7 @@ import (
 	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/microsoft/go-mssqldb/msdsn"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
 	"github.com/microsoft/go-sqlcmd/pkg/sqlcmd"
 	"github.com/spf13/cobra"
@@ -221,11 +222,11 @@ func Execute(version string) {
 					fmt.Println(localizer.Sprintf("Servers:"))
 				}
 				listLocalServers()
-				os.Exit(0)
+				telemetry.CloseTelemetryAndExit(0)
 			}
 			if len(argss) > 0 {
 				fmt.Printf("%s'%s': Unknown command. Enter '--help' for command help.", sqlcmdErrorPrefix, argss[0])
-				os.Exit(1)
+				telemetry.CloseTelemetryAndExit(1)
 			}
 
 			vars := sqlcmd.InitializeVariables(args.useEnvVars())
@@ -238,16 +239,16 @@ func Execute(version string) {
 				fmt.Println()
 				fmt.Println(localizer.Sprintf("Legal docs and information: aka.ms/SqlcmdLegal"))
 				fmt.Println(localizer.Sprintf("Third party notices: aka.ms/SqlcmdNotices"))
-				os.Exit(0)
+				telemetry.CloseTelemetryAndExit(0)
 			}
 
 			if args.Help {
 				fmt.Print(cmd.UsageString())
-				os.Exit(0)
+				telemetry.CloseTelemetryAndExit(0)
 			}
 
 			exitCode, _ := run(vars, &args)
-			os.Exit(exitCode)
+			telemetry.CloseTelemetryAndExit(exitCode)
 
 		},
 	}
@@ -271,7 +272,7 @@ func Execute(version string) {
 	})
 	rootCmd.SetArgs(convertOsArgs(os.Args[1:]))
 	if err := rootCmd.Execute(); err != nil {
-		os.Exit(1)
+		telemetry.CloseTelemetryAndExit(1)
 	}
 }
 
