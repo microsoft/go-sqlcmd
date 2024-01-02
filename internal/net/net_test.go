@@ -17,10 +17,10 @@ func TestIsLocalPortAvailable(t *testing.T) {
 		isPortAvailable := IsLocalPortAvailable(i)
 		if isPortAvailable {
 			testedPortAvailable = true
-			t.Logf("Port %d is available", i)
+			t.Logf("Port %#v is available", i)
 		} else {
 			testedNotPortAvailable = true
-			t.Logf("Port %d is not available", i)
+			t.Logf("Port %#v is not available", i)
 		}
 		if testedPortAvailable && testedNotPortAvailable {
 			return

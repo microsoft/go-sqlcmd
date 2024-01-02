@@ -71,7 +71,7 @@ func (c *Ads) launchAds(host string, port int, username string) {
 		"-r",
 		fmt.Sprintf(
 			"--server=%s", fmt.Sprintf(
-				"%s,%d",
+				"%s,%#v",
 				host,
 				port)),
 	}

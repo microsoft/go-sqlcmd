@@ -16,7 +16,7 @@ func IsLocalPortAvailable(port int) (portAvailable bool) {
 
 	hostPort := net.JoinHostPort("localhost", strconv.Itoa(port))
 	trace(
-		"Checking if local port %d is available using DialTimeout(tcp, %v, timeout: %d)",
+		"Checking if local port %#v is available using DialTimeout(tcp, %v, timeout: %d)",
 		port,
 		hostPort,
 		timeout,
@@ -28,7 +28,7 @@ func IsLocalPortAvailable(port int) (portAvailable bool) {
 	)
 	if err != nil {
 		trace(
-			"Expected connecting error '%v' on local port %d, therefore port is available)",
+			"Expected connecting error '%v' on local port %#v, therefore port is available)",
 			err,
 			port,
 		)
@@ -37,9 +37,9 @@ func IsLocalPortAvailable(port int) (portAvailable bool) {
 	if conn != nil {
 		err := conn.Close()
 		checkErr(err)
-		trace("Local port '%d' is not available", port)
+		trace("Local port '%#v' is not available", port)
 	} else {
-		trace("Local port '%d' is available", port)
+		trace("Local port '%#v' is available", port)
 	}
 
 	return

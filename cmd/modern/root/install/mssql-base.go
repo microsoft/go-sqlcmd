@@ -391,7 +391,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
 
 	output.InfoWithHintExamples(hints,
-		localizer.Sprintf("Now ready for client connections on port %d",
+		localizer.Sprintf("Now ready for client connections on port %#v",
 			c.port),
 	)
 }
