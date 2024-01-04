@@ -102,6 +102,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true"
 		}},
+		{[]string{"-N", "m"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "m"
+		}},
 	}
 
 	for _, test := range commands {
@@ -529,6 +532,42 @@ func TestConvertOsArgs(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			actual := convertOsArgs(c.in)
 			assert.ElementsMatch(t, c.expected, actual, "Incorrect converted args")
+		})
+	}
+}
+
+func TestEncryptionOptions(t *testing.T) {
+	type test struct {
+		input  string
+		output string
+	}
+	tests := []test{
+		{
+			"s",
+			"strict",
+		},
+		{
+			"m",
+			"mandatory",
+		},
+		{
+			"o",
+			"optional",
+		},
+		{
+			"mandatory",
+			"mandatory",
+		},
+	}
+	for _, c := range tests {
+		t.Run(c.input, func(t *testing.T) {
+			args := newArguments()
+			args.EncryptConnection = c.input
+			vars := sqlcmd.InitializeVariables(false)
+			setVars(vars, &args)
+			var connectConfig sqlcmd.ConnectSettings
+			setConnect(&connectConfig, &args, vars)
+			assert.Equal(t, c.output, connectConfig.Encrypt, "Incorrect connect.Encrypt")
 		})
 	}
 }

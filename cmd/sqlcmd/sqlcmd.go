@@ -460,10 +460,10 @@ func normalizeFlags(cmd *cobra.Command) error {
 		case encryptConnection:
 			value := strings.ToLower(v)
 			switch value {
-			case "mandatory", "yes", "1", "t", "true", "disable", "optional", "no", "0", "f", "false", "strict":
+			case "mandatory", "yes", "1", "t", "true", "disable", "optional", "no", "0", "f", "false", "strict", "m", "s", "o":
 				return pflag.NormalizedName(name)
 			default:
-				err = invalidParameterError("-N", v, "mandatory", "yes", "1", "t", "true", "disable", "optional", "no", "0", "f", "false", "strict")
+				err = invalidParameterError("-N", v, "m[andatory]", "yes", "1", "t", "true", "disable", "o[ptional]", "no", "0", "f", "false", "s[trict]")
 				return pflag.NormalizedName("")
 			}
 		case format:
@@ -685,7 +685,16 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.DisableVariableSubstitution = args.DisableVariableSubstitution
 	connect.ApplicationIntent = args.ApplicationIntent
 	connect.LoginTimeoutSeconds = args.LoginTimeout
-	connect.Encrypt = args.EncryptConnection
+	switch args.EncryptConnection {
+	case "s":
+		connect.Encrypt = "strict"
+	case "o":
+		connect.Encrypt = "optional"
+	case "m":
+		connect.Encrypt = "mandatory"
+	default:
+		connect.Encrypt = args.EncryptConnection
+	}
 	connect.PacketSize = args.PacketSize
 	connect.WorkstationName = args.WorkstationName
 	connect.LogLevel = args.DriverLoggingLevel
