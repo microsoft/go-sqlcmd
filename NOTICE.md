@@ -587,8 +587,8 @@ Apache License
 ## github.com/docker/docker
 
 * Name: github.com/docker/docker
-* Version: v24.0.6
-* License: [Apache-2.0](https://github.com/docker/docker/blob/v24.0.6/LICENSE)
+* Version: v24.0.7
+* License: [Apache-2.0](https://github.com/docker/docker/blob/v24.0.7/LICENSE)
 
 ```
 
