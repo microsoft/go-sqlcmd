@@ -18,7 +18,8 @@
         {
             "id": "Feedback:\n  {FeedbackUrl}",
             "message": "Feedback:\n  {FeedbackUrl}",
-            "translation": "",
+            "translation": "Feedback:\n  {FeedbackUrl}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "FeedbackUrl",
@@ -28,7 +29,8 @@
                     "argNum": 1,
                     "expr": "feedbackUrl"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "help for backwards compatibility flags (-S, -U, -E etc.)",
@@ -2125,7 +2127,7 @@
             "placeholders": [
                 {
                     "id": "Port",
-                    "string": "%[1]d",
+                    "string": "%#[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
@@ -2487,7 +2489,8 @@
         {
             "id": "Version: {Version}",
             "message": "Version: {Version}",
-            "translation": "",
+            "translation": "Version: {Version}",
+            "translatorComment": "Copied from source.",
             "placeholders": [
                 {
                     "id": "Version",
@@ -2497,7 +2500,8 @@
                     "argNum": 1,
                     "expr": "version"
                 }
-            ]
+            ],
+            "fuzzy": true
         },
         {
             "id": "Flags:",
@@ -3277,7 +3281,9 @@
         {
             "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
             "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
-            "translation": ""
+            "translation": "sqlcmd: SQL Server, Azure SQL und Tools installieren/erstellen/abfragen",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "Sqlcmd: Error:",
