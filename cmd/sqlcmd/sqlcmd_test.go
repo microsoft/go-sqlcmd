@@ -99,6 +99,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-k", "-X", "-r", "-z", "something"}, func(args SQLCmdArguments) bool {
 			return args.warnOnBlockedCmd() && !args.useEnvVars() && args.getControlCharacterBehavior() == sqlcmd.ControlRemove && *args.ErrorsToStderr == 0 && args.ChangePassword == "something"
 		}},
+		{[]string{"-N"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "true"
+		}},
 	}
 
 	for _, test := range commands {
