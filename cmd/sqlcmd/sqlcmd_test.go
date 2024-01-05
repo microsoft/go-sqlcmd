@@ -99,6 +99,12 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-k", "-X", "-r", "-z", "something"}, func(args SQLCmdArguments) bool {
 			return args.warnOnBlockedCmd() && !args.useEnvVars() && args.getControlCharacterBehavior() == sqlcmd.ControlRemove && *args.ErrorsToStderr == 0 && args.ChangePassword == "something"
 		}},
+		{[]string{"-N"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "true"
+		}},
+		{[]string{"-N", "m"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "m"
+		}},
 	}
 
 	for _, test := range commands {
@@ -150,7 +156,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-P"}, "'-P': Missing argument. Enter '-?' for help."},
 		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
 		{[]string{"-t", "-2"}, "'-t -2': value must be greater than or equal to 0 and less than or equal to 65534."},
-		{[]string{"-N", "invalid"}, "'-N invalid': Unexpected argument. Argument value has to be one of [mandatory yes 1 t true disable optional no 0 f false strict]."},
+		{[]string{"-N", "invalid"}, "'-N invalid': Unexpected argument. Argument value has to be one of [m[andatory] yes 1 t[rue] disable o[ptional] no 0 f[alse] s[trict]]."},
 	}
 
 	for _, test := range commands {
@@ -526,6 +532,42 @@ func TestConvertOsArgs(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			actual := convertOsArgs(c.in)
 			assert.ElementsMatch(t, c.expected, actual, "Incorrect converted args")
+		})
+	}
+}
+
+func TestEncryptionOptions(t *testing.T) {
+	type test struct {
+		input  string
+		output string
+	}
+	tests := []test{
+		{
+			"s",
+			"strict",
+		},
+		{
+			"m",
+			"mandatory",
+		},
+		{
+			"o",
+			"optional",
+		},
+		{
+			"mandatory",
+			"mandatory",
+		},
+	}
+	for _, c := range tests {
+		t.Run(c.input, func(t *testing.T) {
+			args := newArguments()
+			args.EncryptConnection = c.input
+			vars := sqlcmd.InitializeVariables(false)
+			setVars(vars, &args)
+			var connectConfig sqlcmd.ConnectSettings
+			setConnect(&connectConfig, &args, vars)
+			assert.Equal(t, c.output, connectConfig.Encrypt, "Incorrect connect.Encrypt")
 		})
 	}
 }
