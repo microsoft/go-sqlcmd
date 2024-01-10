@@ -3,6 +3,7 @@ package mechanism
 var mechanisms = []Mechanism{
 	&attach{},
 	&dacfx{},
+	&git2{},
 	&restore{},
 	&script{},
 }

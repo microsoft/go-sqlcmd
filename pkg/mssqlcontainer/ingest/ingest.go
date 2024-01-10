@@ -108,7 +108,10 @@ func (i *ingest) BringOnline(query func(string), username string, password strin
 	i.options.Username = username
 	i.options.Password = password
 	i.mechanism.BringOnline(i.url.DatabaseNameAsTsqlIdentifier, i.containerId, i.query, i.options)
-	i.setDefaultDatabase(username)
+
+	if i.mechanism.Name() != "git" {
+		i.setDefaultDatabase(username)
+	}
 }
 
 func (i *ingest) setDefaultDatabase(username string) {

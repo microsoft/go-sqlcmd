@@ -60,5 +60,10 @@ func (t *tool) Run(args []string) (int, error) {
 	cmd := t.generateCommandLine(args)
 	err := cmd.Run()
 
+	if cmd.ProcessState.ExitCode() != 0 {
+		fmt.Println(cmd.Stdout)
+		fmt.Println(cmd.Stderr)
+	}
+
 	return cmd.ProcessState.ExitCode(), err
 }

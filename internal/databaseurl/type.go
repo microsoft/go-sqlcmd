@@ -5,7 +5,9 @@ import "net/url"
 type DatabaseUrl struct {
 	*url.URL
 
-	Filename      string
+	Filename string
+
+	// Is this .git or git!
 	FileExtension string
 	IsLocal       bool
 

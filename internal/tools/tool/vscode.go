@@ -4,7 +4,6 @@
 package tool
 
 import (
-	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/test"
 	"os/exec"
 )
@@ -21,7 +20,6 @@ func (t *VisualStudioCode) Init() {
 
 	binary, _ := exec.LookPath("code")
 
-	fmt.Println("binary: ", binary)
 	t.tool.SetExePathAndName(binary)
 }
 

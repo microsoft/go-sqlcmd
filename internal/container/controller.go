@@ -424,6 +424,8 @@ func (c Controller) ContainerRunning(id string) (running bool) {
 // filtering by the given ID. If a container with the given ID is found, it
 // returns true; otherwise, it returns false.
 func (c Controller) ContainerExists(id string) (exists bool) {
+	trace("ContainerExists: " + id)
+
 	f := filters.NewArgs()
 	f.Add(
 		"id", id,
@@ -440,6 +442,8 @@ func (c Controller) ContainerExists(id string) (exists bool) {
 		trace("%v", status)
 		exists = true
 	}
+
+	trace("ContainerExists: %v", exists)
 
 	return
 }

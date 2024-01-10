@@ -5,14 +5,17 @@ package install
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
+	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
+	"github.com/microsoft/go-sqlcmd/internal/io/file"
+	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"os"
 	"runtime"
 	"strconv"
 	"strings"
 
-	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
-	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
@@ -20,7 +23,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
-	"github.com/microsoft/go-sqlcmd/internal/tools"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/mechanism"
 	"github.com/spf13/viper"
@@ -455,7 +457,9 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	// Download and restore/attach etc. DB if asked
 	if useDatabase != nil {
 		if useDatabase.IsRemoteUrl() {
-			output.Infof("Downloading %q to container", useDatabase.UrlFilename())
+			if useDatabase.UserProvidedFileExt() != "git" {
+				output.Infof("Downloading %q to container", useDatabase.UrlFilename())
+			}
 		} else {
 			output.Infof("Copying %q to container", useDatabase.UrlFilename())
 		}
@@ -495,6 +499,24 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			useDatabase.BringOnline(runSqlcmdInContainer, contextOptions.Username, contextOptions.Password)
 		} else {
 			useDatabase.BringOnline(c.sql.Query, contextOptions.Username, contextOptions.Password)
+		}
+	}
+
+	// If folder .sqlcmd exists
+	if file.Exists(".sqlcmd") {
+
+		//for each file in folder .sqlcmd
+		files, err := os.ReadDir(".sqlcmd")
+		if err != nil {
+			output.Fatalf("Error reading .sqlcmd folder: %v", err)
+		}
+		for _, f := range files {
+			//if file is .sql
+			if strings.HasSuffix(f.Name(), ".sql") {
+				//run sql file
+				output.Infof("Running %q", f.Name())
+				c.sql.ExecuteSqlFile(".sqlcmd/" + f.Name())
+			}
 		}
 	}
 
@@ -552,7 +574,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 					password),
 			}
 
-			dabPort = config.FindFreePort(5001)
+			dabPort = config.FindFreePort(5000)
 
 			dabRunOptions := container.RunOptions{
 				Env:          dabEnv,
@@ -580,12 +602,24 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				"127.0.0.1",
 				dabPort)
 
-			// Download the dab-config file to the container
-			controller.DownloadFile(
-				addOnContainerId,
-				c.addOnUse[i],
-				"/App",
-			)
+			if len(c.addOnUse) >= i+1 {
+				// Download the dab-config file to the container
+				controller.DownloadFile(
+					addOnContainerId,
+					c.addOnUse[i],
+					"/App",
+				)
+			} else {
+				if addOn == "dab" {
+					if file.Exists("dab-config.json") {
+						controller.CopyFile(
+							addOnContainerId,
+							"dab-config.json",
+							"/App",
+						)
+					}
+				}
+			}
 
 			// Restart the container, now that the dab-config file is there
 			controller.ContainerStop(addOnContainerId)
@@ -593,6 +627,63 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		}
 
 	}
+
+	hints := [][]string{}
+
+	// TODO: sqlcmd open ads only supported on Windows and Mac right now, add Linux support
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+		hints = append(hints, []string{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"})
+	}
+
+	hints = append(hints, []string{localizer.Sprintf("Run a query"), "sqlcmd query \"SELECT @@version\""})
+	hints = append(hints, []string{localizer.Sprintf("Start interactive session"), "sqlcmd query"})
+
+	if previousContextName != "" {
+		hints = append(
+			hints,
+			[]string{localizer.Sprintf("Change current context"), fmt.Sprintf(
+				"sqlcmd config use-context %v",
+				previousContextName,
+			)},
+		)
+	}
+
+	hints = append(hints, []string{localizer.Sprintf("View sqlcmd configuration"), "sqlcmd config view"})
+	hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
+	hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
+
+	for _, addOn := range c.addOn {
+		if addOn == "fleet-manager" {
+			hints = append(hints, []string{
+				localizer.Sprintf("Fleet Manager (Renzo) API UI"),
+				fmt.Sprintf("http://localhost:%d/swagger/index.html", fleetManagerPort),
+			})
+		}
+
+		if addOn == "dab" {
+			hints = append(hints, []string{
+				localizer.Sprintf("Data API Builder (DAB) Health Status"),
+				fmt.Sprintf("curl -s http://localhost:%d", dabPort),
+			})
+		}
+
+		if addOn == "fleet-manager" {
+			output.Info(localizer.Sprintf("Now ready for Fleet Manager connections on port %v",
+				strconv.Itoa(fleetManagerPort)),
+			)
+		}
+
+		if addOn == "dab" {
+			output.Info(localizer.Sprintf("Now ready for DAB connections on port %v",
+				strconv.Itoa(dabPort)),
+			)
+		}
+	}
+
+	output.InfofWithHintExamples(hints,
+		localizer.Sprintf("Now ready for SQL connections on port %v",
+			strconv.Itoa(c.port)),
+	)
 
 	if c.openTool == "ads" {
 		ads := open.Ads{}
@@ -632,63 +723,17 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		c.CheckErr(err)
 	}
 
-	if c.openTool == "" {
-		hints := [][]string{}
-
-		// TODO: sqlcmd open ads only supported on Windows and Mac right now, add Linux support
-		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-			hints = append(hints, []string{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"})
+	if c.openTool == "vscode" {
+		tool := tools.NewTool("vscode")
+		if !tool.IsInstalled() {
+			output.Fatalf(tool.HowToInstall())
 		}
 
-		hints = append(hints, []string{localizer.Sprintf("Run a query"), "sqlcmd query \"SELECT @@version\""})
-		hints = append(hints, []string{localizer.Sprintf("Start interactive session"), "sqlcmd query"})
+		// BUGBUG: This should come from: displayPreLaunchInfo
+		output.Info(localizer.Sprintf("Launching Visual Studio Code..."))
 
-		if previousContextName != "" {
-			hints = append(
-				hints,
-				[]string{localizer.Sprintf("Change current context"), fmt.Sprintf(
-					"sqlcmd config use-context %v",
-					previousContextName,
-				)},
-			)
-		}
-
-		hints = append(hints, []string{localizer.Sprintf("View sqlcmd configuration"), "sqlcmd config view"})
-		hints = append(hints, []string{localizer.Sprintf("See connection strings"), "sqlcmd config connection-strings"})
-		hints = append(hints, []string{localizer.Sprintf("Remove"), "sqlcmd delete"})
-
-		for _, addOn := range c.addOn {
-			if addOn == "fleet-manager" {
-				hints = append(hints, []string{
-					localizer.Sprintf("Fleet Manager (Renzo) API UI"),
-					fmt.Sprintf("http://localhost:%d/swagger/index.html", fleetManagerPort),
-				})
-			}
-
-			if addOn == "dab" {
-				hints = append(hints, []string{
-					localizer.Sprintf("Data API Builder (DAB) Health Status"),
-					fmt.Sprintf("http://localhost:%d", dabPort),
-				})
-			}
-
-			if addOn == "fleet-manager" {
-				output.Info(localizer.Sprintf("Now ready for Fleet Manager connections on port %v",
-					strconv.Itoa(fleetManagerPort)),
-				)
-			}
-
-			if addOn == "dab" {
-				output.Info(localizer.Sprintf("Now ready for DAB connections on port %v",
-					strconv.Itoa(dabPort)),
-				)
-			}
-		}
-
-		output.InfofWithHintExamples(hints,
-			localizer.Sprintf("Now ready for SQL connections on port %v",
-				strconv.Itoa(c.port)),
-		)
+		_, err := tool.Run([]string{}) // []string{"."}) BUGBUG
+		c.CheckErr(err)
 	}
 }
 
