@@ -17,7 +17,7 @@ parameters:
 steps:
 - task: GoTool@0
   inputs:
-    version: '1.18'
+    version: '1.21'
     goBin: $(Build.SourcesDirectory)
 
 - task: Go@0
