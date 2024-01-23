@@ -4,9 +4,12 @@
 package config
 
 import (
+	"strconv"
+
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 )
 
 // View implements the `sqlcmd config view` command
@@ -48,4 +51,15 @@ func (c *View) run() {
 
 	contents := config.RedactedConfig(c.raw)
 	output.Struct(contents)
+	c.LogTelemtry()
+}
+
+func (c *View) LogTelemtry() {
+	eventName := "config-view"
+	properties := map[string]string{}
+	properties["Command"] = "Config"
+	properties["SubCommand"] = "View"
+	properties["Flag"] = strconv.FormatBool(c.raw)
+	telemetry.TrackEvent(eventName, properties)
+	telemetry.CloseTelemetry()
 }

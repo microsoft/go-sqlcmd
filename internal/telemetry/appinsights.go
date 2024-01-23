@@ -3,25 +3,40 @@ package telemetry
 import (
 	"fmt"
 	"os"
+	"os/user"
 	"strings"
 	"time"
 
+	"github.com/denisbrodbeck/machineid"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
-var TelemetryClient appinsights.TelemetryClient
+var telemetryClient appinsights.TelemetryClient
+var isTelemetryEnabled string = "true"
+var uniqTelemetryID string = ""
+
+func initUniqUserId() {
+	if uniqTelemetryID == "" {
+		user, _ := user.Current()
+		id, _ := machineid.ProtectedID(user.Username)
+		uniqTelemetryID = id
+	}
+}
 
 func init() {
 	telemetryEnabled := strings.ToLower(os.Getenv("SQLCMD_TELEMETRY"))
-	if telemetryEnabled == "true" {
+	if telemetryEnabled == "false" {
+		isTelemetryEnabled = "false"
+	}
+	if isTelemetryEnabled == "true" {
 		InitializeAppInsights()
+		initUniqUserId()
 	}
 }
 
 func InitializeTelemetryLogging() {
-	telemetryEnabled := strings.ToLower(os.Getenv("SQLCMD_TELEMETRY"))
 	loggingEnabled := strings.ToLower(os.Getenv("SQLCMD_TELEMETRY_LOGGING"))
-	if telemetryEnabled == "true" && loggingEnabled == "true" {
+	if isTelemetryEnabled == "true" && loggingEnabled == "true" {
 		// Add a diagnostics listener for printing telemetry messages
 		appinsights.NewDiagnosticsMessageListener(func(msg string) error {
 			fmt.Printf("[%s] %s\n", time.Now().Format(time.UnixDate), msg)
@@ -33,21 +48,24 @@ func InitializeTelemetryLogging() {
 func InitializeAppInsights() {
 	instrumentationKey := "f305b208-557d-4fba-bf06-25345c4dfdbc"
 	config := appinsights.NewTelemetryConfiguration(instrumentationKey)
-	TelemetryClient = appinsights.NewTelemetryClientFromConfig(config)
+	telemetryClient = appinsights.NewTelemetryClientFromConfig(config)
 	InitializeTelemetryLogging()
 }
 
 func TrackEvent(eventName string, properties map[string]string) {
-	event := appinsights.NewEventTelemetry(eventName)
-	for key, value := range properties {
-		event.Properties[key] = value
+	if isTelemetryEnabled == "true" {
+		event := appinsights.NewEventTelemetry(eventName)
+		event.Properties["userId"] = uniqTelemetryID
+		for key, value := range properties {
+			event.Properties[key] = value
+		}
+		telemetryClient.Track(event)
 	}
-	TelemetryClient.Track(event)
 }
 
 func CloseTelemetry() {
 	select {
-	case <-TelemetryClient.Channel().Close(10 * time.Second):
+	case <-telemetryClient.Channel().Close(10 * time.Second):
 		// Ten second timeout for retries.
 
 		// If we got here, then all telemetry was submitted
@@ -67,8 +85,7 @@ func CloseTelemetry() {
 }
 
 func CloseTelemetryAndExit(exitcode int) {
-	telemetryEnabled := strings.ToLower(os.Getenv("SQLCMD_TELEMETRY"))
-	if telemetryEnabled == "true" {
+	if isTelemetryEnabled == "true" {
 		CloseTelemetry()
 	}
 	os.Exit(exitcode)

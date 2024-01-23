@@ -41,7 +41,7 @@ var version = "local-build" // overridden in pipeline builds with: -ldflags="-X 
 // executed. Otherwise, the legacy CLI is executed.
 func main() {
 	telemetry.InitializeAppInsights()
-	telemetry.TrackEvent("sqlcmd.version", map[string]string{"version": version})
+
 	dependencies := dependency.Options{
 		Output: output.New(output.Options{
 			StandardWriter: os.Stdout,

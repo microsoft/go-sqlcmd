@@ -42,4 +42,8 @@ type Command interface {
 	// the Command object to have access to the dependencies it needs, without
 	// having to manage them directly.
 	SetCrossCuttingConcerns(dependency.Options)
+
+	// LogTelemtry is used to track the useful telemetry for the command
+	// To be enforced after the review
+	// LogTelemtry()
 }

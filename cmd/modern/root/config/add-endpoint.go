@@ -11,6 +11,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 )
 
 // AddEndpoint implements the `sqlcmd config add-endpoint` command
@@ -82,4 +83,23 @@ func (c *AddEndpoint) run() {
 		{localizer.Sprintf("Delete this endpoint"), fmt.Sprintf("sqlcmd config delete-endpoint %v", uniqueEndpointName)},
 	},
 		localizer.Sprintf("Endpoint '%v' added (address: '%v', port: '%v')", uniqueEndpointName, c.address, c.port))
+	c.LogTelemtry()
+}
+
+func (c *AddEndpoint) LogTelemtry() {
+	eventName := "config-add-endpoint"
+	properties := map[string]string{}
+	properties["Command"] = "Config"
+	properties["SubCommand"] = "add-endpoint"
+	if c.name != "" {
+		properties["name"] = "set"
+	}
+	if c.address != "" {
+		properties["address"] = "set"
+	}
+	if c.port != 0 {
+		properties["port"] = "set"
+	}
+	telemetry.TrackEvent(eventName, properties)
+	telemetry.CloseTelemetry()
 }

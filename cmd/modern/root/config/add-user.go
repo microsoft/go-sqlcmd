@@ -11,6 +11,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -169,4 +170,24 @@ func (c *AddUser) run() {
 
 	uniqueUserName := config.AddUser(user)
 	output.Info(localizer.Sprintf("User '%v' added", uniqueUserName))
+}
+
+func (c *AddUser) LogTelemtry() {
+	eventName := "config-add-user"
+	properties := map[string]string{}
+	if c.username != "" {
+		properties["username"] = "set"
+	}
+	if c.authType != "" {
+		properties["authtype"] = c.authType
+	}
+	if c.name != "" {
+		properties["name"] = "set"
+	}
+
+	if c.passwordEncryption != "" {
+		properties["passwordEncryption"] = "set"
+	}
+	telemetry.TrackEvent(eventName, properties)
+	telemetry.CloseTelemetry()
 }
