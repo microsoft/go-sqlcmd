@@ -295,10 +295,10 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 		s.vars.Set(SQLCMDUSER, connect.UserName)
 	} else {
 		u, e := osuser.Current()
-		if e != nil {
-			panic("Unable to get user name")
+		// osuser.Current() returns an error in some restricted environments
+		if e == nil {
+			s.vars.Set(SQLCMDUSER, u.Username)
 		}
-		s.vars.Set(SQLCMDUSER, u.Username)
 	}
 	if newConnection {
 		s.Connect = connect
