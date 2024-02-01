@@ -42,6 +42,8 @@ func (m *mssql) Connect(
 		ApplicationName: "sqlcmd",
 	}
 
+	connect.LogLevel = options.LogLevel
+
 	if options.Database != "" {
 		connect.Database = options.Database
 	}
@@ -56,7 +58,15 @@ func (m *mssql) Connect(
 				user.BasicAuth.Password,
 				user.BasicAuth.PasswordEncryption,
 			)
+		} else if user.AuthenticationType == "ActiveDirectoryDefault" ||
+			user.AuthenticationType == "ActiveDirectoryInteractive" {
+			connect.Encrypt = "true"
+			connect.UserName = user.Name
+			connect.TrustServerCertificate = false
+			connect.AuthenticationMethod = user.AuthenticationType
+			connect.LogLevel = 255
 		} else {
+
 			panic("Authentication not supported")
 		}
 	}

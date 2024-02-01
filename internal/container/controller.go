@@ -467,3 +467,219 @@ func (c Controller) ContainerRemove(id string) (err error) {
 
 	return
 }
+
+// DAB project file
+/*
+dabCsproj := `<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>`
+
+dabDockerfile := `FROM mcr.microsoft.com/azure-databases/data-api-builder:latest
+
+COPY dab-config.json /App
+WORKDIR /App
+ENV ASPNETCORE_URLS=http://+:5000
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "Azure.DataApiBuilder.Service.dll"]
+`
+
+// C:\Users\stuartpa\classroom-assignment\infra\core\database\sqlserver\sqlserver.bicep
+sqlServerBicep := `metadata description = 'Creates an Azure SQL Server instance.'
+param name string
+param location string = resourceGroup().location
+param tags object = {}
+
+param appUser string = 'appUser'
+param databaseName string
+param keyVaultName string
+param sqlAdmin string = 'sqlAdmin'
+param connectionStringKey string = 'AZURE-SQL-CONNECTION-STRING'
+
+@secure()
+param sqlAdminPassword string
+@secure()
+param appUserPassword string
+
+resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
+  name: name
+  location: location
+  tags: tags
+  properties: {
+    version: '12.0'
+    minimalTlsVersion: '1.2'
+    publicNetworkAccess: 'Enabled'
+    administratorLogin: sqlAdmin
+    administratorLoginPassword: sqlAdminPassword
+  }
+
+  resource database 'databases' = {
+    name: databaseName
+    location: location
+  }
+
+  resource firewall 'firewallRules' = {
+    name: 'Azure Services'
+    properties: {
+      // Allow all clients
+      // Note: range [0.0.0.0-0.0.0.0] means "allow all Azure-hosted clients only".
+      // This is not sufficient, because we also want to allow direct access from developer machine, for debugging purposes.
+      startIpAddress: '0.0.0.1'
+      endIpAddress: '255.255.255.254'
+    }
+  }
+}
+
+resource sqlDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: '${name}-deployment-script'
+  location: location
+  kind: 'AzureCLI'
+  properties: {
+    azCliVersion: '2.37.0'
+    retentionInterval: 'PT1H' // Retain the script resource for 1 hour after it ends running
+    timeout: 'PT5M' // Five minutes
+    cleanupPreference: 'OnSuccess'
+    environmentVariables: [
+      {
+        name: 'APPUSERNAME'
+        value: appUser
+      }
+      {
+        name: 'APPUSERPASSWORD'
+        secureValue: appUserPassword
+      }
+      {
+        name: 'DBNAME'
+        value: databaseName
+      }
+      {
+        name: 'DBSERVER'
+        value: sqlServer.properties.fullyQualifiedDomainName
+      }
+      {
+        name: 'SQLCMDPASSWORD'
+        secureValue: sqlAdminPassword
+      }
+      {
+        name: 'SQLADMIN'
+        value: sqlAdmin
+      }
+    ]
+
+    scriptContent: '''
+wget https://github.com/microsoft/go-sqlcmd/releases/download/v0.8.1/sqlcmd-v0.8.1-linux-x64.tar.bz2
+tar x -f sqlcmd-v0.8.1-linux-x64.tar.bz2 -C .
+
+cat <<SCRIPT_END > ./initDb.sql
+drop user if exists ${APPUSERNAME}
+go
+create user ${APPUSERNAME} with password = '${APPUSERPASSWORD}'
+go
+alter role db_owner add member ${APPUSERNAME}
+go
+SCRIPT_END
+
+./sqlcmd -S ${DBSERVER} -d ${DBNAME} -U ${SQLADMIN} -i ./initDb.sql
+    '''
+  }
+}
+
+resource sqlAdminPasswordSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  parent: keyVault
+  name: 'sqlAdminPassword'
+  properties: {
+    value: sqlAdminPassword
+  }
+}
+
+resource appUserPasswordSecret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  parent: keyVault
+  name: 'appUserPassword'
+  properties: {
+    value: appUserPassword
+  }
+}
+
+resource sqlAzureConnectionStringSercret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  parent: keyVault
+  name: connectionStringKey
+  properties: {
+    value: '${connectionString}; Password=${appUserPassword}'
+  }
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  name: keyVaultName
+}
+
+var connectionString = 'Server=${sqlServer.properties.fullyQualifiedDomainName}; Database=${sqlServer::database.name}; User=${appUser}'
+output connectionStringKey string = connectionStringKey
+output databaseName string = sqlServer::database.name
+`
+
+mainBicepDatabase := `
+param sqlDatabaseName string = ''
+param sqlServerName string = ''
+
+@secure()
+@description('SQL Server administrator password')
+param sqlAdminPassword string
+
+@secure()
+@description('Application user password')
+param appUserPassword string
+
+// The application database
+module sqlServer './app/db.bicep' = {
+  name: 'sql'
+  scope: rg
+  params: {
+    name: !empty(sqlServerName) ? sqlServerName : '${abbrs.sqlServers}${resourceToken}'
+    databaseName: sqlDatabaseName
+    location: location
+    tags: tags
+    sqlAdminPassword: sqlAdminPassword
+    appUserPassword: appUserPassword
+    keyVaultName: keyVault.outputs.name
+  }
+}
+
+output AZURE_SQL_CONNECTION_STRING_KEY string = sqlServer.outputs.connectionStringKey
+`
+
+// C:\Users\stuartpa\classroom-assignment\infra\app\db.bicep
+dbBicep := `param name string
+param location string = resourceGroup().location
+param tags object = {}
+
+param databaseName string = ''
+param keyVaultName string
+
+@secure()
+param sqlAdminPassword string
+@secure()
+param appUserPassword string
+
+// Because databaseName is optional in main.bicep, we make sure the database name is set here.
+var defaultDatabaseName = 'sample'
+var actualDatabaseName = !empty(databaseName) ? databaseName : defaultDatabaseName
+
+module sqlServer '../core/database/sqlserver/sqlserver.bicep' = {
+  name: 'sqlserver'
+  params: {
+    name: name
+    location: location
+    tags: tags
+    databaseName: actualDatabaseName
+    keyVaultName: keyVaultName
+    sqlAdminPassword: sqlAdminPassword
+    appUserPassword: appUserPassword
+  }
+}
+
+output connectionStringKey string = sqlServer.outputs.connectionStringKey
+output databaseName string = sqlServer.outputs.databaseName
+`
+
+*/

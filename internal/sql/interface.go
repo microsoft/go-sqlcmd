@@ -15,7 +15,7 @@ type Sql interface {
 }
 
 type ConnectOptions struct {
-	Database string
-
+	Database    string
+	LogLevel    int
 	Interactive bool
 }

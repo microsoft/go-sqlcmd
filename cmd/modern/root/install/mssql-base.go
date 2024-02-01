@@ -572,6 +572,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 					c.defaultDatabase,
 					userName,
 					password),
+				// "DAB_ENVIRONMENT=Development",
 			}
 
 			dabPort = config.FindFreePort(5000)
@@ -611,6 +612,9 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				)
 			} else {
 				if addOn == "dab" {
+
+					// If no Dab config was specified on command line, if there is a dab-config.json
+					// in the current directory, use it, copy it to the container
 					if file.Exists("dab-config.json") {
 						controller.CopyFile(
 							addOnContainerId,
@@ -625,7 +629,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			controller.ContainerStop(addOnContainerId)
 			controller.ContainerStart(addOnContainerId)
 		}
-
 	}
 
 	hints := [][]string{}
