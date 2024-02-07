@@ -94,11 +94,13 @@ func (i *ingest) Extract() {
 }
 
 func (i *ingest) BringOnline(query func(string), username string, password string) {
-	if i.options.Filename == "" {
-		panic("filename is empty, did you call CopyToContainer()?")
-	}
-	if query == nil {
-		panic("query is nil")
+	if i.mechanism.Name() != "git" {
+		if i.options.Filename == "" {
+			panic("filename is empty, did you call CopyToContainer()?")
+		}
+		if query == nil {
+			panic("query is nil")
+		}
 	}
 	if i.mechanism == nil {
 		panic("mechanism is nil")

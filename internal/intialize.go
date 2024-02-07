@@ -7,6 +7,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/databaseurl"
+	"github.com/microsoft/go-sqlcmd/internal/dotsqlcmdconfig"
 	"github.com/microsoft/go-sqlcmd/internal/http"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/net"
@@ -49,6 +50,7 @@ func Initialize(options InitializeOptions) {
 	file.Initialize(options.ErrorHandler, options.TraceHandler)
 	sql.Initialize(enableTraceLogging, options.ErrorHandler, options.TraceHandler, secret.Decode)
 	config.Initialize(options.ErrorHandler, options.TraceHandler, secret.Encode, secret.Decode, net.IsLocalPortAvailable)
+	dotsqlcmdconfig.Initialize(options.ErrorHandler, options.TraceHandler, secret.Encode, secret.Decode, net.IsLocalPortAvailable)
 	container.Initialize(options.ErrorHandler, options.TraceHandler)
 	secret.Initialize(options.ErrorHandler)
 	net.Initialize(options.ErrorHandler, options.TraceHandler)

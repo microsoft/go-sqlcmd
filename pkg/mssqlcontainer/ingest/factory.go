@@ -1,6 +1,7 @@
 package ingest
 
 import (
+	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/databaseurl"
 	"github.com/microsoft/go-sqlcmd/pkg/mssqlcontainer/ingest/extract"
@@ -11,6 +12,13 @@ import (
 
 func NewIngest(databaseUrl string, controller *container.Controller, options IngestOptions) Ingest {
 	url := databaseurl.NewDatabaseUrl(databaseUrl)
+
+	fmt.Println("url.DatabaseName: " + url.DatabaseName)
+	fmt.Println("options.DatabaseName: " + options.DatabaseName)
+
+	if options.DatabaseName != "" {
+		url.DatabaseName = options.DatabaseName
+	}
 
 	return &ingest{
 		url:        url,

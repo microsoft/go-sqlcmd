@@ -1,5 +1,6 @@
 package ingest
 
 type IngestOptions struct {
-	Mechanism string
+	Mechanism    string
+	DatabaseName string
 }

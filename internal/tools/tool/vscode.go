@@ -5,7 +5,7 @@ package tool
 
 import (
 	"github.com/microsoft/go-sqlcmd/internal/test"
-	"os/exec"
+	"os"
 )
 
 type VisualStudioCode struct {
@@ -18,12 +18,18 @@ func (t *VisualStudioCode) Init() {
 		Purpose:     "Visual Studio Code is a tool for editing files",
 		InstallText: t.installText()})
 
-	binary, _ := exec.LookPath("code")
+	// binary, _ := exec.LookPath("code")
 
-	t.tool.SetExePathAndName(binary)
+	// Get the environment variable COMSPEC
+	comspec := os.Getenv("COMSPEC")
+
+	// BUGBUG: This only works on Windows obviously.
+	t.tool.SetExePathAndName(comspec)
 }
 
 func (t *VisualStudioCode) Run(args []string) (int, error) {
+	args = append([]string{"/c", "code"}, args...)
+
 	if !test.IsRunningInTestExecutor() {
 		return t.tool.Run(args)
 	} else {

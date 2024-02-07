@@ -45,10 +45,11 @@ func (c *Deploy) DefineCommand(...cmdparser.CommandOptions) {
 	c.Cmd.DefineCommand(options)
 
 	c.AddFlag(cmdparser.FlagOptions{
-		String:    &c.target,
-		Name:      "target",
-		Shorthand: "t",
-		Usage:     localizer.Sprintf("Target environment (e.g. azure, fabric")})
+		String:        &c.target,
+		DefaultString: "azure",
+		Name:          "target",
+		Shorthand:     "t",
+		Usage:         localizer.Sprintf("Target environment (azure, fabric")})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:  &c.notFree,
@@ -184,6 +185,10 @@ func (c *Deploy) run() {
 		cmd.Stdin = os.Stdin
 		cmd.Start()
 		cmd.Wait()
+
+		if file.Exists("next-steps.md") {
+			file.Remove("next-steps.md")
+		}
 
 		{
 			f := file.OpenFile("infra\\app\\db.bicep")
@@ -400,22 +405,20 @@ func (c *Deploy) run() {
 	// Remove the first two characters from random (the 'cr' which stands for Container Registry)
 	random = random[2:]
 
-	cmd = exec.Command("azd", "env", "set", "CONN_STRING",
-		fmt.Sprintf("Server=sql-%s.database.windows.net; Database=sample; Authentication=Active Directory Default; Encrypt=True", random))
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	cmd.Start()
-	cmd.Wait()
-
-	// Read the file back in (now that CONN_STRING) is there
-	envFile, err = godotenv.Read(".azure\\" + defaultEnvironment + "\\.env")
-	if err != nil {
-		panic("Unable to read .env file: " + filename)
+	azureClientId, ok := envFile["AZURE_CLIENT_ID"]
+	if !ok {
+		panic("AZURE_CLIENT_ID is not set in .env")
+	}
+	if azureClientId == "" {
+		panic("AZURE_CLIENT_ID is not set in .env")
 	}
 
-	// Save the .env to the DataApiBuilder so it is included in the docker image
-	godotenv.Write(envFile, "DataApiBuilder\\.env")
+	f := file.OpenFile("DataApiBuilder\\Dockerfile")
+	f.WriteString(
+		fmt.Sprintf(dockerfile,
+			fmt.Sprintf("Server=sql-%s.database.windows.net; Database=sample; Authentication=Active Directory Default; Encrypt=True", random),
+			azureClientId))
+	f.Close()
 
 	endpoint := sqlconfig.Endpoint{
 		EndpointDetails: sqlconfig.EndpointDetails{
@@ -507,8 +510,9 @@ var dataApiBuilderCsProj = `<Project Sdk="Microsoft.NET.Sdk.Web">
 var dockerfile = `FROM mcr.microsoft.com/azure-databases/data-api-builder:latest
 
 COPY dab-config.json /App
-COPY .env /App
 WORKDIR /App
+ENV CONN_STRING='%s'
+ENV AZURE_CLIENT_ID=%s
 ENV ASPNETCORE_URLS=http://+:5000
 EXPOSE 5000
 ENTRYPOINT ["dotnet", "Azure.DataApiBuilder.Service.dll"]`

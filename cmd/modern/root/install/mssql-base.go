@@ -4,12 +4,16 @@
 package install
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
+	"github.com/microsoft/go-sqlcmd/internal/dotsqlcmdconfig"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
+	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
-	"os"
+	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
@@ -59,8 +63,8 @@ type MssqlBase struct {
 
 	port int
 
-	useDatabaseUrl string
-	useMechanism   string
+	useUrl       []string
+	useMechanism []string
 
 	openTool string
 	openFile string
@@ -233,25 +237,22 @@ func (c *MssqlBase) AddFlags(
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.useDatabaseUrl,
-		DefaultString: "",
-		Name:          "using",
-		Hidden:        true,
-		Usage:         localizer.Sprintf("[DEPRECATED use --use] Download %q and use database", ingest.ValidFileExtensions()),
+		StringArray: &c.useUrl,
+		Name:        "using",
+		Hidden:      true,
+		Usage:       localizer.Sprintf("[DEPRECATED use --use] Download %q and use database", ingest.ValidFileExtensions()),
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.useDatabaseUrl,
-		DefaultString: "",
-		Name:          "use",
-		Usage:         localizer.Sprintf("Download %q and use database", ingest.ValidFileExtensions()),
+		StringArray: &c.useUrl,
+		Name:        "use",
+		Usage:       localizer.Sprintf("Download %q and use database", ingest.ValidFileExtensions()),
 	})
 
 	addFlag(cmdparser.FlagOptions{
-		String:        &c.useMechanism,
-		DefaultString: "",
-		Name:          "use-mechanism",
-		Usage:         localizer.Sprintf("Mechanism to use to bring database online (%s)", strings.Join(mechanism.Mechanisms(), ",")),
+		StringArray: &c.useMechanism,
+		Name:        "use-mechanism",
+		Usage:       localizer.Sprintf("Mechanism to use to bring database online (%s)", strings.Join(mechanism.Mechanisms(), ",")),
 	})
 
 	addFlag(cmdparser.FlagOptions{
@@ -317,7 +318,46 @@ func (c *MssqlBase) Run() {
 		c.contextName = c.defaultContextName
 	}
 
+	c.GetValuesFromDotSqlcmd()
+
 	c.createContainer(imageName, c.contextName)
+}
+
+func (c *MssqlBase) GetValuesFromDotSqlcmd() {
+	if file.Exists(filepath.Join(".sqlcmd", "sqlcmd.yaml")) {
+		dotsqlcmdconfig.SetFileName(dotsqlcmdconfig.DefaultFileName())
+
+		// If there is a .sqlcmd/sqlcmd.yaml file, then load that up and use it for any values not provided
+		dotsqlcmdconfig.Load()
+		dbs := dotsqlcmdconfig.DatabaseNames()
+
+		if len(dbs) > 1 {
+			panic("Only a single database is supported at this time")
+		}
+
+		if len(dbs) > 0 {
+			fmt.Println("Using database: ", dbs[0])
+			if c.defaultDatabase == "" {
+				c.defaultDatabase = dbs[0]
+			}
+
+			if len(c.useUrl) == 0 {
+				c.useUrl = append(c.useUrl, dotsqlcmdconfig.DatabaseFiles(0)...)
+			}
+		}
+
+		addons := dotsqlcmdconfig.AddonTypes()
+
+		if len(addons) > 0 {
+			c.addOn = append(c.addOn, addons...)
+		}
+
+		for i, _ := range c.addOn {
+			if len(c.addOnUse) < i+1 {
+				c.addOnUse = append(c.addOnUse, dotsqlcmdconfig.AddonFiles(i)...)
+			}
+		}
+	}
 }
 
 // createContainer creates a SQL Server container for an image. The image
@@ -340,11 +380,28 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	// Do an early exit if url doesn't exist
-	var useDatabase ingest.Ingest
-	if c.useDatabaseUrl != "" {
-		useDatabase = c.verifyUseSourceFileExists(controller, output)
+	var useUrls []ingest.Ingest
+	if len(c.useUrl) > 0 {
+		useUrls = c.verifyUseSourceFileExists(controller, output)
 	}
 
+	if len(useUrls) == 1 {
+		if useUrls[0].UserProvidedFileExt() == "git" {
+			useUrls[0].BringOnline(nil, "", "")
+			useUrls = nil
+			c.useUrl = nil // Blank this out, because we now will get more useUrls from the .sqlcmd/sqlcmd.yaml file
+			c.useMechanism = nil
+		}
+	}
+
+	// Now that we have any remote repo cloned local, now is the time to
+	// go look for the .sqlcmd/sqlcmd.yaml settings
+	c.GetValuesFromDotSqlcmd()
+
+	if len(c.useUrl) > 0 {
+		useUrls = c.verifyUseSourceFileExists(controller, output)
+	}
+	
 	if c.defaultDatabase != "" {
 		if !c.validateDbName(c.defaultDatabase) {
 			output.Fatalf(localizer.Sprintf("--database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))
@@ -455,69 +512,63 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	c.createUser(contextOptions.Username, contextOptions.Password)
 
 	// Download and restore/attach etc. DB if asked
-	if useDatabase != nil {
-		if useDatabase.IsRemoteUrl() {
-			if useDatabase.UserProvidedFileExt() != "git" {
-				output.Infof("Downloading %q to container", useDatabase.UrlFilename())
-			}
-		} else {
-			output.Infof("Copying %q to container", useDatabase.UrlFilename())
-		}
-		useDatabase.CopyToContainer(containerId)
-
-		if useDatabase.IsExtractionNeeded() {
-			output.Infof("Extracting files from %q archive", useDatabase.UrlFilename())
-			useDatabase.Extract()
-		}
-
-		output.Infof("Bringing database %q online (%s)", useDatabase.DatabaseName(), useDatabase.OnlineMethod())
-
-		// Connect to master, unless a default database was specified (at this point the default database
-		// has not been set yet, so we need to specify it in the -d statement
-		databaseToConnectTo := "master"
-		if c.defaultDatabase != "" {
-			databaseToConnectTo = c.defaultDatabase
-		}
-		if useDatabase.OnlineMethod() == "script" {
-			runSqlcmdInContainer := func(query string) {
-				cmd := []string{
-					"/opt/mssql-tools/bin/sqlcmd",
-					"-S",
-					"localhost",
-					"-U",
-					contextOptions.Username,
-					"-P",
-					contextOptions.Password,
-					"-d",
-					databaseToConnectTo,
-					"-i",
-					"/var/opt/mssql/backup/" + useDatabase.UrlFilename(),
+	if len(useUrls) > 0 {
+		for i, useUrl := range useUrls {
+			if useUrl.IsRemoteUrl() {
+				if useUrl.UserProvidedFileExt() != "git" {
+					output.Infof("Downloading %q to container", useUrl.UrlFilename())
 				}
-
-				controller.RunCmdInContainer(containerId, cmd, container.ExecOptions{})
+			} else {
+				output.Infof("Copying %q to container", useUrl.UrlFilename())
 			}
-			useDatabase.BringOnline(runSqlcmdInContainer, contextOptions.Username, contextOptions.Password)
-		} else {
-			useDatabase.BringOnline(c.sql.Query, contextOptions.Username, contextOptions.Password)
-		}
-	}
+			useUrl.CopyToContainer(containerId)
 
-	// If folder .sqlcmd exists
-	if file.Exists(".sqlcmd") {
+			if useUrl.IsExtractionNeeded() {
+				output.Infof("Extracting files from %q archive", useUrl.UrlFilename())
+				useUrl.Extract()
+			}
 
-		//for each file in folder .sqlcmd
-		files, err := os.ReadDir(".sqlcmd")
-		if err != nil {
-			output.Fatalf("Error reading .sqlcmd folder: %v", err)
-		}
-		for _, f := range files {
-			//if file is .sql
-			if strings.HasSuffix(f.Name(), ".sql") {
-				//run sql file
-				output.Infof("Running %q", f.Name())
-				c.sql.ExecuteSqlFile(".sqlcmd/" + f.Name())
+			output.Infof("Bringing database %q online (%s)", useUrl.DatabaseName(), useUrl.OnlineMethod())
+
+			// Connect to master, unless a default database was specified (at this point the default database
+			// has not been set yet, so we need to specify it in the -d statement
+			databaseToConnectTo := "master"
+			if c.defaultDatabase != "" {
+				databaseToConnectTo = c.defaultDatabase
+			}
+			if useUrl.OnlineMethod() == "script" {
+				runSqlcmdInContainer := func(query string) {
+					cmd := []string{
+						"/opt/mssql-tools/bin/sqlcmd",
+						"-S",
+						"localhost",
+						"-U",
+						contextOptions.Username,
+						"-P",
+						contextOptions.Password,
+						"-d",
+						databaseToConnectTo,
+						"-i",
+						"/var/opt/mssql/backup/" + useUrl.UrlFilename(),
+					}
+
+					controller.RunCmdInContainer(containerId, cmd, container.ExecOptions{})
+				}
+				useUrl.BringOnline(runSqlcmdInContainer, contextOptions.Username, contextOptions.Password)
+			} else {
+				useUrl.BringOnline(c.sql.Query, contextOptions.Username, contextOptions.Password)
+			}
+
+			for _, f := range dotsqlcmdconfig.DatabaseFiles(i) {
+				//if file is .sql
+				if strings.HasSuffix(f, ".sql") {
+					//run sql file
+					output.Infof("Running %q", f)
+					c.sql.ExecuteSqlFile(f)
+				}
 			}
 		}
+
 	}
 
 	dabPort := 0
@@ -566,19 +617,9 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				c.downloadImage(dabImageName, output, controller)
 			}
 
-			dabEnv := []string{
-				fmt.Sprintf("CONN_STRING=Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
-					c.name,
-					c.defaultDatabase,
-					userName,
-					password),
-				// "DAB_ENVIRONMENT=Development",
-			}
-
 			dabPort = config.FindFreePort(5000)
 
 			dabRunOptions := container.RunOptions{
-				Env:          dabEnv,
 				PortInternal: 5000,
 				Port:         dabPort,
 				Architecture: c.architecture,
@@ -604,25 +645,41 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				dabPort)
 
 			if len(c.addOnUse) >= i+1 {
+
+				var dabConfigJson map[string]interface{}
+				dabConfigString := file.GetContents(c.addOnUse[i])
+				json.Unmarshal([]byte(dabConfigString), &dabConfigJson)
+
+				dataSource := dabConfigJson["data-source"]
+				dataSource.(map[string]interface{})["connection-string"] = fmt.Sprintf("Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
+					c.name,
+					c.defaultDatabase,
+					userName,
+					password)
+
+				newData, err := json.Marshal(dabConfigJson)
+				if err != nil {
+					panic(err)
+				}
+
+				var prettyJSON bytes.Buffer
+				json.Indent(&prettyJSON, newData, "", "    ")
+
+				folder.RemoveAll("tmp-dab-config.json")
+				folder.MkdirAll("tmp-dab-config.json")
+
+				f := file.OpenFile(filepath.Join("tmp-dab-config.json", "dab-config.json"))
+				f.WriteString(prettyJSON.String())
+				f.Close()
+
 				// Download the dab-config file to the container
-				controller.DownloadFile(
+				controller.CopyFile(
 					addOnContainerId,
-					c.addOnUse[i],
+					filepath.Join("tmp-dab-config.json", "dab-config.json"),
 					"/App",
 				)
-			} else {
-				if addOn == "dab" {
 
-					// If no Dab config was specified on command line, if there is a dab-config.json
-					// in the current directory, use it, copy it to the container
-					if file.Exists("dab-config.json") {
-						controller.CopyFile(
-							addOnContainerId,
-							"dab-config.json",
-							"/App",
-						)
-					}
-				}
+				folder.RemoveAll("tmp-dab-config.json")
 			}
 
 			// Restart the container, now that the dab-config file is there
@@ -735,46 +792,57 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		// BUGBUG: This should come from: displayPreLaunchInfo
 		output.Info(localizer.Sprintf("Launching Visual Studio Code..."))
 
-		_, err := tool.Run([]string{}) // []string{"."}) BUGBUG
+		_, err := tool.Run([]string{"."}) // []string{"."}) BUGBUG
 		c.CheckErr(err)
 	}
 }
 
 func (c *MssqlBase) verifyUseSourceFileExists(
 	controller *container.Controller,
-	output *output.Output) (useDatabase ingest.Ingest) {
-	useDatabase = ingest.NewIngest(c.useDatabaseUrl, controller, ingest.IngestOptions{
-		Mechanism: c.useMechanism,
-	})
+	output *output.Output) (useUrls []ingest.Ingest) {
 
-	if !useDatabase.IsValidFileExtension() {
-		output.FatalWithHints(
-			[]string{
-				fmt.Sprintf(
-					localizer.Sprintf("--use must be a path to a file with a %q extension"),
-					ingest.ValidFileExtensions(),
-				),
-			},
-			localizer.Sprintf("%q is not a valid file extension for --use flag"), useDatabase.UserProvidedFileExt())
+	for i, url := range c.useUrl {
+
+		mechanism := ""
+		if len(c.useMechanism) > i {
+			mechanism = c.useMechanism[i]
+		}
+
+		useUrls = append(useUrls, ingest.NewIngest(url, controller, ingest.IngestOptions{
+			Mechanism:    mechanism,
+			DatabaseName: c.defaultDatabase,
+		}))
+
+		if !useUrls[i].IsValidFileExtension() {
+			output.FatalWithHints(
+				[]string{
+					fmt.Sprintf(
+						localizer.Sprintf("--use must be a path to a file with a %q extension"),
+						ingest.ValidFileExtensions(),
+					),
+				},
+				localizer.Sprintf("%q is not a valid file extension for --use flag"), useUrls[i].UserProvidedFileExt())
+		}
+
+		if useUrls[i].IsRemoteUrl() && !useUrls[i].IsValidScheme() {
+			output.FatalfWithHints(
+				[]string{
+					fmt.Sprintf(
+						localizer.Sprintf("--use URL must one of %q"),
+						strings.Join(useUrls[i].ValidSchemes(), ", "),
+					),
+				},
+				localizer.Sprintf("%q is not a valid URL for --use flag", useUrls[i].UrlFilename()))
+		}
+
+		if !useUrls[i].SourceFileExists() {
+			output.FatalfWithHints(
+				[]string{localizer.Sprintf("File does not exist at URL %q", useUrls[i].UrlFilename())},
+				"Unable to download file")
+		}
 	}
 
-	if useDatabase.IsRemoteUrl() && !useDatabase.IsValidScheme() {
-		output.FatalfWithHints(
-			[]string{
-				fmt.Sprintf(
-					localizer.Sprintf("--use URL must one of %q"),
-					strings.Join(useDatabase.ValidSchemes(), ", "),
-				),
-			},
-			localizer.Sprintf("%q is not a valid URL for --use flag", c.useDatabaseUrl))
-	}
-
-	if !useDatabase.SourceFileExists() {
-		output.FatalfWithHints(
-			[]string{localizer.Sprintf("File does not exist at URL %q", c.useDatabaseUrl)},
-			"Unable to download file")
-	}
-	return useDatabase
+	return useUrls
 }
 
 // createUser creates a user (non-sa) and assigns the sysadmin role
