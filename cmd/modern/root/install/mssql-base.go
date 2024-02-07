@@ -336,7 +336,6 @@ func (c *MssqlBase) GetValuesFromDotSqlcmd() {
 		}
 
 		if len(dbs) > 0 {
-			fmt.Println("Using database: ", dbs[0])
 			if c.defaultDatabase == "" {
 				c.defaultDatabase = dbs[0]
 			}
@@ -401,7 +400,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	if len(c.useUrl) > 0 {
 		useUrls = c.verifyUseSourceFileExists(controller, output)
 	}
-	
+
 	if c.defaultDatabase != "" {
 		if !c.validateDbName(c.defaultDatabase) {
 			output.Fatalf(localizer.Sprintf("--database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))

@@ -101,6 +101,8 @@ func (i *ingest) BringOnline(query func(string), username string, password strin
 		if query == nil {
 			panic("query is nil")
 		}
+	} else {
+		i.options.Filename = i.url.String()
 	}
 	if i.mechanism == nil {
 		panic("mechanism is nil")

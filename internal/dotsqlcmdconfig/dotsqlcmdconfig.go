@@ -4,7 +4,6 @@
 package dotsqlcmdconfig
 
 import (
-	"fmt"
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlcmdconfig"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"path/filepath"
@@ -29,7 +28,6 @@ func SetFileName(name string) {
 
 func DatabaseNames() (dbs []string) {
 	for _, db := range config.Databases {
-		fmt.Println("db.Name: " + db.Name)
 		dbs = append(dbs, db.Name)
 	}
 
@@ -58,6 +56,9 @@ func AddonTypes() (addons []string) {
 }
 
 func AddonFiles(ordinal int) (files []string) {
+	if ordinal < 0 || ordinal >= len(config.AddOns) {
+		return
+	}
 	addon := config.AddOns[ordinal]
 
 	for _, file := range addon.AddOnDetails.Use {

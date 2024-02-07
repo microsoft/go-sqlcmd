@@ -4,7 +4,6 @@
 package dotsqlcmdconfig
 
 import (
-	"fmt"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/spf13/viper"
@@ -23,8 +22,6 @@ func Load() {
 	text := file.GetContents(filename)
 	err := yaml.Unmarshal([]byte(text), &config)
 	checkErr(err)
-
-	fmt.Printf("%v\n", config)
 
 	trace("Config loaded from file: %v"+pal.LineBreak(), filename)
 }

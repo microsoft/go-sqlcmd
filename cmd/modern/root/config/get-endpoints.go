@@ -15,6 +15,7 @@ type GetEndpoints struct {
 
 	name     string
 	detailed bool
+	value    string
 }
 
 func (c *GetEndpoints) DefineCommand(...cmdparser.CommandOptions) {
@@ -47,6 +48,11 @@ func (c *GetEndpoints) DefineCommand(...cmdparser.CommandOptions) {
 		Bool:  &c.detailed,
 		Name:  "detailed",
 		Usage: localizer.Sprintf("Include endpoint details")})
+
+	c.AddFlag(cmdparser.FlagOptions{
+		String: &c.value,
+		Name:   "value",
+		Usage:  localizer.Sprintf("Value to get, (endpoint, port")})
 }
 
 func (c *GetEndpoints) run() {
@@ -55,7 +61,19 @@ func (c *GetEndpoints) run() {
 	if c.name != "" {
 		if config.EndpointExists(c.name) {
 			context := config.GetEndpoint(c.name)
-			output.Struct(context)
+
+			if c.value == "" {
+				output.Struct(context)
+			} else {
+				if c.value == "address" {
+					output.Struct(context.Address)
+				} else if c.value == "port" {
+					output.Struct(context.Port)
+				} else {
+					panic("Invalid value")
+				}
+			}
+
 		} else {
 			output.FatalWithHints(
 				[]string{localizer.Sprintf("To view available endpoints run `%s`", localizer.GetEndpointsCommand)},

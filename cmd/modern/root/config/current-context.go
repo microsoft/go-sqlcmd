@@ -17,10 +17,10 @@ type CurrentContext struct {
 func (c *CurrentContext) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "current-context",
-		Short: localizer.Sprintf("Display the current-context"),
+		Short: localizer.Sprintf("Display the name of the current-context"),
 		Examples: []cmdparser.ExampleOptions{
 			{
-				Description: localizer.Sprintf("Display the current-context"),
+				Description: localizer.Sprintf("Display the current-context name"),
 				Steps: []string{
 					"sqlcmd config current-context"},
 			},

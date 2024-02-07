@@ -30,16 +30,16 @@ func (m *git2) FileTypes() []string {
 }
 
 func (m *git2) BringOnline(databaseName string, _ string, query func(string), options BringOnlineOptions) {
-	/*if options.Filename == "" {
-		panic("Filename is required for restore")
+	if options.Filename == "" {
+		panic("Filename is required for git")
 	}
-	if databaseName == "" {
-		panic("databaseName is required for restore")
-	}
+	/*
+		if databaseName == "" {
+			panic("databaseName is required for git")
+		}
 	*/
 
-	fmt.Printf("BringOnlineOptions: %v\n", options)
-	url := "https://github.com/stuartpa/DabBlazorSamplePages.git"
+	url := options.Filename
 	dir := "."
 
 	// If there are any files in the current directory then error
@@ -60,10 +60,7 @@ func (m *git2) BringOnline(databaseName string, _ string, query func(string), op
 				panic(err)
 			}
 
-			// print the remotes
 			for _, remote := range c.Remotes {
-
-				// print each URL
 				for _, u := range remote.URLs {
 					if url == u {
 						alreadyCloned = true
@@ -74,6 +71,7 @@ func (m *git2) BringOnline(databaseName string, _ string, query func(string), op
 
 		if !alreadyCloned {
 			fmt.Println("Current directory is not empty, cannot clone .git repo. Run sqlcmd again from an empty directory, or remove the --use switch.")
+
 			os.Exit(1)
 		}
 	}
