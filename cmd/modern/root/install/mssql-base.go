@@ -13,6 +13,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
 	"path/filepath"
 	"runtime"
 	"strconv"
@@ -317,9 +318,7 @@ func (c *MssqlBase) Run() {
 	if c.contextName == "" {
 		c.contextName = c.defaultContextName
 	}
-
-	c.GetValuesFromDotSqlcmd()
-
+	
 	c.createContainer(imageName, c.contextName)
 }
 
@@ -607,9 +606,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				dabImageName,
 				"127.0.0.1",
 				fleetManagerPort)
-		}
-
-		if addOn == "dab" {
+		} else if addOn == "dab" {
 			dabImageName := "mcr.microsoft.com/azure-databases/data-api-builder"
 
 			if !c.useCached {
@@ -650,11 +647,12 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				json.Unmarshal([]byte(dabConfigString), &dabConfigJson)
 
 				dataSource := dabConfigJson["data-source"]
-				dataSource.(map[string]interface{})["connection-string"] = fmt.Sprintf("Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
-					c.name,
-					c.defaultDatabase,
-					userName,
-					password)
+				dataSource.(map[string]interface{})["connection-string"] =
+					fmt.Sprintf("Server=%s;Database=%s;User ID=%s;Password=%s;TrustServerCertificate=true",
+						c.name,
+						c.defaultDatabase,
+						userName,
+						password)
 
 				newData, err := json.Marshal(dabConfigJson)
 				if err != nil {
@@ -684,6 +682,8 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			// Restart the container, now that the dab-config file is there
 			controller.ContainerStop(addOnContainerId)
 			controller.ContainerStart(addOnContainerId)
+		} else {
+			output.Fatal("%q is an invalid add-on type", addOn)
 		}
 	}
 
@@ -770,28 +770,28 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 		args = append(args, fmt.Sprintf("--user=%s",
 			strings.Replace(contextOptions.Username, `"`, `\"`, -1)))
 
-		tool := tools.NewTool("ads")
-		if !tool.IsInstalled() {
-			output.Fatalf(tool.HowToInstall())
+		adsTool := tools.NewTool("ads")
+		if !adsTool.IsInstalled() {
+			output.Fatalf(adsTool.HowToInstall())
 		}
 
 		// BUGBUG: This should come from: displayPreLaunchInfo
 		output.Info(localizer.Sprintf("Press Ctrl+C to exit this process..."))
 
-		_, err := tool.Run(args)
+		_, err := adsTool.Run(args, tool.RunOptions{})
 		c.CheckErr(err)
 	}
 
 	if c.openTool == "vscode" {
-		tool := tools.NewTool("vscode")
-		if !tool.IsInstalled() {
-			output.Fatalf(tool.HowToInstall())
+		vscode := tools.NewTool("vscode")
+		if !vscode.IsInstalled() {
+			output.Fatalf(vscode.HowToInstall())
 		}
 
 		// BUGBUG: This should come from: displayPreLaunchInfo
 		output.Info(localizer.Sprintf("Launching Visual Studio Code..."))
 
-		_, err := tool.Run([]string{"."}) // []string{"."}) BUGBUG
+		_, err := vscode.Run([]string{"."}, tool.RunOptions{})
 		c.CheckErr(err)
 	}
 }

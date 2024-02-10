@@ -10,6 +10,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
 )
 
 // Vscode implements the `sqlcmd open vscode` (or just `sqlcmd open code`)
@@ -59,13 +60,13 @@ func (c *Vscode) launchAds(host string, port int, username string) {
 	output := c.Output()
 	args := []string{}
 
-	tool := tools.NewTool("vscode")
-	if !tool.IsInstalled() {
-		output.Fatalf(tool.HowToInstall())
+	vscode := tools.NewTool("vscode")
+	if !vscode.IsInstalled() {
+		output.Fatalf(vscode.HowToInstall())
 	}
 
 	c.displayPreLaunchInfo()
 
-	_, err := tool.Run(args)
+	_, err := vscode.Run(args, tool.RunOptions{})
 	c.CheckErr(err)
 }

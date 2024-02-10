@@ -5,6 +5,7 @@ package open
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
 	"runtime"
 	"strings"
 
@@ -89,13 +90,13 @@ func (c *Ads) launchAds(host string, port int, username string) {
 		}
 	}
 
-	tool := tools.NewTool("ads")
-	if !tool.IsInstalled() {
-		output.Fatalf(tool.HowToInstall())
+	ads := tools.NewTool("ads")
+	if !ads.IsInstalled() {
+		output.Fatalf(ads.HowToInstall())
 	}
 
 	c.displayPreLaunchInfo()
 
-	_, err := tool.Run(args)
+	_, err := ads.Run(args, tool.RunOptions{})
 	c.CheckErr(err)
 }

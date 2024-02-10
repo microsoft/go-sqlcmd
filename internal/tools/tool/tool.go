@@ -5,6 +5,7 @@ package tool
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
@@ -52,12 +53,19 @@ func (t *tool) HowToInstall() string {
 	return sb.String()
 }
 
-func (t *tool) Run(args []string) (int, error) {
+func (t *tool) Run(args []string, options RunOptions) (int, error) {
 	if t.installed == nil {
 		panic("Call IsInstalled before Run")
 	}
 
 	cmd := t.generateCommandLine(args)
+
+	if options.Interactive {
+		cmd.Stdin = os.Stdin
+		cmd.Stderr = os.Stderr
+		cmd.Stdout = os.Stdout
+	}
+
 	err := cmd.Run()
 
 	if cmd.ProcessState.ExitCode() != 0 {

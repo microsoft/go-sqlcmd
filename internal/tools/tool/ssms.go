@@ -26,9 +26,9 @@ func (t *SqlServerManagementStudio) Init() {
 	}
 }
 
-func (t *SqlServerManagementStudio) Run(args []string) (int, error) {
+func (t *SqlServerManagementStudio) Run(args []string, options RunOptions) (int, error) {
 	if !test.IsRunningInTestExecutor() {
-		return t.tool.Run(args)
+		return t.tool.Run(args, options)
 	} else {
 		return 0, nil
 	}

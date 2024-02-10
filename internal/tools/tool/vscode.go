@@ -27,11 +27,11 @@ func (t *VisualStudioCode) Init() {
 	t.tool.SetExePathAndName(comspec)
 }
 
-func (t *VisualStudioCode) Run(args []string) (int, error) {
+func (t *VisualStudioCode) Run(args []string, options RunOptions) (int, error) {
 	args = append([]string{"/c", "code"}, args...)
 
 	if !test.IsRunningInTestExecutor() {
-		return t.tool.Run(args)
+		return t.tool.Run(args, options)
 	} else {
 		return 0, nil
 	}

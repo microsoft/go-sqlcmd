@@ -17,6 +17,9 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/sql"
+	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
+	"path/filepath"
 
 	"github.com/rdegges/go-ipify"
 
@@ -85,33 +88,30 @@ func (c *Deploy) run() {
 		}
 		folder.RemoveAll("infra")
 		folder.RemoveAll(".azure")
-		folder.RemoveAll("DataApiBuilder")
+		folder.RemoveAll(filepath.Join(".sqlcmd", "DataApiBuilder"))
 	}
 
-	// Check to see if we're already logged in (this will return 1 if not
-	cmd := exec.Command("azd", "auth", "token", "--output", "json")
-	cmd.Stderr = os.Stderr
-	cmd.Start()
-	cmd.Wait()
-	if cmd.ProcessState.ExitCode() != 0 {
+	azd := tools.NewTool("azd")
+	if !azd.IsInstalled() {
+		output.Fatalf(azd.HowToInstall())
+	}
+
+	exitCode, err := azd.Run([]string{"auth", "token", "--output", "json"}, tool.RunOptions{})
+	if err != nil {
 		output.Fatal(localizer.Sprintf("Error checking if logged in to azd"))
 	}
 
 	// If we're not logged in, log in
-	if cmd.ProcessState.ExitCode() == 1 {
-		cmd := exec.Command("azd", "auth", "login")
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Start()
-		cmd.Wait()
-		if cmd.ProcessState.ExitCode() != 0 {
+	if exitCode == 1 {
+		exitCode, _ := azd.Run([]string{"auth", "login"}, tool.RunOptions{})
+		if exitCode != 0 {
 			output.Fatal(localizer.Sprintf("Error logging in to azd"))
 		}
 	}
 
 	var stdout bytes.Buffer
 
-	cmd = exec.Command("azd", "auth", "token", "--output", "json")
+	cmd := exec.Command("azd", "auth", "token", "--output", "json")
 	cmd.Stdout = &stdout
 	cmd.Stderr = os.Stderr
 	cmd.Start()
@@ -162,12 +162,14 @@ func (c *Deploy) run() {
 	domain := parts[1]
 	domain = strings.ToLower(domain)
 
-	if domain == "hotmail.com" || domain == "live.com" || domain == "outlook.com" {
-		output.FatalWithHints([]string{
-			localizer.Sprintf("TEMP: The go-mssqldb driver is unable to auth using consumer accounts.  Use a corporate account (non-consumer, e.g. not hotmail.com etc.).  Run `azd auth logout` & `azd auth login alias@microsoft.com`"),
-			localizer.Sprintf("azd logged in using a consumer domain: %q", domain),
-		})
-	}
+	/*
+		if domain == "hotmail.com" || domain == "live.com" || domain == "outlook.com" {
+			output.FatalWithHints([]string{
+				localizer.Sprintf("TEMP: The go-mssqldb driver is unable to auth using consumer accounts.  Use a corporate account (non-consumer, e.g. not hotmail.com etc.).  Run `azd auth logout` & `azd auth login alias@microsoft.com`"),
+				localizer.Sprintf("azd logged in using a consumer domain: %q", domain),
+			})
+		}
+	*/
 
 	dotsqlcmdconfig.SetFileName(dotsqlcmdconfig.DefaultFileName())
 	dotsqlcmdconfig.Load()
@@ -178,17 +180,19 @@ func (c *Deploy) run() {
 
 		for i, addon := range addons {
 			if addon == "dab" {
-				folder.MkdirAll("DataApiBuilder")
+				path := filepath.Join(".sqlcmd", "DataApiBuilder")
 
-				f := file.OpenFile("DataApiBuilder\\DataApiBuilder.csproj")
+				folder.MkdirAll(path)
+
+				f := file.OpenFile(filepath.Join(path, "DataApiBuilder.csproj"))
 				f.WriteString(dataApiBuilderCsProj)
 				f.Close()
 
-				f = file.OpenFile("DataApiBuilder\\Dockerfile")
+				f = file.OpenFile(filepath.Join(path, "Dockerfile"))
 				f.WriteString(dockerfile)
 				f.Close()
 
-				f = file.OpenFile("DataApiBuilder\\Program.cs")
+				f = file.OpenFile(filepath.Join(path, "Program.cs"))
 				f.Close()
 
 				var dabConfigJson map[string]interface{}
@@ -210,7 +214,7 @@ func (c *Deploy) run() {
 					var prettyJSON bytes.Buffer
 					json.Indent(&prettyJSON, newData, "", "    ")
 
-					f = file.OpenFile("DataApiBuilder\\dab-config.json")
+					f = file.OpenFile(filepath.Join(path, "dab-config.json"))
 					f.WriteString(prettyJSON.String())
 					f.Close()
 				} else {
@@ -223,12 +227,35 @@ func (c *Deploy) run() {
 			c.environment = username + "-" + current_contextName
 		}
 
-		cmd = exec.Command("azd", "init", "--environment", c.environment)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Stdin = os.Stdin
-		cmd.Start()
-		cmd.Wait()
+		exitCode, _ = azd.Run([]string{"init", "--environment", c.environment}, tool.RunOptions{Interactive: true})
+		if exitCode != 0 {
+			output.Fatal(localizer.Sprintf("Error initializing application"))
+		}
+	}
+
+	{
+		gitignore := ""
+		if file.Exists(".gitignore") {
+			gitignore = file.GetContents(".gitignore")
+		}
+
+		f := file.OpenFile(".gitignore")
+		defer f.Close()
+		if !strings.Contains(gitignore, ".sqlcmd/DataApiBuilder") {
+			f.WriteString(".sqlcmd/DataApiBuilder\n")
+		}
+
+		if !strings.Contains(gitignore, "infra") {
+			f.WriteString("infra\n")
+		}
+
+		if !strings.Contains(gitignore, "azure.yaml") {
+			f.WriteString("azure.yaml\n")
+		}
+
+		if !strings.Contains(gitignore, ".azure") {
+			f.WriteString(".azure\n")
+		}
 	}
 
 	if file.Exists("next-steps.md") {
@@ -333,55 +360,36 @@ func (c *Deploy) run() {
 		f.Close()
 	}
 
-	// BUGBUG: Do this using a microsoft bless method (SSMS/ADS must do this in the connection dialogs)
-	output.Infof("Discovering IP address for this client, to allow firewall access to the Azure SQL server")
+	// BUGBUG: Do this using a microsoft blessed method (SSMS/ADS must do this in the connection dialogs)
+	output.Infof("\nDiscovering IP address for this client, to allow firewall access to the Azure SQL server")
 
 	ip, err := ipify.GetIp()
 	output.FatalErr(err)
 
 	output.Infof("Setting local Address to %q to have access to the Azure SQL server", ip)
 
-	cmd = exec.Command("azd", "env", "set", "MY_IP", ip)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	cmd.Start()
-	cmd.Wait()
-	if cmd.ProcessState.ExitCode() != 0 {
+	exitCode, _ = azd.Run([]string{"env", "set", "MY_IP", ip}, tool.RunOptions{})
+	if exitCode != 0 {
 		output.Fatal(localizer.Sprintf("Error setting environment variable MY_IP"))
 	}
 
-	cmd = exec.Command("azd", "env", "set", "AZURE_PRINCIPAL_NAME", email)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	cmd.Start()
-	cmd.Wait()
-	if cmd.ProcessState.ExitCode() != 0 {
+	exitCode, _ = azd.Run([]string{"env", "set", "AZURE_PRINCIPAL_NAME", email}, tool.RunOptions{})
+	if exitCode != 0 {
 		output.Fatal(localizer.Sprintf("Error setting environment variable AZURE_PRINCIPAL_NAME"))
 	}
 
-	cmd = exec.Command("azd", "env", "set", "USE_FREE_LIMIT", fmt.Sprintf("%t", !c.notFree))
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	cmd.Start()
-	cmd.Wait()
-	if cmd.ProcessState.ExitCode() != 0 {
+	exitCode, _ = azd.Run([]string{"env", "set", "USE_FREE_LIMIT", fmt.Sprintf("%t", !c.notFree)}, tool.RunOptions{})
+	if exitCode != 0 {
 		output.Fatal(localizer.Sprintf("Error setting environment variable USE_FREE_LIMIT"))
 	}
 
-	cmd = exec.Command("azd", "provision")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	cmd.Start()
-	cmd.Wait()
-	if cmd.ProcessState.ExitCode() != 0 {
+	exitCode, _ = azd.Run([]string{"provision"}, tool.RunOptions{Interactive: true})
+	if exitCode != 0 {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("To clean up any resources created"), "azd down --force"},
 			{localizer.Sprintf("To not create an Azure SQL 'Spinnaker' run again with --not-free"), "sqlcmd deploy --not-free"},
-			{localizer.Sprintf("If failed with 'Invalid value given for parameter ExternalAdministratorLoginName'"), "sqlcmd deploy (but `azd auth login` with a corp (non-consumer, e.g. not hotmail.com etc.) account)"},
+			{localizer.Sprintf("If failed with 'Invalid value given for parameter ExternalAdministratorLoginName'"), "azd auth login. Use a corp account (e.g. not hotmail.com etc.)"},
+			{localizer.Sprintf("If, 'The client ... does not have permission to perform action 'Microsoft.Authorization/roleAssignments/write' at scope ... Microsoft.ContainerRegistry'"), "See: https://github.com/Azure-Samples/azure-search-openai-demo#azure-account-requirements"},
 		}, localizer.Sprintf("Error provisioning infrastructure"))
 	}
 
@@ -431,7 +439,7 @@ func (c *Deploy) run() {
 		panic("AZURE_CLIENT_ID is not set in .env")
 	}
 
-	f := file.OpenFile("DataApiBuilder\\Dockerfile")
+	f := file.OpenFile(filepath.Join(".sqlcmd", "DataApiBuilder", "Dockerfile"))
 	f.WriteString(
 		fmt.Sprintf(dockerfile,
 			fmt.Sprintf("Server=sql-%s.database.windows.net; Database=%s; Authentication=Active Directory Default; Encrypt=True",
@@ -481,25 +489,19 @@ func (c *Deploy) run() {
 			}
 		}
 
-		cmd = exec.Command("azd", "package")
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Stdin = os.Stdin
-		cmd.Start()
-		cmd.Wait()
-		if cmd.ProcessState.ExitCode() != 0 {
+		exitCode, _ = azd.Run([]string{"package"}, tool.RunOptions{Interactive: true})
+		if exitCode != 0 {
 			output.Fatal(localizer.Sprintf("Error packaging application"))
 		}
 
-		cmd = exec.Command("azd", "deploy")
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Stdin = os.Stdin
-		cmd.Start()
-		cmd.Wait()
-		if cmd.ProcessState.ExitCode() != 0 {
+		exitCode, _ = azd.Run([]string{"deploy"}, tool.RunOptions{Interactive: true})
+		if exitCode != 0 {
 			output.Fatal(localizer.Sprintf("Error deploying application"))
 		}
+
+		file.Remove("azure.yaml")
+		folder.RemoveAll("infra")
+		folder.RemoveAll(".azure")
 
 		output.InfofWithHintExamples([][]string{
 			{localizer.Sprintf("To view the deployed resources"), "azd show"},

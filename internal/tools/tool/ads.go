@@ -26,9 +26,9 @@ func (t *AzureDataStudio) Init() {
 	}
 }
 
-func (t *AzureDataStudio) Run(args []string) (int, error) {
+func (t *AzureDataStudio) Run(args []string, options RunOptions) (int, error) {
 	if !test.IsRunningInTestExecutor() {
-		return t.tool.Run(args)
+		return t.tool.Run(args, options)
 	} else {
 		return 0, nil
 	}

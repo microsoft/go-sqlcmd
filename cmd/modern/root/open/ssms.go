@@ -5,6 +5,7 @@ package open
 
 import (
 	"fmt"
+	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
@@ -84,13 +85,13 @@ func (c *Ssms) launchAds(host string, port int, username string) {
 		args = append(args, "-E")
 	}
 
-	tool := tools.NewTool("ssms")
-	if !tool.IsInstalled() {
-		output.Fatalf(tool.HowToInstall())
+	ssms := tools.NewTool("ssms")
+	if !ssms.IsInstalled() {
+		output.Fatalf(ssms.HowToInstall())
 	}
 
 	c.displayPreLaunchInfo()
 
-	_, err := tool.Run(args)
+	_, err := ssms.Run(args, tool.RunOptions{})
 	c.CheckErr(err)
 }

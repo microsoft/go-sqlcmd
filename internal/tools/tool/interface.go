@@ -6,7 +6,11 @@ package tool
 type Tool interface {
 	Init()
 	Name() (name string)
-	Run(args []string) (exitCode int, err error)
+	Run(args []string, options RunOptions) (exitCode int, err error)
 	IsInstalled() bool
 	HowToInstall() string
+}
+
+type RunOptions struct {
+	Interactive bool
 }
