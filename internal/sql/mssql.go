@@ -64,7 +64,6 @@ func (m *mssql) Connect(
 			connect.UserName = user.Name
 			connect.TrustServerCertificate = false
 			connect.AuthenticationMethod = user.AuthenticationType
-			connect.LogLevel = 255
 		} else {
 
 			panic("Authentication not supported")

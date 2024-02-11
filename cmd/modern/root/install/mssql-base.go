@@ -318,7 +318,7 @@ func (c *MssqlBase) Run() {
 	if c.contextName == "" {
 		c.contextName = c.defaultContextName
 	}
-	
+
 	c.createContainer(imageName, c.contextName)
 }
 

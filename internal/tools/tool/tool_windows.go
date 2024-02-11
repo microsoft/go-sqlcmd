@@ -5,15 +5,14 @@ package tool
 
 import (
 	"bytes"
-	"fmt"
 	"os/exec"
 )
 
 func (t *tool) generateCommandLine(args []string) *exec.Cmd {
 	var stdout, stderr bytes.Buffer
-	fmt.Printf("t.exeName: %v\n", t.exeName)
-	fmt.Printf("args: %v\n", args)
 
+	// BUGBUG: Why does Cmd ignore the first arg!! (hence I am stuffing it
+	// appropriately with 'foobar'
 	args = append([]string{"foobar"}, args...)
 
 	cmd := &exec.Cmd{
