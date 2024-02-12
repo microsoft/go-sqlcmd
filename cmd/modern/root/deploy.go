@@ -8,6 +8,9 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"path/filepath"
+	"runtime"
+
 	"github.com/joho/godotenv"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -19,7 +22,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/sql"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
 	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
-	"path/filepath"
 
 	"github.com/rdegges/go-ipify"
 
@@ -263,18 +265,18 @@ func (c *Deploy) run() {
 	}
 
 	{
-		f := file.OpenFile("infra\\app\\db.bicep")
+		f := file.OpenFile(filepath.Join("infra", "app", "db.bicep"))
 		f.WriteString(dbBicep)
 		f.Close()
 
-		folder.MkdirAll("infra\\core\\database\\sqlserver")
-		f = file.OpenFile("infra\\core\\database\\sqlserver\\sqlserver.bicep")
+		folder.MkdirAll(filepath.Join("infra", "core", "database", "sqlserver"))
+		f = file.OpenFile(filepath.Join("infra", "core", "database", "sqlserver", "sqlserver.bicep"))
 		f.WriteString(sqlserverBicep)
 		f.Close()
 	}
 
 	{
-		mainBicep := file.GetContents("infra\\main.bicep")
+		mainBicep := file.GetContents(filepath.Join("infra", "main.bicep"))
 		mainBicep = strings.Replace(mainBicep, "module monitoring",
 			mainBicepDbCall+"\n\nmodule monitoring", 1)
 
@@ -290,19 +292,19 @@ func (c *Deploy) run() {
 
 		mainBicep += "\noutput DATA_API_BUILDER_ENDPOINT string = dataApiBuilder.outputs.uri\noutput AZURE_CLIENT_ID string = dataApiBuilder.outputs.managedUserIdentity\n"
 
-		f := file.OpenFile("infra\\main.bicep")
+		f := file.OpenFile(filepath.Join("infra", "main.bicep"))
 		f.WriteString(string(mainBicep))
 		f.Close()
 	}
 
 	{
-		dabBicep := file.GetContents("infra\\app\\DataApiBuilder.bicep")
+		dabBicep := file.GetContents(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
 		dabBicep = strings.Replace(dabBicep, "cpu: json('1.0')", "cpu: json('0.25')", 1)
 		dabBicep = strings.Replace(dabBicep, "memory: '2.0Gi'", "memory: '0.5Gi'", 1)
 
 		dabBicep += "\noutput managedUserIdentity string = identity.properties.clientId\n"
 
-		f := file.OpenFile("infra\\app\\DataApiBuilder.bicep")
+		f := file.OpenFile(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
 		f.WriteString(string(dabBicep))
 		f.Close()
 	}
@@ -315,7 +317,7 @@ func (c *Deploy) run() {
 
 	{
 		var mainParamsJson map[string]interface{}
-		mainParamsString := file.GetContents("infra\\main.parameters.json")
+		mainParamsString := file.GetContents(filepath.Join("infra", "main.parameters.json"))
 		json.Unmarshal([]byte(mainParamsString), &mainParamsJson)
 
 		// Append a parameter sqlAdminLoginName to the parameters object
@@ -355,7 +357,7 @@ func (c *Deploy) run() {
 		var prettyJSON bytes.Buffer
 		json.Indent(&prettyJSON, newData, "", "  ")
 
-		f := file.OpenFile("infra\\main.parameters.json")
+		f := file.OpenFile(filepath.Join("infra", "main.parameters.json"))
 		f.WriteString(prettyJSON.String())
 		f.Close()
 	}
@@ -383,6 +385,16 @@ func (c *Deploy) run() {
 		output.Fatal(localizer.Sprintf("Error setting environment variable USE_FREE_LIMIT"))
 	}
 
+	// BUGBUG: There seems to be a dependency on dotnet being on the machine!
+
+	/* Provisioning Azure resources (azd provision)
+
+		Provisioning Azure resources can take some time.
+
+	ERROR: initializing service 'DataApiBuilder', failed to initialize secrets at project '/Users/stuartpa/demo/.sqlcmd/DataApiBuilder/DataApiBuilder.csproj': exec: "dotnet": executable file not found in $PATH
+
+	Although interesting, is the secrets even needed for what we are doing!
+	*/
 	exitCode, _ = azd.Run([]string{"provision"}, tool.RunOptions{Interactive: true})
 	if exitCode != 0 {
 		output.FatalWithHintExamples([][]string{
@@ -396,19 +408,19 @@ func (c *Deploy) run() {
 	var defaultEnvironment string
 	{
 		var payloadJson map[string]interface{}
-		configJson := file.GetContents(".azure\\config.json")
+		configJson := file.GetContents(filepath.Join(".azure", "config.json"))
 		json.Unmarshal([]byte(configJson), &payloadJson)
 		if payloadJson["defaultEnvironment"] != nil {
 			defaultEnvironment = payloadJson["defaultEnvironment"].(string)
 		} else {
-			panic("Unable to get defaultEnvironment from .azure\\config.json")
+			panic("Unable to get defaultEnvironment from " + filepath.Join(".azure", "config.json"))
 		}
 	}
 
 	// Run the SQL scripts
-	filename := ".azure\\" + defaultEnvironment + "\\.env"
+	filename := filepath.Join(".azure", defaultEnvironment, ".env")
 
-	envFile, err := godotenv.Read(".azure\\" + defaultEnvironment + "\\.env")
+	envFile, err := godotenv.Read(filename)
 	if err != nil {
 		panic("Unable to read .env file: " + filename)
 	}
@@ -455,9 +467,16 @@ func (c *Deploy) run() {
 		},
 	}
 
+	authType := "ActiveDirectoryDefault"
+
+	// if on mac use Interactive, because Default doesn't work
+	if runtime.GOOS == "darwin" {
+		authType = "ActiveDirectoryInteractive"
+	}
+
 	user := sqlconfig.User{
 		Name:               email,
-		AuthenticationType: "ActiveDirectoryDefault",
+		AuthenticationType: authType,
 	}
 
 	// options := sql.ConnectOptions{Database: databaseName, Interactive: false}
@@ -481,8 +500,17 @@ func (c *Deploy) run() {
 		for _, fi := range files {
 			//if file is .sql
 			if strings.HasSuffix(fi, ".sql") {
+
+				// if on Windows, replace / with \\
+				if runtime.GOOS == "windows" {
+					fi = strings.Replace(fi, "/", "\\", -1)
+				} else {
+					fi = strings.Replace(fi, "\\", "/", -1)
+				}
+
 				//run sql file
 				output.Infof("Running %q", fi)
+
 				s.ExecuteSqlFile(fi)
 			} else {
 				panic(fmt.Sprintf("File %q is not supported", fi))

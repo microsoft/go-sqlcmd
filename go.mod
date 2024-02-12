@@ -2,7 +2,8 @@ module github.com/microsoft/go-sqlcmd
 
 go 1.18
 
-replace github.com/microsoft/go-mssqldb => C:\src\go-mssqldb
+// replace github.com/microsoft/go-mssqldb => C:\src\go-mssqldb
+replace github.com/microsoft/go-mssqldb => /Users/stuartpa/src/go-mssqldb
 
 require (
 	github.com/alecthomas/chroma/v2 v2.5.0
@@ -29,6 +30,7 @@ require (
 
 require (
 	github.com/rdegges/go-ipify v0.0.0-20150526035502-2d94a6a86c40
+	gopkg.in/src-d/go-billy.v4 v4.3.2
 	gopkg.in/src-d/go-git.v4 v4.13.1
 )
 
@@ -89,7 +91,6 @@ require (
 	golang.org/x/net v0.19.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gotest.tools/v3 v3.4.0 // indirect

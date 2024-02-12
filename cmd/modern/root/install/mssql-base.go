@@ -7,6 +7,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"path/filepath"
+	"runtime"
+	"strconv"
+	"strings"
+
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/microsoft/go-sqlcmd/internal/dotsqlcmdconfig"
@@ -14,10 +19,6 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
 	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
-	"path/filepath"
-	"runtime"
-	"strconv"
-	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -318,7 +319,7 @@ func (c *MssqlBase) Run() {
 	if c.contextName == "" {
 		c.contextName = c.defaultContextName
 	}
-	
+
 	c.createContainer(imageName, c.contextName)
 }
 
@@ -560,13 +561,21 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			for _, f := range dotsqlcmdconfig.DatabaseFiles(i) {
 				//if file is .sql
 				if strings.HasSuffix(f, ".sql") {
+					// If not on Windows, Replace \ with / in the file path
+					if runtime.GOOS != "windows" {
+						f = strings.Replace(f, "\\", "/", -1)
+					} else {
+						// If on Windows, replace / with \ in the file path
+						f = strings.Replace(f, "/", "\\", -1)
+					}
+
 					//run sql file
 					output.Infof("Running %q", f)
+
 					c.sql.ExecuteSqlFile(f)
 				}
 			}
 		}
-
 	}
 
 	dabPort := 0
@@ -895,6 +904,10 @@ func (c *MssqlBase) downloadImage(
 	output.Info(localizer.Sprintf("Downloading %q", imageName))
 	err := controller.EnsureImage(imageName)
 	if err != nil || c.unitTesting {
+
+		// BUGBUG: Add hint for the new issue on Mac with Docker Desktop
+		// https://stackoverflow.com/questions/44084846/cannot-connect-to-the-docker-daemon-on-macos
+		// (see the "permanent solution" part)
 		output.FatalErrorWithHints(
 			err,
 			[]string{
