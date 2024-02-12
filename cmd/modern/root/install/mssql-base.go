@@ -518,7 +518,9 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 					output.Infof("Downloading %q to container", useUrl.UrlFilename())
 				}
 			} else {
-				output.Infof("Copying %q to container", useUrl.UrlFilename())
+				if useUrl.OnlineMethod() != "script" {
+					output.Infof("Copying %q to container", useUrl.UrlFilename())
+				}
 			}
 			useUrl.CopyToContainer(containerId)
 
@@ -527,7 +529,9 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 				useUrl.Extract()
 			}
 
-			output.Infof("Bringing database %q online (%s)", useUrl.DatabaseName(), useUrl.OnlineMethod())
+			if useUrl.OnlineMethod() != "script" {
+				output.Infof("Bringing database %q online (%s)", useUrl.DatabaseName(), useUrl.OnlineMethod())
+			}
 
 			// Connect to master, unless a default database was specified (at this point the default database
 			// has not been set yet, so we need to specify it in the -d statement

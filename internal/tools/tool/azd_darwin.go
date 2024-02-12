@@ -3,12 +3,6 @@
 
 package tool
 
-// Search in this order
-//
-//	User Insiders Install
-//	System Insiders Install
-//	User non-Insiders install
-//	System non-Insiders install
 func (t *AzureDeveloperCli) searchLocations() []string {
 
 	return []string{"/usr/local/bin/azd"}
@@ -17,9 +11,9 @@ func (t *AzureDeveloperCli) searchLocations() []string {
 func (t *AzureDeveloperCli) installText() string {
 	return `Install the Azure Developer CLI:
 
-    TODO: Add instructions here
+    brew tap azure/azd && brew install azd
 
 More information can be found here:
 
-    https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd`
+    https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?pivots=os-mac`
 }

@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"path/filepath"
 	"runtime"
 
@@ -71,7 +72,7 @@ func (c *Deploy) DefineCommand(...cmdparser.CommandOptions) {
 	c.AddFlag(cmdparser.FlagOptions{
 		Bool:  &c.force,
 		Name:  "force",
-		Usage: localizer.Sprintf("Remove existing azure.yaml and infra folder")})
+		Usage: localizer.Sprintf("Remove existing azure.yaml, and .azure and infra folders")})
 }
 
 func (c *Deploy) run() {
@@ -93,29 +94,67 @@ func (c *Deploy) run() {
 		folder.RemoveAll(filepath.Join(".sqlcmd", "DataApiBuilder"))
 	}
 
+	// BUBUG: For some reason azd provision needs dotnet cli installed, so do an early check
+	// See the comment at the point we call "azd provision" for more details
+	// TEMP: Check dotnet is installed
+	{
+		dotnetCliName := "dotnet"
+		if runtime.GOOS == "windows" {
+			dotnetCliName = "dotnet.exe"
+		}
+
+		path, err := exec.LookPath(dotnetCliName)
+		c.CheckErr(err)
+
+		if path == "" {
+			output.FatalWithHints(
+				[]string{"Install the dotnet CLI"},
+				fmt.Sprintf("%q CLI does not exist in the PATH directories", dotnetCliName))
+		}
+	}
+
+	// azd provision requires docker.  podman isn't enough
+	{
+		dockerCliName := "docker"
+		if runtime.GOOS == "windows" {
+			dockerCliName = "docker.exe"
+		}
+
+		path, err := exec.LookPath(dockerCliName)
+		c.CheckErr(err)
+
+		if path == "" {
+			output.FatalWithHints(
+				[]string{"Install Docker Desktop"},
+				fmt.Sprintf("%q does not exist in the PATH directories.  `azd provision` requires docker.", dockerCliName))
+		}
+	}
+
 	azd := tools.NewTool("azd")
 	if !azd.IsInstalled() {
 		output.Fatalf(azd.HowToInstall())
-	}
-
-	exitCode, err := azd.Run([]string{"auth", "token", "--output", "json"}, tool.RunOptions{})
-	if err != nil {
-		output.Fatal(localizer.Sprintf("Error checking if logged in to azd"))
-	}
-
-	// If we're not logged in, log in
-	if exitCode == 1 {
-		exitCode, _ := azd.Run([]string{"auth", "login"}, tool.RunOptions{})
-		if exitCode != 0 {
-			output.Fatal(localizer.Sprintf("Error logging in to azd"))
-		}
 	}
 
 	var stdout bytes.Buffer
 
 	cmd := exec.Command("azd", "auth", "token", "--output", "json")
 	cmd.Stdout = &stdout
-	cmd.Stderr = os.Stderr
+	cmd.Start()
+	cmd.Wait()
+
+	// If we're not logged in, log in
+	if cmd.ProcessState.ExitCode() == 1 {
+		output.Info("Not logged using `azd`.  Running `azd auth login`.  Please complete login in the browser.")
+		exitCode, _ := azd.Run([]string{"auth", "login"}, tool.RunOptions{})
+		if exitCode != 0 {
+			output.Fatal(localizer.Sprintf("Error logging in to azd"))
+		}
+	}
+
+	stdout.Truncate(0)
+
+	cmd = exec.Command("azd", "auth", "token", "--output", "json")
+	cmd.Stdout = &stdout
 	cmd.Start()
 	cmd.Wait()
 	if cmd.ProcessState.ExitCode() != 0 {
@@ -140,6 +179,7 @@ func (c *Deploy) run() {
 		payloadstring += "}" // BUGBUG: Why do I need to do this!
 	}
 
+	// Get the email of the person logged into azd
 	var email string
 	{
 		var payloadJson map[string]interface{}
@@ -157,21 +197,43 @@ func (c *Deploy) run() {
 
 	output.Info("Using principal name: " + email)
 
+	email = strings.ToLower(email)
 	// get the string up to the @ from email
 	parts := strings.Split(email, "@")
 	username := parts[0]
-	username = strings.ToLower(username)
-	domain := parts[1]
-	domain = strings.ToLower(domain)
 
-	/*
-		if domain == "hotmail.com" || domain == "live.com" || domain == "outlook.com" {
-			output.FatalWithHints([]string{
-				localizer.Sprintf("TEMP: The go-mssqldb driver is unable to auth using consumer accounts.  Use a corporate account (non-consumer, e.g. not hotmail.com etc.).  Run `azd auth logout` & `azd auth login alias@microsoft.com`"),
-				localizer.Sprintf("azd logged in using a consumer domain: %q", domain),
-			})
+	// BUGBUG: Temporary code because go-mssqldb cannot log into Azure SQL
+	// if the azd auth login is not the same as the user logged into shell, e.g.
+	// if I log in to shell as alias@mycompany.com, and then log in to azd auth login
+	// as alias@hotmail.com.  go-mssqldb cannot login as alias@hotmail.com.  But
+	// SSMS can.  So there is an issuse with go-mssqldb AAD auth here.
+
+	// if on windows, verify the logged in upn is the same as the azd auth login
+	if runtime.GOOS == "windows" {
+		out, err := exec.Command("cmd", "/C", "whoami /upn").Output()
+		if err != nil {
+			whoami := strings.ToLower(string(out))
+			whoami = strings.TrimRight(whoami, "\r\n")
+			if whoami != "" {
+				if email != whoami {
+					output.FatalWithHints(
+						[]string{
+							localizer.Sprintf("Log in to shell as %q", whoami),
+							localizer.Sprintf("Log in to `azd auth login` as %q", email),
+						},
+						localizer.Sprintf(
+							"TEMP: Due to an issue with go-mssqldb, the shell login %q must be the same as the `azd auth login` %q",
+							whoami, email))
+				}
+			}
 		}
-	*/
+	}
+
+	output.Info("")
+	output.Info("TEMP: `azd init` will run, and ask 2 questions, accept both defaults ('Use Code in Current Directory' and 'Confirm and continue initializing my app').")
+	output.Info("TEMP: https://github.com/Azure/azure-dev/issues/3339")
+	output.Info("TEMP: https://github.com/Azure/azure-dev/issues/3340")
+	output.Info("")
 
 	dotsqlcmdconfig.SetFileName(dotsqlcmdconfig.DefaultFileName())
 	dotsqlcmdconfig.Load()
@@ -182,6 +244,11 @@ func (c *Deploy) run() {
 
 		for i, addon := range addons {
 			if addon == "dab" {
+
+				output.Info("TEMP: `azd init` will ask 'What port does 'DataApiBuilder' listen on?', 5000 is the common standard port")
+				output.Info("TEMP: https://github.com/Azure/azure-dev/issues/3341")
+				output.Info("")
+
 				path := filepath.Join(".sqlcmd", "DataApiBuilder")
 
 				folder.MkdirAll(path)
@@ -201,7 +268,10 @@ func (c *Deploy) run() {
 
 				files := dotsqlcmdconfig.AddonFiles(i)
 
+				// There should be one --use-file (which points to the dab-config.json file)
 				if len(files) == 1 {
+
+					// Edit that dab-config.json file and force the data-source to read from the CONN_STRING variable
 					dabConfigString := file.GetContents(files[0])
 					json.Unmarshal([]byte(dabConfigString), &dabConfigJson)
 
@@ -229,12 +299,14 @@ func (c *Deploy) run() {
 			c.environment = username + "-" + current_contextName
 		}
 
-		exitCode, _ = azd.Run([]string{"init", "--environment", c.environment}, tool.RunOptions{Interactive: true})
+		exitCode, _ := azd.Run([]string{"init", "--environment", c.environment}, tool.RunOptions{Interactive: true})
 		if exitCode != 0 {
 			output.Fatal(localizer.Sprintf("Error initializing application"))
 		}
 	}
 
+	// Update the git ignore file so all the files azd init generated don't get checked
+	// in, unless the user intentionally wants them to
 	{
 		gitignore := ""
 		if file.Exists(".gitignore") {
@@ -258,55 +330,77 @@ func (c *Deploy) run() {
 		if !strings.Contains(gitignore, ".azure") {
 			f.WriteString(".azure\n")
 		}
-	}
 
-	if file.Exists("next-steps.md") {
-		file.Remove("next-steps.md")
-	}
+		if file.Exists("next-steps.md") {
+			file.Remove("next-steps.md")
+		}
 
-	{
-		f := file.OpenFile(filepath.Join("infra", "app", "db.bicep"))
-		f.WriteString(dbBicep)
-		f.Close()
+		// Add bicep for the Azure SQL Server
+		{
+			f := file.OpenFile(filepath.Join("infra", "app", "db.bicep"))
+			f.WriteString(dbBicep)
+			f.Close()
 
-		folder.MkdirAll(filepath.Join("infra", "core", "database", "sqlserver"))
-		f = file.OpenFile(filepath.Join("infra", "core", "database", "sqlserver", "sqlserver.bicep"))
-		f.WriteString(sqlserverBicep)
-		f.Close()
-	}
+			folder.MkdirAll(filepath.Join("infra", "core", "database", "sqlserver"))
+			f = file.OpenFile(filepath.Join("infra", "core", "database", "sqlserver", "sqlserver.bicep"))
+			f.WriteString(sqlserverBicep)
+			f.Close()
+		}
 
-	{
-		mainBicep := file.GetContents(filepath.Join("infra", "main.bicep"))
-		mainBicep = strings.Replace(mainBicep, "module monitoring",
-			mainBicepDbCall+"\n\nmodule monitoring", 1)
+		// Alter azd init generated bicep to do the right things
+		{
+			// Alter bicep to create an Azure SQL database
+			mainBicep := file.GetContents(filepath.Join("infra", "main.bicep"))
+			mainBicep = strings.Replace(mainBicep, "module monitoring",
+				mainBicepDbCall+"\n\nmodule monitoring", 1)
 
-		// If windows then replace \r\n with \n
-		keyvaultBicep = strings.Replace(keyvaultBicep, "\n", "\r\n", -1)
-		mainBicep = strings.Replace(mainBicep, keyvaultBicep, "/*\n"+keyvaultBicep+"*/\n", 1)
+			// If windows then replace \r\n with \n
+			keyvaultBicep = strings.Replace(keyvaultBicep, "\n", "\r\n", -1)
+			mainBicep = strings.Replace(mainBicep, keyvaultBicep, "/*\n"+keyvaultBicep+"*/\n", 1)
 
-		mainBicep = strings.Replace(mainBicep, "output AZURE_KEY_VAULT_NAME",
-			"// output AZURE_KEY_VAULT_NAME", 1)
+			// Alter bicep to remove Key Vault (we do everything with managed identities and entra, so no secrets to store
+			mainBicep = strings.Replace(mainBicep, "output AZURE_KEY_VAULT_NAME",
+				"// output AZURE_KEY_VAULT_NAME", 1)
 
-		mainBicep = strings.Replace(mainBicep, "output AZURE_KEY_VAULT_ENDPOINT",
-			"// output AZURE_KEY_VAULT_ENDPOINT", 1)
+			mainBicep = strings.Replace(mainBicep, "output AZURE_KEY_VAULT_ENDPOINT",
+				"// output AZURE_KEY_VAULT_ENDPOINT", 1)
 
-		mainBicep += "\noutput DATA_API_BUILDER_ENDPOINT string = dataApiBuilder.outputs.uri\noutput AZURE_CLIENT_ID string = dataApiBuilder.outputs.managedUserIdentity\n"
+			// Output the DAB uri, so we can pass it in to the front end
+			mainBicep += "\noutput DATA_API_BUILDER_ENDPOINT string = dataApiBuilder.outputs.uri\noutput AZURE_CLIENT_ID string = dataApiBuilder.outputs.managedUserIdentity\n"
 
-		f := file.OpenFile(filepath.Join("infra", "main.bicep"))
-		f.WriteString(string(mainBicep))
-		f.Close()
-	}
+			f := file.OpenFile(filepath.Join("infra", "main.bicep"))
+			f.WriteString(string(mainBicep))
+			f.Close()
+		}
 
-	{
-		dabBicep := file.GetContents(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
-		dabBicep = strings.Replace(dabBicep, "cpu: json('1.0')", "cpu: json('0.25')", 1)
-		dabBicep = strings.Replace(dabBicep, "memory: '2.0Gi'", "memory: '0.5Gi'", 1)
+		{
+			// Shrink the container size to minimum, to keep costs down
+			dabBicep := file.GetContents(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
+			dabBicep += "\noutput managedUserIdentity string = identity.properties.clientId\n"
 
-		dabBicep += "\noutput managedUserIdentity string = identity.properties.clientId\n"
+			f := file.OpenFile(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
+			f.WriteString(dabBicep)
+			f.Close()
 
-		f := file.OpenFile(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
-		f.WriteString(string(dabBicep))
-		f.Close()
+			// go through all the Bicep files and reduce the container size to keep costs down
+			files, err := ioutil.ReadDir(filepath.Join("infra", "app"))
+			if err != nil {
+				output.FatalErr(err)
+			}
+
+			for _, f := range files {
+				if !f.IsDir() {
+					if strings.HasSuffix(f.Name(), ".bicep") {
+						bicep := file.GetContents(filepath.Join("infra", "app", f.Name()))
+						bicep = strings.Replace(bicep, "cpu: json('1.0')", "cpu: json('0.25')", -1)
+						bicep = strings.Replace(bicep, "memory: '2.0Gi'", "memory: '0.5Gi'", -1)
+						f := file.OpenFile(filepath.Join("infra", "app", f.Name()))
+						f.WriteString(bicep)
+						f.Close()
+					}
+				}
+			}
+		}
 	}
 
 	databases := dotsqlcmdconfig.DatabaseNames()
@@ -370,7 +464,7 @@ func (c *Deploy) run() {
 
 	output.Infof("Setting local Address to %q to have access to the Azure SQL server", ip)
 
-	exitCode, _ = azd.Run([]string{"env", "set", "MY_IP", ip}, tool.RunOptions{})
+	exitCode, _ := azd.Run([]string{"env", "set", "MY_IP", ip}, tool.RunOptions{})
 	if exitCode != 0 {
 		output.Fatal(localizer.Sprintf("Error setting environment variable MY_IP"))
 	}
@@ -482,6 +576,8 @@ func (c *Deploy) run() {
 	// options := sql.ConnectOptions{Database: databaseName, Interactive: false}
 	// options.LogLevel = 255
 
+	// Enable the Managed Identity for the DataApiBuilder service to have permissions
+	// to the Azure SQL Database
 	s := sql.NewSql(sql.SqlOptions{})
 	s.Connect(endpoint, &user, sql.ConnectOptions{Database: databaseName, Interactive: false})
 	s.Query("DROP USER IF EXISTS [id-dataapibuild-" + random + "]")
@@ -526,10 +622,6 @@ func (c *Deploy) run() {
 		if exitCode != 0 {
 			output.Fatal(localizer.Sprintf("Error deploying application"))
 		}
-
-		file.Remove("azure.yaml")
-		folder.RemoveAll("infra")
-		folder.RemoveAll(".azure")
 
 		output.InfofWithHintExamples([][]string{
 			{localizer.Sprintf("To view the deployed resources"), "azd show"},

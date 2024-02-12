@@ -32,5 +32,5 @@ func (t *AzureDeveloperCli) installText() string {
 
 More information can be found here:
 
-    https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd`
+    https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd`
 }
