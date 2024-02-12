@@ -9,9 +9,11 @@ import (
 )
 
 func (t *tool) generateCommandLine(args []string) *exec.Cmd {
+	path := t.exeName
+
 	// BUGBUG: Move ads specific code to the ads tool
-	if tool.Name() == "ads" {
-		path, _ := exec.LookPath("open")
+	if t.Name() == "ads" {
+		path, _ = exec.LookPath("open")
 
 		args = append([]string{"--args"}, args...)
 		args = append([]string{t.exeName}, args...)
@@ -21,7 +23,6 @@ func (t *tool) generateCommandLine(args []string) *exec.Cmd {
 	// BUGBUG: Why is this needed?
 	args = append([]string{"."}, args...)
 
-	path := t.exeName
 	var stdout, stderr bytes.Buffer
 	cmd := &exec.Cmd{
 		Path:   path,
