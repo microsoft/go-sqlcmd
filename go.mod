@@ -2,7 +2,7 @@ module github.com/microsoft/go-sqlcmd
 
 go 1.18
 
-replace github.com/microsoft/go-mssqldb => C:\src\go-mssqldb
+// replace github.com/microsoft/go-mssqldb => C:\src\go-mssqldb
 // replace github.com/microsoft/go-mssqldb => /Users/stuartpa/src/go-mssqldb
 
 require (
