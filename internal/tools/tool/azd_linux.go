@@ -14,9 +14,9 @@ func (t *AzureDeveloperCli) searchLocations() []string {
 func (t *AzureDeveloperCli) installText() string {
 	return `Install the Azure Developer CLI:
 
-    brew tap azure/azd && brew install azd
+    TODO: 
 
 More information can be found here:
 
-    https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?pivots=os-mac`
+    TODO: https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd?pivots=os-mac`
 }

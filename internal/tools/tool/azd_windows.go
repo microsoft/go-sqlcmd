@@ -5,6 +5,7 @@ package tool
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
@@ -18,8 +19,11 @@ func (t *AzureDeveloperCli) searchLocations() []string {
 	userProfile := os.Getenv("USERPROFILE")
 	programFiles := os.Getenv("ProgramFiles")
 
+	location, _ := exec.LookPath("azd")
+
 	// C:\Users\stuartpa\AppData\Local\Programs\Azure Dev CLI\azd.exe
 	return []string{
+		location,
 		filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Dev CLI\\azd.exe"),
 		filepath.Join(programFiles, "Azure Dev CLI\\azd.exe"),
 	}

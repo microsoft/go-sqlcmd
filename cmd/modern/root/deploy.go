@@ -238,6 +238,12 @@ func (c *Deploy) run() {
 	dotsqlcmdconfig.SetFileName(dotsqlcmdconfig.DefaultFileName())
 	dotsqlcmdconfig.Load()
 
+	databases := dotsqlcmdconfig.DatabaseNames()
+	if len(databases) == 0 {
+		panic("POC Limitation: At least one database has to be found in .sqlcmd file")
+	}
+	databaseName := databases[0]
+
 	// If the file azure.yaml does not exist in current directory
 	if _, err := os.Stat("azure.yaml"); os.IsNotExist(err) {
 		addons := dotsqlcmdconfig.AddonTypes()
@@ -303,157 +309,151 @@ func (c *Deploy) run() {
 		if exitCode != 0 {
 			output.Fatal(localizer.Sprintf("Error initializing application"))
 		}
-	}
 
-	// Update the git ignore file so all the files azd init generated don't get checked
-	// in, unless the user intentionally wants them to
-	{
-		gitignore := ""
-		if file.Exists(".gitignore") {
-			gitignore = file.GetContents(".gitignore")
-		}
-
-		f := file.OpenFile(".gitignore")
-		defer f.Close()
-		if !strings.Contains(gitignore, ".sqlcmd/DataApiBuilder") {
-			f.WriteString(".sqlcmd/DataApiBuilder\n")
-		}
-
-		if !strings.Contains(gitignore, "infra") {
-			f.WriteString("infra\n")
-		}
-
-		if !strings.Contains(gitignore, "azure.yaml") {
-			f.WriteString("azure.yaml\n")
-		}
-
-		if !strings.Contains(gitignore, ".azure") {
-			f.WriteString(".azure\n")
-		}
-
-		if file.Exists("next-steps.md") {
-			file.Remove("next-steps.md")
-		}
-
-		// Add bicep for the Azure SQL Server
+		// Update the git ignore file so all the files azd init generated don't get checked
+		// in, unless the user intentionally wants them to
 		{
-			f := file.OpenFile(filepath.Join("infra", "app", "db.bicep"))
-			f.WriteString(dbBicep)
-			f.Close()
-
-			folder.MkdirAll(filepath.Join("infra", "core", "database", "sqlserver"))
-			f = file.OpenFile(filepath.Join("infra", "core", "database", "sqlserver", "sqlserver.bicep"))
-			f.WriteString(sqlserverBicep)
-			f.Close()
-		}
-
-		// Alter azd init generated bicep to do the right things
-		{
-			// Alter bicep to create an Azure SQL database
-			mainBicep := file.GetContents(filepath.Join("infra", "main.bicep"))
-			mainBicep = strings.Replace(mainBicep, "module monitoring",
-				mainBicepDbCall+"\n\nmodule monitoring", 1)
-
-			// If windows then replace \r\n with \n
-			keyvaultBicep = strings.Replace(keyvaultBicep, "\n", "\r\n", -1)
-			mainBicep = strings.Replace(mainBicep, keyvaultBicep, "/*\n"+keyvaultBicep+"*/\n", 1)
-
-			// Alter bicep to remove Key Vault (we do everything with managed identities and entra, so no secrets to store
-			mainBicep = strings.Replace(mainBicep, "output AZURE_KEY_VAULT_NAME",
-				"// output AZURE_KEY_VAULT_NAME", 1)
-
-			mainBicep = strings.Replace(mainBicep, "output AZURE_KEY_VAULT_ENDPOINT",
-				"// output AZURE_KEY_VAULT_ENDPOINT", 1)
-
-			// Output the DAB uri, so we can pass it in to the front end
-			mainBicep += "\noutput DATA_API_BUILDER_ENDPOINT string = dataApiBuilder.outputs.uri\noutput AZURE_CLIENT_ID string = dataApiBuilder.outputs.managedUserIdentity\n"
-
-			f := file.OpenFile(filepath.Join("infra", "main.bicep"))
-			f.WriteString(string(mainBicep))
-			f.Close()
-		}
-
-		{
-			// Shrink the container size to minimum, to keep costs down
-			dabBicep := file.GetContents(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
-			dabBicep += "\noutput managedUserIdentity string = identity.properties.clientId\n"
-
-			f := file.OpenFile(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
-			f.WriteString(dabBicep)
-			f.Close()
-
-			// go through all the Bicep files and reduce the container size to keep costs down
-			files, err := ioutil.ReadDir(filepath.Join("infra", "app"))
-			if err != nil {
-				output.FatalErr(err)
+			gitignore := ""
+			if file.Exists(".gitignore") {
+				gitignore = file.GetContents(".gitignore")
 			}
 
-			for _, f := range files {
-				if !f.IsDir() {
-					if strings.HasSuffix(f.Name(), ".bicep") {
-						bicep := file.GetContents(filepath.Join("infra", "app", f.Name()))
-						bicep = strings.Replace(bicep, "cpu: json('1.0')", "cpu: json('0.25')", -1)
-						bicep = strings.Replace(bicep, "memory: '2.0Gi'", "memory: '0.5Gi'", -1)
-						f := file.OpenFile(filepath.Join("infra", "app", f.Name()))
-						f.WriteString(bicep)
-						f.Close()
+			f := file.OpenFile(".gitignore")
+			defer f.Close()
+			if !strings.Contains(gitignore, ".sqlcmd/DataApiBuilder") {
+				f.WriteString(".sqlcmd/DataApiBuilder\n")
+			}
+
+			if !strings.Contains(gitignore, "infra") {
+				f.WriteString("infra\n")
+			}
+
+			if !strings.Contains(gitignore, "azure.yaml") {
+				f.WriteString("azure.yaml\n")
+			}
+
+			if !strings.Contains(gitignore, ".azure") {
+				f.WriteString(".azure\n")
+			}
+
+			if file.Exists("next-steps.md") {
+				file.Remove("next-steps.md")
+			}
+
+			// Add bicep for the Azure SQL Server
+			{
+				f := file.OpenFile(filepath.Join("infra", "app", "db.bicep"))
+				f.WriteString(dbBicep)
+				f.Close()
+
+				folder.MkdirAll(filepath.Join("infra", "core", "database", "sqlserver"))
+				f = file.OpenFile(filepath.Join("infra", "core", "database", "sqlserver", "sqlserver.bicep"))
+				f.WriteString(sqlserverBicep)
+				f.Close()
+			}
+
+			// Alter azd init generated bicep to do the right things
+			{
+				// Alter bicep to create an Azure SQL database
+				mainBicep := file.GetContents(filepath.Join("infra", "main.bicep"))
+				mainBicep = strings.Replace(mainBicep, "module monitoring",
+					mainBicepDbCall+"\n\nmodule monitoring", 1)
+
+				// If windows then replace \r\n with \n
+				keyvaultBicep = strings.Replace(keyvaultBicep, "\n", "\r\n", -1)
+				mainBicep = strings.Replace(mainBicep, keyvaultBicep, "/*\n"+keyvaultBicep+"*/\n", 1)
+
+				// Alter bicep to remove Key Vault (we do everything with managed identities and entra, so no secrets to store
+				mainBicep = strings.Replace(mainBicep, "output AZURE_KEY_VAULT_NAME",
+					"// output AZURE_KEY_VAULT_NAME", 1)
+
+				mainBicep = strings.Replace(mainBicep, "output AZURE_KEY_VAULT_ENDPOINT",
+					"// output AZURE_KEY_VAULT_ENDPOINT", 1)
+
+				// Output the DAB uri, so we can pass it in to the front end
+				mainBicep += "\noutput DATA_API_BUILDER_ENDPOINT string = dataApiBuilder.outputs.uri\noutput AZURE_CLIENT_ID string = dataApiBuilder.outputs.managedUserIdentity\n"
+
+				f := file.OpenFile(filepath.Join("infra", "main.bicep"))
+				f.WriteString(string(mainBicep))
+				f.Close()
+			}
+
+			{
+				// Shrink the container size to minimum, to keep costs down
+				dabBicep := file.GetContents(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
+				dabBicep += "\noutput managedUserIdentity string = identity.properties.clientId\n"
+
+				f := file.OpenFile(filepath.Join("infra", "app", "DataApiBuilder.bicep"))
+				f.WriteString(dabBicep)
+				f.Close()
+
+				// go through all the Bicep files and reduce the container size to keep costs down
+				files, err := ioutil.ReadDir(filepath.Join("infra", "app"))
+				if err != nil {
+					output.FatalErr(err)
+				}
+
+				for _, f := range files {
+					if !f.IsDir() {
+						if strings.HasSuffix(f.Name(), ".bicep") {
+							bicep := file.GetContents(filepath.Join("infra", "app", f.Name()))
+							bicep = strings.Replace(bicep, "cpu: json('1.0')", "cpu: json('0.25')", -1)
+							bicep = strings.Replace(bicep, "memory: '2.0Gi'", "memory: '0.5Gi'", -1)
+							f := file.OpenFile(filepath.Join("infra", "app", f.Name()))
+							f.WriteString(bicep)
+							f.Close()
+						}
 					}
 				}
 			}
 		}
-	}
 
-	databases := dotsqlcmdconfig.DatabaseNames()
-	if len(databases) == 0 {
-		panic("No databases found in .sqlcmd file")
-	}
-	databaseName := databases[0]
+		{
+			var mainParamsJson map[string]interface{}
+			mainParamsString := file.GetContents(filepath.Join("infra", "main.parameters.json"))
+			json.Unmarshal([]byte(mainParamsString), &mainParamsJson)
 
-	{
-		var mainParamsJson map[string]interface{}
-		mainParamsString := file.GetContents(filepath.Join("infra", "main.parameters.json"))
-		json.Unmarshal([]byte(mainParamsString), &mainParamsJson)
+			// Append a parameter sqlAdminLoginName to the parameters object
+			mainParamsJson["parameters"].(map[string]interface{})["sqlAdminLoginName"] = map[string]interface{}{
+				"value": "${AZURE_PRINCIPAL_NAME}",
+			}
 
-		// Append a parameter sqlAdminLoginName to the parameters object
-		mainParamsJson["parameters"].(map[string]interface{})["sqlAdminLoginName"] = map[string]interface{}{
-			"value": "${AZURE_PRINCIPAL_NAME}",
+			mainParamsJson["parameters"].(map[string]interface{})["sqlDatabaseName"] = map[string]interface{}{
+				"value": databaseName,
+			}
+
+			mainParamsJson["parameters"].(map[string]interface{})["sqlClientIpAddress"] = map[string]interface{}{
+				"value": "${MY_IP}",
+			}
+
+			mainParamsJson["parameters"].(map[string]interface{})["useFreeLimit"] = map[string]interface{}{
+				"value": "${USE_FREE_LIMIT}",
+			}
+
+			var arr []interface{}
+			arr = append(arr, map[string]interface {
+			}{
+				"name":  "ASPNETCORE_ENVIRONMENT",
+				"value": "Development",
+			})
+
+			mainParamsJson["parameters"].(map[string]interface {
+			})["dataApiBuilderDefinition"].(map[string]interface {
+			})["value"].(map[string]interface {
+			})["settings"] = arr
+
+			newData, err := json.Marshal(mainParamsJson)
+			if err != nil {
+				panic(err)
+			}
+
+			var prettyJSON bytes.Buffer
+			json.Indent(&prettyJSON, newData, "", "  ")
+
+			f := file.OpenFile(filepath.Join("infra", "main.parameters.json"))
+			f.WriteString(prettyJSON.String())
+			f.Close()
 		}
-
-		mainParamsJson["parameters"].(map[string]interface{})["sqlDatabaseName"] = map[string]interface{}{
-			"value": databaseName,
-		}
-
-		mainParamsJson["parameters"].(map[string]interface{})["sqlClientIpAddress"] = map[string]interface{}{
-			"value": "${MY_IP}",
-		}
-
-		mainParamsJson["parameters"].(map[string]interface{})["useFreeLimit"] = map[string]interface{}{
-			"value": "${USE_FREE_LIMIT}",
-		}
-
-		var arr []interface{}
-		arr = append(arr, map[string]interface {
-		}{
-			"name":  "ASPNETCORE_ENVIRONMENT",
-			"value": "Development",
-		})
-
-		mainParamsJson["parameters"].(map[string]interface {
-		})["dataApiBuilderDefinition"].(map[string]interface {
-		})["value"].(map[string]interface {
-		})["settings"] = arr
-
-		newData, err := json.Marshal(mainParamsJson)
-		if err != nil {
-			panic(err)
-		}
-
-		var prettyJSON bytes.Buffer
-		json.Indent(&prettyJSON, newData, "", "  ")
-
-		f := file.OpenFile(filepath.Join("infra", "main.parameters.json"))
-		f.WriteString(prettyJSON.String())
-		f.Close()
 	}
 
 	// BUGBUG: Do this using a microsoft blessed method (SSMS/ADS must do this in the connection dialogs)
@@ -537,23 +537,6 @@ func (c *Deploy) run() {
 	// Remove the first two characters from random (the 'cr' which stands for Container Registry)
 	random = random[2:]
 
-	azureClientId, ok := envFile["AZURE_CLIENT_ID"]
-	if !ok {
-		panic("AZURE_CLIENT_ID is not set in .env")
-	}
-	if azureClientId == "" {
-		panic("AZURE_CLIENT_ID is not set in .env")
-	}
-
-	f := file.OpenFile(filepath.Join(".sqlcmd", "DataApiBuilder", "Dockerfile"))
-	f.WriteString(
-		fmt.Sprintf(dockerfile,
-			fmt.Sprintf("Server=sql-%s.database.windows.net; Database=%s; Authentication=Active Directory Default; Encrypt=True",
-				random,
-				databaseName),
-			azureClientId))
-	f.Close()
-
 	endpoint := sqlconfig.Endpoint{
 		EndpointDetails: sqlconfig.EndpointDetails{
 			Address: "sql-" + random + ".database.windows.net",
@@ -580,14 +563,38 @@ func (c *Deploy) run() {
 	// to the Azure SQL Database
 	s := sql.NewSql(sql.SqlOptions{})
 	s.Connect(endpoint, &user, sql.ConnectOptions{Database: databaseName, Interactive: false})
-	s.Query("DROP USER IF EXISTS [id-dataapibuild-" + random + "]")
-	s.Query("CREATE USER [id-dataapibuild-" + random + "] FROM EXTERNAL PROVIDER")
-	s.Query("ALTER ROLE db_datareader ADD MEMBER [id-dataapibuild-" + random + "]")
-	s.Query("ALTER ROLE db_datawriter ADD MEMBER [id-dataapibuild-" + random + "]")
+
+	addons := dotsqlcmdconfig.AddonTypes()
+	for _, addon := range addons {
+		if addon == "dab" {
+
+			azureClientId, ok := envFile["AZURE_CLIENT_ID"]
+			if !ok {
+				panic("AZURE_CLIENT_ID is not set in .env")
+			}
+			if azureClientId == "" {
+				panic("AZURE_CLIENT_ID is not set in .env")
+			}
+
+			f := file.OpenFile(filepath.Join(".sqlcmd", "DataApiBuilder", "Dockerfile"))
+			f.WriteString(
+				fmt.Sprintf(dockerfile,
+					fmt.Sprintf("Server=sql-%s.database.windows.net; Database=%s; Authentication=Active Directory Default; Encrypt=True",
+						random,
+						databaseName),
+					azureClientId))
+			f.Close()
+			break
+
+			s.Query("DROP USER IF EXISTS [id-dataapibuild-" + random + "]")
+			s.Query("CREATE USER [id-dataapibuild-" + random + "] FROM EXTERNAL PROVIDER")
+			s.Query("ALTER ROLE db_datareader ADD MEMBER [id-dataapibuild-" + random + "]")
+			s.Query("ALTER ROLE db_datawriter ADD MEMBER [id-dataapibuild-" + random + "]")
+		}
+	}
 
 	// If folder .sqlcmd exists
 	if file.Exists(".sqlcmd") {
-
 		dotsqlcmdconfig.SetFileName(dotsqlcmdconfig.DefaultFileName())
 		dotsqlcmdconfig.Load()
 		files := dotsqlcmdconfig.DatabaseFiles(0)

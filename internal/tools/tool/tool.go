@@ -33,7 +33,8 @@ func (t *tool) IsInstalled() bool {
 	}
 
 	t.installed = new(bool)
-	if file.Exists(t.exeName) {
+
+	if t.exeName != "" && file.Exists(t.exeName) {
 		*t.installed = true
 	} else {
 		*t.installed = false
