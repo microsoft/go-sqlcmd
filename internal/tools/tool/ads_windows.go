@@ -19,10 +19,10 @@ func (t *AzureDataStudio) searchLocations() []string {
 	programFiles := os.Getenv("ProgramFiles")
 
 	return []string{
-		filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Data Studio - Insiders\\azuredatastudio-insiders.exe"),
-		filepath.Join(programFiles, "Azure Data Studio - Insiders\\azuredatastudio-insiders.exe"),
 		filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Data Studio\\azuredatastudio.exe"),
 		filepath.Join(programFiles, "Azure Data Studio\\azuredatastudio.exe"),
+		filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Data Studio - Insiders\\azuredatastudio-insiders.exe"),
+		filepath.Join(programFiles, "Azure Data Studio - Insiders\\azuredatastudio-insiders.exe"),
 	}
 }
 

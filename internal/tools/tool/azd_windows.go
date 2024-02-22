@@ -21,12 +21,15 @@ func (t *AzureDeveloperCli) searchLocations() []string {
 
 	location, _ := exec.LookPath("azd")
 
-	// C:\Users\stuartpa\AppData\Local\Programs\Azure Dev CLI\azd.exe
-	return []string{
-		location,
-		filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Dev CLI\\azd.exe"),
-		filepath.Join(programFiles, "Azure Dev CLI\\azd.exe"),
+	var locations []string
+	if location != "" {
+		locations = append(locations, location)
 	}
+
+	locations = append(locations, filepath.Join(userProfile, "AppData\\Local\\Programs\\Azure Dev CLI\\azd.exe"))
+	locations = append(locations, filepath.Join(programFiles, "Azure Dev CLI\\azd.exe"))
+
+	return locations
 }
 
 func (t *AzureDeveloperCli) installText() string {

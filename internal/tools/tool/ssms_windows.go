@@ -17,6 +17,8 @@ import (
 func (t *SqlServerManagementStudio) searchLocations() []string {
 	programFiles := os.Getenv("ProgramFiles(x86)")
 
+	// BUGBUG: Go looking in the registry for where SSMS is
+
 	// C:\Program Files (x86)\Microsoft SQL Server Management Studio 19\Common7\IDE
 	return []string{
 		filepath.Join(programFiles, "Microsoft SQL Server Management Studio 19\\Common7\\IDE\\ssms.exe"),

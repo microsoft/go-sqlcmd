@@ -324,18 +324,6 @@ func (c *Deploy) run() {
 				f.WriteString(".sqlcmd/DataApiBuilder\n")
 			}
 
-			if !strings.Contains(gitignore, "infra") {
-				f.WriteString("infra\n")
-			}
-
-			if !strings.Contains(gitignore, "azure.yaml") {
-				f.WriteString("azure.yaml\n")
-			}
-
-			if !strings.Contains(gitignore, ".azure") {
-				f.WriteString(".azure\n")
-			}
-
 			if file.Exists("next-steps.md") {
 				file.Remove("next-steps.md")
 			}
