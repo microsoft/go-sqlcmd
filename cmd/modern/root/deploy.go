@@ -229,11 +229,13 @@ func (c *Deploy) run() {
 		}
 	}
 
-	output.Info("")
-	output.Info("TEMP: `azd init` will run, and ask 2 questions, accept both defaults ('Use Code in Current Directory' and 'Confirm and continue initializing my app').")
-	output.Info("TEMP: https://github.com/Azure/azure-dev/issues/3339")
-	output.Info("TEMP: https://github.com/Azure/azure-dev/issues/3340")
-	output.Info("")
+	if _, err := os.Stat("azure.yaml"); os.IsNotExist(err) {
+		output.Info("")
+		output.Info("TEMP: `azd init` will run, and ask 2 questions, accept both defaults ('Use Code in Current Directory' and 'Confirm and continue initializing my app').")
+		output.Info("TEMP: https://github.com/Azure/azure-dev/issues/3339")
+		output.Info("TEMP: https://github.com/Azure/azure-dev/issues/3340")
+		output.Info("")
+	}
 
 	dotsqlcmdconfig.SetFileName(dotsqlcmdconfig.DefaultFileName())
 	dotsqlcmdconfig.Load()
@@ -574,7 +576,6 @@ func (c *Deploy) run() {
 						databaseName),
 					azureClientId))
 			f.Close()
-			break
 
 			s.Query("DROP USER IF EXISTS [id-dataapibuild-" + random + "]")
 			s.Query("CREATE USER [id-dataapibuild-" + random + "] FROM EXTERNAL PROVIDER")
