@@ -348,7 +348,9 @@ func (c *Deploy) run() {
 					mainBicepDbCall+"\n\nmodule monitoring", 1)
 
 				// If windows then replace \r\n with \n
-				keyvaultBicep = strings.Replace(keyvaultBicep, "\n", "\r\n", -1)
+				if runtime.GOOS == "windows" {
+					keyvaultBicep = strings.Replace(keyvaultBicep, "\n", "\r\n", -1)
+				}
 				mainBicep = strings.Replace(mainBicep, keyvaultBicep, "/*\n"+keyvaultBicep+"*/\n", 1)
 
 				// Alter bicep to remove Key Vault (we do everything with managed identities and entra, so no secrets to store
