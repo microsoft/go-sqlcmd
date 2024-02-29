@@ -4712,8 +4712,8 @@ THE SOFTWARE.
 ## golang.org/x/crypto
 
 * Name: golang.org/x/crypto
-* Version: v0.17.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.17.0:LICENSE)
+* Version: v0.19.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.19.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4749,8 +4749,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/net
 
 * Name: golang.org/x/net
-* Version: v0.17.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.17.0:LICENSE)
+* Version: v0.21.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.21.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -4786,8 +4786,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/sys/windows
 
 * Name: golang.org/x/sys/windows
-* Version: v0.15.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.15.0:LICENSE)
+* Version: v0.17.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.17.0:LICENSE)
 
 ```
 Copyright (c) 2009 The Go Authors. All rights reserved.
