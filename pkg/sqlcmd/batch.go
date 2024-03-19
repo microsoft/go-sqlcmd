@@ -104,10 +104,13 @@ parse:
 			if ok {
 				b.quote = 0
 			}
+			// don't bother looking for a command
+			scannedCommand = true
 		// inside a multiline comment
 		case b.comment:
 			i, ok = readMultilineComment(b.raw, i, b.rawlen)
 			b.comment = !ok
+			scannedCommand = true
 		// start of a string
 		case c == '\'' || c == '"' || c == '[':
 			b.quote = c
