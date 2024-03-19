@@ -16,10 +16,7 @@ Learn more about how `sqlcmd` is used from a articles/posts written by the commu
 
 | Install:                | Upgrade:                    |
 | ----------------------- |-----------------------------|
-| `winget install sqlcmd` | `winget uninstall sqlcmd`** |
-|                         | `winget install sqlcmd`     |
-
-** temporary workaround, while we fix `winget upgrade`
+| `winget install sqlcmd` | `winget upgrade sqlcmd`     |
 
 #### Choco
 
