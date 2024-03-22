@@ -27,6 +27,7 @@ import (
 	"github.com/microsoft/go-mssqldb/msdsn"
 	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -571,7 +572,7 @@ func (s *Sqlcmd) SetupCloseHandler() {
 		if s.lineIo != nil {
 			s.lineIo.Close()
 		}
-		os.Exit(0)
+		telemetry.CloseTelemetryAndExit(0)
 	}()
 }
 

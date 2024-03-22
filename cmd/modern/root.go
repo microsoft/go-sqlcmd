@@ -142,3 +142,7 @@ func (c *Root) addGlobalFlags() {
 		Usage:      localizer.Sprintf("log level, error=0, warn=1, info=2, debug=3, trace=4"),
 	})
 }
+
+func (c *Root) LogTelemtry() {
+	/* Dummy implementation for now */
+}
