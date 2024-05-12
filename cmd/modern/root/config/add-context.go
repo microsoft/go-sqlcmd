@@ -10,6 +10,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
+	"github.com/microsoft/go-sqlcmd/internal/telemetry"
 )
 
 // AddContext implements the `sqlcmd config add-context` command
@@ -93,4 +94,23 @@ func (c *AddContext) run() {
 		{localizer.Sprintf("To start interactive query session"), "sqlcmd query"},
 		{localizer.Sprintf("To run a query"), "sqlcmd query \"SELECT @@version\""},
 	}, localizer.Sprintf("Current Context '%v'", context.Name))
+	c.LogTelemtry()
+}
+
+func (c *AddContext) LogTelemtry() {
+	eventName := "config-add-context"
+	properties := map[string]string{}
+	properties["Command"] = "config"
+	properties["SubCommand"] = "add-context"
+	if c.name != "" {
+		properties["name"] = "set"
+	}
+	if c.endpointName != "" {
+		properties["endpoint"] = "set"
+	}
+	if c.userName != "" {
+		properties["user"] = "set"
+	}
+	telemetry.TrackEvent(eventName, properties)
+	telemetry.CloseTelemetry()
 }

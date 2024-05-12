@@ -19,6 +19,7 @@ import (
 )
 
 var Translator *message.Printer
+var LocaleName = "en-us"
 
 var supportedLanguages = map[string]string{
 	"de-de":   "de-DE",
@@ -40,11 +41,11 @@ var supportedLanguages = map[string]string{
 // based on env var SQLCMD_LANG which expects language
 // tag such as en-us, de-de, fr-ch, etc.
 func init() {
-	localeName := strings.ToLower(os.Getenv("SQLCMD_LANG"))
-	if _, ok := supportedLanguages[localeName]; !ok {
-		localeName = "en-us"
+	LocaleName = strings.ToLower(os.Getenv("SQLCMD_LANG"))
+	if _, ok := supportedLanguages[LocaleName]; !ok {
+		LocaleName = "en-us"
 	}
-	Translator = message.NewPrinter(language.MustParse(supportedLanguages[localeName]))
+	Translator = message.NewPrinter(language.MustParse(supportedLanguages[LocaleName]))
 }
 
 // Errorf() is wrapper function to create localized errors
