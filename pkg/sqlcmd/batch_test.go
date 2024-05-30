@@ -38,6 +38,8 @@ func TestBatchNext(t *testing.T) {
 		{"select [bracket", []string{"select [bracket"}, nil, "["},
 		{"select [bracket]]a]", []string{"select [bracket]]a]"}, nil, "-"},
 		{"exit_1", []string{"exit_1"}, nil, "-"},
+		{"print ('me\n!!me')", []string{"print ('me" + SqlcmdEol + "!!me')"}, nil, "-"},
+		{"/*comment\n!!me*/", []string{"/*comment" + SqlcmdEol + "!!me*/"}, nil, "-"},
 	}
 	for _, test := range tests {
 		b := NewBatch(sp(test.s, "\n"), newCommands())
