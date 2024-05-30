@@ -20,13 +20,14 @@ steps:
       RunName: 'SQL2017'
       SQLCMDUSER: sa
       SQLPASSWORD: $(PASSWORD)
-      
-  - template: include-runtests-linux.yml
-    parameters:
-      RunName: 'SQLDB'
-      # AZURESERVER must be defined as a variable in the pipeline
-      SQLCMDSERVER: $(AZURESERVER)
-      AZURECLIENTSECRET: $(AZURECLIENTSECRET)
+
+  # The use of client secrets is disallowed now, so commenting out the Azure tests until we can switch to a federated credential.
+  # - template: include-runtests-linux.yml
+  #   parameters:
+  #     RunName: 'SQLDB'
+  #     # AZURESERVER must be defined as a variable in the pipeline
+  #     SQLCMDSERVER: $(AZURESERVER)
+  #     AZURECLIENTSECRET: $(AZURECLIENTSECRET)
       
   - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
     displayName: Merge coverage data
