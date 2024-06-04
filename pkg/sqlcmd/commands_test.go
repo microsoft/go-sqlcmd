@@ -254,7 +254,7 @@ func TestErrorCommand(t *testing.T) {
 	fileName := file.Name()
 	_ = file.Close()
 	err = errorCommand(s, []string{""}, 1)
-	assert.EqualError(t, err, InvalidCommandError("OUT", 1).Error(), "errorCommand with empty file name")
+	assert.EqualError(t, err, InvalidCommandError("ERROR", 1).Error(), "errorCommand with empty file name")
 	err = errorCommand(s, []string{fileName}, 1)
 	assert.NoError(t, err, "errorCommand")
 	// Only some error kinds go to the error output
