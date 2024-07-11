@@ -246,6 +246,7 @@ func TestConnectCommand(t *testing.T) {
 
 func TestErrorCommand(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer s.SetError(nil)
 	defer buf.Close()
 	file, err := os.CreateTemp("", "sqlcmderr")
 	assert.NoError(t, err, "os.CreateTemp")
@@ -253,17 +254,20 @@ func TestErrorCommand(t *testing.T) {
 	fileName := file.Name()
 	_ = file.Close()
 	err = errorCommand(s, []string{""}, 1)
-	assert.EqualError(t, err, InvalidCommandError("OUT", 1).Error(), "errorCommand with empty file name")
+	assert.EqualError(t, err, InvalidCommandError("ERROR", 1).Error(), "errorCommand with empty file name")
 	err = errorCommand(s, []string{fileName}, 1)
 	assert.NoError(t, err, "errorCommand")
 	// Only some error kinds go to the error output
 	err = runSqlCmd(t, s, []string{"print N'message'", "RAISERROR(N'Error', 16, 1)", "SELECT 1", ":SETVAR 1", "GO"})
 	assert.NoError(t, err, "runSqlCmd")
-	s.SetError(nil)
 	errText, err := os.ReadFile(file.Name())
 	if assert.NoError(t, err, "ReadFile") {
 		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents: "+string(errText))
 	}
+	s.vars.Set("myvar", "stdout")
+	err = errorCommand(s, []string{"$(myvar)"}, 1)
+	assert.NoError(t, err, "errorCommand with a variable")
+	assert.Equal(t, os.Stdout, s.err, "error set to stdout using a variable")
 }
 
 func TestOnErrorCommand(t *testing.T) {
@@ -320,6 +324,11 @@ func TestResolveArgumentVariables(t *testing.T) {
 	if assert.ErrorContains(t, err, UndefinedVariable("var2").Error(), "fail on unresolved variable") {
 		assert.Empty(t, actual, "fail on unresolved variable")
 	}
+	s.Connect.DisableVariableSubstitution = true
+	input := "$(var1) notvar"
+	actual, err = resolveArgumentVariables(s, []rune(input), true)
+	assert.NoError(t, err)
+	assert.Equal(t, input, actual, "resolveArgumentVariables when DisableVariableSubstitution is false")
 }
 
 func TestExecCommand(t *testing.T) {

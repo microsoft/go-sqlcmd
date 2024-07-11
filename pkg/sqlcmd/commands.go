@@ -264,13 +264,18 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 	if len(args) == 0 || args[0] == "" {
 		return InvalidCommandError("OUT", line)
 	}
+	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
+	if err != nil {
+		return err
+	}
+
 	switch {
-	case strings.EqualFold(args[0], "stdout"):
+	case strings.EqualFold(filePath, "stdout"):
 		s.SetOutput(os.Stdout)
-	case strings.EqualFold(args[0], "stderr"):
+	case strings.EqualFold(filePath, "stderr"):
 		s.SetOutput(os.Stderr)
 	default:
-		o, err := os.OpenFile(args[0], os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
+		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
 			return InvalidFileError(err, args[0])
 		}
@@ -290,15 +295,19 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 // errorCommand changes the error writer to use a file
 func errorCommand(s *Sqlcmd, args []string, line uint) error {
 	if len(args) == 0 || args[0] == "" {
-		return InvalidCommandError("OUT", line)
+		return InvalidCommandError("ERROR", line)
+	}
+	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
+	if err != nil {
+		return err
 	}
 	switch {
-	case strings.EqualFold(args[0], "stderr"):
+	case strings.EqualFold(filePath, "stderr"):
 		s.SetError(os.Stderr)
-	case strings.EqualFold(args[0], "stdout"):
+	case strings.EqualFold(filePath, "stdout"):
 		s.SetError(os.Stdout)
 	default:
-		o, err := os.OpenFile(args[0], os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
+		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
 			return InvalidFileError(err, args[0])
 		}
@@ -549,7 +558,7 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 func resolveArgumentVariables(s *Sqlcmd, arg []rune, failOnUnresolved bool) (string, error) {
 	var b *strings.Builder
 	end := len(arg)
-	for i := 0; i < end; {
+	for i := 0; i < end && !s.Connect.DisableVariableSubstitution; {
 		c, next := arg[i], grab(arg, i+1, end)
 		switch {
 		case c == '$' && next == '(':
