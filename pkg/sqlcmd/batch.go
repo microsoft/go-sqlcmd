@@ -35,15 +35,20 @@ type Batch struct {
 	linevarmap map[int]string
 	// cmd is the set of Commands available
 	cmd Commands
+	// ParseVariables is a function that returns true if Next should parse variables
+	ParseVariables batchParseVariables
 }
 
 type batchScan func() (string, error)
 
+type batchParseVariables func() bool
+
 // NewBatch creates a Batch which converts runes provided by reader into SQL batches
 func NewBatch(reader batchScan, cmd Commands) *Batch {
 	b := &Batch{
-		read: reader,
-		cmd:  cmd,
+		read:           reader,
+		cmd:            cmd,
+		ParseVariables: func() bool { return true },
 	}
 	b.Reset(nil)
 	return b
@@ -125,7 +130,7 @@ parse:
 		case b.quote != 0 || b.comment:
 
 		// Handle variable references
-		case c == '$' && next == '(':
+		case (b.ParseVariables == nil || b.ParseVariables()) && c == '$' && next == '(':
 			vi, ok := readVariableReference(b.raw, i+2, b.rawlen)
 			if ok {
 				b.addVariableLocation(i, string(b.raw[i+2:vi]))
@@ -231,7 +236,7 @@ func (b *Batch) readString(r []rune, i, end int, quote rune, line uint) (int, bo
 	for ; i < end; i++ {
 		c, next = r[i], grab(r, i+1, end)
 		switch {
-		case c == '$' && next == '(':
+		case (b.ParseVariables == nil || b.ParseVariables()) && c == '$' && next == '(':
 			vl, ok := readVariableReference(r, i+2, end)
 			if ok {
 				b.addVariableLocation(i, string(r[i+2:vl]))
