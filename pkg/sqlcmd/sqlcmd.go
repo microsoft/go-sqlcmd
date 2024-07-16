@@ -103,6 +103,7 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 		colorizer:        color.New(false),
 	}
 	s.batch = NewBatch(s.scanNext, s.Cmd)
+	s.batch.ParseVariables = func() bool { return !s.Connect.DisableVariableSubstitution }
 	mssql.SetContextLogger(s)
 	s.PrintError = func(msg string, severity uint8) bool {
 		return false
