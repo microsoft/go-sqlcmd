@@ -294,8 +294,8 @@ func convertOsArgs(args []string) (cargs []string) {
 		}
 		var defValue string
 		if isListFlag(a) {
-			flag = a
-			first = true
+			flag = a[0:2]
+			first = len(a) == 2
 		} else {
 			defValue = checkDefaultValue(args, i)
 		}
@@ -326,11 +326,11 @@ func checkDefaultValue(args []string, i int) (val string) {
 }
 
 func isFlag(arg string) bool {
-	return len(arg) == 2 && arg[0] == '-'
+	return arg[0] == '-'
 }
 
 func isListFlag(arg string) bool {
-	return arg == "-v" || arg == "-i"
+	return len(arg) > 1 && (arg[0:2] == "-v" || arg[0:2] == "-i")
 }
 
 func formatDescription(description string, maxWidth, indentWidth int) string {

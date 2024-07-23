@@ -105,6 +105,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "m"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "m"
 		}},
+		{[]string{"-ifoo.sql", "bar.sql", "-V10"}, func(args SQLCmdArguments) bool {
+			return args.ErrorSeverityLevel == 10 && args.InputFile[0] == "foo.sql" && args.InputFile[1] == "bar.sql"
+		}},
 	}
 
 	for _, test := range commands {
@@ -526,6 +529,16 @@ func TestConvertOsArgs(t *testing.T) {
 			"Flags with optional arguments",
 			[]string{"-r", "1", "-X", "-k", "-C"},
 			[]string{"-r", "1", "-X", "0", "-k", "0", "-C"},
+		},
+		{
+			"-i followed by flags without spaces",
+			[]string{"-i", "a.sql", "-V10", "-C"},
+			[]string{"-i", "a.sql", "-V10", "-C"},
+		},
+		{
+			"list flags without spaces",
+			[]string{"-ifoo.sql", "bar.sql", "-V10", "-X", "-va=b", "c=d"},
+			[]string{"-ifoo.sql", "-i", "bar.sql", "-V10", "-X", "0", "-va=b", "-v", "c=d"},
 		},
 	}
 	for _, c := range tests {
