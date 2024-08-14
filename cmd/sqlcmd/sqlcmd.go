@@ -811,11 +811,11 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 
 	if err == nil && s.Exitcode == 0 {
 		once := false
-		if args.InitialQuery != "" {
-			s.Query = args.InitialQuery
-		} else if args.Query != "" {
+		if args.Query != "" {
 			once = true
 			s.Query = args.Query
+		} else if args.InitialQuery != "" {
+			s.Query = args.InitialQuery
 		}
 		iactive := args.InputFile == nil && args.Query == ""
 		if iactive || s.Query != "" {
