@@ -59,12 +59,64 @@ func TestCommandParsing(t *testing.T) {
 		cmd, args := c.matchCommand(test.line)
 		if test.cmd != "" {
 			if assert.NotNil(t, cmd, "No command found for `%s`", test.line) {
-				assert.Equal(t, test.cmd, cmd.name, "Incorrect command for `%s`", test.line)
-				assert.Equal(t, test.args, args, "Incorrect arguments for `%s`", test.line)
+				assert.Equalf(t, test.cmd, cmd.name, "Incorrect command for `%s`", test.line)
+				assert.Equalf(t, test.args, args, "Incorrect arguments for `%s`", test.line)
+				line := test.line + " -- comment"
+				cmd, args = c.matchCommand(line)
+				if assert.NotNil(t, cmd, "No command found for `%s`", line) {
+					assert.Equalf(t, test.cmd, cmd.name, "Incorrect command for `%s`", line)
+					assert.Equalf(t, len(test.args), len(args), "Incorrect argument count for `%s`.", line)
+					for _, a := range args {
+						assert.NotContains(t, a, "--", "comment marker should be omitted")
+						assert.NotContains(t, a, "comment", "comment should e omitted")
+					}
+				}
 			}
 		} else {
 			assert.Nil(t, cmd, "Unexpected match for %s", test.line)
 		}
+	}
+}
+
+func TestRemoveComments(t *testing.T) {
+	type testData struct {
+		args   []string
+		result []string
+	}
+	tests := []testData{
+		{[]string{"-- comment"}, []string{""}},
+		{[]string{"filename -- comment"}, []string{"filename "}},
+		{[]string{`"file""name"`, `-- comment`}, []string{`"file""name"`, ""}},
+		{[]string{`"file""name"--comment`}, []string{`"file""name"--comment`}},
+	}
+	for _, test := range tests {
+		actual := removeComments(test.args)
+		assert.Equal(t, test.result, actual, "Comments not removed properly")
+	}
+}
+
+func TestCommentStart(t *testing.T) {
+	type testData struct {
+		arg      string
+		quoteIn  bool
+		quoteOut bool
+		pos      int
+	}
+	tests := []testData{
+		{"nospace-- comment", false, false, -1},
+		{"-- comment", false, false, 0},
+		{"-- comment", true, true, -1},
+		{`" ""quoted""`, false, true, -1},
+		{`"-- ""quoted""`, false, true, -1},
+		{`"-- ""quoted"" " -- comment`, false, false, 17},
+		{`"-- ""quoted"" " -- comment`, true, false, 1},
+	}
+	for _, test := range tests {
+		t.Run(test.arg, func(t *testing.T) {
+			i, q := commentStart([]rune(test.arg), test.quoteIn)
+			assert.Equal(t, test.quoteOut, q, "Wrong quote")
+			assert.Equal(t, test.pos, i, "Wrong position")
+		})
 	}
 }
 
