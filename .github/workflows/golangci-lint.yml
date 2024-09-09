@@ -18,3 +18,55 @@ jobs:
         with:
           version: latest
           only-new-issues: true
+          args: --disable staticcheck
+
+  golangci-pr-staticcheck:
+    name: "Run staticcheck CI"
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["windows-latest", "ubuntu-latest", "macOS-latest"]
+        go: ["1.19"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - uses: WillAbides/setup-go-faster@v1.12.0
+        with:
+          go-version: ${{ matrix.go }}
+      - uses: dominikh/staticcheck-action@v1.3.0
+        with:
+          version: "2023.1.6"
+          min-go-version: "module"
+          install-go: false
+          cache-key: ${{ matrix.go }}
+          output-format: binary
+          output-file: "./staticcheck.bin"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "staticcheck-${{ github.sha }}-${{ matrix.go }}-${{ matrix.os }}.bin"
+          path: "./staticcheck.bin"
+          retention-days: 1
+          if-no-files-found: warn
+  output:
+    name: "Output Staticcheck findings"
+    needs: golangci-pr-staticcheck
+    runs-on: "ubuntu-latest"
+    steps:
+    - uses: WillAbides/setup-go-faster@v1.12.0
+      with:
+        go-version: "1.22.x"
+    # this downloads all artifacts of the current workflow into the current working directory, creating one directory per artifact
+    - uses: actions/download-artifact@v3
+    - id: glob
+      run: |
+        # We replace newlines with %0A, which GitHub apparently magically turns back into newlines
+        out=$(ls -1 ./staticcheck-*.bin/*.bin)
+        echo "::set-output name=files::${out//$'\n'/%0A}"
+    - uses: dominikh/staticcheck-action@v1.3.0
+      with:
+        version: "2023.1.6"
+        min-go-version: "module"
+        install-go: false
+        merge-files: ${{ steps.glob.outputs.files }}
