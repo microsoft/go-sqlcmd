@@ -6,7 +6,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.5.0
 	github.com/billgraziano/dpapi v0.4.0
 	github.com/docker/distribution v2.8.2+incompatible
-	github.com/docker/docker v25.0.6+incompatible
+	github.com/docker/docker v27.3.1+incompatible
 	github.com/docker/go-connections v0.4.0
 	github.com/golang-sql/sqlexp v0.1.0
 	github.com/google/uuid v1.6.0
@@ -57,6 +57,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.3 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/term v0.0.0-20221120202655-abb19827d345 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
