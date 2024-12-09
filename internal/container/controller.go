@@ -34,7 +34,10 @@ type Controller struct {
 func NewController() (c *Controller) {
 	var err error
 	c = new(Controller)
-	c.cli, err = client.NewClientWithOpts(client.FromEnv)
+	c.cli, err = client.NewClientWithOpts(
+		client.FromEnv,
+		client.WithVersion("1.45"),
+	)
 	checkErr(err)
 
 	return
