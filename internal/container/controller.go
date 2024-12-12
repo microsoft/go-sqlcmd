@@ -15,6 +15,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
+	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/stdcopy"
 	"github.com/docker/go-connections/nat"
@@ -33,7 +34,10 @@ type Controller struct {
 func NewController() (c *Controller) {
 	var err error
 	c = new(Controller)
-	c.cli, err = client.NewClientWithOpts(client.FromEnv)
+	c.cli, err = client.NewClientWithOpts(
+		client.FromEnv,
+		client.WithVersion("1.45"),
+	)
 	checkErr(err)
 
 	return
@@ -45,11 +49,11 @@ func NewController() (c *Controller) {
 // if one occurred while creating the client. The Controller struct has a
 // method EnsureImage() which pulls an image with the given name from
 // a registry and logs the output to the console.
-func (c Controller) EnsureImage(image string) (err error) {
+func (c Controller) EnsureImage(imageName string) (err error) {
 	var reader io.ReadCloser
 
-	trace("Running ImagePull for image %s", image)
-	reader, err = c.cli.ImagePull(context.Background(), image, types.ImagePullOptions{})
+	trace("Running ImagePull for image %s", imageName)
+	reader, err = c.cli.ImagePull(context.Background(), imageName, image.PullOptions{})
 	if reader != nil {
 		defer func() {
 			checkErr(reader.Close())
@@ -106,7 +110,7 @@ func (c Controller) ContainerRun(
 	err = c.cli.ContainerStart(
 		context.Background(),
 		resp.ID,
-		types.ContainerStartOptions{},
+		container.StartOptions{},
 	)
 	if err != nil || unitTestFailure {
 		// Remove the container, because we haven't persisted to config yet, so
@@ -131,7 +135,7 @@ func (c Controller) ContainerRun(
 // This function is useful for waiting until a specific event has occurred in the
 // container (e.g. a server has started up) before continuing with other operations.
 func (c Controller) ContainerWaitForLogEntry(id string, text string) {
-	options := types.ContainerLogsOptions{
+	options := container.LogsOptions{
 		ShowStdout: true,
 		ShowStderr: false,
 		Since:      "",
@@ -177,7 +181,7 @@ func (c Controller) ContainerStart(id string) (err error) {
 		panic("Must pass in non-empty id")
 	}
 
-	err = c.cli.ContainerStart(context.Background(), id, types.ContainerStartOptions{})
+	err = c.cli.ContainerStart(context.Background(), id, container.StartOptions{})
 	return
 }
 
@@ -329,7 +333,7 @@ func (c Controller) ContainerExists(id string) (exists bool) {
 	)
 	resp, err := c.cli.ContainerList(
 		context.Background(),
-		types.ContainerListOptions{Filters: f},
+		container.ListOptions{Filters: f},
 	)
 	checkErr(err)
 	if len(resp) > 0 {
@@ -352,7 +356,7 @@ func (c Controller) ContainerRemove(id string) (err error) {
 		panic("Must pass in non-empty id")
 	}
 
-	options := types.ContainerRemoveOptions{
+	options := container.RemoveOptions{
 		RemoveVolumes: false,
 		RemoveLinks:   false,
 		Force:         false,
