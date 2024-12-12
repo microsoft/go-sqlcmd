@@ -77,7 +77,7 @@ func newCommands() Commands {
 			name:   "LISTVAR",
 		},
 		"RESET": {
-			regex:  regexp.MustCompile(`(?im)^[ \t]*:RESET(?:[ \t]+(.*$)|$)`),
+			regex:  regexp.MustCompile(`(?im)^[ \t]*?:?RESET(?:[ \t]+(.*$)|$)`),
 			action: resetCommand,
 			name:   "RESET",
 		},
