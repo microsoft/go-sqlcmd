@@ -474,19 +474,19 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 				first = true
 			}
 		case sqlexp.MsgNext:
+			if first {
+				first = false
+				cols, err = rows.ColumnTypes()
+				if err != nil {
+					retcode = -100
+					qe = s.handleError(&retcode, err)
+					s.Format.AddError(err)
+				} else {
+					s.Format.BeginResultSet(cols)
+				}
+			}
 			inresult := rows.Next()
 			for inresult {
-				if first {
-					first = false
-					cols, err = rows.ColumnTypes()
-					if err != nil {
-						retcode = -100
-						qe = s.handleError(&retcode, err)
-						s.Format.AddError(err)
-					} else {
-						s.Format.BeginResultSet(cols)
-					}
-				}
 				col1 := s.Format.AddRow(rows)
 				inresult = rows.Next()
 				if !inresult {

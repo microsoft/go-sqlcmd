@@ -521,6 +521,17 @@ func TestQueryServerPropertyReturnsColumnName(t *testing.T) {
 	}
 }
 
+func TestHeadersPrintWhenThereAreZeroRows(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
+	s.vars.Set(SQLCMDCOLWIDTH, "4")
+	defer buf.Close()
+	err := runSqlCmd(t, s, []string{"select name from sys.databases where name like 'bogus'", "GO"})
+	if assert.NoError(t, err, "select should succeed") {
+		assert.Contains(t, buf.buf.String(), "name"+SqlcmdEol+"----"+SqlcmdEol, "Headers missing from output")
+	}
+}
+
 func TestSqlCmdOutputAndError(t *testing.T) {
 	s, outfile, errfile := setupSqlcmdWithFileErrorOutput(t)
 	defer os.Remove(outfile.Name())
