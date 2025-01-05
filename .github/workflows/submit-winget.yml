@@ -1,0 +1,31 @@
+name: Submit published release to WinGet community repository
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-winget:
+    name: Submit to WinGet repository
+    runs-on: windows-latest
+    if: ${{ !github.event.release.prerelease }}
+    steps:
+      # Sometimes wingetcreate may fail to sync fork automatically, so we do it manually here.
+      # Ref: https://github.com/microsoft/winget-create/issues/502
+      - name: Sync winget-pkgs fork
+        # TODO: Replace <repo-owner> with the owner of the fork
+        run: gh repo sync <repo-owner>/winget-pkgs -b master
+        env:
+          GH_TOKEN: ${{ secrets.WINGET_GITHUB_TOKEN }}
+      - name: Submit package using wingetcreate
+        run: |
+          # Get installer info from release event
+          $assets = '${{ toJSON(github.event.release.assets) }}' | ConvertFrom-Json
+          $x64InstallerUrl = $assets | Where-Object -Property name -eq 'sqlcmd-amd64.msi' | Select-Object -ExpandProperty browser_download_url
+          $armInstallerUrl = $assets | Where-Object -Property name -eq 'sqlcmd-arm.msi' | Select-Object -ExpandProperty browser_download_url
+          $arm64InstallerUrl = $assets | Where-Object -Property name -eq 'sqlcmd-arm64.msi' | Select-Object -ExpandProperty browser_download_url
+          $packageVersion = (${{ toJSON(github.event.release.tag_name) }}).Trim('v')
+
+          # Update package using wingetcreate
+          Invoke-WebRequest https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
+          .\wingetcreate.exe update Microsoft.Sqlcmd --version $packageVersion --urls "$x64InstallerUrl|x64" "$armInstallerUrl|arm" "$arm64InstallerUrl|arm64" --submit --token "${{ secrets.WINGET_GITHUB_TOKEN }}"
