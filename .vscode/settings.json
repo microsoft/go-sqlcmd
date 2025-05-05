@@ -1,4 +1,5 @@
 {
     "go.lintTool": "golangci-lint",
-    "go.lintOnSave": "workspace"
+    "go.lintOnSave": "workspace",
+    "azure-pipelines.1ESPipelineTemplatesSchemaFile": true
 }
