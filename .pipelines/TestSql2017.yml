@@ -10,14 +10,14 @@ steps:
   - template: include-install-go-tools.yml
 
   - task: Docker@2
-    displayName: 'Run SQL 2017 docker image'
+    displayName: 'Run SQL 2022 docker image'
     inputs:
       command: run
-      arguments: '-m 2GB -e ACCEPT_EULA=1 -d --name sql2017 -p:1433:1433 -e SA_PASSWORD=$(PASSWORD) mcr.microsoft.com/mssql/server:2017-latest'
+      arguments: '-m 2GB -e ACCEPT_EULA=1 -d --name sql2022 -p:1433:1433 -e SA_PASSWORD=$(PASSWORD) mcr.microsoft.com/mssql/server:2022-latest'
 
   - template: include-runtests-linux.yml
     parameters:
-      RunName: 'SQL2017'
+      RunName: 'SQL2022'
       SQLCMDUSER: sa
       SQLPASSWORD: $(PASSWORD)
 
