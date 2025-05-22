@@ -717,8 +717,24 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 }
 
 func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
+	// Password input always requires console initialization
+	if connect.RequiresPassword() {
+		return true
+	}
+
+	// Check if stdin is from a terminal or a redirection
+	file, err := os.Stdin.Stat()
+	if err == nil {
+		// If stdin is not a character device, it's coming from a pipe or redirect
+		if (file.Mode() & os.ModeCharDevice) == 0 {
+			// Non-interactive: stdin is redirected
+			return false
+		}
+	}
+
+	// If we get here, stdin is from a terminal or we couldn't determine
 	iactive := args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0
-	return iactive || connect.RequiresPassword()
+	return iactive
 }
 
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
