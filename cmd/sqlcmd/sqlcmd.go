@@ -78,7 +78,6 @@ type SQLCmdArguments struct {
 	EnableColumnEncryption      bool
 	ChangePassword              string
 	ChangePasswordAndExit       string
-	DisablePrompts              bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -439,7 +438,6 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.EnableColumnEncryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
 	rootCmd.Flags().StringVarP(&args.ChangePassword, "change-password", "z", "", localizer.Sprintf("New password"))
 	rootCmd.Flags().StringVarP(&args.ChangePasswordAndExit, "change-password-exit", "Z", "", localizer.Sprintf("New password and exit"))
-	rootCmd.Flags().BoolVar(&args.DisablePrompts, "disable-prompts", false, localizer.Sprintf("Disables line prompts when running as a subprocess"))
 }
 
 func setScriptVariable(v string) string {
@@ -756,7 +754,6 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	s.SetupCloseHandler()
 	defer s.StopCloseHandler()
 	s.UnicodeOutputFile = args.UnicodeOutputFile
-	s.DisablePrompts = args.DisablePrompts
 
 	if args.DisableCmd != nil {
 		s.Cmd.DisableSysCommands(args.errorOnBlockedCmd())

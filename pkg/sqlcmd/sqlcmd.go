@@ -86,8 +86,6 @@ type Sqlcmd struct {
 	UnicodeOutputFile bool
 	// EchoInput tells the GO command to print the batch text before running the query
 	EchoInput bool
-	// DisablePrompts suppresses printing of line prompts like "1>" when running in non-interactive mode
-	DisablePrompts bool
 	colorizer color.Colorizer
 	termchan  chan os.Signal
 }
@@ -351,9 +349,7 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 			ln = append(ln, line...)
 		}
 		if err == nil && echoFileLines {
-			if !s.DisablePrompts {
-				_, _ = s.GetOutput().Write([]byte(s.Prompt()))
-			}
+			_, _ = s.GetOutput().Write([]byte(s.Prompt()))
 			_, _ = s.GetOutput().Write(ln)
 			_, _ = s.GetOutput().Write([]byte(SqlcmdEol))
 		}
