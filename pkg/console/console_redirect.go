@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-//go:build !windows
-// +build !windows
-
 package console
 
 import (
@@ -24,7 +21,7 @@ func isStdinRedirected() bool {
 		return true
 	}
 	
-	// Double-check using isatty
+	// Double-check using term.IsTerminal
 	fd := int(os.Stdin.Fd())
 	return !term.IsTerminal(fd)
 }
