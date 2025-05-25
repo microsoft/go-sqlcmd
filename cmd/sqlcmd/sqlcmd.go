@@ -819,7 +819,16 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		}
 		iactive := args.InputFile == nil && args.Query == ""
 		if iactive || s.Query != "" {
-			err = s.Run(once, false)
+			processAll := false
+			if iactive {
+				// Check if stdin is a pipe rather than a terminal
+				fi, _ := os.Stdin.Stat()
+				if fi != nil && (fi.Mode()&os.ModeCharDevice) == 0 {
+					// Stdin is not a terminal, it's being piped in
+					processAll = true
+				}
+			}
+			err = s.Run(once, processAll)
 		} else {
 			for f := range args.InputFile {
 				if err = s.IncludeFile(args.InputFile[f], true); err != nil {
