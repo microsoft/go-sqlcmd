@@ -715,11 +715,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 }
 
 func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) (bool, bool) {
-	// Password input always requires console initialization
-	if connect.RequiresPassword() {
-		// Need console for password, but that doesn't mean we're in interactive mode
-		return true, false
-	}
+	needsConsole := false
 
 	// Check if stdin is from a terminal or a redirection
 	isStdinRedirected := false
@@ -734,12 +730,15 @@ func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLC
 	// Determine if we're in interactive mode
 	iactive := args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0 && !isStdinRedirected
 
-	// If stdin is redirected, we don't need a console
-	if isStdinRedirected {
-		return false, false
+	// Password input always requires console initialization
+	if connect.RequiresPassword() {
+		needsConsole = true
+	} else if iactive {
+		// Interactive mode also requires console
+		needsConsole = true
 	}
 
-	return iactive, iactive
+	return needsConsole, iactive
 }
 
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
