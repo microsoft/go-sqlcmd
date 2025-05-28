@@ -714,25 +714,32 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	}
 }
 
-func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
+func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) (bool, bool) {
 	// Password input always requires console initialization
 	if connect.RequiresPassword() {
-		return true
+		// Need console for password, but that doesn't mean we're in interactive mode
+		return true, false
 	}
 
 	// Check if stdin is from a terminal or a redirection
+	isStdinRedirected := false
 	file, err := os.Stdin.Stat()
 	if err == nil {
 		// If stdin is not a character device, it's coming from a pipe or redirect
 		if (file.Mode() & os.ModeCharDevice) == 0 {
-			// Non-interactive: stdin is redirected
-			return false
+			isStdinRedirected = true
 		}
 	}
 
-	// If we get here, stdin is from a terminal or we couldn't determine
-	iactive := args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0
-	return iactive
+	// Determine if we're in interactive mode
+	iactive := args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0 && !isStdinRedirected
+
+	// If stdin is redirected, we don't need a console
+	if isStdinRedirected {
+		return false, false
+	}
+
+	return iactive, iactive
 }
 
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
@@ -744,7 +751,8 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	var connectConfig sqlcmd.ConnectSettings
 	setConnect(&connectConfig, args, vars)
 	var line sqlcmd.Console = nil
-	if isConsoleInitializationRequired(&connectConfig, args) {
+	needsConsole, isInteractive := isConsoleInitializationRequired(&connectConfig, args)
+	if needsConsole {
 		line = console.NewConsole("")
 		defer line.Close()
 	}
@@ -835,15 +843,9 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		}
 		iactive := args.InputFile == nil && args.Query == ""
 		if iactive || s.Query != "" {
-			processAll := false
-			if iactive {
-				// Check if stdin is a pipe rather than a terminal
-				fi, _ := os.Stdin.Stat()
-				if fi != nil && (fi.Mode()&os.ModeCharDevice) == 0 {
-					// Stdin is not a terminal, it's being piped in
-					processAll = true
-				}
-			}
+			// If we're not in interactive mode and stdin is redirected,
+			// we want to process all input without requiring GO statements
+			processAll := !isInteractive
 			err = s.Run(once, processAll)
 		} else {
 			for f := range args.InputFile {

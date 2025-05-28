@@ -56,13 +56,25 @@ func TestIsConsoleInitializationRequiredWithRedirectedStdin(t *testing.T) {
 	t.Logf("RequiresPassword() returns: %v", connectConfig.RequiresPassword())
 
 	// Test with SQL authentication that requires a password
-	res := isConsoleInitializationRequired(&connectConfig, args)
-	// Should be true since password is required, even with redirected stdin
-	assert.True(t, res, "Console initialization should be required when SQL authentication is used")
+	needsConsole, isInteractive := isConsoleInitializationRequired(&connectConfig, args)
+	// Should need console since password is required, but not be interactive
+	assert.True(t, needsConsole, "Console should be needed when SQL authentication is used")
+	assert.False(t, isInteractive, "Should not be interactive mode with redirected stdin")
 
 	// Now test with no authentication (no password required)
 	connectConfig = sqlcmd.ConnectSettings{}
-	res = isConsoleInitializationRequired(&connectConfig, args)
-	// Should be false since stdin is redirected and no password is required
-	assert.False(t, res, "Console initialization should not be required with redirected stdin and no password")
+	needsConsole, isInteractive = isConsoleInitializationRequired(&connectConfig, args)
+	// Should not need console and not be interactive
+	assert.False(t, needsConsole, "Console should not be needed with redirected stdin and no password")
+	assert.False(t, isInteractive, "Should not be interactive mode with redirected stdin")
+
+	// Test with direct terminal input (simulated by restoring original stdin)
+	os.Stdin = originalStdin
+	connectConfig = sqlcmd.ConnectSettings{} // No password needed
+	needsConsole, isInteractive = isConsoleInitializationRequired(&connectConfig, args)
+	// If no input file or query is specified, it should be interactive mode
+	assert.Equal(t, args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0, needsConsole,
+		"Console needs should match interactive mode requirements with terminal stdin")
+	assert.Equal(t, args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0, isInteractive,
+		"Interactive mode should be true with terminal stdin and no input files or queries")
 }
