@@ -506,7 +506,8 @@ func TestConditionsForPasswordPrompt(t *testing.T) {
 		setConnect(&connectConfig, &args, vars)
 		connectConfig.AuthenticationMethod = testcase.authenticationMethod
 		connectConfig.Password = testcase.pwd
-		assert.Equal(t, testcase.expectedResult, isConsoleInitializationRequired(&connectConfig, &args), "Unexpected test result encountered for console initialization")
+		needsConsole, _ := isConsoleInitializationRequired(&connectConfig, &args)
+		assert.Equal(t, testcase.expectedResult, needsConsole, "Unexpected test result encountered for console initialization")
 		assert.Equal(t, testcase.expectedResult, connectConfig.RequiresPassword() && connectConfig.Password == "", "Unexpected test result encountered for password prompt conditions")
 	}
 }
