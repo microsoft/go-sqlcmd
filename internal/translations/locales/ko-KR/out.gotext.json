@@ -2528,6 +2528,11 @@
             "fuzzy": true
         },
         {
+            "id": "Write runtime trace to the specified file. Only for advanced debugging.",
+            "message": "Write runtime trace to the specified file. Only for advanced debugging.",
+            "translation": ""
+        },
+        {
             "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
             "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
             "translation": "SQL 문의 일괄 처리를 포함하는 하나 이상의 파일을 식별합니다. 하나 이상의 파일이 없으면 sqlcmd가 종료됩니다. {QueryAndExitFlag}/{QueryFlag}와 상호 배타적임",
@@ -3255,6 +3260,44 @@
             "fuzzy": true
         },
         {
+            "id": "failed to create trace file '{TraceFile}': {Err}",
+            "message": "failed to create trace file '{TraceFile}': {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "TraceFile",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "args.TraceFile"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to start trace: {Err}",
+            "message": "failed to start trace: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
             "id": "invalid batch terminator '{BatchTerminator}'",
             "message": "invalid batch terminator '{BatchTerminator}'",
             "translation": "잘못된 일괄 처리 종결자 '{BatchTerminator}'",
@@ -3583,6 +3626,26 @@
             "translation": "암호:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "(1 row affected)",
+            "message": "(1 row affected)",
+            "translation": ""
+        },
+        {
+            "id": "({Count} rows affected)",
+            "message": "({Count} rows affected)",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Count",
+                    "string": "%[1]d",
+                    "type": "int64",
+                    "underlyingType": "int64",
+                    "argNum": 1,
+                    "expr": "m.Count"
+                }
+            ]
         },
         {
             "id": "Invalid variable identifier {Name}",

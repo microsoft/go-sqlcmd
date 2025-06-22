@@ -11,6 +11,7 @@ import (
 	"net"
 	"os"
 	"regexp"
+	"runtime/trace"
 	"strconv"
 	"strings"
 	"time"
@@ -78,6 +79,7 @@ type SQLCmdArguments struct {
 	EnableColumnEncryption      bool
 	ChangePassword              string
 	ChangePasswordAndExit       string
+	TraceFile                   string
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -380,6 +382,7 @@ func SetScreenWidthFlags(args *SQLCmdArguments, rootCmd *cobra.Command) {
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.SetFlagErrorFunc(flagErrorHandler)
 	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, localizer.Sprintf("-? shows this syntax summary, %s shows modern sqlcmd sub-command help", localizer.HelpFlag))
+	rootCmd.Flags().StringVar(&args.TraceFile, "trace-file", "", localizer.Sprintf("Write runtime trace to the specified file. Only for advanced debugging."))
 	var inputfiles []string
 	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, localizer.Sprintf("Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s", localizer.QueryAndExitFlag, localizer.QueryFlag))
 	rootCmd.Flags().StringVarP(&args.OutputFile, "output-file", "o", "", localizer.Sprintf("Identifies the file that receives output from sqlcmd"))
@@ -742,6 +745,18 @@ func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLC
 }
 
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
+	if args.TraceFile != "" {
+		traceFile, err := os.Create(args.TraceFile)
+		if err != nil {
+			return 1, localizer.Errorf("failed to create trace file '%s': %v", args.TraceFile, err)
+		}
+		defer traceFile.Close()
+		err = trace.Start(traceFile)
+		if err != nil {
+			return 1, localizer.Errorf("failed to start trace: %v", err)
+		}
+		defer trace.Stop()
+	}
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
