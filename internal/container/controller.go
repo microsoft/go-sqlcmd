@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"path/filepath"
 	"strconv"
@@ -248,19 +249,28 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 	}
 
 	cmd := []string{"mkdir", destFolder}
-	c.runCmdInContainer(id, cmd)
+	stdout, stderr := c.runCmdInContainer(id, cmd)
+	fmt.Printf("DEBUG: mkdir stdout: %s\n", string(stdout))
+	fmt.Printf("DEBUG: mkdir stderr: %s\n", string(stderr))
 
 	_, file := filepath.Split(src)
+	fmt.Printf("DEBUG: src: %s\n", src)
+	fmt.Printf("DEBUG: file: %s\n", file)
+	fmt.Printf("DEBUG: destFolder: %s\n", destFolder)
+	fullPath := destFolder + "/" + file
+	fmt.Printf("DEBUG: fullPath: %s\n", fullPath)
 
 	// Wget the .bak file from the http src, and place it in /var/opt/sql/backup
 	cmd = []string{
 		"wget",
 		"-O",
-		destFolder + "/" + file, // not using filepath.Join here, this is in the *nix container. always /
+		fullPath, // not using filepath.Join here, this is in the *nix container. always /
 		src,
 	}
 
-	c.runCmdInContainer(id, cmd)
+	stdout, stderr = c.runCmdInContainer(id, cmd)
+	fmt.Printf("DEBUG: wget stdout: %s\n", string(stdout))
+	fmt.Printf("DEBUG: wget stderr: %s\n", string(stderr))
 }
 
 func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) {
