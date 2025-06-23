@@ -1,7 +1,4 @@
 variables:
-  # AZURE_CLIENT_SECRET and SQLPASSWORD must be defined as secret variables in the pipeline. 
-  # AZURE_TENANT_ID and AZURE_CLIENT_ID are not expected to be secret variables, just regular variables
-  AZURECLIENTSECRET: $(AZURE_CLIENT_SECRET)
   PASSWORD: $(SQLPASSWORD)
 pool:
    vmImage: 'ubuntu-latest'
@@ -21,13 +18,20 @@ steps:
       SQLCMDUSER: sa
       SQLPASSWORD: $(PASSWORD)
 
-  # The use of client secrets is disallowed now, so commenting out the Azure tests until we can switch to a federated credential.
-  # - template: include-runtests-linux.yml
-  #   parameters:
-  #     RunName: 'SQLDB'
-  #     # AZURESERVER must be defined as a variable in the pipeline
-  #     SQLCMDSERVER: $(AZURESERVER)
-  #     AZURECLIENTSECRET: $(AZURECLIENTSECRET)
+  - task: AzureCLI@2
+    inputs:
+      addSpnToEnvironment: true
+      azureSubscription: $(AZURESUBSCRIPTION_SERVICE_CONNECTION_NAME)
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        gci env:* | sort-object name
+
+  - template: include-runtests-linux.yml
+    parameters:
+      RunName: 'SQLDB'
+      # AZURESERVER must be defined as a variable in the pipeline
+      SQLCMDSERVER: $(AZURESERVER)
       
   - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
     displayName: Merge coverage data
