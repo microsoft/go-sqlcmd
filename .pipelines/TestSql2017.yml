@@ -34,8 +34,7 @@ steps:
       RunName: 'SQLDB'
       # AZURESERVER must be defined as a variable in the pipeline
       SQLCMDSERVER: $(AZURESERVER)
-      AZURESUBSCRIPTION_CLIENT_ID : $(AZURESUBSCRIPTION_CLIENT_ID)
-      AZURESUBSCRIPTION_TENANT_ID : $(AZURESUBSCRIPTION_TENANT_ID)
+
   - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
     displayName: Merge coverage data
     inputs:
@@ -46,6 +45,7 @@ steps:
       verbosity: 'Info' # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
       tag: '$(build.buildnumber)_#$(build.buildid)_$(Build.SourceBranchName)' # Optional tag or build version.
     continueOnError: true
+    condition: always()
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: Cobertura 

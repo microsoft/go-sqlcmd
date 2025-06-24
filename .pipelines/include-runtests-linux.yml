@@ -27,6 +27,8 @@ steps:
       SQLCMDPASSWORD: ${{ parameters.SQLPASSWORD }}
       SQLCMDSERVER: ${{ parameters.SQLCMDSERVER }}
       SQLCMDDBNAME: ${{ parameters.SQLCMDDBNAME }}
+      AZURESUBSCRIPTION_CLIENT_ID : $(AZURESUBSCRIPTION_CLIENT_ID)
+      AZURESUBSCRIPTION_TENANT_ID : $(AZURESUBSCRIPTION_TENANT_ID)
     continueOnError: true
 
   - task: PublishTestResults@2
