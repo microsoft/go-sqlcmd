@@ -25,6 +25,8 @@ steps:
       scriptType: pscore
       scriptLocation: inlineScript
       inlineScript: |
+        Write-Host "##vso[task.setvariable variable=AZURESUBSCRIPTION_CLIENT_ID;]$env:AZURESUBSCRIPTION_CLIENT_ID"
+        Write-Host "##vso[task.setvariable variable=AZURESUBSCRIPTION_TENANT_ID;]$env:AZURESUBSCRIPTION_TENANT_ID"
         gci env:* | sort-object name
 
   - template: include-runtests-linux.yml
@@ -32,7 +34,8 @@ steps:
       RunName: 'SQLDB'
       # AZURESERVER must be defined as a variable in the pipeline
       SQLCMDSERVER: $(AZURESERVER)
-      
+      AZURESUBSCRIPTION_CLIENT_ID : $(AZURESUBSCRIPTION_CLIENT_ID)
+      AZURESUBSCRIPTION_TENANT_ID : $(AZURESUBSCRIPTION_TENANT_ID)
   - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
     displayName: Merge coverage data
     inputs:
@@ -42,6 +45,7 @@ steps:
       sourcedirs: '$(Build.SourcesDirectory)' # Optional directories which contain the corresponding source code (separated by semicolon). The source directories are used if coverage report contains classes without path information.
       verbosity: 'Info' # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
       tag: '$(build.buildnumber)_#$(build.buildid)_$(Build.SourceBranchName)' # Optional tag or build version.
+    continueOnError: true
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: Cobertura 
