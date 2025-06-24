@@ -108,6 +108,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-ifoo.sql", "bar.sql", "-V10"}, func(args SQLCmdArguments) bool {
 			return args.ErrorSeverityLevel == 10 && args.InputFile[0] == "foo.sql" && args.InputFile[1] == "bar.sql"
 		}},
+		{[]string{"-N", "s:myserver.domain.com"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "s:myserver.domain.com"
+		}},
 	}
 
 	for _, test := range commands {
@@ -580,25 +583,40 @@ func TestConvertOsArgs(t *testing.T) {
 
 func TestEncryptionOptions(t *testing.T) {
 	type test struct {
-		input  string
-		output string
+		input                 string
+		output                string
+		hostnameincertificate string
 	}
 	tests := []test{
 		{
 			"s",
 			"strict",
+			"",
 		},
 		{
 			"m",
 			"mandatory",
+			"",
 		},
 		{
 			"o",
 			"optional",
+			"",
 		},
 		{
 			"mandatory",
 			"mandatory",
+			"",
+		},
+		{
+			"s:myserver.domain.com",
+			"strict",
+			"myserver.domain.com",
+		},
+		{
+			"strict:myserver.domain.com",
+			"strict",
+			"myserver.domain.com",
 		},
 	}
 	for _, c := range tests {
@@ -610,6 +628,7 @@ func TestEncryptionOptions(t *testing.T) {
 			var connectConfig sqlcmd.ConnectSettings
 			setConnect(&connectConfig, &args, vars)
 			assert.Equal(t, c.output, connectConfig.Encrypt, "Incorrect connect.Encrypt")
+			assert.Equal(t, c.hostnameincertificate, connectConfig.HostNameInCertificate, "Incorrect connect.HostNameInCertificate")
 		})
 	}
 }

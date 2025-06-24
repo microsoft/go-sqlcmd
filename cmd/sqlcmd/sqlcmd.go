@@ -314,13 +314,15 @@ func checkDefaultValue(args []string, i int) (val string) {
 		'k': "0",
 		'L': "|", // | is the sentinel for no value since users are unlikely to use it. It's "reserved" in most shells
 		'X': "0",
-		'N': "true",
 	}
 	if isFlag(args[i]) && (len(args) == i+1 || args[i+1][0] == '-') {
 		if v, ok := flags[rune(args[i][1])]; ok {
 			val = v
 			return
 		}
+	}
+	if args[i] == "-N" && (len(args) == i+1 || args[i+1][0] == '-') {
+		val = "true"
 	}
 	return
 }
@@ -406,7 +408,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.EncryptConnection, encryptConnection, "N", "default", localizer.Sprintf("This switch is used by the client to request an encrypted connection"))
 	// Can't use NoOptDefVal until this fix: https://github.com/spf13/cobra/issues/866
 	//rootCmd.Flags().Lookup(encryptConnection).NoOptDefVal = "true"
-	rootCmd.Flags().StringVarP(&args.Format, format, "F", "horiz", localizer.Sprintf("Specifies the formatting for results"))
+	rootCmd.Flags().StringVarP(&args.Format, format, "F", "horiz", localizer.Sprintf("Specifies the formatting for results. Can be either %s or %s. The default is %s.", "horiz[ontal]", "vert[ical]", "horiz[ontal]"))
 	_ = rootCmd.Flags().IntP(errorsToStderr, "r", -1, localizer.Sprintf("%s Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.", "-r[0 | 1]"))
 	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, localizer.Sprintf("Level of mssql driver messages to print"))
 	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, localizer.Sprintf("Specifies that sqlcmd exits and returns a %s value when an error occurs", localizer.DosErrorLevel))
@@ -463,11 +465,14 @@ func normalizeFlags(cmd *cobra.Command) error {
 			}
 		case encryptConnection:
 			value := strings.ToLower(v)
+			if strictEncryptRegexp.MatchString(value) {
+				return pflag.NormalizedName(name)
+			}
 			switch value {
 			case "mandatory", "yes", "1", "t", "true", "disable", "optional", "no", "0", "f", "false", "strict", "m", "s", "o":
 				return pflag.NormalizedName(name)
 			default:
-				err = invalidParameterError("-N", v, "m[andatory]", "yes", "1", "t[rue]", "disable", "o[ptional]", "no", "0", "f[alse]", "s[trict]")
+				err = invalidParameterError("-N", v, "m[andatory]", "yes", "1", "t[rue]", "disable", "o[ptional]", "no", "0", "f[alse]", "s[trict][:hostnameincertificate]")
 				return pflag.NormalizedName("")
 			}
 		case format:
@@ -525,6 +530,7 @@ func normalizeFlags(cmd *cobra.Command) error {
 var invalidArgRegexp = regexp.MustCompile(`invalid argument \"(.*)\" for \"(-.), (--.*)\"`)
 var missingArgRegexp = regexp.MustCompile(`flag needs an argument: '.' in (-.)`)
 var unknownArgRegexp = regexp.MustCompile(`unknown shorthand flag: '(.)' in -.`)
+var strictEncryptRegexp = regexp.MustCompile(`^((s)|(strict)):(.+)`)
 
 func rangeParameterError(flag string, value string, min int, max int, inclusive bool) error {
 	if inclusive {
@@ -689,15 +695,21 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	connect.DisableVariableSubstitution = args.DisableVariableSubstitution
 	connect.ApplicationIntent = args.ApplicationIntent
 	connect.LoginTimeoutSeconds = args.LoginTimeout
-	switch args.EncryptConnection {
-	case "s":
+	matches := strictEncryptRegexp.FindStringSubmatch(args.EncryptConnection)
+	if len(matches) == 5 {
 		connect.Encrypt = "strict"
-	case "o":
-		connect.Encrypt = "optional"
-	case "m":
-		connect.Encrypt = "mandatory"
-	default:
-		connect.Encrypt = args.EncryptConnection
+		connect.HostNameInCertificate = matches[4]
+	} else {
+		switch args.EncryptConnection {
+		case "s":
+			connect.Encrypt = "strict"
+		case "o":
+			connect.Encrypt = "optional"
+		case "m":
+			connect.Encrypt = "mandatory"
+		default:
+			connect.Encrypt = args.EncryptConnection
+		}
 	}
 	connect.PacketSize = args.PacketSize
 	connect.WorkstationName = args.WorkstationName

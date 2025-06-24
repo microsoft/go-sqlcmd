@@ -130,6 +130,7 @@ The following switches have different behavior in this version of `sqlcmd` compa
   - If `-N` is provided but `-C` is not, sqlcmd will require validation of the server certificate. Note that a `false` value for encryption could still lead to encryption of the login packet.
   - `-C` has no effect when `strict` value is specified for `-N`.
   - If both `-N` and `-C` are provided, sqlcmd will use their values for encryption negotiation.
+  - To provide the value of the host name in the server certificate when using strict encryption, append the name after a `:` to the `-Ns[trict]`. Example: `-Ns:myhost.domain.com`
   - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
