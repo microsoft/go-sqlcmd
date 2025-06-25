@@ -519,7 +519,6 @@ func normalizeFlags(cmd *cobra.Command) error {
 var invalidArgRegexp = regexp.MustCompile(`invalid argument \"(.*)\" for \"(-.), (--.*)\"`)
 var missingArgRegexp = regexp.MustCompile(`flag needs an argument: '.' in (-.)`)
 var unknownArgRegexp = regexp.MustCompile(`unknown shorthand flag: '(.)' in -.`)
-var strictEncryptRegexp = regexp.MustCompile(`^((s)|(strict)):(.+)`)
 
 func rangeParameterError(flag string, value string, min int, max int, inclusive bool) error {
 	if inclusive {
