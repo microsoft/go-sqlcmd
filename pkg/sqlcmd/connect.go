@@ -58,6 +58,8 @@ type ConnectSettings struct {
 	EnableColumnEncryption bool
 	// ChangePassword is the new password for the user to set during login
 	ChangePassword string
+	// The HostNameInCertificate is the name to use for the host in the certificate validation
+	HostNameInCertificate string
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -144,6 +146,9 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if connect.Encrypt != "" && connect.Encrypt != "default" {
 		query.Add(msdsn.Encrypt, connect.Encrypt)
+	}
+	if connect.HostNameInCertificate != "" {
+		query.Add(msdsn.HostNameInCertificate, connect.HostNameInCertificate)
 	}
 	if connect.LogLevel > 0 {
 		query.Add(msdsn.LogParam, fmt.Sprint(connect.LogLevel))
