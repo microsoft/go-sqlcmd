@@ -42,7 +42,7 @@ steps:
   - task: PublishCodeCoverageResults@2
     inputs:
       pathToSources: '$(Build.SourcesDirectory)'
-      summaryFileLocation: $(Build.SourcesDirectory)/**/coverage.xml
+      summaryFileLocation: $(Build.SourcesDirectory)/**/*coverage.xml
       failIfCoverageEmpty: true
     condition: always()
     continueOnError: true
