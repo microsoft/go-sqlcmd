@@ -2683,11 +2683,19 @@
             "fuzzy": true
         },
         {
-            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "translation": "Especifica el método de autenticación de SQL que se va a usar para conectarse a Azure SQL Database. Uno de los siguientes: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ActiveDirectoryAzureDeveloperCli__SqlPassword___",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "strings.Join([]string{\n\tazuread.ActiveDirectoryDefault,\n\tazuread.ActiveDirectoryIntegrated,\n\tazuread.ActiveDirectoryPassword,\n\tazuread.ActiveDirectoryInteractive,\n\tazuread.ActiveDirectoryManagedIdentity,\n\tazuread.ActiveDirectoryServicePrincipal,\n\tazuread.ActiveDirectoryServicePrincipalAccessToken,\n\tazuread.ActiveDirectoryAzCli,\n\tazuread.ActiveDirectoryDeviceCode,\n\tazuread.ActiveDirectoryWorkloadIdentity,\n\tazuread.ActiveDirectoryClientAssertion,\n\tazuread.ActiveDirectoryAzurePipelines,\n\tazuread.ActiveDirectoryEnvironment,\n\tazuread.ActiveDirectoryAzureDeveloperCli,\n\t\"SqlPassword\",\n}, \", \")"
+                }
+            ]
         },
         {
             "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
