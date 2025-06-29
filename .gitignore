@@ -6,7 +6,7 @@
 *.dylib
 bin
 obj
-
+.vscode/*
 # Test binary, built with `go test -c`
 *.test
 

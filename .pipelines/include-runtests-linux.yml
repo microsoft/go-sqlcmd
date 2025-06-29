@@ -7,9 +7,6 @@ parameters:
 - name: SQLPASSWORD
   type: string
   default: ''
-- name: AZURECLIENTSECRET
-  type: string
-  default: ''
 - name: SQLCMDSERVER
   type: string
   default: .
@@ -28,11 +25,11 @@ steps:
       SQLPASSWORD: ${{ parameters.SQLPASSWORD }}
       SQLCMDUSER: ${{ parameters.SQLCMDUSER }}
       SQLCMDPASSWORD: ${{ parameters.SQLPASSWORD }}
-      AZURE_TENANT_ID: $(AZURE_TENANT_ID)
-      AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
-      AZURE_CLIENT_SECRET: ${{ parameters.AZURECLIENTSECRET }}
       SQLCMDSERVER: ${{ parameters.SQLCMDSERVER }}
       SQLCMDDBNAME: ${{ parameters.SQLCMDDBNAME }}
+      AZURESUBSCRIPTION_CLIENT_ID: $(AZURESUBSCRIPTION_CLIENT_ID)
+      AZURESUBSCRIPTION_TENANT_ID: $(AZURESUBSCRIPTION_TENANT_ID)
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     continueOnError: true
 
   - task: PublishTestResults@2

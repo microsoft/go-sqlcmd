@@ -10,7 +10,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/microsoft/go-mssqldb/azuread"
 	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -277,7 +276,7 @@ func TestConnectCommand(t *testing.T) {
 	password := ""
 	username := ""
 	if canTestAzureAuth() {
-		authenticationMethod = "-G " + azuread.ActiveDirectoryDefault
+		authenticationMethod = "-G " + s.Connect.AuthenticationMethod
 	}
 	if c.Password != "" {
 		password = "-P " + c.Password

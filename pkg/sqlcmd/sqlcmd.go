@@ -459,9 +459,9 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 			qe = s.handleError(&retcode, m.Error)
 		case sqlexp.MsgRowsAffected:
 			if m.Count == 1 {
-				s.Format.AddMessage("(1 row affected)")
+				s.Format.AddMessage(localizer.Sprintf("(1 row affected)"))
 			} else {
-				s.Format.AddMessage(fmt.Sprintf("(%d rows affected)", m.Count))
+				s.Format.AddMessage(localizer.Sprintf("(%d rows affected)", m.Count))
 			}
 		case sqlexp.MsgNextResultSet:
 			results = rows.NextResultSet()
