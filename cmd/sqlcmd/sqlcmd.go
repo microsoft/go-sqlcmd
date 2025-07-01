@@ -318,7 +318,7 @@ func checkDefaultValue(args []string, i int) (val string) {
 		'X': "0",
 		'N': "true",
 	}
-	if isFlag(args[i]) && (len(args) == i+1 || args[i+1][0] == '-') {
+	if isFlag(args[i]) && len(args[i]) == 2 && (len(args) == i+1 || args[i+1][0] == '-') {
 		if v, ok := flags[rune(args[i][1])]; ok {
 			val = v
 			return

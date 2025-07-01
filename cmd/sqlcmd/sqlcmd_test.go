@@ -556,6 +556,16 @@ func TestConvertOsArgs(t *testing.T) {
 			[]string{"-ifoo.sql", "bar.sql", "-V10", "-X", "-va=b", "c=d"},
 			[]string{"-ifoo.sql", "-i", "bar.sql", "-V10", "-X", "0", "-va=b", "-v", "c=d"},
 		},
+		{
+			"X1 k2",
+			[]string{"-X1", "-k2"},
+			[]string{"-X1", "-k2"},
+		},
+		{
+			"X k2",
+			[]string{"-X", "-k2"},
+			[]string{"-X", "0", "-k2"},
+		},
 	}
 	for _, c := range tests {
 		t.Run(c.name, func(t *testing.T) {
