@@ -492,7 +492,7 @@ func normalizeFlags(cmd *cobra.Command) error {
 			case "mandatory", "yes", "1", "t", "true", "disable", "optional", "no", "0", "f", "false", "strict", "m", "s", "o":
 				return pflag.NormalizedName(name)
 			default:
-				err = invalidParameterError("-N", v, "m[andatory]", "yes", "1", "t[rue]", "disable", "o[ptional]", "no", "0", "f[alse]")
+				err = invalidParameterError("-N", v, "m[andatory]", "yes", "1", "t[rue]", "disable", "o[ptional]", "no", "0", "f[alse]", "s[trict]")
 				return pflag.NormalizedName("")
 			}
 		case errorsToStderr:
