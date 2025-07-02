@@ -49,6 +49,8 @@ func GetTokenBasedConnection(connstr string, authenticationMethod string) (drive
 		if loginTimeoutSeconds > 0 && loginTimeoutSeconds < 120 {
 			query.Set("connection timeout", "120")
 		}
+	case azuread.ActiveDirectoryClientAssertion:
+		query.Set("clientassertion", query.Get("password"))
 	}
 
 	connectionUrl.RawQuery = query.Encode()

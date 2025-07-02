@@ -683,8 +683,14 @@ func newConnect(t testing.TB) *ConnectSettings {
 		Password:   os.Getenv(SQLCMDPASSWORD),
 	}
 	if canTestAzureAuth() {
-		t.Log("Using ActiveDirectoryDefault")
-		connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
+		sc := os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_NAME")
+		if sc != "" {
+			t.Log("Using ActiveDirectoryAzurePipelines")
+			connect.AuthenticationMethod = azuread.ActiveDirectoryAzurePipelines
+		} else {
+			t.Log("Using ActiveDirectoryDefault")
+			connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
+		}
 	}
 	return &connect
 }

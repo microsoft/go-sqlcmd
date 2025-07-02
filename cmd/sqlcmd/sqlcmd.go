@@ -11,6 +11,7 @@ import (
 	"net"
 	"os"
 	"regexp"
+	"runtime/trace"
 	"strconv"
 	"strings"
 	"time"
@@ -78,6 +79,7 @@ type SQLCmdArguments struct {
 	EnableColumnEncryption      bool
 	ChangePassword              string
 	ChangePasswordAndExit       string
+	TraceFile                   string
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -316,7 +318,7 @@ func checkDefaultValue(args []string, i int) (val string) {
 		'X': "0",
 		'N': "true",
 	}
-	if isFlag(args[i]) && (len(args) == i+1 || args[i+1][0] == '-') {
+	if isFlag(args[i]) && len(args[i]) == 2 && (len(args) == i+1 || args[i+1][0] == '-') {
 		if v, ok := flags[rune(args[i][1])]; ok {
 			val = v
 			return
@@ -380,6 +382,7 @@ func SetScreenWidthFlags(args *SQLCmdArguments, rootCmd *cobra.Command) {
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.SetFlagErrorFunc(flagErrorHandler)
 	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, localizer.Sprintf("-? shows this syntax summary, %s shows modern sqlcmd sub-command help", localizer.HelpFlag))
+	rootCmd.Flags().StringVar(&args.TraceFile, "trace-file", "", localizer.Sprintf("Write runtime trace to the specified file. Only for advanced debugging."))
 	var inputfiles []string
 	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, localizer.Sprintf("Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s", localizer.QueryAndExitFlag, localizer.QueryFlag))
 	rootCmd.Flags().StringVarP(&args.OutputFile, "output-file", "o", "", localizer.Sprintf("Identifies the file that receives output from sqlcmd"))
@@ -393,7 +396,26 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.Query, "query", "Q", "", localizer.Sprintf("Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed"))
 	rootCmd.Flags().StringVarP(&args.Server, "server", "S", "", localizer.Sprintf("%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.", localizer.ConnStrPattern, localizer.ServerEnvVar))
 	_ = rootCmd.Flags().IntP(disableCmdAndWarn, "X", 0, localizer.Sprintf("%s Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.", "-X[1]"))
-	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", localizer.Sprintf("Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword"))
+	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", localizer.Sprintf(
+		"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: %s",
+		strings.Join([]string{
+			azuread.ActiveDirectoryDefault,
+			azuread.ActiveDirectoryIntegrated,
+			azuread.ActiveDirectoryPassword,
+			azuread.ActiveDirectoryInteractive,
+			azuread.ActiveDirectoryManagedIdentity,
+			azuread.ActiveDirectoryServicePrincipal,
+			azuread.ActiveDirectoryServicePrincipalAccessToken,
+			azuread.ActiveDirectoryAzCli,
+			azuread.ActiveDirectoryDeviceCode,
+			azuread.ActiveDirectoryWorkloadIdentity,
+			azuread.ActiveDirectoryClientAssertion,
+			azuread.ActiveDirectoryAzurePipelines,
+			azuread.ActiveDirectoryEnvironment,
+			azuread.ActiveDirectoryAzureDeveloperCli,
+			"SqlPassword",
+		}, ", "),
+	))
 	rootCmd.Flags().BoolVarP(&args.UseAad, "use-aad", "G", false, localizer.Sprintf("Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used"))
 	rootCmd.Flags().BoolVarP(&args.DisableVariableSubstitution, "disable-variable-substitution", "x", false, localizer.Sprintf("Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)", localizer.InsertKeyword))
 	var variables map[string]string
@@ -742,6 +764,18 @@ func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLC
 }
 
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
+	if args.TraceFile != "" {
+		traceFile, err := os.Create(args.TraceFile)
+		if err != nil {
+			return 1, localizer.Errorf("failed to create trace file '%s': %v", args.TraceFile, err)
+		}
+		defer traceFile.Close()
+		err = trace.Start(traceFile)
+		if err != nil {
+			return 1, localizer.Errorf("failed to start trace: %v", err)
+		}
+		defer trace.Stop()
+	}
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
