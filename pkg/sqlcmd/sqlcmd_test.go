@@ -51,8 +51,8 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			"sqlserver://someserver:1045?protocol=tcp&trustservercertificate=true",
 		},
 		{
-			&ConnectSettings{ServerName: `tcp:someserver,1045`},
-			"sqlserver://someserver:1045?protocol=tcp",
+			&ConnectSettings{ServerName: `tcp:someserver,1045`, Encrypt: "strict", HostNameInCertificate: "*.mydomain.com"},
+			"sqlserver://someserver:1045?encrypt=strict&hostnameincertificate=%2A.mydomain.com&protocol=tcp",
 		},
 		{
 			&ConnectSettings{ServerName: "someserver", AuthenticationMethod: azuread.ActiveDirectoryServicePrincipal, UserName: "myapp@mytenant", Password: pwd},

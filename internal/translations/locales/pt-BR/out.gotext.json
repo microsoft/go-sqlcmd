@@ -2812,11 +2812,32 @@
             "fuzzy": true
         },
         {
-            "id": "Specifies the formatting for results",
-            "message": "Specifies the formatting for results",
-            "translation": "Especifica a formatação dos resultados",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Specifies the host name in the server certificate.",
+            "message": "Specifies the host name in the server certificate.",
+            "translation": ""
+        },
+        {
+            "id": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+            "message": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Vert",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"vert\""
+                }
+            ]
         },
         {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",

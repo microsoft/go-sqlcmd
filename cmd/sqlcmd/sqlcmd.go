@@ -56,11 +56,12 @@ type SQLCmdArguments struct {
 	WorkstationName             string
 	ApplicationIntent           string
 	EncryptConnection           string
+	HostNameInCertificate       string
 	DriverLoggingLevel          int
 	ExitOnError                 bool
 	ErrorSeverityLevel          uint8
 	ErrorLevel                  int
-	Format                      string
+	Vertical                    bool
 	ErrorsToStderr              *int
 	Headers                     int
 	UnicodeOutputFile           bool
@@ -117,7 +118,6 @@ const (
 	sqlcmdErrorPrefix       = "Sqlcmd: "
 	applicationIntent       = "application-intent"
 	errorsToStderr          = "errors-to-stderr"
-	format                  = "format"
 	encryptConnection       = "encrypt-connection"
 	screenWidth             = "screen-width"
 	fixedTypeWidth          = "fixed-type-width"
@@ -316,13 +316,15 @@ func checkDefaultValue(args []string, i int) (val string) {
 		'k': "0",
 		'L': "|", // | is the sentinel for no value since users are unlikely to use it. It's "reserved" in most shells
 		'X': "0",
-		'N': "true",
 	}
 	if isFlag(args[i]) && len(args[i]) == 2 && (len(args) == i+1 || args[i+1][0] == '-') {
 		if v, ok := flags[rune(args[i][1])]; ok {
 			val = v
 			return
 		}
+	}
+	if args[i] == "-N" && (len(args) == i+1 || args[i+1][0] == '-') {
+		val = "true"
 	}
 	return
 }
@@ -426,9 +428,10 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 
 	rootCmd.Flags().StringVarP(&args.ApplicationIntent, applicationIntent, "K", "default", localizer.Sprintf("Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group", localizer.ApplicationIntentFlagShort))
 	rootCmd.Flags().StringVarP(&args.EncryptConnection, encryptConnection, "N", "default", localizer.Sprintf("This switch is used by the client to request an encrypted connection"))
+	rootCmd.Flags().StringVarP(&args.HostNameInCertificate, "host-name-in-certificate", "F", "", localizer.Sprintf("Specifies the host name in the server certificate."))
 	// Can't use NoOptDefVal until this fix: https://github.com/spf13/cobra/issues/866
 	//rootCmd.Flags().Lookup(encryptConnection).NoOptDefVal = "true"
-	rootCmd.Flags().StringVarP(&args.Format, format, "F", "horiz", localizer.Sprintf("Specifies the formatting for results"))
+	rootCmd.Flags().BoolVarP(&args.Vertical, "vertical", "", false, localizer.Sprintf("Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false", sqlcmd.SQLCMDFORMAT, "vert"))
 	_ = rootCmd.Flags().IntP(errorsToStderr, "r", -1, localizer.Sprintf("%s Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.", "-r[0 | 1]"))
 	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, localizer.Sprintf("Level of mssql driver messages to print"))
 	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, localizer.Sprintf("Specifies that sqlcmd exits and returns a %s value when an error occurs", localizer.DosErrorLevel))
@@ -490,15 +493,6 @@ func normalizeFlags(cmd *cobra.Command) error {
 				return pflag.NormalizedName(name)
 			default:
 				err = invalidParameterError("-N", v, "m[andatory]", "yes", "1", "t[rue]", "disable", "o[ptional]", "no", "0", "f[alse]", "s[trict]")
-				return pflag.NormalizedName("")
-			}
-		case format:
-			value := strings.ToLower(v)
-			switch value {
-			case "horiz", "horizontal", "vert", "vertical":
-				return pflag.NormalizedName(name)
-			default:
-				err = invalidParameterError("-F", v, "horiz", "horizontal", "vert", "vertical")
 				return pflag.NormalizedName("")
 			}
 		case errorsToStderr:
@@ -670,7 +664,12 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			}
 			return ""
 		},
-		sqlcmd.SQLCMDFORMAT: func(a *SQLCmdArguments) string { return a.Format },
+		sqlcmd.SQLCMDFORMAT: func(a *SQLCmdArguments) string {
+			if a.Vertical {
+				return "vert"
+			}
+			return "horizontal"
+		},
 	}
 	for varname, set := range varmap {
 		val := set(args)
@@ -721,6 +720,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	default:
 		connect.Encrypt = args.EncryptConnection
 	}
+	connect.HostNameInCertificate = args.HostNameInCertificate
 	connect.PacketSize = args.PacketSize
 	connect.WorkstationName = args.WorkstationName
 	connect.LogLevel = args.DriverLoggingLevel

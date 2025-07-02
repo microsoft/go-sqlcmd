@@ -63,8 +63,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-b", "-m", "15", "-V", "20"}, func(args SQLCmdArguments) bool {
 			return args.ExitOnError && args.ErrorLevel == 15 && args.ErrorSeverityLevel == 20
 		}},
-		{[]string{"-F", "vert"}, func(args SQLCmdArguments) bool {
-			return args.Format == "vert"
+		{[]string{"--vertical"}, func(args SQLCmdArguments) bool {
+			return args.Vertical
 		}},
 		{[]string{"-r", "1"}, func(args SQLCmdArguments) bool {
 			return *args.ErrorsToStderr == 1
@@ -107,6 +107,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		}},
 		{[]string{"-ifoo.sql", "bar.sql", "-V10"}, func(args SQLCmdArguments) bool {
 			return args.ErrorSeverityLevel == 10 && args.InputFile[0] == "foo.sql" && args.InputFile[1] == "bar.sql"
+		}},
+		{[]string{"-N", "s", "-F", "myserver.domain.com"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "s" && args.HostNameInCertificate == "myserver.domain.com"
 		}},
 	}
 
@@ -151,7 +154,6 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-E", "-U", "someuser"}, "The -E and the -U/-P options are mutually exclusive."},
 		{[]string{"-L", "-q", `"select 1"`}, "The -L parameter can not be used in combination with other parameters."},
 		{[]string{"-i", "foo.sql", "-q", `"select 1"`}, "The i and the -Q/-q options are mutually exclusive."},
-		{[]string{"-F", "what"}, "'-F what': Unexpected argument. Argument value has to be one of [horiz horizontal vert vertical]."},
 		{[]string{"-r", "5"}, `'-r 5': Unexpected argument. Argument value has to be one of [0 1].`},
 		{[]string{"-w", "x"}, "'-w x': value must be greater than 8 and less than 65536."},
 		{[]string{"-y", "111111"}, "'-y 111111': value must be greater than or equal to 0 and less than or equal to 8000."},

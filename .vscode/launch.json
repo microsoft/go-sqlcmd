@@ -24,7 +24,7 @@
             "request": "launch",
             "mode" : "auto",
             "program": "${workspaceFolder}/cmd/modern",
-            "args" : ["-S", "davidshi-2022", "-g", "-Q", "select nvarcharcol from encrypt.dbo.encrypted", "--driver-logging-level=65"],
+            "args" : ["-S", ".", "-Q", "select top 8 name from sys.all_objects"],
         },
         {
             "name" : "Run file query",
