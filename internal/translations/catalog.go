@@ -53,27 +53,29 @@ var messageKeyToIndex = map[string]int{
 	"\n\nFeedback:\n  %s":                     2,
 	"%q is not a valid URL for --using flag":  193,
 	"%s Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.":     242,
-	"%s Error occurred while opening or operating on file %s (Reason: %s).":                                                          292,
-	"%s List servers. Pass %s to omit 'Servers:' output.":                                                                            265,
-	"%s Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.":            253,
-	"%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters": 269,
+	"%s Error occurred while opening or operating on file %s (Reason: %s).":                                                          291,
+	"%s List servers. Pass %s to omit 'Servers:' output.":                                                                            264,
+	"%s Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.":            252,
+	"%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters": 268,
 	"%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.":                         241,
-	"%sSyntax error at line %d": 293,
+	"%sSyntax error at line %d": 292,
 	"%v":                        46,
-	"'%s %s': Unexpected argument. Argument value has to be %v.":                         277,
-	"'%s %s': Unexpected argument. Argument value has to be one of %v.":                  278,
-	"'%s %s': value must be greater than %#v and less than %#v.":                         276,
-	"'%s %s': value must be greater than or equal to %#v and less than or equal to %#v.": 275,
-	"'%s' scripting variable not defined.":                                               289,
-	"'%s': Missing argument. Enter '-?' for help.":                                       280,
-	"'%s': Unknown Option. Enter '-?' for help.":                                         281,
+	"'%s %s': Unexpected argument. Argument value has to be %v.":                         276,
+	"'%s %s': Unexpected argument. Argument value has to be one of %v.":                  277,
+	"'%s %s': value must be greater than %#v and less than %#v.":                         275,
+	"'%s %s': value must be greater than or equal to %#v and less than or equal to %#v.": 274,
+	"'%s' scripting variable not defined.":                                               288,
+	"'%s': Missing argument. Enter '-?' for help.":                                       279,
+	"'%s': Unknown Option. Enter '-?' for help.":                                         280,
 	"'-a %#v': Packet size has to be a number between 512 and 32767.":                    223,
 	"'-h %#v': header value must be either -1 or a value between 1 and 2147483647":       224,
-	"--user-database %q contains non-ASCII chars and/or quotes":                          182,
-	"--using URL must be http or https":                                                  192,
-	"--using URL must have a path to .bak file":                                          194,
-	"--using file URL must be a .bak file":                                               195,
-	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help":              230,
+	"(%d rows affected)": 304,
+	"(1 row affected)":   303,
+	"--user-database %q contains non-ASCII chars and/or quotes":             182,
+	"--using URL must be http or https":                                     192,
+	"--using URL must have a path to .bak file":                             194,
+	"--using file URL must be a .bak file":                                  195,
+	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help": 230,
 	"A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager": 220,
 	"Accept the SQL Server EULA": 165,
 	"Add a context":              51,
@@ -96,7 +98,7 @@ var messageKeyToIndex = map[string]int{
 	"Authentication type must be '%s' or '%s'":               86,
 	"Authentication type this user will use (basic | other)": 83,
 	"Both environment variables %s and %s are set. ":         100,
-	"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)": 245,
+	"Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)": 244,
 	"Change current context": 187,
 	"Command text to run":    15,
 	"Complete the operation even if non-system (user) database files are present":      32,
@@ -108,8 +110,8 @@ var messageKeyToIndex = map[string]int{
 	"Context '%v' does not exist": 114,
 	"Context name (a default context name will be created if not provided)":                                                        163,
 	"Context name to view details of":                                                                                              131,
-	"Controls the severity level that is used to set the %s variable on exit":                                                      263,
-	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent": 256,
+	"Controls the severity level that is used to set the %s variable on exit":                                                      262,
+	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent": 255,
 	"Create SQL Server with an empty user database":                                                                                212,
 	"Create SQL Server, download and attach AdventureWorks sample database":                                                        210,
 	"Create SQL Server, download and attach AdventureWorks sample database with different database name":                           211,
@@ -119,7 +121,7 @@ var messageKeyToIndex = map[string]int{
 	"Create context with SQL Server container":                  35,
 	"Create new context with a sql container ":                  22,
 	"Created context %q in \"%s\", configuring user account...": 184,
-	"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits": 246,
+	"Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits": 245,
 	"Creating default database [%s]":                                             197,
 	"Current Context '%v'":                                                       67,
 	"Current context does not have a container":                                  23,
@@ -127,8 +129,8 @@ var messageKeyToIndex = map[string]int{
 	"Current context is now %s":                                                  45,
 	"Database for the connection string (default is taken from the T/SQL login)": 104,
 	"Database to use":                                                            16,
-	"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group": 250,
-	"Dedicated administrator connection":                                                  266,
+	"Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group": 249,
+	"Dedicated administrator connection":                                                  265,
 	"Delete a context":                                                                    107,
 	"Delete a context (excluding its endpoint and user)":                                  109,
 	"Delete a context (including its endpoint and user)":                                  108,
@@ -154,11 +156,11 @@ var messageKeyToIndex = map[string]int{
 	"Download (into container) and attach database (.bak) from URL":                       178,
 	"Downloading %s":                                                                      198,
 	"Downloading %v":                                                                      200,
-	"ED and !!<command> commands, startup script, and environment variables are disabled": 287,
+	"ED and !!<command> commands, startup script, and environment variables are disabled": 286,
 	"EULA not accepted":                                                                   181,
-	"Echo input":                                                                          270,
+	"Echo input":                                                                          269,
 	"Either, add the %s flag to the command-line":                                         179,
-	"Enable column encryption":                                                            271,
+	"Enable column encryption":                                                            270,
 	"Encryption method '%v' is not valid":                                                 98,
 	"Endpoint '%v' added (address: '%v', port: '%v')":                                     77,
 	"Endpoint '%v' deleted":                                                               120,
@@ -166,7 +168,7 @@ var messageKeyToIndex = map[string]int{
 	"Endpoint name must be provided.  Provide endpoint name with %s flag":                 117,
 	"Endpoint name to view details of":                                                    138,
 	"Endpoint required to add context.  Endpoint '%v' does not exist.  Use %s flag":       59,
-	"Enter new password:":                                                                 283,
+	"Enter new password:":                                                                 282,
 	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed":                             240,
 	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed": 239,
 	"Explicitly set the container hostname, it defaults to the container ID":                                                                                  174,
@@ -190,12 +192,12 @@ var messageKeyToIndex = map[string]int{
 	"Install/Create SQL Server, Azure SQL, and Tools":                           9,
 	"Install/Create, Query, Uninstall SQL Server":                               0,
 	"Invalid --using file type":                                                 196,
-	"Invalid variable identifier %s":                                            298,
-	"Invalid variable value %s":                                                 299,
+	"Invalid variable identifier %s":                                            297,
+	"Invalid variable value %s":                                                 298,
 	"Is a container runtime installed on this machine (e.g. Podman or Docker)?": 201,
 	"Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)": 204,
 	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       226,
-	"Level of mssql driver messages to print":                                                              254,
+	"Level of mssql driver messages to print":                                                              253,
 	"Line in errorlog to wait for before connecting":                                                       172,
 	"List all the context names in your sqlconfig file":                                                    128,
 	"List all the contexts in your sqlconfig file":                                                         129,
@@ -207,16 +209,16 @@ var messageKeyToIndex = map[string]int{
 	"Minimum number of special characters":                             167,
 	"Minimum number of upper characters":                               169,
 	"Modify sqlconfig files using subcommands like \"%s\"":             7,
-	"Msg %#v, Level %d, State %d, Server %s, Line %#v%s":               296,
-	"Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s": 295,
+	"Msg %#v, Level %d, State %d, Server %s, Line %#v%s":               295,
+	"Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s": 294,
 	"Name of context to delete":                                        110,
 	"Name of context to set as current context":                        151,
 	"Name of endpoint this context will use":                           54,
 	"Name of endpoint to delete":                                       116,
 	"Name of user this context will use":                               55,
 	"Name of user to delete":                                           122,
-	"New password":                                                     272,
-	"New password and exit":                                            273,
+	"New password":                                                     271,
+	"New password and exit":                                            272,
 	"No context exists with the name: \"%v\"":                          155,
 	"No current context":                                               20,
 	"No endpoints to uninstall":                                        50,
@@ -226,24 +228,24 @@ var messageKeyToIndex = map[string]int{
 	"Or, set the environment variable i.e. %s %s=YES ":                 180,
 	"Pass in the %s %s":                                                89,
 	"Pass in the flag %s to override this safety check for user (non-system) databases": 48,
-	"Password": 262,
+	"Password": 261,
 	"Password encryption method (%s) in sqlconfig file": 85,
-	"Password:": 297,
+	"Password:": 296,
 	"Port (next available port from 1433 upwards used by default)":                                                           177,
 	"Press Ctrl+C to exit this process...":                                                                                   219,
 	"Print version information and exit":                                                                                     233,
 	"Provide a username with the %s flag":                                                                                    95,
 	"Provide a valid encryption method (%s) with the %s flag":                                                                97,
 	"Provide password in the %s (or %s) environment variable":                                                                93,
-	"Provided for backward compatibility. Client regional settings are not used":                                             268,
-	"Provided for backward compatibility. Quoted identifiers are always enabled":                                             267,
-	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster": 261,
+	"Provided for backward compatibility. Client regional settings are not used":                                             267,
+	"Provided for backward compatibility. Quoted identifiers are always enabled":                                             266,
+	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster": 260,
 	"Quiet mode (do not stop for user input to confirm the operation)":                                                       31,
 	"Remove":                               190,
 	"Remove the %s flag":                   88,
-	"Remove trailing spaces from a column": 260,
+	"Remove trailing spaces from a column": 259,
 	"Removing context %s":                  42,
-	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size": 247,
+	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size": 246,
 	"Restoring database %s":                                         199,
 	"Run a query":                                                   12,
 	"Run a query against the current context":                       11,
@@ -253,25 +255,25 @@ var messageKeyToIndex = map[string]int{
 	"Servers:":                                                      225,
 	"Set new default database":                                      14,
 	"Set the current context":                                       149,
-	"Set the mssql context (endpoint/user) to be the current context":         150,
-	"Sets the sqlcmd scripting variable %s":                                   274,
-	"Show sqlconfig settings and raw authentication data":                     158,
-	"Show sqlconfig settings, with REDACTED authentication data":              157,
-	"Special character set to include in password":                            170,
-	"Specifies that all output files are encoded with little-endian Unicode":  258,
-	"Specifies that sqlcmd exits and returns a %s value when an error occurs": 255,
-	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword": 243,
-	"Specifies the batch terminator. The default value is %s":         237,
-	"Specifies the column separator character. Sets the %s variable.": 259,
-	"Specifies the formatting for results":                            252,
-	"Specifies the image CPU architecture":                            175,
-	"Specifies the image operating system":                            176,
-	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed":                                                                                                         257,
-	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite": 248,
-	"Specifies the screen width for output":                                        264,
+	"Set the mssql context (endpoint/user) to be the current context":                                                    150,
+	"Sets the sqlcmd scripting variable %s":                                                                              273,
+	"Show sqlconfig settings and raw authentication data":                                                                158,
+	"Show sqlconfig settings, with REDACTED authentication data":                                                         157,
+	"Special character set to include in password":                                                                       170,
+	"Specifies that all output files are encoded with little-endian Unicode":                                             257,
+	"Specifies that sqlcmd exits and returns a %s value when an error occurs":                                            254,
+	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: %s":                        300,
+	"Specifies the batch terminator. The default value is %s":                                                            237,
+	"Specifies the column separator character. Sets the %s variable.":                                                    258,
+	"Specifies the formatting for results":                                                                               251,
+	"Specifies the image CPU architecture":                                                                               175,
+	"Specifies the image operating system":                                                                               176,
+	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed": 256,
+	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite": 247,
+	"Specifies the screen width for output":                                        263,
 	"Specify a custom name for the container rather than a randomly generated one": 173,
-	"Sqlcmd: Error: ":                              285,
-	"Sqlcmd: Warning: ":                            286,
+	"Sqlcmd: Error: ":                              284,
+	"Sqlcmd: Warning: ":                            285,
 	"Start current context":                        17,
 	"Start interactive session":                    186,
 	"Start the current context":                    18,
@@ -282,24 +284,24 @@ var messageKeyToIndex = map[string]int{
 	"Stopping %q for context %q":                   26,
 	"Stopping %s":                                  43,
 	"Switched to context \"%v\".":                  154,
-	"Syntax error at line %d near command '%s'.":   291,
+	"Syntax error at line %d near command '%s'.":   290,
 	"Tag to use, use get-tags to see list of tags": 162,
-	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used": 244,
-	"The %s and the %s options are mutually exclusive.":                                                                        279,
+	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used": 243,
+	"The %s and the %s options are mutually exclusive.":                                                                        278,
 	"The %s flag can only be used when authentication type is '%s'":                                                            90,
 	"The %s flag must be set when authentication type is '%s'":                                                                 92,
 	"The -L parameter can not be used in combination with other parameters.":                                                   222,
-	"The environment variable: '%s' has invalid value: '%s'.":                                                                  290,
+	"The environment variable: '%s' has invalid value: '%s'.":                                                                  289,
 	"The login name or contained database user name.  For contained database users, you must provide the database name option": 238,
 	"The network address to connect to, e.g. 127.0.0.1 etc.":                                                                   70,
 	"The network port to connect to, e.g. 1433 etc.":                                                                           71,
-	"The scripting variable: '%s' is read-only":                                                                                288,
+	"The scripting variable: '%s' is read-only":                                                                                287,
 	"The username (provide password in %s or %s environment variable)":                                                         84,
 	"Third party notices: aka.ms/SqlcmdNotices":                                                                                227,
-	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions": 249,
+	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions": 248,
 	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits":                                                                                                     235,
-	"This switch is used by the client to request an encrypted connection": 251,
-	"Timeout expired":                                                  294,
+	"This switch is used by the client to request an encrypted connection": 250,
+	"Timeout expired":                                                  293,
 	"To override the check, use %s":                                    40,
 	"To remove:         %s":                                            153,
 	"To run a query":                                                   66,
@@ -330,27 +332,30 @@ var messageKeyToIndex = map[string]int{
 	"Version: %v\n":              228,
 	"View all endpoints details": 75,
 	"View available contexts":    33,
-	"View configuration information and connection strings":         1,
-	"View endpoint details":                                         74,
-	"View endpoint names":                                           73,
-	"View endpoints":                                                118,
-	"View existing endpoints to choose from":                        56,
-	"View list of users":                                            60,
-	"View sqlcmd configuration":                                     188,
-	"View users":                                                    124,
+	"View configuration information and connection strings": 1,
+	"View endpoint details":                                 74,
+	"View endpoint names":                                   73,
+	"View endpoints":                                        118,
+	"View existing endpoints to choose from":                56,
+	"View list of users":                                    60,
+	"View sqlcmd configuration":                             188,
+	"View users":                                            124,
+	"Write runtime trace to the specified file. Only for advanced debugging.": 299,
 	"configuration file":                                            5,
 	"error: no context exists with the name: \"%v\"":                134,
 	"error: no endpoint exists with the name: \"%v\"":               141,
 	"error: no user exists with the name: \"%v\"":                   148,
+	"failed to create trace file '%s': %v":                          301,
+	"failed to start trace: %v":                                     302,
 	"help for backwards compatibility flags (-S, -U, -E etc.)":      3,
-	"invalid batch terminator '%s'":                                 282,
+	"invalid batch terminator '%s'":                                 281,
 	"log level, error=0, warn=1, info=2, debug=3, trace=4":          6,
 	"print version of sqlcmd":                                       4,
 	"sqlcmd start":                                                  217,
-	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools": 284,
+	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools": 283,
 }
 
-var de_DEIndex = []uint32{ // 301 elements
+var de_DEIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x0000007e, 0x00000096,
 	0x000000d1, 0x000000e9, 0x000000fd, 0x00000148,
@@ -420,26 +425,27 @@ var de_DEIndex = []uint32{ // 301 elements
 	0x00003040, 0x0000307b, 0x000030a5, 0x000030f2,
 	0x0000320f, 0x000032eb, 0x00003329, 0x000033be,
 	0x0000347c, 0x00003519, 0x000035a5, 0x00003650,
-	0x000037d6, 0x00003908, 0x00003a08, 0x00003b4f,
-	0x00003d36, 0x00003e5d, 0x00004002, 0x00004137,
-	0x00004192, 0x000041bb, 0x00004247, 0x00004276,
+	0x00003782, 0x00003882, 0x000039c9, 0x00003bb0,
+	0x00003cd7, 0x00003e7c, 0x00003fb1, 0x0000400c,
+	0x00004035, 0x000040c1, 0x000040f0, 0x00004144,
 	// Entry 100 - 11F
-	0x000042ca, 0x00004359, 0x000043fb, 0x00004444,
-	0x00004483, 0x000044b7, 0x00004547, 0x00004550,
-	0x000045a2, 0x000045d0, 0x00004625, 0x00004648,
-	0x000046b8, 0x00004727, 0x000047d0, 0x000047dc,
-	0x000047ff, 0x0000480e, 0x00004829, 0x00004853,
-	0x000048b1, 0x000048ff, 0x00004947, 0x00004999,
-	0x000049d7, 0x00004a21, 0x00004a5f, 0x00004a89,
-	0x00004aa2, 0x00004aea, 0x00004aff, 0x00004b15,
+	0x000041d3, 0x00004275, 0x000042be, 0x000042fd,
+	0x00004331, 0x000043c1, 0x000043ca, 0x0000441c,
+	0x0000444a, 0x0000449f, 0x000044c2, 0x00004532,
+	0x000045a1, 0x0000464a, 0x00004656, 0x00004679,
+	0x00004688, 0x000046a3, 0x000046cd, 0x0000472b,
+	0x00004779, 0x000047c1, 0x00004813, 0x00004851,
+	0x0000489b, 0x000048d9, 0x00004903, 0x0000491c,
+	0x00004964, 0x00004979, 0x0000498f, 0x000049e7,
 	// Entry 120 - 13F
-	0x00004b6d, 0x00004ba0, 0x00004bd0, 0x00004c13,
-	0x00004c51, 0x00004c9d, 0x00004cbe, 0x00004cd1,
-	0x00004d2c, 0x00004d77, 0x00004d81, 0x00004da7,
-	0x00004dc7,
-} // Size: 1228 bytes
+	0x00004a1a, 0x00004a4a, 0x00004a8d, 0x00004acb,
+	0x00004b17, 0x00004b38, 0x00004b4b, 0x00004ba6,
+	0x00004bf1, 0x00004bfb, 0x00004c21, 0x00004c41,
+	0x00004c41, 0x00004c41, 0x00004c41, 0x00004c41,
+	0x00004c41, 0x00004c41,
+} // Size: 1248 bytes
 
-const de_DEData string = "" + // Size: 19911 bytes
+const de_DEData string = "" + // Size: 19521 bytes
 	"\x02SQL Server installieren/erstellen, abfragen, deinstallieren\x02Konfi" +
 	"gurationsinformationen und Verbindungszeichenfolgen anzeigen\x04\x02\x0a" +
 	"\x0a\x00\x12\x02Feedback:\x0a  %[1]s\x02Hilfe für Abwärtskompatibilitäts" +
@@ -642,95 +648,89 @@ const de_DEData string = "" + // Size: 19911 bytes
 	"indung hergestellt werden soll. Sie legt die sqlcmd-Skriptvariable %[2]s" +
 	" fest.\x02%[1]s Deaktiviert Befehle, die die Systemsicherheit gefährden " +
 	"könnten. Die Übergabe 1 weist sqlcmd an, beendet zu werden, wenn deaktiv" +
-	"ierte Befehle ausgeführt werden.\x02Gibt die SQL-Authentifizierungsmetho" +
-	"de an, die zum Herstellen einer Verbindung mit der Azure SQL-Datenbank v" +
-	"erwendet werden soll. Eines der folgenden Elemente: ActiveDirectoryDefau" +
-	"lt, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryI" +
-	"nteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrinci" +
-	"pal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword\x02Wei" +
-	"st sqlcmd an, die ActiveDirectory-Authentifizierung zu verwenden. Wenn k" +
-	"ein Benutzername angegeben wird, wird die Authentifizierungsmethode Acti" +
-	"veDirectoryDefault verwendet. Wenn ein Kennwort angegeben wird, wird Act" +
-	"iveDirectoryPassword verwendet. Andernfalls wird ActiveDirectoryInteract" +
-	"ive verwendet.\x02Bewirkt, dass sqlcmd Skriptvariablen ignoriert. Dieser" +
-	" Parameter ist nützlich, wenn ein Skript viele %[1]s-Anweisungen enthält" +
-	", die möglicherweise Zeichenfolgen enthalten, die das gleiche Format wie" +
-	" reguläre Variablen aufweisen, z. B. $(variable_name)\x02Erstellt eine s" +
-	"qlcmd-Skriptvariable, die in einem sqlcmd-Skript verwendet werden kann. " +
-	"Schließen Sie den Wert in Anführungszeichen ein, wenn der Wert Leerzeich" +
-	"en enthält. Sie können mehrere var=values-Werte angeben. Wenn Fehler in " +
-	"einem der angegebenen Werte vorliegen, generiert sqlcmd eine Fehlermeldu" +
-	"ng und beendet dann\x02Fordert ein Paket einer anderen Größe an. Mit die" +
-	"ser Option wird die sqlcmd-Skriptvariable %[1]s festgelegt. packet_size " +
-	"muss ein Wert zwischen 512 und 32767 sein. Der Standardwert = 4096. Eine" +
-	" größere Paketgröße kann die Leistung für die Ausführung von Skripts mit" +
-	" vielen SQL-Anweisungen zwischen %[2]s-Befehlen verbessern. Sie können e" +
-	"ine größere Paketgröße anfordern. Wenn die Anforderung abgelehnt wird, v" +
-	"erwendet sqlcmd jedoch den Serverstandard für die Paketgröße.\x02Gibt di" +
-	"e Anzahl von Sekunden an, nach der ein Timeout für eine sqlcmd-Anmeldung" +
-	" beim go-mssqldb-Treiber auftritt, wenn Sie versuchen, eine Verbindung m" +
-	"it einem Server herzustellen. Mit dieser Option wird die sqlcmd-Skriptva" +
-	"riable %[1]s festgelegt. Der Standardwert ist 30. 0 bedeutet unendlich" +
-	"\x02Mit dieser Option wird die sqlcmd-Skriptvariable %[1]s festgelegt. D" +
-	"er Arbeitsstationsname ist in der Hostnamenspalte der sys.sysprocesses-K" +
-	"atalogsicht aufgeführt und kann mithilfe der gespeicherten Prozedur sp_w" +
-	"ho zurückgegeben werden. Wenn diese Option nicht angegeben ist, wird sta" +
-	"ndardmäßig der aktuelle Computername verwendet. Dieser Name kann zum Ide" +
-	"ntifizieren verschiedener sqlcmd-Sitzungen verwendet werden.\x02Deklarie" +
-	"rt den Anwendungsworkloadtyp beim Herstellen einer Verbindung mit einem " +
-	"Server. Der einzige aktuell unterstützte Wert ist ReadOnly. Wenn %[1]s n" +
-	"icht angegeben ist, unterstützt das sqlcam-Hilfsprogramm die Konnektivit" +
-	"ät mit einem sekundären Replikat in einer Always-On-Verfügbarkeitsgrupp" +
-	"e nicht.\x02Dieser Schalter wird vom Client verwendet, um eine verschlüs" +
-	"selte Verbindung anzufordern.\x02Gibt die Formatierung für Ergebnisse an" +
-	"\x02%[1]s Leitet Fehlermeldungen mit Schweregrad >= 11 Ausgabe an stderr" +
-	" um. Übergeben Sie 1, um alle Fehler einschließlich PRINT umzuleiten." +
-	"\x02Ebene der zu druckenden MSSQL-Treibermeldungen\x02Gibt an, dass sqlc" +
-	"md bei einem Fehler beendet wird und einen %[1]s-Wert zurückgibt\x02Steu" +
-	"ert, welche Fehlermeldungen an %[1]s gesendet werden. Nachrichten mit ei" +
-	"nem Schweregrad größer oder gleich dieser Ebene werden gesendet.\x02Gibt" +
-	" die Anzahl der Zeilen an, die zwischen den Spaltenüberschriften gedruck" +
-	"t werden sollen. Verwenden Sie -h-1, um anzugeben, dass Header nicht ged" +
-	"ruckt werden\x02Gibt an, dass alle Ausgabedateien mit Little-Endian-Unic" +
-	"ode codiert sind\x02Gibt das Spaltentrennzeichen an. Legt die %[1]s-Vari" +
-	"able fest.\x02Nachfolgende Leerzeichen aus einer Spalte entfernen\x02Aus" +
-	" Gründen der Abwärtskompatibilität bereitgestellt. Sqlcmd optimiert imme" +
-	"r die Erkennung des aktiven Replikats eines SQL-Failoverclusters.\x02Ken" +
-	"nwort\x02Steuert den Schweregrad, mit dem die Variable %[1]s beim Beende" +
-	"n festgelegt wird.\x02Gibt die Bildschirmbreite für die Ausgabe an\x02%[" +
-	"1]s Server auflisten. Übergeben Sie %[2]s, um die Ausgabe \x22Servers:" +
-	"\x22 auszulassen.\x02Dedizierte Administratorverbindung\x02Aus Gründen d" +
-	"er Abwärtskompatibilität bereitgestellt. Bezeichner in Anführungszeichen" +
-	" sind immer aktiviert.\x02Aus Gründen der Abwärtskompatibilität bereitge" +
-	"stellt. Regionale Clienteinstellungen werden nicht verwendet.\x02%[1]s E" +
-	"ntfernen Sie Steuerzeichen aus der Ausgabe. Übergeben Sie 1, um ein Leer" +
-	"zeichen pro Zeichen zu ersetzen, 2 für ein Leerzeichen pro aufeinanderfo" +
-	"lgende Zeichen.\x02Echoeingabe\x02Spaltenverschlüsselung aktivieren\x02N" +
-	"eues Kennwort\x02Neues Kennwort und Beenden\x02Legt die sqlcmd-Skriptvar" +
-	"iable %[1]s fest\x02'%[1]s %[2]s': Der Wert muss größer oder gleich %#[3" +
-	"]v und kleiner oder gleich %#[4]v sein.\x02\x22%[1]s %[2]s\x22: Der Wert" +
-	" muss größer als %#[3]v und kleiner als %#[4]v sein.\x02\x22%[1]s %[2]s" +
-	"\x22: Unerwartetes Argument. Der Argumentwert muss %[3]v sein.\x02\x22%[" +
-	"1]s %[2]s\x22: Unerwartetes Argument. Der Argumentwert muss einer der %[" +
-	"3]v sein.\x02Die Optionen %[1]s und %[2]s schließen sich gegenseitig aus" +
-	".\x02'%[1]s': Fehlendes Argument. Geben Sie \x22-?\x22 ein, um die Hilfe" +
-	" anzuzeigen.\x02'%[1]s': Unbekannte Option. Mit \x22-?\x22 rufen Sie die" +
-	" Hilfe auf.\x02Ungültiges Batchabschlusszeichen '%[1]s'\x02Neues Kennwor" +
-	"t eingeben:\x02sqlcmd: SQL Server, Azure SQL und Tools installieren/erst" +
-	"ellen/abfragen\x04\x00\x01 \x10\x02Sqlcmd: Fehler:\x04\x00\x01 \x11\x02S" +
-	"qlcmd: Warnung:\x02Die Befehle \x22ED\x22 und \x22!!<command>\x22, Start" +
-	"skript und Umgebungsvariablen sind deaktiviert\x02Die Skriptvariable: '%" +
-	"[1]s' ist schreibgeschützt.\x02Die '%[1]s'-Skriptvariable ist nicht defi" +
-	"niert.\x02Die Umgebungsvariable '%[1]s' hat einen ungültigen Wert: '%[2]" +
-	"s'.\x02Syntaxfehler in Zeile %[1]d in der Nähe des Befehls '%[2]s'.\x02%" +
-	"[1]s Fehler beim Öffnen oder Ausführen der Datei %[2]s (Ursache: %[3]s)." +
-	"\x02%[1]sSyntaxfehler in Zeile %[2]d\x02Timeout abgelaufen\x02Meldung %#" +
-	"[1]v, Ebene %[2]d, Status %[3]d, Server %[4]s, Prozedur %[5]s, Zeile %#[" +
-	"6]v%[7]s\x02Meldung %#[1]v, Ebene %[2]d, Status %[3]d, Server %[4]s, Zei" +
-	"le %#[5]v%[6]s\x02Kennwort:\x02Ungültiger Variablenbezeichner %[1]s\x02U" +
-	"ngültiger Variablenwert %[1]s"
+	"ierte Befehle ausgeführt werden.\x02Weist sqlcmd an, die ActiveDirectory" +
+	"-Authentifizierung zu verwenden. Wenn kein Benutzername angegeben wird, " +
+	"wird die Authentifizierungsmethode ActiveDirectoryDefault verwendet. Wen" +
+	"n ein Kennwort angegeben wird, wird ActiveDirectoryPassword verwendet. A" +
+	"ndernfalls wird ActiveDirectoryInteractive verwendet.\x02Bewirkt, dass s" +
+	"qlcmd Skriptvariablen ignoriert. Dieser Parameter ist nützlich, wenn ein" +
+	" Skript viele %[1]s-Anweisungen enthält, die möglicherweise Zeichenfolge" +
+	"n enthalten, die das gleiche Format wie reguläre Variablen aufweisen, z." +
+	" B. $(variable_name)\x02Erstellt eine sqlcmd-Skriptvariable, die in eine" +
+	"m sqlcmd-Skript verwendet werden kann. Schließen Sie den Wert in Anführu" +
+	"ngszeichen ein, wenn der Wert Leerzeichen enthält. Sie können mehrere va" +
+	"r=values-Werte angeben. Wenn Fehler in einem der angegebenen Werte vorli" +
+	"egen, generiert sqlcmd eine Fehlermeldung und beendet dann\x02Fordert ei" +
+	"n Paket einer anderen Größe an. Mit dieser Option wird die sqlcmd-Skript" +
+	"variable %[1]s festgelegt. packet_size muss ein Wert zwischen 512 und 32" +
+	"767 sein. Der Standardwert = 4096. Eine größere Paketgröße kann die Leis" +
+	"tung für die Ausführung von Skripts mit vielen SQL-Anweisungen zwischen " +
+	"%[2]s-Befehlen verbessern. Sie können eine größere Paketgröße anfordern." +
+	" Wenn die Anforderung abgelehnt wird, verwendet sqlcmd jedoch den Server" +
+	"standard für die Paketgröße.\x02Gibt die Anzahl von Sekunden an, nach de" +
+	"r ein Timeout für eine sqlcmd-Anmeldung beim go-mssqldb-Treiber auftritt" +
+	", wenn Sie versuchen, eine Verbindung mit einem Server herzustellen. Mit" +
+	" dieser Option wird die sqlcmd-Skriptvariable %[1]s festgelegt. Der Stan" +
+	"dardwert ist 30. 0 bedeutet unendlich\x02Mit dieser Option wird die sqlc" +
+	"md-Skriptvariable %[1]s festgelegt. Der Arbeitsstationsname ist in der H" +
+	"ostnamenspalte der sys.sysprocesses-Katalogsicht aufgeführt und kann mit" +
+	"hilfe der gespeicherten Prozedur sp_who zurückgegeben werden. Wenn diese" +
+	" Option nicht angegeben ist, wird standardmäßig der aktuelle Computernam" +
+	"e verwendet. Dieser Name kann zum Identifizieren verschiedener sqlcmd-Si" +
+	"tzungen verwendet werden.\x02Deklariert den Anwendungsworkloadtyp beim H" +
+	"erstellen einer Verbindung mit einem Server. Der einzige aktuell unterst" +
+	"ützte Wert ist ReadOnly. Wenn %[1]s nicht angegeben ist, unterstützt da" +
+	"s sqlcam-Hilfsprogramm die Konnektivität mit einem sekundären Replikat i" +
+	"n einer Always-On-Verfügbarkeitsgruppe nicht.\x02Dieser Schalter wird vo" +
+	"m Client verwendet, um eine verschlüsselte Verbindung anzufordern.\x02Gi" +
+	"bt die Formatierung für Ergebnisse an\x02%[1]s Leitet Fehlermeldungen mi" +
+	"t Schweregrad >= 11 Ausgabe an stderr um. Übergeben Sie 1, um alle Fehle" +
+	"r einschließlich PRINT umzuleiten.\x02Ebene der zu druckenden MSSQL-Trei" +
+	"bermeldungen\x02Gibt an, dass sqlcmd bei einem Fehler beendet wird und e" +
+	"inen %[1]s-Wert zurückgibt\x02Steuert, welche Fehlermeldungen an %[1]s g" +
+	"esendet werden. Nachrichten mit einem Schweregrad größer oder gleich die" +
+	"ser Ebene werden gesendet.\x02Gibt die Anzahl der Zeilen an, die zwische" +
+	"n den Spaltenüberschriften gedruckt werden sollen. Verwenden Sie -h-1, u" +
+	"m anzugeben, dass Header nicht gedruckt werden\x02Gibt an, dass alle Aus" +
+	"gabedateien mit Little-Endian-Unicode codiert sind\x02Gibt das Spaltentr" +
+	"ennzeichen an. Legt die %[1]s-Variable fest.\x02Nachfolgende Leerzeichen" +
+	" aus einer Spalte entfernen\x02Aus Gründen der Abwärtskompatibilität ber" +
+	"eitgestellt. Sqlcmd optimiert immer die Erkennung des aktiven Replikats " +
+	"eines SQL-Failoverclusters.\x02Kennwort\x02Steuert den Schweregrad, mit " +
+	"dem die Variable %[1]s beim Beenden festgelegt wird.\x02Gibt die Bildsch" +
+	"irmbreite für die Ausgabe an\x02%[1]s Server auflisten. Übergeben Sie %[" +
+	"2]s, um die Ausgabe \x22Servers:\x22 auszulassen.\x02Dedizierte Administ" +
+	"ratorverbindung\x02Aus Gründen der Abwärtskompatibilität bereitgestellt." +
+	" Bezeichner in Anführungszeichen sind immer aktiviert.\x02Aus Gründen de" +
+	"r Abwärtskompatibilität bereitgestellt. Regionale Clienteinstellungen we" +
+	"rden nicht verwendet.\x02%[1]s Entfernen Sie Steuerzeichen aus der Ausga" +
+	"be. Übergeben Sie 1, um ein Leerzeichen pro Zeichen zu ersetzen, 2 für e" +
+	"in Leerzeichen pro aufeinanderfolgende Zeichen.\x02Echoeingabe\x02Spalte" +
+	"nverschlüsselung aktivieren\x02Neues Kennwort\x02Neues Kennwort und Been" +
+	"den\x02Legt die sqlcmd-Skriptvariable %[1]s fest\x02'%[1]s %[2]s': Der W" +
+	"ert muss größer oder gleich %#[3]v und kleiner oder gleich %#[4]v sein." +
+	"\x02\x22%[1]s %[2]s\x22: Der Wert muss größer als %#[3]v und kleiner als" +
+	" %#[4]v sein.\x02\x22%[1]s %[2]s\x22: Unerwartetes Argument. Der Argumen" +
+	"twert muss %[3]v sein.\x02\x22%[1]s %[2]s\x22: Unerwartetes Argument. De" +
+	"r Argumentwert muss einer der %[3]v sein.\x02Die Optionen %[1]s und %[2]" +
+	"s schließen sich gegenseitig aus.\x02'%[1]s': Fehlendes Argument. Geben " +
+	"Sie \x22-?\x22 ein, um die Hilfe anzuzeigen.\x02'%[1]s': Unbekannte Opti" +
+	"on. Mit \x22-?\x22 rufen Sie die Hilfe auf.\x02Ungültiges Batchabschluss" +
+	"zeichen '%[1]s'\x02Neues Kennwort eingeben:\x02sqlcmd: SQL Server, Azure" +
+	" SQL und Tools installieren/erstellen/abfragen\x04\x00\x01 \x10\x02Sqlcm" +
+	"d: Fehler:\x04\x00\x01 \x11\x02Sqlcmd: Warnung:\x02Die Befehle \x22ED" +
+	"\x22 und \x22!!<command>\x22, Startskript und Umgebungsvariablen sind de" +
+	"aktiviert\x02Die Skriptvariable: '%[1]s' ist schreibgeschützt.\x02Die '%" +
+	"[1]s'-Skriptvariable ist nicht definiert.\x02Die Umgebungsvariable '%[1]" +
+	"s' hat einen ungültigen Wert: '%[2]s'.\x02Syntaxfehler in Zeile %[1]d in" +
+	" der Nähe des Befehls '%[2]s'.\x02%[1]s Fehler beim Öffnen oder Ausführe" +
+	"n der Datei %[2]s (Ursache: %[3]s).\x02%[1]sSyntaxfehler in Zeile %[2]d" +
+	"\x02Timeout abgelaufen\x02Meldung %#[1]v, Ebene %[2]d, Status %[3]d, Ser" +
+	"ver %[4]s, Prozedur %[5]s, Zeile %#[6]v%[7]s\x02Meldung %#[1]v, Ebene %[" +
+	"2]d, Status %[3]d, Server %[4]s, Zeile %#[5]v%[6]s\x02Kennwort:\x02Ungül" +
+	"tiger Variablenbezeichner %[1]s\x02Ungültiger Variablenwert %[1]s"
 
-var en_USIndex = []uint32{ // 301 elements
+var en_USIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002c, 0x00000062, 0x0000007a,
 	0x000000b3, 0x000000cb, 0x000000de, 0x00000113,
@@ -800,26 +800,27 @@ var en_USIndex = []uint32{ // 301 elements
 	0x0000255a, 0x0000258f, 0x000025b2, 0x000025ed,
 	0x000026d8, 0x0000277c, 0x000027b7, 0x00002830,
 	0x000028c8, 0x00002944, 0x000029b1, 0x00002a2f,
-	0x00002b6e, 0x00002c5e, 0x00002d33, 0x00002e50,
-	0x00002feb, 0x000030c9, 0x00003218, 0x00003312,
-	0x00003357, 0x0000337c, 0x000033f3, 0x0000341b,
+	0x00002b1f, 0x00002bf4, 0x00002d11, 0x00002eac,
+	0x00002f8a, 0x000030d9, 0x000031d3, 0x00003218,
+	0x0000323d, 0x000032b4, 0x000032dc, 0x00003327,
 	// Entry 100 - 11F
-	0x00003466, 0x000034e6, 0x00003559, 0x000035a0,
-	0x000035e3, 0x00003608, 0x0000367f, 0x00003688,
-	0x000036d3, 0x000036f9, 0x00003733, 0x00003756,
-	0x000037a1, 0x000037ec, 0x0000386e, 0x00003879,
-	0x00003892, 0x0000389f, 0x000038b5, 0x000038de,
-	0x0000393d, 0x00003984, 0x000039c8, 0x00003a13,
-	0x00003a4b, 0x00003a7b, 0x00003aa9, 0x00003aca,
-	0x00003ade, 0x00003b1c, 0x00003b30, 0x00003b46,
+	0x000033a7, 0x0000341a, 0x00003461, 0x000034a4,
+	0x000034c9, 0x00003540, 0x00003549, 0x00003594,
+	0x000035ba, 0x000035f4, 0x00003617, 0x00003662,
+	0x000036ad, 0x0000372f, 0x0000373a, 0x00003753,
+	0x00003760, 0x00003776, 0x0000379f, 0x000037fe,
+	0x00003845, 0x00003889, 0x000038d4, 0x0000390c,
+	0x0000393c, 0x0000396a, 0x0000398b, 0x0000399f,
+	0x000039dd, 0x000039f1, 0x00003a07, 0x00003a5b,
 	// Entry 120 - 13F
-	0x00003b9a, 0x00003bc7, 0x00003bef, 0x00003c2d,
-	0x00003c5e, 0x00003cad, 0x00003ccd, 0x00003cdd,
-	0x00003d33, 0x00003d78, 0x00003d82, 0x00003da4,
-	0x00003dc1,
-} // Size: 1228 bytes
+	0x00003a88, 0x00003ab0, 0x00003aee, 0x00003b1f,
+	0x00003b6e, 0x00003b8e, 0x00003b9e, 0x00003bf4,
+	0x00003c39, 0x00003c43, 0x00003c65, 0x00003c82,
+	0x00003cca, 0x00003d29, 0x00003d54, 0x00003d71,
+	0x00003d82, 0x00003d98,
+} // Size: 1248 bytes
 
-const en_USData string = "" + // Size: 15809 bytes
+const en_USData string = "" + // Size: 15768 bytes
 	"\x02Install/Create, Query, Uninstall SQL Server\x02View configuration in" +
 	"formation and connection strings\x04\x02\x0a\x0a\x00\x12\x02Feedback:" +
 	"\x0a  %[1]s\x02help for backwards compatibility flags (-S, -U, -E etc.)" +
@@ -982,81 +983,81 @@ const en_USData string = "" + // Size: 15809 bytes
 	" executed\x02%[1]s Specifies the instance of SQL Server to which to conn" +
 	"ect. It sets the sqlcmd scripting variable %[2]s.\x02%[1]s Disables comm" +
 	"ands that might compromise system security. Passing 1 tells sqlcmd to ex" +
-	"it when disabled commands are run.\x02Specifies the SQL authentication m" +
-	"ethod to use to connect to Azure SQL Database. One of: ActiveDirectoryDe" +
-	"fault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirecto" +
-	"ryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePri" +
-	"ncipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword\x02" +
-	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is p" +
-	"rovided, authentication method ActiveDirectoryDefault is used. If a pass" +
-	"word is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirec" +
-	"toryInteractive is used\x02Causes sqlcmd to ignore scripting variables. " +
-	"This parameter is useful when a script contains many %[1]s statements th" +
-	"at may contain strings that have the same format as regular variables, s" +
-	"uch as $(variable_name)\x02Creates a sqlcmd scripting variable that can " +
-	"be used in a sqlcmd script. Enclose the value in quotation marks if the " +
-	"value contains spaces. You can specify multiple var=values values. If th" +
-	"ere are errors in any of the values specified, sqlcmd generates an error" +
-	" message and then exits\x02Requests a packet of a different size. This o" +
-	"ption sets the sqlcmd scripting variable %[1]s. packet_size must be a va" +
-	"lue between 512 and 32767. The default = 4096. A larger packet size can " +
-	"enhance performance for execution of scripts that have lots of SQL state" +
-	"ments between %[2]s commands. You can request a larger packet size. Howe" +
-	"ver, if the request is denied, sqlcmd uses the server default for packet" +
-	" size\x02Specifies the number of seconds before a sqlcmd login to the go" +
-	"-mssqldb driver times out when you try to connect to a server. This opti" +
-	"on sets the sqlcmd scripting variable %[1]s. The default value is 30. 0 " +
-	"means infinite\x02This option sets the sqlcmd scripting variable %[1]s. " +
-	"The workstation name is listed in the hostname column of the sys.sysproc" +
-	"esses catalog view and can be returned using the stored procedure sp_who" +
-	". If this option is not specified, the default is the current computer n" +
-	"ame. This name can be used to identify different sqlcmd sessions\x02Decl" +
-	"ares the application workload type when connecting to a server. The only" +
-	" currently supported value is ReadOnly. If %[1]s is not specified, the s" +
-	"qlcmd utility will not support connectivity to a secondary replica in an" +
-	" Always On availability group\x02This switch is used by the client to re" +
-	"quest an encrypted connection\x02Specifies the formatting for results" +
-	"\x02%[1]s Redirects error messages with severity >= 11 output to stderr." +
-	" Pass 1 to to redirect all errors including PRINT.\x02Level of mssql dri" +
-	"ver messages to print\x02Specifies that sqlcmd exits and returns a %[1]s" +
-	" value when an error occurs\x02Controls which error messages are sent to" +
-	" %[1]s. Messages that have severity level greater than or equal to this " +
-	"level are sent\x02Specifies the number of rows to print between the colu" +
-	"mn headings. Use -h-1 to specify that headers not be printed\x02Specifie" +
-	"s that all output files are encoded with little-endian Unicode\x02Specif" +
-	"ies the column separator character. Sets the %[1]s variable.\x02Remove t" +
-	"railing spaces from a column\x02Provided for backward compatibility. Sql" +
-	"cmd always optimizes detection of the active replica of a SQL Failover C" +
-	"luster\x02Password\x02Controls the severity level that is used to set th" +
-	"e %[1]s variable on exit\x02Specifies the screen width for output\x02%[1" +
-	"]s List servers. Pass %[2]s to omit 'Servers:' output.\x02Dedicated admi" +
-	"nistrator connection\x02Provided for backward compatibility. Quoted iden" +
-	"tifiers are always enabled\x02Provided for backward compatibility. Clien" +
-	"t regional settings are not used\x02%[1]s Remove control characters from" +
-	" output. Pass 1 to substitute a space per character, 2 for a space per c" +
-	"onsecutive characters\x02Echo input\x02Enable column encryption\x02New p" +
-	"assword\x02New password and exit\x02Sets the sqlcmd scripting variable %" +
-	"[1]s\x02'%[1]s %[2]s': value must be greater than or equal to %#[3]v and" +
-	" less than or equal to %#[4]v.\x02'%[1]s %[2]s': value must be greater t" +
-	"han %#[3]v and less than %#[4]v.\x02'%[1]s %[2]s': Unexpected argument. " +
-	"Argument value has to be %[3]v.\x02'%[1]s %[2]s': Unexpected argument. A" +
-	"rgument value has to be one of %[3]v.\x02The %[1]s and the %[2]s options" +
-	" are mutually exclusive.\x02'%[1]s': Missing argument. Enter '-?' for he" +
-	"lp.\x02'%[1]s': Unknown Option. Enter '-?' for help.\x02invalid batch te" +
-	"rminator '%[1]s'\x02Enter new password:\x02sqlcmd: Install/Create/Query " +
-	"SQL Server, Azure SQL, and Tools\x04\x00\x01 \x0f\x02Sqlcmd: Error:\x04" +
-	"\x00\x01 \x11\x02Sqlcmd: Warning:\x02ED and !!<command> commands, startu" +
-	"p script, and environment variables are disabled\x02The scripting variab" +
-	"le: '%[1]s' is read-only\x02'%[1]s' scripting variable not defined.\x02T" +
-	"he environment variable: '%[1]s' has invalid value: '%[2]s'.\x02Syntax e" +
-	"rror at line %[1]d near command '%[2]s'.\x02%[1]s Error occurred while o" +
-	"pening or operating on file %[2]s (Reason: %[3]s).\x02%[1]sSyntax error " +
-	"at line %[2]d\x02Timeout expired\x02Msg %#[1]v, Level %[2]d, State %[3]d" +
-	", Server %[4]s, Procedure %[5]s, Line %#[6]v%[7]s\x02Msg %#[1]v, Level %" +
-	"[2]d, State %[3]d, Server %[4]s, Line %#[5]v%[6]s\x02Password:\x02Invali" +
-	"d variable identifier %[1]s\x02Invalid variable value %[1]s"
+	"it when disabled commands are run.\x02Tells sqlcmd to use ActiveDirector" +
+	"y authentication. If no user name is provided, authentication method Act" +
+	"iveDirectoryDefault is used. If a password is provided, ActiveDirectoryP" +
+	"assword is used. Otherwise ActiveDirectoryInteractive is used\x02Causes " +
+	"sqlcmd to ignore scripting variables. This parameter is useful when a sc" +
+	"ript contains many %[1]s statements that may contain strings that have t" +
+	"he same format as regular variables, such as $(variable_name)\x02Creates" +
+	" a sqlcmd scripting variable that can be used in a sqlcmd script. Enclos" +
+	"e the value in quotation marks if the value contains spaces. You can spe" +
+	"cify multiple var=values values. If there are errors in any of the value" +
+	"s specified, sqlcmd generates an error message and then exits\x02Request" +
+	"s a packet of a different size. This option sets the sqlcmd scripting va" +
+	"riable %[1]s. packet_size must be a value between 512 and 32767. The def" +
+	"ault = 4096. A larger packet size can enhance performance for execution " +
+	"of scripts that have lots of SQL statements between %[2]s commands. You " +
+	"can request a larger packet size. However, if the request is denied, sql" +
+	"cmd uses the server default for packet size\x02Specifies the number of s" +
+	"econds before a sqlcmd login to the go-mssqldb driver times out when you" +
+	" try to connect to a server. This option sets the sqlcmd scripting varia" +
+	"ble %[1]s. The default value is 30. 0 means infinite\x02This option sets" +
+	" the sqlcmd scripting variable %[1]s. The workstation name is listed in " +
+	"the hostname column of the sys.sysprocesses catalog view and can be retu" +
+	"rned using the stored procedure sp_who. If this option is not specified," +
+	" the default is the current computer name. This name can be used to iden" +
+	"tify different sqlcmd sessions\x02Declares the application workload type" +
+	" when connecting to a server. The only currently supported value is Read" +
+	"Only. If %[1]s is not specified, the sqlcmd utility will not support con" +
+	"nectivity to a secondary replica in an Always On availability group\x02T" +
+	"his switch is used by the client to request an encrypted connection\x02S" +
+	"pecifies the formatting for results\x02%[1]s Redirects error messages wi" +
+	"th severity >= 11 output to stderr. Pass 1 to to redirect all errors inc" +
+	"luding PRINT.\x02Level of mssql driver messages to print\x02Specifies th" +
+	"at sqlcmd exits and returns a %[1]s value when an error occurs\x02Contro" +
+	"ls which error messages are sent to %[1]s. Messages that have severity l" +
+	"evel greater than or equal to this level are sent\x02Specifies the numbe" +
+	"r of rows to print between the column headings. Use -h-1 to specify that" +
+	" headers not be printed\x02Specifies that all output files are encoded w" +
+	"ith little-endian Unicode\x02Specifies the column separator character. S" +
+	"ets the %[1]s variable.\x02Remove trailing spaces from a column\x02Provi" +
+	"ded for backward compatibility. Sqlcmd always optimizes detection of the" +
+	" active replica of a SQL Failover Cluster\x02Password\x02Controls the se" +
+	"verity level that is used to set the %[1]s variable on exit\x02Specifies" +
+	" the screen width for output\x02%[1]s List servers. Pass %[2]s to omit '" +
+	"Servers:' output.\x02Dedicated administrator connection\x02Provided for " +
+	"backward compatibility. Quoted identifiers are always enabled\x02Provide" +
+	"d for backward compatibility. Client regional settings are not used\x02%" +
+	"[1]s Remove control characters from output. Pass 1 to substitute a space" +
+	" per character, 2 for a space per consecutive characters\x02Echo input" +
+	"\x02Enable column encryption\x02New password\x02New password and exit" +
+	"\x02Sets the sqlcmd scripting variable %[1]s\x02'%[1]s %[2]s': value mus" +
+	"t be greater than or equal to %#[3]v and less than or equal to %#[4]v." +
+	"\x02'%[1]s %[2]s': value must be greater than %#[3]v and less than %#[4]" +
+	"v.\x02'%[1]s %[2]s': Unexpected argument. Argument value has to be %[3]v" +
+	".\x02'%[1]s %[2]s': Unexpected argument. Argument value has to be one of" +
+	" %[3]v.\x02The %[1]s and the %[2]s options are mutually exclusive.\x02'%" +
+	"[1]s': Missing argument. Enter '-?' for help.\x02'%[1]s': Unknown Option" +
+	". Enter '-?' for help.\x02invalid batch terminator '%[1]s'\x02Enter new " +
+	"password:\x02sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Too" +
+	"ls\x04\x00\x01 \x0f\x02Sqlcmd: Error:\x04\x00\x01 \x11\x02Sqlcmd: Warnin" +
+	"g:\x02ED and !!<command> commands, startup script, and environment varia" +
+	"bles are disabled\x02The scripting variable: '%[1]s' is read-only\x02'%[" +
+	"1]s' scripting variable not defined.\x02The environment variable: '%[1]s" +
+	"' has invalid value: '%[2]s'.\x02Syntax error at line %[1]d near command" +
+	" '%[2]s'.\x02%[1]s Error occurred while opening or operating on file %[2" +
+	"]s (Reason: %[3]s).\x02%[1]sSyntax error at line %[2]d\x02Timeout expire" +
+	"d\x02Msg %#[1]v, Level %[2]d, State %[3]d, Server %[4]s, Procedure %[5]s" +
+	", Line %#[6]v%[7]s\x02Msg %#[1]v, Level %[2]d, State %[3]d, Server %[4]s" +
+	", Line %#[5]v%[6]s\x02Password:\x02Invalid variable identifier %[1]s\x02" +
+	"Invalid variable value %[1]s\x02Write runtime trace to the specified fil" +
+	"e. Only for advanced debugging.\x02Specifies the SQL authentication meth" +
+	"od to use to connect to Azure SQL Database. One of: %[1]s\x02failed to c" +
+	"reate trace file '%[1]s': %[2]v\x02failed to start trace: %[1]v\x02(1 ro" +
+	"w affected)\x02(%[1]d rows affected)"
 
-var es_ESIndex = []uint32{ // 301 elements
+var es_ESIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000032, 0x00000081, 0x0000009c,
 	0x000000ec, 0x0000010d, 0x00000127, 0x0000017f,
@@ -1126,26 +1127,27 @@ var es_ESIndex = []uint32{ // 301 elements
 	0x000030a4, 0x000030da, 0x00003104, 0x0000314a,
 	0x0000325d, 0x0000332e, 0x00003372, 0x0000342f,
 	0x000034e7, 0x00003589, 0x00003601, 0x000036ab,
-	0x0000380e, 0x0000392c, 0x00003a0f, 0x00003b3f,
-	0x00003d39, 0x00003e5a, 0x00003ff0, 0x00004105,
-	0x0000414a, 0x00004172, 0x000041f8, 0x00004236,
+	0x000037c9, 0x000038ac, 0x000039dc, 0x00003bd6,
+	0x00003cf7, 0x00003e8d, 0x00003fa2, 0x00003fe7,
+	0x0000400f, 0x00004095, 0x000040d3, 0x00004124,
 	// Entry 100 - 11F
-	0x00004287, 0x00004310, 0x000043a4, 0x000043f8,
-	0x00004443, 0x0000446a, 0x00004516, 0x00004522,
-	0x00004578, 0x000045a7, 0x000045f2, 0x00004616,
-	0x00004690, 0x000046fd, 0x0000478f, 0x0000479e,
-	0x000047bb, 0x000047cd, 0x000047e7, 0x00004817,
-	0x0000486d, 0x000048b3, 0x000048ff, 0x00004952,
-	0x00004985, 0x000049c2, 0x00004a00, 0x00004a26,
-	0x00004a45, 0x00004a8c, 0x00004aa0, 0x00004aba,
+	0x000041ad, 0x00004241, 0x00004295, 0x000042e0,
+	0x00004307, 0x000043b3, 0x000043bf, 0x00004415,
+	0x00004444, 0x0000448f, 0x000044b3, 0x0000452d,
+	0x0000459a, 0x0000462c, 0x0000463b, 0x00004658,
+	0x0000466a, 0x00004684, 0x000046b4, 0x0000470a,
+	0x00004750, 0x0000479c, 0x000047ef, 0x00004822,
+	0x0000485f, 0x0000489d, 0x000048c3, 0x000048e2,
+	0x00004929, 0x0000493d, 0x00004957, 0x000049b8,
 	// Entry 120 - 13F
-	0x00004b1b, 0x00004b4f, 0x00004b7a, 0x00004bbd,
-	0x00004bfd, 0x00004c42, 0x00004c6d, 0x00004c86,
-	0x00004ce9, 0x00004d37, 0x00004d44, 0x00004d6f,
-	0x00004d92,
-} // Size: 1228 bytes
+	0x000049ec, 0x00004a17, 0x00004a5a, 0x00004a9a,
+	0x00004adf, 0x00004b0a, 0x00004b23, 0x00004b86,
+	0x00004bd4, 0x00004be1, 0x00004c0c, 0x00004c2f,
+	0x00004c2f, 0x00004c2f, 0x00004c2f, 0x00004c2f,
+	0x00004c2f, 0x00004c2f,
+} // Size: 1248 bytes
 
-const es_ESData string = "" + // Size: 19858 bytes
+const es_ESData string = "" + // Size: 19503 bytes
 	"\x02Instalar/Crear, Consultar, Desinstalar SQL Server\x02Visualización d" +
 	"e la información de configuración y las cadenas de conexión\x04\x02\x0a" +
 	"\x0a\x00\x15\x02Comentarios:\x0a  %[1]s\x02ayuda para marcas de compatib" +
@@ -1351,92 +1353,87 @@ const es_ESData string = "" + // Size: 19858 bytes
 	"r. Establece la variable de scripting sqlcmd %[2]s.\x02%[1]s Deshabilita" +
 	" comandos que pueden poner en peligro la seguridad del sistema. Al pasar" +
 	" 1, se indica a sqlcmd que se cierre cuando se ejecuten comandos deshabi" +
-	"litados.\x02Especifica el método de autenticación de SQL que se va a usa" +
-	"r para conectarse a Azure SQL Database. Uno de los siguientes: ActiveDir" +
-	"ectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, Activ" +
-	"eDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectorySe" +
-	"rvicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPass" +
-	"word\x02Indicar a sqlcmd que use la autenticación activedirectory. Si no" +
-	" se proporciona ningún nombre de usuario, se usa el método de autenticac" +
-	"ión ActiveDirectoryDefault. Si se proporciona una contraseña, se usa Act" +
-	"iveDirectoryPassword. De lo contrario, se usa ActiveDirectoryInteractive" +
-	"\x02Hace que sqlcmd omita las variables de scripting. Este parámetro es " +
-	"útil cuando un script contiene muchas instrucciones %[1]s que pueden co" +
-	"ntener cadenas con el mismo formato que las variables normales, como $(v" +
-	"ariable_name)\x02Crear una variable de scripting sqlcmd que se puede usa" +
-	"r en un script sqlcmd. Escriba el valor entre comillas si el valor conti" +
-	"ene espacios. Puede especificar varios valores var=values. Si hay errore" +
-	"s en cualquiera de los valores especificados, sqlcmd genera un mensaje d" +
-	"e error y, a continuación, sale\x02Solicitar un paquete de un tamaño dif" +
-	"erente. Esta opción establece la variable de scripting sqlcmd %[1]s. pac" +
-	"ket_size debe ser un valor entre 512 y 32767. Valor predeterminado = 409" +
-	"6. Un tamaño de paquete mayor puede mejorar el rendimiento de la ejecuci" +
-	"ón de scripts que tienen una gran cantidad de instrucciones SQL entre c" +
-	"omandos %[2]s. Puede solicitar un tamaño de paquete mayor. Sin embargo, " +
-	"si se deniega la solicitud, sqlcmd usa el valor predeterminado del servi" +
-	"dor para el tamaño del paquete.\x02Especificar el número de segundos ant" +
-	"es de que se agote el tiempo de espera de un inicio de sesión sqlcmd en " +
-	"el controlador go-mssqldb al intentar conectarse a un servidor. Esta opc" +
-	"ión establece la variable de scripting sqlcmd %[1]s. El valor predetermi" +
-	"nado es 30. 0 significa infinito\x02Esta opción establece la variable de" +
-	" scripting sqlcmd %[1]s. El nombre de la estación de trabajo aparece en " +
-	"la columna de nombre de host de la vista de catálogo sys.sysprocesses y " +
-	"se puede devolver mediante el procedimiento almacenado sp_who. Si no se " +
-	"especifica esta opción, el valor predeterminado es el nombre del equipo " +
-	"actual. Este nombre se puede usar para identificar diferentes sesiones s" +
-	"qlcmd\x02Declarar el tipo de carga de trabajo de la aplicación al conect" +
-	"arse a un servidor. El único valor admitido actualmente es ReadOnly. Si " +
-	"no se especifica %[1]s, la utilidad sqlcmd no admitirá la conectividad c" +
-	"on una réplica secundaria en un grupo de disponibilidad Always On\x02El " +
-	"cliente usa este modificador para solicitar una conexión cifrada\x02Espe" +
-	"cifica el formato de los resultados\x02%[1]s Redirige los mensajes de er" +
-	"ror con salidas de gravedad >= 11 a stderr. Pase 1 para redirigir todos " +
-	"los errores, incluido PRINT.\x02Nivel de mensajes del controlador mssql " +
-	"que se van a imprimir\x02Especificar que sqlcmd sale y devuelve un valor" +
-	" %[1]s cuando se produce un error\x02Controla qué mensajes de error se e" +
-	"nvían a %[1]s. Se envían los mensajes que tienen un nivel de gravedad ma" +
-	"yor o igual que este nivel\x02Especifica el número de filas que se van a" +
-	" imprimir entre los encabezados de columna. Use -h-1 para especificar qu" +
-	"e los encabezados no se impriman\x02Especifica que todos los archivos de" +
-	" salida se codifican con Unicode little endian.\x02Especifica el carácte" +
-	"r separador de columna. Establece la variable %[1]s.\x02Quitar espacios " +
-	"finales de una columna\x02Se proporciona para la compatibilidad con vers" +
-	"iones anteriores. Sqlcmd siempre optimiza la detección de la réplica act" +
-	"iva de un clúster de conmutación por error de SQL\x02Contraseña\x02Contr" +
-	"olar el nivel de gravedad que se usa para establecer la variable %[1]s a" +
-	"l salir.\x02Especificar el ancho de pantalla de la salida.\x02%[1]s Serv" +
-	"idores de lista. Pase %[2]s para omitir la salida de 'Servers:'.\x02Cone" +
-	"xión de administrador dedicada\x02Proporcionado para compatibilidad con " +
-	"versiones anteriores. Los identificadores entre comillas siempre están h" +
-	"abilitados\x02Proporcionado para compatibilidad con versiones anteriores" +
-	". No se usa la configuración regional del cliente\x02%[1]s Quite los car" +
-	"acteres de control de la salida. Pase 1 para sustituir un espacio por ca" +
-	"rácter, 2 para un espacio por caracteres consecutivos\x02Entrada de eco" +
-	"\x02Habilitar cifrado de columna\x02Contraseña nueva\x02Nueva contraseña" +
-	" y salir\x02Establece la variable de scripting sqlcmd %[1]s\x02'%[1]s %[" +
-	"2]s': El valor debe ser mayor o igual que %#[3]v y menor o igual que %#[" +
-	"4]v.\x02'%[1]s %[2]s': El valor debe ser mayor que %#[3]v y menor que %#" +
-	"[4]v.\x02'%[1]s %[2]s': Argumento inesperado. El valor del argumento deb" +
-	"e ser %[3]v.\x02'%[1]s %[2]s': Argumento inesperado. El valor del argume" +
-	"nto debe ser uno de %[3]v.\x02Las opciones %[1]s y %[2]s se excluyen mut" +
-	"uamente.\x02'%[1]s': Falta el argumento. Escriba \x22-?\x22para obtener " +
-	"ayuda.\x02'%[1]s': opción desconocida. Escriba \x22-?\x22para obtener ay" +
-	"uda.\x02terminador de lote no válido '%[1]s'\x02Escribir la nueva contra" +
-	"seña:\x02ssqlcmd: Instalar/Crear/Consultar SQL Server, Azure SQL y Herra" +
-	"mientas\x04\x00\x01 \x0f\x02Sqlcmd: Error:\x04\x00\x01 \x15\x02Sqlcmd: A" +
-	"dvertencia:\x02Los comandos ED y !! <command>, el script de inicio y var" +
-	"iables de entorno están deshabilitados\x02La variable de scripting '%[1]" +
-	"s' es de solo lectura\x02Variable de scripting '%[1]s' no definida.\x02L" +
-	"a variable de entorno '%[1]s' tiene un valor no válido: '%[2]s'.\x02Erro" +
-	"r de sintaxis en la línea %[1]d cerca del comando '%[2]s'.\x02%[1]s Erro" +
-	"r al abrir o trabajar en el archivo %[2]s (Motivo: %[3]s).\x02%[1]s Erro" +
-	"r de sintaxis en la línea %[2]d\x02Tiempo de espera agotado\x02Mensaje %" +
-	"#[1]v, Nivel %[2]d, Estado %[3]d, Servidor %[4]s, Procedimiento %[5]s, L" +
-	"ínea %#[6]v%[7]s\x02Mensaje %#[1]v, Nivel %[2]d, Estado %[3]d, Servidor" +
+	"litados.\x02Indicar a sqlcmd que use la autenticación activedirectory. S" +
+	"i no se proporciona ningún nombre de usuario, se usa el método de autent" +
+	"icación ActiveDirectoryDefault. Si se proporciona una contraseña, se usa" +
+	" ActiveDirectoryPassword. De lo contrario, se usa ActiveDirectoryInterac" +
+	"tive\x02Hace que sqlcmd omita las variables de scripting. Este parámetro" +
+	" es útil cuando un script contiene muchas instrucciones %[1]s que pueden" +
+	" contener cadenas con el mismo formato que las variables normales, como " +
+	"$(variable_name)\x02Crear una variable de scripting sqlcmd que se puede " +
+	"usar en un script sqlcmd. Escriba el valor entre comillas si el valor co" +
+	"ntiene espacios. Puede especificar varios valores var=values. Si hay err" +
+	"ores en cualquiera de los valores especificados, sqlcmd genera un mensaj" +
+	"e de error y, a continuación, sale\x02Solicitar un paquete de un tamaño " +
+	"diferente. Esta opción establece la variable de scripting sqlcmd %[1]s. " +
+	"packet_size debe ser un valor entre 512 y 32767. Valor predeterminado = " +
+	"4096. Un tamaño de paquete mayor puede mejorar el rendimiento de la ejec" +
+	"ución de scripts que tienen una gran cantidad de instrucciones SQL entre" +
+	" comandos %[2]s. Puede solicitar un tamaño de paquete mayor. Sin embargo" +
+	", si se deniega la solicitud, sqlcmd usa el valor predeterminado del ser" +
+	"vidor para el tamaño del paquete.\x02Especificar el número de segundos a" +
+	"ntes de que se agote el tiempo de espera de un inicio de sesión sqlcmd e" +
+	"n el controlador go-mssqldb al intentar conectarse a un servidor. Esta o" +
+	"pción establece la variable de scripting sqlcmd %[1]s. El valor predeter" +
+	"minado es 30. 0 significa infinito\x02Esta opción establece la variable " +
+	"de scripting sqlcmd %[1]s. El nombre de la estación de trabajo aparece e" +
+	"n la columna de nombre de host de la vista de catálogo sys.sysprocesses " +
+	"y se puede devolver mediante el procedimiento almacenado sp_who. Si no s" +
+	"e especifica esta opción, el valor predeterminado es el nombre del equip" +
+	"o actual. Este nombre se puede usar para identificar diferentes sesiones" +
+	" sqlcmd\x02Declarar el tipo de carga de trabajo de la aplicación al cone" +
+	"ctarse a un servidor. El único valor admitido actualmente es ReadOnly. S" +
+	"i no se especifica %[1]s, la utilidad sqlcmd no admitirá la conectividad" +
+	" con una réplica secundaria en un grupo de disponibilidad Always On\x02E" +
+	"l cliente usa este modificador para solicitar una conexión cifrada\x02Es" +
+	"pecifica el formato de los resultados\x02%[1]s Redirige los mensajes de " +
+	"error con salidas de gravedad >= 11 a stderr. Pase 1 para redirigir todo" +
+	"s los errores, incluido PRINT.\x02Nivel de mensajes del controlador mssq" +
+	"l que se van a imprimir\x02Especificar que sqlcmd sale y devuelve un val" +
+	"or %[1]s cuando se produce un error\x02Controla qué mensajes de error se" +
+	" envían a %[1]s. Se envían los mensajes que tienen un nivel de gravedad " +
+	"mayor o igual que este nivel\x02Especifica el número de filas que se van" +
+	" a imprimir entre los encabezados de columna. Use -h-1 para especificar " +
+	"que los encabezados no se impriman\x02Especifica que todos los archivos " +
+	"de salida se codifican con Unicode little endian.\x02Especifica el carác" +
+	"ter separador de columna. Establece la variable %[1]s.\x02Quitar espacio" +
+	"s finales de una columna\x02Se proporciona para la compatibilidad con ve" +
+	"rsiones anteriores. Sqlcmd siempre optimiza la detección de la réplica a" +
+	"ctiva de un clúster de conmutación por error de SQL\x02Contraseña\x02Con" +
+	"trolar el nivel de gravedad que se usa para establecer la variable %[1]s" +
+	" al salir.\x02Especificar el ancho de pantalla de la salida.\x02%[1]s Se" +
+	"rvidores de lista. Pase %[2]s para omitir la salida de 'Servers:'.\x02Co" +
+	"nexión de administrador dedicada\x02Proporcionado para compatibilidad co" +
+	"n versiones anteriores. Los identificadores entre comillas siempre están" +
+	" habilitados\x02Proporcionado para compatibilidad con versiones anterior" +
+	"es. No se usa la configuración regional del cliente\x02%[1]s Quite los c" +
+	"aracteres de control de la salida. Pase 1 para sustituir un espacio por " +
+	"carácter, 2 para un espacio por caracteres consecutivos\x02Entrada de ec" +
+	"o\x02Habilitar cifrado de columna\x02Contraseña nueva\x02Nueva contraseñ" +
+	"a y salir\x02Establece la variable de scripting sqlcmd %[1]s\x02'%[1]s %" +
+	"[2]s': El valor debe ser mayor o igual que %#[3]v y menor o igual que %#" +
+	"[4]v.\x02'%[1]s %[2]s': El valor debe ser mayor que %#[3]v y menor que %" +
+	"#[4]v.\x02'%[1]s %[2]s': Argumento inesperado. El valor del argumento de" +
+	"be ser %[3]v.\x02'%[1]s %[2]s': Argumento inesperado. El valor del argum" +
+	"ento debe ser uno de %[3]v.\x02Las opciones %[1]s y %[2]s se excluyen mu" +
+	"tuamente.\x02'%[1]s': Falta el argumento. Escriba \x22-?\x22para obtener" +
+	" ayuda.\x02'%[1]s': opción desconocida. Escriba \x22-?\x22para obtener a" +
+	"yuda.\x02terminador de lote no válido '%[1]s'\x02Escribir la nueva contr" +
+	"aseña:\x02ssqlcmd: Instalar/Crear/Consultar SQL Server, Azure SQL y Herr" +
+	"amientas\x04\x00\x01 \x0f\x02Sqlcmd: Error:\x04\x00\x01 \x15\x02Sqlcmd: " +
+	"Advertencia:\x02Los comandos ED y !! <command>, el script de inicio y va" +
+	"riables de entorno están deshabilitados\x02La variable de scripting '%[1" +
+	"]s' es de solo lectura\x02Variable de scripting '%[1]s' no definida.\x02" +
+	"La variable de entorno '%[1]s' tiene un valor no válido: '%[2]s'.\x02Err" +
+	"or de sintaxis en la línea %[1]d cerca del comando '%[2]s'.\x02%[1]s Err" +
+	"or al abrir o trabajar en el archivo %[2]s (Motivo: %[3]s).\x02%[1]s Err" +
+	"or de sintaxis en la línea %[2]d\x02Tiempo de espera agotado\x02Mensaje " +
+	"%#[1]v, Nivel %[2]d, Estado %[3]d, Servidor %[4]s, Procedimiento %[5]s, " +
+	"Línea %#[6]v%[7]s\x02Mensaje %#[1]v, Nivel %[2]d, Estado %[3]d, Servidor" +
 	" %[4]s, Línea %#[5]v%[6]s\x02Contraseña:\x02Identificador de variable %[" +
 	"1]s no válido\x02Valor de variable %[1]s no válido"
 
-var fr_FRIndex = []uint32{ // 301 elements
+var fr_FRIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000037, 0x0000007f, 0x00000097,
 	0x000000db, 0x000000f8, 0x00000111, 0x00000163,
@@ -1506,26 +1503,27 @@ var fr_FRIndex = []uint32{ // 301 elements
 	0x00003343, 0x00003378, 0x000033a8, 0x000033e9,
 	0x00003503, 0x000035ea, 0x0000362b, 0x000036dd,
 	0x0000379c, 0x00003841, 0x000038b4, 0x00003969,
-	0x00003ac6, 0x00003be9, 0x00003ce1, 0x00003e20,
-	0x0000402c, 0x00004128, 0x000042b7, 0x000043ef,
-	0x0000443f, 0x00004465, 0x000044f4, 0x00004524,
+	0x00003a8c, 0x00003b84, 0x00003cc3, 0x00003ecf,
+	0x00003fcb, 0x0000415a, 0x00004292, 0x000042e2,
+	0x00004308, 0x00004397, 0x000043c7, 0x00004420,
 	// Entry 100 - 11F
-	0x0000457d, 0x00004612, 0x000046ab, 0x000046fc,
-	0x00004748, 0x00004773, 0x000047f9, 0x00004806,
-	0x0000485c, 0x0000488c, 0x000048e2, 0x00004904,
-	0x00004962, 0x000049c2, 0x00004a5d, 0x00004a6f,
-	0x00004a91, 0x00004aa6, 0x00004ac5, 0x00004af1,
-	0x00004b5b, 0x00004bb1, 0x00004c02, 0x00004c5b,
-	0x00004c8f, 0x00004cc5, 0x00004cf9, 0x00004d1d,
-	0x00004d35, 0x00004d73, 0x00004d8c, 0x00004dac,
+	0x000044b5, 0x0000454e, 0x0000459f, 0x000045eb,
+	0x00004616, 0x0000469c, 0x000046a9, 0x000046ff,
+	0x0000472f, 0x00004785, 0x000047a7, 0x00004805,
+	0x00004865, 0x00004900, 0x00004912, 0x00004934,
+	0x00004949, 0x00004968, 0x00004994, 0x000049fe,
+	0x00004a54, 0x00004aa5, 0x00004afe, 0x00004b32,
+	0x00004b68, 0x00004b9c, 0x00004bc0, 0x00004bd8,
+	0x00004c16, 0x00004c2f, 0x00004c4f, 0x00004cbb,
 	// Entry 120 - 13F
-	0x00004e18, 0x00004e4e, 0x00004e77, 0x00004ec2,
-	0x00004f04, 0x00004f70, 0x00004f99, 0x00004fa8,
-	0x00004ffe, 0x00005043, 0x00005053, 0x0000507a,
-	0x0000509c,
-} // Size: 1228 bytes
+	0x00004cf1, 0x00004d1a, 0x00004d65, 0x00004da7,
+	0x00004e13, 0x00004e3c, 0x00004e4b, 0x00004ea1,
+	0x00004ee6, 0x00004ef6, 0x00004f1d, 0x00004f3f,
+	0x00004f3f, 0x00004f3f, 0x00004f3f, 0x00004f3f,
+	0x00004f3f, 0x00004f3f,
+} // Size: 1248 bytes
 
-const fr_FRData string = "" + // Size: 20636 bytes
+const fr_FRData string = "" + // Size: 20287 bytes
 	"\x02Installer/créer, interroger, désinstaller SQL Server\x02Afficher les" +
 	" informations de configuration et les chaînes de connexion\x04\x02\x0a" +
 	"\x0a\x00\x12\x02Feedback:\x0a  %[1]s\x02aide pour les indicateurs de rét" +
@@ -1739,93 +1737,88 @@ const fr_FRData string = "" + // Size: 20636 bytes
 	"e se connecter. Il définit la variable de script sqlcmd %[2]s.\x02%[1]s " +
 	"Désactive les commandes susceptibles de compromettre la sécurité du syst" +
 	"ème. La passe 1 indique à sqlcmd de quitter lorsque des commandes désac" +
-	"tivées sont exécutées.\x02Spécifie la méthode d'authentification SQL à u" +
-	"tiliser pour se connecter à Azure SQL Database. L'un des suivants\u00a0:" +
-	" ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassw" +
-	"ord, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveD" +
-	"irectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCod" +
-	"e, SqlPassword\x02Indique à sqlcmd d'utiliser l'authentification ActiveD" +
-	"irectory. Si aucun nom d'utilisateur n'est fourni, la méthode d'authenti" +
-	"fication ActiveDirectoryDefault est utilisée. Si un mot de passe est fou" +
-	"rni, ActiveDirectoryPassword est utilisé. Sinon, ActiveDirectoryInteract" +
-	"ive est utilisé\x02Force sqlcmd à ignorer les variables de script. Ce pa" +
-	"ramètre est utile lorsqu'un script contient de nombreuses instructions %" +
-	"[1]s qui peuvent contenir des chaînes ayant le même format que les varia" +
-	"bles régulières, telles que $(variable_name)\x02Crée une variable de scr" +
-	"ipt sqlcmd qui peut être utilisée dans un script sqlcmd. Placez la valeu" +
-	"r entre guillemets si la valeur contient des espaces. Vous pouvez spécif" +
-	"ier plusieurs valeurs var=values. S’il y a des erreurs dans l’une des va" +
-	"leurs spécifiées, sqlcmd génère un message d’erreur, puis quitte\x02Dema" +
-	"nde un paquet d'une taille différente. Cette option définit la variable " +
-	"de script sqlcmd %[1]s. packet_size doit être une valeur comprise entre " +
-	"512 et 32767. La valeur par défaut = 4096. Une taille de paquet plus gra" +
-	"nde peut améliorer les performances d'exécution des scripts comportant d" +
-	"e nombreuses instructions SQL entre les commandes %[2]s. Vous pouvez dem" +
-	"ander une taille de paquet plus grande. Cependant, si la demande est ref" +
-	"usée, sqlcmd utilise la valeur par défaut du serveur pour la taille des " +
-	"paquets\x02Spécifie le nombre de secondes avant qu'une connexion sqlcmd " +
-	"au pilote go-mssqldb n'expire lorsque vous essayez de vous connecter à u" +
-	"n serveur. Cette option définit la variable de script sqlcmd %[1]s. La v" +
-	"aleur par défaut est 30. 0 signifie infini\x02Cette option définit la va" +
-	"riable de script sqlcmd %[1]s. Le nom du poste de travail est répertorié" +
-	" dans la colonne hostname de la vue catalogue sys.sysprocesses et peut ê" +
-	"tre renvoyé à l'aide de la procédure stockée sp_who. Si cette option n'e" +
-	"st pas spécifiée, la valeur par défaut est le nom de l'ordinateur actuel" +
-	". Ce nom peut être utilisé pour identifier différentes sessions sqlcmd" +
-	"\x02Déclare le type de charge de travail de l'application lors de la con" +
-	"nexion à un serveur. La seule valeur actuellement prise en charge est Re" +
-	"adOnly. Si %[1]s n'est pas spécifié, l'utilitaire sqlcmd ne prendra pas " +
-	"en charge la connectivité à un réplica secondaire dans un groupe de disp" +
-	"onibilité Always On\x02Ce commutateur est utilisé par le client pour dem" +
-	"ander une connexion chiffrée\x02Spécifie le formatage des résultats\x02%" +
-	"[1]s Redirige les messages d’erreur avec la gravité >= 11 sortie vers st" +
-	"derr. Passez 1 pour rediriger toutes les erreurs, y compris PRINT.\x02Ni" +
-	"veau des messages du pilote mssql à imprimer\x02Spécifie que sqlcmd se t" +
-	"ermine et renvoie une valeur %[1]s lorsqu'une erreur se produit\x02Contr" +
-	"ôle quels messages d'erreur sont envoyés à %[1]s. Les messages dont le " +
-	"niveau de gravité est supérieur ou égal à ce niveau sont envoyés\x02Spéc" +
-	"ifie le nombre de lignes à imprimer entre les en-têtes de colonne. Utili" +
-	"sez -h-1 pour spécifier que les en-têtes ne doivent pas être imprimés" +
-	"\x02Spécifie que tous les fichiers de sortie sont codés avec Unicode lit" +
-	"tle-endian\x02Spécifie le caractère séparateur de colonne. Définit la va" +
-	"riable %[1]s.\x02Supprimer les espaces de fin d'une colonne\x02Fourni po" +
-	"ur la rétrocompatibilité. Sqlcmd optimise toujours la détection du répli" +
-	"ca actif d'un cluster de basculement langage SQL\x02Mot de passe\x02Cont" +
-	"rôle le niveau de gravité utilisé pour définir la variable %[1]s à la so" +
-	"rtie\x02Spécifie la largeur de l'écran pour la sortie\x02%[1]s Répertori" +
-	"e les serveurs. Passez %[2]s pour omettre la sortie « Serveurs : ».\x02C" +
-	"onnexion administrateur dédiée\x02Fourni pour la rétrocompatibilité. Les" +
-	" identifiants entre guillemets sont toujours activés\x02Fourni pour la r" +
-	"étrocompatibilité. Les paramètres régionaux du client ne sont pas utili" +
-	"sés\x02%[1]s Supprimer les caractères de contrôle de la sortie. Passer 1" +
-	" pour remplacer un espace par caractère, 2 pour un espace par caractères" +
-	" consécutifs\x02Entrée d’écho\x02Activer le chiffrement de colonne\x02No" +
-	"uveau mot de passe\x02Nouveau mot de passe et sortie\x02Définit la varia" +
-	"ble de script sqlcmd %[1]s\x02'%[1]s %[2]s'\u00a0: la valeur doit être s" +
-	"upérieure ou égale à %#[3]v et inférieure ou égale à %#[4]v.\x02'%[1]s %" +
-	"[2]s'\u00a0: la valeur doit être supérieure à %#[3]v et inférieure à %#[" +
-	"4]v.\x02'%[1]s %[2]s'\u00a0: Argument inattendu. La valeur de l’argument" +
-	" doit être %[3]v.\x02'%[1]s %[2]s'\u00a0: Argument inattendu. La valeur " +
-	"de l'argument doit être l'une des %[3]v.\x02Les options %[1]s et %[2]s s" +
-	"'excluent mutuellement.\x02'%[1]s'\u00a0: argument manquant. Entrer '-?'" +
-	" pour aider.\x02'%[1]s'\u00a0: option inconnue. Entrer '-?' pour aider." +
-	"\x02terminateur de lot invalide '%[1]s'\x02Nouveau mot de passe\u00a0:" +
-	"\x02sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\x04" +
-	"\x00\x01 \x14\x02Sqlcmd\u00a0: Erreur\u00a0:\x04\x00\x01 \x1b\x02Sqlcmd" +
-	"\u00a0: Avertissement\u00a0:\x02Les commandes ED et !!<command>, le scri" +
-	"pt de démarrage et les variables d'environnement sont désactivés\x02La v" +
-	"ariable de script\u00a0: '%[1]s' est en lecture seule\x02'%[1]s' variabl" +
-	"e de script non définie.\x02La variable d'environnement\u00a0: '%[1]s' a" +
-	" une valeur non valide\u00a0: '%[2]s'.\x02Erreur de syntaxe à la ligne %" +
-	"[1]d près de la commande '%[2]s'.\x02%[1]s Une erreur s'est produite lor" +
-	"s de l'ouverture ou de l'utilisation du fichier %[2]s (Raison\u00a0: %[3" +
-	"]s).\x02%[1]sErreur de syntaxe à la ligne %[2]d\x02Délai expiré\x02Msg %" +
-	"#[1]v, Level %[2]d, State %[3]d, Server %[4]s, Procedure %[5]s, Line %#[" +
-	"6]v%[7]s\x02Msg %#[1]v, Level %[2]d, State %[3]d, Server %[4]s, Line %#[" +
-	"5]v%[6]s\x02Mot de passe\u00a0:\x02Identifiant de variable invalide %[1]" +
-	"s\x02Valeur de variable invalide %[1]s"
+	"tivées sont exécutées.\x02Indique à sqlcmd d'utiliser l'authentification" +
+	" ActiveDirectory. Si aucun nom d'utilisateur n'est fourni, la méthode d'" +
+	"authentification ActiveDirectoryDefault est utilisée. Si un mot de passe" +
+	" est fourni, ActiveDirectoryPassword est utilisé. Sinon, ActiveDirectory" +
+	"Interactive est utilisé\x02Force sqlcmd à ignorer les variables de scrip" +
+	"t. Ce paramètre est utile lorsqu'un script contient de nombreuses instru" +
+	"ctions %[1]s qui peuvent contenir des chaînes ayant le même format que l" +
+	"es variables régulières, telles que $(variable_name)\x02Crée une variabl" +
+	"e de script sqlcmd qui peut être utilisée dans un script sqlcmd. Placez " +
+	"la valeur entre guillemets si la valeur contient des espaces. Vous pouve" +
+	"z spécifier plusieurs valeurs var=values. S’il y a des erreurs dans l’un" +
+	"e des valeurs spécifiées, sqlcmd génère un message d’erreur, puis quitte" +
+	"\x02Demande un paquet d'une taille différente. Cette option définit la v" +
+	"ariable de script sqlcmd %[1]s. packet_size doit être une valeur compris" +
+	"e entre 512 et 32767. La valeur par défaut = 4096. Une taille de paquet " +
+	"plus grande peut améliorer les performances d'exécution des scripts comp" +
+	"ortant de nombreuses instructions SQL entre les commandes %[2]s. Vous po" +
+	"uvez demander une taille de paquet plus grande. Cependant, si la demande" +
+	" est refusée, sqlcmd utilise la valeur par défaut du serveur pour la tai" +
+	"lle des paquets\x02Spécifie le nombre de secondes avant qu'une connexion" +
+	" sqlcmd au pilote go-mssqldb n'expire lorsque vous essayez de vous conne" +
+	"cter à un serveur. Cette option définit la variable de script sqlcmd %[1" +
+	"]s. La valeur par défaut est 30. 0 signifie infini\x02Cette option défin" +
+	"it la variable de script sqlcmd %[1]s. Le nom du poste de travail est ré" +
+	"pertorié dans la colonne hostname de la vue catalogue sys.sysprocesses e" +
+	"t peut être renvoyé à l'aide de la procédure stockée sp_who. Si cette op" +
+	"tion n'est pas spécifiée, la valeur par défaut est le nom de l'ordinateu" +
+	"r actuel. Ce nom peut être utilisé pour identifier différentes sessions " +
+	"sqlcmd\x02Déclare le type de charge de travail de l'application lors de " +
+	"la connexion à un serveur. La seule valeur actuellement prise en charge " +
+	"est ReadOnly. Si %[1]s n'est pas spécifié, l'utilitaire sqlcmd ne prendr" +
+	"a pas en charge la connectivité à un réplica secondaire dans un groupe d" +
+	"e disponibilité Always On\x02Ce commutateur est utilisé par le client po" +
+	"ur demander une connexion chiffrée\x02Spécifie le formatage des résultat" +
+	"s\x02%[1]s Redirige les messages d’erreur avec la gravité >= 11 sortie v" +
+	"ers stderr. Passez 1 pour rediriger toutes les erreurs, y compris PRINT." +
+	"\x02Niveau des messages du pilote mssql à imprimer\x02Spécifie que sqlcm" +
+	"d se termine et renvoie une valeur %[1]s lorsqu'une erreur se produit" +
+	"\x02Contrôle quels messages d'erreur sont envoyés à %[1]s. Les messages " +
+	"dont le niveau de gravité est supérieur ou égal à ce niveau sont envoyés" +
+	"\x02Spécifie le nombre de lignes à imprimer entre les en-têtes de colonn" +
+	"e. Utilisez -h-1 pour spécifier que les en-têtes ne doivent pas être imp" +
+	"rimés\x02Spécifie que tous les fichiers de sortie sont codés avec Unicod" +
+	"e little-endian\x02Spécifie le caractère séparateur de colonne. Définit " +
+	"la variable %[1]s.\x02Supprimer les espaces de fin d'une colonne\x02Four" +
+	"ni pour la rétrocompatibilité. Sqlcmd optimise toujours la détection du " +
+	"réplica actif d'un cluster de basculement langage SQL\x02Mot de passe" +
+	"\x02Contrôle le niveau de gravité utilisé pour définir la variable %[1]s" +
+	" à la sortie\x02Spécifie la largeur de l'écran pour la sortie\x02%[1]s R" +
+	"épertorie les serveurs. Passez %[2]s pour omettre la sortie « Serveurs " +
+	": ».\x02Connexion administrateur dédiée\x02Fourni pour la rétrocompatibi" +
+	"lité. Les identifiants entre guillemets sont toujours activés\x02Fourni " +
+	"pour la rétrocompatibilité. Les paramètres régionaux du client ne sont p" +
+	"as utilisés\x02%[1]s Supprimer les caractères de contrôle de la sortie. " +
+	"Passer 1 pour remplacer un espace par caractère, 2 pour un espace par ca" +
+	"ractères consécutifs\x02Entrée d’écho\x02Activer le chiffrement de colon" +
+	"ne\x02Nouveau mot de passe\x02Nouveau mot de passe et sortie\x02Définit " +
+	"la variable de script sqlcmd %[1]s\x02'%[1]s %[2]s'\u00a0: la valeur doi" +
+	"t être supérieure ou égale à %#[3]v et inférieure ou égale à %#[4]v.\x02" +
+	"'%[1]s %[2]s'\u00a0: la valeur doit être supérieure à %#[3]v et inférieu" +
+	"re à %#[4]v.\x02'%[1]s %[2]s'\u00a0: Argument inattendu. La valeur de l’" +
+	"argument doit être %[3]v.\x02'%[1]s %[2]s'\u00a0: Argument inattendu. La" +
+	" valeur de l'argument doit être l'une des %[3]v.\x02Les options %[1]s et" +
+	" %[2]s s'excluent mutuellement.\x02'%[1]s'\u00a0: argument manquant. Ent" +
+	"rer '-?' pour aider.\x02'%[1]s'\u00a0: option inconnue. Entrer '-?' pour" +
+	" aider.\x02terminateur de lot invalide '%[1]s'\x02Nouveau mot de passe" +
+	"\u00a0:\x02sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools" +
+	"\x04\x00\x01 \x14\x02Sqlcmd\u00a0: Erreur\u00a0:\x04\x00\x01 \x1b\x02Sql" +
+	"cmd\u00a0: Avertissement\u00a0:\x02Les commandes ED et !!<command>, le s" +
+	"cript de démarrage et les variables d'environnement sont désactivés\x02L" +
+	"a variable de script\u00a0: '%[1]s' est en lecture seule\x02'%[1]s' vari" +
+	"able de script non définie.\x02La variable d'environnement\u00a0: '%[1]s" +
+	"' a une valeur non valide\u00a0: '%[2]s'.\x02Erreur de syntaxe à la lign" +
+	"e %[1]d près de la commande '%[2]s'.\x02%[1]s Une erreur s'est produite " +
+	"lors de l'ouverture ou de l'utilisation du fichier %[2]s (Raison\u00a0: " +
+	"%[3]s).\x02%[1]sErreur de syntaxe à la ligne %[2]d\x02Délai expiré\x02Ms" +
+	"g %#[1]v, Level %[2]d, State %[3]d, Server %[4]s, Procedure %[5]s, Line " +
+	"%#[6]v%[7]s\x02Msg %#[1]v, Level %[2]d, State %[3]d, Server %[4]s, Line " +
+	"%#[5]v%[6]s\x02Mot de passe\u00a0:\x02Identifiant de variable invalide %" +
+	"[1]s\x02Valeur de variable invalide %[1]s"
 
-var it_ITIndex = []uint32{ // 301 elements
+var it_ITIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x00000088, 0x000000a0,
 	0x000000f7, 0x00000114, 0x0000012b, 0x0000016a,
@@ -1895,26 +1888,27 @@ var it_ITIndex = []uint32{ // 301 elements
 	0x00002e4f, 0x00002e80, 0x00002eb1, 0x00002f05,
 	0x0000302c, 0x000030e1, 0x00003132, 0x000031ce,
 	0x00003271, 0x000032fd, 0x00003368, 0x0000340c,
-	0x00003568, 0x0000369c, 0x0000378b, 0x000038b5,
-	0x00003acc, 0x00003bdc, 0x00003d6d, 0x00003e8b,
-	0x00003ede, 0x00003f07, 0x00003f8f, 0x00003fc0,
+	0x00003540, 0x0000362f, 0x00003759, 0x00003970,
+	0x00003a80, 0x00003c11, 0x00003d2f, 0x00003d82,
+	0x00003dab, 0x00003e33, 0x00003e64, 0x00003ebc,
 	// Entry 100 - 11F
-	0x00004018, 0x000040aa, 0x0000413d, 0x0000418c,
-	0x000041d6, 0x00004200, 0x00004294, 0x0000429d,
-	0x000042f0, 0x00004322, 0x00004369, 0x0000438d,
-	0x000043fb, 0x0000446b, 0x000044ff, 0x00004509,
-	0x00004530, 0x0000453f, 0x00004557, 0x00004586,
-	0x000045e2, 0x0000462e, 0x0000467f, 0x000046d7,
-	0x00004708, 0x0000474f, 0x00004797, 0x000047ce,
-	0x000047eb, 0x00004839, 0x0000484e, 0x00004863,
+	0x00003f4e, 0x00003fe1, 0x00004030, 0x0000407a,
+	0x000040a4, 0x00004138, 0x00004141, 0x00004194,
+	0x000041c6, 0x0000420d, 0x00004231, 0x0000429f,
+	0x0000430f, 0x000043a3, 0x000043ad, 0x000043d4,
+	0x000043e3, 0x000043fb, 0x0000442a, 0x00004486,
+	0x000044d2, 0x00004523, 0x0000457b, 0x000045ac,
+	0x000045f3, 0x0000463b, 0x00004672, 0x0000468f,
+	0x000046dd, 0x000046f2, 0x00004707, 0x00004764,
 	// Entry 120 - 13F
-	0x000048c0, 0x000048f5, 0x00004922, 0x0000496b,
-	0x000049a9, 0x00004a0a, 0x00004a33, 0x00004a43,
-	0x00004aa1, 0x00004aee, 0x00004af8, 0x00004b28,
-	0x00004b50,
-} // Size: 1228 bytes
+	0x00004799, 0x000047c6, 0x0000480f, 0x0000484d,
+	0x000048ae, 0x000048d7, 0x000048e7, 0x00004945,
+	0x00004992, 0x0000499c, 0x000049cc, 0x000049f4,
+	0x000049f4, 0x000049f4, 0x000049f4, 0x000049f4,
+	0x000049f4, 0x000049f4,
+} // Size: 1248 bytes
 
-const it_ITData string = "" + // Size: 19280 bytes
+const it_ITData string = "" + // Size: 18932 bytes
 	"\x02Installare/creare, eseguire query, disinstallare SQL Server\x02Visua" +
 	"lizzare le informazioni di configurazione e le stringhe di connessione" +
 	"\x04\x02\x0a\x0a\x00\x12\x02Feedback:\x0a  %[1]s\x02guida per i flag di " +
@@ -2111,94 +2105,90 @@ const it_ITData string = "" + // Size: 19280 bytes
 	"pecifica l'istanza di SQL Server a cui connettersi. Imposta la variabile" +
 	" di scripting sqlcmd %[2]s.\x02%[1]s Disabilita i comandi che potrebbero" +
 	" compromettere la sicurezza del sistema. Se si passa 1, sqlcmd verrà chi" +
-	"uso quando vengono eseguiti comandi disabilitati.\x02Specifica il metodo" +
-	" di autenticazione SQL da usare per connettersi al database SQL di Azure" +
-	". Uno dei valori seguenti: ActiveDirectoryDefault, ActiveDirectoryIntegr" +
-	"ated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirecto" +
-	"ryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli" +
-	", ActiveDirectoryDeviceCode, SqlPassword\x02Indica a sqlcmd di usare l'a" +
-	"utenticazione ActiveDirectory. Se non viene specificato alcun nome utent" +
-	"e, verrà utilizzato il metodo di autenticazione ActiveDirectoryDefault. " +
-	"Se viene specificata una password, viene utilizzato ActiveDirectoryPassw" +
-	"ord. In caso contrario, viene usato ActiveDirectoryInteractive\x02Fa in " +
-	"modo che sqlcmd ignori le variabili di scripting. Questo parametro è uti" +
-	"le quando uno script contiene molte istruzioni %[1]s che possono contene" +
-	"re stringhe con lo stesso formato delle variabili regolari, ad esempio $" +
-	"(variable_name)\x02Crea una variabile di scripting sqlcmd utilizzabile i" +
-	"n uno script sqlcmd. Racchiudere il valore tra virgolette se il valore c" +
-	"ontiene spazi. È possibile specificare più valori var=values. Se sono pr" +
-	"esenti errori in uno dei valori specificati, sqlcmd genera un messaggio " +
-	"di errore e quindi termina\x02Richiede un pacchetto di dimensioni divers" +
-	"e. Questa opzione consente di impostare la variabile di scripting sqlcmd" +
-	" %[1]s. packet_size deve essere un valore compreso tra 512 e 32767. Valo" +
-	"re predefinito = 4096. Dimensioni del pacchetto maggiori possono miglior" +
-	"are le prestazioni per l'esecuzione di script con molte istruzioni SQL t" +
-	"ra i comandi %[2]s. È possibile richiedere dimensioni del pacchetto magg" +
-	"iori. Tuttavia, se la richiesta viene negata, sqlcmd utilizza l'impostaz" +
-	"ione predefinita del server per le dimensioni del pacchetto\x02Specifica" +
-	" il numero di secondi prima del timeout di un account di accesso sqlcmd " +
-	"al driver go-mssqldb quando si prova a connettersi a un server. Questa o" +
-	"pzione consente di impostare la variabile di scripting sqlcmd %[1]s. Il " +
-	"valore predefinito è 30. 0 significa infinito\x02Questa opzione consente" +
-	" di impostare la variabile di scripting sqlcmd %[1]s. Il nome della work" +
-	"station è elencato nella colonna nome host della vista del catalogo sys." +
-	"sysprocesses e può essere restituito con la stored procedure sp_who. Se " +
-	"questa opzione non è specificata, il nome predefinito è il nome del comp" +
-	"uter corrente. Questo nome può essere usato per identificare diverse ses" +
-	"sioni sqlcmd\x02Dichiara il tipo di carico di lavoro dell'applicazione d" +
-	"urante la connessione a un server. L'unico valore attualmente supportato" +
-	" è ReadOnly. Se non si specifica %[1]s, l'utilità sqlcmd non supporterà " +
-	"la connettività a una replica secondaria in un gruppo di disponibilità A" +
-	"lways On\x02Questa opzione viene usata dal client per richiedere una con" +
-	"nessione crittografata\x02Specifica la formattazione dei risultati\x02%[" +
-	"1]s Reindirizza i messaggi di errore con gravità >= 11 output a stderr. " +
-	"Passare 1 per reindirizzare tutti gli errori, incluso PRINT.\x02Livello " +
-	"di messaggi del driver mssql da stampare\x02Specifica che sqlcmd termina" +
-	" e restituisce un valore %[1]s quando si verifica un errore\x02Controlla" +
-	" quali messaggi di errore vengono inviati a %[1]s. Vengono inviati i mes" +
-	"saggi con livello di gravità maggiore o uguale a questo livello\x02Speci" +
-	"fica il numero di righe da stampare tra le intestazioni di colonna. Usar" +
-	"e -h-1 per specificare che le intestazioni non devono essere stampate" +
-	"\x02Specifica che tutti i file di output sono codificati con Unicode lit" +
-	"tle-endian\x02Specifica il carattere separatore di colonna. Imposta la v" +
-	"ariabile %[1]s.\x02Rimuovere gli spazi finali da una colonna\x02Fornito " +
-	"per la compatibilità con le versioni precedenti. Sqlcmd ottimizza sempre" +
-	" il rilevamento della replica attiva di un cluster di failover SQL\x02Pa" +
-	"ssword\x02Controlla il livello di gravità usato per impostare la variabi" +
-	"le %[1]s all'uscita\x02Specifica la larghezza dello schermo per l'output" +
-	"\x02%[1]s Elenca i server. Passare %[2]s per omettere l'output 'Servers:" +
-	"'.\x02Connessione amministrativa dedicata\x02Fornito per la compatibilit" +
-	"à con le versioni precedenti. Gli identificatori delimitati sono sempre" +
-	" abilitati\x02Fornito per la compatibilità con le versioni precedenti. L" +
-	"e impostazioni locali del client non sono utilizzate\x02%[1]s Rimuovere " +
-	"i caratteri di controllo dall'output. Passare 1 per sostituire uno spazi" +
-	"o per carattere, 2 per uno spazio per caratteri consecutivi\x02Input eco" +
-	"\x02Abilita la crittografia delle colonne.\x02Nuova password\x02Nuova pa" +
-	"ssword e chiudi\x02Imposta la variabile di scripting sqlcmd %[1]s\x02'%[" +
-	"1]s %[2]s': il valore deve essere maggiore o uguale a %#[3]v e minore o " +
-	"uguale a %#[4]v.\x02'%[1]s %[2]s': il valore deve essere maggiore di %#[" +
-	"3]v e minore di %#[4]v.\x02'%[1]s %[2]s': argomento imprevisto. Il valor" +
-	"e dell'argomento deve essere %[3]v.\x02'%[1]s %[2]s': argomento imprevis" +
-	"to. Il valore dell'argomento deve essere uno di %[3]v.\x02Le opzioni %[1" +
-	"]s e %[2]s si escludono a vicenda.\x02'%[1]s': argomento mancante. Immet" +
-	"tere '-?' per visualizzare la Guida.\x02'%[1]s': opzione sconosciuta. Im" +
-	"mettere '-?' per visualizzare la Guida.\x02carattere di terminazione del" +
-	" batch '%[1]s' non valido\x02Immettere la nuova password:\x02sqlcmd: ins" +
-	"tallare/creare/eseguire query su SQL Server, Azure SQL e strumenti\x04" +
-	"\x00\x01 \x10\x02Sqlcmd: errore:\x04\x00\x01 \x10\x02Sqlcmd: avviso:\x02" +
-	"I comandi ED e !!<command>, lo script di avvio e le variabili di ambient" +
-	"e sono disabilitati.\x02La variabile di scripting '%[1]s' è di sola lett" +
-	"ura\x02Variabile di scripting '%[1]s' non definita.\x02La variabile di a" +
-	"mbiente '%[1]s' contiene un valore non valido: '%[2]s'.\x02Errore di sin" +
-	"tassi alla riga %[1]d vicino al comando '%[2]s'.\x02%[1]s Si è verificat" +
-	"o un errore durante l'apertura o l'utilizzo del file %[2]s (motivo: %[3]" +
-	"s).\x02%[1]s Errore di sintassi alla riga %[2]d\x02Timeout scaduto\x02Me" +
-	"ssaggio %#[1]v, Livello %[2]d, Stato %[3]d, Server %[4]s, Procedura %[5]" +
-	"s, Riga %#[6]v%[7]s\x02Messaggio %#[1]v, Livello %[2]d, Stato %[3]d, Ser" +
-	"ver %[4]s, Riga %#[5]v%[6]s\x02Password:\x02Identificatore della variabi" +
-	"le %[1]s non valido\x02Valore della variabile %[1]s non valido"
+	"uso quando vengono eseguiti comandi disabilitati.\x02Indica a sqlcmd di " +
+	"usare l'autenticazione ActiveDirectory. Se non viene specificato alcun n" +
+	"ome utente, verrà utilizzato il metodo di autenticazione ActiveDirectory" +
+	"Default. Se viene specificata una password, viene utilizzato ActiveDirec" +
+	"toryPassword. In caso contrario, viene usato ActiveDirectoryInteractive" +
+	"\x02Fa in modo che sqlcmd ignori le variabili di scripting. Questo param" +
+	"etro è utile quando uno script contiene molte istruzioni %[1]s che posso" +
+	"no contenere stringhe con lo stesso formato delle variabili regolari, ad" +
+	" esempio $(variable_name)\x02Crea una variabile di scripting sqlcmd util" +
+	"izzabile in uno script sqlcmd. Racchiudere il valore tra virgolette se i" +
+	"l valore contiene spazi. È possibile specificare più valori var=values. " +
+	"Se sono presenti errori in uno dei valori specificati, sqlcmd genera un " +
+	"messaggio di errore e quindi termina\x02Richiede un pacchetto di dimensi" +
+	"oni diverse. Questa opzione consente di impostare la variabile di script" +
+	"ing sqlcmd %[1]s. packet_size deve essere un valore compreso tra 512 e 3" +
+	"2767. Valore predefinito = 4096. Dimensioni del pacchetto maggiori posso" +
+	"no migliorare le prestazioni per l'esecuzione di script con molte istruz" +
+	"ioni SQL tra i comandi %[2]s. È possibile richiedere dimensioni del pacc" +
+	"hetto maggiori. Tuttavia, se la richiesta viene negata, sqlcmd utilizza " +
+	"l'impostazione predefinita del server per le dimensioni del pacchetto" +
+	"\x02Specifica il numero di secondi prima del timeout di un account di ac" +
+	"cesso sqlcmd al driver go-mssqldb quando si prova a connettersi a un ser" +
+	"ver. Questa opzione consente di impostare la variabile di scripting sqlc" +
+	"md %[1]s. Il valore predefinito è 30. 0 significa infinito\x02Questa opz" +
+	"ione consente di impostare la variabile di scripting sqlcmd %[1]s. Il no" +
+	"me della workstation è elencato nella colonna nome host della vista del " +
+	"catalogo sys.sysprocesses e può essere restituito con la stored procedur" +
+	"e sp_who. Se questa opzione non è specificata, il nome predefinito è il " +
+	"nome del computer corrente. Questo nome può essere usato per identificar" +
+	"e diverse sessioni sqlcmd\x02Dichiara il tipo di carico di lavoro dell'a" +
+	"pplicazione durante la connessione a un server. L'unico valore attualmen" +
+	"te supportato è ReadOnly. Se non si specifica %[1]s, l'utilità sqlcmd no" +
+	"n supporterà la connettività a una replica secondaria in un gruppo di di" +
+	"sponibilità Always On\x02Questa opzione viene usata dal client per richi" +
+	"edere una connessione crittografata\x02Specifica la formattazione dei ri" +
+	"sultati\x02%[1]s Reindirizza i messaggi di errore con gravità >= 11 outp" +
+	"ut a stderr. Passare 1 per reindirizzare tutti gli errori, incluso PRINT" +
+	".\x02Livello di messaggi del driver mssql da stampare\x02Specifica che s" +
+	"qlcmd termina e restituisce un valore %[1]s quando si verifica un errore" +
+	"\x02Controlla quali messaggi di errore vengono inviati a %[1]s. Vengono " +
+	"inviati i messaggi con livello di gravità maggiore o uguale a questo liv" +
+	"ello\x02Specifica il numero di righe da stampare tra le intestazioni di " +
+	"colonna. Usare -h-1 per specificare che le intestazioni non devono esser" +
+	"e stampate\x02Specifica che tutti i file di output sono codificati con U" +
+	"nicode little-endian\x02Specifica il carattere separatore di colonna. Im" +
+	"posta la variabile %[1]s.\x02Rimuovere gli spazi finali da una colonna" +
+	"\x02Fornito per la compatibilità con le versioni precedenti. Sqlcmd otti" +
+	"mizza sempre il rilevamento della replica attiva di un cluster di failov" +
+	"er SQL\x02Password\x02Controlla il livello di gravità usato per impostar" +
+	"e la variabile %[1]s all'uscita\x02Specifica la larghezza dello schermo " +
+	"per l'output\x02%[1]s Elenca i server. Passare %[2]s per omettere l'outp" +
+	"ut 'Servers:'.\x02Connessione amministrativa dedicata\x02Fornito per la " +
+	"compatibilità con le versioni precedenti. Gli identificatori delimitati " +
+	"sono sempre abilitati\x02Fornito per la compatibilità con le versioni pr" +
+	"ecedenti. Le impostazioni locali del client non sono utilizzate\x02%[1]s" +
+	" Rimuovere i caratteri di controllo dall'output. Passare 1 per sostituir" +
+	"e uno spazio per carattere, 2 per uno spazio per caratteri consecutivi" +
+	"\x02Input eco\x02Abilita la crittografia delle colonne.\x02Nuova passwor" +
+	"d\x02Nuova password e chiudi\x02Imposta la variabile di scripting sqlcmd" +
+	" %[1]s\x02'%[1]s %[2]s': il valore deve essere maggiore o uguale a %#[3]" +
+	"v e minore o uguale a %#[4]v.\x02'%[1]s %[2]s': il valore deve essere ma" +
+	"ggiore di %#[3]v e minore di %#[4]v.\x02'%[1]s %[2]s': argomento imprevi" +
+	"sto. Il valore dell'argomento deve essere %[3]v.\x02'%[1]s %[2]s': argom" +
+	"ento imprevisto. Il valore dell'argomento deve essere uno di %[3]v.\x02L" +
+	"e opzioni %[1]s e %[2]s si escludono a vicenda.\x02'%[1]s': argomento ma" +
+	"ncante. Immettere '-?' per visualizzare la Guida.\x02'%[1]s': opzione sc" +
+	"onosciuta. Immettere '-?' per visualizzare la Guida.\x02carattere di ter" +
+	"minazione del batch '%[1]s' non valido\x02Immettere la nuova password:" +
+	"\x02sqlcmd: installare/creare/eseguire query su SQL Server, Azure SQL e " +
+	"strumenti\x04\x00\x01 \x10\x02Sqlcmd: errore:\x04\x00\x01 \x10\x02Sqlcmd" +
+	": avviso:\x02I comandi ED e !!<command>, lo script di avvio e le variabi" +
+	"li di ambiente sono disabilitati.\x02La variabile di scripting '%[1]s' è" +
+	" di sola lettura\x02Variabile di scripting '%[1]s' non definita.\x02La v" +
+	"ariabile di ambiente '%[1]s' contiene un valore non valido: '%[2]s'.\x02" +
+	"Errore di sintassi alla riga %[1]d vicino al comando '%[2]s'.\x02%[1]s S" +
+	"i è verificato un errore durante l'apertura o l'utilizzo del file %[2]s " +
+	"(motivo: %[3]s).\x02%[1]s Errore di sintassi alla riga %[2]d\x02Timeout " +
+	"scaduto\x02Messaggio %#[1]v, Livello %[2]d, Stato %[3]d, Server %[4]s, P" +
+	"rocedura %[5]s, Riga %#[6]v%[7]s\x02Messaggio %#[1]v, Livello %[2]d, Sta" +
+	"to %[3]d, Server %[4]s, Riga %#[5]v%[6]s\x02Password:\x02Identificatore " +
+	"della variabile %[1]s non valido\x02Valore della variabile %[1]s non val" +
+	"ido"
 
-var ja_JPIndex = []uint32{ // 301 elements
+var ja_JPIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x00000077, 0x0000009d,
 	0x000000d8, 0x000000f8, 0x0000010b, 0x0000014c,
@@ -2268,26 +2258,27 @@ var ja_JPIndex = []uint32{ // 301 elements
 	0x00003c49, 0x00003c8a, 0x00003cb5, 0x00003cf8,
 	0x00003e4d, 0x00003f1f, 0x00003f62, 0x0000402f,
 	0x000040f3, 0x0000419f, 0x00004220, 0x000042f5,
-	0x0000444f, 0x000045a7, 0x000046b4, 0x0000481c,
-	0x00004a8a, 0x00004bb9, 0x00004da5, 0x00004f0a,
-	0x00004f83, 0x00004fa5, 0x00005060, 0x0000509f,
+	0x0000444d, 0x0000455a, 0x000046c2, 0x00004930,
+	0x00004a5f, 0x00004c4b, 0x00004db0, 0x00004e29,
+	0x00004e4b, 0x00004f06, 0x00004f45, 0x00004fa8,
 	// Entry 100 - 11F
-	0x00005102, 0x00005197, 0x0000521e, 0x00005295,
-	0x000052e1, 0x00005312, 0x000053c1, 0x000053d1,
-	0x00005436, 0x0000545e, 0x000054c7, 0x000054dd,
-	0x00005544, 0x000055b4, 0x00005678, 0x00005688,
-	0x000056a7, 0x000056c0, 0x000056e2, 0x00005718,
-	0x0000576b, 0x000057c9, 0x0000582b, 0x0000589f,
-	0x000058dd, 0x00005949, 0x000059bb, 0x000059f0,
-	0x00005a13, 0x00005a6d, 0x00005a85, 0x00005a9a,
+	0x0000503d, 0x000050c4, 0x0000513b, 0x00005187,
+	0x000051b8, 0x00005267, 0x00005277, 0x000052dc,
+	0x00005304, 0x0000536d, 0x00005383, 0x000053ea,
+	0x0000545a, 0x0000551e, 0x0000552e, 0x0000554d,
+	0x00005566, 0x00005588, 0x000055be, 0x00005611,
+	0x0000566f, 0x000056d1, 0x00005745, 0x00005783,
+	0x000057ef, 0x00005861, 0x00005896, 0x000058b9,
+	0x00005913, 0x0000592b, 0x00005940, 0x000059b8,
 	// Entry 120 - 13F
-	0x00005b12, 0x00005b4d, 0x00005b8c, 0x00005bd5,
-	0x00005c1f, 0x00005c8e, 0x00005cb1, 0x00005cd6,
-	0x00005d50, 0x00005daf, 0x00005dc0, 0x00005de6,
-	0x00005e09,
-} // Size: 1228 bytes
+	0x000059f3, 0x00005a32, 0x00005a7b, 0x00005ac5,
+	0x00005b34, 0x00005b57, 0x00005b7c, 0x00005bf6,
+	0x00005c55, 0x00005c66, 0x00005c8c, 0x00005caf,
+	0x00005caf, 0x00005caf, 0x00005caf, 0x00005caf,
+	0x00005caf, 0x00005caf,
+} // Size: 1248 bytes
 
-const ja_JPData string = "" + // Size: 24073 bytes
+const ja_JPData string = "" + // Size: 23727 bytes
 	"\x02インストール/作成、クエリ、SQL Server のアンインストール\x02構成情報と接続文字列の表示\x04\x02\x0a\x0a" +
 	"\x00 \x02フィードバック：\x0a %[1]s\x02下位互換性フラグのヘルプ (-S、-U、-E など)\x02sqlcmd の印刷バ" +
 	"ージョン\x02構成ファイル\x02ログ レベル、error=0、warn=1、info=2、debug=3、trace=4\x02\x22" +
@@ -2402,35 +2393,31 @@ const ja_JPData string = "" + // Size: 24073 bytes
 	"d を終了しません。複数のセミコロンで区切られたクエリを実行できます\x02sqlcmd が開始してから sqlcmd を直ちに終了するときにク" +
 	"エリを実行します。複数のセミコロンで区切られたクエリを実行できます\x02%[1]s 接続先の SQL Server のインスタンスを指定し" +
 	"ます。sqlcmd スクリプト変数 %[2]s を設定します。\x02%[1]s システム セキュリティを侵害する可能性のあるコマンドを無効" +
-	"にします。1 を渡すと、無効なコマンドの実行時に sqlcmd が終了するように指示されます。\x02Azure SQL Database " +
-	"への接続に使用する SQL 認証方法を指定します。次のうちの 1 つ: ActiveDirectoryDefault、ActiveDirec" +
-	"toryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、Active" +
-	"DirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectory" +
-	"AzCli、 ActiveDirectoryDeviceCode、SqlPassword\x02ActiveDirectory 認証を使用するよ" +
-	"うに sqlcmd に指示します。ユーザー名が指定されていない場合、認証方法 ActiveDirectoryDefault が使用されます。" +
-	"パスワードを指定すると、ActiveDirectoryPassword が使用されます。それ以外の場合は ActiveDirectoryIn" +
-	"teractive が使用されます\x02sqlcmd がスクリプト変数を無視するようにします。このパラメーターは、$(variable_nam" +
-	"e) などの通常の変数と同じ形式の文字列を含む %[1]s ステートメントがスクリプトに多数含まれている場合に便利です\x02sqlcmd スク" +
-	"リプトで使用できる sqlcmd スクリプト変数を作成します。値にスペースが含まれている場合は、値を引用符で囲ってください。複数の var=" +
-	"values 値を指定できます。指定された値のいずれかにエラーがある場合、sqlcmd はエラー メッセージを生成して終了します\x02サイズの" +
-	"異なるパケットを要求します。このオプションは、sqlcmd スクリプト変数 %[1]s を設定します。packet_size は 512 か" +
-	"ら 32767 の間の値である必要があります。既定値 = 4096。パケット サイズを大きくすると、%[2]s コマンド間に多数の SQL " +
-	"ステートメントを含むスクリプトの実行のパフォーマンスを向上させることができます。より大きいパケット サイズを要求できます。しかし、要求が拒否" +
-	"された場合、sqlcmd はサーバーのパケット サイズの既定値を使用します\x02サーバーに接続しようとしたときに、go-mssqldb ド" +
-	"ライバーへの sqlcmd ログインがタイムアウトするまでの秒数を指定します。このオプションは、sqlcmd スクリプト変数%[1]s を設" +
-	"定します。既定値は 30 です。0 は無限を意味します\x02このオプションは、sqlcmd スクリプト変数 %[1]s を設定します。ワー" +
-	"クステーション名は sys.sysprocesses カタログ ビューのホスト名列に一覧表示されており、ストアド プロシージャ sp_who" +
-	" を使用して返すことができます。このオプションを指定しない場合、既定値は現在のコンピューター名です。この名前は、さまざまな sqlcmd セッシ" +
-	"ョンを識別するために使用できます\x02サーバーに接続するときに、アプリケーション ワークロードの種類を宣言します。現在サポートされている値" +
-	"は ReadOnly のみです。%[1]s が指定されていない場合、sqlcmd ユーティリティは、Always On 可用性グループ内のセ" +
-	"カンダリ レプリカへの接続をサポートしません\x02このスイッチは、暗号化された接続を要求するためにクライアントによって使用されます\x02" +
-	"結果の書式を指定します\x02%[1]s 重大度 >= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含む" +
-	"すべてのエラーをリダイレクトするには、1 を渡します。\x02印刷する mssql ドライバー メッセージのレベル\x02sqlcmd が終" +
-	"了し、エラーが発生したときに %[1]s 値を返すように指定します\x02%[1]s に送信するエラー メッセージを制御します。このレベル以" +
-	"上の重大度レベルのメッセージが送信されます\x02列見出し間で印刷する行数を指定します。-h-1 を使用して、ヘッダーを印刷しないように指定" +
-	"します\x02すべての出力ファイルをリトル エンディアン Unicode でエンコードすることを指定します\x02列の区切り文字を指定します" +
-	"。%[1]s 変数を設定します。\x02列から末尾のスペースを削除します\x02下位互換性のために提供されます。Sqlcmd は、SQL フ" +
-	"ェールオーバー クラスターのアクティブなレプリカの検出を常に最適化します\x02パスワード\x02終了時に %[1]s 変数を設定するために" +
+	"にします。1 を渡すと、無効なコマンドの実行時に sqlcmd が終了するように指示されます。\x02ActiveDirectory 認証を" +
+	"使用するように sqlcmd に指示します。ユーザー名が指定されていない場合、認証方法 ActiveDirectoryDefault が使用" +
+	"されます。パスワードを指定すると、ActiveDirectoryPassword が使用されます。それ以外の場合は ActiveDirect" +
+	"oryInteractive が使用されます\x02sqlcmd がスクリプト変数を無視するようにします。このパラメーターは、$(variabl" +
+	"e_name) などの通常の変数と同じ形式の文字列を含む %[1]s ステートメントがスクリプトに多数含まれている場合に便利です\x02sqlc" +
+	"md スクリプトで使用できる sqlcmd スクリプト変数を作成します。値にスペースが含まれている場合は、値を引用符で囲ってください。複数の v" +
+	"ar=values 値を指定できます。指定された値のいずれかにエラーがある場合、sqlcmd はエラー メッセージを生成して終了します\x02サ" +
+	"イズの異なるパケットを要求します。このオプションは、sqlcmd スクリプト変数 %[1]s を設定します。packet_size は 51" +
+	"2 から 32767 の間の値である必要があります。既定値 = 4096。パケット サイズを大きくすると、%[2]s コマンド間に多数の SQL" +
+	" ステートメントを含むスクリプトの実行のパフォーマンスを向上させることができます。より大きいパケット サイズを要求できます。しかし、要求が拒否さ" +
+	"れた場合、sqlcmd はサーバーのパケット サイズの既定値を使用します\x02サーバーに接続しようとしたときに、go-mssqldb ドラ" +
+	"イバーへの sqlcmd ログインがタイムアウトするまでの秒数を指定します。このオプションは、sqlcmd スクリプト変数%[1]s を設定" +
+	"します。既定値は 30 です。0 は無限を意味します\x02このオプションは、sqlcmd スクリプト変数 %[1]s を設定します。ワーク" +
+	"ステーション名は sys.sysprocesses カタログ ビューのホスト名列に一覧表示されており、ストアド プロシージャ sp_who " +
+	"を使用して返すことができます。このオプションを指定しない場合、既定値は現在のコンピューター名です。この名前は、さまざまな sqlcmd セッ" +
+	"ションを識別するために使用できます\x02サーバーに接続するときに、アプリケーション ワークロードの種類を宣言します。現在サポートされている" +
+	"値は ReadOnly のみです。%[1]s が指定されていない場合、sqlcmd ユーティリティは、Always On 可用性グループ内の" +
+	"セカンダリ レプリカへの接続をサポートしません\x02このスイッチは、暗号化された接続を要求するためにクライアントによって使用されます" +
+	"\x02結果の書式を指定します\x02%[1]s 重大度 >= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を" +
+	"含むすべてのエラーをリダイレクトするには、1 を渡します。\x02印刷する mssql ドライバー メッセージのレベル\x02sqlcmd " +
+	"が終了し、エラーが発生したときに %[1]s 値を返すように指定します\x02%[1]s に送信するエラー メッセージを制御します。このレベ" +
+	"ル以上の重大度レベルのメッセージが送信されます\x02列見出し間で印刷する行数を指定します。-h-1 を使用して、ヘッダーを印刷しないように" +
+	"指定します\x02すべての出力ファイルをリトル エンディアン Unicode でエンコードすることを指定します\x02列の区切り文字を指定し" +
+	"ます。%[1]s 変数を設定します。\x02列から末尾のスペースを削除します\x02下位互換性のために提供されます。Sqlcmd は、SQL" +
+	" フェールオーバー クラスターのアクティブなレプリカの検出を常に最適化します\x02パスワード\x02終了時に %[1]s 変数を設定するために" +
 	"使用される重大度レベルを制御します\x02出力の画面の幅を指定します\x02%[1]s サーバーを一覧表示します。%[2]s を渡すと、'S" +
 	"ervers:' 出力を省略します。\x02専用管理者接続\x02下位互換性のために提供されます。引用符で囲まれた識別子は常に有効です\x02下" +
 	"位互換性のために提供されます。クライアントの地域設定は使用されていません\x02%[1]s 出力から制御文字を削除します。1 を渡すと、1 " +
@@ -2451,7 +2438,7 @@ const ja_JPData string = "" + // Size: 24073 bytes
 	"]v%[7]s\x02メッセージ %#[1]v、レベル %[2]d、状態 %[3]d、サーバー %[4]s、行 %#[5]v%[6]s\x02パ" +
 	"スワード:\x02変数識別子 %[1]s が無効です\x02変数値の %[1]s が無効です"
 
-var ko_KRIndex = []uint32{ // 301 elements
+var ko_KRIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000029, 0x00000053, 0x0000006b,
 	0x000000b7, 0x000000cf, 0x000000dd, 0x00000120,
@@ -2521,26 +2508,27 @@ var ko_KRIndex = []uint32{ // 301 elements
 	0x00002fb2, 0x00002ff1, 0x00003011, 0x00003054,
 	0x00003172, 0x0000323f, 0x00003288, 0x00003345,
 	0x00003404, 0x000034a3, 0x00003517, 0x000035e1,
-	0x00003731, 0x00003860, 0x0000395c, 0x00003a9c,
-	0x00003c8a, 0x00003da0, 0x00003f38, 0x0000405c,
-	0x000040b9, 0x000040de, 0x00004180, 0x000041ae,
+	0x00003710, 0x0000380c, 0x0000394c, 0x00003b3a,
+	0x00003c50, 0x00003de8, 0x00003f0c, 0x00003f69,
+	0x00003f8e, 0x00004030, 0x0000405e, 0x000040b5,
 	// Entry 100 - 11F
-	0x00004205, 0x0000428e, 0x00004306, 0x00004360,
-	0x000043a7, 0x000043c6, 0x0000446b, 0x00004472,
-	0x000044d0, 0x000044f9, 0x00004556, 0x0000456e,
-	0x000045f3, 0x00004671, 0x0000471b, 0x00004729,
-	0x0000473e, 0x00004749, 0x0000475f, 0x00004799,
-	0x000047f9, 0x00004845, 0x0000489e, 0x000048ff,
-	0x00004934, 0x00004985, 0x000049de, 0x00004a08,
-	0x00004a1b, 0x00004a59, 0x00004a6e, 0x00004a83,
+	0x0000413e, 0x000041b6, 0x00004210, 0x00004257,
+	0x00004276, 0x0000431b, 0x00004322, 0x00004380,
+	0x000043a9, 0x00004406, 0x0000441e, 0x000044a3,
+	0x00004521, 0x000045cb, 0x000045d9, 0x000045ee,
+	0x000045f9, 0x0000460f, 0x00004649, 0x000046a9,
+	0x000046f5, 0x0000474e, 0x000047af, 0x000047e4,
+	0x00004835, 0x0000488e, 0x000048b8, 0x000048cb,
+	0x00004909, 0x0000491e, 0x00004933, 0x0000499f,
 	// Entry 120 - 13F
-	0x00004aef, 0x00004b2c, 0x00004b69, 0x00004bae,
-	0x00004bf3, 0x00004c54, 0x00004c84, 0x00004cac,
-	0x00004d0c, 0x00004d58, 0x00004d60, 0x00004d81,
-	0x00004d9c,
-} // Size: 1228 bytes
+	0x000049dc, 0x00004a19, 0x00004a5e, 0x00004aa3,
+	0x00004b04, 0x00004b34, 0x00004b5c, 0x00004bbc,
+	0x00004c08, 0x00004c10, 0x00004c31, 0x00004c4c,
+	0x00004c4c, 0x00004c4c, 0x00004c4c, 0x00004c4c,
+	0x00004c4c, 0x00004c4c,
+} // Size: 1248 bytes
 
-const ko_KRData string = "" + // Size: 19868 bytes
+const ko_KRData string = "" + // Size: 19532 bytes
 	"\x02SQL Server 설치/생성, 쿼리, 제거\x02구성 정보 및 연결 문자열 보기\x04\x02\x0a\x0a\x00" +
 	"\x12\x02Feedback:\x0a  %[1]s\x02이전 버전과의 호환성 플래그(-S, -U, -E 등)에 대한 도움말" +
 	"\x02sqlcmd의 인쇄 버전\x02구성 파일\x02로그 수준, 오류=0, 경고=1, 정보=2, 디버그=3, 추적=4\x02" +
@@ -2647,56 +2635,52 @@ const ko_KRData string = "" + // Size: 19868 bytes
 	"가 시작될 때 쿼리를 실행한 다음 즉시 sqlcmd를 종료합니다. 여러 세미콜론으로 구분된 쿼리를 실행할 수 있습니다.\x02" +
 	"%[1]s 연결할 SQL Server의 인스턴스를 지정합니다. sqlcmd 스크립팅 변수 %[2]s를 설정합니다.\x02%[1]s" +
 	" 시스템 보안을 손상시킬 수 있는 명령을 사용하지 않도록 설정합니다. 1을 전달하면 사용하지 않도록 설정된 명령이 실행될 때 sq" +
-	"lcmd가 종료됩니다.\x02Azure SQL Database에 연결하는 데 사용할 SQL 인증 방법을 지정합니다. 다음 중 하나" +
-	": ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPass" +
-	"word, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, Active" +
-	"DirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCo" +
-	"de, SqlPassword\x02ActiveDirectory 인증을 사용하도록 sqlcmd에 지시합니다. 사용자 이름이 제공되지" +
-	" 않으면 인증 방법 ActiveDirectoryDefault가 사용됩니다. 암호가 제공되면 ActiveDirectoryPasswo" +
-	"rd가 사용됩니다. 그렇지 않으면 ActiveDirectoryInteractive가 사용됩니다.\x02sqlcmd가 스크립팅 변수" +
-	"를 무시하도록 합니다. 이 매개 변수는 스크립트에 $(variable_name)과 같은 일반 변수와 동일한 형식의 문자열이 포" +
-	"함될 수 있는 많은 %[1]s 문이 포함된 경우에 유용합니다.\x02sqlcmd 스크립트에서 사용할 수 있는 sqlcmd 스크" +
-	"립팅 변수를 만듭니다. 값에 공백이 포함된 경우 값을 따옴표로 묶습니다. 여러 개의 var=values 값을 지정할 수 있습니" +
-	"다. 지정된 값에 오류가 있으면 sqlcmd는 오류 메시지를 생성한 다음 종료합니다.\x02다른 크기의 패킷을 요청합니다. 이" +
-	" 옵션은 sqlcmd 스크립팅 변수 %[1]s를 설정합니다. packet_size는 512와 32767 사이의 값이어야 합니다. " +
-	"기본값은 4096입니다. 패킷 크기가 클수록 %[2]s 명령 사이에 SQL 문이 많은 스크립트를 실행할 때 성능이 향상될 수 " +
-	"있습니다. 더 큰 패킷 크기를 요청할 수 있습니다. 그러나 요청이 거부되면 sqlcmd는 패킷 크기에 대해 서버 기본값을 사용" +
-	"합니다.\x02서버에 연결을 시도할 때 go-mssqldb 드라이버에 대한 sqlcmd 로그인 시간이 초과되기 전까지의 시간(" +
-	"초)을 지정합니다. 이 옵션은 sqlcmd 스크립팅 변수 %[1]s를 설정합니다. 기본값은 30입니다. 0은 무한을 의미합니다" +
-	".\x02이 옵션은 sqlcmd 스크립팅 변수 %[1]s를 설정합니다. 워크스테이션 이름은 sys.sysprocesses 카탈로그" +
-	" 뷰의 호스트 이름 열에 나열되며 저장 프로시저 sp_who를 사용하여 반환될 수 있습니다. 이 옵션을 지정하지 않으면 기본값은 " +
-	"현재 컴퓨터 이름입니다. 이 이름은 다른 sqlcmd 세션을 식별하는 데 사용할 수 있습니다.\x02서버에 연결할 때 애플리케" +
-	"이션 워크로드 유형을 선언합니다. 현재 지원되는 유일한 값은 ReadOnly입니다. %[1]s가 지정되지 않은 경우 sqlcm" +
-	"d 유틸리티는 Always On 가용성 그룹의 보조 복제본에 대한 연결을 지원하지 않습니다.\x02이 스위치는 클라이언트가 암호화" +
-	"된 연결을 요청하는 데 사용됩니다.\x02결과의 형식을 지정합니다.\x02%[1]s 심각도 >= 11인 오류 메시지 출력을 s" +
-	"tderr로 리디렉션합니다. 1을 전달하면 PRINT를 포함한 모든 오류를 리디렉션합니다.\x02인쇄할 mssql 드라이버 메시지" +
-	" 수준\x02오류 발생 시 sqlcmd가 종료되고 %[1]s 값을 반환하도록 지정합니다.\x02%[1]s에 보낼 오류 메시지를 제" +
-	"어합니다. 심각도 수준이 이 수준보다 크거나 같은 메시지가 전송됩니다.\x02열 표제 사이에 인쇄할 행 수를 지정합니다. -h" +
-	"-1을 사용하여 헤더가 인쇄되지 않도록 지정\x02모든 출력 파일이 little-endian 유니코드로 인코딩되도록 지정합니다." +
-	"\x02열 구분 문자를 지정합니다. %[1]s 변수를 설정합니다.\x02열에서 후행 공백 제거\x02이전 버전과의 호환성을 위해 " +
-	"제공됩니다. Sqlcmd는 항상 SQL 장애 조치(failover) 클러스터의 활성 복제본 검색을 최적화합니다.\x02암호" +
-	"\x02종료 시 %[1]s 변수를 설정하는 데 사용되는 심각도 수준을 제어합니다.\x02출력 화면 너비를 지정합니다.\x02%[1" +
-	"]s 서버를 나열합니다. %[2]s를 전달하여 'Servers:' 출력을 생략합니다.\x02전용 관리자 연결\x02이전 버전과의 " +
-	"호환성을 위해 제공되었습니다. 따옴표 붙은 식별자를 항상 사용하도록 설정됩니다.\x02이전 버전과의 호환성을 위해 제공되었습니" +
-	"다. 클라이언트 국가별 설정이 사용되지 않습니다.\x02%[1]s 출력에서 제어 문자를 제거합니다. 1을 전달하면 문자당 공백" +
-	"을 대체하고, 2를 전달하면 연속된 문자당 공백을 대체합니다.\x02에코 입력\x02열 암호화 사용\x02새 암호\x02새 암" +
-	"호 및 종료\x02sqlcmd 스크립팅 변수 %[1]s을(를) 설정합니다.\x02'%[1]s %[2]s': 값은 %#[3]v보" +
-	"다 크거나 같고 %#[4]v보다 작거나 같아야 합니다.\x02'%[1]s %[2]s': 값은 %#[3]v보다 크고 %#[4]v" +
-	"보다 작아야 합니다.\x02'%[1]s %[2]s': 예기치 않은 인수입니다. 인수 값은 %[3]v이어야 합니다.\x02'%[" +
-	"1]s %[2]s': 예기치 않은 인수입니다. 인수 값은 %[3]v 중 하나여야 합니다.\x02%[1]s 및 %[2]s 옵션은 상" +
-	"호 배타적입니다.\x02'%[1]s': 인수가 없습니다. 도움말을 보려면 '-?'를 입력하세요.\x02'%[1]s': 알 수 " +
-	"없는 옵션입니다. 도움말을 보려면 '-?'를 입력하세요.\x02잘못된 일괄 처리 종결자 '%[1]s'\x02새 암호 입력:" +
-	"\x02sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\x04" +
-	"\x00\x01 \x10\x02Sqlcmd: 오류:\x04\x00\x01 \x10\x02Sqlcmd: 경고:\x02ED 및 !!<" +
-	"command> 명령, 시작 스크립트 및 환경 변수를 사용하지 않도록 설정합니다.\x02스크립팅 변수: '%[1]s'은(는) 읽기" +
-	" 전용입니다.\x02'%[1]s' 스크립팅 변수가 정의되지 않았습니다.\x02환경 변수 '%[1]s'에 잘못된 값 '%[2]s'이" +
-	"(가) 있습니다.\x02'%[2]s' 명령 근처의 %[1]d 줄에 구문 오류가 있습니다.\x02%[1]s %[2]s 파일을 열거나" +
-	" 작업하는 동안 오류가 발생했습니다(이유: %[3]s).\x02%[1]s%[2]d행에 구문 오류가 있습니다.\x02시간 제한이 만" +
-	"료되었습니다.\x02메시지 %#[1]v, 수준 %[2]d, 상태 %[3]d, 서버 %[4]s, 프로시저 %[5]s, 줄 %#[" +
-	"6]v%[7]s\x02메시지 %#[1]v, 수준 %[2]d, 상태 %[3]d, 서버 %[4]s, 줄 %#[5]v%[6]s\x02암" +
-	"호:\x02잘못된 변수 식별자 %[1]s\x02잘못된 변수 값 %[1]s"
+	"lcmd가 종료됩니다.\x02ActiveDirectory 인증을 사용하도록 sqlcmd에 지시합니다. 사용자 이름이 제공되지 않으" +
+	"면 인증 방법 ActiveDirectoryDefault가 사용됩니다. 암호가 제공되면 ActiveDirectoryPasswor" +
+	"d가 사용됩니다. 그렇지 않으면 ActiveDirectoryInteractive가 사용됩니다.\x02sqlcmd가 스크립팅 변수를" +
+	" 무시하도록 합니다. 이 매개 변수는 스크립트에 $(variable_name)과 같은 일반 변수와 동일한 형식의 문자열이 포함될 " +
+	"수 있는 많은 %[1]s 문이 포함된 경우에 유용합니다.\x02sqlcmd 스크립트에서 사용할 수 있는 sqlcmd 스크립팅 " +
+	"변수를 만듭니다. 값에 공백이 포함된 경우 값을 따옴표로 묶습니다. 여러 개의 var=values 값을 지정할 수 있습니다. " +
+	"지정된 값에 오류가 있으면 sqlcmd는 오류 메시지를 생성한 다음 종료합니다.\x02다른 크기의 패킷을 요청합니다. 이 옵션" +
+	"은 sqlcmd 스크립팅 변수 %[1]s를 설정합니다. packet_size는 512와 32767 사이의 값이어야 합니다. 기" +
+	"본값은 4096입니다. 패킷 크기가 클수록 %[2]s 명령 사이에 SQL 문이 많은 스크립트를 실행할 때 성능이 향상될 수 있" +
+	"습니다. 더 큰 패킷 크기를 요청할 수 있습니다. 그러나 요청이 거부되면 sqlcmd는 패킷 크기에 대해 서버 기본값을 사용합" +
+	"니다.\x02서버에 연결을 시도할 때 go-mssqldb 드라이버에 대한 sqlcmd 로그인 시간이 초과되기 전까지의 시간(초" +
+	")을 지정합니다. 이 옵션은 sqlcmd 스크립팅 변수 %[1]s를 설정합니다. 기본값은 30입니다. 0은 무한을 의미합니다." +
+	"\x02이 옵션은 sqlcmd 스크립팅 변수 %[1]s를 설정합니다. 워크스테이션 이름은 sys.sysprocesses 카탈로그 " +
+	"뷰의 호스트 이름 열에 나열되며 저장 프로시저 sp_who를 사용하여 반환될 수 있습니다. 이 옵션을 지정하지 않으면 기본값은" +
+	" 현재 컴퓨터 이름입니다. 이 이름은 다른 sqlcmd 세션을 식별하는 데 사용할 수 있습니다.\x02서버에 연결할 때 애플리케이" +
+	"션 워크로드 유형을 선언합니다. 현재 지원되는 유일한 값은 ReadOnly입니다. %[1]s가 지정되지 않은 경우 sqlcmd" +
+	" 유틸리티는 Always On 가용성 그룹의 보조 복제본에 대한 연결을 지원하지 않습니다.\x02이 스위치는 클라이언트가 암호화된" +
+	" 연결을 요청하는 데 사용됩니다.\x02결과의 형식을 지정합니다.\x02%[1]s 심각도 >= 11인 오류 메시지 출력을 stde" +
+	"rr로 리디렉션합니다. 1을 전달하면 PRINT를 포함한 모든 오류를 리디렉션합니다.\x02인쇄할 mssql 드라이버 메시지 수준" +
+	"\x02오류 발생 시 sqlcmd가 종료되고 %[1]s 값을 반환하도록 지정합니다.\x02%[1]s에 보낼 오류 메시지를 제어합니" +
+	"다. 심각도 수준이 이 수준보다 크거나 같은 메시지가 전송됩니다.\x02열 표제 사이에 인쇄할 행 수를 지정합니다. -h-1을" +
+	" 사용하여 헤더가 인쇄되지 않도록 지정\x02모든 출력 파일이 little-endian 유니코드로 인코딩되도록 지정합니다.\x02" +
+	"열 구분 문자를 지정합니다. %[1]s 변수를 설정합니다.\x02열에서 후행 공백 제거\x02이전 버전과의 호환성을 위해 제공" +
+	"됩니다. Sqlcmd는 항상 SQL 장애 조치(failover) 클러스터의 활성 복제본 검색을 최적화합니다.\x02암호\x02" +
+	"종료 시 %[1]s 변수를 설정하는 데 사용되는 심각도 수준을 제어합니다.\x02출력 화면 너비를 지정합니다.\x02%[1]s" +
+	" 서버를 나열합니다. %[2]s를 전달하여 'Servers:' 출력을 생략합니다.\x02전용 관리자 연결\x02이전 버전과의 호환" +
+	"성을 위해 제공되었습니다. 따옴표 붙은 식별자를 항상 사용하도록 설정됩니다.\x02이전 버전과의 호환성을 위해 제공되었습니다." +
+	" 클라이언트 국가별 설정이 사용되지 않습니다.\x02%[1]s 출력에서 제어 문자를 제거합니다. 1을 전달하면 문자당 공백을 대체" +
+	"하고, 2를 전달하면 연속된 문자당 공백을 대체합니다.\x02에코 입력\x02열 암호화 사용\x02새 암호\x02새 암호 및 " +
+	"종료\x02sqlcmd 스크립팅 변수 %[1]s을(를) 설정합니다.\x02'%[1]s %[2]s': 값은 %#[3]v보다 크거" +
+	"나 같고 %#[4]v보다 작거나 같아야 합니다.\x02'%[1]s %[2]s': 값은 %#[3]v보다 크고 %#[4]v보다 작" +
+	"아야 합니다.\x02'%[1]s %[2]s': 예기치 않은 인수입니다. 인수 값은 %[3]v이어야 합니다.\x02'%[1]s " +
+	"%[2]s': 예기치 않은 인수입니다. 인수 값은 %[3]v 중 하나여야 합니다.\x02%[1]s 및 %[2]s 옵션은 상호 배타" +
+	"적입니다.\x02'%[1]s': 인수가 없습니다. 도움말을 보려면 '-?'를 입력하세요.\x02'%[1]s': 알 수 없는 옵" +
+	"션입니다. 도움말을 보려면 '-?'를 입력하세요.\x02잘못된 일괄 처리 종결자 '%[1]s'\x02새 암호 입력:\x02sq" +
+	"lcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\x04\x00\x01 " +
+	"\x10\x02Sqlcmd: 오류:\x04\x00\x01 \x10\x02Sqlcmd: 경고:\x02ED 및 !!<command> " +
+	"명령, 시작 스크립트 및 환경 변수를 사용하지 않도록 설정합니다.\x02스크립팅 변수: '%[1]s'은(는) 읽기 전용입니다." +
+	"\x02'%[1]s' 스크립팅 변수가 정의되지 않았습니다.\x02환경 변수 '%[1]s'에 잘못된 값 '%[2]s'이(가) 있습니" +
+	"다.\x02'%[2]s' 명령 근처의 %[1]d 줄에 구문 오류가 있습니다.\x02%[1]s %[2]s 파일을 열거나 작업하는" +
+	" 동안 오류가 발생했습니다(이유: %[3]s).\x02%[1]s%[2]d행에 구문 오류가 있습니다.\x02시간 제한이 만료되었습니" +
+	"다.\x02메시지 %#[1]v, 수준 %[2]d, 상태 %[3]d, 서버 %[4]s, 프로시저 %[5]s, 줄 %#[6]v%[" +
+	"7]s\x02메시지 %#[1]v, 수준 %[2]d, 상태 %[3]d, 서버 %[4]s, 줄 %#[5]v%[6]s\x02암호:" +
+	"\x02잘못된 변수 식별자 %[1]s\x02잘못된 변수 값 %[1]s"
 
-var pt_BRIndex = []uint32{ // 301 elements
+var pt_BRIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000034, 0x00000071, 0x00000089,
 	0x000000df, 0x000000ff, 0x0000011a, 0x00000169,
@@ -2766,26 +2750,27 @@ var pt_BRIndex = []uint32{ // 301 elements
 	0x00002e7b, 0x00002eae, 0x00002ed7, 0x00002f19,
 	0x00003028, 0x000030dd, 0x00003117, 0x000031c5,
 	0x00003285, 0x0000332c, 0x0000339c, 0x00003439,
-	0x0000358e, 0x000036ab, 0x00003798, 0x000038d0,
-	0x00003a9c, 0x00003b98, 0x00003d14, 0x00003e3d,
-	0x00003e8a, 0x00003eb3, 0x00003f3a, 0x00003f70,
+	0x00003556, 0x00003643, 0x0000377b, 0x00003947,
+	0x00003a43, 0x00003bbf, 0x00003ce8, 0x00003d35,
+	0x00003d5e, 0x00003de5, 0x00003e1b, 0x00003e66,
 	// Entry 100 - 11F
-	0x00003fbb, 0x0000404c, 0x000040dc, 0x00004132,
-	0x00004178, 0x000041a2, 0x00004232, 0x00004238,
-	0x00004287, 0x000042b0, 0x000042f5, 0x00004318,
-	0x00004386, 0x000043f7, 0x00004485, 0x00004494,
-	0x000044b5, 0x000044c0, 0x000044d2, 0x000044fc,
-	0x0000454f, 0x00004594, 0x000045de, 0x0000462e,
-	0x00004664, 0x0000469e, 0x000046db, 0x00004700,
-	0x00004715, 0x00004753, 0x00004766, 0x0000477a,
+	0x00003ef7, 0x00003f87, 0x00003fdd, 0x00004023,
+	0x0000404d, 0x000040dd, 0x000040e3, 0x00004132,
+	0x0000415b, 0x000041a0, 0x000041c3, 0x00004231,
+	0x000042a2, 0x00004330, 0x0000433f, 0x00004360,
+	0x0000436b, 0x0000437d, 0x000043a7, 0x000043fa,
+	0x0000443f, 0x00004489, 0x000044d9, 0x0000450f,
+	0x00004549, 0x00004586, 0x000045ab, 0x000045c0,
+	0x000045fe, 0x00004611, 0x00004625, 0x00004691,
 	// Entry 120 - 13F
-	0x000047e6, 0x00004818, 0x00004843, 0x00004884,
-	0x000048c0, 0x00004900, 0x00004925, 0x0000493b,
-	0x00004999, 0x000049e3, 0x000049ea, 0x00004a15,
-	0x00004a38,
-} // Size: 1228 bytes
+	0x000046c3, 0x000046ee, 0x0000472f, 0x0000476b,
+	0x000047ab, 0x000047d0, 0x000047e6, 0x00004844,
+	0x0000488e, 0x00004895, 0x000048c0, 0x000048e3,
+	0x000048e3, 0x000048e3, 0x000048e3, 0x000048e3,
+	0x000048e3, 0x000048e3,
+} // Size: 1248 bytes
 
-const pt_BRData string = "" + // Size: 19000 bytes
+const pt_BRData string = "" + // Size: 18659 bytes
 	"\x02Instalar/Criar, Consultar, Desinstalar o SQL Server\x02Exibir inform" +
 	"ações de configuração e cadeias de conexão\x04\x02\x0a\x0a\x00\x12\x02Fe" +
 	"edback:\x0a  %[1]s\x02ajuda para sinalizadores de compatibilidade com ve" +
@@ -2981,89 +2966,84 @@ const pt_BRData string = "" + // Size: 19000 bytes
 	"r à qual se conectar. Ele define a variável de script sqlcmd %[2]s.\x02%" +
 	"[1]s Desabilita comandos que podem comprometer a segurança do sistema. P" +
 	"assar 1 informa ao sqlcmd para sair quando comandos desabilitados são ex" +
-	"ecutados.\x02Especifica o método de autenticação SQL a ser usado para se" +
-	" conectar ao Banco de Dados SQL do Azure. Um de: ActiveDirectoryDefault," +
-	" ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInte" +
-	"ractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal" +
-	", ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword\x02Instru" +
-	"i o sqlcmd a usar a autenticação ActiveDirectory. Se nenhum nome de usuá" +
-	"rio for fornecido, o método de autenticação ActiveDirectoryDefault será " +
-	"usado. Se uma senha for fornecida, ActiveDirectoryPassword será usado. C" +
-	"aso contrário, ActiveDirectoryInteractive será usado\x02Faz com que o sq" +
-	"lcmd ignore variáveis de script. Esse parâmetro é útil quando um script " +
-	"contém muitas instruções %[1]s que podem conter cadeias de caracteres qu" +
-	"e têm o mesmo formato de variáveis regulares, como $(variable_name)\x02C" +
-	"ria uma variável de script sqlcmd que pode ser usada em um script sqlcmd" +
-	". Coloque o valor entre aspas se o valor contiver espaços. Você pode esp" +
-	"ecificar vários valores var=values. Se houver erros em qualquer um dos v" +
-	"alores especificados, o sqlcmd gerará uma mensagem de erro e, em seguida" +
-	", será encerrado\x02Solicita um pacote de um tamanho diferente. Essa opç" +
-	"ão define a variável de script sqlcmd %[1]s. packet_size deve ser um va" +
-	"lor entre 512 e 32767. O padrão = 4096. Um tamanho de pacote maior pode " +
-	"melhorar o desempenho para a execução de scripts que têm muitas instruçõ" +
-	"es SQL entre comandos %[2]s. Você pode solicitar um tamanho de pacote ma" +
-	"ior. No entanto, se a solicitação for negada, o sqlcmd usará o padrão do" +
-	" servidor para o tamanho do pacote\x02Especifica o número de segundos an" +
-	"tes de um logon do sqlcmd no driver go-mssqldb atingir o tempo limite qu" +
-	"ando você tentar se conectar a um servidor. Essa opção define a variável" +
-	" de script sqlcmd %[1]s. O valor padrão é 30. 0 significa infinito\x02Es" +
-	"sa opção define a variável de script sqlcmd %[1]s. O nome da estação de " +
-	"trabalho é listado na coluna nome do host da exibição do catálogo sys.sy" +
-	"sprocesses e pode ser retornado usando o procedimento armazenado sp_who." +
-	" Se essa opção não for especificada, o padrão será o nome do computador " +
-	"atual. Esse nome pode ser usado para identificar sessões sqlcmd diferent" +
-	"es\x02Declara o tipo de carga de trabalho do aplicativo ao se conectar a" +
-	" um servidor. O único valor com suporte no momento é ReadOnly. Se %[1]s " +
-	"não for especificado, o utilitário sqlcmd não será compatível com a cone" +
-	"ctividade com uma réplica secundária em um grupo de Always On disponibil" +
-	"idade\x02Essa opção é usada pelo cliente para solicitar uma conexão crip" +
-	"tografada\x02Especifica a formatação dos resultados\x02%[1]s Redireciona" +
-	" mensagens de erro com gravidade >= 11 saída para stderr. Passe 1 para r" +
-	"edirecionar todos os erros, incluindo PRINT.\x02Nível de mensagens de dr" +
-	"iver mssql a serem impressas\x02Especifica que o sqlcmd sai e retorna um" +
-	" valor %[1]s quando ocorre um erro\x02Controla quais mensagens de erro s" +
-	"ão enviadas para %[1]s. As mensagens que têm nível de severidade maior " +
-	"ou igual a esse nível são enviadas\x02Especifica o número de linhas a se" +
-	"rem impressas entre os títulos de coluna. Use -h-1 para especificar que " +
-	"os cabeçalhos não sejam impressos\x02Especifica que todos os arquivos de" +
-	" saída são codificados com Unicode little-endian\x02Especifica o caracte" +
-	"re separador de coluna. Define a variável %[1]s.\x02Remover espaços à di" +
-	"reita de uma coluna\x02Fornecido para compatibilidade com versões anteri" +
-	"ores. O Sqlcmd sempre otimiza a detecção da réplica ativa de um Cluster " +
-	"de Failover do SQL\x02Senha\x02Controla o nível de severidade usado para" +
-	" definir a variável %[1]s na saída\x02Especifica a largura da tela para " +
-	"saída\x02%[1]s Lista servidores. Passe %[2]s para omitir a saída 'Server" +
-	"s:'.\x02Conexão de administrador dedicada\x02Fornecido para compatibilid" +
-	"ade com versões anteriores. Os identificadores entre aspas estão sempre " +
-	"ativados\x02Fornecido para compatibilidade com versões anteriores. As co" +
-	"nfigurações regionais do cliente não são usadas\x02%[1]s Remova caracter" +
-	"es de controle da saída. Passe 1 para substituir um espaço por caractere" +
-	", 2 por um espaço por caracteres consecutivos\x02Entrada de eco\x02Habil" +
-	"itar criptografia de coluna\x02Nova senha\x02Nova senha e sair\x02Define" +
-	" a variável de script sqlcmd %[1]s\x02\x22%[1]s %[2]s\x22: o valor deve " +
-	"ser maior ou igual a %#[3]v e menor ou igual a %#[4]v.\x02\x22%[1]s %[2]" +
-	"s\x22: o valor deve ser maior que %#[3]v e menor que %#[4]v.\x02\x22%[1]" +
-	"s %[2]s\x22: argumento inesperado. O valor do argumento deve ser %[3]v." +
-	"\x02\x22%[1]s %[2]s\x22: argumento inesperado. O valor do argumento deve" +
-	" ser um de %[3]v.\x02As opções %[1]s e %[2]s são mutuamente exclusivas." +
-	"\x02\x22%[1]s\x22: Argumento ausente. Digite \x22-?\x22 para obter ajuda" +
-	".\x02\x22%[1]s\x22: opção desconhecida. Insira \x22-?\x22 para obter aju" +
-	"da.\x02terminador de lote inválido \x22%[1]s\x22\x02Digite a nova senha:" +
-	"\x02sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools\x04" +
-	"\x00\x01 \x0e\x02Sqlcmd: Erro:\x04\x00\x01 \x0f\x02Sqlcmd: Aviso:\x02Os " +
-	"comandos ED e !!<command>, o script de inicialização e as variáveis de a" +
-	"mbiente estão desabilitados.\x02A variável de script: \x22%[1]s\x22 é so" +
-	"mente leitura\x02Variável de script \x22%[1]s\x22 não definida.\x02A var" +
-	"iável de ambiente \x22%[1]s\x22 tem um valor inválido: \x22%[2]s\x22." +
-	"\x02Erro de sintaxe na linha %[1]d próximo ao comando \x22%[2]s\x22.\x02" +
-	"%[1]s Erro ao abrir ou operar no arquivo %[2]s (Motivo: %[3]s).\x02%[1]s" +
-	" Erro de sintaxe na linha %[2]d\x02Tempo limite expirado\x02Msg %#[1]v, " +
-	"Nível %[2]d, Estado %[3]d, Servidor %[4]s, Procedimento %[5]s, Linha %#[" +
-	"6]v%[7]s\x02Msg %#[1]v, Nível %[2]d, Estado %[3]d, Servidor %[4]s, Linha" +
-	" %#[5]v%[6]s\x02Senha:\x02Identificador de variável %[1]s inválido\x02Va" +
-	"lor de variável inválido %[1]s"
+	"ecutados.\x02Instrui o sqlcmd a usar a autenticação ActiveDirectory. Se " +
+	"nenhum nome de usuário for fornecido, o método de autenticação ActiveDir" +
+	"ectoryDefault será usado. Se uma senha for fornecida, ActiveDirectoryPas" +
+	"sword será usado. Caso contrário, ActiveDirectoryInteractive será usado" +
+	"\x02Faz com que o sqlcmd ignore variáveis de script. Esse parâmetro é út" +
+	"il quando um script contém muitas instruções %[1]s que podem conter cade" +
+	"ias de caracteres que têm o mesmo formato de variáveis regulares, como $" +
+	"(variable_name)\x02Cria uma variável de script sqlcmd que pode ser usada" +
+	" em um script sqlcmd. Coloque o valor entre aspas se o valor contiver es" +
+	"paços. Você pode especificar vários valores var=values. Se houver erros " +
+	"em qualquer um dos valores especificados, o sqlcmd gerará uma mensagem d" +
+	"e erro e, em seguida, será encerrado\x02Solicita um pacote de um tamanho" +
+	" diferente. Essa opção define a variável de script sqlcmd %[1]s. packet_" +
+	"size deve ser um valor entre 512 e 32767. O padrão = 4096. Um tamanho de" +
+	" pacote maior pode melhorar o desempenho para a execução de scripts que " +
+	"têm muitas instruções SQL entre comandos %[2]s. Você pode solicitar um t" +
+	"amanho de pacote maior. No entanto, se a solicitação for negada, o sqlcm" +
+	"d usará o padrão do servidor para o tamanho do pacote\x02Especifica o nú" +
+	"mero de segundos antes de um logon do sqlcmd no driver go-mssqldb atingi" +
+	"r o tempo limite quando você tentar se conectar a um servidor. Essa opçã" +
+	"o define a variável de script sqlcmd %[1]s. O valor padrão é 30. 0 signi" +
+	"fica infinito\x02Essa opção define a variável de script sqlcmd %[1]s. O " +
+	"nome da estação de trabalho é listado na coluna nome do host da exibição" +
+	" do catálogo sys.sysprocesses e pode ser retornado usando o procedimento" +
+	" armazenado sp_who. Se essa opção não for especificada, o padrão será o " +
+	"nome do computador atual. Esse nome pode ser usado para identificar sess" +
+	"ões sqlcmd diferentes\x02Declara o tipo de carga de trabalho do aplicat" +
+	"ivo ao se conectar a um servidor. O único valor com suporte no momento é" +
+	" ReadOnly. Se %[1]s não for especificado, o utilitário sqlcmd não será c" +
+	"ompatível com a conectividade com uma réplica secundária em um grupo de " +
+	"Always On disponibilidade\x02Essa opção é usada pelo cliente para solici" +
+	"tar uma conexão criptografada\x02Especifica a formatação dos resultados" +
+	"\x02%[1]s Redireciona mensagens de erro com gravidade >= 11 saída para s" +
+	"tderr. Passe 1 para redirecionar todos os erros, incluindo PRINT.\x02Nív" +
+	"el de mensagens de driver mssql a serem impressas\x02Especifica que o sq" +
+	"lcmd sai e retorna um valor %[1]s quando ocorre um erro\x02Controla quai" +
+	"s mensagens de erro são enviadas para %[1]s. As mensagens que têm nível " +
+	"de severidade maior ou igual a esse nível são enviadas\x02Especifica o n" +
+	"úmero de linhas a serem impressas entre os títulos de coluna. Use -h-1 " +
+	"para especificar que os cabeçalhos não sejam impressos\x02Especifica que" +
+	" todos os arquivos de saída são codificados com Unicode little-endian" +
+	"\x02Especifica o caractere separador de coluna. Define a variável %[1]s." +
+	"\x02Remover espaços à direita de uma coluna\x02Fornecido para compatibil" +
+	"idade com versões anteriores. O Sqlcmd sempre otimiza a detecção da répl" +
+	"ica ativa de um Cluster de Failover do SQL\x02Senha\x02Controla o nível " +
+	"de severidade usado para definir a variável %[1]s na saída\x02Especifica" +
+	" a largura da tela para saída\x02%[1]s Lista servidores. Passe %[2]s par" +
+	"a omitir a saída 'Servers:'.\x02Conexão de administrador dedicada\x02For" +
+	"necido para compatibilidade com versões anteriores. Os identificadores e" +
+	"ntre aspas estão sempre ativados\x02Fornecido para compatibilidade com v" +
+	"ersões anteriores. As configurações regionais do cliente não são usadas" +
+	"\x02%[1]s Remova caracteres de controle da saída. Passe 1 para substitui" +
+	"r um espaço por caractere, 2 por um espaço por caracteres consecutivos" +
+	"\x02Entrada de eco\x02Habilitar criptografia de coluna\x02Nova senha\x02" +
+	"Nova senha e sair\x02Define a variável de script sqlcmd %[1]s\x02\x22%[1" +
+	"]s %[2]s\x22: o valor deve ser maior ou igual a %#[3]v e menor ou igual " +
+	"a %#[4]v.\x02\x22%[1]s %[2]s\x22: o valor deve ser maior que %#[3]v e me" +
+	"nor que %#[4]v.\x02\x22%[1]s %[2]s\x22: argumento inesperado. O valor do" +
+	" argumento deve ser %[3]v.\x02\x22%[1]s %[2]s\x22: argumento inesperado." +
+	" O valor do argumento deve ser um de %[3]v.\x02As opções %[1]s e %[2]s s" +
+	"ão mutuamente exclusivas.\x02\x22%[1]s\x22: Argumento ausente. Digite " +
+	"\x22-?\x22 para obter ajuda.\x02\x22%[1]s\x22: opção desconhecida. Insir" +
+	"a \x22-?\x22 para obter ajuda.\x02terminador de lote inválido \x22%[1]s" +
+	"\x22\x02Digite a nova senha:\x02sqlcmd: Install/Create/Query SQL Server," +
+	" Azure SQL, and Tools\x04\x00\x01 \x0e\x02Sqlcmd: Erro:\x04\x00\x01 \x0f" +
+	"\x02Sqlcmd: Aviso:\x02Os comandos ED e !!<command>, o script de iniciali" +
+	"zação e as variáveis de ambiente estão desabilitados.\x02A variável de s" +
+	"cript: \x22%[1]s\x22 é somente leitura\x02Variável de script \x22%[1]s" +
+	"\x22 não definida.\x02A variável de ambiente \x22%[1]s\x22 tem um valor " +
+	"inválido: \x22%[2]s\x22.\x02Erro de sintaxe na linha %[1]d próximo ao co" +
+	"mando \x22%[2]s\x22.\x02%[1]s Erro ao abrir ou operar no arquivo %[2]s (" +
+	"Motivo: %[3]s).\x02%[1]s Erro de sintaxe na linha %[2]d\x02Tempo limite " +
+	"expirado\x02Msg %#[1]v, Nível %[2]d, Estado %[3]d, Servidor %[4]s, Proce" +
+	"dimento %[5]s, Linha %#[6]v%[7]s\x02Msg %#[1]v, Nível %[2]d, Estado %[3]" +
+	"d, Servidor %[4]s, Linha %#[5]v%[6]s\x02Senha:\x02Identificador de variá" +
+	"vel %[1]s inválido\x02Valor de variável inválido %[1]s"
 
-var ru_RUIndex = []uint32{ // 301 elements
+var ru_RUIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000056, 0x000000c1, 0x000000ec,
 	0x00000151, 0x00000172, 0x00000195, 0x0000023b,
@@ -3133,26 +3113,27 @@ var ru_RUIndex = []uint32{ // 301 elements
 	0x0000512d, 0x00005196, 0x000051d2, 0x0000522e,
 	0x000053e9, 0x00005512, 0x00005588, 0x000056d4,
 	0x000057fd, 0x0000590c, 0x000059be, 0x00005ae4,
-	0x00005cb8, 0x00005e8a, 0x00006036, 0x0000624c,
-	0x0000654f, 0x000066c7, 0x0000695b, 0x00006b2e,
-	0x00006bc6, 0x00006c07, 0x00006d16, 0x00006d63,
+	0x00005cb6, 0x00005e62, 0x00006078, 0x0000637b,
+	0x000064f3, 0x00006787, 0x0000695a, 0x000069f2,
+	0x00006a33, 0x00006b42, 0x00006b8f, 0x00006c1e,
 	// Entry 100 - 11F
-	0x00006df2, 0x00006ef1, 0x00006fb7, 0x00007041,
-	0x000070c4, 0x00007107, 0x000071ef, 0x000071fc,
-	0x00007294, 0x000072cf, 0x0000735b, 0x000073a6,
-	0x0000744b, 0x000074f3, 0x0000761f, 0x00007656,
-	0x0000768d, 0x000076a5, 0x000076cb, 0x0000770b,
-	0x00007777, 0x000077d9, 0x00007858, 0x000078fb,
-	0x00007954, 0x000079b1, 0x00007a20, 0x00007a60,
-	0x00007a88, 0x00007af7, 0x00007b12, 0x00007b3d,
+	0x00006d1d, 0x00006de3, 0x00006e6d, 0x00006ef0,
+	0x00006f33, 0x0000701b, 0x00007028, 0x000070c0,
+	0x000070fb, 0x00007187, 0x000071d2, 0x00007277,
+	0x0000731f, 0x0000744b, 0x00007482, 0x000074b9,
+	0x000074d1, 0x000074f7, 0x00007537, 0x000075a3,
+	0x00007605, 0x00007684, 0x00007727, 0x00007780,
+	0x000077dd, 0x0000784c, 0x0000788c, 0x000078b4,
+	0x00007923, 0x0000793e, 0x00007969, 0x000079e9,
 	// Entry 120 - 13F
-	0x00007bbd, 0x00007c1b, 0x00007c62, 0x00007cc8,
-	0x00007d2f, 0x00007db9, 0x00007dfe, 0x00007e29,
-	0x00007ebb, 0x00007f33, 0x00007f41, 0x00007f90,
-	0x00007fd5,
-} // Size: 1228 bytes
+	0x00007a47, 0x00007a8e, 0x00007af4, 0x00007b5b,
+	0x00007be5, 0x00007c2a, 0x00007c55, 0x00007ce7,
+	0x00007d5f, 0x00007d6d, 0x00007dbc, 0x00007e01,
+	0x00007e01, 0x00007e01, 0x00007e01, 0x00007e01,
+	0x00007e01, 0x00007e01,
+} // Size: 1248 bytes
 
-const ru_RUData string = "" + // Size: 32725 bytes
+const ru_RUData string = "" + // Size: 32257 bytes
 	"\x02Установка или создание, запрос, удаление SQL Server\x02Просмотреть с" +
 	"ведения о конфигурации и строки подключения\x04\x02\x0a\x0a\x00%\x02Обр" +
 	"атная связь:\x0a  %[1]s\x02справка по флагам обратной совместимости (-S" +
@@ -3354,92 +3335,86 @@ const ru_RUData string = "" + // Size: 32725 bytes
 	" SQL Server, к которому нужно подключиться. Задает переменную скриптов s" +
 	"qlcmd %[2]s.\x02%[1]s Отключение команд, которые могут скомпрометировать" +
 	" безопасность системы. Передача 1 сообщает sqlcmd о необходимости выхода" +
-	" при выполнении отключенных команд.\x02Указывает метод проверки подлинно" +
-	"сти SQL, используемый для подключения к базе данных SQL Azure. Метод вы" +
-	"бирается из следующего списка: ActiveDirectoryDefault, ActiveDirectoryI" +
-	"ntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDi" +
-	"rectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectory" +
-	"AzCli, ActiveDirectoryDeviceCode, SqlPassword\x02Указывает sqlcmd, что с" +
-	"ледует использовать проверку подлинности ActiveDirectory. Если имя поль" +
-	"зователя не указано, используется метод проверки подлинности ActiveDire" +
-	"ctoryDefault. Если указан пароль, используется ActiveDirectoryPassword. " +
-	"В противном случае используется ActiveDirectoryInteractive\x02Сообщает " +
-	"sqlcmd, что следует игнорировать переменные скрипта. Этот параметр полез" +
-	"ен, если сценарий содержит множество инструкций %[1]s, в которых могут " +
-	"содержаться строки, совпадающие по формату с обычными переменными, напр" +
-	"имер $(variable_name)\x02Создает переменную скрипта sqlcmd, которую мож" +
-	"но использовать в скрипте sqlcmd. Если значение содержит пробелы, его с" +
-	"ледует заключить в кавычки. Можно указать несколько значений var=values" +
-	". Если в любом из указанных значений имеются ошибки, sqlcmd генерирует с" +
-	"ообщение об ошибке, а затем завершает работу\x02Запрашивает пакет друго" +
-	"го размера. Этот параметр задает переменную скрипта sqlcmd %[1]s. packe" +
-	"t_size должно быть значением от 512 до 32767. Значение по умолчанию = 40" +
-	"96. Более крупный размер пакета может повысить производительность выполн" +
-	"ения сценариев, содержащих много инструкций SQL вперемешку с командами " +
-	"%[2]s. Можно запросить больший размер пакета. Однако если запрос отклоне" +
-	"н, sqlcmd использует для размера пакета значение по умолчанию\x02Указыв" +
-	"ает время ожидания входа sqlcmd в драйвер go-mssqldb в секундах при поп" +
-	"ытке подключения к серверу. Этот параметр задает переменную скрипта sql" +
-	"cmd %[1]s. Значение по умолчанию — 30. 0 означает бесконечное значение." +
-	"\x02Этот параметр задает переменную скрипта sqlcmd %[1]s. Имя рабочей ст" +
-	"анции указано в столбце hostname (\x22Имя узла\x22) представления катал" +
-	"ога sys.sysprocesses. Его можно получить с помощью хранимой процедуры s" +
-	"p_who. Если этот параметр не указан, по умолчанию используется имя испол" +
-	"ьзуемого в данный момент компьютера. Это имя можно использовать для иде" +
-	"нтификации различных сеансов sqlcmd\x02Объявляет тип рабочей нагрузки п" +
-	"риложения при подключении к серверу. Сейчас поддерживается только значе" +
-	"ние ReadOnly. Если параметр %[1]s не задан, служебная программа sqlcmd " +
-	"не поддерживает подключение к вторичному серверу репликации в группе до" +
-	"ступности Always On.\x02Этот переключатель используется клиентом для за" +
-	"проса зашифрованного подключения\x02Задает форматирование результатов" +
-	"\x02%[1]s Перенаправление сообщений об ошибках с выходными данными уровн" +
-	"я серьезности >= 11 в stderr. Передайте 1, чтобы перенаправлять все оши" +
-	"бки, включая PRINT.\x02Уровень сообщений драйвера mssql для печати\x02У" +
-	"казывает, что при возникновении ошибки sqlcmd завершает работу и возвра" +
-	"щает %[1]s\x02Определяет, какие сообщения об ошибках следует отправлять" +
-	" в %[1]s. Отправляются сообщения, уровень серьезности которых не меньше " +
-	"указанного\x02Указывает число строк для печати между заголовками столбц" +
-	"ов. Используйте -h-1, чтобы заголовки не печатались\x02Указывает, что в" +
-	"се выходные файлы имеют кодировку Юникод с прямым порядком\x02Указывает" +
-	" символ разделителя столбцов. Задает значение переменной %[1]s.\x02Удали" +
-	"ть конечные пробелы из столбца\x02Предоставлено для обратной совместимо" +
-	"сти. Sqlcmd всегда оптимизирует обнаружение активной реплики кластера о" +
-	"тработки отказа SQL\x02Пароль\x02Управляет уровнем серьезности, использ" +
-	"уемым для задания переменной %[1]s при выходе\x02Задает ширину экрана д" +
-	"ля вывода\x02%[1]s Перечисление серверов. Передайте %[2]s для пропуска " +
-	"выходных данных \x22Servers:\x22.\x02Выделенное административное соедин" +
-	"ение\x02Предоставлено для обратной совместимости. Нестандартные идентиф" +
-	"икаторы всегда включены\x02Предоставлено для обратной совместимости. Ре" +
-	"гиональные параметры клиента не используются\x02%[1]s Удалить управляющ" +
-	"ие символы из выходных данных. Передайте 1, чтобы заменить пробел для к" +
-	"аждого символа, и 2 с целью замены пробела для последовательных символо" +
-	"в\x02Вывод на экран входных данных\x02Включить шифрование столбцов\x02Н" +
-	"овый пароль\x02Новый пароль и выход\x02Задает переменную скриптов sqlcm" +
-	"d %[1]s\x02'%[1]s %[2]s': значение должно быть не меньше %#[3]v и не бол" +
-	"ьше %#[4]v.\x02\x22%[1]s %[2]s\x22: значение должно быть больше %#[3]v " +
-	"и меньше %#[4]v.\x02'%[1]s %[2]s': непредвиденный аргумент. Значение ар" +
-	"гумента должно быть %[3]v.\x02\x22%[1]s %[2]s\x22: непредвиденный аргум" +
-	"ент. Значение аргумента должно быть одним из следующих: %[3]v.\x02Парам" +
-	"етры %[1]s и %[2]s являются взаимоисключающими.\x02\x22%[1]s\x22: аргум" +
-	"ент отсутствует. Для справки введите \x22-?\x22.\x02\x22%[1]s\x22: неиз" +
-	"вестный параметр. Введите \x22?\x22 для получения справки.\x02недопусти" +
-	"мый код конца пакета \x22%[1]s\x22\x02Введите новый пароль:\x02sqlcmd: " +
-	"установка, создание и запрос SQL Server, Azure SQL и инструментов\x04" +
-	"\x00\x01 \x16\x02Sqlcmd: ошибка:\x04\x00\x01 &\x02Sqlcmd: предупреждение" +
-	":\x02ED, а также команды !!<command>, скрипт запуска и переменные среды " +
-	"отключены\x02Переменная скрипта \x22%[1]s\x22 доступна только для чтени" +
-	"я\x02Переменная скрипта \x22%[1]s\x22 не определена.\x02Переменная сред" +
-	"ы \x22%[1]s\x22 имеет недопустимое значение \x22%[2]s\x22.\x02Синтаксич" +
-	"еская ошибка в строке %[1]d рядом с командой \x22%[2]s\x22\x02%[1]s Про" +
-	"изошла ошибка при открытии или использовании файла %[2]s (причина: %[3]" +
-	"s).\x02%[1]sСинтаксическая ошибка в строке %[2]d\x02Время ожидания истек" +
-	"ло\x02Сообщение %#[1]v, уровень %[2]d, состояние %[3]d, сервер %[4]s, п" +
-	"роцедура %[5]s, строка %#[6]v%[7]s\x02Сообщение %#[1]v, уровень %[2]d, " +
-	"состояние %[3]d, сервер %[4]s, строка %#[5]v%[6]s\x02Пароль:\x02Недопус" +
-	"тимый идентификатор переменной %[1]s\x02Недопустимое значение переменно" +
-	"й %[1]s"
+	" при выполнении отключенных команд.\x02Указывает sqlcmd, что следует исп" +
+	"ользовать проверку подлинности ActiveDirectory. Если имя пользователя н" +
+	"е указано, используется метод проверки подлинности ActiveDirectoryDefau" +
+	"lt. Если указан пароль, используется ActiveDirectoryPassword. В противно" +
+	"м случае используется ActiveDirectoryInteractive\x02Сообщает sqlcmd, чт" +
+	"о следует игнорировать переменные скрипта. Этот параметр полезен, если " +
+	"сценарий содержит множество инструкций %[1]s, в которых могут содержать" +
+	"ся строки, совпадающие по формату с обычными переменными, например $(va" +
+	"riable_name)\x02Создает переменную скрипта sqlcmd, которую можно использ" +
+	"овать в скрипте sqlcmd. Если значение содержит пробелы, его следует зак" +
+	"лючить в кавычки. Можно указать несколько значений var=values. Если в л" +
+	"юбом из указанных значений имеются ошибки, sqlcmd генерирует сообщение " +
+	"об ошибке, а затем завершает работу\x02Запрашивает пакет другого размер" +
+	"а. Этот параметр задает переменную скрипта sqlcmd %[1]s. packet_size до" +
+	"лжно быть значением от 512 до 32767. Значение по умолчанию = 4096. Боле" +
+	"е крупный размер пакета может повысить производительность выполнения сц" +
+	"енариев, содержащих много инструкций SQL вперемешку с командами %[2]s. " +
+	"Можно запросить больший размер пакета. Однако если запрос отклонен, sql" +
+	"cmd использует для размера пакета значение по умолчанию\x02Указывает вре" +
+	"мя ожидания входа sqlcmd в драйвер go-mssqldb в секундах при попытке по" +
+	"дключения к серверу. Этот параметр задает переменную скрипта sqlcmd %[1" +
+	"]s. Значение по умолчанию — 30. 0 означает бесконечное значение.\x02Этот" +
+	" параметр задает переменную скрипта sqlcmd %[1]s. Имя рабочей станции ук" +
+	"азано в столбце hostname (\x22Имя узла\x22) представления каталога sys." +
+	"sysprocesses. Его можно получить с помощью хранимой процедуры sp_who. Ес" +
+	"ли этот параметр не указан, по умолчанию используется имя используемого" +
+	" в данный момент компьютера. Это имя можно использовать для идентификаци" +
+	"и различных сеансов sqlcmd\x02Объявляет тип рабочей нагрузки приложения" +
+	" при подключении к серверу. Сейчас поддерживается только значение ReadOn" +
+	"ly. Если параметр %[1]s не задан, служебная программа sqlcmd не поддержи" +
+	"вает подключение к вторичному серверу репликации в группе доступности A" +
+	"lways On.\x02Этот переключатель используется клиентом для запроса зашифр" +
+	"ованного подключения\x02Задает форматирование результатов\x02%[1]s Пере" +
+	"направление сообщений об ошибках с выходными данными уровня серьезности" +
+	" >= 11 в stderr. Передайте 1, чтобы перенаправлять все ошибки, включая P" +
+	"RINT.\x02Уровень сообщений драйвера mssql для печати\x02Указывает, что п" +
+	"ри возникновении ошибки sqlcmd завершает работу и возвращает %[1]s\x02О" +
+	"пределяет, какие сообщения об ошибках следует отправлять в %[1]s. Отпра" +
+	"вляются сообщения, уровень серьезности которых не меньше указанного\x02" +
+	"Указывает число строк для печати между заголовками столбцов. Используйт" +
+	"е -h-1, чтобы заголовки не печатались\x02Указывает, что все выходные фа" +
+	"йлы имеют кодировку Юникод с прямым порядком\x02Указывает символ раздел" +
+	"ителя столбцов. Задает значение переменной %[1]s.\x02Удалить конечные п" +
+	"робелы из столбца\x02Предоставлено для обратной совместимости. Sqlcmd в" +
+	"сегда оптимизирует обнаружение активной реплики кластера отработки отка" +
+	"за SQL\x02Пароль\x02Управляет уровнем серьезности, используемым для зад" +
+	"ания переменной %[1]s при выходе\x02Задает ширину экрана для вывода\x02" +
+	"%[1]s Перечисление серверов. Передайте %[2]s для пропуска выходных данны" +
+	"х \x22Servers:\x22.\x02Выделенное административное соединение\x02Предос" +
+	"тавлено для обратной совместимости. Нестандартные идентификаторы всегда" +
+	" включены\x02Предоставлено для обратной совместимости. Региональные пара" +
+	"метры клиента не используются\x02%[1]s Удалить управляющие символы из в" +
+	"ыходных данных. Передайте 1, чтобы заменить пробел для каждого символа," +
+	" и 2 с целью замены пробела для последовательных символов\x02Вывод на эк" +
+	"ран входных данных\x02Включить шифрование столбцов\x02Новый пароль\x02Н" +
+	"овый пароль и выход\x02Задает переменную скриптов sqlcmd %[1]s\x02'%[1]" +
+	"s %[2]s': значение должно быть не меньше %#[3]v и не больше %#[4]v.\x02" +
+	"\x22%[1]s %[2]s\x22: значение должно быть больше %#[3]v и меньше %#[4]v." +
+	"\x02'%[1]s %[2]s': непредвиденный аргумент. Значение аргумента должно бы" +
+	"ть %[3]v.\x02\x22%[1]s %[2]s\x22: непредвиденный аргумент. Значение арг" +
+	"умента должно быть одним из следующих: %[3]v.\x02Параметры %[1]s и %[2]" +
+	"s являются взаимоисключающими.\x02\x22%[1]s\x22: аргумент отсутствует. Д" +
+	"ля справки введите \x22-?\x22.\x02\x22%[1]s\x22: неизвестный параметр. " +
+	"Введите \x22?\x22 для получения справки.\x02недопустимый код конца паке" +
+	"та \x22%[1]s\x22\x02Введите новый пароль:\x02sqlcmd: установка, создани" +
+	"е и запрос SQL Server, Azure SQL и инструментов\x04\x00\x01 \x16\x02Sql" +
+	"cmd: ошибка:\x04\x00\x01 &\x02Sqlcmd: предупреждение:\x02ED, а также ком" +
+	"анды !!<command>, скрипт запуска и переменные среды отключены\x02Переме" +
+	"нная скрипта \x22%[1]s\x22 доступна только для чтения\x02Переменная скр" +
+	"ипта \x22%[1]s\x22 не определена.\x02Переменная среды \x22%[1]s\x22 име" +
+	"ет недопустимое значение \x22%[2]s\x22.\x02Синтаксическая ошибка в стро" +
+	"ке %[1]d рядом с командой \x22%[2]s\x22\x02%[1]s Произошла ошибка при о" +
+	"ткрытии или использовании файла %[2]s (причина: %[3]s).\x02%[1]sСинтакс" +
+	"ическая ошибка в строке %[2]d\x02Время ожидания истекло\x02Сообщение %#" +
+	"[1]v, уровень %[2]d, состояние %[3]d, сервер %[4]s, процедура %[5]s, стр" +
+	"ока %#[6]v%[7]s\x02Сообщение %#[1]v, уровень %[2]d, состояние %[3]d, се" +
+	"рвер %[4]s, строка %#[5]v%[6]s\x02Пароль:\x02Недопустимый идентификатор" +
+	" переменной %[1]s\x02Недопустимое значение переменной %[1]s"
 
-var zh_CNIndex = []uint32{ // 301 elements
+var zh_CNIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002b, 0x00000050, 0x00000065,
 	0x00000096, 0x000000ab, 0x000000b8, 0x000000fc,
@@ -3509,26 +3484,27 @@ var zh_CNIndex = []uint32{ // 301 elements
 	0x00002409, 0x00002430, 0x0000244c, 0x0000247a,
 	0x0000253b, 0x000025bf, 0x000025ed, 0x0000265a,
 	0x000026d9, 0x00002743, 0x0000279a, 0x00002808,
-	0x00002953, 0x00002a3b, 0x00002af8, 0x00002be5,
-	0x00002d64, 0x00002e1b, 0x00002f24, 0x00002ff7,
-	0x00003022, 0x00003038, 0x000030b7, 0x000030e6,
+	0x000028f0, 0x000029ad, 0x00002a9a, 0x00002c19,
+	0x00002cd0, 0x00002dd9, 0x00002eac, 0x00002ed7,
+	0x00002eed, 0x00002f6c, 0x00002f9b, 0x00002fcf,
 	// Entry 100 - 11F
-	0x0000311a, 0x0000317e, 0x000031cd, 0x00003212,
-	0x00003244, 0x00003260, 0x000032c4, 0x000032cb,
-	0x00003309, 0x00003325, 0x0000336c, 0x00003382,
-	0x000033bc, 0x000033f3, 0x00003468, 0x00003475,
-	0x00003485, 0x0000348f, 0x000034a8, 0x000034c9,
-	0x00003512, 0x0000354c, 0x00003586, 0x000035c7,
-	0x000035e7, 0x0000361e, 0x00003655, 0x00003677,
-	0x00003688, 0x000036c6, 0x000036db, 0x000036f0,
+	0x00003033, 0x00003082, 0x000030c7, 0x000030f9,
+	0x00003115, 0x00003179, 0x00003180, 0x000031be,
+	0x000031da, 0x00003221, 0x00003237, 0x00003271,
+	0x000032a8, 0x0000331d, 0x0000332a, 0x0000333a,
+	0x00003344, 0x0000335d, 0x0000337e, 0x000033c7,
+	0x00003401, 0x0000343b, 0x0000347c, 0x0000349c,
+	0x000034d3, 0x0000350a, 0x0000352c, 0x0000353d,
+	0x0000357b, 0x00003590, 0x000035a5, 0x000035e6,
 	// Entry 120 - 13F
-	0x00003731, 0x00003754, 0x00003776, 0x000037a6,
-	0x000037de, 0x0000381c, 0x00003840, 0x00003853,
-	0x000038af, 0x000038fc, 0x00003904, 0x00003921,
-	0x00003938,
-} // Size: 1228 bytes
+	0x00003609, 0x0000362b, 0x0000365b, 0x00003693,
+	0x000036d1, 0x000036f5, 0x00003708, 0x00003764,
+	0x000037b1, 0x000037b9, 0x000037d6, 0x000037ed,
+	0x000037ed, 0x000037ed, 0x000037ed, 0x000037ed,
+	0x000037ed, 0x000037ed,
+} // Size: 1248 bytes
 
-const zh_CNData string = "" + // Size: 14648 bytes
+const zh_CNData string = "" + // Size: 14317 bytes
 	"\x02安装/创建、查询、卸载 SQL Server\x02查看配置信息和连接字符串\x04\x02\x0a\x0a\x00\x0f\x02反馈" +
 	":\x0a %[1]s\x02向后兼容性标志(-S、-U、-E 等)的帮助\x02打印 sqlcmd 版本\x02配置文件\x02日志级别，错误" +
 	"=0，警告=1，信息=2，调试=3，跟踪=4\x02使用 \x22%[1]s\x22 等子命令修改 sqlconfig 文件\x02为现有终结点" +
@@ -3611,45 +3587,41 @@ const zh_CNData string = "" + // Size: 14648 bytes
 	"\x02指定批处理终止符。默认值为 %[1]s\x02登录名或包含的数据库用户名。对于包含的数据库用户，必须提供数据库名称选项\x02在 sql" +
 	"cmd 启动时执行查询，但不会在查询完成运行后退出 sqlcmd。可以执行以多个分号分隔的查询\x02在 sqlcmd 启动时执行查询，然后立即" +
 	"退出 sqlcmd。可以执行以多个分号分隔的查询\x02%[1]s 指定要连接到的 SQL Server 实例。它设置 sqlcmd 脚本变" +
-	"量 %[2]s。\x02%[1]s禁用可能危及系统安全性的命令。传递 1 指示 sqlcmd 在禁用的命令运行时退出。\x02指定用于连接到" +
-	" Azure SQL 数据库的 SQL 身份验证方法。为以下方法之一: ActiveDirectoryDefault、ActiveDirecto" +
-	"ryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDi" +
-	"rectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAz" +
-	"Cli、ActiveDirectoryDeviceCode、SqlPassword\x02告知 sqlcmd 使用 ActiveDirector" +
-	"y 身份验证。如果未提供用户名，则使用身份验证方法 ActiveDirectoryDefault。如果提供了密码，则使用 ActiveDirec" +
-	"toryPassword。否则使用 ActiveDirectoryInteractive\x02使 sqlcmd 忽略脚本变量。当脚本包含许多 " +
-	"%[1]s 语句时，此参数很有用，这些语句可能包含与常规变量具有相同格式的字符串，例如 $(variable_name)\x02创建可在 sql" +
-	"cmd 脚本中使用的 sqlcmd 脚本变量。如果值包含空格，则将该值以引号括起。可以指定多个 var=values 值。如果指定的任何值中存在" +
-	"错误，sqlcmd 将生成错误消息，然后退出\x02请求不同大小的数据包。此选项设置 sqlcmd 脚本变量 %[1]s。packet_si" +
-	"ze 必须是介于 512 和 32767 之间的值。默认值 = 4096。数据包大小越大，执行在 %[2]s 命令之间具有大量 SQL 语句的脚" +
-	"本的性能就越强。你可以请求更大的数据包大小。但是，如果请求被拒绝，sqlcmd将 使用服务器的默认数据包大小\x02指定当你尝试连接到服务器" +
-	"时，sqlcmd 登录到 go-mssqldb 驱动程序超时之前的秒数。此选项设置 sqlcmd 脚本变量 %[1]s。默认值为 30。0 " +
-	"表示无限\x02此选项设置 sqlcmd 脚本变量 %[1]s。工作站名称列在 sys.sysprocesses 目录视图的主机名列中，可以" +
-	"使用存储程序 sp_who 返回。如果未指定此选项，则默认为当前计算机名。此名称可用于标识不同的 sqlcmd 会话\x02在连接到服务器时" +
-	"声明应用程序工作负载类型。当前唯一受支持的值是 ReadOnly。如果未指定 %[1]s，sqlcmd 实用工具将不支持连接到 Always" +
-	" On 可用性组中的辅助副本\x02客户端使用此开关请求加密连接\x02指定结果的格式\x02%[1]s 将严重性> = 11 输出的错误消息重" +
-	"定向到 stderr。传递 1 以重定向包括 PRINT 在内的所有错误。\x02要打印的 mssql 驱动程序消息的级别\x02指定 sq" +
-	"lcmd 在出错时退出并返回 %[1]s 值\x02控制将哪些错误消息发送到 %[1]s。将发送严重级别大于或等于此级别的消息\x02指定要在列" +
-	"标题之间打印的行数。使用 -h-1 指定不打印标头\x02指定所有输出文件均使用 little-endian Unicode 进行编码" +
-	"\x02指定列分隔符字符。设置 %[1]s 变量。\x02从列中删除尾随空格\x02为实现向后兼容而提供。Sqlcmd 一直在优化 SQL 故障" +
-	"转移群集的活动副本检测\x02密码\x02控制用于在退出时设置 %[1]s 变量的严重性级别\x02指定输出的屏幕宽度\x02%[1]s 列" +
-	"出服务器。传递 %[2]s 以省略 “Servers:”输出。\x02专用管理员连接\x02为向后兼容提供。始终启用带引号的标识符\x02为" +
-	"向后兼容提供。不使用客户端区域设置\x02%[1]s 从输出中删除控制字符。传递 1 以替换每个字符的空格，2 表示每个连续字符的空格" +
-	"\x02回显输入\x02启用列加密\x02新密码\x02输入新密码并退出\x02设置 sqlcmd 脚本变量 %[1]s\x02\x22%[1]" +
-	"s %[2]s\x22: 值必须大于等于 %#[3]v 且小于或等于 %#[4]v。\x02\x22%[1]s %[2]s\x22: 值必须大于" +
-	" %#[3]v 且小于 %#[4]v。\x02\x22%[1]s %[2]s\x22: 意外参数。参数值必须是 %[3]v。\x02'%[1]s" +
-	" %[2]s': 意外参数。参数值必须是 %[3]v 之一。\x02%[1]s 和 %[2]s 选项互斥。\x02\x22%[1]s\x22: " +
-	"缺少参数。输入 \x22-?\x22 可查看帮助。\x02\x22%[1]s\x22: 未知选项。输入 \x22-?\x22 可查看帮助。" +
-	"\x02批处理终止符 \x22%[1]s\x22 无效\x02输入新密码:\x02sqlcmd: 安装/创建/查询 SQL Server、Azu" +
-	"re SQL 和工具\x04\x00\x01 \x10\x02Sqlcmd: 错误:\x04\x00\x01 \x10\x02Sqlcmd: 警" +
-	"告:\x02ED 和 !!<command> 命令、启动脚本和环境变量被禁用\x02脚本变量: \x22%[1]s\x22 为只读项\x02" +
-	"未定义 \x22%[1]s\x22 脚本变量。\x02环境变量 \x22%[1]s\x22 具有无效值 \x22%[2]s\x22。\x02" +
-	"命令 \x22%[2]s\x22 附近的行 %[1]d 存在语法错误。\x02%[1]s 打开或操作文件 %[2]s 时出错(原因: %[3" +
-	"]s)。\x02行 %[2]d 存在 %[1]s 语法错误\x02超时时间已到\x02Msg %#[1]v，级别 %[2]d，状态 %[3]d，" +
-	"服务器 %[4]s，过程 %[5]s，行 %#[6]v%[7]s\x02Msg %#[1]v，级别 %[2]d，状态 %[3]d，服务器 %" +
-	"[4]s，行 %#[5]v%[6]s\x02密码:\x02变量标识符 %[1]s 无效\x02变量值 %[1]s 无效"
+	"量 %[2]s。\x02%[1]s禁用可能危及系统安全性的命令。传递 1 指示 sqlcmd 在禁用的命令运行时退出。\x02告知 sqlc" +
+	"md 使用 ActiveDirectory 身份验证。如果未提供用户名，则使用身份验证方法 ActiveDirectoryDefault。如果提" +
+	"供了密码，则使用 ActiveDirectoryPassword。否则使用 ActiveDirectoryInteractive\x02使 " +
+	"sqlcmd 忽略脚本变量。当脚本包含许多 %[1]s 语句时，此参数很有用，这些语句可能包含与常规变量具有相同格式的字符串，例如 $(vari" +
+	"able_name)\x02创建可在 sqlcmd 脚本中使用的 sqlcmd 脚本变量。如果值包含空格，则将该值以引号括起。可以指定多个 va" +
+	"r=values 值。如果指定的任何值中存在错误，sqlcmd 将生成错误消息，然后退出\x02请求不同大小的数据包。此选项设置 sqlcmd " +
+	"脚本变量 %[1]s。packet_size 必须是介于 512 和 32767 之间的值。默认值 = 4096。数据包大小越大，执行在 %" +
+	"[2]s 命令之间具有大量 SQL 语句的脚本的性能就越强。你可以请求更大的数据包大小。但是，如果请求被拒绝，sqlcmd将 使用服务器的默认数" +
+	"据包大小\x02指定当你尝试连接到服务器时，sqlcmd 登录到 go-mssqldb 驱动程序超时之前的秒数。此选项设置 sqlcmd 脚" +
+	"本变量 %[1]s。默认值为 30。0 表示无限\x02此选项设置 sqlcmd 脚本变量 %[1]s。工作站名称列在 sys.syspro" +
+	"cesses 目录视图的主机名列中，可以使用存储程序 sp_who 返回。如果未指定此选项，则默认为当前计算机名。此名称可用于标识不同的 sql" +
+	"cmd 会话\x02在连接到服务器时声明应用程序工作负载类型。当前唯一受支持的值是 ReadOnly。如果未指定 %[1]s，sqlcmd 实用" +
+	"工具将不支持连接到 Always On 可用性组中的辅助副本\x02客户端使用此开关请求加密连接\x02指定结果的格式\x02%[1]s 将" +
+	"严重性> = 11 输出的错误消息重定向到 stderr。传递 1 以重定向包括 PRINT 在内的所有错误。\x02要打印的 mssql " +
+	"驱动程序消息的级别\x02指定 sqlcmd 在出错时退出并返回 %[1]s 值\x02控制将哪些错误消息发送到 %[1]s。将发送严重级别" +
+	"大于或等于此级别的消息\x02指定要在列标题之间打印的行数。使用 -h-1 指定不打印标头\x02指定所有输出文件均使用 little-en" +
+	"dian Unicode 进行编码\x02指定列分隔符字符。设置 %[1]s 变量。\x02从列中删除尾随空格\x02为实现向后兼容而提供。Sq" +
+	"lcmd 一直在优化 SQL 故障转移群集的活动副本检测\x02密码\x02控制用于在退出时设置 %[1]s 变量的严重性级别\x02指定输出的" +
+	"屏幕宽度\x02%[1]s 列出服务器。传递 %[2]s 以省略 “Servers:”输出。\x02专用管理员连接\x02为向后兼容提供。始" +
+	"终启用带引号的标识符\x02为向后兼容提供。不使用客户端区域设置\x02%[1]s 从输出中删除控制字符。传递 1 以替换每个字符的空格，2" +
+	" 表示每个连续字符的空格\x02回显输入\x02启用列加密\x02新密码\x02输入新密码并退出\x02设置 sqlcmd 脚本变量 %[1]s" +
+	"\x02\x22%[1]s %[2]s\x22: 值必须大于等于 %#[3]v 且小于或等于 %#[4]v。\x02\x22%[1]s %[2]" +
+	"s\x22: 值必须大于 %#[3]v 且小于 %#[4]v。\x02\x22%[1]s %[2]s\x22: 意外参数。参数值必须是 %[3]" +
+	"v。\x02'%[1]s %[2]s': 意外参数。参数值必须是 %[3]v 之一。\x02%[1]s 和 %[2]s 选项互斥。\x02" +
+	"\x22%[1]s\x22: 缺少参数。输入 \x22-?\x22 可查看帮助。\x02\x22%[1]s\x22: 未知选项。输入 \x22-" +
+	"?\x22 可查看帮助。\x02批处理终止符 \x22%[1]s\x22 无效\x02输入新密码:\x02sqlcmd: 安装/创建/查询 SQ" +
+	"L Server、Azure SQL 和工具\x04\x00\x01 \x10\x02Sqlcmd: 错误:\x04\x00\x01 \x10" +
+	"\x02Sqlcmd: 警告:\x02ED 和 !!<command> 命令、启动脚本和环境变量被禁用\x02脚本变量: \x22%[1]s" +
+	"\x22 为只读项\x02未定义 \x22%[1]s\x22 脚本变量。\x02环境变量 \x22%[1]s\x22 具有无效值 \x22%[2" +
+	"]s\x22。\x02命令 \x22%[2]s\x22 附近的行 %[1]d 存在语法错误。\x02%[1]s 打开或操作文件 %[2]s 时出" +
+	"错(原因: %[3]s)。\x02行 %[2]d 存在 %[1]s 语法错误\x02超时时间已到\x02Msg %#[1]v，级别 %[2]" +
+	"d，状态 %[3]d，服务器 %[4]s，过程 %[5]s，行 %#[6]v%[7]s\x02Msg %#[1]v，级别 %[2]d，状态 %[" +
+	"3]d，服务器 %[4]s，行 %#[5]v%[6]s\x02密码:\x02变量标识符 %[1]s 无效\x02变量值 %[1]s 无效"
 
-var zh_TWIndex = []uint32{ // 301 elements
+var zh_TWIndex = []uint32{ // 306 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000031, 0x00000053, 0x0000006e,
 	0x000000a1, 0x000000b8, 0x000000c2, 0x00000106,
@@ -3719,26 +3691,27 @@ var zh_TWIndex = []uint32{ // 301 elements
 	0x000023d9, 0x00002400, 0x0000241c, 0x0000244a,
 	0x00002511, 0x0000259b, 0x000025c9, 0x0000263f,
 	0x000026b7, 0x00002721, 0x00002781, 0x000027f6,
-	0x0000293b, 0x00002a20, 0x00002ad7, 0x00002bc4,
-	0x00002d46, 0x00002dfd, 0x00002f2a, 0x00002ffc,
-	0x0000302d, 0x00003049, 0x000030c4, 0x000030f0,
+	0x000028db, 0x00002992, 0x00002a7f, 0x00002c01,
+	0x00002cb8, 0x00002de5, 0x00002eb7, 0x00002ee8,
+	0x00002f04, 0x00002f7f, 0x00002fab, 0x00002fe4,
 	// Entry 100 - 11F
-	0x00003129, 0x00003190, 0x000031ee, 0x00003225,
-	0x00003260, 0x0000327f, 0x000032e0, 0x000032e7,
-	0x00003322, 0x0000333e, 0x00003382, 0x0000339e,
-	0x000033d5, 0x0000340f, 0x00003484, 0x00003491,
-	0x000034a7, 0x000034b1, 0x000034c7, 0x000034eb,
-	0x00003537, 0x00003571, 0x000035b1, 0x00003601,
-	0x00003621, 0x00003658, 0x00003692, 0x000036b4,
-	0x000036c5, 0x00003703, 0x00003718, 0x0000372d,
+	0x0000304b, 0x000030a9, 0x000030e0, 0x0000311b,
+	0x0000313a, 0x0000319b, 0x000031a2, 0x000031dd,
+	0x000031f9, 0x0000323d, 0x00003259, 0x00003290,
+	0x000032ca, 0x0000333f, 0x0000334c, 0x00003362,
+	0x0000336c, 0x00003382, 0x000033a6, 0x000033f2,
+	0x0000342c, 0x0000346c, 0x000034bc, 0x000034dc,
+	0x00003513, 0x0000354d, 0x0000356f, 0x00003580,
+	0x000035be, 0x000035d3, 0x000035e8, 0x0000362d,
 	// Entry 120 - 13F
-	0x00003772, 0x00003795, 0x000037b9, 0x000037ee,
-	0x00003820, 0x00003866, 0x0000388d, 0x0000389d,
-	0x000038fc, 0x0000394c, 0x00003954, 0x00003973,
-	0x0000398a,
-} // Size: 1228 bytes
+	0x00003650, 0x00003674, 0x000036a9, 0x000036db,
+	0x00003721, 0x00003748, 0x00003758, 0x000037b7,
+	0x00003807, 0x0000380f, 0x0000382e, 0x00003845,
+	0x00003845, 0x00003845, 0x00003845, 0x00003845,
+	0x00003845, 0x00003845,
+} // Size: 1248 bytes
 
-const zh_TWData string = "" + // Size: 14730 bytes
+const zh_TWData string = "" + // Size: 14405 bytes
 	"\x02安裝/建立、查詢、解除安裝 SQL Server\x02檢視組態資訊和連接字串\x04\x02\x0a\x0a\x00\x15\x02意" +
 	"見反應:\x0a %[1]s\x02回溯相容性旗標的說明 (-S、-U、-E 等) \x02sqlcmd 的列印版本\x02設定檔\x02記" +
 	"錄層級，錯誤=0，警告=1，資訊=2，偵錯=3，追蹤=4\x02使用子命令修改 sqlconfig 檔案，例如 \x22%[1]s\x22" +
@@ -3819,41 +3792,38 @@ const zh_TWData string = "" + // Size: 14730 bytes
 	"值為 %[1]s\x02登入名稱或包含資料庫使用者名稱。對於容器資料庫使用者，您必須提供資料庫名稱選項\x02sqlcmd 啟動時執行查詢，" +
 	"但查詢完成執行時不會結束 sqlcmd。可以執行以分號分隔的多重查詢\x02在 sqlcmd 啟動時執行查詢，然後立即結束 sqlcmd。可" +
 	"以執行以分號分隔的多重查詢\x02%[1]s 指定要連線的 SQL Server 執行個體。它會設定 sqlcmd 指令碼變數 %[2]s。" +
-	"\x02%[1]s 停用可能會危害系統安全性的命令。傳遞 1 會告訴 sqlcmd 在執行停用的命令時結束。\x02指定要用來連接到 Azure" +
-	" SQL Database 的 SQL 驗證方法。下列其中一項: ActiveDirectoryDefault、ActiveDirectoryI" +
-	"ntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirec" +
-	"toryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli" +
-	"、ActiveDirectoryDeviceCode、SqlPassword\x02告訴 sqlcmd 使用 ActiveDirectory" +
-	" 驗證。若未提供使用者名稱，則會使用驗證方法 ActiveDirectoryDefault。如果提供密碼，就會使用 ActiveDirector" +
-	"yPassword。否則會使用 ActiveDirectoryInteractive\x02導致 sqlcmd 忽略指令碼變數。當指令碼包含許多" +
-	"可能包含格式與一般變數相同之字串的 %[1]s 陳述式時，此參數會很有用，例如 $(variable_name)\x02建立可在 sqlcm" +
-	"d 指令碼中使用的 sqlcmd 指令碼變數。如果值包含空格，請將值括在引號中。您可以指定多個 var=values 值。如果指定的任何值有錯誤" +
-	"，sqlcmd 會產生錯誤訊息，然後結束\x02要求不同大小的封包。此選項可設定 sqlcmd 指令碼變數 %[1]s。packet_siz" +
-	"e 必須是介於 512 到 32767 之間的值。預設值 = 4096。較大的封包大小可以提高在 %[2]s 命令之間包含大量 SQL 語句的指" +
-	"令碼的執行性能。您可以要求較大的封包大小。不過，如果要求遭到拒絕，sqlcmd 會使用伺服器預設的封包大小\x02指定當您嘗試連線到伺服器時" +
-	"，sqlcmd 登入 go-mssqldb 驅動程式逾時前的秒數。此選項可設定 sqlcmd 指令碼變數 %[1]s。預設值是 30。0 表" +
-	"示無限\x02此選項可設定 sqlcmd 指令碼變數 %[1]s。工作站名稱列在 sys.sysprocesses 目錄檢視的主機名稱資料行" +
-	"中，而且可以使用預存程式 sp_who 傳回。如果未指定這個選項，預設值是目前的電腦名稱稱。此名稱可用來識別不同的 sqlcmd 工作階段" +
-	"\x02在連線到伺服器時宣告應用程式工作負載類型。目前唯一支援的值是 ReadOnly。如果未指定%[1]s，sqlcmd 公用程式將不支援連線" +
-	"到 Always On 可用性群組中的次要複本\x02用戶端會使用此切換來要求加密連線\x02指定結果的格式設定\x02%[1]s 將嚴重性" +
-	"為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。\x02要列印的 mssql 驅動程式訊" +
-	"息層級\x02指定 sqlcmd 在發生錯誤時結束並傳回%[1]s 值\x02控制要傳送哪些錯誤訊息給 %[1]s。會傳送嚴重性層級大於或等" +
-	"於此層級的訊息\x02指定資料行標題之間要列印的資料列數目。使用 -h-1 指定不要列印標頭\x02指定所有輸出檔案都以小端點 Unicod" +
-	"e 編碼\x02指定資料行分隔符號字元。設定 %[1]s 變數。\x02從資料行移除尾端空格\x02為回溯相容性提供。Sqlcmd 一律最佳化 " +
-	"SQL 容錯移轉叢集作用中複本的偵測\x02密碼\x02控制結束時用來設定 %[1]s 變數的嚴重性層級\x02指定輸出的螢幕寬度\x02%[1" +
-	"]s 列出伺服器。傳遞 %[2]s 以省略 'Servers:' 輸出。\x02專用系統管理員連線\x02為回溯相容性提供。一律啟用引號識別項" +
-	"\x02為回溯相容性提供。未使用用戶端地區設定\x02%[1]s 從輸出移除控制字元。傳遞 1 以取代每個字元的空格，2 表示每個連續字元一個空" +
-	"格\x02回音輸入\x02啟用資料行加密\x02新密碼\x02新增密碼並結束\x02設定 sqlcmd 指令碼變數 %[1]s\x02'%[" +
-	"1]s %[2]s': 值必須大於或等於 %#[3]v 且小於或等於 %#[4]v。\x02'%[1]s %[2]s': 值必須大於 %#[3]" +
-	"v 且小於 %#[4]v。\x02'%[1]s %[2]s': 非預期的引數。引數值必須是 %[3]v。\x02'%[1]s %[2]s': 非" +
-	"預期的引數。引數值必須是 %[3]v 的其中一個。\x02%[1]s 和 %[2]s 選項互斥。\x02'%[1]s': 遺漏引數。輸入 '" +
-	"-?' 以取得說明。\x02'%[1]s': 未知的選項。輸入 '-?' 以取得說明。\x02批次結束字元 '%[1]s' 無效\x02輸入新密" +
-	"碼:\x02sqlcmd: 安裝/建立/查詢 SQL Server、Azure SQL 與工具\x04\x00\x01 \x10\x02Sq" +
-	"lcmd: 錯誤:\x04\x00\x01 \x10\x02Sqlcmd: 警告:\x02已停用 ED 和 !!<command> 命令、啟動指" +
-	"令碼和環境變數\x02指令碼變數: '%[1]s' 是唯讀\x02未定義'%[1]s' 指令碼變數。\x02環境變數: '%[1]s' 具有" +
-	"不正確值: '%[2]s'。\x02接近命令 '%[2]s' 的行 %[1]d 語法錯誤。\x02開啟或操作檔案 %[2]s 時發生 %[1" +
-	"]s 錯誤 (原因: %[3]s)。\x02第 %[2]d 行發生 %[1]s 語法錯誤\x02逾時已過期\x02訊息 %#[1]v、層級 %[" +
-	"2]d、狀態 %[3]d、伺服器 %[4]s、程序 %[5]s、行 %#[6]v%[7]s\x02訊息 %#[1]v、層級 %[2]d、狀態 %" +
-	"[3]d、伺服器 %[4]s、行 %#[5]v%[6]s\x02密碼:\x02無效的變數識別碼 %[1]s\x02變數值 %[1]s 無效"
+	"\x02%[1]s 停用可能會危害系統安全性的命令。傳遞 1 會告訴 sqlcmd 在執行停用的命令時結束。\x02告訴 sqlcmd 使用 A" +
+	"ctiveDirectory 驗證。若未提供使用者名稱，則會使用驗證方法 ActiveDirectoryDefault。如果提供密碼，就會使用 " +
+	"ActiveDirectoryPassword。否則會使用 ActiveDirectoryInteractive\x02導致 sqlcmd 忽略" +
+	"指令碼變數。當指令碼包含許多可能包含格式與一般變數相同之字串的 %[1]s 陳述式時，此參數會很有用，例如 $(variable_name)" +
+	"\x02建立可在 sqlcmd 指令碼中使用的 sqlcmd 指令碼變數。如果值包含空格，請將值括在引號中。您可以指定多個 var=values" +
+	" 值。如果指定的任何值有錯誤，sqlcmd 會產生錯誤訊息，然後結束\x02要求不同大小的封包。此選項可設定 sqlcmd 指令碼變數 %[1]" +
+	"s。packet_size 必須是介於 512 到 32767 之間的值。預設值 = 4096。較大的封包大小可以提高在 %[2]s 命令之間包" +
+	"含大量 SQL 語句的指令碼的執行性能。您可以要求較大的封包大小。不過，如果要求遭到拒絕，sqlcmd 會使用伺服器預設的封包大小\x02指" +
+	"定當您嘗試連線到伺服器時，sqlcmd 登入 go-mssqldb 驅動程式逾時前的秒數。此選項可設定 sqlcmd 指令碼變數 %[1]s" +
+	"。預設值是 30。0 表示無限\x02此選項可設定 sqlcmd 指令碼變數 %[1]s。工作站名稱列在 sys.sysprocesses " +
+	"目錄檢視的主機名稱資料行中，而且可以使用預存程式 sp_who 傳回。如果未指定這個選項，預設值是目前的電腦名稱稱。此名稱可用來識別不同的 " +
+	"sqlcmd 工作階段\x02在連線到伺服器時宣告應用程式工作負載類型。目前唯一支援的值是 ReadOnly。如果未指定%[1]s，sqlcmd" +
+	" 公用程式將不支援連線到 Always On 可用性群組中的次要複本\x02用戶端會使用此切換來要求加密連線\x02指定結果的格式設定\x02%" +
+	"[1]s 將嚴重性為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。\x02要列印的 mssq" +
+	"l 驅動程式訊息層級\x02指定 sqlcmd 在發生錯誤時結束並傳回%[1]s 值\x02控制要傳送哪些錯誤訊息給 %[1]s。會傳送嚴重性層" +
+	"級大於或等於此層級的訊息\x02指定資料行標題之間要列印的資料列數目。使用 -h-1 指定不要列印標頭\x02指定所有輸出檔案都以小端點 U" +
+	"nicode 編碼\x02指定資料行分隔符號字元。設定 %[1]s 變數。\x02從資料行移除尾端空格\x02為回溯相容性提供。Sqlcmd 一" +
+	"律最佳化 SQL 容錯移轉叢集作用中複本的偵測\x02密碼\x02控制結束時用來設定 %[1]s 變數的嚴重性層級\x02指定輸出的螢幕寬度" +
+	"\x02%[1]s 列出伺服器。傳遞 %[2]s 以省略 'Servers:' 輸出。\x02專用系統管理員連線\x02為回溯相容性提供。一律啟" +
+	"用引號識別項\x02為回溯相容性提供。未使用用戶端地區設定\x02%[1]s 從輸出移除控制字元。傳遞 1 以取代每個字元的空格，2 表示每" +
+	"個連續字元一個空格\x02回音輸入\x02啟用資料行加密\x02新密碼\x02新增密碼並結束\x02設定 sqlcmd 指令碼變數 %[1]" +
+	"s\x02'%[1]s %[2]s': 值必須大於或等於 %#[3]v 且小於或等於 %#[4]v。\x02'%[1]s %[2]s': 值必須" +
+	"大於 %#[3]v 且小於 %#[4]v。\x02'%[1]s %[2]s': 非預期的引數。引數值必須是 %[3]v。\x02'%[1]s" +
+	" %[2]s': 非預期的引數。引數值必須是 %[3]v 的其中一個。\x02%[1]s 和 %[2]s 選項互斥。\x02'%[1]s': 遺" +
+	"漏引數。輸入 '-?' 以取得說明。\x02'%[1]s': 未知的選項。輸入 '-?' 以取得說明。\x02批次結束字元 '%[1]s' " +
+	"無效\x02輸入新密碼:\x02sqlcmd: 安裝/建立/查詢 SQL Server、Azure SQL 與工具\x04\x00\x01 " +
+	"\x10\x02Sqlcmd: 錯誤:\x04\x00\x01 \x10\x02Sqlcmd: 警告:\x02已停用 ED 和 !!<comma" +
+	"nd> 命令、啟動指令碼和環境變數\x02指令碼變數: '%[1]s' 是唯讀\x02未定義'%[1]s' 指令碼變數。\x02環境變數: '%" +
+	"[1]s' 具有不正確值: '%[2]s'。\x02接近命令 '%[2]s' 的行 %[1]d 語法錯誤。\x02開啟或操作檔案 %[2]s 時" +
+	"發生 %[1]s 錯誤 (原因: %[3]s)。\x02第 %[2]d 行發生 %[1]s 語法錯誤\x02逾時已過期\x02訊息 %#[1" +
+	"]v、層級 %[2]d、狀態 %[3]d、伺服器 %[4]s、程序 %[5]s、行 %#[6]v%[7]s\x02訊息 %#[1]v、層級 %[" +
+	"2]d、狀態 %[3]d、伺服器 %[4]s、行 %#[5]v%[6]s\x02密碼:\x02無效的變數識別碼 %[1]s\x02變數值 %[1" +
+	"]s 無效"
 
-	// Total table size 234046 bytes (228KiB); checksum: CD8A81A8
+	// Total table size 230636 bytes (225KiB); checksum: E24501AE

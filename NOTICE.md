@@ -6,8 +6,8 @@ This repository incorporates material as listed below or described in the code.
 ## github.com/Azure/azure-sdk-for-go/sdk/azcore
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azcore
-* Version: v1.11.1
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.11.1/sdk/azcore/LICENSE.txt)
+* Version: v1.18.0
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azcore/v1.18.0/sdk/azcore/LICENSE.txt)
 
 ```
 MIT License
@@ -37,8 +37,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/azidentity
-* Version: v1.6.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.6.0/sdk/azidentity/LICENSE.txt)
+* Version: v1.10.1
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/azidentity/v1.10.1/sdk/azidentity/LICENSE.txt)
 
 ```
 MIT License
@@ -68,8 +68,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/internal
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/internal
-* Version: v1.8.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/internal/v1.8.0/sdk/internal/LICENSE.txt)
+* Version: v1.11.1
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/internal/v1.11.1/sdk/internal/LICENSE.txt)
 
 ```
 MIT License
@@ -99,8 +99,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys
-* Version: v1.0.1
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/azkeys/v1.0.1/sdk/security/keyvault/azkeys/LICENSE.txt)
+* Version: v1.3.1
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/azkeys/v1.3.1/sdk/security/keyvault/azkeys/LICENSE.txt)
 
 ```
     MIT License
@@ -129,8 +129,8 @@ SOFTWARE
 ## github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
 
 * Name: github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal
-* Version: v1.0.0
-* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/internal/v1.0.0/sdk/security/keyvault/internal/LICENSE.txt)
+* Version: v1.1.1
+* License: [MIT](https://github.com/Azure/azure-sdk-for-go/blob/sdk/security/keyvault/internal/v1.1.1/sdk/security/keyvault/internal/LICENSE.txt)
 
 ```
     MIT License
@@ -159,8 +159,8 @@ SOFTWARE
 ## github.com/AzureAD/microsoft-authentication-library-for-go/apps
 
 * Name: github.com/AzureAD/microsoft-authentication-library-for-go/apps
-* Version: v1.2.2
-* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v1.2.2/LICENSE)
+* Version: v1.4.2
+* License: [MIT](https://github.com/AzureAD/microsoft-authentication-library-for-go/blob/v1.4.2/LICENSE)
 
 ```
     MIT License
@@ -6641,8 +6641,8 @@ THE SOFTWARE.
 ## golang.org/x/crypto
 
 * Name: golang.org/x/crypto
-* Version: v0.37.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.37.0:LICENSE)
+* Version: v0.38.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.38.0:LICENSE)
 
 ```
 Copyright 2009 The Go Authors.
@@ -6678,8 +6678,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/net
 
 * Name: golang.org/x/net
-* Version: v0.39.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.39.0:LICENSE)
+* Version: v0.40.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.40.0:LICENSE)
 
 ```
 Copyright 2009 The Go Authors.
@@ -6789,8 +6789,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ## golang.org/x/text
 
 * Name: golang.org/x/text
-* Version: v0.24.0
-* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.24.0:LICENSE)
+* Version: v0.25.0
+* License: [BSD-3-Clause](https://cs.opensource.google/go/x/text/+/v0.25.0:LICENSE)
 
 ```
 Copyright 2009 The Go Authors.
