@@ -1,0 +1,26 @@
+trigger: none
+pr: none
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+  - checkout: self
+    persistCredentials: true # needed for the OneLocBuild task to access the repo
+
+  - task: OneLocBuild@2
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    inputs:
+      isCreatePrSelected: true
+      repoType: 'github'
+      locProj: internal/translations/LocProject.json
+      outDir: '$(Build.ArtifactStagingDirectory)'
+      packageSourceAuth: patAuth
+      dependencyPackageSource: 'https://pkgs.dev.azure.com/msdata/_packaging/SQLDS_SSMS/nuget/v3/index.json'
+      patVariable: $(System.AccessToken)
+
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifact: 'drop'
