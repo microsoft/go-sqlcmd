@@ -2528,6 +2528,11 @@
             "fuzzy": true
         },
         {
+            "id": "Write runtime trace to the specified file. Only for advanced debugging.",
+            "message": "Write runtime trace to the specified file. Only for advanced debugging.",
+            "translation": ""
+        },
+        {
             "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
             "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
             "translation": "SQL 문의 일괄 처리를 포함하는 하나 이상의 파일을 식별합니다. 하나 이상의 파일이 없으면 sqlcmd가 종료됩니다. {QueryAndExitFlag}/{QueryFlag}와 상호 배타적임",
@@ -2678,11 +2683,19 @@
             "fuzzy": true
         },
         {
-            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "translation": "Azure SQL Database에 연결하는 데 사용할 SQL 인증 방법을 지정합니다. 다음 중 하나: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ActiveDirectoryAzureDeveloperCli__SqlPassword___",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "strings.Join([]string{\n\tazuread.ActiveDirectoryDefault,\n\tazuread.ActiveDirectoryIntegrated,\n\tazuread.ActiveDirectoryPassword,\n\tazuread.ActiveDirectoryInteractive,\n\tazuread.ActiveDirectoryManagedIdentity,\n\tazuread.ActiveDirectoryServicePrincipal,\n\tazuread.ActiveDirectoryServicePrincipalAccessToken,\n\tazuread.ActiveDirectoryAzCli,\n\tazuread.ActiveDirectoryDeviceCode,\n\tazuread.ActiveDirectoryWorkloadIdentity,\n\tazuread.ActiveDirectoryClientAssertion,\n\tazuread.ActiveDirectoryAzurePipelines,\n\tazuread.ActiveDirectoryEnvironment,\n\tazuread.ActiveDirectoryAzureDeveloperCli,\n\t\"SqlPassword\",\n}, \", \")"
+                }
+            ]
         },
         {
             "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
@@ -2799,11 +2812,32 @@
             "fuzzy": true
         },
         {
-            "id": "Specifies the formatting for results",
-            "message": "Specifies the formatting for results",
-            "translation": "결과의 형식을 지정합니다.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Specifies the host name in the server certificate.",
+            "message": "Specifies the host name in the server certificate.",
+            "translation": ""
+        },
+        {
+            "id": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+            "message": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Vert",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"vert\""
+                }
+            ]
         },
         {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
@@ -3255,6 +3289,44 @@
             "fuzzy": true
         },
         {
+            "id": "failed to create trace file '{TraceFile}': {Err}",
+            "message": "failed to create trace file '{TraceFile}': {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "TraceFile",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "args.TraceFile"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "failed to start trace: {Err}",
+            "message": "failed to start trace: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
             "id": "invalid batch terminator '{BatchTerminator}'",
             "message": "invalid batch terminator '{BatchTerminator}'",
             "translation": "잘못된 일괄 처리 종결자 '{BatchTerminator}'",
@@ -3583,6 +3655,26 @@
             "translation": "암호:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "(1 row affected)",
+            "message": "(1 row affected)",
+            "translation": ""
+        },
+        {
+            "id": "({Count} rows affected)",
+            "message": "({Count} rows affected)",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Count",
+                    "string": "%[1]d",
+                    "type": "int64",
+                    "underlyingType": "int64",
+                    "argNum": 1,
+                    "expr": "m.Count"
+                }
+            ]
         },
         {
             "id": "Invalid variable identifier {Name}",

@@ -1,5 +1,6 @@
 {
     "go.lintTool": "golangci-lint",
     "go.lintOnSave": "workspace",
-    "azure-pipelines.1ESPipelineTemplatesSchemaFile": true
+    "azure-pipelines.1ESPipelineTemplatesSchemaFile": true,
+    "sarif-viewer.connectToGithubCodeScanning": "on"
 }
