@@ -1731,9 +1731,81 @@
       </Item>
       <Item ItemId=";messages[231].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
+          <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[指定されたファイルにランタイムトレースを書き込みます。高度なデバッグの場合のみ。]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[232].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
           <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[SQL ステートメントのバッチを含む 1 つ以上のファイルを識別します。1 つ以上のファイルが存在しない場合、sqlcmd は終了します。{QueryAndExitFlag}/{QueryFlag} と同時に使用することはできません]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[233].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[sqlcmd から出力を受け取るファイルを識別します]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Print version information and exit]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[234].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Print version information and exit]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[バージョン情報を印刷して終了]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[235].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[検証なしでサーバー証明書を暗黙的に信頼します]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[236].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[このオプションは、sqlcmd スクリプト変数 {DbNameVar} を設定します。このパラメーターは、初期データベースを指定します。既定はログインの default-database プロパティです。データベースが存在しない場合は、エラー メッセージが生成され、sqlcmd が終了します]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[237].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ユーザー名とパスワードを使用せず、信頼された接続を使用してSQL Server にサインインします。ユーザー名とパスワードを定義する環境変数は無視されます]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
@@ -1741,11 +1813,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[232].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[238].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
+          <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd から出力を受け取るファイルを識別します]]></Val>
+            <Val><![CDATA[バッチ ターミネータを指定します。既定値は{BatchTerminatorGo}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
@@ -1753,86 +1825,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[233].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Print version information and exit]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[バージョン情報を印刷して終了]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[234].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[検証なしでサーバー証明書を暗黙的に信頼します]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[235].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[このオプションは、sqlcmd スクリプト変数 {DbNameVar} を設定します。このパラメーターは、初期データベースを指定します。既定はログインの default-database プロパティです。データベースが存在しない場合は、エラー メッセージが生成され、sqlcmd が終了します]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[236].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ユーザー名とパスワードを使用せず、信頼された接続を使用してSQL Server にサインインします。ユーザー名とパスワードを定義する環境変数は無視されます]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Disables commands that might compromise system security. Sqlcmd issues a warning and continues]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[237].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[バッチ ターミネータを指定します。既定値は{BatchTerminatorGo}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[238].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[239].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[ログイン名または含まれているデータベース ユーザー名。 包含データベース ユーザーの場合は、データベース名オプションを指定する必要があります]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[239].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd の開始時にクエリを実行しますが、クエリの実行が完了しても sqlcmd を終了しません。複数のセミコロンで区切られたクエリを実行できます]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
+            <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1848,9 +1848,81 @@
       </Item>
       <Item ItemId=";messages[240].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
+          <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[sqlcmd の開始時にクエリを実行しますが、クエリの実行が完了しても sqlcmd を終了しません。複数のセミコロンで区切られたクエリを実行できます]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[241].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
           <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[sqlcmd が開始してから sqlcmd を直ちに終了するときにクエリを実行します。複数のセミコロンで区切られたクエリを実行できます]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{ConnStrPattern} 接続先の SQL Server のインスタンスを指定します。sqlcmd スクリプト変数 {ServerEnvVar} を設定します。]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_X1} システム セキュリティを侵害する可能性のあるコマンドを無効にします。1 を渡すと、無効なコマンドの実行時に sqlcmd が終了するように指示されます。]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[244].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Azure SQL データベースへの接続に使用する SQL 認証方法を指定します。次のいずれか: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[245].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ActiveDirectory 認証を使用するように sqlcmd に指示します。ユーザー名が指定されていない場合、認証方法 ActiveDirectoryDefault が使用されます。パスワードを指定すると、ActiveDirectoryPassword が使用されます。それ以外の場合は ActiveDirectoryInteractive が使用されます]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[246].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[sqlcmd がスクリプト変数を無視するようにします。このパラメーターは、$(variable_name) などの通常の変数と同じ形式の文字列を含む {InsertKeyword} ステートメントがスクリプトに多数含まれている場合に便利です]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
@@ -1858,11 +1930,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[241].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[247].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
+          <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ConnStrPattern} 接続先の SQL Server のインスタンスを指定します。sqlcmd スクリプト変数 {ServerEnvVar} を設定します。]]></Val>
+            <Val><![CDATA[sqlcmd スクリプトで使用できる sqlcmd スクリプト変数を作成します。値にスペースが含まれている場合は、値を引用符で囲ってください。複数の var=values 値を指定できます。指定された値のいずれかにエラーがある場合、sqlcmd はエラー メッセージを生成して終了します]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
@@ -1870,98 +1942,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_X1} システム セキュリティを侵害する可能性のあるコマンドを無効にします。1 を渡すと、無効なコマンドの実行時に sqlcmd が終了するように指示されます。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Disables commands that might compromise system security. Sqlcmd issues a warning and continues]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Azure SQL Database への接続に使用する SQL 認証方法を指定します。次のうちの 1 つ: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、 ActiveDirectoryDeviceCode、SqlPassword]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, SqlPassword]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[244].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ActiveDirectory 認証を使用するように sqlcmd に指示します。ユーザー名が指定されていない場合、認証方法 ActiveDirectoryDefault が使用されます。パスワードを指定すると、ActiveDirectoryPassword が使用されます。それ以外の場合は ActiveDirectoryInteractive が使用されます]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[245].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd がスクリプト変数を無視するようにします。このパラメーターは、$(variable_name) などの通常の変数と同じ形式の文字列を含む {InsertKeyword} ステートメントがスクリプトに多数含まれている場合に便利です]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[246].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd スクリプトで使用できる sqlcmd スクリプト変数を作成します。値にスペースが含まれている場合は、値を引用符で囲ってください。複数の var=values 値を指定できます。指定された値のいずれかにエラーがある場合、sqlcmd はエラー メッセージを生成して終了します]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Specifies the formatting for results]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[247].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[248].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[サイズの異なるパケットを要求します。このオプションは、sqlcmd スクリプト変数 {PacketSizeVar} を設定します。packet_size は 512 から 32767 の間の値である必要があります。既定値 = 4096。パケット サイズを大きくすると、{BatchTerminatorGo} コマンド間に多数の SQL ステートメントを含むスクリプトの実行のパフォーマンスを向上させることができます。より大きいパケット サイズを要求できます。しかし、要求が拒否された場合、sqlcmd はサーバーのパケット サイズの既定値を使用します]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[248].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[サーバーに接続しようとしたときに、go-mssqldb ドライバーへの sqlcmd ログインがタイムアウトするまでの秒数を指定します。このオプションは、sqlcmd スクリプト変数{LoginTimeOutVar} を設定します。既定値は 30 です。0 は無限を意味します]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Level of mssql driver messages to print]]></Val>
+            <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[249].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
+          <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[このオプションは、sqlcmd スクリプト変数 {WorkstationVar} を設定します。ワークステーション名は sys.sysprocesses カタログ ビューのホスト名列に一覧表示されており、ストアド プロシージャ sp_who を使用して返すことができます。このオプションを指定しない場合、既定値は現在のコンピューター名です。この名前は、さまざまな sqlcmd セッションを識別するために使用できます]]></Val>
+            <Val><![CDATA[サーバーに接続しようとしたときに、go-mssqldb ドライバーへの sqlcmd ログインがタイムアウトするまでの秒数を指定します。このオプションは、sqlcmd スクリプト変数{LoginTimeOutVar} を設定します。既定値は 30 です。0 は無限を意味します]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
+            <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1977,9 +1977,81 @@
       </Item>
       <Item ItemId=";messages[250].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
+          <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[このオプションは、sqlcmd スクリプト変数 {WorkstationVar} を設定します。ワークステーション名は sys.sysprocesses カタログ ビューのホスト名列に一覧表示されており、ストアド プロシージャ sp_who を使用して返すことができます。このオプションを指定しない場合、既定値は現在のコンピューター名です。この名前は、さまざまな sqlcmd セッションを識別するために使用できます]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[251].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
           <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[サーバーに接続するときに、アプリケーション ワークロードの種類を宣言します。現在サポートされている値は ReadOnly のみです。{ApplicationIntentFlagShort} が指定されていない場合、sqlcmd ユーティリティは、Always On 可用性グループ内のセカンダリ レプリカへの接続をサポートしません]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[252].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[このスイッチは、暗号化された接続を要求するためにクライアントによって使用されます]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies the formatting for results]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[サーバー証明書のホスト名を指定します。]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[254].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[出力を縦向きで印刷します。このオプションは、sqlcmd スクリプト変数 {SQLCMDFORMAT} を '{Vert}' に設定します。既定値は 'false' です]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Level of mssql driver messages to print]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[255].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_r0__1} 重大度 >= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[256].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Level of mssql driver messages to print]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[印刷する mssql ドライバー メッセージのレベル]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
@@ -1987,11 +2059,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[251].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[257].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
+          <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[このスイッチは、暗号化された接続を要求するためにクライアントによって使用されます]]></Val>
+            <Val><![CDATA[sqlcmd が終了し、エラーが発生したときに {DosErrorLevel} 値を返すように指定します]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
@@ -1999,11 +2071,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[252].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[258].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the formatting for results]]></Val>
+          <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[結果の書式を指定します]]></Val>
+            <Val><![CDATA[{StdoutName} に送信するエラー メッセージを制御します。このレベル以上の重大度レベルのメッセージが送信されます]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
@@ -2011,86 +2083,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_r0__1} 重大度 >= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Controls which error messages are sent to stdout. Messages that have severity level greater than or equal to this level are sent]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[254].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Level of mssql driver messages to print]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[印刷する mssql ドライバー メッセージのレベル]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Remove trailing spaces from a column]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[255].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd が終了し、エラーが発生したときに {DosErrorLevel} 値を返すように指定します]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[256].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{StdoutName} に送信するエラー メッセージを制御します。このレベル以上の重大度レベルのメッセージが送信されます]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Password]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[257].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[259].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[列見出し間で印刷する行数を指定します。-h-1 を使用して、ヘッダーを印刷しないように指定します]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[258].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[すべての出力ファイルをリトル エンディアン Unicode でエンコードすることを指定します]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Specifies the screen width for output]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[259].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[列の区切り文字を指定します。{ColSeparatorVar} 変数を設定します。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Dedicated administrator connection]]></Val>
+            <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2106,69 +2106,81 @@
       </Item>
       <Item ItemId=";messages[260].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Remove trailing spaces from a column]]></Val>
+          <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[列から末尾のスペースを削除します]]></Val>
+            <Val><![CDATA[すべての出力ファイルをリトル エンディアン Unicode でエンコードすることを指定します]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
+            <Val><![CDATA[Remove trailing spaces from a column]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[261].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
+          <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[下位互換性のために提供されます。Sqlcmd は、SQL フェールオーバー クラスターのアクティブなレプリカの検出を常に最適化します]]></Val>
+            <Val><![CDATA[列の区切り文字を指定します。{ColSeparatorVar} 変数を設定します。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
+            <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[262].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password]]></Val>
+          <Val><![CDATA[Remove trailing spaces from a column]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[パスワード]]></Val>
+            <Val><![CDATA[列から末尾のスペースを削除します]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
+            <Val><![CDATA[Password]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[263].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[終了時に {ErrorLevel} 変数を設定するために使用される重大度レベルを制御します]]></Val>
+            <Val><![CDATA[下位互換性のために提供されます。Sqlcmd は、SQL フェールオーバー クラスターのアクティブなレプリカの検出を常に最適化します]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
+            <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[264].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the screen width for output]]></Val>
+          <Val><![CDATA[Password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[出力の画面の幅を指定します]]></Val>
+            <Val><![CDATA[パスワード]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
+            <Val><![CDATA[Specifies the screen width for output]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[265].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
+          <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_Lc} サーバーを一覧表示します。{C} を渡すと、'Servers:' 出力を省略します。]]></Val>
+            <Val><![CDATA[終了時に {ErrorLevel} 変数を設定するために使用される重大度レベルを制御します]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the screen width for output]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[出力の画面の幅を指定します]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Dedicated administrator connection]]></Val>
@@ -2176,11 +2188,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Dedicated administrator connection]]></Val>
+          <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[専用管理者接続]]></Val>
+            <Val><![CDATA[{_Lc} サーバーを一覧表示します。{C} を渡すと、'Servers:' 出力を省略します。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
@@ -2188,11 +2200,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[268].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
+          <Val><![CDATA[Dedicated administrator connection]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[下位互換性のために提供されます。引用符で囲まれた識別子は常に有効です]]></Val>
+            <Val><![CDATA[専用管理者接続]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
@@ -2200,26 +2212,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[268].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[下位互換性のために提供されます。クライアントの地域設定は使用されていません]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";messages[269].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_k_12} 出力から制御文字を削除します。1 を渡すと、1 文字につきスペース 1 つに置き換え、2 では連続する文字ごとにスペース 1 つに置き換えます]]></Val>
+            <Val><![CDATA[下位互換性のために提供されます。引用符で囲まれた識別子は常に有効です]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
+            <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2238,9 +2238,81 @@
       </Item>
       <Item ItemId=";messages[270].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
+          <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[下位互換性のために提供されます。クライアントの地域設定は使用されていません]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Echo input]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_k_12} 出力から制御文字を削除します。1 を渡すと、1 文字につきスペース 1 つに置き換え、2 では連続する文字ごとにスペース 1 つに置き換えます]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enable column encryption]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[272].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
           <Val><![CDATA[Echo input]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[エコー入力]]></Val>
+            <Val><![CDATA[入力のエコー]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[New password]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Enable column encryption]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[列の暗号化を有効にする]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[New password and exit]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[274].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[New password]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[新しいパスワード]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[275].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[New password and exit]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[新しいパスワードと終了]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[276].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[sqlcmd スクリプト変数 {V} を設定します]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
@@ -2248,11 +2320,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[277].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enable column encryption]]></Val>
+          <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[列暗号化を有効にする]]></Val>
+            <Val><![CDATA['{Flag} {Value}': 値は {Min} 以上 {Max} 以下である必要があります。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
@@ -2260,11 +2332,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[272].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[278].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[New password]]></Val>
+          <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[新しいパスワード]]></Val>
+            <Val><![CDATA['{Flag} {Value}': 値は {Min} より大きく、{Max} 未満である必要があります。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
@@ -2272,86 +2344,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[New password and exit]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[新しいパスワードと終了]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[274].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd スクリプト変数 {V} を設定します]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[275].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 値は {Min} 以上 {Max} 以下である必要があります。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[276].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 値は {Min} より大きく、{Max} 未満である必要があります。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[277].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[279].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['{Flag} {Value}': 予期しない引数です。引数の値を {AllowedValues0} する必要があります。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Sqlcmd: Error:]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[278].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 予期しない引数です。引数の値は {AllowedValues} のいずれかである必要があります。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Sqlcmd: Warning:]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[279].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{Flag1} と {Flag2} オプションは相互に排他的です。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+            <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2367,57 +2367,69 @@
       </Item>
       <Item ItemId=";messages[280].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
+          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{P1}': 引数がありません。ヘルプを表示するには、「-?」と入力してください。]]></Val>
+            <Val><![CDATA['{Flag} {Value}': 予期しない引数です。引数の値は {AllowedValues} のいずれかである必要があります。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
+            <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[281].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
+          <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{P1}': 不明なオプションです。ヘルプを表示するには、「-?」と入力してください。]]></Val>
+            <Val><![CDATA[{Flag1} と {Flag2} オプションは相互に排他的です。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
+            <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[282].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
+          <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[バッチ ターミネータ '{BatchTerminator}' が無効です]]></Val>
+            <Val><![CDATA['{P1}': 引数がありません。ヘルプを表示するには、「-?」と入力してください。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+            <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[283].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enter new password:]]></Val>
+          <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[新しいパスワードの入力:]]></Val>
+            <Val><![CDATA['{P1}': 不明なオプションです。ヘルプを表示するには、「-?」と入力してください。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+            <Val><![CDATA[Enter new password:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
+          <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd: インストール/作成/SQL Server、Azure SQL、およびツールのクエリ]]></Val>
+            <Val><![CDATA[トレース ファイル '{TraceFile}' を作成できませんでした: {Err}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[failed to start trace: {Err}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[トレースを開始できませんでした: {Err}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Error:]]></Val>
@@ -2425,11 +2437,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Error:]]></Val>
+          <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: エラー:]]></Val>
+            <Val><![CDATA[バッチ ターミネータ '{BatchTerminator}' が無効です]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Warning:]]></Val>
@@ -2437,11 +2449,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
+          <Val><![CDATA[Enter new password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: 警告:]]></Val>
+            <Val><![CDATA[新しいパスワードの入力:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
@@ -2449,11 +2461,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ED および !!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です。]]></Val>
+            <Val><![CDATA[sqlcmd: SQL Server、Azure SQL、ツールのインストール/作成/クエリ]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
@@ -2461,26 +2473,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
+          <Val><![CDATA[Sqlcmd: Error:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[スクリプト変数: '{Variable}' は読み取り専用です]]></Val>
+            <Val><![CDATA[Sqlcmd: エラー:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Variable}' スクリプト変数が定義されていません。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2496,9 +2496,21 @@
       </Item>
       <Item ItemId=";messages[290].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[環境変数 '{Variable}' に無効な値が含まれています: '{EnvVal}'。]]></Val>
+            <Val><![CDATA[Sqlcmd: 警告:]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ED および !!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
@@ -2506,11 +2518,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[コマンド '{Command}' 付近 {LineNumber} 行に構文エラーがあります。]]></Val>
+            <Val><![CDATA[スクリプト変数: '{Variable}' は読み取り専用です]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
@@ -2518,11 +2530,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix} ファイル {Filepath} を開いているか、操作中にエラーが発生しました (理由: {Error})。]]></Val>
+            <Val><![CDATA['{Variable}' スクリプト変数が定義されていません。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
@@ -2530,11 +2542,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix} 行 {LineNumber} で構文エラー]]></Val>
+            <Val><![CDATA[環境変数 '{Variable}' に無効な値が含まれています: '{EnvVal}'。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Timeout expired]]></Val>
@@ -2542,11 +2554,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Timeout expired]]></Val>
+          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[タイムアウトになりました]]></Val>
+            <Val><![CDATA[コマンド '{Command}' 付近 {LineNumber} 行に構文エラーがあります。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
@@ -2554,11 +2566,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[メッセージ {Number}、レベル {Class}、状態 {State}、サーバー {ServerName}、プロシージャ {ProcName}、行 {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[{ErrorPrefix} ファイル {Filepath} を開いているか、操作中にエラーが発生しました (理由: {Error})。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
@@ -2566,11 +2578,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[メッセージ {Number}、レベル {Class}、状態 {State}、サーバー {ServerName}、行 {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[{ErrorPrefix} 行 {LineNumber} で構文エラー]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Password:]]></Val>
@@ -2578,11 +2590,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password:]]></Val>
+          <Val><![CDATA[Timeout expired]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[パスワード:]]></Val>
+            <Val><![CDATA[タイムアウトの有効期限が切れました]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
@@ -2590,24 +2602,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[変数識別子 {Name} が無効です]]></Val>
+            <Val><![CDATA[メッセージ {Number}、レベル {Class}、状態 {State}、サーバー {ServerName}、プロシージャ {ProcName}、行 {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Invalid variable value {Val}]]></Val>
           </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Invalid variable value {Val}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[変数値の {Val} が無効です]]></Val>
-          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2629,6 +2632,60 @@
           <Prev Cat="Text">
             <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]A;]A;Feedback:]A;  {FeedbackUrl}]]></Val>
           </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[300].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[メッセージ {Number}、レベル {Class}、状態 {State}、サーバー {ServerName}、行 {LineNo}{SqlcmdEol}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[301].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Password:]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[パスワード:]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[302].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[(1 row affected)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[(1 行が影響を受けます)]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[303].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[({Count} rows affected)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[({Count} 行が影響を受けます)]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[304].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[変数識別子 {Name} が無効です]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[305].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid variable value {Val}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[変数値の {Val} が無効です]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
