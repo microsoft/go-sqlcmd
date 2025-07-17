@@ -2127,7 +2127,7 @@
       "placeholders": [
         {
           "id": "Port",
-          "string": "%[1]d",
+          "string": "%#[1]v",
           "type": "int",
           "underlyingType": "int",
           "argNum": 1,
@@ -2528,6 +2528,13 @@
       "fuzzy": true
     },
     {
+      "id": "Write runtime trace to the specified file. Only for advanced debugging.",
+      "message": "Write runtime trace to the specified file. Only for advanced debugging.",
+      "translation": "指定されたファイルにランタイムトレースを書き込みます。高度なデバッグの場合のみ。",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "translation": "SQL ステートメントのバッチを含む 1 つ以上のファイルを識別します。1 つ以上のファイルが存在しない場合、sqlcmd は終了します。{QueryAndExitFlag}/{QueryFlag} と同時に使用することはできません",
@@ -2678,10 +2685,20 @@
       "fuzzy": true
     },
     {
-      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-      "translation": "Azure SQL Database への接続に使用する SQL 認証方法を指定します。次のうちの 1 つ: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、 ActiveDirectoryDeviceCode、SqlPassword",
+      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+      "translation": "Azure SQL データベースへの接続に使用する SQL 認証方法を指定します。次のいずれか: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
       "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ActiveDirectoryAzureDeveloperCli__SqlPassword___",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "strings.Join([]string{\n\tazuread.ActiveDirectoryDefault,\n\tazuread.ActiveDirectoryIntegrated,\n\tazuread.ActiveDirectoryPassword,\n\tazuread.ActiveDirectoryInteractive,\n\tazuread.ActiveDirectoryManagedIdentity,\n\tazuread.ActiveDirectoryServicePrincipal,\n\tazuread.ActiveDirectoryServicePrincipalAccessToken,\n\tazuread.ActiveDirectoryAzCli,\n\tazuread.ActiveDirectoryDeviceCode,\n\tazuread.ActiveDirectoryWorkloadIdentity,\n\tazuread.ActiveDirectoryClientAssertion,\n\tazuread.ActiveDirectoryAzurePipelines,\n\tazuread.ActiveDirectoryEnvironment,\n\tazuread.ActiveDirectoryAzureDeveloperCli,\n\t\"SqlPassword\",\n}, \", \")"
+        }
+      ],
       "fuzzy": true
     },
     {
@@ -2799,10 +2816,35 @@
       "fuzzy": true
     },
     {
-      "id": "Specifies the formatting for results",
-      "message": "Specifies the formatting for results",
-      "translation": "結果の書式を指定します",
+      "id": "Specifies the host name in the server certificate.",
+      "message": "Specifies the host name in the server certificate.",
+      "translation": "サーバー証明書のホスト名を指定します。",
       "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+      "message": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+      "translation": "出力を縦向きで印刷します。このオプションは、sqlcmd スクリプト変数 {SQLCMDFORMAT} を '{Vert}' に設定します。既定値は 'false' です",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "SQLCMDFORMAT",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "sqlcmd.SQLCMDFORMAT"
+        },
+        {
+          "id": "Vert",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"vert\""
+        }
+      ],
       "fuzzy": true
     },
     {
@@ -3005,14 +3047,14 @@
     {
       "id": "Echo input",
       "message": "Echo input",
-      "translation": "エコー入力",
+      "translation": "入力のエコー",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Enable column encryption",
       "message": "Enable column encryption",
-      "translation": "列暗号化を有効にする",
+      "translation": "列の暗号化を有効にする",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3255,6 +3297,48 @@
       "fuzzy": true
     },
     {
+      "id": "failed to create trace file '{TraceFile}': {Err}",
+      "message": "failed to create trace file '{TraceFile}': {Err}",
+      "translation": "トレース ファイル '{TraceFile}' を作成できませんでした: {Err}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "TraceFile",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "args.TraceFile"
+        },
+        {
+          "id": "Err",
+          "string": "%[2]v",
+          "type": "error",
+          "underlyingType": "interface{Error() string}",
+          "argNum": 2,
+          "expr": "err"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "failed to start trace: {Err}",
+      "message": "failed to start trace: {Err}",
+      "translation": "トレースを開始できませんでした: {Err}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Err",
+          "string": "%[1]v",
+          "type": "error",
+          "underlyingType": "interface{Error() string}",
+          "argNum": 1,
+          "expr": "err"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
       "id": "invalid batch terminator '{BatchTerminator}'",
       "message": "invalid batch terminator '{BatchTerminator}'",
       "translation": "バッチ ターミネータ '{BatchTerminator}' が無効です",
@@ -3281,7 +3365,7 @@
     {
       "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
       "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
-      "translation": "sqlcmd: インストール/作成/SQL Server、Azure SQL、およびツールのクエリ",
+      "translation": "sqlcmd: SQL Server、Azure SQL、ツールのインストール/作成/クエリ",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3451,7 +3535,7 @@
     {
       "id": "Timeout expired",
       "message": "Timeout expired",
-      "translation": "タイムアウトになりました",
+      "translation": "タイムアウトの有効期限が切れました",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3582,6 +3666,30 @@
       "message": "Password:",
       "translation": "パスワード:",
       "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "(1 row affected)",
+      "message": "(1 row affected)",
+      "translation": "(1 行が影響を受けます)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "({Count} rows affected)",
+      "message": "({Count} rows affected)",
+      "translation": "({Count} 行が影響を受けます)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Count",
+          "string": "%[1]d",
+          "type": "int64",
+          "underlyingType": "int64",
+          "argNum": 1,
+          "expr": "m.Count"
+        }
+      ],
       "fuzzy": true
     },
     {
