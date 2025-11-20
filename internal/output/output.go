@@ -34,7 +34,7 @@ func (o Output) Debugf(format string, a ...any) {
 func (o Output) Debug(msg string) {
 	if o.loggingLevel >= verbosity.Debug {
 		msg = o.ensureEol(msg)
-		o.printf("DEBUG: " + msg)
+		o.printf("DEBUG: %s", msg)
 	}
 }
 
@@ -157,7 +157,7 @@ func (o Output) Tracef(format string, a ...any) {
 func (o Output) Trace(msg string) {
 	if o.loggingLevel >= verbosity.Trace {
 		msg = o.ensureEol(msg)
-		o.printf("TRACE: " + msg)
+		o.printf("TRACE: %s", msg)
 	}
 }
 
