@@ -50,7 +50,7 @@ func init() {
 // Errorf() is wrapper function to create localized errors
 func Errorf(format string, a ...any) error {
 	errMsg := Translator.Sprintf(format, a...)
-	return fmt.Errorf(errMsg)
+	return fmt.Errorf("%s", errMsg)
 }
 
 // Sprintf() is wrapper function to create localized string
