@@ -668,7 +668,7 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			if a.Vertical {
 				return "vert"
 			}
-			return "horizontal"
+			return ""
 		},
 	}
 	for varname, set := range varmap {
@@ -811,7 +811,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s.Connect = &connectConfig
-	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(args.TrimSpaces, args.getControlCharacterBehavior())
+	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(vars, args.TrimSpaces, args.getControlCharacterBehavior())
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {
