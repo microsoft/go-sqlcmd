@@ -184,7 +184,7 @@ func (v Variables) Format() string {
 	case "horiz", "horizontal":
 		return "horizontal"
 	}
-	return "ascii"
+	return "horizontal"
 }
 
 // StartupScriptFile is the path to the file that contains the startup script
