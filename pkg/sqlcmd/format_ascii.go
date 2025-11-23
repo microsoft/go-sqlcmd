@@ -50,7 +50,6 @@ func (f *asciiFormatter) EndResultSet() {
 		f.printAsciiTable()
 	}
 	f.rows = nil
-	f.writeOut(SqlcmdEol, color.TextTypeNormal)
 }
 
 func (f *asciiFormatter) printAsciiTable() {
@@ -107,9 +106,6 @@ func (f *asciiFormatter) printAsciiTable() {
 
 			f.printTableSegment(colWidths, startCol, endCol-1)
 			startCol = endCol
-			if startCol < len(colWidths) {
-				f.writeOut(SqlcmdEol, color.TextTypeNormal)
-			}
 		}
 	}
 }
