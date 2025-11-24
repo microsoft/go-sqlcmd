@@ -154,7 +154,7 @@ switches are most important to you to have implemented next in the new sqlcmd.
 - `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `--vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
-- Sqlcmd defaults to a horizontal output format (space separated, no borders). To use the new ASCII table format, use the new `--ascii` command line option or set `SQLCMDFORMAT` to `ascii` (`-v SQLCMDFORMAT=ascii`).
+- Sqlcmd defaults to a horizontal output format (space separated, no borders). To use the new ASCII table format, use the new `--ascii` command line option or set `SQLCMDFORMAT` to `ascii` (`-v SQLCMDFORMAT=ascii`). Note that when using the ASCII table format, the `SQLCMDCOLWIDTH` variable and the `-w` parameter are ignored, as the table width is determined by the content.
 
 ```
 1> select session_id, client_interface_name, program_name from sys.dm_exec_sessions where session_id=@@spid
