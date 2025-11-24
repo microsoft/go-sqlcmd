@@ -141,6 +141,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 		switch {
 		case len(a.InputFile) > 0 && (len(a.Query) > 0 || len(a.InitialQuery) > 0):
 			err = mutuallyExclusiveError("i", `-Q/-q`)
+		case a.Vertical && a.Ascii:
+			err = mutuallyExclusiveError("--vertical", "--ascii")
 		case a.UseTrustedConnection && (len(a.UserName) > 0 || len(a.Password) > 0):
 			err = mutuallyExclusiveError("-E", `-U/-P`)
 		case a.UseAad && len(a.AuthenticationMethod) > 0:
