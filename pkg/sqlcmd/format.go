@@ -87,7 +87,8 @@ type sqlCmdFormatterType struct {
 	xml                  bool
 }
 
-// NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
+// NewSQLCmdDefaultFormatter returns a Formatter based on the configuration.
+// It returns an ASCII formatter if the format is set to "ascii", otherwise it returns a formatter that mimics the original ODBC-based sqlcmd formatter.
 func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior) Formatter {
 	if vars.Format() == "ascii" {
 		return NewSQLCmdAsciiFormatter(vars, removeTrailingSpaces, ccb)
