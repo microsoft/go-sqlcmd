@@ -178,12 +178,48 @@ The project supports creating SQL Server instances using Docker or Podman:
 
 ## Common Tasks
 
-### Adding a New Subcommand
+### Adding a New Command (Modern CLI)
+
+For new commands related to context management, container operations, or configuration:
 
 1. Create a new file in `cmd/modern/root/` (e.g., `mycommand.go`)
-2. Define the command struct and implement the `Run` method
-3. Register the command in the root command
-4. Add corresponding tests in `mycommand_test.go`
+2. Define a command struct that embeds `cmdparser.Cmd`
+3. Implement the `DefineCommand` method to set up command options, flags, and examples
+4. Implement the `run` method with the command logic
+5. Add corresponding tests in `mycommand_test.go`
+
+Example structure:
+```go
+type MyCommand struct {
+    cmdparser.Cmd
+    // flags
+}
+
+func (c *MyCommand) DefineCommand(...cmdparser.CommandOptions) {
+    options := cmdparser.CommandOptions{
+        Use:   "mycommand",
+        Short: localizer.Sprintf("Description"),
+        Run:   c.run,
+    }
+    c.Cmd.DefineCommand(options)
+    // Add flags
+}
+
+func (c *MyCommand) run() {
+    // Command logic
+}
+```
+
+### Adding Features (Legacy CLI)
+
+For new features related to querying SQL Server and displaying query results, add them to the legacy CLI:
+
+1. Add new fields to the `SQLCmdArguments` struct in `cmd/sqlcmd/sqlcmd.go`
+2. Register new flags in the `setFlags` function
+3. Add validation logic in the `Validate` method if needed
+4. Update `setVars` or `setConnect` functions to use the new arguments
+5. Implement the feature logic in the `run` function or related functions
+6. Add corresponding tests in `cmd/sqlcmd/sqlcmd_test.go`
 
 ### Adding a New Configuration Option
 
