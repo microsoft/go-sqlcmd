@@ -210,6 +210,13 @@ func (c *MyCommand) run() {
 }
 ```
 
+### Adding a New Configuration Option (Modern CLI)
+
+1. Update the config struct in `internal/config/config.go`
+2. Add validation if needed
+3. Update the Viper bindings in `internal/config/viper.go`
+4. Add tests
+
 ### Adding Features (Legacy CLI)
 
 For new features related to querying SQL Server and displaying query results, add them to the legacy CLI:
@@ -217,16 +224,11 @@ For new features related to querying SQL Server and displaying query results, ad
 1. Add new fields to the `SQLCmdArguments` struct in `cmd/sqlcmd/sqlcmd.go`
 2. Register new flags in the `setFlags` function
 3. Add validation logic in the `Validate` method if needed
-4. Update `setVars` or `setConnect` functions to use the new arguments
-5. Implement the feature logic in the `run` function or related functions
-6. Add corresponding tests in `cmd/sqlcmd/sqlcmd_test.go`
-
-### Adding a New Configuration Option
-
-1. Update the config struct in `internal/config/config.go`
-2. Add validation if needed
-3. Update the Viper bindings in `internal/config/viper.go`
-4. Add tests
+4. Determine from existing patterns whether to add a SQLCMD variable to support it
+5. Update `setVars` or `setConnect` functions to use the new arguments
+6. Implement the feature logic in the `run` function or related functions
+7. Add corresponding tests in `cmd/sqlcmd/sqlcmd_test.go`
+8. Update README.md to show example usage
 
 ### Working with SQL Connections
 
