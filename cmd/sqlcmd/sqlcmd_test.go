@@ -111,6 +111,12 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "s", "-F", "myserver.domain.com"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "s" && args.HostNameInCertificate == "myserver.domain.com"
 		}},
+		{[]string{"-N", "s", "-J", "/path/to/cert.pem"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "s" && args.ServerCertificate == "/path/to/cert.pem"
+		}},
+		{[]string{"-N", "strict", "-J", "/path/to/cert.der"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "strict" && args.ServerCertificate == "/path/to/cert.der"
+		}},
 	}
 
 	for _, test := range commands {
@@ -162,6 +168,9 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
 		{[]string{"-t", "-2"}, "'-t -2': value must be greater than or equal to 0 and less than or equal to 65534."},
 		{[]string{"-N", "invalid"}, "'-N invalid': Unexpected argument. Argument value has to be one of [m[andatory] yes 1 t[rue] disable o[ptional] no 0 f[alse] s[trict]]."},
+		{[]string{"-J", "/path/to/cert.pem"}, "The -J parameter can only be used with strict encryption mode (-Ys or -N strict)."},
+		{[]string{"-N", "m", "-J", "/path/to/cert.pem"}, "The -J parameter can only be used with strict encryption mode (-Ys or -N strict)."},
+		{[]string{"-N", "optional", "-J", "/path/to/cert.pem"}, "The -J parameter can only be used with strict encryption mode (-Ys or -N strict)."},
 	}
 
 	for _, test := range commands {

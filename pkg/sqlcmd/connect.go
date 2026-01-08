@@ -60,6 +60,8 @@ type ConnectSettings struct {
 	ChangePassword string
 	// The HostNameInCertificate is the name to use for the host in the certificate validation
 	HostNameInCertificate string
+	// ServerCertificate is the path to a certificate file to match against the server's TLS certificate
+	ServerCertificate string
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -149,6 +151,9 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	if connect.HostNameInCertificate != "" {
 		query.Add(msdsn.HostNameInCertificate, connect.HostNameInCertificate)
+	}
+	if connect.ServerCertificate != "" {
+		query.Add(msdsn.Certificate, connect.ServerCertificate)
 	}
 	if connect.LogLevel > 0 {
 		query.Add(msdsn.LogParam, fmt.Sprint(connect.LogLevel))

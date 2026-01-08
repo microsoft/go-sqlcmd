@@ -57,6 +57,7 @@ type SQLCmdArguments struct {
 	ApplicationIntent           string
 	EncryptConnection           string
 	HostNameInCertificate       string
+	ServerCertificate           string
 	DriverLoggingLevel          int
 	ExitOnError                 bool
 	ErrorSeverityLevel          uint8
@@ -157,6 +158,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
 		case a.QueryTimeout < 0 || a.QueryTimeout > 65534:
 			err = rangeParameterError("-t", fmt.Sprint(a.QueryTimeout), 0, 65534, true)
+		case a.ServerCertificate != "" && a.EncryptConnection != "s" && a.EncryptConnection != "strict":
+			err = localizer.Errorf("The -J parameter can only be used with strict encryption mode (-Ys or -N strict).")
 		}
 	}
 	if err != nil {
@@ -429,6 +432,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.ApplicationIntent, applicationIntent, "K", "default", localizer.Sprintf("Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group", localizer.ApplicationIntentFlagShort))
 	rootCmd.Flags().StringVarP(&args.EncryptConnection, encryptConnection, "N", "default", localizer.Sprintf("This switch is used by the client to request an encrypted connection"))
 	rootCmd.Flags().StringVarP(&args.HostNameInCertificate, "host-name-in-certificate", "F", "", localizer.Sprintf("Specifies the host name in the server certificate."))
+	rootCmd.Flags().StringVarP(&args.ServerCertificate, "server-certificate", "J", "", localizer.Sprintf("Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Used with strict encryption mode (-Ys) for certificate pinning instead of standard certificate validation."))
 	// Can't use NoOptDefVal until this fix: https://github.com/spf13/cobra/issues/866
 	//rootCmd.Flags().Lookup(encryptConnection).NoOptDefVal = "true"
 	rootCmd.Flags().BoolVarP(&args.Vertical, "vertical", "", false, localizer.Sprintf("Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false", sqlcmd.SQLCMDFORMAT, "vert"))
@@ -721,6 +725,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 		connect.Encrypt = args.EncryptConnection
 	}
 	connect.HostNameInCertificate = args.HostNameInCertificate
+	connect.ServerCertificate = args.ServerCertificate
 	connect.PacketSize = args.PacketSize
 	connect.WorkstationName = args.WorkstationName
 	connect.LogLevel = args.DriverLoggingLevel
