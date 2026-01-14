@@ -153,7 +153,7 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 		query.Add(msdsn.HostNameInCertificate, connect.HostNameInCertificate)
 	}
 	if connect.ServerCertificate != "" {
-		query.Add(msdsn.Certificate, connect.ServerCertificate)
+		query.Add(msdsn.ServerCertificate, connect.ServerCertificate)
 	}
 	if connect.LogLevel > 0 {
 		query.Add(msdsn.LogParam, fmt.Sprint(connect.LogLevel))
