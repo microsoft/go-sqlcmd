@@ -12,7 +12,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/image"
@@ -202,7 +201,7 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	response, err := c.cli.ContainerExecCreate(
 		context.Background(),
 		id,
-		types.ExecConfig{
+		container.ExecOptions{
 			AttachStderr: false,
 			AttachStdout: true,
 			Cmd:          cmd,
@@ -213,7 +212,7 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	r, err := c.cli.ContainerExecAttach(
 		context.Background(),
 		response.ID,
-		types.ExecStartCheck{},
+		container.ExecStartOptions{},
 	)
 	checkErr(err)
 	defer r.Close()
@@ -269,7 +268,7 @@ func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) 
 	response, err := c.cli.ContainerExecCreate(
 		context.Background(),
 		id,
-		types.ExecConfig{
+		container.ExecOptions{
 			AttachStderr: true,
 			AttachStdout: true,
 			Cmd:          cmd,
@@ -280,7 +279,7 @@ func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) 
 	r, err := c.cli.ContainerExecAttach(
 		context.Background(),
 		response.ID,
-		types.ExecStartCheck{},
+		container.ExecStartOptions{},
 	)
 	checkErr(err)
 	defer r.Close()

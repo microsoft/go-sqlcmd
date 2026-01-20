@@ -8,7 +8,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.5.0
 	github.com/billgraziano/dpapi v0.4.0
 	github.com/docker/distribution v2.8.2+incompatible
-	github.com/docker/docker v27.3.1+incompatible
+	github.com/docker/docker v28.0.0+incompatible
 	github.com/docker/go-connections v0.4.0
 	github.com/golang-sql/sqlexp v0.1.0
 	github.com/google/uuid v1.6.0
