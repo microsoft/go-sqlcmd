@@ -111,6 +111,18 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "s", "-F", "myserver.domain.com"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "s" && args.HostNameInCertificate == "myserver.domain.com"
 		}},
+		{[]string{"-N", "s", "-J", "/path/to/cert.pem"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "s" && args.ServerCertificate == "/path/to/cert.pem"
+		}},
+		{[]string{"-N", "strict", "-J", "/path/to/cert.der"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "strict" && args.ServerCertificate == "/path/to/cert.der"
+		}},
+		{[]string{"-N", "m", "-J", "/path/to/cert.cer"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "m" && args.ServerCertificate == "/path/to/cert.cer"
+		}},
+		{[]string{"-N", "true", "-J", "/path/to/cert2.pem"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "true" && args.ServerCertificate == "/path/to/cert2.pem"
+		}},
 	}
 
 	for _, test := range commands {
@@ -154,7 +166,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-E", "-U", "someuser"}, "The -E and the -U/-P options are mutually exclusive."},
 		{[]string{"-L", "-q", `"select 1"`}, "The -L parameter can not be used in combination with other parameters."},
 		{[]string{"-i", "foo.sql", "-q", `"select 1"`}, "The i and the -Q/-q options are mutually exclusive."},
-		{[]string{"-r", "5"}, `'-r 5': Unexpected argument. Argument value has to be one of [0 1].`},
+		{[]string{"-r", "5"}, "'-r 5': Unexpected argument. Argument value has to be one of [0 1]."},
 		{[]string{"-w", "x"}, "'-w x': value must be greater than 8 and less than 65536."},
 		{[]string{"-y", "111111"}, "'-y 111111': value must be greater than or equal to 0 and less than or equal to 8000."},
 		{[]string{"-Y", "-2"}, "'-Y -2': value must be greater than or equal to 0 and less than or equal to 8000."},
@@ -162,6 +174,10 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
 		{[]string{"-t", "-2"}, "'-t -2': value must be greater than or equal to 0 and less than or equal to 65534."},
 		{[]string{"-N", "invalid"}, "'-N invalid': Unexpected argument. Argument value has to be one of [m[andatory] yes 1 t[rue] disable o[ptional] no 0 f[alse] s[trict]]."},
+		{[]string{"-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
+		{[]string{"-N", "optional", "-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
+		{[]string{"-N", "disable", "-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
+		{[]string{"-N", "strict", "-F", "myserver.domain.com", "-J", "/path/to/cert.pem"}, "The -F and the -J options are mutually exclusive."},
 	}
 
 	for _, test := range commands {

@@ -57,6 +57,7 @@ type SQLCmdArguments struct {
 	ApplicationIntent           string
 	EncryptConnection           string
 	HostNameInCertificate       string
+	ServerCertificate           string
 	DriverLoggingLevel          int
 	ExitOnError                 bool
 	ErrorSeverityLevel          uint8
@@ -127,6 +128,15 @@ const (
 	removeControlCharacters = "remove-control-characters"
 )
 
+func encryptConnectionAllowsTLS(value string) bool {
+	switch strings.ToLower(value) {
+	case "s", "strict", "m", "mandatory", "true", "t", "yes", "1":
+		return true
+	default:
+		return false
+	}
+}
+
 // Validate arguments for settings not describe
 func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 	if a.ListServers != "" {
@@ -144,6 +154,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = mutuallyExclusiveError("-E", `-U/-P`)
 		case a.UseAad && len(a.AuthenticationMethod) > 0:
 			err = mutuallyExclusiveError("-G", "--authentication-method")
+		case len(a.HostNameInCertificate) > 0 && len(a.ServerCertificate) > 0:
+			err = mutuallyExclusiveError("-F", "-J")
 		case a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767):
 			err = localizer.Errorf(`'-a %#v': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
 		// Ignore 0 even though it's technically an invalid input
@@ -157,6 +169,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
 		case a.QueryTimeout < 0 || a.QueryTimeout > 65534:
 			err = rangeParameterError("-t", fmt.Sprint(a.QueryTimeout), 0, 65534, true)
+		case a.ServerCertificate != "" && !encryptConnectionAllowsTLS(a.EncryptConnection):
+			err = localizer.Errorf("The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).")
 		}
 	}
 	if err != nil {
@@ -429,6 +443,8 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.ApplicationIntent, applicationIntent, "K", "default", localizer.Sprintf("Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group", localizer.ApplicationIntentFlagShort))
 	rootCmd.Flags().StringVarP(&args.EncryptConnection, encryptConnection, "N", "default", localizer.Sprintf("This switch is used by the client to request an encrypted connection"))
 	rootCmd.Flags().StringVarP(&args.HostNameInCertificate, "host-name-in-certificate", "F", "", localizer.Sprintf("Specifies the host name in the server certificate."))
+	rootCmd.Flags().StringVarP(&args.ServerCertificate, "server-certificate", "J", "", localizer.Sprintf("Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation."))
+	rootCmd.MarkFlagsMutuallyExclusive("host-name-in-certificate", "server-certificate")
 	// Can't use NoOptDefVal until this fix: https://github.com/spf13/cobra/issues/866
 	//rootCmd.Flags().Lookup(encryptConnection).NoOptDefVal = "true"
 	rootCmd.Flags().BoolVarP(&args.Vertical, "vertical", "", false, localizer.Sprintf("Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false", sqlcmd.SQLCMDFORMAT, "vert"))
@@ -721,6 +737,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 		connect.Encrypt = args.EncryptConnection
 	}
 	connect.HostNameInCertificate = args.HostNameInCertificate
+	connect.ServerCertificate = args.ServerCertificate
 	connect.PacketSize = args.PacketSize
 	connect.WorkstationName = args.WorkstationName
 	connect.LogLevel = args.DriverLoggingLevel
