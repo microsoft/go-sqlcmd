@@ -738,3 +738,59 @@ func TestPrintPerformanceStatisticsDisabled(t *testing.T) {
 	s.PrintPerformanceStatistics(1000, 2)
 	assert.Empty(t, buf.buf.String(), "No output when PrintStatistics is false")
 }
+
+// TestPrintStatisticsIntegration tests the -p flag with real query execution
+func TestPrintStatisticsIntegration(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.PrintStatistics = true
+
+	// Execute a real query via GO command
+	err := runSqlCmd(t, s, []string{"SELECT 1 AS test_column", "GO"})
+	assert.NoError(t, err, "runSqlCmd should succeed")
+
+	output := buf.buf.String()
+	t.Logf("Output:\n%s", output)
+
+	// Verify real statistics were printed after query execution
+	assert.Contains(t, output, "Network packet size (bytes):", "Should print network packet size")
+	assert.Contains(t, output, "xact[s]:", "Should print transaction count")
+	assert.Contains(t, output, "Clock Time (ms.):", "Should print clock time")
+	assert.Contains(t, output, "xacts per sec", "Should print transactions per second")
+
+	// Verify the query was actually executed (result value is present)
+	assert.Contains(t, output, "1", "Query result should be in output")
+	assert.Contains(t, output, "(1 row affected)", "Should show row count")
+}
+
+// TestRawErrorsIntegration tests the -j flag with a real database error
+func TestRawErrorsIntegration(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+
+	// Use the default formatter (NOT raw errors)
+	s.Format = NewSQLCmdDefaultFormatterWithOptions(true, ControlIgnore, false)
+	s.Format.BeginBatch("", s.vars, buf, buf)
+
+	// Execute a query that will cause an error
+	buf.buf.Reset()
+	err := runSqlCmd(t, s, []string{"SELECT * FROM nonexistent_table_xyz_12345", "GO"})
+	// Error is expected to be handled within sqlcmd, not returned
+	_ = err
+
+	output := buf.buf.String()
+	// Default mode should include the Msg prefix
+	assert.Contains(t, output, "Msg", "Default mode should include Msg prefix")
+	assert.Contains(t, output, "Invalid object name", "Should contain error message")
+
+	// Now test with raw errors (-j flag)
+	buf.buf.Reset()
+	s.Format = NewSQLCmdDefaultFormatterWithOptions(true, ControlIgnore, true)
+	s.Format.BeginBatch("", s.vars, buf, buf)
+
+	err = runSqlCmd(t, s, []string{"SELECT * FROM another_nonexistent_table_abc_67890", "GO"})
+	_ = err
+
+	rawOutput := buf.buf.String()
+	// Raw mode should NOT include the Msg prefix line
+	assert.NotContains(t, rawOutput, "Msg 208", "Raw mode should NOT include Msg prefix")
+	assert.Contains(t, rawOutput, "Invalid object name", "Raw mode should still show error message")
+}
