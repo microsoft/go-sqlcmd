@@ -158,3 +158,21 @@ func TestFormatterXmlMode(t *testing.T) {
 	assert.NoError(t, err, "runSqlCmd returned error")
 	assert.Equal(t, `<sys.databases name="master"/>`+SqlcmdEol, buf.buf.String())
 }
+
+func TestNewSQLCmdDefaultFormatterWithOptions(t *testing.T) {
+	// Test that the formatter can be created with raw errors option
+	f := NewSQLCmdDefaultFormatterWithOptions(true, ControlIgnore, true)
+	assert.NotNil(t, f, "Formatter should not be nil")
+
+	// Verify it's the correct type with rawErrors enabled
+	formatter, ok := f.(*sqlCmdFormatterType)
+	assert.True(t, ok, "Should be sqlCmdFormatterType")
+	assert.True(t, formatter.rawErrors, "rawErrors should be true")
+	assert.True(t, formatter.removeTrailingSpaces, "removeTrailingSpaces should be true")
+
+	// Test with rawErrors disabled
+	f2 := NewSQLCmdDefaultFormatterWithOptions(false, ControlReplace, false)
+	formatter2, _ := f2.(*sqlCmdFormatterType)
+	assert.False(t, formatter2.rawErrors, "rawErrors should be false")
+	assert.False(t, formatter2.removeTrailingSpaces, "removeTrailingSpaces should be false")
+}

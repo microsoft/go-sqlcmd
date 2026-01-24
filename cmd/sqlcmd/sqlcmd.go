@@ -83,6 +83,7 @@ type SQLCmdArguments struct {
 	ChangePasswordAndExit       string
 	TraceFile                   string
 	PrintStatistics             bool
+	RawErrors                   bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -481,6 +482,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.ChangePassword, "change-password", "z", "", localizer.Sprintf("New password"))
 	rootCmd.Flags().StringVarP(&args.ChangePasswordAndExit, "change-password-exit", "Z", "", localizer.Sprintf("New password and exit"))
 	rootCmd.Flags().BoolVarP(&args.PrintStatistics, "print-statistics", "p", false, localizer.Sprintf("Print performance statistics for each batch"))
+	rootCmd.Flags().BoolVarP(&args.RawErrors, "raw-errors", "j", false, localizer.Sprintf("Print raw error messages without additional formatting"))
 }
 
 func setScriptVariable(v string) string {
@@ -831,7 +833,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s.Connect = &connectConfig
-	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(args.TrimSpaces, args.getControlCharacterBehavior())
+	s.Format = sqlcmd.NewSQLCmdDefaultFormatterWithOptions(args.TrimSpaces, args.getControlCharacterBehavior(), args.RawErrors)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {
