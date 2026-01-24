@@ -381,7 +381,7 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 
 // perftraceCommand changes the performance trace writer to use a file
 func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
-	if args == nil || len(args) == 0 || args[0] == "" {
+	if len(args) == 0 || args[0] == "" {
 		return InvalidCommandError(":PERFTRACE", line)
 	}
 	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
@@ -405,7 +405,7 @@ func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
 
 // serverlistCommand lists SQL Server instances on the network
 func serverlistCommand(s *Sqlcmd, args []string, line uint) error {
-	if args != nil && strings.TrimSpace(args[0]) != "" {
+	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
 		return InvalidCommandError(":SERVERLIST", line)
 	}
 
@@ -483,7 +483,7 @@ func listVarCommand(s *Sqlcmd, args []string, line uint) error {
 
 // helpCommand displays the list of available sqlcmd commands
 func helpCommand(s *Sqlcmd, args []string, line uint) error {
-	if args != nil && strings.TrimSpace(args[0]) != "" {
+	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
 		return InvalidCommandError(":HELP", line)
 	}
 
