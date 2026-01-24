@@ -222,6 +222,26 @@ func TestPerftraceCommand(t *testing.T) {
 	assert.Error(t, err, "perftraceCommand should reject nil argument")
 }
 
+func TestServerlistCommand(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+
+	// Test serverlist command (will output "Servers:" header even with no servers found)
+	err := serverlistCommand(s, []string{""}, 1)
+	assert.NoError(t, err, "serverlistCommand")
+	s.SetOutput(nil)
+
+	o := buf.buf.String()
+	// Should at minimum contain the "Servers:" header
+	assert.Contains(t, o, "Servers:", "Output should contain Servers: header")
+
+	// Verify serverlist command rejects arguments
+	err = serverlistCommand(s, []string{"invalid"}, 1)
+	assert.Error(t, err, "serverlistCommand should reject arguments")
+}
+
 // memoryBuffer has both Write and Close methods for use as io.WriteCloser
 type memoryBuffer struct {
 	buf *bytes.Buffer

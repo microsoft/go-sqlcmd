@@ -124,6 +124,11 @@ func newCommands() Commands {
 			action: perftraceCommand,
 			name:   "PERFTRACE",
 		},
+		"SERVERLIST": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:SERVERLIST(?:[ \t]+(.*$)|$)`),
+			action: serverlistCommand,
+			name:   "SERVERLIST",
+		},
 	}
 }
 
@@ -398,6 +403,28 @@ func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
+// serverlistCommand lists SQL Server instances on the network
+func serverlistCommand(s *Sqlcmd, args []string, line uint) error {
+	if args != nil && strings.TrimSpace(args[0]) != "" {
+		return InvalidCommandError(":SERVERLIST", line)
+	}
+
+	output := s.GetOutput()
+	fmt.Fprintf(output, "Servers:%s", SqlcmdEol)
+
+	instances, err := ListServers(0)
+	if err != nil {
+		// Silently ignore errors (same as ODBC sqlcmd)
+		return nil
+	}
+
+	servers := FormatServerList(instances)
+	for _, srv := range servers {
+		fmt.Fprintf(output, "  %s%s", srv, SqlcmdEol)
+	}
+	return nil
+}
+
 func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 {
 		return InvalidCommandError(":R", line)
@@ -479,6 +506,7 @@ func helpCommand(s *Sqlcmd, args []string, line uint) error {
 		{":OUT <filename>|STDERR|STDOUT", "Redirect output to file"},
 		{":PERFTRACE <filename>|STDERR|STDOUT", "Redirect timing output to file"},
 		{":QUIT", "Exit sqlcmd immediately"},
+		{":SERVERLIST", "List local and network SQL Server instances"},
 		{":R <filename>", "Read input from file"},
 		{":RESET", "Clear statement cache"},
 		{":SETVAR <var> <value>", "Set scripting variable"},

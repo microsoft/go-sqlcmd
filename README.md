@@ -179,6 +179,7 @@ net_transport Named pipe
 - The new `-j` (`--raw-errors`) flag prints raw error messages without the standard "Msg #, Level, State, Server, Line" prefix formatting.
 - The new `:HELP` interactive command displays a list of all available sqlcmd commands with descriptions.
 - The new `:PERFTRACE <filename>|STDERR|STDOUT` interactive command redirects timing output to a file or stream. This is useful when using `-p` to separate statistics from query output.
+- The new `:SERVERLIST` interactive command lists local and network SQL Server instances (same as `-L` flag but available during an interactive session).
 
 ### Azure Active Directory Authentication
 
