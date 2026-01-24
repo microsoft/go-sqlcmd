@@ -705,3 +705,36 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be fourth protocol")
 
 }
+
+func TestPrintPerformanceStatistics(t *testing.T) {
+	v := InitializeVariables(true)
+	s := New(nil, "", v)
+	s.Connect = &ConnectSettings{PacketSize: 4096}
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	s.PrintStatistics = true
+
+	// Test printing statistics
+	s.PrintPerformanceStatistics(1000, 2)
+	output := buf.buf.String()
+
+	// Verify the output matches ODBC sqlcmd format
+	assert.Contains(t, output, "Network packet size (bytes): 4096", "Output should contain packet size")
+	assert.Contains(t, output, "2 xact[s]:", "Output should contain transaction count")
+	assert.Contains(t, output, "Clock Time (ms.): total", "Output should contain clock time header")
+	assert.Contains(t, output, "1000", "Output should contain total time")
+	assert.Contains(t, output, "500.00", "Output should contain avg time (1000/2)")
+	assert.Contains(t, output, "xacts per sec", "Output should contain xacts per sec")
+}
+
+func TestPrintPerformanceStatisticsDisabled(t *testing.T) {
+	v := InitializeVariables(true)
+	s := New(nil, "", v)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	s.PrintStatistics = false
+
+	// Test that statistics are not printed when disabled
+	s.PrintPerformanceStatistics(1000, 2)
+	assert.Empty(t, buf.buf.String(), "No output when PrintStatistics is false")
+}

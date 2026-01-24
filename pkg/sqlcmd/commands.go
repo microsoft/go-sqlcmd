@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/microsoft/go-sqlcmd/internal/color"
 	"golang.org/x/text/encoding/unicode"
@@ -259,7 +260,10 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 
 	if len(query1) > 0 || len(query2) > 0 {
 		query := query1 + SqlcmdEol + query2
+		startTime := time.Now()
 		s.Exitcode, _ = s.runQuery(query)
+		elapsed := time.Since(startTime)
+		s.PrintPerformanceStatistics(elapsed.Milliseconds(), 1)
 	}
 	return ErrExitRequested
 }
@@ -300,12 +304,15 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 		return nil
 	}
 	query = s.getRunnableQuery(query)
+	startTime := time.Now()
 	for i := 0; i < n; i++ {
 		if retcode, err := s.runQuery(query); err != nil {
 			s.Exitcode = retcode
 			return err
 		}
 	}
+	elapsed := time.Since(startTime)
+	s.PrintPerformanceStatistics(elapsed.Milliseconds(), n)
 	s.batch.Reset(nil)
 	return nil
 }
@@ -369,8 +376,8 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 
 // perftraceCommand changes the performance trace writer to use a file
 func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
-	if len(args) == 0 || args[0] == "" {
-		return InvalidCommandError("PERFTRACE", line)
+	if args == nil || len(args) == 0 || args[0] == "" {
+		return InvalidCommandError(":PERFTRACE", line)
 	}
 	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
 	if err != nil {

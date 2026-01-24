@@ -256,6 +256,39 @@ func (s *Sqlcmd) SetPerftrace(p io.WriteCloser) {
 	s.perftrace = p
 }
 
+// PrintPerformanceStatistics prints the performance statistics to the perftrace output.
+// This matches the ODBC sqlcmd format: network packet size, transaction count, and clock time.
+func (s *Sqlcmd) PrintPerformanceStatistics(totalTimeMs int64, numXacts int) {
+	if !s.PrintStatistics || numXacts <= 0 {
+		return
+	}
+
+	perfout := s.GetPerftrace()
+
+	// Get packet size from the connection settings (default is 4096)
+	packetSize := s.Connect.PacketSize
+	if packetSize == 0 {
+		packetSize = 4096
+	}
+
+	// Ensure minimum time of 1ms for calculations
+	if totalTimeMs < 1 {
+		totalTimeMs = 1
+	}
+
+	avgTimeMs := float64(totalTimeMs) / float64(numXacts)
+	if avgTimeMs < 1 {
+		avgTimeMs = 1
+	}
+	xactsPerSec := 1000.0 / avgTimeMs
+
+	// Format matches ODBC sqlcmd MSG_PERF_STATS format:
+	// "\r\nNetwork packet size (bytes): %s\r\n%d xact[s]:\r\nClock Time (ms.): total   %7ld  avg   %s (%s xacts per sec.)\r\n"
+	fmt.Fprintf(perfout, "%sNetwork packet size (bytes): %d%s", SqlcmdEol, packetSize, SqlcmdEol)
+	fmt.Fprintf(perfout, "%d xact[s]:%s", numXacts, SqlcmdEol)
+	fmt.Fprintf(perfout, "Clock Time (ms.): total %7d  avg   %.2f (%.2f xacts per sec.)%s", totalTimeMs, avgTimeMs, xactsPerSec, SqlcmdEol)
+}
+
 // WriteError writes the error on specified stream
 func (s *Sqlcmd) WriteError(stream io.Writer, err error) {
 	if serr, ok := err.(SqlcmdError); ok {
@@ -440,7 +473,6 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 // -101: No rows found
 // -102: Conversion error occurred when selecting return value
 func (s *Sqlcmd) runQuery(query string) (int, error) {
-	startTime := time.Now()
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
@@ -529,13 +561,6 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		}
 	}
 	s.Format.EndBatch()
-	if s.PrintStatistics {
-		elapsed := time.Since(startTime)
-		perfout := s.GetPerftrace()
-		fmt.Fprintf(perfout, "%s", SqlcmdEol)
-		fmt.Fprintf(perfout, " SQL Server Execution Times:%s", SqlcmdEol)
-		fmt.Fprintf(perfout, "   CPU time = 0 ms,  elapsed time = %d ms.%s", elapsed.Milliseconds(), SqlcmdEol)
-	}
 	return retcode, qe
 }
 

@@ -175,6 +175,11 @@ program_name          sqlcmd
 net_transport Named pipe
 ```
 
+- The new `-p` (`--print-statistics`) flag prints performance statistics after each batch execution, including network packet size, transaction count, and clock time (total, average, and transactions per second).
+- The new `-j` (`--raw-errors`) flag prints raw error messages without the standard "Msg #, Level, State, Server, Line" prefix formatting.
+- The new `:HELP` interactive command displays a list of all available sqlcmd commands with descriptions.
+- The new `:PERFTRACE <filename>|STDERR|STDOUT` interactive command redirects timing output to a file or stream. This is useful when using `-p` to separate statistics from query output.
+
 ### Azure Active Directory Authentication
 
 `sqlcmd` supports a broader range of AAD authentication models (over the original ODBC based `sqlcmd`), based on the [azidentity package](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity). The implementation relies on an AAD Connector in the [driver](https://github.com/microsoft/go-mssqldb).

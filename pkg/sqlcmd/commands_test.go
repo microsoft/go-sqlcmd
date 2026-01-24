@@ -199,6 +199,20 @@ func TestPerftraceCommand(t *testing.T) {
 	err = perftraceCommand(s, []string{"stderr"}, 1)
 	assert.NoError(t, err, "perftraceCommand with stderr")
 
+	// Test setting perftrace to a file
+	tmpFile, err := os.CreateTemp("", "perftrace_test_*.txt")
+	assert.NoError(t, err, "CreateTemp")
+	tmpFileName := tmpFile.Name()
+	tmpFile.Close()
+	defer os.Remove(tmpFileName)
+
+	err = perftraceCommand(s, []string{tmpFileName}, 1)
+	assert.NoError(t, err, "perftraceCommand with file")
+
+	// Verify we can write to the perftrace output
+	_, err = fmt.Fprintf(s.GetPerftrace(), "test output")
+	assert.NoError(t, err, "Write to perftrace")
+
 	// Test error case - empty argument
 	err = perftraceCommand(s, []string{""}, 1)
 	assert.Error(t, err, "perftraceCommand should reject empty argument")
