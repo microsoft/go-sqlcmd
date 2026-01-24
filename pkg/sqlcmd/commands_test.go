@@ -187,6 +187,27 @@ func TestHelpCommand(t *testing.T) {
 	assert.Error(t, err, "helpCommand should reject arguments")
 }
 
+func TestPerftraceCommand(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+
+	// Test setting perftrace to stdout
+	err := perftraceCommand(s, []string{"stdout"}, 1)
+	assert.NoError(t, err, "perftraceCommand with stdout")
+
+	// Test setting perftrace to stderr
+	err = perftraceCommand(s, []string{"stderr"}, 1)
+	assert.NoError(t, err, "perftraceCommand with stderr")
+
+	// Test error case - empty argument
+	err = perftraceCommand(s, []string{""}, 1)
+	assert.Error(t, err, "perftraceCommand should reject empty argument")
+
+	// Test error case - no argument
+	err = perftraceCommand(s, nil, 1)
+	assert.Error(t, err, "perftraceCommand should reject nil argument")
+}
+
 // memoryBuffer has both Write and Close methods for use as io.WriteCloser
 type memoryBuffer struct {
 	buf *bytes.Buffer

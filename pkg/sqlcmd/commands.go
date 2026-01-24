@@ -118,6 +118,11 @@ func newCommands() Commands {
 			action: helpCommand,
 			name:   "HELP",
 		},
+		"PERFTRACE": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:PERFTRACE(?:[ \t]+(.*$)|$)`),
+			action: perftraceCommand,
+			name:   "PERFTRACE",
+		},
 	}
 }
 
@@ -362,6 +367,30 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
+// perftraceCommand changes the performance trace writer to use a file
+func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 || args[0] == "" {
+		return InvalidCommandError("PERFTRACE", line)
+	}
+	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
+	if err != nil {
+		return err
+	}
+	switch {
+	case strings.EqualFold(filePath, "stderr"):
+		s.SetPerftrace(os.Stderr)
+	case strings.EqualFold(filePath, "stdout"):
+		s.SetPerftrace(os.Stdout)
+	default:
+		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
+		if err != nil {
+			return InvalidFileError(err, args[0])
+		}
+		s.SetPerftrace(o)
+	}
+	return nil
+}
+
 func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 {
 		return InvalidCommandError(":R", line)
@@ -441,6 +470,7 @@ func helpCommand(s *Sqlcmd, args []string, line uint) error {
 		{":LISTVAR", "List scripting variables"},
 		{":ON ERROR [EXIT|IGNORE]", "Action on error"},
 		{":OUT <filename>|STDERR|STDOUT", "Redirect output to file"},
+		{":PERFTRACE <filename>|STDERR|STDOUT", "Redirect timing output to file"},
 		{":QUIT", "Exit sqlcmd immediately"},
 		{":R <filename>", "Read input from file"},
 		{":RESET", "Clear statement cache"},

@@ -88,8 +88,10 @@ type Sqlcmd struct {
 	EchoInput bool
 	// PrintStatistics enables printing of timing statistics after each batch
 	PrintStatistics bool
-	colorizer       color.Colorizer
-	termchan        chan os.Signal
+	// perftrace is the writer for performance trace output (set by :perftrace command)
+	perftrace io.WriteCloser
+	colorizer color.Colorizer
+	termchan  chan os.Signal
 }
 
 // New creates a new Sqlcmd instance.
@@ -236,6 +238,22 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 		s.err.Close()
 	}
 	s.err = e
+}
+
+// GetPerftrace returns the io.Writer to use for performance trace output
+func (s *Sqlcmd) GetPerftrace() io.Writer {
+	if s.perftrace == nil {
+		return s.GetOutput()
+	}
+	return s.perftrace
+}
+
+// SetPerftrace sets the io.WriteCloser to use for performance trace output
+func (s *Sqlcmd) SetPerftrace(p io.WriteCloser) {
+	if s.perftrace != nil && s.perftrace != os.Stderr && s.perftrace != os.Stdout {
+		s.perftrace.Close()
+	}
+	s.perftrace = p
 }
 
 // WriteError writes the error on specified stream
@@ -513,9 +531,10 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	s.Format.EndBatch()
 	if s.PrintStatistics {
 		elapsed := time.Since(startTime)
-		fmt.Fprintf(s.GetOutput(), "%s", SqlcmdEol)
-		fmt.Fprintf(s.GetOutput(), " SQL Server Execution Times:%s", SqlcmdEol)
-		fmt.Fprintf(s.GetOutput(), "   CPU time = 0 ms,  elapsed time = %d ms.%s", elapsed.Milliseconds(), SqlcmdEol)
+		perfout := s.GetPerftrace()
+		fmt.Fprintf(perfout, "%s", SqlcmdEol)
+		fmt.Fprintf(perfout, " SQL Server Execution Times:%s", SqlcmdEol)
+		fmt.Fprintf(perfout, "   CPU time = 0 ms,  elapsed time = %d ms.%s", elapsed.Milliseconds(), SqlcmdEol)
 	}
 	return retcode, qe
 }
