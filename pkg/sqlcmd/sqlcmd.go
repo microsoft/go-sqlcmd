@@ -86,8 +86,10 @@ type Sqlcmd struct {
 	UnicodeOutputFile bool
 	// EchoInput tells the GO command to print the batch text before running the query
 	EchoInput bool
-	colorizer color.Colorizer
-	termchan  chan os.Signal
+	// PrintStatistics enables printing of timing statistics after each batch
+	PrintStatistics bool
+	colorizer       color.Colorizer
+	termchan        chan os.Signal
 }
 
 // New creates a new Sqlcmd instance.
@@ -420,6 +422,7 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 // -101: No rows found
 // -102: Conversion error occurred when selecting return value
 func (s *Sqlcmd) runQuery(query string) (int, error) {
+	startTime := time.Now()
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
@@ -508,6 +511,12 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		}
 	}
 	s.Format.EndBatch()
+	if s.PrintStatistics {
+		elapsed := time.Since(startTime)
+		fmt.Fprintf(s.GetOutput(), "%s", SqlcmdEol)
+		fmt.Fprintf(s.GetOutput(), " SQL Server Execution Times:%s", SqlcmdEol)
+		fmt.Fprintf(s.GetOutput(), "   CPU time = 0 ms,  elapsed time = %d ms.%s", elapsed.Milliseconds(), SqlcmdEol)
+	}
 	return retcode, qe
 }
 

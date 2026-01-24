@@ -82,6 +82,7 @@ type SQLCmdArguments struct {
 	ChangePassword              string
 	ChangePasswordAndExit       string
 	TraceFile                   string
+	PrintStatistics             bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -479,6 +480,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.EnableColumnEncryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
 	rootCmd.Flags().StringVarP(&args.ChangePassword, "change-password", "z", "", localizer.Sprintf("New password"))
 	rootCmd.Flags().StringVarP(&args.ChangePasswordAndExit, "change-password-exit", "Z", "", localizer.Sprintf("New password and exit"))
+	rootCmd.Flags().BoolVarP(&args.PrintStatistics, "print-statistics", "p", false, localizer.Sprintf("Print performance statistics for each batch"))
 }
 
 func setScriptVariable(v string) string {
@@ -817,6 +819,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		s.Cmd.DisableSysCommands(args.errorOnBlockedCmd())
 	}
 	s.EchoInput = args.EchoInput
+	s.PrintStatistics = args.PrintStatistics
 	if args.BatchTerminator != "GO" {
 		err = s.Cmd.SetBatchTerminator(args.BatchTerminator)
 		if err != nil {
