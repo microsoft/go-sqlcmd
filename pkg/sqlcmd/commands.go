@@ -113,6 +113,11 @@ func newCommands() Commands {
 			action: xmlCommand,
 			name:   "XML",
 		},
+		"HELP": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:HELP(?:[ \t]+(.*$)|$)`),
+			action: helpCommand,
+			name:   "HELP",
+		},
 	}
 }
 
@@ -409,6 +414,43 @@ func listVarCommand(s *Sqlcmd, args []string, line uint) error {
 	keys = append(builtinVariables, keys...)
 	for _, k := range keys {
 		fmt.Fprintf(s.GetOutput(), `%s = "%s"%s`, k, vars[k], SqlcmdEol)
+	}
+	return nil
+}
+
+// helpCommand displays the list of available sqlcmd commands
+func helpCommand(s *Sqlcmd, args []string, line uint) error {
+	if args != nil && strings.TrimSpace(args[0]) != "" {
+		return InvalidCommandError(":HELP", line)
+	}
+
+	helpText := []struct {
+		cmd  string
+		desc string
+	}{
+		{"ED", "Edit the statement cache using the default editor"},
+		{"!!", "Execute operating system command"},
+		{":CONNECT server[\\instance] [-l timeout] [-U user [-P password]]", "Connect to a server"},
+		{":ERROR <filename>|STDERR|STDOUT", "Redirect error output to file"},
+		{":EXIT", "Exit sqlcmd"},
+		{":EXIT()", "Execute query, exit returning no value"},
+		{":EXIT(<query>)", "Execute query and exit returning numeric result"},
+		{"GO [<n>]", "Execute batch [n times]"},
+		{":HELP", "Show this list of commands"},
+		{":LIST", "Print statement cache contents"},
+		{":LISTVAR", "List scripting variables"},
+		{":ON ERROR [EXIT|IGNORE]", "Action on error"},
+		{":OUT <filename>|STDERR|STDOUT", "Redirect output to file"},
+		{":QUIT", "Exit sqlcmd immediately"},
+		{":R <filename>", "Read input from file"},
+		{":RESET", "Clear statement cache"},
+		{":SETVAR <var> <value>", "Set scripting variable"},
+		{":XML [ON|OFF]", "Enable or disable XML output mode"},
+	}
+
+	output := s.GetOutput()
+	for _, h := range helpText {
+		fmt.Fprintf(output, "%-60s %s%s", h.cmd, h.desc, SqlcmdEol)
 	}
 	return nil
 }

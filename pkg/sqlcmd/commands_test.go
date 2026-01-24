@@ -161,6 +161,32 @@ func TestVarCommands(t *testing.T) {
 
 }
 
+func TestHelpCommand(t *testing.T) {
+	vars := InitializeVariables(false)
+	s := New(nil, "", vars)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+
+	err := helpCommand(s, []string{""}, 1)
+	assert.NoError(t, err, "helpCommand")
+	s.SetOutput(nil)
+
+	o := buf.buf.String()
+	t.Logf("Help output:\n'%s'", o)
+
+	// Verify key commands are listed
+	assert.Contains(t, o, ":HELP", "Help output should contain :HELP")
+	assert.Contains(t, o, ":CONNECT", "Help output should contain :CONNECT")
+	assert.Contains(t, o, ":SETVAR", "Help output should contain :SETVAR")
+	assert.Contains(t, o, "GO", "Help output should contain GO")
+	assert.Contains(t, o, ":EXIT", "Help output should contain :EXIT")
+	assert.Contains(t, o, ":QUIT", "Help output should contain :QUIT")
+
+	// Verify help command rejects arguments
+	err = helpCommand(s, []string{"invalid"}, 1)
+	assert.Error(t, err, "helpCommand should reject arguments")
+}
+
 // memoryBuffer has both Write and Close methods for use as io.WriteCloser
 type memoryBuffer struct {
 	buf *bytes.Buffer
