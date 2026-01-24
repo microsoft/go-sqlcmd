@@ -14,6 +14,11 @@ import (
 	"github.com/microsoft/go-mssqldb/msdsn"
 )
 
+const (
+	// DefaultBrowserTimeout is the default timeout for SQL Server Browser queries
+	DefaultBrowserTimeout = 30 * time.Second
+)
+
 // ServerInstance represents a discovered SQL Server instance
 type ServerInstance struct {
 	ServerName   string
@@ -28,7 +33,7 @@ type ServerInstance struct {
 // Returns a slice of ServerInstance and any error encountered.
 func ListServers(timeout time.Duration) ([]ServerInstance, error) {
 	if timeout == 0 {
-		timeout = 30 * time.Second
+		timeout = DefaultBrowserTimeout
 	}
 
 	bmsg := []byte{byte(msdsn.BrowserAllInstances)}

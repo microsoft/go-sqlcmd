@@ -258,6 +258,8 @@ func (s *Sqlcmd) SetPerftrace(p io.WriteCloser) {
 
 // PrintPerformanceStatistics prints the performance statistics to the perftrace output.
 // This matches the ODBC sqlcmd format: network packet size, transaction count, and clock time.
+// The function returns early without printing if PrintStatistics is false or numXacts <= 0.
+// Output format: "Network packet size (bytes): N\nX xact[s]:\nClock Time (ms.): total T  avg A (R xacts per sec.)"
 func (s *Sqlcmd) PrintPerformanceStatistics(totalTimeMs int64, numXacts int) {
 	if !s.PrintStatistics || numXacts <= 0 {
 		return
@@ -265,10 +267,13 @@ func (s *Sqlcmd) PrintPerformanceStatistics(totalTimeMs int64, numXacts int) {
 
 	perfout := s.GetPerftrace()
 
-	// Get packet size from the connection settings (default is 4096)
+	// DefaultPacketSize is the default network packet size in bytes
+	const DefaultPacketSize = 4096
+
+	// Get packet size from the connection settings
 	packetSize := s.Connect.PacketSize
 	if packetSize == 0 {
-		packetSize = 4096
+		packetSize = DefaultPacketSize
 	}
 
 	// Ensure minimum time of 1ms for calculations

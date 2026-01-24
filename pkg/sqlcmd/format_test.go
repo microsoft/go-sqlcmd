@@ -4,10 +4,12 @@
 package sqlcmd
 
 import (
+	"bytes"
 	"context"
 	"strings"
 	"testing"
 
+	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 )
@@ -175,4 +177,44 @@ func TestNewSQLCmdDefaultFormatterWithOptions(t *testing.T) {
 	formatter2, _ := f2.(*sqlCmdFormatterType)
 	assert.False(t, formatter2.rawErrors, "rawErrors should be false")
 	assert.False(t, formatter2.removeTrailingSpaces, "removeTrailingSpaces should be false")
+}
+
+func TestRawErrorsOutput(t *testing.T) {
+	// Test that raw errors mode (-j flag) omits the "Msg #, Level, State, Server, Line" prefix
+	v := InitializeVariables(true)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+
+	// Test with rawErrors = false (default behavior)
+	formatter := NewSQLCmdDefaultFormatterWithOptions(true, ControlIgnore, false)
+	formatter.BeginBatch("", v, buf, buf)
+
+	// Simulate an SQL error
+	mssqlErr := mssql.Error{
+		Number:     208,
+		Class:      16,
+		State:      1,
+		ServerName: "TESTSERVER",
+		Message:    "Invalid object name 'nonexistent'.",
+	}
+	formatter.AddError(mssqlErr)
+
+	output := buf.buf.String()
+	assert.Contains(t, output, "Msg 208", "Default mode should include Msg prefix")
+	assert.Contains(t, output, "Level 16", "Default mode should include Level")
+	assert.Contains(t, output, "State 1", "Default mode should include State")
+	assert.Contains(t, output, "TESTSERVER", "Default mode should include Server")
+	assert.Contains(t, output, "Invalid object name", "Should include error message")
+
+	// Test with rawErrors = true (-j flag)
+	buf.buf.Reset()
+	rawFormatter := NewSQLCmdDefaultFormatterWithOptions(true, ControlIgnore, true)
+	rawFormatter.BeginBatch("", v, buf, buf)
+
+	rawFormatter.AddError(mssqlErr)
+
+	rawOutput := buf.buf.String()
+	assert.NotContains(t, rawOutput, "Msg 208", "Raw mode should NOT include Msg prefix")
+	assert.NotContains(t, rawOutput, "Level 16", "Raw mode should NOT include Level")
+	assert.NotContains(t, rawOutput, "State 1", "Raw mode should NOT include State")
+	assert.Contains(t, rawOutput, "Invalid object name", "Raw mode should still include error message")
 }
