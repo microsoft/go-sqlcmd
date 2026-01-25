@@ -163,6 +163,21 @@ client_interface_name go-mssqldb
 program_name          sqlcmd
 ```
 
+- The `-p[1]` flag prints performance statistics after each result set. Use `-p` for human-readable format or `-p1` for colon-separated format suitable for scripts.
+
+```
+1> select 1
+2> go
+
+-----------
+          1
+
+(1 row affected)
+Network packet size (bytes): 4096
+1 xact(s):
+Clock Time (ms.): total       15  avg       15 (66.67 xacts per sec.)
+```
+
 - `sqlcmd` supports shared memory and named pipe transport. Use the appropriate protocol prefix on the server name to force a protocol:
   * `lpc` for shared memory, only for a localhost.                           `sqlcmd -S lpc:.`
   * `np` for named pipes. Or use the UNC named pipe path as the server name: `sqlcmd -S \\myserver\pipe\sql\query`
