@@ -113,8 +113,13 @@ func newCommands() Commands {
 			action: xmlCommand,
 			name:   "XML",
 		},
+		"HELP": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:HELP(?:[ \t]+(.*$)|$)`),
+			action: helpCommand,
+			name:   "HELP",
+		},
 		"PERFTRACE": {
-			regex:  regexp.MustCompile(`(?im)^[ \t]*:PERFTRACE(?:[ \t]+(.*$)|$)`),
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:PERFTRACE(?:[ \t]+(.*$)|$)`),
 			action: perftraceCommand,
 			name:   "PERFTRACE",
 		},
@@ -362,30 +367,6 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
-// perftraceCommand changes the performance statistics writer to use a file
-func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
-	if len(args) == 0 || args[0] == "" {
-		return InvalidCommandError("PERFTRACE", line)
-	}
-	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
-	if err != nil {
-		return err
-	}
-	switch {
-	case strings.EqualFold(filePath, "stderr"):
-		s.SetStat(os.Stderr)
-	case strings.EqualFold(filePath, "stdout"):
-		s.SetStat(os.Stdout)
-	default:
-		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
-		if err != nil {
-			return InvalidFileError(err, args[0])
-		}
-		s.SetStat(o)
-	}
-	return nil
-}
-
 func readFileCommand(s *Sqlcmd, args []string, line uint) error {
 	if args == nil || len(args) != 1 {
 		return InvalidCommandError(":R", line)
@@ -621,6 +602,77 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 		s.Format.XmlMode(true)
 	} else {
 		s.Format.XmlMode(false)
+	}
+	return nil
+}
+
+// helpCommand displays the list of available sqlcmd commands
+func helpCommand(s *Sqlcmd, args []string, line uint) error {
+	helpText := `:!! [<command>]
+  - Executes a command in the operating system shell.
+:connect server[\instance] [-l timeout] [-U user [-P password]]
+  - Connects to a SQL Server instance.
+:ed
+  - Edits the current or last executed statement cache.
+:error <dest>
+  - Redirects error output to a file, stderr, or stdout.
+:exit
+  - Quits sqlcmd immediately.
+:exit()
+  - Execute statement cache; quit with no return value.
+:exit(<query>)
+  - Execute the specified query; returns numeric result.
+go [<n>]
+  - Executes the statement cache (n times).
+:help
+  - Shows this list of commands.
+:list
+  - Prints the content of the statement cache.
+:listvar
+  - Lists the set sqlcmd scripting variables.
+:on error [exit|ignore]
+  - Action for batch or sqlcmd command errors.
+:out <filename>|stderr|stdout
+  - Redirects query output to a file, stderr, or stdout.
+:perftrace <filename>|stderr|stdout
+  - Redirects timing output to a file, stderr, or stdout.
+:quit
+  - Quits sqlcmd immediately.
+:r <filename>
+  - Append file contents to the statement cache.
+:reset
+  - Discards the statement cache.
+:setvar {variable}
+  - Removes a sqlcmd scripting variable.
+:setvar <variable> <value>
+  - Sets a sqlcmd scripting variable.
+:xml [on|off]
+  - Sets XML output mode.
+`
+	_, err := s.GetOutput().Write([]byte(helpText))
+	return err
+}
+
+// perftraceCommand changes the performance statistics writer to use a file
+func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 || args[0] == "" {
+		return InvalidCommandError("PERFTRACE", line)
+	}
+	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
+	if err != nil {
+		return err
+	}
+	switch {
+	case strings.EqualFold(filePath, "stderr"):
+		s.SetStat(os.Stderr)
+	case strings.EqualFold(filePath, "stdout"):
+		s.SetStat(os.Stdout)
+	default:
+		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
+		if err != nil {
+			return InvalidFileError(err, args[0])
+		}
+		s.SetStat(o)
 	}
 	return nil
 }
