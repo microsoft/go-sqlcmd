@@ -326,6 +326,20 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 			win16le := unicode.UTF16(unicode.LittleEndian, unicode.UseBOM)
 			encoder := transform.NewWriter(o, win16le.NewEncoder())
 			s.SetOutput(encoder)
+		} else if s.CodePage != nil && s.CodePage.OutputCodePage != 0 {
+			// Use specified output codepage
+			enc, err := GetEncoding(s.CodePage.OutputCodePage)
+			if err != nil {
+				return err
+			}
+			if enc != nil {
+				// Transform from UTF-8 to specified encoding
+				encoder := transform.NewWriter(o, enc.NewEncoder())
+				s.SetOutput(encoder)
+			} else {
+				// UTF-8, no transformation needed
+				s.SetOutput(o)
+			}
 		} else {
 			s.SetOutput(o)
 		}
@@ -352,7 +366,18 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 		if err != nil {
 			return InvalidFileError(err, args[0])
 		}
-		s.SetError(o)
+		// Apply output codepage if configured
+		if s.CodePage != nil && s.CodePage.OutputCodePage != 0 {
+			enc, err := GetEncoding(s.CodePage.OutputCodePage)
+			if err != nil {
+				o.Close()
+				return err
+			}
+			encoder := transform.NewWriter(o, enc.NewEncoder())
+			s.SetError(encoder)
+		} else {
+			s.SetError(o)
+		}
 	}
 	return nil
 }

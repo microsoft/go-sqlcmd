@@ -133,6 +133,7 @@ The following switches have different behavior in this version of `sqlcmd` compa
   - To provide the value of the host name in the server certificate when using strict encryption, pass the host name with `-F`. Example: `-Ns -F myhost.domain.com`
   - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
+- `-f` Specifies the code page for input and output files. Format: `codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]`. Use `65001` for UTF-8. Supported codepages include Unicode (65001, 1200, 1201), Windows (874, 1250-1258), OEM/DOS (437, 850, etc.), ISO-8859 (28591-28606), CJK (932, 936, 949, 950), and EBCDIC (37, 1047, 1140). Use `--list-codepages` to see all supported code pages.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 - `-i` doesn't handle a comma `,` in a file name correctly unless the file name argument is triple quoted. For example:
