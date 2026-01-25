@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -211,7 +212,7 @@ func TestGetEncoding(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		t.Run(string(rune(tt.codepage)), func(t *testing.T) {
+		t.Run(fmt.Sprintf("cp_%d", tt.codepage), func(t *testing.T) {
 			enc, err := GetEncoding(tt.codepage)
 			if tt.wantErr {
 				assert.Error(t, err)

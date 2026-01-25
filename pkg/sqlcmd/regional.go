@@ -10,7 +10,6 @@ import (
 
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
-	"golang.org/x/text/number"
 )
 
 // RegionalSettings provides locale-aware formatting for output when -R is used
@@ -71,30 +70,46 @@ func (r *RegionalSettings) FormatNumber(value string) string {
 
 // FormatMoney formats a currency value with locale-specific formatting
 // Used for MONEY and SMALLMONEY types
+// Uses pure string manipulation to preserve precision for large values
 func (r *RegionalSettings) FormatMoney(value string) string {
 	if !r.enabled || value == "" || value == "NULL" {
 		return value
 	}
 
-	// Parse the money value
+	// MONEY/SMALLMONEY are fixed-point with 4 decimal places.
+	// Avoid float64 to prevent rounding of large values; format via string operations.
 	negative := strings.HasPrefix(value, "-")
 	cleanValue := value
 	if negative {
 		cleanValue = value[1:]
 	}
 
-	if f, err := strconv.ParseFloat(cleanValue, 64); err == nil {
-		// Use locale-aware number formatting
-		// Note: We use number formatting, not currency, to maintain compatibility
-		// with ODBC sqlcmd which formats with thousand separators but not currency symbols
-		formatted := r.printer.Sprint(number.Decimal(f, number.Scale(4)))
-		if negative && !strings.HasPrefix(formatted, "-") {
-			formatted = "-" + formatted
-		}
-		return formatted
+	// Split into integer and fractional parts
+	parts := strings.SplitN(cleanValue, ".", 2)
+	intPart := parts[0]
+	fracPart := ""
+	if len(parts) > 1 {
+		fracPart = parts[1]
 	}
 
-	return value
+	// Normalize fractional part to exactly 4 digits, matching SQL Server MONEY display
+	if len(fracPart) == 0 {
+		fracPart = "0000"
+	} else if len(fracPart) < 4 {
+		fracPart = fracPart + strings.Repeat("0", 4-len(fracPart))
+	} else if len(fracPart) > 4 {
+		fracPart = fracPart[:4]
+	}
+
+	// Apply locale-specific thousand separators to the integer part
+	formattedInt := addThousandSeparators(intPart, r.tag)
+
+	// Combine with locale-specific decimal separator
+	formatted := formattedInt + getDecimalSeparator(r.tag) + fracPart
+	if negative {
+		formatted = "-" + formatted
+	}
+	return formatted
 }
 
 // FormatDate formats a date value using locale-specific date format
