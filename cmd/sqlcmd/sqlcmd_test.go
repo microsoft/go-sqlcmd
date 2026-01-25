@@ -139,6 +139,13 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"--list-codepages"}, func(args SQLCmdArguments) bool {
 			return args.ListCodePages
 		}},
+		// Regional settings flag test
+		{[]string{"-R"}, func(args SQLCmdArguments) bool {
+			return args.UseRegionalSettings
+		}},
+		{[]string{"--client-regional-setting"}, func(args SQLCmdArguments) bool {
+			return args.UseRegionalSettings
+		}},
 	}
 
 	for _, test := range commands {

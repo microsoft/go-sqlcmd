@@ -567,7 +567,6 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 					row[n] = "0"
 				}
 			default:
-				var err error
 				val := fmt.Sprintf("%v", x)
 				// Apply regional formatting for numeric types
 				if f.regional.IsEnabled() {
@@ -581,9 +580,6 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 					}
 				} else {
 					row[n] = val
-				}
-				if err != nil {
-					return nil, err
 				}
 			}
 		}
