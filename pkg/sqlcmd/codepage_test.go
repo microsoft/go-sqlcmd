@@ -227,3 +227,39 @@ func TestGetEncoding(t *testing.T) {
 		})
 	}
 }
+
+func TestSupportedCodePages(t *testing.T) {
+	cps := SupportedCodePages()
+
+	// Should have entries
+	assert.Greater(t, len(cps), 0, "should return codepages")
+
+	// Each returned codepage should be valid in GetEncoding
+	for _, cp := range cps {
+		_, err := GetEncoding(cp.CodePage)
+		assert.NoError(t, err, "SupportedCodePages entry %d should be valid in GetEncoding", cp.CodePage)
+		assert.NotEmpty(t, cp.Name, "codepage %d should have a name", cp.CodePage)
+		assert.NotEmpty(t, cp.Description, "codepage %d should have a description", cp.CodePage)
+	}
+
+	// Result should be sorted by codepage number
+	for i := 1; i < len(cps); i++ {
+		assert.Less(t, cps[i-1].CodePage, cps[i].CodePage, "codepages should be sorted")
+	}
+
+	// Check some well-known codepages are present
+	known := map[int]bool{
+		65001: false, // UTF-8
+		1252:  false, // Windows Western
+		437:   false, // DOS US
+		932:   false, // Japanese
+	}
+	for _, cp := range cps {
+		if _, ok := known[cp.CodePage]; ok {
+			known[cp.CodePage] = true
+		}
+	}
+	for cp, found := range known {
+		assert.True(t, found, "well-known codepage %d should be in list", cp)
+	}
+}
