@@ -9,13 +9,11 @@ import (
 	"time"
 
 	"golang.org/x/text/language"
-	"golang.org/x/text/message"
 )
 
 // RegionalSettings provides locale-aware formatting for output when -R is used
 type RegionalSettings struct {
 	enabled bool
-	printer *message.Printer
 	tag     language.Tag
 	dateFmt string
 	timeFmt string
@@ -27,7 +25,6 @@ func NewRegionalSettings(enabled bool) *RegionalSettings {
 	r := &RegionalSettings{enabled: enabled}
 	if enabled {
 		r.tag = detectUserLocale()
-		r.printer = message.NewPrinter(r.tag)
 		r.dateFmt, r.timeFmt = getLocaleDateTimeFormats(r.tag)
 	}
 	return r
