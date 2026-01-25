@@ -210,7 +210,7 @@ func (c Commands) SetBatchTerminator(terminator string) error {
 
 // isExitParenBalanced checks if the parentheses in an EXIT command argument are balanced.
 // It tracks quotes to avoid counting parens inside string literals.
-// It handles SQL Server's quote escaping: ” inside strings and ]] inside bracket identifiers.
+// It handles SQL Server's quote escaping: ” inside single-quoted strings, "" inside double-quoted strings, and ]] inside bracket identifiers.
 func isExitParenBalanced(s string) bool {
 	depth := 0
 	var quote rune

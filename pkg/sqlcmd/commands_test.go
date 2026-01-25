@@ -516,7 +516,7 @@ func TestReadExitContinuation(t *testing.T) {
 
 		result, err := readExitContinuation(s, "(select 1")
 		assert.NoError(t, err)
-		assert.Equal(t, "(select 1\r\n+ 2)", result)
+		assert.Equal(t, "(select 1"+SqlcmdEol+"+ 2)", result)
 
 		// Verify prompt was set
 		tc := s.lineIo.(*testConsole)
@@ -560,7 +560,7 @@ func TestReadExitContinuation(t *testing.T) {
 
 		result, err := readExitContinuation(s, "(select 1")
 		assert.NoError(t, err)
-		assert.Equal(t, "(select 1\r\n+ 2\r\n+ 3\r\n)", result)
+		assert.Equal(t, "(select 1"+SqlcmdEol+"+ 2"+SqlcmdEol+"+ 3"+SqlcmdEol+")", result)
 	})
 
 	t.Run("returns immediately if already balanced", func(t *testing.T) {
