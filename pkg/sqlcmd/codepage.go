@@ -32,8 +32,8 @@ type codepageEntry struct {
 var codepageRegistry = map[int]codepageEntry{
 	// Unicode
 	65001: {nil, "UTF-8", "Unicode (UTF-8)"},
-	1200:  {unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM), "UTF-16LE", "Unicode (UTF-16 Little-Endian)"},
-	1201:  {unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM), "UTF-16BE", "Unicode (UTF-16 Big-Endian)"},
+	1200:  {unicode.UTF16(unicode.LittleEndian, unicode.UseBOM), "UTF-16LE", "Unicode (UTF-16 Little-Endian)"},
+	1201:  {unicode.UTF16(unicode.BigEndian, unicode.UseBOM), "UTF-16BE", "Unicode (UTF-16 Big-Endian)"},
 
 	// OEM/DOS codepages
 	437: {charmap.CodePage437, "CP437", "OEM United States"},

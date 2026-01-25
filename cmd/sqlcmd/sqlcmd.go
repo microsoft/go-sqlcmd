@@ -83,7 +83,10 @@ type SQLCmdArguments struct {
 	ChangePasswordAndExit       string
 	TraceFile                   string
 	CodePage                    string
-	ListCodePages               bool
+	// codePageSettings stores the parsed CodePageSettings after validation.
+	// This avoids parsing CodePage twice (in Validate and run).
+	codePageSettings *sqlcmd.CodePageSettings
+	ListCodePages    bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -174,8 +177,10 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 		case a.ServerCertificate != "" && !encryptConnectionAllowsTLS(a.EncryptConnection):
 			err = localizer.Errorf("The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).")
 		case a.CodePage != "":
-			if _, parseErr := sqlcmd.ParseCodePage(a.CodePage); parseErr != nil {
+			if codePageSettings, parseErr := sqlcmd.ParseCodePage(a.CodePage); parseErr != nil {
 				err = localizer.Errorf(`'-f %s': %v`, a.CodePage, parseErr)
+			} else {
+				a.codePageSettings = codePageSettings
 			}
 		}
 	}
@@ -832,13 +837,9 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	defer s.StopCloseHandler()
 	s.UnicodeOutputFile = args.UnicodeOutputFile
 
-	// Parse and apply codepage settings
-	if args.CodePage != "" {
-		codePageSettings, err := sqlcmd.ParseCodePage(args.CodePage)
-		if err != nil {
-			return 1, localizer.Errorf("Invalid code page: %v", err)
-		}
-		s.CodePage = codePageSettings
+	// Apply codepage settings (already parsed and validated in Validate)
+	if args.codePageSettings != nil {
+		s.CodePage = args.codePageSettings
 	}
 
 	if args.DisableCmd != nil {
