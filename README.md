@@ -112,6 +112,24 @@ sqlcmd
 
 If no current context exists, `sqlcmd` (with no connection parameters) reverts to the original ODBC `sqlcmd` behavior of creating an interactive session to the default local instance on port 1433 using trusted authentication, otherwise it will create an interactive session to the current context.
 
+### Interactive Mode Commands
+
+In interactive mode, `sqlcmd` supports several special commands. The `EXIT` command can execute a query and use its result as the exit code:
+
+```
+1> EXIT(SELECT 100)
+```
+
+For complex queries, `EXIT(query)` can span multiple lines. When parentheses are unbalanced, `sqlcmd` prompts for continuation:
+
+```
+1> EXIT(SELECT 1
+      -> + 2
+      -> + 3)
+```
+
+The query result (6 in this example) becomes the process exit code.
+
 ## Sqlcmd
 
 The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to the `Go` language, utilizing the [go-mssqldb][] driver. For full documentation of the tool and installation instructions, see [go-sqlcmd-utility][].

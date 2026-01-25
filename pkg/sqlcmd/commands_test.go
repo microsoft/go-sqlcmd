@@ -632,3 +632,41 @@ func TestExitCommandNonInteractiveUnbalanced(t *testing.T) {
 	err := exitCommand(s, []string{"(select 1"}, 1)
 	assert.EqualError(t, err, InvalidCommandError("EXIT", 1).Error(), "unbalanced parens in non-interactive should error")
 }
+
+// TestExitCommandMultiLineInteractive is an integration test that exercises the full
+// multi-line EXIT flow: starting with unbalanced parentheses, reading continuation lines
+// from the console, executing the combined query, and returning the correct exit code.
+func TestExitCommandMultiLineInteractive(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+
+	// Set up mock console to provide continuation lines
+	continuationLines := []string{"+ 2", ")"}
+	lineIndex := 0
+	s.lineIo = &testConsole{
+		OnReadLine: func() (string, error) {
+			if lineIndex >= len(continuationLines) {
+				return "", io.EOF
+			}
+			line := continuationLines[lineIndex]
+			lineIndex++
+			return line, nil
+		},
+		OnPasswordPrompt: func(prompt string) ([]byte, error) {
+			return nil, nil
+		},
+	}
+
+	// Initialize batch so exitCommand can work with it
+	s.batch = NewBatch(nil, nil)
+
+	// Call exitCommand with unbalanced parentheses - this should:
+	// 1. Detect unbalanced parens in "(select 1"
+	// 2. Read continuation lines "+ 2" and ")" from the mock console
+	// 3. Combine into "(select 1\r\n+ 2\r\n)" and execute
+	// 4. Return ErrExitRequested with Exitcode set to 3 (1+2)
+	err := exitCommand(s, []string{"(select 1"}, 1)
+
+	assert.Equal(t, ErrExitRequested, err, "exitCommand should return ErrExitRequested")
+	assert.Equal(t, 3, s.Exitcode, "Exitcode should be 3 (result of 'select 1 + 2')")
+}
