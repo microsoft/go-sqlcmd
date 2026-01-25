@@ -4,10 +4,10 @@
 package sqlcmd
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/encoding/charmap"
 	"golang.org/x/text/encoding/japanese"
@@ -43,21 +43,21 @@ func ParseCodePage(arg string) (*CodePageSettings, error) {
 			// Input codepage
 			cp, err := strconv.Atoi(strings.TrimPrefix(strings.ToLower(part), "i:"))
 			if err != nil {
-				return nil, fmt.Errorf("invalid input codepage: %s", part)
+				return nil, localizer.Errorf("invalid input codepage: %s", part)
 			}
 			settings.InputCodePage = cp
 		} else if strings.HasPrefix(strings.ToLower(part), "o:") {
 			// Output codepage
 			cp, err := strconv.Atoi(strings.TrimPrefix(strings.ToLower(part), "o:"))
 			if err != nil {
-				return nil, fmt.Errorf("invalid output codepage: %s", part)
+				return nil, localizer.Errorf("invalid output codepage: %s", part)
 			}
 			settings.OutputCodePage = cp
 		} else {
 			// Both input and output
 			cp, err := strconv.Atoi(part)
 			if err != nil {
-				return nil, fmt.Errorf("invalid codepage: %s", part)
+				return nil, localizer.Errorf("invalid codepage: %s", part)
 			}
 			settings.InputCodePage = cp
 			settings.OutputCodePage = cp
@@ -88,11 +88,11 @@ func GetEncoding(codepage int) (encoding.Encoding, error) {
 		// UTF-8 - Go's native encoding, return nil to indicate no transformation needed
 		return nil, nil
 	case 1200:
-		// UTF-16LE
-		return unicode.UTF16(unicode.LittleEndian, unicode.IgnoreBOM), nil
+		// UTF-16LE - Use ExpectBOM to strip BOM if present during input
+		return unicode.UTF16(unicode.LittleEndian, unicode.ExpectBOM), nil
 	case 1201:
-		// UTF-16BE
-		return unicode.UTF16(unicode.BigEndian, unicode.IgnoreBOM), nil
+		// UTF-16BE - Use ExpectBOM to strip BOM if present during input
+		return unicode.UTF16(unicode.BigEndian, unicode.ExpectBOM), nil
 
 	// OEM/DOS codepages
 	case 437:
@@ -224,7 +224,7 @@ func GetEncoding(codepage int) (encoding.Encoding, error) {
 		return traditionalchinese.Big5, nil
 
 	default:
-		return nil, fmt.Errorf("unsupported codepage %d", codepage)
+		return nil, localizer.Errorf("unsupported codepage %d", codepage)
 	}
 }
 

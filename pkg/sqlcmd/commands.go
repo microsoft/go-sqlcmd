@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"regexp"
 	"sort"
@@ -13,9 +14,27 @@ import (
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/color"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
+
+// transformWriteCloser wraps a transform.Writer and ensures the underlying
+// file is closed when Close() is called.
+type transformWriteCloser struct {
+	*transform.Writer
+	underlying io.Closer
+}
+
+// Close flushes the transform writer and closes the underlying file.
+func (t *transformWriteCloser) Close() error {
+	// Close the transform writer (flushes pending data)
+	if err := t.Writer.Close(); err != nil {
+		_ = t.underlying.Close()
+		return err
+	}
+	return t.underlying.Close()
+}
 
 // Command defines a sqlcmd action which can be intermixed with the SQL batch
 // Commands for sqlcmd are defined at https://docs.microsoft.com/sql/tools/sqlcmd-utility#sqlcmd-commands
@@ -324,7 +343,10 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 			// ODBC sqlcmd doesn't write a BOM but we will.
 			// Maybe the endian-ness should be configurable.
 			win16le := unicode.UTF16(unicode.LittleEndian, unicode.UseBOM)
-			encoder := transform.NewWriter(o, win16le.NewEncoder())
+			encoder := &transformWriteCloser{
+				Writer:     transform.NewWriter(o, win16le.NewEncoder()),
+				underlying: o,
+			}
 			s.SetOutput(encoder)
 		} else if s.CodePage != nil && s.CodePage.OutputCodePage != 0 {
 			// Use specified output codepage
@@ -335,7 +357,10 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 			}
 			if enc != nil {
 				// Transform from UTF-8 to specified encoding
-				encoder := transform.NewWriter(o, enc.NewEncoder())
+				encoder := &transformWriteCloser{
+					Writer:     transform.NewWriter(o, enc.NewEncoder()),
+					underlying: o,
+				}
 				s.SetOutput(encoder)
 			} else {
 				// UTF-8, no transformation needed
@@ -372,7 +397,7 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 			enc, err := GetEncoding(s.CodePage.OutputCodePage)
 			if err != nil {
 				if cerr := o.Close(); cerr != nil {
-					return fmt.Errorf("%v; additionally, closing error file %q failed: %w", err, args[0], cerr)
+					return localizer.Errorf("%v; additionally, closing error file %q failed: %v", err, args[0], cerr)
 				}
 				return err
 			}
@@ -380,7 +405,10 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 				// UTF-8 (or default) encoding: write directly without transform
 				s.SetError(o)
 			} else {
-				encoder := transform.NewWriter(o, enc.NewEncoder())
+				encoder := &transformWriteCloser{
+					Writer:     transform.NewWriter(o, enc.NewEncoder()),
+					underlying: o,
+				}
 				s.SetError(encoder)
 			}
 		} else {
