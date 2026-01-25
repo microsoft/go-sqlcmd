@@ -55,8 +55,8 @@ func TestCommandParsing(t *testing.T) {
 		{`:RESET`, "RESET", []string{""}},
 		{`RESET`, "RESET", []string{""}},
 		{`:HELP`, "HELP", []string{""}},
-		{`:help`, "HELP", []string{""}},
-	}
+		{`:help`, "HELP", []string{""}}, {`:SERVERLIST`, "SERVERLIST", []string{""}},
+		{`:serverlist`, "SERVERLIST", []string{""}}}
 
 	for _, test := range commands {
 		cmd, args := c.matchCommand(test.line)
@@ -479,5 +479,6 @@ func TestHelpCommand(t *testing.T) {
 	assert.Contains(t, output, ":out", "help should list :out")
 	assert.Contains(t, output, ":error", "help should list :error")
 	assert.Contains(t, output, ":r", "help should list :r")
+	assert.Contains(t, output, ":serverlist", "help should list :serverlist")
 	assert.Contains(t, output, "go", "help should list go")
 }

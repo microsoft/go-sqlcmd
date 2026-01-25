@@ -608,6 +608,9 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 
 // helpCommand displays the list of available sqlcmd commands
 func helpCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
+		return InvalidCommandError("HELP", line)
+	}
 	helpText := `:!! [<command>]
   - Executes a command in the operating system shell.
 :connect server[\instance] [-l timeout] [-U user [-P password]]

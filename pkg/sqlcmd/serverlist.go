@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"sort"
 	"strings"
 	"time"
 
@@ -19,7 +20,7 @@ import (
 func ListLocalServers(w io.Writer) {
 	instances := GetLocalServerInstances()
 	for _, s := range instances {
-		fmt.Fprintln(w, "  ", s)
+		fmt.Fprintf(w, "  %s\n", s)
 	}
 }
 
@@ -52,11 +53,24 @@ func GetLocalServerInstances() []string {
 
 	data := parseInstances(resp[:read])
 	instances := make([]string, 0, len(data))
+
+	// Sort instance names for deterministic output
+	instanceNames := make([]string, 0, len(data))
 	for s := range data {
+		instanceNames = append(instanceNames, s)
+	}
+	sort.Strings(instanceNames)
+
+	for _, s := range instanceNames {
+		serverName := data[s]["ServerName"]
+		if serverName == "" {
+			// Skip instances without a ServerName
+			continue
+		}
 		if s == "MSSQLSERVER" {
-			instances = append(instances, "(local)", data[s]["ServerName"])
+			instances = append(instances, "(local)", serverName)
 		} else {
-			instances = append(instances, fmt.Sprintf(`%s\%s`, data[s]["ServerName"], s))
+			instances = append(instances, fmt.Sprintf(`%s\%s`, serverName, s))
 		}
 	}
 	return instances
