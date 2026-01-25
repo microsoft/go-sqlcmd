@@ -149,7 +149,7 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 	if err == nil {
 		switch {
 		case len(a.InputFile) > 0 && len(a.Query) > 0:
-			err = mutuallyExclusiveError("-i", `-Q`)
+			err = mutuallyExclusiveError("-i", "-Q")
 		case a.UseTrustedConnection && (len(a.UserName) > 0 || len(a.Password) > 0):
 			err = mutuallyExclusiveError("-E", `-U/-P`)
 		case a.UseAad && len(a.AuthenticationMethod) > 0:
@@ -890,6 +890,9 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 			s.Query = args.Query
 		} else if args.InitialQuery != "" {
 			s.Query = args.InitialQuery
+			if !isInteractive {
+				once = true
+			}
 		}
 
 		// Run initial query (-q) if provided, even when combined with input files (-i)
