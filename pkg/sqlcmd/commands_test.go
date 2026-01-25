@@ -5,7 +5,9 @@ package sqlcmd
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -476,8 +478,12 @@ func TestIsExitParenBalanced(t *testing.T) {
 		{"", true},          // empty string is balanced
 		{"no parens", true}, // no parens is balanced
 		{"(", false},
-		{")", false},       // depth goes -1, not balanced
-		{"(test))", false}, // depth goes -1 at end
+		{")", false},                       // depth goes -1, not balanced
+		{"(test))", false},                 // depth goes -1 at end
+		{"(select 'can''t')", true},        // escaped single quote
+		{"(select [col]]name])", true},     // escaped bracket identifier
+		{"(select 'it''s a )test')", true}, // escaped quote with paren
+		{"(select [a]]])", true},           // escaped bracket with paren
 	}
 	for _, test := range tests {
 		t.Run(test.input, func(t *testing.T) {
@@ -485,4 +491,94 @@ func TestIsExitParenBalanced(t *testing.T) {
 			assert.Equal(t, test.balanced, result, "isExitParenBalanced(%q)", test.input)
 		})
 	}
+}
+
+func TestReadExitContinuation(t *testing.T) {
+	t.Run("reads continuation lines until balanced", func(t *testing.T) {
+		s := &Sqlcmd{}
+		lines := []string{"+ 2)", ""}
+		lineIndex := 0
+		promptSet := ""
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				if lineIndex >= len(lines) {
+					return "", io.EOF
+				}
+				line := lines[lineIndex]
+				lineIndex++
+				return line, nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+		s.lineIo.SetPrompt("")
+
+		result, err := readExitContinuation(s, "(select 1")
+		assert.NoError(t, err)
+		assert.Equal(t, "(select 1\r\n+ 2)", result)
+
+		// Verify prompt was set
+		tc := s.lineIo.(*testConsole)
+		promptSet = tc.PromptText
+		assert.Equal(t, "      -> ", promptSet)
+	})
+
+	t.Run("returns error on readline failure", func(t *testing.T) {
+		s := &Sqlcmd{}
+		expectedErr := errors.New("readline error")
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				return "", expectedErr
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+
+		_, err := readExitContinuation(s, "(select 1")
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("handles multiple continuation lines", func(t *testing.T) {
+		s := &Sqlcmd{}
+		lines := []string{"+ 2", "+ 3", ")"}
+		lineIndex := 0
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				if lineIndex >= len(lines) {
+					return "", io.EOF
+				}
+				line := lines[lineIndex]
+				lineIndex++
+				return line, nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+
+		result, err := readExitContinuation(s, "(select 1")
+		assert.NoError(t, err)
+		assert.Equal(t, "(select 1\r\n+ 2\r\n+ 3\r\n)", result)
+	})
+
+	t.Run("returns immediately if already balanced", func(t *testing.T) {
+		s := &Sqlcmd{}
+		readLineCalled := false
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				readLineCalled = true
+				return "", nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+
+		result, err := readExitContinuation(s, "(select 1)")
+		assert.NoError(t, err)
+		assert.Equal(t, "(select 1)", result)
+		assert.False(t, readLineCalled, "Readline should not be called for balanced input")
+	})
 }
