@@ -75,6 +75,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-u", "-A"}, func(args SQLCmdArguments) bool {
 			return args.UnicodeOutputFile && args.DedicatedAdminConnection
 		}},
+		{[]string{"-u", "--no-bom"}, func(args SQLCmdArguments) bool {
+			return args.UnicodeOutputFile && args.NoBOM
+		}},
 		{[]string{"--version"}, func(args SQLCmdArguments) bool {
 			return args.Version
 		}},
