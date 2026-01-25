@@ -458,3 +458,31 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 	}
 
 }
+func TestIsExitParenBalanced(t *testing.T) {
+	tests := []struct {
+		input    string
+		balanced bool
+	}{
+		{"()", true},
+		{"(select 1)", true},
+		{"(select 1", false},
+		{"(select (1 + 2))", true},
+		{"(select ')')", true},     // paren inside string
+		{"(select \"(\")", true},   // paren inside double-quoted string
+		{"(select [col)])", true},  // paren inside bracket-quoted identifier
+		{"(select 1) extra", true}, // balanced even with trailing text
+		{"((nested))", true},
+		{"((nested)", false},
+		{"", true},          // empty string is balanced
+		{"no parens", true}, // no parens is balanced
+		{"(", false},
+		{")", false},       // depth goes -1, not balanced
+		{"(test))", false}, // depth goes -1 at end
+	}
+	for _, test := range tests {
+		t.Run(test.input, func(t *testing.T) {
+			result := isExitParenBalanced(test.input)
+			assert.Equal(t, test.balanced, result, "isExitParenBalanced(%q)", test.input)
+		})
+	}
+}
