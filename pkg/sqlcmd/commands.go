@@ -228,6 +228,8 @@ func (c Commands) SetBatchTerminator(terminator string) error {
 // With no (), it just exits without running any query
 // With () it runs whatever batch is in the buffer then exits
 // With any text between () it runs the text as a query then exits
+// In interactive mode, EXIT(query) can span multiple lines - sqlcmd will
+// continue prompting for input until the closing ) is found.
 func exitCommand(s *Sqlcmd, args []string, line uint) error {
 	if len(args) == 0 {
 		return ErrExitRequested
@@ -236,7 +238,26 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 	if params == "" {
 		return ErrExitRequested
 	}
-	if !strings.HasPrefix(params, "(") || !strings.HasSuffix(params, ")") {
+
+	// Check if we have an opening paren
+	if !strings.HasPrefix(params, "(") {
+		return InvalidCommandError("EXIT", line)
+	}
+
+	// If we don't have a closing paren, try to read continuation lines (interactive mode only)
+	if !isExitParenBalanced(params) {
+		if s.lineIo == nil {
+			// Not in interactive mode, can't read more lines
+			return InvalidCommandError("EXIT", line)
+		}
+		var err error
+		params, err = readExitContinuation(s, params)
+		if err != nil {
+			return err
+		}
+	}
+
+	if !strings.HasSuffix(params, ")") {
 		return InvalidCommandError("EXIT", line)
 	}
 	// First we save the current batch
@@ -271,6 +292,50 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 		s.PrintPerformanceStatistics(elapsed.Milliseconds(), 1)
 	}
 	return ErrExitRequested
+}
+
+// isExitParenBalanced checks if the parentheses in an EXIT command argument are balanced.
+// It tracks quotes to avoid counting parens inside string literals.
+func isExitParenBalanced(s string) bool {
+	depth := 0
+	var quote rune = 0
+	for _, c := range s {
+		switch {
+		case quote != 0:
+			// Inside a quoted string
+			if c == quote {
+				quote = 0
+			}
+		case c == '\'' || c == '"':
+			quote = c
+		case c == '[':
+			quote = ']' // SQL Server bracket quoting
+		case c == '(':
+			depth++
+		case c == ')':
+			depth--
+		}
+	}
+	return depth == 0
+}
+
+// readExitContinuation reads additional lines from the console until the EXIT
+// parentheses are balanced. This enables multi-line EXIT(query) in interactive mode.
+func readExitContinuation(s *Sqlcmd, params string) (string, error) {
+	var builder strings.Builder
+	builder.WriteString(params)
+
+	for !isExitParenBalanced(builder.String()) {
+		// Show continuation prompt
+		s.lineIo.SetPrompt("      -> ")
+		line, err := s.lineIo.Readline()
+		if err != nil {
+			return "", err
+		}
+		builder.WriteString(SqlcmdEol)
+		builder.WriteString(line)
+	}
+	return builder.String(), nil
 }
 
 // quitCommand immediately exits the program without running any more batches

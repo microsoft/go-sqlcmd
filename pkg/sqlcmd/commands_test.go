@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -538,4 +539,57 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
 	}
 
+}
+
+func TestIsExitParenBalanced(t *testing.T) {
+	tests := []struct {
+		input    string
+		balanced bool
+	}{
+		{"()", true},
+		{"(select 1)", true},
+		{"(select 1", false},
+		{"(select (1 + 2))", true},
+		{"(select ')')", true},     // paren inside string
+		{"(select \"(\")", true},   // paren inside double-quoted string
+		{"(select [col)])", true},  // paren inside bracket-quoted identifier
+		{"(select 1) extra", true}, // balanced even with trailing text
+		{"((nested))", true},
+		{"((nested)", false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			result := isExitParenBalanced(tt.input)
+			assert.Equal(t, tt.balanced, result, "isExitParenBalanced(%q)", tt.input)
+		})
+	}
+}
+
+func TestExitMultiLine(t *testing.T) {
+	// Test that multi-line EXIT works in interactive mode
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+
+	// Simulate multi-line input: "EXIT(SELECT 1" then "  + 2)"
+	lines := []string{"  + 2)"}
+	lineIndex := 0
+
+	s.lineIo = &testConsole{
+		OnReadLine: func() (string, error) {
+			if lineIndex >= len(lines) {
+				return "", io.EOF
+			}
+			line := lines[lineIndex]
+			lineIndex++
+			return line, nil
+		},
+		OnPasswordPrompt: func(prompt string) ([]byte, error) {
+			return nil, nil
+		},
+	}
+
+	// Directly call exitCommand with unclosed paren
+	err := exitCommand(s, []string{"(SELECT 1"}, 1)
+	assert.Equal(t, ErrExitRequested, err, "exitCommand should return ErrExitRequested")
+	assert.Equal(t, 3, s.Exitcode, "EXIT should set exit code to query result (1+2=3)")
 }

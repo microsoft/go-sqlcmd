@@ -134,7 +134,6 @@ The following switches have different behavior in this version of `sqlcmd` compa
   - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
-- All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 - `-i` doesn't handle a comma `,` in a file name correctly unless the file name argument is triple quoted. For example:
   `sqlcmd -i """select,100.sql"""` will try to open a file named `sql,100.sql` while `sqlcmd -i "select,100.sql"` will try to open two files `select` and `100.sql`
 - If using a single `-i` flag  to pass multiple file names, there must be a space after the `-i`. Example: `-i file1.sql file2.sql`
@@ -180,6 +179,7 @@ net_transport Named pipe
 - The new `:HELP` interactive command displays a list of all available sqlcmd commands with descriptions.
 - The new `:PERFTRACE <filename>|STDERR|STDOUT` interactive command redirects timing output to a file or stream. This is useful when using `-p` to separate statistics from query output.
 - The new `:SERVERLIST` interactive command lists local and network SQL Server instances (same as `-L` flag but available during an interactive session).
+- `EXIT(query)` now supports multi-line queries in interactive mode. When an unclosed parenthesis is detected, sqlcmd prompts for additional input until the query is complete.
 
 ### Azure Active Directory Authentication
 
