@@ -325,6 +325,24 @@ func TestUnicodeOutputNoBOM(t *testing.T) {
 		assert.True(t, len(fileBytes) >= 2, "output file should have content")
 		hasBOM := len(fileBytes) >= 2 && fileBytes[0] == 0xFF && fileBytes[1] == 0xFE
 		assert.False(t, hasBOM, "output file should NOT have BOM when --no-bom is used")
+
+		// Verify content is valid UTF-16 LE by decoding and checking for expected text
+		// UTF-16 LE uses 2 bytes per character, so file size should be even
+		assert.Equal(t, 0, len(fileBytes)%2, "UTF-16 LE output should have even number of bytes")
+		// Decode first few bytes as UTF-16 LE and verify it contains recognizable content
+		if len(fileBytes) >= 4 {
+			// Check for ASCII-range characters encoded as UTF-16 LE (low byte first, high byte = 0)
+			// Common characters like digits, letters have high byte = 0 in UTF-16 LE
+			hasValidUtf16Pattern := false
+			for i := 0; i+1 < len(fileBytes); i += 2 {
+				// In UTF-16 LE, ASCII chars have low byte = char, high byte = 0
+				if fileBytes[i+1] == 0 && fileBytes[i] >= 0x20 && fileBytes[i] < 0x7F {
+					hasValidUtf16Pattern = true
+					break
+				}
+			}
+			assert.True(t, hasValidUtf16Pattern, "output should contain valid UTF-16 LE encoded content")
+		}
 	}
 }
 
