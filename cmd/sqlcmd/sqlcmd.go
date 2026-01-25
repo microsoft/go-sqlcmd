@@ -909,6 +909,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 	s.SetOutput(nil)
 	s.SetError(nil)
+	s.SetStat(nil)
 	return s.Exitcode, err
 }
 
