@@ -224,7 +224,7 @@ func GetEncoding(codepage int) (encoding.Encoding, error) {
 		return traditionalchinese.Big5, nil
 
 	default:
-		return nil, localizer.Errorf("unsupported codepage %d", codepage)
+		return nil, localizer.Errorf("unsupported codepage %s", strconv.Itoa(codepage))
 	}
 }
 
