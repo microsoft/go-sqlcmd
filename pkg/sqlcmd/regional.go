@@ -40,34 +40,25 @@ func (r *RegionalSettings) IsEnabled() bool {
 }
 
 // FormatNumber formats a numeric value with locale-specific thousand separators
-// Used for DECIMAL and NUMERIC types
+// Used for DECIMAL and NUMERIC types. Formatting is done purely by string
+// manipulation to preserve all digits of high-precision values.
 func (r *RegionalSettings) FormatNumber(value string) string {
 	if !r.enabled || value == "" || value == "NULL" {
 		return value
 	}
 
-	// Parse the number to get parts
+	// Handle leading sign
 	negative := strings.HasPrefix(value, "-")
 	if negative {
 		value = value[1:]
 	}
 
-	// Split into integer and decimal parts
+	// Split into integer and decimal parts using the SQL-style decimal point.
+	// We do not change any digits; we only insert locale-specific separators.
 	parts := strings.SplitN(value, ".", 2)
 	intPart := parts[0]
 
-	// Try to parse as float to use the message printer
-	if f, err := strconv.ParseFloat(strings.Replace(value, ",", "", -1), 64); err == nil {
-		// Use the message printer with the number formatter for grouping
-		formatted := r.printer.Sprint(number.Decimal(f))
-		if negative && !strings.HasPrefix(formatted, "-") {
-			formatted = "-" + formatted
-		}
-		return formatted
-	}
-
-	// Fallback for very large numbers that don't fit in float64
-	// Add thousand separators manually using locale convention
+	// Add thousand separators using locale convention (pure string manipulation)
 	formatted := addThousandSeparators(intPart, r.tag)
 	if len(parts) > 1 {
 		formatted += getDecimalSeparator(r.tag) + parts[1]
