@@ -629,16 +629,12 @@ go [<n>]
   - Action for batch or sqlcmd command errors.
 :out <filename>|stderr|stdout
   - Redirects query output to a file, stderr, or stdout.
-:perftrace <filename>|stderr|stdout
-  - Redirects timing output to a file, stderr, or stdout.
 :quit
   - Quits sqlcmd immediately.
 :r <filename>
   - Append file contents to the statement cache.
 :reset
   - Discards the statement cache.
-:serverlist
-  - Lists local and SQL Servers on the network.
 :setvar {variable}
   - Removes a sqlcmd scripting variable.
 :setvar <variable> <value>
