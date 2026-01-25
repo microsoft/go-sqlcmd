@@ -8,11 +8,11 @@ require (
 	github.com/alecthomas/chroma/v2 v2.5.0
 	github.com/billgraziano/dpapi v0.4.0
 	github.com/docker/distribution v2.8.2+incompatible
-	github.com/docker/docker v27.3.1+incompatible
+	github.com/docker/docker v28.0.0+incompatible
 	github.com/docker/go-connections v0.4.0
 	github.com/golang-sql/sqlexp v0.1.0
 	github.com/google/uuid v1.6.0
-	github.com/microsoft/go-mssqldb v1.9.2
+	github.com/microsoft/go-mssqldb v1.9.6
 	github.com/opencontainers/image-spec v1.0.2
 	github.com/peterh/liner v1.2.2
 	github.com/pkg/errors v0.9.1
@@ -72,6 +72,7 @@ require (
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/common v0.26.0 // indirect
 	github.com/prometheus/procfs v0.6.0 // indirect
+	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

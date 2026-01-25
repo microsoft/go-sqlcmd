@@ -32,3 +32,12 @@ darwin-arm64/sqlcmd
 linux-amd64/sqlcmd
 linux-arm64/sqlcmd
 linux-s390x/sqlcmd
+
+# Build artifacts in root
+/sqlcmd
+/sqlcmd_binary
+
+# certificates used for local testing
+*.der
+*.pem
+*.pfx
