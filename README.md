@@ -155,6 +155,7 @@ switches are most important to you to have implemented next in the new sqlcmd.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `--vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
 - `:help` displays a list of available sqlcmd commands.
+- `:serverlist` lists local SQL Server instances discovered via the SQL Server Browser service.
 
 ```
 1> select session_id, client_interface_name, program_name from sys.dm_exec_sessions where session_id=@@spid

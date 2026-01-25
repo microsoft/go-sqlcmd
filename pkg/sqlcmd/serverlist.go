@@ -94,7 +94,10 @@ func parseInstances(msg []byte) msdsn.BrowserData {
 					if len(instanceDict) == 0 {
 						break
 					}
-					results[strings.ToUpper(instanceDict["InstanceName"])] = instanceDict
+					// Only add if InstanceName key exists and is non-empty
+					if instName, ok := instanceDict["InstanceName"]; ok && instName != "" {
+						results[strings.ToUpper(instName)] = instanceDict
+					}
 					instanceDict = map[string]string{}
 					continue
 				}

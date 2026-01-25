@@ -657,7 +657,7 @@ go [<n>]
 }
 
 func serverlistCommand(s *Sqlcmd, args []string, line uint) error {
-	if len(args) > 0 && args[0] != "" {
+	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
 		return InvalidCommandError("SERVERLIST", line)
 	}
 	ListLocalServers(s.GetOutput())

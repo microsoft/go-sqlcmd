@@ -55,8 +55,10 @@ func TestCommandParsing(t *testing.T) {
 		{`:RESET`, "RESET", []string{""}},
 		{`RESET`, "RESET", []string{""}},
 		{`:HELP`, "HELP", []string{""}},
-		{`:help`, "HELP", []string{""}}, {`:SERVERLIST`, "SERVERLIST", []string{""}},
-		{`:serverlist`, "SERVERLIST", []string{""}}}
+		{`:help`, "HELP", []string{""}},
+		{`:SERVERLIST`, "SERVERLIST", []string{""}},
+		{`:serverlist`, "SERVERLIST", []string{""}},
+	}
 
 	for _, test := range commands {
 		cmd, args := c.matchCommand(test.line)
