@@ -99,6 +99,12 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-k", "-X", "-r", "-z", "something"}, func(args SQLCmdArguments) bool {
 			return args.warnOnBlockedCmd() && !args.useEnvVars() && args.getControlCharacterBehavior() == sqlcmd.ControlRemove && *args.ErrorsToStderr == 0 && args.ChangePassword == "something"
 		}},
+		{[]string{"-p"}, func(args SQLCmdArguments) bool {
+			return args.PrintStatistics != nil && *args.PrintStatistics == 0
+		}},
+		{[]string{"-p", "1"}, func(args SQLCmdArguments) bool {
+			return args.PrintStatistics != nil && *args.PrintStatistics == 1
+		}},
 		{[]string{"-N"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true"
 		}},

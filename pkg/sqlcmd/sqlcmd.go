@@ -612,7 +612,7 @@ func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int) {
 	if *s.PrintStatistics == 1 {
 		// Colon-separated format: n:x:t1:t2:t3
 		// packetSize:numBatches:totalTime:avgTime:batchesPerSec
-		fmt.Fprintf(out, "\n%d:%d:%d:%.2f:%.2f \n", packetSize, numBatches, elapsedMs, avgTime, batchesPerSec)
+		fmt.Fprintf(out, "\n%d:%d:%d:%.2f:%.2f\n", packetSize, numBatches, elapsedMs, avgTime, batchesPerSec)
 	} else {
 		// Standard format
 		fmt.Fprintf(out, "\nNetwork packet size (bytes): %d\n", packetSize)

@@ -332,6 +332,7 @@ func checkDefaultValue(args []string, i int) (val string) {
 		'k': "0",
 		'L': "|", // | is the sentinel for no value since users are unlikely to use it. It's "reserved" in most shells
 		'X': "0",
+		'p': "0",
 	}
 	if isFlag(args[i]) && len(args[i]) == 2 && (len(args) == i+1 || args[i+1][0] == '-') {
 		if v, ok := flags[rune(args[i][1])]; ok {
@@ -552,7 +553,7 @@ func normalizeFlags(cmd *cobra.Command) error {
 			case "0", "1":
 				return pflag.NormalizedName(name)
 			default:
-				err = invalidParameterError("-p", v, "1")
+				err = invalidParameterError("-p", v, "0", "1")
 				return pflag.NormalizedName("")
 			}
 		}
