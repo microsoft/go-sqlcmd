@@ -376,6 +376,11 @@ func getOptionalIntArgument(cmd *cobra.Command, name string) (i *int) {
 	if val != nil && val.Changed {
 		i = new(int)
 		value := val.Value.String()
+		// Handle empty value for flags that allow no argument (e.g., -r without value defaults to 0)
+		if value == "" {
+			*i = 0
+			return
+		}
 		v, e := strconv.Atoi(value)
 		if e != nil {
 			*i = -1
@@ -513,7 +518,7 @@ func normalizeFlags(cmd *cobra.Command) error {
 			}
 		case errorsToStderr:
 			switch v {
-			case "0", "1":
+			case "0", "1", "":
 				return pflag.NormalizedName(name)
 			default:
 				err = invalidParameterError("-r", v, "0", "1")
