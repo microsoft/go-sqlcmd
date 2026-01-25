@@ -88,6 +88,17 @@ type Sqlcmd struct {
 	EchoInput bool
 	colorizer color.Colorizer
 	termchan  chan os.Signal
+	// PrintStatistics controls whether performance statistics are printed after each batch
+	// nil = disabled, 0 = human-readable format, 1 = colon-separated format
+	PrintStatistics *int
+	// stats tracks cumulative statistics for the session
+	stats *SessionStats
+}
+
+// SessionStats tracks cumulative performance statistics for a sqlcmd session
+type SessionStats struct {
+	TotalTransactions int
+	TotalTimeMs       float64
 }
 
 // New creates a new Sqlcmd instance.
@@ -420,6 +431,9 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 // -101: No rows found
 // -102: Conversion error occurred when selecting return value
 func (s *Sqlcmd) runQuery(query string) (int, error) {
+	// Start timing for statistics
+	startTime := time.Now()
+
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
@@ -508,6 +522,13 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		}
 	}
 	s.Format.EndBatch()
+
+	// Print statistics if enabled
+	if s.PrintStatistics != nil {
+		elapsed := time.Since(startTime)
+		s.printStatistics(elapsed)
+	}
+
 	return retcode, qe
 }
 
@@ -550,6 +571,48 @@ func (s *Sqlcmd) handleError(retcode *int, err error) error {
 		return ErrExitRequested
 	}
 	return nil
+}
+
+// printStatistics prints performance statistics for the query
+func (s *Sqlcmd) printStatistics(elapsed time.Duration) {
+	if s.stats == nil {
+		s.stats = &SessionStats{}
+	}
+
+	// Update cumulative statistics
+	s.stats.TotalTransactions++
+	elapsedMs := float64(elapsed.Milliseconds())
+	s.stats.TotalTimeMs += elapsedMs
+
+	// Calculate statistics
+	avgMs := s.stats.TotalTimeMs / float64(s.stats.TotalTransactions)
+	var xactsPerSec float64
+	if s.stats.TotalTimeMs > 0 {
+		xactsPerSec = float64(s.stats.TotalTransactions) / (s.stats.TotalTimeMs / 1000.0)
+	}
+
+	// Get packet size from connection settings
+	packetSize := s.Connect.PacketSize
+	if packetSize == 0 {
+		packetSize = 4096 // default
+	}
+
+	out := s.GetOutput()
+
+	if *s.PrintStatistics == 1 {
+		// Colon-separated format for spreadsheet/script processing
+		_, _ = out.Write([]byte(localizer.Sprintf("Network packet size (bytes):%d%s", packetSize, SqlcmdEol)))
+		_, _ = out.Write([]byte(localizer.Sprintf("%d xact(s):%s", s.stats.TotalTransactions, SqlcmdEol)))
+		_, _ = out.Write([]byte(localizer.Sprintf("Clock Time (ms.): total:%d:avg:%.2f:(%.4f xacts per sec.)%s",
+			int(s.stats.TotalTimeMs), avgMs, xactsPerSec, SqlcmdEol)))
+	} else {
+		// Human-readable format
+		_, _ = out.Write([]byte(SqlcmdEol))
+		_, _ = out.Write([]byte(localizer.Sprintf("Network packet size (bytes): %d%s", packetSize, SqlcmdEol)))
+		_, _ = out.Write([]byte(localizer.Sprintf("%d xact(s):%s", s.stats.TotalTransactions, SqlcmdEol)))
+		_, _ = out.Write([]byte(localizer.Sprintf("Clock Time (ms.): total       %d  avg       %.2f (%.4f xacts per sec.)%s",
+			int(s.stats.TotalTimeMs), avgMs, xactsPerSec, SqlcmdEol)))
+	}
 }
 
 // Log attempts to write driver traces to the current output. It ignores errors

@@ -123,6 +123,16 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "true", "-J", "/path/to/cert2.pem"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true" && args.ServerCertificate == "/path/to/cert2.pem"
 		}},
+		// Test -p flag for performance statistics
+		{[]string{"-p"}, func(args SQLCmdArguments) bool {
+			return args.PrintStatistics != nil && *args.PrintStatistics == 0
+		}},
+		{[]string{"-p", "1"}, func(args SQLCmdArguments) bool {
+			return args.PrintStatistics != nil && *args.PrintStatistics == 1
+		}},
+		{[]string{"--print-statistics", "0"}, func(args SQLCmdArguments) bool {
+			return args.PrintStatistics != nil && *args.PrintStatistics == 0
+		}},
 	}
 
 	for _, test := range commands {
@@ -178,6 +188,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-N", "optional", "-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
 		{[]string{"-N", "disable", "-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
 		{[]string{"-N", "strict", "-F", "myserver.domain.com", "-J", "/path/to/cert.pem"}, "The -F and the -J options are mutually exclusive."},
+		{[]string{"-p", "2"}, "'-p 2': Unexpected argument. Argument value has to be one of [0 1]."},
 	}
 
 	for _, test := range commands {
