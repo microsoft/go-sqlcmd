@@ -122,7 +122,7 @@ The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to t
 - There are new posix-style versions of each flag, such as `--input-file` for `-i`. `sqlcmd -?` will print those parameter names. Those new names do not preserve backward compatibility with ODBC `sqlcmd`. For example, to specify multiple input file names using `--input-file`, the file names must be comma-delimited, not space-delimited.
 
 The following switches have different behavior in this version of `sqlcmd` compared to the original ODBC based `sqlcmd`.
-- `-R` switch is ignored. The go runtime does not provide access to user locale information, and it's not readily available through syscall on all supported platforms.
+- `-R` switch enables regional formatting for numeric, currency, and date/time values based on the user's locale. Formatting includes locale-specific thousand separators for numbers, and locale-specific date/time formats. On Windows, the user's default locale is detected from system settings. On Linux/macOS, the locale is detected from environment variables (`LC_ALL`, `LC_MESSAGES`, `LANG`).
 - `-I` switch is ignored; quoted identifiers are always set on. To disable quoted identifier behavior, add `SET QUOTED IDENTIFIER OFF` in your scripts.
 - `-N` now takes an optional string value that can be one of `s[trict]`,`t[rue]`,`m[andatory]`, `yes`,`1`, `o[ptional]`,`no`, `0`, `f[alse]`, or `disable` to specify the encryption choice.
   - If `-N` is passed but no value is provided, `true` is used.

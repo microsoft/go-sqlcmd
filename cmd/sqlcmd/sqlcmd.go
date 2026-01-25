@@ -84,6 +84,7 @@ type SQLCmdArguments struct {
 	TraceFile                   string
 	CodePage                    string
 	ListCodePages               bool
+	UseRegionalSettings         bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -489,7 +490,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.ListServers, listServers, "L", "", localizer.Sprintf("%s List servers. Pass %s to omit 'Servers:' output.", "-L[c]", "c"))
 	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 	_ = rootCmd.Flags().BoolP("enable-quoted-identifiers", "I", true, localizer.Sprintf("Provided for backward compatibility. Quoted identifiers are always enabled"))
-	_ = rootCmd.Flags().BoolP("client-regional-setting", "R", false, localizer.Sprintf("Provided for backward compatibility. Client regional settings are not used"))
+	rootCmd.Flags().BoolVarP(&args.UseRegionalSettings, "client-regional-setting", "R", false, localizer.Sprintf("Use client regional settings for currency, date, and time formatting"))
 	_ = rootCmd.Flags().IntP(removeControlCharacters, "k", 0, localizer.Sprintf("%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters", "-k [1|2]"))
 	rootCmd.Flags().BoolVarP(&args.EchoInput, "echo-input", "e", false, localizer.Sprintf("Echo input"))
 	rootCmd.Flags().IntVarP(&args.QueryTimeout, "query-timeout", "t", 0, "Query timeout")
@@ -856,7 +857,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s.Connect = &connectConfig
-	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(args.TrimSpaces, args.getControlCharacterBehavior())
+	s.Format = sqlcmd.NewSQLCmdDefaultFormatterWithRegional(args.TrimSpaces, args.getControlCharacterBehavior(), args.UseRegionalSettings)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {
