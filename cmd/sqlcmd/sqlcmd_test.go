@@ -273,6 +273,33 @@ func TestRunInputFiles(t *testing.T) {
 	}
 }
 
+// TestInitialQueryWithInputFile verifies that -q (initial query) executes before -i (input files)
+func TestInitialQueryWithInputFile(t *testing.T) {
+	o, err := os.CreateTemp("", "sqlcmdmain")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(o.Name())
+	defer o.Close()
+	args = newArguments()
+	// Use -q to change session language, then -i to verify the setting persists
+	// The initial query sets LANGUAGE to German, then the script selects @@LANGUAGE
+	args.InitialQuery = "SET LANGUAGE German"
+	args.InputFile = []string{"testdata/select_init_value.sql"}
+	args.OutputFile = o.Name()
+	setAzureAuthArgIfNeeded(&args)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
+	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	bytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		// Verify that the language set in the initial query is reflected in the script output
+		assert.Contains(t, string(bytes), "Deutsch", "Initial query should execute before input file")
+	}
+}
+
 func TestUnicodeOutput(t *testing.T) {
 	o, err := os.CreateTemp("", "sqlcmdmain")
 	assert.NoError(t, err, "os.CreateTemp")
