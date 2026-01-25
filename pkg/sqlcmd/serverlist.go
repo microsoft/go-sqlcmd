@@ -65,26 +65,26 @@ func GetLocalServerInstances() []string {
 func parseInstances(msg []byte) msdsn.BrowserData {
 	results := msdsn.BrowserData{}
 	if len(msg) > 3 && msg[0] == 5 {
-		out_s := string(msg[3:])
-		tokens := strings.Split(out_s, ";")
-		instdict := map[string]string{}
-		got_name := false
+		outStr := string(msg[3:])
+		tokens := strings.Split(outStr, ";")
+		instanceDict := map[string]string{}
+		gotName := false
 		var name string
 		for _, token := range tokens {
-			if got_name {
-				instdict[name] = token
-				got_name = false
+			if gotName {
+				instanceDict[name] = token
+				gotName = false
 			} else {
 				name = token
 				if len(name) == 0 {
-					if len(instdict) == 0 {
+					if len(instanceDict) == 0 {
 						break
 					}
-					results[strings.ToUpper(instdict["InstanceName"])] = instdict
-					instdict = map[string]string{}
+					results[strings.ToUpper(instanceDict["InstanceName"])] = instanceDict
+					instanceDict = map[string]string{}
 					continue
 				}
-				got_name = true
+				gotName = true
 			}
 		}
 	}

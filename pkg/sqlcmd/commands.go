@@ -602,6 +602,9 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 }
 
 func serverlistCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) > 0 && args[0] != "" {
+		return InvalidCommandError("SERVERLIST", line)
+	}
 	ListLocalServers(s.GetOutput())
 	return nil
 }
