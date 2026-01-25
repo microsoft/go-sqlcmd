@@ -2127,7 +2127,7 @@
       "placeholders": [
         {
           "id": "Port",
-          "string": "%[1]d",
+          "string": "%#[1]v",
           "type": "int",
           "underlyingType": "int",
           "argNum": 1,
@@ -2528,6 +2528,13 @@
       "fuzzy": true
     },
     {
+      "id": "Write runtime trace to the specified file. Only for advanced debugging.",
+      "message": "Write runtime trace to the specified file. Only for advanced debugging.",
+      "translation": "將執行階段追蹤寫入指定的檔案。僅供進階偵錯使用。",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "translation": "識別一或多個包含 SQL 語句批次的檔案。如果一或多個檔案不存在，sqlcmd 將會結束。與 {QueryAndExitFlag}/{QueryFlag} 互斥",
@@ -2678,10 +2685,20 @@
       "fuzzy": true
     },
     {
-      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-      "translation": "指定要用來連接到 Azure SQL Database 的 SQL 驗證方法。下列其中一項: ActiveDirectoryDefault、ActiveDirectoryIntegrated、ActiveDirectoryPassword、ActiveDirectoryInteractive、ActiveDirectoryManagedIdentity、ActiveDirectoryServicePrincipal、ActiveDirectoryAzCli、ActiveDirectoryDeviceCode、SqlPassword",
+      "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+      "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+      "translation": "指定要用來連接到 Azure SQL 資料庫的 SQL 驗證方法。下列其中一項: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
       "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "ActiveDirectoryAzureDeveloperCli__SqlPassword___",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "strings.Join([]string{\n\tazuread.ActiveDirectoryDefault,\n\tazuread.ActiveDirectoryIntegrated,\n\tazuread.ActiveDirectoryPassword,\n\tazuread.ActiveDirectoryInteractive,\n\tazuread.ActiveDirectoryManagedIdentity,\n\tazuread.ActiveDirectoryServicePrincipal,\n\tazuread.ActiveDirectoryServicePrincipalAccessToken,\n\tazuread.ActiveDirectoryAzCli,\n\tazuread.ActiveDirectoryDeviceCode,\n\tazuread.ActiveDirectoryWorkloadIdentity,\n\tazuread.ActiveDirectoryClientAssertion,\n\tazuread.ActiveDirectoryAzurePipelines,\n\tazuread.ActiveDirectoryEnvironment,\n\tazuread.ActiveDirectoryAzureDeveloperCli,\n\t\"SqlPassword\",\n}, \", \")"
+        }
+      ],
       "fuzzy": true
     },
     {
@@ -2799,10 +2816,35 @@
       "fuzzy": true
     },
     {
-      "id": "Specifies the formatting for results",
-      "message": "Specifies the formatting for results",
-      "translation": "指定結果的格式設定",
+      "id": "Specifies the host name in the server certificate.",
+      "message": "Specifies the host name in the server certificate.",
+      "translation": "指定伺服器憑證中的主機名稱。",
       "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+      "message": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+      "translation": "以垂直格式列印輸出。此選項會將 sqlcmd 指令碼變數 {SQLCMDFORMAT} 設定為 '{Vert}'。預設值為 false",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "SQLCMDFORMAT",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "sqlcmd.SQLCMDFORMAT"
+        },
+        {
+          "id": "Vert",
+          "string": "%[2]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 2,
+          "expr": "\"vert\""
+        }
+      ],
       "fuzzy": true
     },
     {
@@ -3005,7 +3047,7 @@
     {
       "id": "Echo input",
       "message": "Echo input",
-      "translation": "回音輸入",
+      "translation": "回應輸入",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3250,6 +3292,48 @@
           "underlyingType": "string",
           "argNum": 1,
           "expr": "p[1]"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "failed to create trace file '{TraceFile}': {Err}",
+      "message": "failed to create trace file '{TraceFile}': {Err}",
+      "translation": "無法建立追蹤檔案 '{TraceFile}': {Err}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "TraceFile",
+          "string": "%[1]s",
+          "type": "string",
+          "underlyingType": "string",
+          "argNum": 1,
+          "expr": "args.TraceFile"
+        },
+        {
+          "id": "Err",
+          "string": "%[2]v",
+          "type": "error",
+          "underlyingType": "interface{Error() string}",
+          "argNum": 2,
+          "expr": "err"
+        }
+      ],
+      "fuzzy": true
+    },
+    {
+      "id": "failed to start trace: {Err}",
+      "message": "failed to start trace: {Err}",
+      "translation": "無法啟動追蹤: {Err}",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Err",
+          "string": "%[1]v",
+          "type": "error",
+          "underlyingType": "interface{Error() string}",
+          "argNum": 1,
+          "expr": "err"
         }
       ],
       "fuzzy": true
@@ -3582,6 +3666,30 @@
       "message": "Password:",
       "translation": "密碼:",
       "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "(1 row affected)",
+      "message": "(1 row affected)",
+      "translation": "(1 個資料列受影響)",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "({Count} rows affected)",
+      "message": "({Count} rows affected)",
+      "translation": "({Count} 個資料列受影響)",
+      "translatorComment": "Copied from source.",
+      "placeholders": [
+        {
+          "id": "Count",
+          "string": "%[1]d",
+          "type": "int64",
+          "underlyingType": "int64",
+          "argNum": 1,
+          "expr": "m.Count"
+        }
+      ],
       "fuzzy": true
     },
     {

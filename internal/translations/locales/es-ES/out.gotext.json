@@ -2528,6 +2528,13 @@
             "fuzzy": true
         },
         {
+            "id": "Write runtime trace to the specified file. Only for advanced debugging.",
+            "message": "Write runtime trace to the specified file. Only for advanced debugging.",
+            "translation": "Escriba el seguimiento en tiempo de ejecución en el archivo especificado. Solo para depuración avanzada.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
             "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
             "translation": "Identificar uno o varios archivos que contienen lotes de instrucciones SQL. Si uno o varios archivos no existen, sqlcmd se cerrará. Mutuamente excluyente con {QueryAndExitFlag}/{QueryFlag}",
@@ -2678,10 +2685,20 @@
             "fuzzy": true
         },
         {
-            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
-            "translation": "Especifica el método de autenticación de SQL que se va a usar para conectarse a Azure SQL Database. Uno de los siguientes: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword",
+            "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+            "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+            "translation": "Especifica el método de autenticación de SQL que se va a usar para conectarse a Azure SQL Database. Uno de: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
             "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "ActiveDirectoryAzureDeveloperCli__SqlPassword___",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "strings.Join([]string{\n\tazuread.ActiveDirectoryDefault,\n\tazuread.ActiveDirectoryIntegrated,\n\tazuread.ActiveDirectoryPassword,\n\tazuread.ActiveDirectoryInteractive,\n\tazuread.ActiveDirectoryManagedIdentity,\n\tazuread.ActiveDirectoryServicePrincipal,\n\tazuread.ActiveDirectoryServicePrincipalAccessToken,\n\tazuread.ActiveDirectoryAzCli,\n\tazuread.ActiveDirectoryDeviceCode,\n\tazuread.ActiveDirectoryWorkloadIdentity,\n\tazuread.ActiveDirectoryClientAssertion,\n\tazuread.ActiveDirectoryAzurePipelines,\n\tazuread.ActiveDirectoryEnvironment,\n\tazuread.ActiveDirectoryAzureDeveloperCli,\n\t\"SqlPassword\",\n}, \", \")"
+                }
+            ],
             "fuzzy": true
         },
         {
@@ -2799,10 +2816,35 @@
             "fuzzy": true
         },
         {
-            "id": "Specifies the formatting for results",
-            "message": "Specifies the formatting for results",
-            "translation": "Especifica el formato de los resultados",
+            "id": "Specifies the host name in the server certificate.",
+            "message": "Specifies the host name in the server certificate.",
+            "translation": "Especifica el nombre del host en el certificado del servidor.",
             "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+            "message": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
+            "translation": "Imprime la salida en formato vertical. Esta opción establece la variable de scripting sqlcmd {SQLCMDFORMAT} en '{Vert}'. El valor predeterminado es false",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Vert",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"vert\""
+                }
+            ],
             "fuzzy": true
         },
         {
@@ -3255,6 +3297,48 @@
             "fuzzy": true
         },
         {
+            "id": "failed to create trace file '{TraceFile}': {Err}",
+            "message": "failed to create trace file '{TraceFile}': {Err}",
+            "translation": "No se pudo crear el archivo de seguimiento '{TraceFile}': {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "TraceFile",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "args.TraceFile"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "failed to start trace: {Err}",
+            "message": "failed to start trace: {Err}",
+            "translation": "no se pudo iniciar el seguimiento: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "invalid batch terminator '{BatchTerminator}'",
             "message": "invalid batch terminator '{BatchTerminator}'",
             "translation": "terminador de lote no válido '{BatchTerminator}'",
@@ -3582,6 +3666,30 @@
             "message": "Password:",
             "translation": "Contraseña:",
             "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "(1 row affected)",
+            "message": "(1 row affected)",
+            "translation": "(1 fila afectada)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "({Count} rows affected)",
+            "message": "({Count} rows affected)",
+            "translation": "({Count} filas afectadas)",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Count",
+                    "string": "%[1]d",
+                    "type": "int64",
+                    "underlyingType": "int64",
+                    "argNum": 1,
+                    "expr": "m.Count"
+                }
+            ],
             "fuzzy": true
         },
         {

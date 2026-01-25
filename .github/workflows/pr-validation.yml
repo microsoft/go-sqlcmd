@@ -13,7 +13,7 @@ jobs:
     - name: Setup go
       uses: actions/setup-go@v2
       with:
-        go-version: '1.21'
+        go-version: '1.22'
     - name: Run tests against Linux SQL
       run: |
         go version
@@ -22,6 +22,6 @@ jobs:
         go build .
         export SQLCMDPASSWORD=$(date +%s|sha256sum|base64|head -c 32)
         export SQLCMDUSER=sa
-        docker run -m 2GB -e ACCEPT_EULA=1 -d --name sql2017 -p:1433:1433 -e SA_PASSWORD=$SQLCMDPASSWORD mcr.microsoft.com/mssql/server:2017-latest
+        docker run -m 2GB -e ACCEPT_EULA=1 -d --name sql2022 -p:1433:1433 -e SA_PASSWORD=$SQLCMDPASSWORD mcr.microsoft.com/mssql/server:2022-latest
         cd ../..
         go test -v ./...

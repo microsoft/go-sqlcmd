@@ -1,7 +1,4 @@
 variables:
-  # AZURE_CLIENT_SECRET and SQLPASSWORD must be defined as secret variables in the pipeline. 
-  # AZURE_TENANT_ID and AZURE_CLIENT_ID are not expected to be secret variables, just regular variables
-  AZURECLIENTSECRET: $(AZURE_CLIENT_SECRET)
   PASSWORD: $(SQLPASSWORD)
 pool:
    vmImage: 'ubuntu-latest'
@@ -10,45 +7,44 @@ steps:
   - template: include-install-go-tools.yml
 
   - task: Docker@2
-    displayName: 'Run SQL 2017 docker image'
+    displayName: 'Run SQL 2022 docker image'
     inputs:
       command: run
-      arguments: '-m 2GB -e ACCEPT_EULA=1 -d --name sql2017 -p:1433:1433 -e SA_PASSWORD=$(PASSWORD) mcr.microsoft.com/mssql/server:2017-latest'
+      arguments: '-m 2GB -e ACCEPT_EULA=1 -d --name sql2022 -p:1433:1433 -e SA_PASSWORD=$(PASSWORD) mcr.microsoft.com/mssql/server:2022-latest'
 
   - template: include-runtests-linux.yml
     parameters:
-      RunName: 'SQL2017'
+      RunName: 'SQL2022'
       SQLCMDUSER: sa
       SQLPASSWORD: $(PASSWORD)
 
-  # The use of client secrets is disallowed now, so commenting out the Azure tests until we can switch to a federated credential.
-  # - template: include-runtests-linux.yml
-  #   parameters:
-  #     RunName: 'SQLDB'
-  #     # AZURESERVER must be defined as a variable in the pipeline
-  #     SQLCMDSERVER: $(AZURESERVER)
-  #     AZURECLIENTSECRET: $(AZURECLIENTSECRET)
-      
-  - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-    displayName: Merge coverage data
+  - task: AzureCLI@2
     inputs:
-      reports: '**/*.coverage.xml"' # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
-      targetdir: 'coverage' # REQUIRED # The directory where the generated report should be saved.
-      reporttypes: 'HtmlInline_AzurePipelines;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
-      sourcedirs: '$(Build.SourcesDirectory)' # Optional directories which contain the corresponding source code (separated by semicolon). The source directories are used if coverage report contains classes without path information.
-      verbosity: 'Info' # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
-      tag: '$(build.buildnumber)_#$(build.buildid)_$(Build.SourceBranchName)' # Optional tag or build version.
-  - task: PublishCodeCoverageResults@1
+      addSpnToEnvironment: true
+      azureSubscription: $(AZURESUBSCRIPTION_SERVICE_CONNECTION_NAME)
+      scriptType: pscore
+      scriptLocation: inlineScript
+      inlineScript: |
+        Write-Host "##vso[task.setvariable variable=AZURESUBSCRIPTION_CLIENT_ID;]$env:AZURESUBSCRIPTION_CLIENT_ID"
+        Write-Host "##vso[task.setvariable variable=AZURESUBSCRIPTION_TENANT_ID;]$env:AZURESUBSCRIPTION_TENANT_ID"
+        gci env:* | sort-object name
+
+  - template: include-runtests-linux.yml
+    parameters:
+      RunName: 'SQLDB'
+      # AZURESERVER must be defined as a variable in the pipeline
+      SQLCMDSERVER: $(AZURESERVER)
+  - task: UseDotNet@2
     inputs:
-      codeCoverageTool: Cobertura 
+      packageType: 'runtime'
+      version: '8.x'
+
+  - task: PublishCodeCoverageResults@2
+    inputs:
       pathToSources: '$(Build.SourcesDirectory)'
-      summaryFileLocation: $(Build.SourcesDirectory)/coverage/*.xml
-      reportDirectory: $(Build.SourcesDirectory)/coverage
+      summaryFileLocation: $(Build.SourcesDirectory)/**/*coverage.xml
       failIfCoverageEmpty: true
     condition: always()
     continueOnError: true
-    env:
-      disable.coverage.autogenerate: 'true'
   
-  - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-    displayName: ‘Component Detection’
+  

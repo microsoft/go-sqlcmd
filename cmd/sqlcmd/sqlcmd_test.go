@@ -63,8 +63,8 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-b", "-m", "15", "-V", "20"}, func(args SQLCmdArguments) bool {
 			return args.ExitOnError && args.ErrorLevel == 15 && args.ErrorSeverityLevel == 20
 		}},
-		{[]string{"-F", "vert"}, func(args SQLCmdArguments) bool {
-			return args.Format == "vert"
+		{[]string{"--vertical"}, func(args SQLCmdArguments) bool {
+			return args.Vertical
 		}},
 		{[]string{"-r", "1"}, func(args SQLCmdArguments) bool {
 			return *args.ErrorsToStderr == 1
@@ -104,6 +104,24 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		}},
 		{[]string{"-N", "m"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "m"
+		}},
+		{[]string{"-ifoo.sql", "bar.sql", "-V10"}, func(args SQLCmdArguments) bool {
+			return args.ErrorSeverityLevel == 10 && args.InputFile[0] == "foo.sql" && args.InputFile[1] == "bar.sql"
+		}},
+		{[]string{"-N", "s", "-F", "myserver.domain.com"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "s" && args.HostNameInCertificate == "myserver.domain.com"
+		}},
+		{[]string{"-N", "s", "-J", "/path/to/cert.pem"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "s" && args.ServerCertificate == "/path/to/cert.pem"
+		}},
+		{[]string{"-N", "strict", "-J", "/path/to/cert.der"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "strict" && args.ServerCertificate == "/path/to/cert.der"
+		}},
+		{[]string{"-N", "m", "-J", "/path/to/cert.cer"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "m" && args.ServerCertificate == "/path/to/cert.cer"
+		}},
+		{[]string{"-N", "true", "-J", "/path/to/cert2.pem"}, func(args SQLCmdArguments) bool {
+			return args.EncryptConnection == "true" && args.ServerCertificate == "/path/to/cert2.pem"
 		}},
 	}
 
@@ -148,8 +166,7 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-E", "-U", "someuser"}, "The -E and the -U/-P options are mutually exclusive."},
 		{[]string{"-L", "-q", `"select 1"`}, "The -L parameter can not be used in combination with other parameters."},
 		{[]string{"-i", "foo.sql", "-q", `"select 1"`}, "The i and the -Q/-q options are mutually exclusive."},
-		{[]string{"-F", "what"}, "'-F what': Unexpected argument. Argument value has to be one of [horiz horizontal vert vertical]."},
-		{[]string{"-r", "5"}, `'-r 5': Unexpected argument. Argument value has to be one of [0 1].`},
+		{[]string{"-r", "5"}, "'-r 5': Unexpected argument. Argument value has to be one of [0 1]."},
 		{[]string{"-w", "x"}, "'-w x': value must be greater than 8 and less than 65536."},
 		{[]string{"-y", "111111"}, "'-y 111111': value must be greater than or equal to 0 and less than or equal to 8000."},
 		{[]string{"-Y", "-2"}, "'-Y -2': value must be greater than or equal to 0 and less than or equal to 8000."},
@@ -157,6 +174,10 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-;"}, "';': Unknown Option. Enter '-?' for help."},
 		{[]string{"-t", "-2"}, "'-t -2': value must be greater than or equal to 0 and less than or equal to 65534."},
 		{[]string{"-N", "invalid"}, "'-N invalid': Unexpected argument. Argument value has to be one of [m[andatory] yes 1 t[rue] disable o[ptional] no 0 f[alse] s[trict]]."},
+		{[]string{"-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
+		{[]string{"-N", "optional", "-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
+		{[]string{"-N", "disable", "-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
+		{[]string{"-N", "strict", "-F", "myserver.domain.com", "-J", "/path/to/cert.pem"}, "The -F and the -J options are mutually exclusive."},
 	}
 
 	for _, test := range commands {
@@ -234,9 +255,7 @@ func TestRunInputFiles(t *testing.T) {
 	args = newArguments()
 	args.InputFile = []string{"testdata/select100.sql", "testdata/select100.sql"}
 	args.OutputFile = o.Name()
-	if canTestAzureAuth() {
-		args.UseAad = true
-	}
+	setAzureAuthArgIfNeeded(&args)
 	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	setVars(vars, &args)
@@ -259,9 +278,7 @@ func TestUnicodeOutput(t *testing.T) {
 	args.InputFile = []string{"testdata/selectutf8.txt"}
 	args.OutputFile = o.Name()
 	args.UnicodeOutputFile = true
-	if canTestAzureAuth() {
-		args.UseAad = true
-	}
+	setAzureAuthArgIfNeeded(&args)
 	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	setVars(vars, &args)
 
@@ -311,9 +328,7 @@ func TestUnicodeInput(t *testing.T) {
 			args.InputFile = []string{test}
 			args.OutputFile = o.Name()
 			args.UnicodeOutputFile = unicodeOutput
-			if canTestAzureAuth() {
-				args.UseAad = true
-			}
+			setAzureAuthArgIfNeeded(&args)
 			vars := sqlcmd.InitializeVariables(args.useEnvVars())
 			setVars(vars, &args)
 			exitCode, err := run(vars, &args)
@@ -341,9 +356,8 @@ func TestQueryAndExit(t *testing.T) {
 	args.Query = "SELECT '$(VAR1) $(VAR2)'"
 	args.OutputFile = o.Name()
 	args.Variables = map[string]string{"var2": "val2"}
-	if canTestAzureAuth() {
-		args.UseAad = true
-	}
+
+	setAzureAuthArgIfNeeded(&args)
 	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	vars.Set("VAR1", "100")
@@ -358,6 +372,34 @@ func TestQueryAndExit(t *testing.T) {
 	}
 }
 
+func TestInitQueryAndQueryExecutesQuery(t *testing.T) {
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("Panic occurred: %v", r)
+		}
+	}()
+	o, err := os.CreateTemp("", "sqlcmdmain")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(o.Name())
+	defer o.Close()
+	args = newArguments()
+	args.InitialQuery = "SELECT 1"
+	args.Query = "SELECT 2"
+	args.OutputFile = o.Name()
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
+	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
+	setAzureAuthArgIfNeeded(&args)
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	bytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		assert.Equal(t, "2"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+	}
+}
+
 // Test to verify fix for issue: https://github.com/microsoft/go-sqlcmd/issues/98
 //  1. Verify when -b is passed in (ExitOnError), we don't always get an error (even when input is good)
 //     2, Verify when the input is actually bad, we do get an error
@@ -367,9 +409,7 @@ func TestExitOnError(t *testing.T) {
 	args.ErrorsToStderr = new(int)
 	*args.ErrorsToStderr = 0
 	args.ExitOnError = true
-	if canTestAzureAuth() {
-		args.UseAad = true
-	}
+	setAzureAuthArgIfNeeded(&args)
 
 	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	setVars(vars, &args)
@@ -401,7 +441,7 @@ func TestAzureAuth(t *testing.T) {
 	args = newArguments()
 	args.Query = "SELECT 'AZURE'"
 	args.OutputFile = o.Name()
-	args.UseAad = true
+	setAzureAuthArgIfNeeded(&args)
 	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
 	setVars(vars, &args)
@@ -418,9 +458,7 @@ func TestMissingInputFile(t *testing.T) {
 	args = newArguments()
 	args.InputFile = []string{filepath.Join("testdata", "missingFile.sql")}
 
-	if canTestAzureAuth() {
-		args.UseAad = true
-	}
+	setAzureAuthArgIfNeeded(&args)
 
 	vars := sqlcmd.InitializeVariables(args.useEnvVars())
 	setVars(vars, &args)
@@ -475,7 +513,8 @@ func TestConditionsForPasswordPrompt(t *testing.T) {
 		setConnect(&connectConfig, &args, vars)
 		connectConfig.AuthenticationMethod = testcase.authenticationMethod
 		connectConfig.Password = testcase.pwd
-		assert.Equal(t, testcase.expectedResult, isConsoleInitializationRequired(&connectConfig, &args), "Unexpected test result encountered for console initialization")
+		needsConsole, _ := isConsoleInitializationRequired(&connectConfig, &args)
+		assert.Equal(t, testcase.expectedResult, needsConsole, "Unexpected test result encountered for console initialization")
 		assert.Equal(t, testcase.expectedResult, connectConfig.RequiresPassword() && connectConfig.Password == "", "Unexpected test result encountered for password prompt conditions")
 	}
 }
@@ -488,9 +527,7 @@ func TestStartupScript(t *testing.T) {
 	args = newArguments()
 	args.OutputFile = o.Name()
 	args.Query = "set nocount on"
-	if canTestAzureAuth() {
-		args.UseAad = true
-	}
+	setAzureAuthArgIfNeeded(&args)
 	vars := sqlcmd.InitializeVariables(true)
 	setVars(vars, &args)
 	vars.Set(sqlcmd.SQLCMDINI, "testdata/select100.sql")
@@ -526,6 +563,26 @@ func TestConvertOsArgs(t *testing.T) {
 			"Flags with optional arguments",
 			[]string{"-r", "1", "-X", "-k", "-C"},
 			[]string{"-r", "1", "-X", "0", "-k", "0", "-C"},
+		},
+		{
+			"-i followed by flags without spaces",
+			[]string{"-i", "a.sql", "-V10", "-C"},
+			[]string{"-i", "a.sql", "-V10", "-C"},
+		},
+		{
+			"list flags without spaces",
+			[]string{"-ifoo.sql", "bar.sql", "-V10", "-X", "-va=b", "c=d"},
+			[]string{"-ifoo.sql", "-i", "bar.sql", "-V10", "-X", "0", "-va=b", "-v", "c=d"},
+		},
+		{
+			"X1 k2",
+			[]string{"-X1", "-k2"},
+			[]string{"-X1", "-k2"},
+		},
+		{
+			"X k2",
+			[]string{"-X", "-k2"},
+			[]string{"-X", "0", "-k2"},
 		},
 	}
 	for _, c := range tests {
@@ -590,4 +647,15 @@ func (b *memoryBuffer) Write(p []byte) (n int, err error) {
 
 func (b *memoryBuffer) Close() error {
 	return nil
+}
+
+func setAzureAuthArgIfNeeded(args *SQLCmdArguments) {
+	if canTestAzureAuth() {
+		sc := os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_NAME")
+		if sc != "" {
+			args.AuthenticationMethod = azuread.ActiveDirectoryAzurePipelines
+		} else {
+			args.UseAad = true
+		}
+	}
 }

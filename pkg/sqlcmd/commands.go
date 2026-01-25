@@ -77,7 +77,7 @@ func newCommands() Commands {
 			name:   "LISTVAR",
 		},
 		"RESET": {
-			regex:  regexp.MustCompile(`(?im)^[ \t]*:RESET(?:[ \t]+(.*$)|$)`),
+			regex:  regexp.MustCompile(`(?im)^[ \t]*?:?RESET(?:[ \t]+(.*$)|$)`),
 			action: resetCommand,
 			name:   "RESET",
 		},
@@ -134,10 +134,51 @@ func (c Commands) matchCommand(line string) (*Command, []string) {
 	for _, cmd := range c {
 		matchedCommand := cmd.regex.FindStringSubmatch(line)
 		if matchedCommand != nil {
-			return cmd, matchedCommand[1:]
+			return cmd, removeComments(matchedCommand[1:])
 		}
 	}
 	return nil, nil
+}
+
+func removeComments(args []string) []string {
+	var pos int
+	quote := false
+	for i := range args {
+		pos, quote = commentStart([]rune(args[i]), quote)
+		if pos > -1 {
+			out := make([]string, i+1)
+			if i > 0 {
+				copy(out, args[:i])
+			}
+			out[i] = args[i][:pos]
+			return out
+		}
+	}
+	return args
+}
+
+func commentStart(arg []rune, quote bool) (int, bool) {
+	var i int
+	space := true
+	for ; i < len(arg); i++ {
+		c, next := arg[i], grab(arg, i+1, len(arg))
+		switch {
+		case quote && c == '"' && next != '"':
+			quote = false
+		case quote && c == '"' && next == '"':
+			i++
+		case c == '\t' || c == ' ':
+			space = true
+		// Note we assume none of the regexes would split arguments on non-whitespace boundaries such that "text -- comment" would get split into "text -" and "- comment"
+		case !quote && space && c == '-' && next == '-':
+			return i, false
+		case !quote && c == '"':
+			quote = true
+		default:
+			space = false
+		}
+	}
+	return -1, quote
 }
 
 func warnDisabled(s *Sqlcmd, args []string, line uint) error {

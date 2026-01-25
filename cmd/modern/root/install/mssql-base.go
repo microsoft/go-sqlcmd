@@ -280,7 +280,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 
 	if c.defaultDatabase != "" {
 		if !c.validateDbName(c.defaultDatabase) {
-			output.Fatalf(localizer.Sprintf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))
+			output.Fatal(localizer.Sprintf("--user-database %q contains non-ASCII chars and/or quotes", c.defaultDatabase))
 		}
 	}
 

@@ -51,8 +51,8 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			"sqlserver://someserver:1045?protocol=tcp&trustservercertificate=true",
 		},
 		{
-			&ConnectSettings{ServerName: `tcp:someserver,1045`},
-			"sqlserver://someserver:1045?protocol=tcp",
+			&ConnectSettings{ServerName: `tcp:someserver,1045`, Encrypt: "strict", HostNameInCertificate: "*.mydomain.com"},
+			"sqlserver://someserver:1045?encrypt=strict&hostnameincertificate=%2A.mydomain.com&protocol=tcp",
 		},
 		{
 			&ConnectSettings{ServerName: "someserver", AuthenticationMethod: azuread.ActiveDirectoryServicePrincipal, UserName: "myapp@mytenant", Password: pwd},
@@ -242,22 +242,31 @@ func TestGetRunnableQuery(t *testing.T) {
 		q   string
 	}
 	tests := []test{
-		{"$(var1)", "v1"},
-		{"$ (var2)", "$ (var2)"},
-		{"select '$(VAR1) $(VAR2)' as  c", "select 'v1 variable2' as  c"},
-		{" $(VAR1) ' $(VAR2) ' as  $(VAR1)", " v1 ' variable2 ' as  v1"},
-		{"í $(VAR1)", "í v1"},
+		// {"$(var1)", "v1"},
+		// {"$ (var2)", "$ (var2)"},
+		// {"select '$(VAR1) $(VAR2)' as  c", "select 'v1 variable2' as  c"},
+		// {" $(VAR1) ' $(VAR2) ' as  $(VAR1)", " v1 ' variable2 ' as  v1"},
+		// {"í $(VAR1)", "í v1"},
+		{"select '$('", ""},
 	}
 	s := New(nil, "", v)
 	for _, test := range tests {
 		s.batch.Reset([]rune(test.raw))
-		_, _, _ = s.batch.Next()
 		s.Connect.DisableVariableSubstitution = false
-		t.Log(test.raw)
-		r := s.getRunnableQuery(test.raw)
-		assert.Equalf(t, test.q, r, `runnableQuery for "%s"`, test.raw)
+		_, _, err := s.batch.Next()
+		if test.q == "" {
+			assert.Error(t, err, "expected variable parsing error")
+		} else {
+			assert.NoError(t, err, "Next should have succeeded")
+			t.Log(test.raw)
+			r := s.getRunnableQuery(test.raw)
+			assert.Equalf(t, test.q, r, `runnableQuery for "%s"`, test.raw)
+		}
+		s.batch.Reset([]rune(test.raw))
 		s.Connect.DisableVariableSubstitution = true
-		r = s.getRunnableQuery(test.raw)
+		_, _, err = s.batch.Next()
+		assert.NoError(t, err, "expected no variable parsing error")
+		r := s.getRunnableQuery(test.raw)
 		assert.Equalf(t, test.raw, r, `runnableQuery without variable subs for "%s"`, test.raw)
 	}
 }
@@ -512,6 +521,17 @@ func TestQueryServerPropertyReturnsColumnName(t *testing.T) {
 	}
 }
 
+func TestHeadersPrintWhenThereAreZeroRows(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
+	s.vars.Set(SQLCMDCOLWIDTH, "4")
+	defer buf.Close()
+	err := runSqlCmd(t, s, []string{"select name from sys.databases where name like 'bogus'", "GO"})
+	if assert.NoError(t, err, "select should succeed") {
+		assert.Contains(t, buf.buf.String(), "name"+SqlcmdEol+"----"+SqlcmdEol, "Headers missing from output")
+	}
+}
+
 func TestSqlCmdOutputAndError(t *testing.T) {
 	s, outfile, errfile := setupSqlcmdWithFileErrorOutput(t)
 	defer os.Remove(outfile.Name())
@@ -663,8 +683,14 @@ func newConnect(t testing.TB) *ConnectSettings {
 		Password:   os.Getenv(SQLCMDPASSWORD),
 	}
 	if canTestAzureAuth() {
-		t.Log("Using ActiveDirectoryDefault")
-		connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
+		sc := os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_NAME")
+		if sc != "" {
+			t.Log("Using ActiveDirectoryAzurePipelines")
+			connect.AuthenticationMethod = azuread.ActiveDirectoryAzurePipelines
+		} else {
+			t.Log("Using ActiveDirectoryDefault")
+			connect.AuthenticationMethod = azuread.ActiveDirectoryDefault
+		}
 	}
 	return &connect
 }

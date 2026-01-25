@@ -11,6 +11,7 @@ import (
 	"net"
 	"os"
 	"regexp"
+	"runtime/trace"
 	"strconv"
 	"strings"
 	"time"
@@ -55,11 +56,13 @@ type SQLCmdArguments struct {
 	WorkstationName             string
 	ApplicationIntent           string
 	EncryptConnection           string
+	HostNameInCertificate       string
+	ServerCertificate           string
 	DriverLoggingLevel          int
 	ExitOnError                 bool
 	ErrorSeverityLevel          uint8
 	ErrorLevel                  int
-	Format                      string
+	Vertical                    bool
 	ErrorsToStderr              *int
 	Headers                     int
 	UnicodeOutputFile           bool
@@ -78,6 +81,7 @@ type SQLCmdArguments struct {
 	EnableColumnEncryption      bool
 	ChangePassword              string
 	ChangePasswordAndExit       string
+	TraceFile                   string
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -115,7 +119,6 @@ const (
 	sqlcmdErrorPrefix       = "Sqlcmd: "
 	applicationIntent       = "application-intent"
 	errorsToStderr          = "errors-to-stderr"
-	format                  = "format"
 	encryptConnection       = "encrypt-connection"
 	screenWidth             = "screen-width"
 	fixedTypeWidth          = "fixed-type-width"
@@ -124,6 +127,15 @@ const (
 	listServers             = "list-servers"
 	removeControlCharacters = "remove-control-characters"
 )
+
+func encryptConnectionAllowsTLS(value string) bool {
+	switch strings.ToLower(value) {
+	case "s", "strict", "m", "mandatory", "true", "t", "yes", "1":
+		return true
+	default:
+		return false
+	}
+}
 
 // Validate arguments for settings not describe
 func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
@@ -142,6 +154,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = mutuallyExclusiveError("-E", `-U/-P`)
 		case a.UseAad && len(a.AuthenticationMethod) > 0:
 			err = mutuallyExclusiveError("-G", "--authentication-method")
+		case len(a.HostNameInCertificate) > 0 && len(a.ServerCertificate) > 0:
+			err = mutuallyExclusiveError("-F", "-J")
 		case a.PacketSize != 0 && (a.PacketSize < 512 || a.PacketSize > 32767):
 			err = localizer.Errorf(`'-a %#v': Packet size has to be a number between 512 and 32767.`, a.PacketSize)
 		// Ignore 0 even though it's technically an invalid input
@@ -155,6 +169,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = rangeParameterError("-y", fmt.Sprint(*a.VariableTypeWidth), 0, 8000, true)
 		case a.QueryTimeout < 0 || a.QueryTimeout > 65534:
 			err = rangeParameterError("-t", fmt.Sprint(a.QueryTimeout), 0, 65534, true)
+		case a.ServerCertificate != "" && !encryptConnectionAllowsTLS(a.EncryptConnection):
+			err = localizer.Errorf("The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).")
 		}
 	}
 	if err != nil {
@@ -294,8 +310,8 @@ func convertOsArgs(args []string) (cargs []string) {
 		}
 		var defValue string
 		if isListFlag(a) {
-			flag = a
-			first = true
+			flag = a[0:2]
+			first = len(a) == 2
 		} else {
 			defValue = checkDefaultValue(args, i)
 		}
@@ -314,23 +330,25 @@ func checkDefaultValue(args []string, i int) (val string) {
 		'k': "0",
 		'L': "|", // | is the sentinel for no value since users are unlikely to use it. It's "reserved" in most shells
 		'X': "0",
-		'N': "true",
 	}
-	if isFlag(args[i]) && (len(args) == i+1 || args[i+1][0] == '-') {
+	if isFlag(args[i]) && len(args[i]) == 2 && (len(args) == i+1 || args[i+1][0] == '-') {
 		if v, ok := flags[rune(args[i][1])]; ok {
 			val = v
 			return
 		}
 	}
+	if args[i] == "-N" && (len(args) == i+1 || args[i+1][0] == '-') {
+		val = "true"
+	}
 	return
 }
 
 func isFlag(arg string) bool {
-	return len(arg) == 2 && arg[0] == '-'
+	return arg[0] == '-'
 }
 
 func isListFlag(arg string) bool {
-	return arg == "-v" || arg == "-i"
+	return len(arg) > 1 && (arg[0:2] == "-v" || arg[0:2] == "-i")
 }
 
 func formatDescription(description string, maxWidth, indentWidth int) string {
@@ -380,6 +398,7 @@ func SetScreenWidthFlags(args *SQLCmdArguments, rootCmd *cobra.Command) {
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.SetFlagErrorFunc(flagErrorHandler)
 	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, localizer.Sprintf("-? shows this syntax summary, %s shows modern sqlcmd sub-command help", localizer.HelpFlag))
+	rootCmd.Flags().StringVar(&args.TraceFile, "trace-file", "", localizer.Sprintf("Write runtime trace to the specified file. Only for advanced debugging."))
 	var inputfiles []string
 	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, localizer.Sprintf("Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s", localizer.QueryAndExitFlag, localizer.QueryFlag))
 	rootCmd.Flags().StringVarP(&args.OutputFile, "output-file", "o", "", localizer.Sprintf("Identifies the file that receives output from sqlcmd"))
@@ -393,7 +412,26 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.Query, "query", "Q", "", localizer.Sprintf("Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed"))
 	rootCmd.Flags().StringVarP(&args.Server, "server", "S", "", localizer.Sprintf("%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.", localizer.ConnStrPattern, localizer.ServerEnvVar))
 	_ = rootCmd.Flags().IntP(disableCmdAndWarn, "X", 0, localizer.Sprintf("%s Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.", "-X[1]"))
-	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", localizer.Sprintf("Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: ActiveDirectoryDefault, ActiveDirectoryIntegrated, ActiveDirectoryPassword, ActiveDirectoryInteractive, ActiveDirectoryManagedIdentity, ActiveDirectoryServicePrincipal, ActiveDirectoryAzCli, ActiveDirectoryDeviceCode, SqlPassword"))
+	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", localizer.Sprintf(
+		"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: %s",
+		strings.Join([]string{
+			azuread.ActiveDirectoryDefault,
+			azuread.ActiveDirectoryIntegrated,
+			azuread.ActiveDirectoryPassword,
+			azuread.ActiveDirectoryInteractive,
+			azuread.ActiveDirectoryManagedIdentity,
+			azuread.ActiveDirectoryServicePrincipal,
+			azuread.ActiveDirectoryServicePrincipalAccessToken,
+			azuread.ActiveDirectoryAzCli,
+			azuread.ActiveDirectoryDeviceCode,
+			azuread.ActiveDirectoryWorkloadIdentity,
+			azuread.ActiveDirectoryClientAssertion,
+			azuread.ActiveDirectoryAzurePipelines,
+			azuread.ActiveDirectoryEnvironment,
+			azuread.ActiveDirectoryAzureDeveloperCli,
+			"SqlPassword",
+		}, ", "),
+	))
 	rootCmd.Flags().BoolVarP(&args.UseAad, "use-aad", "G", false, localizer.Sprintf("Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used"))
 	rootCmd.Flags().BoolVarP(&args.DisableVariableSubstitution, "disable-variable-substitution", "x", false, localizer.Sprintf("Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)", localizer.InsertKeyword))
 	var variables map[string]string
@@ -404,9 +442,12 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 
 	rootCmd.Flags().StringVarP(&args.ApplicationIntent, applicationIntent, "K", "default", localizer.Sprintf("Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If %s is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group", localizer.ApplicationIntentFlagShort))
 	rootCmd.Flags().StringVarP(&args.EncryptConnection, encryptConnection, "N", "default", localizer.Sprintf("This switch is used by the client to request an encrypted connection"))
+	rootCmd.Flags().StringVarP(&args.HostNameInCertificate, "host-name-in-certificate", "F", "", localizer.Sprintf("Specifies the host name in the server certificate."))
+	rootCmd.Flags().StringVarP(&args.ServerCertificate, "server-certificate", "J", "", localizer.Sprintf("Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation."))
+	rootCmd.MarkFlagsMutuallyExclusive("host-name-in-certificate", "server-certificate")
 	// Can't use NoOptDefVal until this fix: https://github.com/spf13/cobra/issues/866
 	//rootCmd.Flags().Lookup(encryptConnection).NoOptDefVal = "true"
-	rootCmd.Flags().StringVarP(&args.Format, format, "F", "horiz", localizer.Sprintf("Specifies the formatting for results"))
+	rootCmd.Flags().BoolVarP(&args.Vertical, "vertical", "", false, localizer.Sprintf("Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false", sqlcmd.SQLCMDFORMAT, "vert"))
 	_ = rootCmd.Flags().IntP(errorsToStderr, "r", -1, localizer.Sprintf("%s Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.", "-r[0 | 1]"))
 	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, localizer.Sprintf("Level of mssql driver messages to print"))
 	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, localizer.Sprintf("Specifies that sqlcmd exits and returns a %s value when an error occurs", localizer.DosErrorLevel))
@@ -468,15 +509,6 @@ func normalizeFlags(cmd *cobra.Command) error {
 				return pflag.NormalizedName(name)
 			default:
 				err = invalidParameterError("-N", v, "m[andatory]", "yes", "1", "t[rue]", "disable", "o[ptional]", "no", "0", "f[alse]", "s[trict]")
-				return pflag.NormalizedName("")
-			}
-		case format:
-			value := strings.ToLower(v)
-			switch value {
-			case "horiz", "horizontal", "vert", "vertical":
-				return pflag.NormalizedName(name)
-			default:
-				err = invalidParameterError("-F", v, "horiz", "horizontal", "vert", "vertical")
 				return pflag.NormalizedName("")
 			}
 		case errorsToStderr:
@@ -648,7 +680,12 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			}
 			return ""
 		},
-		sqlcmd.SQLCMDFORMAT: func(a *SQLCmdArguments) string { return a.Format },
+		sqlcmd.SQLCMDFORMAT: func(a *SQLCmdArguments) string {
+			if a.Vertical {
+				return "vert"
+			}
+			return "horizontal"
+		},
 	}
 	for varname, set := range varmap {
 		val := set(args)
@@ -699,6 +736,8 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	default:
 		connect.Encrypt = args.EncryptConnection
 	}
+	connect.HostNameInCertificate = args.HostNameInCertificate
+	connect.ServerCertificate = args.ServerCertificate
 	connect.PacketSize = args.PacketSize
 	connect.WorkstationName = args.WorkstationName
 	connect.LogLevel = args.DriverLoggingLevel
@@ -714,12 +753,46 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	}
 }
 
-func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) bool {
-	iactive := args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0
-	return iactive || connect.RequiresPassword()
+func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments) (bool, bool) {
+	needsConsole := false
+
+	// Check if stdin is from a terminal or a redirection
+	isStdinRedirected := false
+	file, err := os.Stdin.Stat()
+	if err == nil {
+		// If stdin is not a character device, it's coming from a pipe or redirect
+		if (file.Mode() & os.ModeCharDevice) == 0 {
+			isStdinRedirected = true
+		}
+	}
+
+	// Determine if we're in interactive mode
+	iactive := args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0 && !isStdinRedirected
+
+	// Password input always requires console initialization
+	if connect.RequiresPassword() {
+		needsConsole = true
+	} else if iactive {
+		// Interactive mode also requires console
+		needsConsole = true
+	}
+
+	return needsConsole, iactive
 }
 
 func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
+	if args.TraceFile != "" {
+		traceFile, err := os.Create(args.TraceFile)
+		if err != nil {
+			return 1, localizer.Errorf("failed to create trace file '%s': %v", args.TraceFile, err)
+		}
+		defer traceFile.Close()
+		err = trace.Start(traceFile)
+		if err != nil {
+			return 1, localizer.Errorf("failed to start trace: %v", err)
+		}
+		defer trace.Stop()
+	}
 	wd, err := os.Getwd()
 	if err != nil {
 		return 1, err
@@ -728,7 +801,8 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	var connectConfig sqlcmd.ConnectSettings
 	setConnect(&connectConfig, args, vars)
 	var line sqlcmd.Console = nil
-	if isConsoleInitializationRequired(&connectConfig, args) {
+	needsConsole, isInteractive := isConsoleInitializationRequired(&connectConfig, args)
+	if needsConsole {
 		line = console.NewConsole("")
 		defer line.Close()
 	}
@@ -811,15 +885,18 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 
 	if err == nil && s.Exitcode == 0 {
 		once := false
-		if args.InitialQuery != "" {
-			s.Query = args.InitialQuery
-		} else if args.Query != "" {
+		if args.Query != "" {
 			once = true
 			s.Query = args.Query
+		} else if args.InitialQuery != "" {
+			s.Query = args.InitialQuery
 		}
 		iactive := args.InputFile == nil && args.Query == ""
 		if iactive || s.Query != "" {
-			err = s.Run(once, false)
+			// If we're not in interactive mode and stdin is redirected,
+			// we want to process all input without requiring GO statements
+			processAll := !isInteractive
+			err = s.Run(once, processAll)
 		} else {
 			for f := range args.InputFile {
 				if err = s.IncludeFile(args.InputFile[f], true); err != nil {

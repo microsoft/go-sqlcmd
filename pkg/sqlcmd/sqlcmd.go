@@ -103,6 +103,7 @@ func New(l Console, workingDirectory string, vars *Variables) *Sqlcmd {
 		colorizer:        color.New(false),
 	}
 	s.batch = NewBatch(s.scanNext, s.Cmd)
+	s.batch.ParseVariables = func() bool { return !s.Connect.DisableVariableSubstitution }
 	mssql.SetContextLogger(s)
 	s.PrintError = func(msg string, severity uint8) bool {
 		return false
@@ -458,9 +459,9 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 			qe = s.handleError(&retcode, m.Error)
 		case sqlexp.MsgRowsAffected:
 			if m.Count == 1 {
-				s.Format.AddMessage("(1 row affected)")
+				s.Format.AddMessage(localizer.Sprintf("(1 row affected)"))
 			} else {
-				s.Format.AddMessage(fmt.Sprintf("(%d rows affected)", m.Count))
+				s.Format.AddMessage(localizer.Sprintf("(%d rows affected)", m.Count))
 			}
 		case sqlexp.MsgNextResultSet:
 			results = rows.NextResultSet()
@@ -473,19 +474,19 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 				first = true
 			}
 		case sqlexp.MsgNext:
+			if first {
+				first = false
+				cols, err = rows.ColumnTypes()
+				if err != nil {
+					retcode = -100
+					qe = s.handleError(&retcode, err)
+					s.Format.AddError(err)
+				} else {
+					s.Format.BeginResultSet(cols)
+				}
+			}
 			inresult := rows.Next()
 			for inresult {
-				if first {
-					first = false
-					cols, err = rows.ColumnTypes()
-					if err != nil {
-						retcode = -100
-						qe = s.handleError(&retcode, err)
-						s.Format.AddError(err)
-					} else {
-						s.Format.BeginResultSet(cols)
-					}
-				}
 				col1 := s.Format.AddRow(rows)
 				inresult = rows.Next()
 				if !inresult {

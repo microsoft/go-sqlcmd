@@ -90,7 +90,7 @@ func (c *Ads) launchAds(host string, port int, username string) {
 
 	tool := tools.NewTool("ads")
 	if !tool.IsInstalled() {
-		output.Fatalf(tool.HowToInstall())
+		output.Fatal(tool.HowToInstall())
 	}
 
 	c.displayPreLaunchInfo()
