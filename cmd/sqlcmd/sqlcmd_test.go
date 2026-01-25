@@ -298,6 +298,32 @@ func TestUnicodeOutput(t *testing.T) {
 	}
 }
 
+func TestUnicodeOutputNoBOM(t *testing.T) {
+	o, err := os.CreateTemp("", "sqlcmdnobom")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(o.Name())
+	defer o.Close()
+	args = newArguments()
+	args.InputFile = []string{"testdata/selectutf8.txt"}
+	args.OutputFile = o.Name()
+	args.UnicodeOutputFile = true
+	args.NoBOM = true
+	setAzureAuthArgIfNeeded(&args)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	fileBytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		// With --no-bom, the file should NOT start with FF FE (UTF-16 LE BOM)
+		assert.True(t, len(fileBytes) >= 2, "output file should have content")
+		hasBOM := len(fileBytes) >= 2 && fileBytes[0] == 0xFF && fileBytes[1] == 0xFE
+		assert.False(t, hasBOM, "output file should NOT have BOM when --no-bom is used")
+	}
+}
+
 func TestUnicodeInput(t *testing.T) {
 	testfiles := []string{
 		filepath.Join(`testdata`, `selectutf8.txt`),
