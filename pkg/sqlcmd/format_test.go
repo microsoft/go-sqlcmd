@@ -200,3 +200,35 @@ func TestFormatterRawErrors(t *testing.T) {
 	// But should still contain the actual error message
 	assert.Contains(t, rawOutput, "Invalid object name 'nonexistent'.")
 }
+
+func TestFormatterErrorWithProcName(t *testing.T) {
+	// Test that errors with ProcName include the Procedure in the header
+	vars := InitializeVariables(false)
+	errBuf := new(strings.Builder)
+
+	// Create formatter with rawErrors = false (default)
+	f := NewSQLCmdDefaultFormatter(false, ControlIgnore, false).(*sqlCmdFormatterType)
+	f.BeginBatch("", vars, new(strings.Builder), errBuf)
+
+	// Create a mssql.Error with ProcName to test with
+	testErr := mssql.Error{
+		Number:     50000,
+		Class:      16,
+		State:      1,
+		ServerName: "testserver",
+		ProcName:   "myStoredProc",
+		LineNo:     10,
+		Message:    "Error raised from stored procedure.",
+	}
+
+	f.AddError(testErr)
+	output := errBuf.String()
+	// Should include the Procedure in the header
+	assert.Contains(t, output, "Msg 50000")
+	assert.Contains(t, output, "Level 16")
+	assert.Contains(t, output, "State 1")
+	assert.Contains(t, output, "Server testserver")
+	assert.Contains(t, output, "Procedure myStoredProc")
+	assert.Contains(t, output, "Line 10")
+	assert.Contains(t, output, "Error raised from stored procedure.")
+}
