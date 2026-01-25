@@ -330,6 +330,7 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 			// Use specified output codepage
 			enc, err := GetEncoding(s.CodePage.OutputCodePage)
 			if err != nil {
+				_ = o.Close()
 				return err
 			}
 			if enc != nil {
