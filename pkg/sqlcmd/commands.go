@@ -113,6 +113,11 @@ func newCommands() Commands {
 			action: xmlCommand,
 			name:   "XML",
 		},
+		"SERVERLIST": {
+			regex:  regexp.MustCompile(`(?im)^[\t ]*?:SERVERLIST(?:[ \t]+(.*$)|$)`),
+			action: serverlistCommand,
+			name:   "SERVERLIST",
+		},
 	}
 }
 
@@ -593,6 +598,11 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 	} else {
 		s.Format.XmlMode(false)
 	}
+	return nil
+}
+
+func serverlistCommand(s *Sqlcmd, args []string, line uint) error {
+	ListLocalServers(s.GetOutput())
 	return nil
 }
 
