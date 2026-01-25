@@ -5,11 +5,9 @@ package sqlcmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"net"
-	"os"
 	"strings"
 	"time"
 
@@ -43,16 +41,12 @@ func GetLocalServerInstances() []string {
 	_ = conn.SetDeadline(dl)
 	_, err = conn.Write(bmsg)
 	if err != nil {
-		if !errors.Is(err, os.ErrDeadlineExceeded) {
-			// Silently ignore errors, same as ODBC
-		}
+		// Silently ignore errors, same as ODBC
 		return nil
 	}
 	read, err := conn.Read(resp)
 	if err != nil {
-		if !errors.Is(err, os.ErrDeadlineExceeded) {
-			// Silently ignore errors, same as ODBC
-		}
+		// Silently ignore errors, same as ODBC
 		return nil
 	}
 
