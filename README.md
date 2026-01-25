@@ -167,7 +167,7 @@ program_name          sqlcmd
 - `:perftrace` redirects performance statistics output to a file, stderr, or stdout. Use in conjunction with `-p` flag.
 
 ```
-1> :perftrace c:\logs\perf.txt
+1> :perftrace c:/logs/perf.txt
 1> select 1
 2> go
 ```

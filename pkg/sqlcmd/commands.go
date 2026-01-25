@@ -119,7 +119,7 @@ func newCommands() Commands {
 			name:   "HELP",
 		},
 		"PERFTRACE": {
-			regex:  regexp.MustCompile(`(?im)^[\t ]*?:PERFTRACE(?:[ \t]+(.*$)|$)`),
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:PERFTRACE(?:[ \t]+(.*$)|$)`),
 			action: perftraceCommand,
 			name:   "PERFTRACE",
 		},
