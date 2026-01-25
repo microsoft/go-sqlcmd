@@ -208,10 +208,100 @@ func (c Commands) SetBatchTerminator(terminator string) error {
 	return nil
 }
 
+// isExitParenBalanced checks if the parentheses in an EXIT command argument are balanced.
+// It tracks quotes to avoid counting parens inside string literals.
+// It handles SQL Server's quote escaping: ” inside single-quoted strings, "" inside double-quoted strings, and ]] inside bracket identifiers.
+// It also ignores parentheses inside SQL comments (-- single-line and /* multi-line */).
+func isExitParenBalanced(s string) bool {
+	depth := 0
+	var quote rune
+	inLineComment := false
+	inBlockComment := false
+	runes := []rune(s)
+	for i := 0; i < len(runes); i++ {
+		c := runes[i]
+
+		// Handle line comment state
+		if inLineComment {
+			// Line comment ends at newline
+			if c == '\n' {
+				inLineComment = false
+			}
+			continue
+		}
+
+		// Handle block comment state
+		if inBlockComment {
+			// Check for end of block comment
+			if c == '*' && i+1 < len(runes) && runes[i+1] == '/' {
+				inBlockComment = false
+				i++ // skip the '/'
+			}
+			continue
+		}
+
+		switch {
+		case quote != 0:
+			// Inside a quoted string
+			if c == quote {
+				// Check for escaped quote ('' or ]])
+				if i+1 < len(runes) && runes[i+1] == quote {
+					i++ // skip the escaped quote
+				} else {
+					quote = 0
+				}
+			}
+		case c == '-' && i+1 < len(runes) && runes[i+1] == '-':
+			// Start of single-line comment
+			inLineComment = true
+			i++ // skip the second '-'
+		case c == '/' && i+1 < len(runes) && runes[i+1] == '*':
+			// Start of block comment
+			inBlockComment = true
+			i++ // skip the '*'
+		case c == '\'' || c == '"':
+			quote = c
+		case c == '[':
+			quote = ']' // SQL Server bracket quoting
+		case c == '(':
+			depth++
+		case c == ')':
+			depth--
+		}
+	}
+	return depth == 0
+}
+
+// readExitContinuation reads additional lines from the console until the EXIT
+// parentheses are balanced. This enables multi-line EXIT(query) in interactive mode.
+func readExitContinuation(s *Sqlcmd, params string) (string, error) {
+	var builder strings.Builder
+	builder.WriteString(params)
+
+	// Save original prompt and restore it when done (if batch is initialized)
+	if s.batch != nil {
+		originalPrompt := s.Prompt()
+		defer s.lineIo.SetPrompt(originalPrompt)
+	}
+
+	for !isExitParenBalanced(builder.String()) {
+		// Show continuation prompt
+		s.lineIo.SetPrompt("      -> ")
+		line, err := s.lineIo.Readline()
+		if err != nil {
+			return "", err
+		}
+		builder.WriteString(SqlcmdEol)
+		builder.WriteString(line)
+	}
+	return builder.String(), nil
+}
+
 // exitCommand has 3 modes.
 // With no (), it just exits without running any query
 // With () it runs whatever batch is in the buffer then exits
 // With any text between () it runs the text as a query then exits
+// In interactive mode, if parentheses are unbalanced, it prompts for continuation lines.
 func exitCommand(s *Sqlcmd, args []string, line uint) error {
 	if len(args) == 0 {
 		return ErrExitRequested
@@ -220,9 +310,29 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 	if params == "" {
 		return ErrExitRequested
 	}
-	if !strings.HasPrefix(params, "(") || !strings.HasSuffix(params, ")") {
+
+	// Check if we have an opening paren
+	if !strings.HasPrefix(params, "(") {
 		return InvalidCommandError("EXIT", line)
 	}
+
+	// If parentheses are unbalanced, try to read continuation lines (interactive mode only)
+	if !isExitParenBalanced(params) {
+		if s.lineIo == nil {
+			// Not in interactive mode, can't read more lines
+			return InvalidCommandError("EXIT", line)
+		}
+		var err error
+		params, err = readExitContinuation(s, params)
+		if err != nil {
+			return err
+		}
+	}
+
+	if !strings.HasSuffix(params, ")") {
+		return InvalidCommandError("EXIT", line)
+	}
+
 	// First we save the current batch
 	query1 := s.batch.String()
 	if len(query1) > 0 {
