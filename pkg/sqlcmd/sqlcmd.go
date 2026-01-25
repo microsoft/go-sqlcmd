@@ -345,8 +345,11 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 		if enc != nil {
 			// Transform from specified encoding to UTF-8
 			reader = transform.NewReader(f, enc.NewDecoder())
+		} else {
+			// UTF-8 codepage: still apply BOM stripping
+			utf8bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
+			reader = transform.NewReader(f, utf8bom)
 		}
-		// If enc is nil, it's UTF-8, no transformation needed
 	} else {
 		// Default: auto-detect BOM for UTF-16, fallback to UTF-8
 		utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())

@@ -330,6 +330,7 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 			// Use specified output codepage
 			enc, err := GetEncoding(s.CodePage.OutputCodePage)
 			if err != nil {
+				_ = o.Close()
 				return err
 			}
 			if enc != nil {
@@ -370,11 +371,18 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 		if s.CodePage != nil && s.CodePage.OutputCodePage != 0 {
 			enc, err := GetEncoding(s.CodePage.OutputCodePage)
 			if err != nil {
-				o.Close()
+				if cerr := o.Close(); cerr != nil {
+					return fmt.Errorf("%v; additionally, closing error file %q failed: %w", err, args[0], cerr)
+				}
 				return err
 			}
-			encoder := transform.NewWriter(o, enc.NewEncoder())
-			s.SetError(encoder)
+			if enc == nil {
+				// UTF-8 (or default) encoding: write directly without transform
+				s.SetError(o)
+			} else {
+				encoder := transform.NewWriter(o, enc.NewEncoder())
+				s.SetError(encoder)
+			}
 		} else {
 			s.SetError(o)
 		}
