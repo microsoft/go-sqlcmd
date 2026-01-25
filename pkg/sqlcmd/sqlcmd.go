@@ -344,7 +344,13 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 		}
 		if enc != nil {
 			// Transform from specified encoding to UTF-8
-			reader = transform.NewReader(f, enc.NewDecoder())
+			// For UTF-16 codepages, wrap with BOMOverride to strip BOM if present
+			if s.CodePage.InputCodePage == 1200 || s.CodePage.InputCodePage == 1201 {
+				// UTF-16 LE/BE: use BOMOverride to handle BOM gracefully
+				reader = transform.NewReader(f, unicode.BOMOverride(enc.NewDecoder()))
+			} else {
+				reader = transform.NewReader(f, enc.NewDecoder())
+			}
 		} else {
 			// UTF-8 codepage: still apply BOM stripping
 			utf8bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())

@@ -25,8 +25,10 @@ type codepageEntry struct {
 	description string
 }
 
-// codepageRegistry is the single source of truth for all supported codepages.
-// Both GetEncoding and SupportedCodePages use this registry.
+// codepageRegistry is the single source of truth for all supported codepages
+// that work cross-platform. Both GetEncoding and SupportedCodePages use this
+// registry. On Windows, additional codepages installed on the system are also
+// available via the Windows API fallback in GetEncoding.
 var codepageRegistry = map[int]codepageEntry{
 	// Unicode
 	65001: {nil, "UTF-8", "Unicode (UTF-8)"},
@@ -170,10 +172,13 @@ func ParseCodePage(arg string) (*CodePageSettings, error) {
 
 // GetEncoding returns the encoding for a given Windows codepage number.
 // Returns nil for UTF-8 (65001) since Go uses UTF-8 natively.
+// If the codepage is not in the built-in registry, falls back to
+// OS-specific support (Windows API on Windows, error on other platforms).
 func GetEncoding(codepage int) (encoding.Encoding, error) {
 	entry, ok := codepageRegistry[codepage]
 	if !ok {
-		return nil, localizer.Errorf("unsupported codepage %s", strconv.Itoa(codepage))
+		// Fallback to system-provided codepage support
+		return getSystemCodePageEncoding(codepage)
 	}
 	return entry.encoding, nil
 }

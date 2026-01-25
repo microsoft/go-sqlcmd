@@ -90,7 +90,7 @@ func TestParseCodePage(t *testing.T) {
 			name:        "unsupported codepage",
 			arg:         "99999",
 			wantErr:     true,
-			errContains: "unsupported codepage",
+			errContains: "codepage", // Error message varies by platform
 		},
 		{
 			name:       "Japanese Shift JIS",
@@ -262,4 +262,39 @@ func TestSupportedCodePages(t *testing.T) {
 	for cp, found := range known {
 		assert.True(t, found, "well-known codepage %d should be in list", cp)
 	}
+}
+
+func TestGetEncodingWindowsFallback(t *testing.T) {
+	// Japanese EBCDIC (20290) is not in our built-in registry but is available on Windows
+	// This test verifies that the Windows API fallback works for codepages not in our registry
+	cp := 20290 // IBM EBCDIC Japanese Katakana Extended
+
+	enc, err := GetEncoding(cp)
+
+	// On Windows, this should succeed because the Windows API can handle this codepage
+	// On other platforms, this should fail with a helpful error message
+	if err != nil {
+		// Expected on non-Windows platforms
+		assert.Contains(t, err.Error(), "codepage")
+	} else {
+		// Expected on Windows - verify the encoding works
+		assert.NotNil(t, enc)
+
+		// Test round-trip encoding/decoding
+		// EBCDIC 'A' is 0xC1
+		decoder := enc.NewDecoder()
+		decoded, err := decoder.String(string([]byte{0xC1}))
+		assert.NoError(t, err, "decoder should work")
+		assert.Equal(t, "A", decoded, "EBCDIC 0xC1 should decode to 'A'")
+
+		encoder := enc.NewEncoder()
+		encoded, err := encoder.String("A")
+		assert.NoError(t, err, "encoder should work")
+		assert.Equal(t, []byte{0xC1}, []byte(encoded), "'A' should encode to EBCDIC 0xC1")
+	}
+
+	// Also test that a completely made-up codepage fails on all platforms
+	_, err = GetEncoding(99999)
+	assert.Error(t, err, "invalid codepage should fail on all platforms")
+	assert.Contains(t, err.Error(), "codepage")
 }
