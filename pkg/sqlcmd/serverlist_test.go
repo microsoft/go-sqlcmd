@@ -22,8 +22,12 @@ func TestListLocalServers(t *testing.T) {
 
 func TestGetLocalServerInstances(t *testing.T) {
 	// Test that GetLocalServerInstances returns a slice (may be empty if no servers)
-	instances := GetLocalServerInstances()
+	instances, err := GetLocalServerInstances()
 	// instances may be nil or empty if no SQL Browser is running, that's OK
+	// err may be non-nil for non-timeout network errors
+	if err != nil {
+		t.Logf("GetLocalServerInstances returned error (expected in some environments): %v", err)
+	}
 	t.Logf("Found %d instances", len(instances))
 	for _, inst := range instances {
 		assert.NotEmpty(t, inst, "Instance name should not be empty")

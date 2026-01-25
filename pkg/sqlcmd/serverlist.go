@@ -5,9 +5,11 @@ package sqlcmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net"
+	"os"
 	"sort"
 	"strings"
 	"time"
@@ -18,7 +20,10 @@ import (
 // ListLocalServers queries the SQL Browser service for available SQL Server instances
 // and writes the results to the provided writer.
 func ListLocalServers(w io.Writer) {
-	instances := GetLocalServerInstances()
+	instances, err := GetLocalServerInstances()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
 	for _, s := range instances {
 		fmt.Fprintf(w, "  %s\n", s)
 	}
@@ -26,7 +31,8 @@ func ListLocalServers(w io.Writer) {
 
 // GetLocalServerInstances queries the SQL Browser service and returns a list of
 // available SQL Server instances on the local machine.
-func GetLocalServerInstances() []string {
+// Returns an error for non-timeout network errors.
+func GetLocalServerInstances() ([]string, error) {
 	bmsg := []byte{byte(msdsn.BrowserAllInstances)}
 	resp := make([]byte, 16*1024-1)
 	dialer := &net.Dialer{}
@@ -35,20 +41,26 @@ func GetLocalServerInstances() []string {
 	conn, err := dialer.DialContext(ctx, "udp", ":1434")
 	// silently ignore failures to connect, same as ODBC
 	if err != nil {
-		return nil
+		return nil, nil
 	}
 	defer conn.Close()
 	dl, _ := ctx.Deadline()
 	_ = conn.SetDeadline(dl)
 	_, err = conn.Write(bmsg)
 	if err != nil {
-		// Silently ignore errors, same as ODBC
-		return nil
+		// Only return error if it's not a timeout
+		if !errors.Is(err, os.ErrDeadlineExceeded) {
+			return nil, err
+		}
+		return nil, nil
 	}
 	read, err := conn.Read(resp)
 	if err != nil {
-		// Silently ignore errors, same as ODBC
-		return nil
+		// Only return error if it's not a timeout
+		if !errors.Is(err, os.ErrDeadlineExceeded) {
+			return nil, err
+		}
+		return nil, nil
 	}
 
 	data := parseInstances(resp[:read])
@@ -73,7 +85,7 @@ func GetLocalServerInstances() []string {
 			instances = append(instances, fmt.Sprintf(`%s\%s`, serverName, s))
 		}
 	}
-	return instances
+	return instances, nil
 }
 
 func parseInstances(msg []byte) msdsn.BrowserData {
