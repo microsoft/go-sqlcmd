@@ -461,11 +461,10 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 
 func TestOutputCodePageCommand(t *testing.T) {
 	tests := []struct {
-		name           string
-		codepage       int
-		expectedBytes  []byte
-		inputText      string
-		skipOnEncError bool
+		name          string
+		codepage      int
+		expectedBytes []byte
+		inputText     string
 	}{
 		{
 			name:          "UTF-8 output",

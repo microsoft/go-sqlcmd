@@ -93,6 +93,24 @@ func TestParseCodePage(t *testing.T) {
 			errContains: "codepage", // Error message varies by platform
 		},
 		{
+			name:        "comma only produces no codepage",
+			arg:         ",",
+			wantErr:     true,
+			errContains: "invalid codepage",
+		},
+		{
+			name:        "whitespace only produces no codepage",
+			arg:         "   ",
+			wantErr:     true,
+			errContains: "invalid codepage",
+		},
+		{
+			name:        "multiple commas produce no codepage",
+			arg:         ",,,",
+			wantErr:     true,
+			errContains: "invalid codepage",
+		},
+		{
 			name:       "Japanese Shift JIS",
 			arg:        "932",
 			wantInput:  932,

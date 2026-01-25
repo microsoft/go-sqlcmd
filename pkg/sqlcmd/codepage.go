@@ -155,6 +155,12 @@ func ParseCodePage(arg string) (*CodePageSettings, error) {
 		}
 	}
 
+	// If a non-empty argument was provided but no codepage was parsed,
+	// treat this as an error rather than silently disabling codepage handling.
+	if settings.InputCodePage == 0 && settings.OutputCodePage == 0 {
+		return nil, localizer.Errorf("invalid codepage: %s", arg)
+	}
+
 	// Validate codepages
 	if settings.InputCodePage != 0 {
 		if _, err := GetEncoding(settings.InputCodePage); err != nil {

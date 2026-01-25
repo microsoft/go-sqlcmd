@@ -352,12 +352,12 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 				reader = transform.NewReader(f, enc.NewDecoder())
 			}
 		} else {
-			// UTF-8 codepage: still apply BOM stripping
+			// UTF-8 codepage: use BOMOverride to strip UTF-8 BOM and auto-detect UTF-16 BOMs, defaulting to UTF-8 otherwise
 			utf8bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
 			reader = transform.NewReader(f, utf8bom)
 		}
 	} else {
-		// Default: auto-detect BOM for UTF-16, fallback to UTF-8
+		// Default: auto-detect BOMs (UTF-8/UTF-16) and decode accordingly, falling back to UTF-8 when no BOM is present
 		utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
 		reader = transform.NewReader(f, utf16bom)
 	}
