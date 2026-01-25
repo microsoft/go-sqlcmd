@@ -232,3 +232,32 @@ func TestFormatterErrorWithProcName(t *testing.T) {
 	assert.Contains(t, output, "Line 10")
 	assert.Contains(t, output, "Error raised from stored procedure.")
 }
+
+func TestFormatterErrorWithProcNameRawMode(t *testing.T) {
+	// Test that errors with ProcName in raw mode skip header but still print message
+	vars := InitializeVariables(false)
+	errBuf := new(strings.Builder)
+
+	// Create formatter with rawErrors = true
+	f := NewSQLCmdDefaultFormatter(false, ControlIgnore, true).(*sqlCmdFormatterType)
+	f.BeginBatch("", vars, new(strings.Builder), errBuf)
+
+	testErr := mssql.Error{
+		Number:     50000,
+		Class:      16,
+		State:      1,
+		ServerName: "testserver",
+		ProcName:   "myStoredProc",
+		LineNo:     10,
+		Message:    "Error raised from stored procedure.",
+	}
+
+	f.AddError(testErr)
+	output := errBuf.String()
+	// Raw mode should NOT include the header
+	assert.NotContains(t, output, "Msg 50000")
+	assert.NotContains(t, output, "Level 16")
+	assert.NotContains(t, output, "Procedure myStoredProc")
+	// But should still contain the actual error message
+	assert.Contains(t, output, "Error raised from stored procedure.")
+}
