@@ -518,7 +518,7 @@ func normalizeFlags(cmd *cobra.Command) error {
 			}
 		case errorsToStderr:
 			switch v {
-			case "0", "1", "":
+			case "0", "1":
 				return pflag.NormalizedName(name)
 			default:
 				err = invalidParameterError("-r", v, "0", "1")
