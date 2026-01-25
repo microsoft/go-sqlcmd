@@ -169,7 +169,7 @@ func TestInvalidCommandLine(t *testing.T) {
 	commands := []cmdLineTest{
 		{[]string{"-E", "-U", "someuser"}, "The -E and the -U/-P options are mutually exclusive."},
 		{[]string{"-L", "-q", `"select 1"`}, "The -L parameter can not be used in combination with other parameters."},
-		{[]string{"-i", "foo.sql", "-Q", `"select 1"`}, "The i and the -Q options are mutually exclusive."},
+		{[]string{"-i", "foo.sql", "-Q", `"select 1"`}, "The -i and the -Q options are mutually exclusive."},
 		{[]string{"-r", "5"}, "'-r 5': Unexpected argument. Argument value has to be one of [0 1]."},
 		{[]string{"-w", "x"}, "'-w x': value must be greater than 8 and less than 65536."},
 		{[]string{"-y", "111111"}, "'-y 111111': value must be greater than or equal to 0 and less than or equal to 8000."},
