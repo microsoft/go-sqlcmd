@@ -335,7 +335,7 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	b := s.batch.batchline
 
 	// Set up the reader with appropriate encoding
-	var reader io.Reader = f
+	var reader io.Reader
 	if s.CodePage != nil && s.CodePage.InputCodePage != 0 {
 		// Use specified input codepage
 		enc, err := GetEncoding(s.CodePage.InputCodePage)
