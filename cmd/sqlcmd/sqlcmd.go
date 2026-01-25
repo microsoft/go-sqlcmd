@@ -172,6 +172,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = rangeParameterError("-t", fmt.Sprint(a.QueryTimeout), 0, 65534, true)
 		case a.ServerCertificate != "" && !encryptConnectionAllowsTLS(a.EncryptConnection):
 			err = localizer.Errorf("The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).")
+		case a.NoBOM && !a.UnicodeOutputFile:
+			err = localizer.Errorf("The --no-bom parameter requires -u (Unicode output file).")
 		}
 	}
 	if err != nil {
