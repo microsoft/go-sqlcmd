@@ -163,6 +163,14 @@ client_interface_name go-mssqldb
 program_name          sqlcmd
 ```
 
+- `:perftrace` redirects performance statistics output to a file, stderr, or stdout. Use in conjunction with `-p` flag.
+
+```
+1> :perftrace c:\logs\perf.txt
+1> select 1
+2> go
+```
+
 - `sqlcmd` supports shared memory and named pipe transport. Use the appropriate protocol prefix on the server name to force a protocol:
   * `lpc` for shared memory, only for a localhost.                           `sqlcmd -S lpc:.`
   * `np` for named pipes. Or use the UNC named pipe path as the server name: `sqlcmd -S \\myserver\pipe\sql\query`

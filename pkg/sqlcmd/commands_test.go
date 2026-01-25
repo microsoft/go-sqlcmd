@@ -54,6 +54,8 @@ func TestCommandParsing(t *testing.T) {
 		{`:XML ON `, "XML", []string{`ON `}},
 		{`:RESET`, "RESET", []string{""}},
 		{`RESET`, "RESET", []string{""}},
+		{`:PERFTRACE stdout`, "PERFTRACE", []string{"stdout"}},
+		{`:perftrace c:\logs\perf.txt`, "PERFTRACE", []string{`c:\logs\perf.txt`}},
 	}
 
 	for _, test := range commands {
@@ -457,4 +459,44 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
 	}
 
+}
+
+func TestPerftraceCommand(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer s.SetStat(nil)
+	defer buf.Close()
+	file, err := os.CreateTemp("", "sqlcmdperf")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(file.Name())
+	fileName := file.Name()
+	_ = file.Close()
+
+	// Test empty file name returns error
+	err = perftraceCommand(s, []string{""}, 1)
+	assert.EqualError(t, err, InvalidCommandError("PERFTRACE", 1).Error(), "perftraceCommand with empty file name")
+
+	// Test valid file name
+	err = perftraceCommand(s, []string{fileName}, 1)
+	assert.NoError(t, err, "perftraceCommand")
+
+	// Test that stat writer is set
+	statWriter := s.GetStat()
+	assert.NotNil(t, statWriter, "stat writer should be set")
+	assert.NotEqual(t, s.GetOutput(), statWriter, "stat writer should not be default output")
+
+	// Test stdout
+	err = perftraceCommand(s, []string{"stdout"}, 1)
+	assert.NoError(t, err, "perftraceCommand stdout")
+	assert.Equal(t, os.Stdout, s.stat, "stat set to stdout")
+
+	// Test stderr
+	err = perftraceCommand(s, []string{"stderr"}, 1)
+	assert.NoError(t, err, "perftraceCommand stderr")
+	assert.Equal(t, os.Stderr, s.stat, "stat set to stderr")
+
+	// Test with variable
+	s.vars.Set("myvar", "stdout")
+	err = perftraceCommand(s, []string{"$(myvar)"}, 1)
+	assert.NoError(t, err, "perftraceCommand with a variable")
+	assert.Equal(t, os.Stdout, s.stat, "stat set to stdout using a variable")
 }

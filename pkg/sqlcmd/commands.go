@@ -113,6 +113,11 @@ func newCommands() Commands {
 			action: xmlCommand,
 			name:   "XML",
 		},
+		"PERFTRACE": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:PERFTRACE(?:[ \t]+(.*$)|$)`),
+			action: perftraceCommand,
+			name:   "PERFTRACE",
+		},
 	}
 }
 
@@ -353,6 +358,30 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 			return InvalidFileError(err, args[0])
 		}
 		s.SetError(o)
+	}
+	return nil
+}
+
+// perftraceCommand changes the performance statistics writer to use a file
+func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) == 0 || args[0] == "" {
+		return InvalidCommandError("PERFTRACE", line)
+	}
+	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
+	if err != nil {
+		return err
+	}
+	switch {
+	case strings.EqualFold(filePath, "stderr"):
+		s.SetStat(os.Stderr)
+	case strings.EqualFold(filePath, "stdout"):
+		s.SetStat(os.Stdout)
+	default:
+		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
+		if err != nil {
+			return InvalidFileError(err, args[0])
+		}
+		s.SetStat(o)
 	}
 	return nil
 }
