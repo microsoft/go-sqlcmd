@@ -594,4 +594,41 @@ func TestReadExitContinuation(t *testing.T) {
 		assert.Equal(t, "(select 1)", result)
 		assert.False(t, readLineCalled, "Readline should not be called for balanced input")
 	})
+
+	t.Run("restores original prompt when batch is initialized", func(t *testing.T) {
+		s := &Sqlcmd{}
+		s.batch = NewBatch(nil, nil)
+		lines := []string{")"}
+		lineIndex := 0
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				if lineIndex >= len(lines) {
+					return "", io.EOF
+				}
+				line := lines[lineIndex]
+				lineIndex++
+				return line, nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+		s.lineIo.SetPrompt("1> ")
+
+		result, err := readExitContinuation(s, "(select 1")
+		assert.NoError(t, err)
+		assert.Equal(t, "(select 1"+SqlcmdEol+")", result)
+		// After function returns, prompt should be restored to original
+		tc := s.lineIo.(*testConsole)
+		assert.Equal(t, "1> ", tc.PromptText)
+	})
+}
+
+func TestExitCommandNonInteractiveUnbalanced(t *testing.T) {
+	// Test that unbalanced parentheses in non-interactive mode returns InvalidCommandError
+	s := &Sqlcmd{}
+	s.lineIo = nil // non-interactive mode
+
+	err := exitCommand(s, []string{"(select 1"}, 1)
+	assert.EqualError(t, err, InvalidCommandError("EXIT", 1).Error(), "unbalanced parens in non-interactive should error")
 }
