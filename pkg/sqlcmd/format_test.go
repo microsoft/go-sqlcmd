@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 )
@@ -157,4 +158,45 @@ func TestFormatterXmlMode(t *testing.T) {
 	err := runSqlCmd(t, s, []string{"select name from sys.databases where name='master' for xml auto ", "GO"})
 	assert.NoError(t, err, "runSqlCmd returned error")
 	assert.Equal(t, `<sys.databases name="master"/>`+SqlcmdEol, buf.buf.String())
+}
+
+func TestFormatterRawErrors(t *testing.T) {
+	// Test that raw errors mode only prints the error message without the Msg/Level/State header
+	vars := InitializeVariables(false)
+	errBuf := new(strings.Builder)
+
+	// Create formatter with rawErrors = false (default)
+	f := NewSQLCmdDefaultFormatter(false, ControlIgnore, false).(*sqlCmdFormatterType)
+	f.BeginBatch("", vars, new(strings.Builder), errBuf)
+
+	// Create a mssql.Error to test with
+	testErr := mssql.Error{
+		Number:     208,
+		Class:      16,
+		State:      1,
+		ServerName: "testserver",
+		Message:    "Invalid object name 'nonexistent'.",
+	}
+
+	f.AddError(testErr)
+	normalOutput := errBuf.String()
+	// Normal mode should include the Msg header
+	assert.Contains(t, normalOutput, "Msg 208")
+	assert.Contains(t, normalOutput, "Level 16")
+	assert.Contains(t, normalOutput, "State 1")
+	assert.Contains(t, normalOutput, "Invalid object name 'nonexistent'.")
+
+	// Create formatter with rawErrors = true
+	errBuf.Reset()
+	f = NewSQLCmdDefaultFormatter(false, ControlIgnore, true).(*sqlCmdFormatterType)
+	f.BeginBatch("", vars, new(strings.Builder), errBuf)
+
+	f.AddError(testErr)
+	rawOutput := errBuf.String()
+	// Raw mode should NOT include the Msg header
+	assert.NotContains(t, rawOutput, "Msg 208")
+	assert.NotContains(t, rawOutput, "Level 16")
+	assert.NotContains(t, rawOutput, "State 1")
+	// But should still contain the actual error message
+	assert.Contains(t, rawOutput, "Invalid object name 'nonexistent'.")
 }

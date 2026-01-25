@@ -32,7 +32,7 @@ func (m *mssql) Connect(
 		m.console = nil
 	}
 	m.sqlcmd = sqlcmd.New(m.console, "", v)
-	m.sqlcmd.Format = sqlcmd.NewSQLCmdDefaultFormatter(false, sqlcmd.ControlIgnore)
+	m.sqlcmd.Format = sqlcmd.NewSQLCmdDefaultFormatter(false, sqlcmd.ControlIgnore, false)
 	connect := sqlcmd.ConnectSettings{
 		ServerName: fmt.Sprintf(
 			"%s,%#v",
