@@ -484,6 +484,19 @@ func TestIsExitParenBalanced(t *testing.T) {
 		{"(select [col]]name])", true},     // escaped bracket identifier
 		{"(select 'it''s a )test')", true}, // escaped quote with paren
 		{"(select [a]]])", true},           // escaped bracket with paren
+		// SQL comment tests
+		{"(select 1 -- unmatched (\n)", true},        // line comment with paren
+		{"(select 1 /* ( */ )", true},                // block comment with paren
+		{"(select /* nested ( */ 1)", true},          // block comment in middle
+		{"(select 1 -- comment\n+ 2)", true},         // line comment continues to next line
+		{"(select /* multi\nline\n( */ 1)", true},    // multi-line block comment
+		{"(select 1 -- ) still need close\n)", true}, // paren in line comment doesn't count
+		{"(select 1 /* ) */ + /* ( */ 2)", true},     // multiple block comments
+		{"(select 1 -- (\n-- )\n)", true},            // multiple line comments
+		{"(select '-- not a comment (' )", true},     // -- inside string is not a comment
+		{"(select '/* not a comment (' )", true},     // /* inside string is not a comment
+		{"(select 1 /* unclosed comment", false},     // unclosed block comment, missing )
+		{"(select 1) -- trailing comment (", true},   // trailing comment after balanced
 	}
 	for _, test := range tests {
 		t.Run(test.input, func(t *testing.T) {

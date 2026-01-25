@@ -211,12 +211,35 @@ func (c Commands) SetBatchTerminator(terminator string) error {
 // isExitParenBalanced checks if the parentheses in an EXIT command argument are balanced.
 // It tracks quotes to avoid counting parens inside string literals.
 // It handles SQL Server's quote escaping: ” inside single-quoted strings, "" inside double-quoted strings, and ]] inside bracket identifiers.
+// It also ignores parentheses inside SQL comments (-- single-line and /* multi-line */).
 func isExitParenBalanced(s string) bool {
 	depth := 0
 	var quote rune
+	inLineComment := false
+	inBlockComment := false
 	runes := []rune(s)
 	for i := 0; i < len(runes); i++ {
 		c := runes[i]
+
+		// Handle line comment state
+		if inLineComment {
+			// Line comment ends at newline
+			if c == '\n' {
+				inLineComment = false
+			}
+			continue
+		}
+
+		// Handle block comment state
+		if inBlockComment {
+			// Check for end of block comment
+			if c == '*' && i+1 < len(runes) && runes[i+1] == '/' {
+				inBlockComment = false
+				i++ // skip the '/'
+			}
+			continue
+		}
+
 		switch {
 		case quote != 0:
 			// Inside a quoted string
@@ -228,6 +251,14 @@ func isExitParenBalanced(s string) bool {
 					quote = 0
 				}
 			}
+		case c == '-' && i+1 < len(runes) && runes[i+1] == '-':
+			// Start of single-line comment
+			inLineComment = true
+			i++ // skip the second '-'
+		case c == '/' && i+1 < len(runes) && runes[i+1] == '*':
+			// Start of block comment
+			inBlockComment = true
+			i++ // skip the '*'
 		case c == '\'' || c == '"':
 			quote = c
 		case c == '[':
@@ -246,6 +277,12 @@ func isExitParenBalanced(s string) bool {
 func readExitContinuation(s *Sqlcmd, params string) (string, error) {
 	var builder strings.Builder
 	builder.WriteString(params)
+
+	// Save original prompt and restore it when done (if batch is initialized)
+	if s.batch != nil {
+		originalPrompt := s.Prompt()
+		defer s.lineIo.SetPrompt(originalPrompt)
+	}
 
 	for !isExitParenBalanced(builder.String()) {
 		// Show continuation prompt
