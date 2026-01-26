@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/text/transform"
 )
 
 func TestParseCodePage(t *testing.T) {
@@ -315,4 +316,75 @@ func TestGetEncodingWindowsFallback(t *testing.T) {
 	_, err = GetEncoding(99999)
 	assert.Error(t, err, "invalid codepage should fail on all platforms")
 	assert.Contains(t, err.Error(), "codepage")
+}
+
+func TestWindowsEncodingStreaming(t *testing.T) {
+	// This test verifies that the Windows API fallback handles streaming correctly
+	// by properly buffering incomplete multibyte sequences
+
+	// Japanese EBCDIC (20290) is a good test case as it's only available via Windows API
+	cp := 20290 // IBM EBCDIC Japanese Katakana Extended
+
+	enc, err := GetEncoding(cp)
+	if err != nil {
+		t.Skip("Codepage 20290 not available on this platform")
+	}
+
+	// Test decoder streaming with transform.Reader
+	t.Run("decoder streaming", func(t *testing.T) {
+		// Create a simple EBCDIC encoded string: "ABC" = 0xC1 0xC2 0xC3
+		ebcdicData := []byte{0xC1, 0xC2, 0xC3}
+
+		decoder := enc.NewDecoder()
+
+		// Simulate streaming by processing one byte at a time
+		var result []byte
+		for i := 0; i < len(ebcdicData); i++ {
+			decoder.Reset() // Reset between chunks for clean state
+			dst := make([]byte, 32)
+			nDst, _, err := decoder.Transform(dst, ebcdicData[i:i+1], i == len(ebcdicData)-1)
+			if err != nil && err != transform.ErrShortSrc {
+				t.Fatalf("Transform failed at byte %d: %v", i, err)
+			}
+			result = append(result, dst[:nDst]...)
+		}
+		assert.Equal(t, "ABC", string(result), "streaming decode should produce 'ABC'")
+	})
+
+	// Test encoder streaming
+	t.Run("encoder streaming", func(t *testing.T) {
+		// Test encoding "ABC" one character at a time
+		input := "ABC"
+		encoder := enc.NewEncoder()
+
+		var result []byte
+		for i := 0; i < len(input); i++ {
+			encoder.Reset() // Reset between chunks for clean state
+			dst := make([]byte, 32)
+			nDst, _, err := encoder.Transform(dst, []byte(input[i:i+1]), i == len(input)-1)
+			if err != nil && err != transform.ErrShortSrc {
+				t.Fatalf("Transform failed at char %d: %v", i, err)
+			}
+			result = append(result, dst[:nDst]...)
+		}
+		expected := []byte{0xC1, 0xC2, 0xC3} // "ABC" in EBCDIC
+		assert.Equal(t, expected, result, "streaming encode should produce EBCDIC ABC")
+	})
+
+	// Test encoder handles incomplete UTF-8 correctly
+	t.Run("encoder incomplete UTF-8", func(t *testing.T) {
+		encoder := enc.NewEncoder()
+		dst := make([]byte, 32)
+
+		// Send first byte of a 2-byte UTF-8 sequence (é = 0xC3 0xA9)
+		incompleteUTF8 := []byte{0xC3} // First byte of é
+		_, _, err := encoder.Transform(dst, incompleteUTF8, false)
+		// Should return ErrShortSrc because the sequence is incomplete
+		assert.Equal(t, transform.ErrShortSrc, err, "incomplete UTF-8 should return ErrShortSrc when not at EOF")
+
+		// At EOF, incomplete sequence should be an error
+		encoder.Reset()
+		_, _, err = encoder.Transform(dst, incompleteUTF8, true)
+		assert.Error(t, err, "incomplete UTF-8 at EOF should return error")
+	})
 }
