@@ -7,6 +7,7 @@ package sqlcmd
 
 import (
 	"errors"
+	"strconv"
 	"unicode/utf16"
 	"unsafe"
 
@@ -177,7 +178,9 @@ func isCodePageValid(codepage uint32) bool {
 func getSystemCodePageEncoding(codepage int) (encoding.Encoding, error) {
 	cp := uint32(codepage)
 	if !isCodePageValid(cp) {
-		return nil, localizer.Errorf("codepage %d is not installed on this system", codepage)
+		// Use %s with strconv.Itoa to avoid locale-based number formatting
+		// that would add thousands separators (e.g., "99,999" instead of "99999")
+		return nil, localizer.Errorf("unsupported codepage %s", strconv.Itoa(codepage))
 	}
 	return &windowsCodePageEncoding{codepage: cp}, nil
 }
