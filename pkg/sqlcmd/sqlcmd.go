@@ -352,12 +352,15 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 				reader = transform.NewReader(f, enc.NewDecoder())
 			}
 		} else {
-			// UTF-8 codepage: use BOMOverride to strip UTF-8 BOM and auto-detect UTF-16 BOMs, defaulting to UTF-8 otherwise
+			// UTF-8 codepage (65001): BOMOverride detects UTF-8/UTF-16LE/UTF-16BE BOMs and
+			// switches decoder accordingly, falling back to UTF-8 when no BOM is present
 			utf8bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
 			reader = transform.NewReader(f, utf8bom)
 		}
 	} else {
-		// Default: auto-detect BOMs (UTF-8/UTF-16) and decode accordingly, falling back to UTF-8 when no BOM is present
+		// Default (no -f flag): BOMOverride detects UTF-8/UTF-16LE/UTF-16BE BOMs at
+		// the start of input and switches decoder accordingly; falls back to UTF-8
+		// when no BOM is present (see golang.org/x/text/encoding/unicode.BOMOverride)
 		utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
 		reader = transform.NewReader(f, utf16bom)
 	}

@@ -319,8 +319,9 @@ func TestGetEncodingWindowsFallback(t *testing.T) {
 }
 
 func TestWindowsEncodingStreaming(t *testing.T) {
-	// This test verifies that the Windows API fallback handles streaming correctly
-	// by properly buffering incomplete multibyte sequences
+	// This test exercises that the Windows API fallback encoding can be used in
+	// streaming-like scenarios and that it handles single-byte data and
+	// incomplete UTF-8 input correctly.
 
 	// Japanese EBCDIC (20290) is a good test case as it's only available via Windows API
 	cp := 20290 // IBM EBCDIC Japanese Katakana Extended

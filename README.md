@@ -295,10 +295,10 @@ sqlcmd --list-codepages
 
 #### Notes
 
-- When no `-f` flag is specified, sqlcmd auto-detects UTF-16 BOM (Byte Order Mark) in input files and falls back to UTF-8.
+- When no `-f` flag is specified, sqlcmd auto-detects UTF-8/UTF-16LE/UTF-16BE BOM (Byte Order Mark) in input files and switches to the appropriate decoder. If no BOM is present, UTF-8 is assumed.
 - UTF-8 input files with BOM are handled automatically.
-- On Windows, additional codepages installed on the system are also available via the Windows API.
-- Use `--list-codepages` to see all supported code pages with their names and descriptions.
+- On Windows, additional codepages installed on the system are available via the Windows API, even if not shown by `--list-codepages`.
+- Use `--list-codepages` to see the built-in code pages with their names and descriptions.
 
 ### Packages
 

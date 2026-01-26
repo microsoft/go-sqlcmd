@@ -302,7 +302,8 @@ func isCodePageValid(codepage uint32) bool {
 }
 
 // getSystemCodePageEncoding returns an encoding using Windows API for codepages
-// not in our built-in registry. Returns nil if the codepage is not available.
+// not in our built-in registry. If the codepage is not available, it returns
+// a nil encoding and a non-nil error.
 func getSystemCodePageEncoding(codepage int) (encoding.Encoding, error) {
 	cp := uint32(codepage)
 	if !isCodePageValid(cp) {
