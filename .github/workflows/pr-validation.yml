@@ -24,13 +24,19 @@ jobs:
         export SQLCMDUSER=sa
         docker run -m 2GB -e ACCEPT_EULA=1 -d --name sql2022 -p:1433:1433 -e SA_PASSWORD=$SQLCMDPASSWORD mcr.microsoft.com/mssql/server:2022-latest
         echo "Waiting for SQL Server to be ready..."
+        READY=0
         for i in {1..60}; do
           if docker exec sql2022 /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$SQLCMDPASSWORD" -C -Q "SELECT 1" &>/dev/null; then
             echo "SQL Server is ready!"
+            READY=1
             break
           fi
           echo "Attempt $i: SQL Server not ready yet, waiting..."
           sleep 2
         done
+        if [ $READY -eq 0 ]; then
+          echo "ERROR: SQL Server failed to become ready within 2 minutes"
+          exit 1
+        fi
         cd ../..
         go test -v ./...
