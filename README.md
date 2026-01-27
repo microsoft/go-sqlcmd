@@ -112,6 +112,24 @@ sqlcmd
 
 If no current context exists, `sqlcmd` (with no connection parameters) reverts to the original ODBC `sqlcmd` behavior of creating an interactive session to the default local instance on port 1433 using trusted authentication, otherwise it will create an interactive session to the current context.
 
+### Piping input to sqlcmd
+
+You can pipe SQL commands directly to `sqlcmd` from the command line. This is useful for scripting and automation:
+
+**PowerShell:**
+```powershell
+"SELECT @@version" | sqlcmd -S myserver -d mydb -G
+"SELECT name FROM sys.databases" | sqlcmd -S myserver.database.windows.net -d mydb -G
+```
+
+**Bash:**
+```bash
+echo "SELECT @@version" | sqlcmd -S myserver -d mydb -G
+cat myscript.sql | sqlcmd -S myserver -d mydb -G
+```
+
+Note: When piping input, `GO` batch terminators are optional—`sqlcmd` will automatically execute the batch when the input ends. However, you can still include `GO` statements if you want to execute multiple batches.
+
 ## Sqlcmd
 
 The `sqlcmd` project aims to be a complete port of the original ODBC sqlcmd to the `Go` language, utilizing the [go-mssqldb][] driver. For full documentation of the tool and installation instructions, see [go-sqlcmd-utility][].
