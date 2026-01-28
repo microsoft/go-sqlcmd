@@ -72,11 +72,6 @@ func hasLiveConnection() bool {
 	return os.Getenv("SQLCMDSERVER") != ""
 }
 
-// hasSQLAuthCredentials returns true if SQL authentication credentials are available.
-func hasSQLAuthCredentials() bool {
-	return os.Getenv("SQLCMDUSER") != "" && os.Getenv("SQLCMDPASSWORD") != ""
-}
-
 // canTestAzureAuth returns true if Azure AD authentication should be used.
 // This matches the logic in pkg/sqlcmd/sqlcmd_test.go - use AAD when
 // SQLCMDSERVER is an Azure SQL endpoint and SQLCMDUSER is not set.
