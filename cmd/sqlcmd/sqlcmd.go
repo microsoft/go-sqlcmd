@@ -83,7 +83,8 @@ type SQLCmdArguments struct {
 	ChangePasswordAndExit       string
 	TraceFile                   string
 	// Keep Help at the end of the list
-	Help bool
+	Help  bool
+	Ascii bool
 }
 
 func (args *SQLCmdArguments) useEnvVars() bool {
@@ -150,6 +151,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 		switch {
 		case len(a.InputFile) > 0 && (len(a.Query) > 0 || len(a.InitialQuery) > 0):
 			err = mutuallyExclusiveError("i", `-Q/-q`)
+		case a.Vertical && a.Ascii:
+			err = mutuallyExclusiveError("--vertical", "--ascii")
 		case a.UseTrustedConnection && (len(a.UserName) > 0 || len(a.Password) > 0):
 			err = mutuallyExclusiveError("-E", `-U/-P`)
 		case a.UseAad && len(a.AuthenticationMethod) > 0:
@@ -436,6 +439,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.DisableVariableSubstitution, "disable-variable-substitution", "x", false, localizer.Sprintf("Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many %s statements that may contain strings that have the same format as regular variables, such as $(variable_name)", localizer.InsertKeyword))
 	var variables map[string]string
 	rootCmd.Flags().StringToStringVarP(&args.Variables, "variables", "v", variables, localizer.Sprintf("Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits"))
+
 	rootCmd.Flags().IntVarP(&args.PacketSize, "packet-size", "a", 0, localizer.Sprintf("Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size", localizer.PacketSizeVar, localizer.BatchTerminatorGo))
 	rootCmd.Flags().IntVarP(&args.LoginTimeout, "login-timeOut", "l", -1, localizer.Sprintf("Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite", localizer.LoginTimeOutVar))
 	rootCmd.Flags().StringVarP(&args.WorkstationName, "workstation-name", "H", "", localizer.Sprintf("This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions", localizer.WorkstationVar))
@@ -448,6 +452,8 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	// Can't use NoOptDefVal until this fix: https://github.com/spf13/cobra/issues/866
 	//rootCmd.Flags().Lookup(encryptConnection).NoOptDefVal = "true"
 	rootCmd.Flags().BoolVarP(&args.Vertical, "vertical", "", false, localizer.Sprintf("Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false", sqlcmd.SQLCMDFORMAT, "vert"))
+	rootCmd.Flags().BoolVarP(&args.Ascii, "ascii", "", false, localizer.Sprintf("Prints the output in ASCII table format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false", sqlcmd.SQLCMDFORMAT, "ascii"))
+
 	_ = rootCmd.Flags().IntP(errorsToStderr, "r", -1, localizer.Sprintf("%s Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.", "-r[0 | 1]"))
 	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, localizer.Sprintf("Level of mssql driver messages to print"))
 	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, localizer.Sprintf("Specifies that sqlcmd exits and returns a %s value when an error occurs", localizer.DosErrorLevel))
@@ -684,7 +690,10 @@ func setVars(vars *sqlcmd.Variables, args *SQLCmdArguments) {
 			if a.Vertical {
 				return "vert"
 			}
-			return "horizontal"
+			if a.Ascii {
+				return "ascii"
+			}
+			return ""
 		},
 	}
 	for varname, set := range varmap {
@@ -832,7 +841,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s.Connect = &connectConfig
-	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(args.TrimSpaces, args.getControlCharacterBehavior())
+	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(vars, args.TrimSpaces, args.getControlCharacterBehavior())
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {
