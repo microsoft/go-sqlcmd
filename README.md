@@ -318,6 +318,17 @@ sqlcmd --list-codepages
 - On Windows, additional codepages installed on the system are available via the Windows API, even if not shown by `--list-codepages`.
 - Use `--list-codepages` to see the built-in code pages with their names and descriptions.
 
+#### Differences from ODBC sqlcmd
+
+| Aspect | ODBC sqlcmd | go-sqlcmd |
+|--------|-------------|-----------|
+| **Default encoding (no BOM, no `-f`)** | Windows ANSI code page (locale-dependent, e.g., 1252) | UTF-8 |
+| **UTF-16 codepages (1200, 1201)** | Rejected by `IsValidCodePage()` API | Accepted |
+| **BOM detection** | Yes (UTF-8, UTF-16 LE/BE) | Yes (identical behavior) |
+| **`--list-codepages`** | Not available | Available |
+
+**Migration note**: If you have UTF-8 encoded SQL scripts without a BOM that worked with ODBC sqlcmd on Windows, they should work identically or better with go-sqlcmd since go-sqlcmd defaults to UTF-8. However, if you have scripts in Windows ANSI encoding (e.g., Windows-1252) without a BOM, you may need to explicitly specify `-f 1252` with go-sqlcmd.
+
 ### Packages
 
 #### sqlcmd executable
