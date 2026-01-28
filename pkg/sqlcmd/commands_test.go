@@ -54,6 +54,10 @@ func TestCommandParsing(t *testing.T) {
 		{`:XML ON `, "XML", []string{`ON `}},
 		{`:RESET`, "RESET", []string{""}},
 		{`RESET`, "RESET", []string{""}},
+		{`:HELP`, "HELP", []string{""}},
+		{`:help`, "HELP", []string{""}},
+		{`:SERVERLIST`, "SERVERLIST", []string{""}},
+		{`:serverlist`, "SERVERLIST", []string{""}},
 	}
 
 	for _, test := range commands {
@@ -457,4 +461,26 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
 	}
 
+}
+
+func TestHelpCommand(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.SetOutput(buf)
+
+	err := helpCommand(s, []string{""}, 1)
+	assert.NoError(t, err, "helpCommand should not error")
+
+	output := buf.buf.String()
+	// Verify key commands are listed
+	assert.Contains(t, output, ":connect", "help should list :connect")
+	assert.Contains(t, output, ":exit", "help should list :exit")
+	assert.Contains(t, output, ":help", "help should list :help")
+	assert.Contains(t, output, ":setvar", "help should list :setvar")
+	assert.Contains(t, output, ":listvar", "help should list :listvar")
+	assert.Contains(t, output, ":out", "help should list :out")
+	assert.Contains(t, output, ":error", "help should list :error")
+	assert.Contains(t, output, ":r", "help should list :r")
+	assert.Contains(t, output, ":serverlist", "help should list :serverlist")
+	assert.Contains(t, output, "go", "help should list go")
 }
