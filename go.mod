@@ -13,7 +13,7 @@ require (
 	github.com/golang-sql/sqlexp v0.1.0
 	github.com/google/uuid v1.6.0
 	github.com/microsoft/go-mssqldb v1.9.6
-	github.com/opencontainers/image-spec v1.0.2
+	github.com/opencontainers/image-spec v1.1.1
 	github.com/peterh/liner v1.2.2
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.6.1
