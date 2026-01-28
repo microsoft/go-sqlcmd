@@ -73,7 +73,7 @@ func hasLiveConnection() bool {
 }
 
 // hasSQLAuthCredentials returns true if SQL authentication credentials are available.
-// For Azure AD/Entra authentication (service principal), we need different handling.
+// For Azure AD/Entra authentication methods, we need different handling.
 func hasSQLAuthCredentials() bool {
 	return os.Getenv("SQLCMDUSER") != "" && os.Getenv("SQLCMDPASSWORD") != ""
 }
