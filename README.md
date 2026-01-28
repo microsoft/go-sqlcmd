@@ -172,6 +172,7 @@ switches are most important to you to have implemented next in the new sqlcmd.
 - `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `--vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
+- `:help` displays a list of available sqlcmd commands.
 
 ```
 1> select session_id, client_interface_name, program_name from sys.dm_exec_sessions where session_id=@@spid
@@ -179,6 +180,14 @@ switches are most important to you to have implemented next in the new sqlcmd.
 session_id            58
 client_interface_name go-mssqldb
 program_name          sqlcmd
+```
+
+- `:perftrace` redirects performance statistics output to a file, stderr, or stdout. Use in conjunction with `-p` flag.
+
+```
+1> :perftrace c:/logs/perf.txt
+1> select 1
+2> go
 ```
 
 - `sqlcmd` supports shared memory and named pipe transport. Use the appropriate protocol prefix on the server name to force a protocol:
