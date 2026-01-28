@@ -82,6 +82,7 @@ type SQLCmdArguments struct {
 	ChangePassword              string
 	ChangePasswordAndExit       string
 	TraceFile                   string
+	PrintStatistics             *int
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -126,6 +127,7 @@ const (
 	disableCmdAndWarn       = "disable-cmd-and-warn"
 	listServers             = "list-servers"
 	removeControlCharacters = "remove-control-characters"
+	printStatistics         = "print-statistics"
 )
 
 func encryptConnectionAllowsTLS(value string) bool {
@@ -330,6 +332,7 @@ func checkDefaultValue(args []string, i int) (val string) {
 		'k': "0",
 		'L': "|", // | is the sentinel for no value since users are unlikely to use it. It's "reserved" in most shells
 		'X': "0",
+		'p': "0",
 	}
 	if isFlag(args[i]) && len(args[i]) == 2 && (len(args) == i+1 || args[i+1][0] == '-') {
 		if v, ok := flags[rune(args[i][1])]; ok {
@@ -393,6 +396,7 @@ func SetScreenWidthFlags(args *SQLCmdArguments, rootCmd *cobra.Command) {
 	args.DisableCmd = getOptionalIntArgument(rootCmd, disableCmdAndWarn)
 	args.ErrorsToStderr = getOptionalIntArgument(rootCmd, errorsToStderr)
 	args.RemoveControlCharacters = getOptionalIntArgument(rootCmd, removeControlCharacters)
+	args.PrintStatistics = getOptionalIntArgument(rootCmd, printStatistics)
 }
 
 func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
@@ -475,6 +479,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	_ = rootCmd.Flags().BoolP("client-regional-setting", "R", false, localizer.Sprintf("Provided for backward compatibility. Client regional settings are not used"))
 	_ = rootCmd.Flags().IntP(removeControlCharacters, "k", 0, localizer.Sprintf("%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters", "-k [1|2]"))
 	rootCmd.Flags().BoolVarP(&args.EchoInput, "echo-input", "e", false, localizer.Sprintf("Echo input"))
+	_ = rootCmd.Flags().IntP(printStatistics, "p", 0, localizer.Sprintf("%s Print performance statistics after each batch. Pass 1 for colon-separated format", "-p[1]"))
 	rootCmd.Flags().IntVarP(&args.QueryTimeout, "query-timeout", "t", 0, "Query timeout")
 	rootCmd.Flags().BoolVarP(&args.EnableColumnEncryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
 	rootCmd.Flags().StringVarP(&args.ChangePassword, "change-password", "z", "", localizer.Sprintf("New password"))
@@ -541,6 +546,14 @@ func normalizeFlags(cmd *cobra.Command) error {
 				return pflag.NormalizedName(name)
 			default:
 				err = invalidParameterError("-k", v, "1", "2")
+				return pflag.NormalizedName("")
+			}
+		case printStatistics:
+			switch v {
+			case "0", "1":
+				return pflag.NormalizedName(name)
+			default:
+				err = invalidParameterError("-p", v, "0", "1")
 				return pflag.NormalizedName("")
 			}
 		}
@@ -816,6 +829,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	s.SetupCloseHandler()
 	defer s.StopCloseHandler()
 	s.UnicodeOutputFile = args.UnicodeOutputFile
+	s.PrintStatistics = args.PrintStatistics
 
 	if args.DisableCmd != nil {
 		s.Cmd.DisableSysCommands(args.errorOnBlockedCmd())
