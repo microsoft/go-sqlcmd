@@ -73,9 +73,17 @@ func hasLiveConnection() bool {
 }
 
 // hasSQLAuthCredentials returns true if SQL authentication credentials are available.
-// For Azure AD/Entra authentication methods, we need different handling.
 func hasSQLAuthCredentials() bool {
 	return os.Getenv("SQLCMDUSER") != "" && os.Getenv("SQLCMDPASSWORD") != ""
+}
+
+// canTestAzureAuth returns true if Azure AD authentication should be used.
+// This matches the logic in pkg/sqlcmd/sqlcmd_test.go - use AAD when
+// SQLCMDSERVER is an Azure SQL endpoint and SQLCMDUSER is not set.
+func canTestAzureAuth() bool {
+	server := os.Getenv("SQLCMDSERVER")
+	userName := os.Getenv("SQLCMDUSER")
+	return strings.Contains(server, ".database.windows.net") && userName == ""
 }
 
 // skipIfNoLiveConnection skips the test if no live SQL Server connection is available.
@@ -86,15 +94,22 @@ func skipIfNoLiveConnection(t *testing.T) {
 	}
 }
 
-// skipIfNoSQLAuth skips the test if SQL authentication credentials are not available.
-// Tests requiring SQL auth should use this instead of skipIfNoLiveConnection when they
-// don't support Azure AD/Entra authentication.
-func skipIfNoSQLAuth(t *testing.T) {
+// getAuthArgs returns the command-line arguments needed for authentication.
+// For SQL auth, it returns empty (sqlcmd picks up SQLCMDUSER/SQLCMDPASSWORD from env).
+// For Azure AD, it returns the appropriate --authentication-method flag.
+func getAuthArgs(t *testing.T) []string {
 	t.Helper()
-	skipIfNoLiveConnection(t)
-	if !hasSQLAuthCredentials() {
-		t.Skip("Skipping: SQLCMDUSER/SQLCMDPASSWORD not set, SQL auth not available (may be using Azure AD)")
+	if canTestAzureAuth() {
+		// Check if running in Azure Pipelines with service connection
+		if os.Getenv("AZURESUBSCRIPTION_SERVICE_CONNECTION_NAME") != "" {
+			t.Log("Using ActiveDirectoryAzurePipelines authentication")
+			return []string{"--authentication-method", "ActiveDirectoryAzurePipelines"}
+		}
+		t.Log("Using ActiveDirectoryDefault authentication")
+		return []string{"--authentication-method", "ActiveDirectoryDefault"}
 	}
+	// SQL auth - credentials come from environment variables
+	return []string{}
 }
 
 type buildError struct {
@@ -160,15 +175,16 @@ func TestE2E_PipedInput_NoPanic(t *testing.T) {
 }
 
 // TestE2E_PipedInput_LiveConnection tests piping input with a real SQL Server connection.
-// This test only runs when SQLCMDSERVER and SQL auth credentials are set.
-// It does not support Azure AD/Entra authentication yet.
+// This test runs when SQLCMDSERVER is set and uses appropriate auth method
+// (SQL auth or Azure AD) based on environment configuration.
 func TestE2E_PipedInput_LiveConnection(t *testing.T) {
-	skipIfNoSQLAuth(t)
+	skipIfNoLiveConnection(t)
 	binary := buildBinary(t)
 
-	cmd := exec.Command(binary, "-C")
+	args := append([]string{"-C"}, getAuthArgs(t)...)
+	cmd := exec.Command(binary, args...)
 	cmd.Stdin = strings.NewReader("SELECT 1 AS TestValue\nGO\n")
-	cmd.Env = os.Environ() // Inherit SQLCMDSERVER, SQLCMDUSER, SQLCMDPASSWORD
+	cmd.Env = os.Environ() // Inherit environment variables
 
 	output, err := cmd.CombinedOutput()
 	outputStr := string(output)
@@ -226,12 +242,13 @@ func TestE2E_QueryFlag_NoServer(t *testing.T) {
 }
 
 // TestE2E_QueryFlag_LiveConnection tests the -Q flag with a real SQL Server connection.
-// This test only runs when SQLCMDSERVER and SQL auth credentials are set.
+// This test runs when SQLCMDSERVER is set and uses appropriate auth method.
 func TestE2E_QueryFlag_LiveConnection(t *testing.T) {
-	skipIfNoSQLAuth(t)
+	skipIfNoLiveConnection(t)
 	binary := buildBinary(t)
 
-	cmd := exec.Command(binary, "-C", "-Q", "SELECT 42 AS Answer")
+	args := append([]string{"-C", "-Q", "SELECT 42 AS Answer"}, getAuthArgs(t)...)
+	cmd := exec.Command(binary, args...)
 	cmd.Env = os.Environ()
 
 	output, err := cmd.CombinedOutput()
@@ -255,9 +272,9 @@ func TestE2E_InputFile_NotFound(t *testing.T) {
 }
 
 // TestE2E_InputFile_LiveConnection tests the -i flag with a real SQL Server connection.
-// This test only runs when SQLCMDSERVER and SQL auth credentials are set.
+// This test runs when SQLCMDSERVER is set and uses appropriate auth method.
 func TestE2E_InputFile_LiveConnection(t *testing.T) {
-	skipIfNoSQLAuth(t)
+	skipIfNoLiveConnection(t)
 	binary := buildBinary(t)
 
 	// Create a temporary SQL file
@@ -269,7 +286,8 @@ func TestE2E_InputFile_LiveConnection(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, tmpFile.Close())
 
-	cmd := exec.Command(binary, "-C", "-i", tmpFile.Name())
+	args := append([]string{"-C", "-i", tmpFile.Name()}, getAuthArgs(t)...)
+	cmd := exec.Command(binary, args...)
 	cmd.Env = os.Environ()
 
 	output, err := cmd.CombinedOutput()
