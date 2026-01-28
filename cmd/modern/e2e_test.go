@@ -72,11 +72,28 @@ func hasLiveConnection() bool {
 	return os.Getenv("SQLCMDSERVER") != ""
 }
 
+// hasSQLAuthCredentials returns true if SQL authentication credentials are available.
+// For Azure AD/Entra authentication (service principal), we need different handling.
+func hasSQLAuthCredentials() bool {
+	return os.Getenv("SQLCMDUSER") != "" && os.Getenv("SQLCMDPASSWORD") != ""
+}
+
 // skipIfNoLiveConnection skips the test if no live SQL Server connection is available.
 func skipIfNoLiveConnection(t *testing.T) {
 	t.Helper()
 	if !hasLiveConnection() {
 		t.Skip("Skipping: SQLCMDSERVER not set, no live connection available")
+	}
+}
+
+// skipIfNoSQLAuth skips the test if SQL authentication credentials are not available.
+// Tests requiring SQL auth should use this instead of skipIfNoLiveConnection when they
+// don't support Azure AD/Entra authentication.
+func skipIfNoSQLAuth(t *testing.T) {
+	t.Helper()
+	skipIfNoLiveConnection(t)
+	if !hasSQLAuthCredentials() {
+		t.Skip("Skipping: SQLCMDUSER/SQLCMDPASSWORD not set, SQL auth not available (may be using Azure AD)")
 	}
 }
 
@@ -143,9 +160,10 @@ func TestE2E_PipedInput_NoPanic(t *testing.T) {
 }
 
 // TestE2E_PipedInput_LiveConnection tests piping input with a real SQL Server connection.
-// This test only runs when SQLCMDSERVER is set.
+// This test only runs when SQLCMDSERVER and SQL auth credentials are set.
+// It does not support Azure AD/Entra authentication yet.
 func TestE2E_PipedInput_LiveConnection(t *testing.T) {
-	skipIfNoLiveConnection(t)
+	skipIfNoSQLAuth(t)
 	binary := buildBinary(t)
 
 	cmd := exec.Command(binary, "-C")
@@ -208,9 +226,9 @@ func TestE2E_QueryFlag_NoServer(t *testing.T) {
 }
 
 // TestE2E_QueryFlag_LiveConnection tests the -Q flag with a real SQL Server connection.
-// This test only runs when SQLCMDSERVER is set.
+// This test only runs when SQLCMDSERVER and SQL auth credentials are set.
 func TestE2E_QueryFlag_LiveConnection(t *testing.T) {
-	skipIfNoLiveConnection(t)
+	skipIfNoSQLAuth(t)
 	binary := buildBinary(t)
 
 	cmd := exec.Command(binary, "-C", "-Q", "SELECT 42 AS Answer")
@@ -237,9 +255,9 @@ func TestE2E_InputFile_NotFound(t *testing.T) {
 }
 
 // TestE2E_InputFile_LiveConnection tests the -i flag with a real SQL Server connection.
-// This test only runs when SQLCMDSERVER is set.
+// This test only runs when SQLCMDSERVER and SQL auth credentials are set.
 func TestE2E_InputFile_LiveConnection(t *testing.T) {
-	skipIfNoLiveConnection(t)
+	skipIfNoSQLAuth(t)
 	binary := buildBinary(t)
 
 	// Create a temporary SQL file
