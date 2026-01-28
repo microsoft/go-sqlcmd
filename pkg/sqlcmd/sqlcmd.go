@@ -86,6 +86,8 @@ type Sqlcmd struct {
 	UnicodeOutputFile bool
 	// EchoInput tells the GO command to print the batch text before running the query
 	EchoInput bool
+	// CodePage specifies input/output file encoding
+	CodePage  *CodePageSettings
 	colorizer color.Colorizer
 	termchan  chan os.Signal
 }
@@ -331,9 +333,26 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	}
 	defer f.Close()
 	b := s.batch.batchline
-	utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
-	unicodeReader := transform.NewReader(f, utf16bom)
-	scanner := bufio.NewReader(unicodeReader)
+
+	// Set up the reader with appropriate encoding
+	var reader io.Reader = f
+	if s.CodePage != nil && s.CodePage.InputCodePage != 0 {
+		// Use specified input codepage
+		enc, err := GetEncoding(s.CodePage.InputCodePage)
+		if err != nil {
+			return err
+		}
+		if enc != nil {
+			// Transform from specified encoding to UTF-8
+			reader = transform.NewReader(f, enc.NewDecoder())
+		}
+		// If enc is nil, it's UTF-8, no transformation needed
+	} else {
+		// Default: auto-detect BOM for UTF-16, fallback to UTF-8
+		utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
+		reader = transform.NewReader(f, utf16bom)
+	}
+	scanner := bufio.NewReader(reader)
 	curLine := s.batch.read
 	echoFileLines := s.echoFileLines
 	ln := make([]byte, 0, 2*1024*1024)

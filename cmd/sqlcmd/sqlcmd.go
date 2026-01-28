@@ -82,6 +82,9 @@ type SQLCmdArguments struct {
 	ChangePassword              string
 	ChangePasswordAndExit       string
 	TraceFile                   string
+	CodePage                    string
+	ListCodePages               bool
+	UseRegionalSettings         bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -171,6 +174,10 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = rangeParameterError("-t", fmt.Sprint(a.QueryTimeout), 0, 65534, true)
 		case a.ServerCertificate != "" && !encryptConnectionAllowsTLS(a.EncryptConnection):
 			err = localizer.Errorf("The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).")
+		case a.CodePage != "":
+			if _, parseErr := sqlcmd.ParseCodePage(a.CodePage); parseErr != nil {
+				err = localizer.Errorf(`'-f %s': %v`, a.CodePage, parseErr)
+			}
 		}
 	}
 	if err != nil {
@@ -237,6 +244,17 @@ func Execute(version string) {
 					fmt.Println(localizer.Sprintf("Servers:"))
 				}
 				listLocalServers()
+				os.Exit(0)
+			}
+			// List supported codepages
+			if args.ListCodePages {
+				fmt.Println(localizer.Sprintf("Supported Code Pages:"))
+				fmt.Println()
+				fmt.Printf("%-8s %-20s %s\n", "Code", "Name", "Description")
+				fmt.Printf("%-8s %-20s %s\n", "----", "----", "-----------")
+				for _, cp := range sqlcmd.SupportedCodePages() {
+					fmt.Printf("%-8d %-20s %s\n", cp.CodePage, cp.Name, cp.Description)
+				}
 				os.Exit(0)
 			}
 			if len(argss) > 0 {
@@ -472,13 +490,15 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.ListServers, listServers, "L", "", localizer.Sprintf("%s List servers. Pass %s to omit 'Servers:' output.", "-L[c]", "c"))
 	rootCmd.Flags().BoolVarP(&args.DedicatedAdminConnection, "dedicated-admin-connection", "A", false, localizer.Sprintf("Dedicated administrator connection"))
 	_ = rootCmd.Flags().BoolP("enable-quoted-identifiers", "I", true, localizer.Sprintf("Provided for backward compatibility. Quoted identifiers are always enabled"))
-	_ = rootCmd.Flags().BoolP("client-regional-setting", "R", false, localizer.Sprintf("Provided for backward compatibility. Client regional settings are not used"))
+	rootCmd.Flags().BoolVarP(&args.UseRegionalSettings, "client-regional-setting", "R", false, localizer.Sprintf("Use client regional settings for currency, date, and time formatting"))
 	_ = rootCmd.Flags().IntP(removeControlCharacters, "k", 0, localizer.Sprintf("%s Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters", "-k [1|2]"))
 	rootCmd.Flags().BoolVarP(&args.EchoInput, "echo-input", "e", false, localizer.Sprintf("Echo input"))
 	rootCmd.Flags().IntVarP(&args.QueryTimeout, "query-timeout", "t", 0, "Query timeout")
 	rootCmd.Flags().BoolVarP(&args.EnableColumnEncryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
 	rootCmd.Flags().StringVarP(&args.ChangePassword, "change-password", "z", "", localizer.Sprintf("New password"))
 	rootCmd.Flags().StringVarP(&args.ChangePasswordAndExit, "change-password-exit", "Z", "", localizer.Sprintf("New password and exit"))
+	rootCmd.Flags().StringVarP(&args.CodePage, "code-page", "f", "", localizer.Sprintf("Specifies the code page for input/output. Use 65001 for UTF-8. Format: codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]"))
+	rootCmd.Flags().BoolVar(&args.ListCodePages, "list-codepages", false, localizer.Sprintf("List supported code pages and exit"))
 }
 
 func setScriptVariable(v string) string {
@@ -817,6 +837,15 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	defer s.StopCloseHandler()
 	s.UnicodeOutputFile = args.UnicodeOutputFile
 
+	// Parse and apply codepage settings
+	if args.CodePage != "" {
+		codePageSettings, err := sqlcmd.ParseCodePage(args.CodePage)
+		if err != nil {
+			return 1, localizer.Errorf("Invalid code page: %v", err)
+		}
+		s.CodePage = codePageSettings
+	}
+
 	if args.DisableCmd != nil {
 		s.Cmd.DisableSysCommands(args.errorOnBlockedCmd())
 	}
@@ -832,7 +861,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s.Connect = &connectConfig
-	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(args.TrimSpaces, args.getControlCharacterBehavior())
+	s.Format = sqlcmd.NewSQLCmdDefaultFormatterWithRegional(args.TrimSpaces, args.getControlCharacterBehavior(), args.UseRegionalSettings)
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {

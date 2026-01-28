@@ -85,15 +85,23 @@ type sqlCmdFormatterType struct {
 	maxColNameLen        int
 	colorizer            color.Colorizer
 	xml                  bool
+	regional             *RegionalSettings
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
 func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool, ccb ControlCharacterBehavior) Formatter {
+	return NewSQLCmdDefaultFormatterWithRegional(removeTrailingSpaces, ccb, false)
+}
+
+// NewSQLCmdDefaultFormatterWithRegional returns a Formatter with optional regional settings support
+// When useRegionalSettings is true, numeric and date/time values are formatted according to the user's locale
+func NewSQLCmdDefaultFormatterWithRegional(removeTrailingSpaces bool, ccb ControlCharacterBehavior, useRegionalSettings bool) Formatter {
 	return &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
 		format:               "horizontal",
 		colorizer:            color.New(false),
 		ccb:                  ccb,
+		regional:             NewRegionalSettings(useRegionalSettings),
 	}
 }
 
@@ -478,11 +486,12 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 		if *j == nil {
 			row[n] = "NULL"
 		} else {
+			typeName := f.columnDetails[n].col.DatabaseTypeName()
 			switch x := (*j).(type) {
 			case []byte:
 				if isBinaryDataType(&f.columnDetails[n].col) {
 					row[n] = decodeBinary(x)
-				} else if f.columnDetails[n].col.DatabaseTypeName() == "UNIQUEIDENTIFIER" {
+				} else if typeName == "UNIQUEIDENTIFIER" {
 					// Unscramble the guid
 					// see https://github.com/denisenkom/go-mssqldb/issues/56
 					x[0], x[1], x[2], x[3] = x[3], x[2], x[1], x[0]
@@ -498,28 +507,55 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 					row[n] = string(x)
 				}
 			case string:
-				row[n] = x
-			case time.Time:
-				// Go lacks any way to get the user's preferred time format or even the system default
-				switch f.columnDetails[n].col.DatabaseTypeName() {
-				case "DATE":
-					row[n] = x.Format("2006-01-02")
-				case "DATETIME":
-					row[n] = x.Format(dateTimeFormatString(3, false))
-				case "DATETIME2":
-					row[n] = x.Format(dateTimeFormatString(f.columnDetails[n].scale, false))
-				case "SMALLDATETIME":
-					row[n] = x.Format(dateTimeFormatString(0, false))
-				case "DATETIMEOFFSET":
-					row[n] = x.Format(dateTimeFormatString(f.columnDetails[n].scale, true))
-				case "TIME":
-					format := "15:04:05"
-					if f.columnDetails[n].scale > 0 {
-						format = fmt.Sprintf("%s.%0*d", format, f.columnDetails[n].scale, 0)
+				// Apply regional formatting for DECIMAL/NUMERIC/MONEY when represented as string
+				if f.regional.IsEnabled() {
+					switch typeName {
+					case "DECIMAL", "NUMERIC":
+						row[n] = f.regional.FormatNumber(x)
+					case "MONEY", "SMALLMONEY":
+						row[n] = f.regional.FormatMoney(x)
+					default:
+						row[n] = x
 					}
-					row[n] = x.Format(format)
-				default:
-					row[n] = x.Format(time.RFC3339)
+				} else {
+					row[n] = x
+				}
+			case time.Time:
+				// Apply regional formatting when -R is enabled
+				if f.regional.IsEnabled() {
+					switch typeName {
+					case "DATE":
+						row[n] = f.regional.FormatDate(x)
+					case "DATETIME", "DATETIME2", "SMALLDATETIME":
+						row[n] = f.regional.FormatDateTime(x, f.columnDetails[n].scale, false)
+					case "DATETIMEOFFSET":
+						row[n] = f.regional.FormatDateTime(x, f.columnDetails[n].scale, true)
+					case "TIME":
+						row[n] = f.regional.FormatTime(x, f.columnDetails[n].scale)
+					default:
+						row[n] = x.Format(time.RFC3339)
+					}
+				} else {
+					switch typeName {
+					case "DATE":
+						row[n] = x.Format("2006-01-02")
+					case "DATETIME":
+						row[n] = x.Format(dateTimeFormatString(3, false))
+					case "DATETIME2":
+						row[n] = x.Format(dateTimeFormatString(f.columnDetails[n].scale, false))
+					case "SMALLDATETIME":
+						row[n] = x.Format(dateTimeFormatString(0, false))
+					case "DATETIMEOFFSET":
+						row[n] = x.Format(dateTimeFormatString(f.columnDetails[n].scale, true))
+					case "TIME":
+						format := "15:04:05"
+						if f.columnDetails[n].scale > 0 {
+							format = fmt.Sprintf("%s.%0*d", format, f.columnDetails[n].scale, 0)
+						}
+						row[n] = x.Format(format)
+					default:
+						row[n] = x.Format(time.RFC3339)
+					}
 				}
 			case fmt.Stringer:
 				row[n] = x.String()
@@ -531,9 +567,19 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 					row[n] = "0"
 				}
 			default:
-				var err error
-				if row[n], err = fmt.Sprintf("%v", x), nil; err != nil {
-					return nil, err
+				val := fmt.Sprintf("%v", x)
+				// Apply regional formatting for numeric types
+				if f.regional.IsEnabled() {
+					switch typeName {
+					case "DECIMAL", "NUMERIC":
+						row[n] = f.regional.FormatNumber(val)
+					case "MONEY", "SMALLMONEY":
+						row[n] = f.regional.FormatMoney(val)
+					default:
+						row[n] = val
+					}
+				} else {
+					row[n] = val
 				}
 			}
 		}
