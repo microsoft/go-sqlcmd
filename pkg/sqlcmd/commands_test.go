@@ -242,7 +242,7 @@ func TestListCommandUsesColorizer(t *testing.T) {
 func TestListColorPrintsStyleSamples(t *testing.T) {
 	vars := InitializeVariables(false)
 	s := New(nil, "", vars)
-	s.Format = NewSQLCmdDefaultFormatter(false, ControlIgnore)
+	s.Format = NewSQLCmdDefaultFormatter(false, ControlIgnore, false)
 	// force colorizer on
 	s.colorizer = color.New(true)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
