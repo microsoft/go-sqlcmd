@@ -6,7 +6,7 @@ toolchain go1.24.12
 
 require (
 	github.com/alecthomas/chroma/v2 v2.5.0
-	github.com/billgraziano/dpapi v0.4.0
+	github.com/billgraziano/dpapi v0.5.0
 	github.com/docker/distribution v2.8.2+incompatible
 	github.com/docker/docker v28.5.2+incompatible
 	github.com/docker/go-connections v0.4.0
