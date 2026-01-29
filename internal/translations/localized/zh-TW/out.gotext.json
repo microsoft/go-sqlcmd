@@ -2466,30 +2466,37 @@
       "fuzzy": true
     },
     {
+      "id": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+      "message": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+      "translation": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Servers:",
       "message": "Servers:",
-      "translation": "伺服器:",
+      "translation": "Servers:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Legal docs and information: aka.ms/SqlcmdLegal",
       "message": "Legal docs and information: aka.ms/SqlcmdLegal",
-      "translation": "法律文件和資訊: aka.ms/SqlcmdLegal",
+      "translation": "Legal docs and information: aka.ms/SqlcmdLegal",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Third party notices: aka.ms/SqlcmdNotices",
       "message": "Third party notices: aka.ms/SqlcmdNotices",
-      "translation": "協力廠商聲明: aka.ms/SqlcmdNotices",
+      "translation": "Third party notices: aka.ms/SqlcmdNotices",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Version: {Version}",
       "message": "Version: {Version}",
-      "translation": "版本: {Version}",
+      "translation": "Version: {Version}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2506,14 +2513,14 @@
     {
       "id": "Flags:",
       "message": "Flags:",
-      "translation": "旗標:",
+      "translation": "Flags:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
       "message": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
-      "translation": "-? 顯示此語法摘要，{HelpFlag} 顯示新式 sqlcmd 子命令說明",
+      "translation": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2530,14 +2537,14 @@
     {
       "id": "Write runtime trace to the specified file. Only for advanced debugging.",
       "message": "Write runtime trace to the specified file. Only for advanced debugging.",
-      "translation": "將執行階段追蹤寫入指定的檔案。僅供進階偵錯使用。",
+      "translation": "Write runtime trace to the specified file. Only for advanced debugging.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
-      "translation": "識別一或多個包含 SQL 語句批次的檔案。如果一或多個檔案不存在，sqlcmd 將會結束。與 {QueryAndExitFlag}/{QueryFlag} 互斥",
+      "translation": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2562,28 +2569,28 @@
     {
       "id": "Identifies the file that receives output from sqlcmd",
       "message": "Identifies the file that receives output from sqlcmd",
-      "translation": "識別從 sqlcmd 接收輸出的檔案",
+      "translation": "Identifies the file that receives output from sqlcmd",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Print version information and exit",
       "message": "Print version information and exit",
-      "translation": "列印版本資訊並結束",
+      "translation": "Print version information and exit",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Implicitly trust the server certificate without validation",
       "message": "Implicitly trust the server certificate without validation",
-      "translation": "隱含地信任沒有驗證的伺服器憑證",
+      "translation": "Implicitly trust the server certificate without validation",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
       "message": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
-      "translation": "此選項可設定 sqlcmd 指令碼變數 {DbNameVar}。此參數指定初始資料庫。預設值是您登入的預設資料庫屬性。如果資料庫不存在，則會產生錯誤訊息並結束 sqlcmd",
+      "translation": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2600,14 +2607,14 @@
     {
       "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
       "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
-      "translation": "使用信任的連線，而非使用使用者名稱和密碼登入 SQL Server，忽略任何定義使用者名稱和密碼的環境變數",
+      "translation": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
       "message": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
-      "translation": "指定批次結束字元。預設值為 {BatchTerminatorGo}",
+      "translation": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2624,28 +2631,28 @@
     {
       "id": "The login name or contained database user name.  For contained database users, you must provide the database name option",
       "message": "The login name or contained database user name.  For contained database users, you must provide the database name option",
-      "translation": "登入名稱或包含資料庫使用者名稱。對於容器資料庫使用者，您必須提供資料庫名稱選項",
+      "translation": "The login name or contained database user name.  For contained database users, you must provide the database name option",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
       "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
-      "translation": "sqlcmd 啟動時執行查詢，但查詢完成執行時不會結束 sqlcmd。可以執行以分號分隔的多重查詢",
+      "translation": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
       "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
-      "translation": "在 sqlcmd 啟動時執行查詢，然後立即結束 sqlcmd。可以執行以分號分隔的多重查詢",
+      "translation": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
       "message": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
-      "translation": "{ConnStrPattern} 指定要連線的 SQL Server 執行個體。它會設定 sqlcmd 指令碼變數 {ServerEnvVar}。",
+      "translation": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2670,7 +2677,7 @@
     {
       "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
       "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
-      "translation": "{_X1} 停用可能會危害系統安全性的命令。傳遞 1 會告訴 sqlcmd 在執行停用的命令時結束。",
+      "translation": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2687,7 +2694,7 @@
     {
       "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
       "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
-      "translation": "指定要用來連接到 Azure SQL 資料庫的 SQL 驗證方法。下列其中一項: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+      "translation": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2704,14 +2711,14 @@
     {
       "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
       "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
-      "translation": "告訴 sqlcmd 使用 ActiveDirectory 驗證。若未提供使用者名稱，則會使用驗證方法 ActiveDirectoryDefault。如果提供密碼，就會使用 ActiveDirectoryPassword。否則會使用 ActiveDirectoryInteractive",
+      "translation": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
       "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
-      "translation": "導致 sqlcmd 忽略指令碼變數。當指令碼包含許多可能包含格式與一般變數相同之字串的 {InsertKeyword} 陳述式時，此參數會很有用，例如 $(variable_name)",
+      "translation": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2728,14 +2735,14 @@
     {
       "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
-      "translation": "建立可在 sqlcmd 指令碼中使用的 sqlcmd 指令碼變數。如果值包含空格，請將值括在引號中。您可以指定多個 var=values 值。如果指定的任何值有錯誤，sqlcmd 會產生錯誤訊息，然後結束",
+      "translation": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
       "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
-      "translation": "要求不同大小的封包。此選項可設定 sqlcmd 指令碼變數 {PacketSizeVar}。packet_size 必須是介於 512 到 32767 之間的值。預設值 = 4096。較大的封包大小可以提高在 {BatchTerminatorGo} 命令之間包含大量 SQL 語句的指令碼的執行性能。您可以要求較大的封包大小。不過，如果要求遭到拒絕，sqlcmd 會使用伺服器預設的封包大小",
+      "translation": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2760,7 +2767,7 @@
     {
       "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
       "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
-      "translation": "指定當您嘗試連線到伺服器時，sqlcmd 登入 go-mssqldb 驅動程式逾時前的秒數。此選項可設定 sqlcmd 指令碼變數 {LoginTimeOutVar}。預設值是 30。0 表示無限",
+      "translation": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2777,7 +2784,7 @@
     {
       "id": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
       "message": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
-      "translation": "此選項可設定 sqlcmd 指令碼變數 {WorkstationVar}。工作站名稱列在 sys.sysprocesses 目錄檢視的主機名稱資料行中，而且可以使用預存程式 sp_who 傳回。如果未指定這個選項，預設值是目前的電腦名稱稱。此名稱可用來識別不同的 sqlcmd 工作階段",
+      "translation": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2794,7 +2801,7 @@
     {
       "id": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
       "message": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
-      "translation": "在連線到伺服器時宣告應用程式工作負載類型。目前唯一支援的值是 ReadOnly。如果未指定{ApplicationIntentFlagShort}，sqlcmd 公用程式將不支援連線到 Always On 可用性群組中的次要複本",
+      "translation": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2811,21 +2818,28 @@
     {
       "id": "This switch is used by the client to request an encrypted connection",
       "message": "This switch is used by the client to request an encrypted connection",
-      "translation": "用戶端會使用此切換來要求加密連線",
+      "translation": "This switch is used by the client to request an encrypted connection",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the host name in the server certificate.",
       "message": "Specifies the host name in the server certificate.",
-      "translation": "指定伺服器憑證中的主機名稱。",
+      "translation": "Specifies the host name in the server certificate.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+      "message": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+      "translation": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
       "message": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
-      "translation": "以垂直格式列印輸出。此選項會將 sqlcmd 指令碼變數 {SQLCMDFORMAT} 設定為 '{Vert}'。預設值為 false",
+      "translation": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2850,7 +2864,7 @@
     {
       "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
       "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-      "translation": "{_r0__1} 將嚴重性為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。",
+      "translation": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2867,14 +2881,14 @@
     {
       "id": "Level of mssql driver messages to print",
       "message": "Level of mssql driver messages to print",
-      "translation": "要列印的 mssql 驅動程式訊息層級",
+      "translation": "Level of mssql driver messages to print",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
       "message": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
-      "translation": "指定 sqlcmd 在發生錯誤時結束並傳回{DosErrorLevel} 值",
+      "translation": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2891,7 +2905,7 @@
     {
       "id": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
       "message": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
-      "translation": "控制要傳送哪些錯誤訊息給 {StdoutName}。會傳送嚴重性層級大於或等於此層級的訊息",
+      "translation": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2908,21 +2922,21 @@
     {
       "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
       "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
-      "translation": "指定資料行標題之間要列印的資料列數目。使用 -h-1 指定不要列印標頭",
+      "translation": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies that all output files are encoded with little-endian Unicode",
       "message": "Specifies that all output files are encoded with little-endian Unicode",
-      "translation": "指定所有輸出檔案都以小端點 Unicode 編碼",
+      "translation": "Specifies that all output files are encoded with little-endian Unicode",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
       "message": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
-      "translation": "指定資料行分隔符號字元。設定 {ColSeparatorVar} 變數。",
+      "translation": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2939,28 +2953,28 @@
     {
       "id": "Remove trailing spaces from a column",
       "message": "Remove trailing spaces from a column",
-      "translation": "從資料行移除尾端空格",
+      "translation": "Remove trailing spaces from a column",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
       "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
-      "translation": "為回溯相容性提供。Sqlcmd 一律最佳化 SQL 容錯移轉叢集作用中複本的偵測",
+      "translation": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Password",
       "message": "Password",
-      "translation": "密碼",
+      "translation": "Password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
       "message": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
-      "translation": "控制結束時用來設定 {ErrorLevel} 變數的嚴重性層級",
+      "translation": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2977,14 +2991,14 @@
     {
       "id": "Specifies the screen width for output",
       "message": "Specifies the screen width for output",
-      "translation": "指定輸出的螢幕寬度",
+      "translation": "Specifies the screen width for output",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
       "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
-      "translation": "{_Lc} 列出伺服器。傳遞 {C} 以省略 'Servers:' 輸出。",
+      "translation": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3009,28 +3023,28 @@
     {
       "id": "Dedicated administrator connection",
       "message": "Dedicated administrator connection",
-      "translation": "專用系統管理員連線",
+      "translation": "Dedicated administrator connection",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
       "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
-      "translation": "為回溯相容性提供。一律啟用引號識別項",
+      "translation": "Provided for backward compatibility. Quoted identifiers are always enabled",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Provided for backward compatibility. Client regional settings are not used",
       "message": "Provided for backward compatibility. Client regional settings are not used",
-      "translation": "為回溯相容性提供。未使用用戶端地區設定",
+      "translation": "Provided for backward compatibility. Client regional settings are not used",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
       "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
-      "translation": "{_k_12} 從輸出移除控制字元。傳遞 1 以取代每個字元的空格，2 表示每個連續字元一個空格",
+      "translation": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3047,35 +3061,35 @@
     {
       "id": "Echo input",
       "message": "Echo input",
-      "translation": "回應輸入",
+      "translation": "Echo input",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Enable column encryption",
       "message": "Enable column encryption",
-      "translation": "啟用資料行加密",
+      "translation": "Enable column encryption",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "New password",
       "message": "New password",
-      "translation": "新密碼",
+      "translation": "New password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "New password and exit",
       "message": "New password and exit",
-      "translation": "新增密碼並結束",
+      "translation": "New password and exit",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sets the sqlcmd scripting variable {V}",
       "message": "Sets the sqlcmd scripting variable {V}",
-      "translation": "設定 sqlcmd 指令碼變數 {V}",
+      "translation": "Sets the sqlcmd scripting variable {V}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3092,7 +3106,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
-      "translation": "'{Flag} {Value}': 值必須大於或等於 {Min} 且小於或等於 {Max}。",
+      "translation": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3133,7 +3147,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
-      "translation": "'{Flag} {Value}': 值必須大於 {Min} 且小於 {Max}。",
+      "translation": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3174,7 +3188,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
-      "translation": "'{Flag} {Value}': 非預期的引數。引數值必須是 {AllowedValues0}。",
+      "translation": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3207,7 +3221,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
-      "translation": "'{Flag} {Value}': 非預期的引數。引數值必須是 {AllowedValues} 的其中一個。",
+      "translation": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3240,7 +3254,7 @@
     {
       "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
       "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
-      "translation": "{Flag1} 和 {Flag2} 選項互斥。",
+      "translation": "The {Flag1} and the {Flag2} options are mutually exclusive.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3265,7 +3279,7 @@
     {
       "id": "'{P1}': Missing argument. Enter '-?' for help.",
       "message": "'{P1}': Missing argument. Enter '-?' for help.",
-      "translation": "'{P1}': 遺漏引數。輸入 '-?' 以取得說明。",
+      "translation": "'{P1}': Missing argument. Enter '-?' for help.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3282,7 +3296,7 @@
     {
       "id": "'{P1}': Unknown Option. Enter '-?' for help.",
       "message": "'{P1}': Unknown Option. Enter '-?' for help.",
-      "translation": "'{P1}': 未知的選項。輸入 '-?' 以取得說明。",
+      "translation": "'{P1}': Unknown Option. Enter '-?' for help.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3299,7 +3313,7 @@
     {
       "id": "failed to create trace file '{TraceFile}': {Err}",
       "message": "failed to create trace file '{TraceFile}': {Err}",
-      "translation": "無法建立追蹤檔案 '{TraceFile}': {Err}",
+      "translation": "failed to create trace file '{TraceFile}': {Err}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3324,7 +3338,7 @@
     {
       "id": "failed to start trace: {Err}",
       "message": "failed to start trace: {Err}",
-      "translation": "無法啟動追蹤: {Err}",
+      "translation": "failed to start trace: {Err}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3341,7 +3355,7 @@
     {
       "id": "invalid batch terminator '{BatchTerminator}'",
       "message": "invalid batch terminator '{BatchTerminator}'",
-      "translation": "批次結束字元 '{BatchTerminator}' 無效",
+      "translation": "invalid batch terminator '{BatchTerminator}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3358,42 +3372,42 @@
     {
       "id": "Enter new password:",
       "message": "Enter new password:",
-      "translation": "輸入新密碼:",
+      "translation": "Enter new password:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
       "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
-      "translation": "sqlcmd: 安裝/建立/查詢 SQL Server、Azure SQL 與工具",
+      "translation": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sqlcmd: Error:",
       "message": "Sqlcmd: Error:",
-      "translation": "Sqlcmd: 錯誤:",
+      "translation": "Sqlcmd: Error:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sqlcmd: Warning:",
       "message": "Sqlcmd: Warning:",
-      "translation": "Sqlcmd: 警告:",
+      "translation": "Sqlcmd: Warning:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-      "translation": "已停用 ED 和 !!<command> 命令、啟動指令碼和環境變數",
+      "translation": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The scripting variable: '{Variable}' is read-only",
       "message": "The scripting variable: '{Variable}' is read-only",
-      "translation": "指令碼變數: '{Variable}' 是唯讀",
+      "translation": "The scripting variable: '{Variable}' is read-only",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3410,7 +3424,7 @@
     {
       "id": "'{Variable}' scripting variable not defined.",
       "message": "'{Variable}' scripting variable not defined.",
-      "translation": "未定義'{Variable}' 指令碼變數。",
+      "translation": "'{Variable}' scripting variable not defined.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3427,7 +3441,7 @@
     {
       "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
       "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-      "translation": "環境變數: '{Variable}' 具有不正確值: '{EnvVal}'。",
+      "translation": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3452,7 +3466,7 @@
     {
       "id": "Syntax error at line {LineNumber} near command '{Command}'.",
       "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-      "translation": "接近命令 '{Command}' 的行 {LineNumber} 語法錯誤。",
+      "translation": "Syntax error at line {LineNumber} near command '{Command}'.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3477,7 +3491,7 @@
     {
       "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
       "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-      "translation": "開啟或操作檔案 {Filepath} 時發生 {ErrorPrefix} 錯誤 (原因: {Error})。",
+      "translation": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3510,7 +3524,7 @@
     {
       "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-      "translation": "第 {LineNumber} 行發生 {ErrorPrefix} 語法錯誤",
+      "translation": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3535,14 +3549,14 @@
     {
       "id": "Timeout expired",
       "message": "Timeout expired",
-      "translation": "逾時已過期",
+      "translation": "Timeout expired",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
-      "translation": "訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、程序 {ProcName}、行 {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3607,7 +3621,7 @@
     {
       "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
       "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
-      "translation": "訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、行 {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3664,21 +3678,21 @@
     {
       "id": "Password:",
       "message": "Password:",
-      "translation": "密碼:",
+      "translation": "Password:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "(1 row affected)",
       "message": "(1 row affected)",
-      "translation": "(1 個資料列受影響)",
+      "translation": "(1 row affected)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "({Count} rows affected)",
       "message": "({Count} rows affected)",
-      "translation": "({Count} 個資料列受影響)",
+      "translation": "({Count} rows affected)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3695,7 +3709,7 @@
     {
       "id": "Invalid variable identifier {Name}",
       "message": "Invalid variable identifier {Name}",
-      "translation": "無效的變數識別碼 {Name}",
+      "translation": "Invalid variable identifier {Name}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3712,7 +3726,7 @@
     {
       "id": "Invalid variable value {Val}",
       "message": "Invalid variable value {Val}",
-      "translation": "變數值 {Val} 無效",
+      "translation": "Invalid variable value {Val}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
