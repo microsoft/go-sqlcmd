@@ -9,7 +9,7 @@ require (
 	github.com/billgraziano/dpapi v0.5.0
 	github.com/docker/distribution v2.8.2+incompatible
 	github.com/docker/docker v28.5.2+incompatible
-	github.com/docker/go-connections v0.4.0
+	github.com/docker/go-connections v0.6.0
 	github.com/golang-sql/sqlexp v0.1.0
 	github.com/google/uuid v1.6.0
 	github.com/microsoft/go-mssqldb v1.9.6
