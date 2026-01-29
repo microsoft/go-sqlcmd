@@ -62,6 +62,10 @@ type ConnectSettings struct {
 	HostNameInCertificate string
 	// ServerCertificate is the path to a certificate file to match against the server's TLS certificate
 	ServerCertificate string
+	// ServerNameOverride specifies the server name to use in the login packet.
+	// When set, the actual dial address comes from ServerName, but this value
+	// is sent in the TDS login packet for server validation.
+	ServerNameOverride string
 }
 
 func (c ConnectSettings) authenticationMethod() string {
@@ -100,6 +104,21 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	if err != nil {
 		return "", err
 	}
+
+	if connect.useServerNameOverride(protocol, connect.ServerName) {
+		overrideName, overrideInstance, _, _, err := splitServer(connect.ServerNameOverride)
+		if err != nil {
+			return "", err
+		}
+		if overrideName == "" {
+			overrideName = "."
+		}
+		serverName = overrideName
+		if overrideInstance != "" {
+			instance = overrideInstance
+		}
+	}
+
 	query := url.Values{}
 	connectionURL := &url.URL{
 		Scheme: "sqlserver",
@@ -175,4 +194,14 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 	connectionURL.RawQuery = query.Encode()
 	return connectionURL.String(), nil
+}
+
+func (connect ConnectSettings) useServerNameOverride(protocol string, serverName string) bool {
+	if connect.ServerNameOverride == "" {
+		return false
+	}
+	if protocol == "np" || strings.HasPrefix(serverName, `\\`) {
+		return false
+	}
+	return true
 }
