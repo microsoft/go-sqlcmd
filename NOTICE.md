@@ -587,8 +587,8 @@ SOFTWARE.
 ## github.com/docker/distribution
 
 * Name: github.com/docker/distribution
-* Version: v2.8.2
-* License: [Apache-2.0](https://github.com/docker/distribution/blob/v2.8.2/LICENSE)
+* Version: v2.8.3
+* License: [Apache-2.0](https://github.com/docker/distribution/blob/v2.8.3/LICENSE)
 
 ```
 Apache License
