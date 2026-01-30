@@ -7,6 +7,7 @@ import (
 	"bufio"
 	"context"
 	"database/sql"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"io"
@@ -258,7 +259,7 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 		connect = s.Connect
 	}
 
-	var connector *mssql.Connector
+	var connector driver.Connector
 	useAad := !connect.sqlAuthentication() && !connect.integratedAuthentication()
 	if connect.RequiresPassword() && !nopw && connect.Password == "" {
 		var err error
@@ -272,7 +273,9 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 	}
 
 	if !useAad {
-		connector, err = mssql.NewConnector(connstr)
+		var c *mssql.Connector
+		c, err = mssql.NewConnector(connstr)
+		connector = c
 	} else {
 		connector, err = GetTokenBasedConnection(connstr, connect.authenticationMethod())
 	}
@@ -292,10 +295,12 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 			if port > 0 {
 				targetPort = fmt.Sprintf("%d", port)
 			}
-			connector.Dialer = &proxyDialer{
-				serverName: connect.ServerNameOverride,
-				targetHost: serverName,
-				targetPort: targetPort,
+			if mssqlConnector, ok := connector.(*mssql.Connector); ok {
+				mssqlConnector.Dialer = &proxyDialer{
+					serverName: connect.ServerNameOverride,
+					targetHost: serverName,
+					targetPort: targetPort,
+				}
 			}
 		}
 	}
