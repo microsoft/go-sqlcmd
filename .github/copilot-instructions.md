@@ -155,6 +155,57 @@ The project supports creating SQL Server instances using Docker or Podman:
 - Use the `internal/localizer` package for localized messages
 - Supported languages: Chinese (Simplified/Traditional), English, French, German, Italian, Japanese, Korean, Portuguese (Brazil), Russian, Spanish
 
+### Adding Localizable Strings
+
+When adding user-facing strings to the code, use the `localizer` package:
+
+```go
+import "github.com/microsoft/go-sqlcmd/internal/localizer"
+
+// Use localizer.Sprintf for formatted strings
+message := localizer.Sprintf("This is a localizable message with %s", value)
+
+// Use localizer.Errorf for localized errors
+err := localizer.Errorf("Error: %s failed", operation)
+```
+
+Constants that are not user-facing (like environment variable names, command names) should be placed in `internal/localizer/constants.go` and do not need localization.
+
+### Generating Localization Files
+
+After adding new localizable strings, you **must** regenerate the translation catalog files before committing. The build scripts handle this automatically.
+
+#### On Windows
+
+```cmd
+build\build.cmd
+```
+
+This script:
+- Installs `gotext` if not already installed
+- Runs `go generate` which executes the gotext command defined in `internal/translations/translations.go`
+- Generates/updates the translation catalog in `internal/translations/catalog.go`
+- Reports any conflicting localizable strings that need to be fixed
+
+#### On Linux/macOS
+
+Run the following commands manually:
+
+```bash
+# Install gotext if not already installed
+go install golang.org/x/text/cmd/gotext@latest
+
+# Generate translation files
+go generate ./...
+```
+
+### Important Notes
+
+- Always run the build script after adding new user-facing strings
+- Check the build output for "conflicting localizable strings" warnings and resolve them
+- The `SQLCMD_LANG` environment variable controls the runtime language (e.g., `de-de`, `fr-fr`)
+- Test your changes with different language settings to ensure proper localization
+
 ## Azure Authentication
 
 - Azure AD authentication is supported via the `azidentity` package

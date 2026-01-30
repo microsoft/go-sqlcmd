@@ -2466,6 +2466,13 @@
             "fuzzy": true
         },
         {
+            "id": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+            "message": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+            "translation": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Servers:",
             "message": "Servers:",
             "translation": "Servers:",
@@ -2819,6 +2826,13 @@
             "id": "Specifies the host name in the server certificate.",
             "message": "Specifies the host name in the server certificate.",
             "translation": "Specifies the host name in the server certificate.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+            "message": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+            "translation": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

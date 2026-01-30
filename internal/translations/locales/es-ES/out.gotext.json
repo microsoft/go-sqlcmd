@@ -2466,6 +2466,11 @@
             "fuzzy": true
         },
         {
+            "id": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+            "message": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+            "translation": ""
+        },
+        {
             "id": "Servers:",
             "message": "Servers:",
             "translation": "Servidores:",
@@ -2821,6 +2826,11 @@
             "translation": "Especifica el nombre del host en el certificado del servidor.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+            "message": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+            "translation": ""
         },
         {
             "id": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
