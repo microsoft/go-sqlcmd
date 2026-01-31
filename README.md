@@ -55,9 +55,9 @@ The Homebrew package manager may be used on Linux and Windows Subsystem for Linu
 | --------------------- | --------------------- |
 | `brew install sqlcmd` | `brew upgrade sqlcmd` |
 
-## Use sqlcmd to create local SQL Server and Azure SQL Edge instances
+## Use sqlcmd to create local SQL Server instances
 
-Use `sqlcmd` to create SQL Server and Azure SQL Edge instances using a local container runtime (e.g. [Docker][] or [Podman][])
+Use `sqlcmd` to create SQL Server instances using a local container runtime (e.g. [Docker][] or [Podman][])
 
 ### Create SQL Server instance using local container runtime and connect using Azure Data Studio
 
