@@ -291,13 +291,20 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 			serverName = "."
 		}
 		if connect.useServerNameOverride(protocol, connect.ServerName) {
+			overrideName, _, _, _, err := splitServer(connect.ServerNameOverride)
+			if err != nil {
+				return err
+			}
+			if overrideName == "" {
+				overrideName = "."
+			}
 			targetPort := ""
 			if port > 0 {
 				targetPort = fmt.Sprintf("%d", port)
 			}
 			if mssqlConnector, ok := connector.(*mssql.Connector); ok {
 				mssqlConnector.Dialer = &proxyDialer{
-					serverName: connect.ServerNameOverride,
+					serverName: overrideName,
 					targetHost: serverName,
 					targetPort: targetPort,
 				}
