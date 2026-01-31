@@ -705,3 +705,32 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be fourth protocol")
 
 }
+
+// TestSafeColumnTypesHandlesPanic verifies that safeColumnTypes properly catches
+// panics from the underlying driver and converts them to errors
+func TestSafeColumnTypesHandlesPanic(t *testing.T) {
+	// Create a mock Rows that will panic when ColumnTypes is called
+	// Since we cannot easily mock sql.Rows, we test the panic recovery mechanism
+	// by calling the function with a nil Rows pointer, which will panic
+	
+	// This test verifies that the defer/recover mechanism works
+	// In a real scenario with GEOGRAPHY/GEOMETRY types, the driver would panic
+	// inside ColumnTypes() and our function should catch it
+	
+	// We can't easily create a failing sql.Rows without a real database connection
+	// but we can at least verify the function exists and doesn't panic with nil
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("safeColumnTypes should not panic, but got: %v", r)
+		}
+	}()
+	
+	// This will trigger a panic due to nil pointer, but safeColumnTypes should catch it
+	var rows *sql.Rows
+	cols, err := safeColumnTypes(rows)
+	
+	// The function should return an error, not panic
+	assert.Nil(t, cols, "Expected nil cols on panic")
+	assert.Error(t, err, "Expected error on panic")
+	assert.Contains(t, err.Error(), "failed to get column types", "Error message should indicate column type failure")
+}

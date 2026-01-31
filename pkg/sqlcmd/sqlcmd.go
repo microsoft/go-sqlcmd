@@ -417,6 +417,20 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 // The return value is based on the first cell of the last column of the last result set.
 // If it's numeric, it will be converted to int
 // -100 : Error encountered prior to selecting return value
+// safeColumnTypes safely calls rows.ColumnTypes() and recovers from any panics
+// that might occur in the underlying driver, particularly for unsupported types
+// like GEOGRAPHY and GEOMETRY (SQL Server type 240).
+func safeColumnTypes(rows *sql.Rows) (cols []*sql.ColumnType, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			// Convert panic to error
+			err = fmt.Errorf("failed to get column types: %v (this may be due to unsupported data types like GEOGRAPHY or GEOMETRY)", r)
+			cols = nil
+		}
+	}()
+	return rows.ColumnTypes()
+}
+
 // -101: No rows found
 // -102: Conversion error occurred when selecting return value
 func (s *Sqlcmd) runQuery(query string) (int, error) {
@@ -476,7 +490,7 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		case sqlexp.MsgNext:
 			if first {
 				first = false
-				cols, err = rows.ColumnTypes()
+				cols, err = safeColumnTypes(rows)
 				if err != nil {
 					retcode = -100
 					qe = s.handleError(&retcode, err)
