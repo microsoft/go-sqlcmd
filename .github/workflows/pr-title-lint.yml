@@ -1,0 +1,49 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
+name: PR Title Lint
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  pr-title-lint:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Configure which types are allowed (see https://github.com/commitizen/conventional-commit-types)
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+            deps
+          # Configure which scopes are allowed (empty means all scopes are allowed)
+          scopes: |
+          # Configure that a scope must always be provided
+          requireScope: false
+          # For work-in-progress PRs you can typically use draft pull requests
+          # Instead of allowing WIP in the title
+          wip: true
+          # Configure validation of the subject line (title after type/scope)
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            must start with a lowercase letter.
+          # If the PR contains only a single commit, validate that its message matches the PR title
+          validateSingleCommit: false
