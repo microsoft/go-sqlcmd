@@ -9,15 +9,15 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
-// Type VSCode is used to implement the "open vscode" which launches Visual
+// Type Vscode is used to implement the "open vscode" which launches Visual
 // Studio Code and establishes a connection to the SQL Server for the current
 // context
-type VSCode struct {
+type Vscode struct {
 	cmdparser.Cmd
 }
 
 // On Windows, show info message before launching
-func (c *VSCode) displayPreLaunchInfo() {
+func (c *Vscode) displayPreLaunchInfo() {
 	output := c.Output()
 
 	output.Info(localizer.Sprintf("Opening VS Code..."))
