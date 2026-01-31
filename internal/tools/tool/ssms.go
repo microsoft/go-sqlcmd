@@ -13,14 +13,14 @@ type SSMS struct {
 }
 
 func (t *SSMS) Init() {
-	t.tool.SetToolDescription(Description{
+	t.SetToolDescription(Description{
 		Name:        "ssms",
 		Purpose:     "SQL Server Management Studio (SSMS) is an integrated environment for managing SQL Server infrastructure.",
 		InstallText: t.installText()})
 
 	for _, location := range t.searchLocations() {
 		if file.Exists(location) {
-			t.tool.SetExePathAndName(location)
+			t.SetExePathAndName(location)
 			break
 		}
 	}

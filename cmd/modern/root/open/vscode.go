@@ -24,9 +24,9 @@ import (
 func (c *VSCode) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "vscode",
-		Short: "Open Visual Studio Code and configure connection for current context",
+		Short: localizer.Sprintf("Open Visual Studio Code and configure connection for current context"),
 		Examples: []cmdparser.ExampleOptions{{
-			Description: "Open VS Code and configure connection using the current context",
+			Description: localizer.Sprintf("Open VS Code and configure connection using the current context"),
 			Steps:       []string{"sqlcmd open vscode"}}},
 		Run: c.run,
 	}
@@ -41,7 +41,7 @@ func (c *VSCode) run() {
 	endpoint, user := config.CurrentContext()
 
 	// If the context has a local container, ensure it is running, otherwise bail out
-	if endpoint.AssetDetails != nil && endpoint.AssetDetails.ContainerDetails != nil {
+	if endpoint.ContainerDetails != nil {
 		c.ensureContainerIsRunning(endpoint)
 	}
 
@@ -55,7 +55,7 @@ func (c *VSCode) run() {
 func (c *VSCode) ensureContainerIsRunning(endpoint sqlconfig.Endpoint) {
 	output := c.Output()
 	controller := container.NewController()
-	if !controller.ContainerRunning(endpoint.AssetDetails.ContainerDetails.Id) {
+	if !controller.ContainerRunning(endpoint.ContainerDetails.Id) {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("To start the container"), localizer.Sprintf("sqlcmd start")},
 		}, localizer.Sprintf("Container is not running"))
@@ -164,7 +164,7 @@ func (c *VSCode) getConnectionsArray(settings map[string]interface{}) []interfac
 
 func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User) map[string]interface{} {
 	profile := map[string]interface{}{
-		"server":      fmt.Sprintf("%s,%d", endpoint.EndpointDetails.Address, endpoint.EndpointDetails.Port),
+		"server":      fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port),
 		"profileName": fmt.Sprintf("sqlcmd-%s", config.CurrentContextName()),
 		// Set encrypt to "Optional" for compatibility with local development containers
 		// which often use self-signed certificates. Users can modify this in VS Code settings
@@ -206,15 +206,29 @@ func (c *VSCode) updateOrAddProfile(connections []interface{}, newProfile map[st
 }
 
 func (c *VSCode) getVSCodeSettingsPath() string {
-	var configDir string
-	
+	var stableDir string
+	var insidersDir string
+
 	switch runtime.GOOS {
 	case "windows":
-		configDir = filepath.Join(os.Getenv("APPDATA"), "Code", "User")
+		base := os.Getenv("APPDATA")
+		stableDir = filepath.Join(base, "Code", "User")
+		insidersDir = filepath.Join(base, "Code - Insiders", "User")
 	case "darwin":
-		configDir = filepath.Join(os.Getenv("HOME"), "Library", "Application Support", "Code", "User")
+		base := filepath.Join(os.Getenv("HOME"), "Library", "Application Support")
+		stableDir = filepath.Join(base, "Code", "User")
+		insidersDir = filepath.Join(base, "Code - Insiders", "User")
 	default: // linux and others
-		configDir = filepath.Join(os.Getenv("HOME"), ".config", "Code", "User")
+		base := filepath.Join(os.Getenv("HOME"), ".config")
+		stableDir = filepath.Join(base, "Code", "User")
+		insidersDir = filepath.Join(base, "Code - Insiders", "User")
+	}
+
+	// Prefer VS Code Insiders settings if the directory exists, since the tool
+	// searches for and launches Insiders first. Fall back to stable Code.
+	configDir := stableDir
+	if info, err := os.Stat(insidersDir); err == nil && info.IsDir() {
+		configDir = insidersDir
 	}
 	
 	return filepath.Join(configDir, "settings.json")

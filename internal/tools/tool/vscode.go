@@ -13,14 +13,14 @@ type VSCode struct {
 }
 
 func (t *VSCode) Init() {
-	t.tool.SetToolDescription(Description{
+	t.SetToolDescription(Description{
 		Name:        "vscode",
 		Purpose:     "Visual Studio Code is a code editor with support for database management through the MSSQL extension.",
 		InstallText: t.installText()})
 
 	for _, location := range t.searchLocations() {
 		if file.Exists(location) {
-			t.tool.SetExePathAndName(location)
+			t.SetExePathAndName(location)
 			break
 		}
 	}

@@ -4,8 +4,6 @@
 package open
 
 import (
-	"fmt"
-
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
@@ -25,5 +23,5 @@ func (c *VSCode) displayPreLaunchInfo() {
 	output.Info(localizer.Sprintf("After VS Code opens:"))
 	output.Info(localizer.Sprintf("1. Install the MSSQL extension if not already installed (Cmd+Shift+X, search 'SQL Server (mssql)')"))
 	output.Info(localizer.Sprintf("2. Open the Command Palette (F1 or Cmd+Shift+P)"))
-	output.Info(fmt.Sprintf("3. Type 'MS SQL: Connect' and select the 'sqlcmd-%s' profile", config.CurrentContextName()))
+	output.Info(localizer.Sprintf("3. Type 'MS SQL: Connect' and select the 'sqlcmd-%s' profile", config.CurrentContextName()))
 }

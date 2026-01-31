@@ -22,9 +22,9 @@ import (
 func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "ssms",
-		Short: "Open SQL Server Management Studio and connect to current context",
+		Short: localizer.Sprintf("Open SQL Server Management Studio and connect to current context"),
 		Examples: []cmdparser.ExampleOptions{{
-			Description: "Open SSMS and connect using the current context",
+			Description: localizer.Sprintf("Open SSMS and connect using the current context"),
 			Steps:       []string{"sqlcmd open ssms"}}},
 		Run: c.run,
 	}
@@ -37,18 +37,18 @@ func (c *Ssms) run() {
 	endpoint, user := config.CurrentContext()
 
 	// If the context has a local container, ensure it is running, otherwise bail out
-	if endpoint.AssetDetails != nil && endpoint.AssetDetails.ContainerDetails != nil {
+	if endpoint.ContainerDetails != nil {
 		c.ensureContainerIsRunning(endpoint)
 	}
 
 	// Launch SSMS with connection parameters
-	c.launchSsms(endpoint.EndpointDetails.Address, endpoint.EndpointDetails.Port, user)
+	c.launchSsms(endpoint.Address, endpoint.Port, user)
 }
 
 func (c *Ssms) ensureContainerIsRunning(endpoint sqlconfig.Endpoint) {
 	output := c.Output()
 	controller := container.NewController()
-	if !controller.ContainerRunning(endpoint.AssetDetails.ContainerDetails.Id) {
+	if !controller.ContainerRunning(endpoint.ContainerDetails.Id) {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("To start the container"), localizer.Sprintf("sqlcmd start")},
 		}, localizer.Sprintf("Container is not running"))
