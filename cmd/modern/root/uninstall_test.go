@@ -18,7 +18,7 @@ func TestUninstallWithUserDbPresent(t *testing.T) {
 
 	cmdparser.TestSetup(t)
 
-	cmdparser.TestCmd[*install.Edge](
+	cmdparser.TestCmd[*install.Mssql](
 		fmt.Sprintf(
 			`--accept-eula --port 1500 --errorlog-wait-line "Hello from Docker!" --registry %v --repo %v`,
 			registry,
