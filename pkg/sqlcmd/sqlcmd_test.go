@@ -705,3 +705,26 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be fourth protocol")
 
 }
+
+// TestSafeColumnTypesHandlesPanic verifies that safeColumnTypes properly catches
+// panics from the underlying driver and converts them to errors.
+//
+// This test validates the panic recovery mechanism by triggering a panic with a
+// nil Rows pointer. While this doesn't test the exact GEOGRAPHY/GEOMETRY type 240
+// panic from the driver, it proves that the defer/recover mechanism works correctly
+// and any panic (including the type 240 panic) will be caught and converted to an error.
+//
+// The actual GEOGRAPHY/GEOMETRY panic occurs deep inside the go-mssqldb driver's
+// makeGoLangScanType function when it encounters type 240. Our safeColumnTypes
+// wrapper ensures this panic is caught regardless of where in the ColumnTypes()
+// call stack it originates.
+func TestSafeColumnTypesHandlesPanic(t *testing.T) {
+	// This will trigger a panic due to nil pointer, but safeColumnTypes should catch it
+	var rows *sql.Rows
+	cols, err := safeColumnTypes(rows)
+
+	// The function should return an error, not panic
+	assert.Nil(t, cols, "Expected nil cols on panic")
+	assert.Error(t, err, "Expected error on panic")
+	assert.Contains(t, err.Error(), "failed to get column types", "Error message should indicate column type failure")
+}
