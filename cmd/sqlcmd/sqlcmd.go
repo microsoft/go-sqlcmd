@@ -296,7 +296,7 @@ func Execute(version string) {
 func convertOsArgs(args []string) (cargs []string) {
 	// Pre-process to handle special help flag cases
 	args = preprocessHelpFlags(args)
-	
+
 	flag := ""
 	first := true
 	for i, a := range args {
@@ -342,7 +342,7 @@ func preprocessHelpFlags(args []string) []string {
 			result = append(result, "--help")
 			continue
 		}
-		
+
 		// Handle "-h" without an argument: convert to "-?" to show help
 		if arg == "-h" {
 			// Check if next arg exists
