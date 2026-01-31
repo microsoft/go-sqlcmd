@@ -707,18 +707,19 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 }
 
 // TestSafeColumnTypesHandlesPanic verifies that safeColumnTypes properly catches
-// panics from the underlying driver and converts them to errors
+// panics from the underlying driver and converts them to errors.
+//
+// This test validates the panic recovery mechanism by triggering a panic with a
+// nil Rows pointer. While this doesn't test the exact GEOGRAPHY/GEOMETRY type 240
+// panic from the driver, it proves that the defer/recover mechanism works correctly
+// and any panic (including the type 240 panic) will be caught and converted to an error.
+//
+// The actual GEOGRAPHY/GEOMETRY panic occurs deep inside the go-mssqldb driver's
+// makeGoLangScanType function when it encounters type 240. Our safeColumnTypes
+// wrapper ensures this panic is caught regardless of where in the ColumnTypes()
+// call stack it originates.
 func TestSafeColumnTypesHandlesPanic(t *testing.T) {
-	// Create a mock Rows that will panic when ColumnTypes is called
-	// Since we cannot easily mock sql.Rows, we test the panic recovery mechanism
-	// by calling the function with a nil Rows pointer, which will panic
-
-	// This test verifies that the defer/recover mechanism works
-	// In a real scenario with GEOGRAPHY/GEOMETRY types, the driver would panic
-	// inside ColumnTypes() and our function should catch it
-
-	// We can't easily create a failing sql.Rows without a real database connection
-	// but we can at least verify the function exists and doesn't panic with nil
+	// Verify that the defer/recover mechanism works by triggering any panic
 	defer func() {
 		if r := recover(); r != nil {
 			t.Errorf("safeColumnTypes should not panic, but got: %v", r)
