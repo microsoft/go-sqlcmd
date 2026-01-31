@@ -336,7 +336,7 @@ func preprocessHelpFlags(args []string) []string {
 	result := make([]string, 0, len(args))
 	for i := 0; i < len(args); i++ {
 		arg := args[i]
-		
+
 		// Convert "-help" to "--help"
 		if arg == "-help" {
 			result = append(result, "--help")
