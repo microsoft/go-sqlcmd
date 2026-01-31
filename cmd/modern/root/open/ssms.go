@@ -71,7 +71,7 @@ func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User) {
 	if user != nil && user.AuthenticationType == "basic" {
 		// SQL Server authentication
 		// Escape double quotes in username (SQL Server allows " in login names)
-		username := strings.Replace(user.BasicAuth.Username, `"`, `\"`, -1)
+		username := strings.ReplaceAll(user.BasicAuth.Username, `"`, `\"`)
 		args = append(args, "-U", username)
 		// Note: -P parameter was removed in SSMS 18+ for security reasons
 		// User will need to enter password in the login dialog
