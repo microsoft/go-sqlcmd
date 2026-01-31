@@ -55,6 +55,18 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			"sqlserver://someserver:1045?encrypt=strict&hostnameincertificate=%2A.mydomain.com&protocol=tcp",
 		},
 		{
+			&ConnectSettings{ServerName: `tcp:proxyhost,1444`, ServerNameOverride: "realsql"},
+			"sqlserver://realsql:1444?protocol=tcp",
+		},
+		{
+			&ConnectSettings{ServerName: `proxyhost\instance`, ServerNameOverride: "realsql"},
+			"sqlserver://realsql/instance",
+		},
+		{
+			&ConnectSettings{ServerName: `proxyhost,1444`, ServerNameOverride: `realsql\inst`},
+			"sqlserver://realsql:1444/inst",
+		},
+		{
 			&ConnectSettings{ServerName: "someserver", AuthenticationMethod: azuread.ActiveDirectoryServicePrincipal, UserName: "myapp@mytenant", Password: pwd},
 			fmt.Sprintf("sqlserver://myapp%%40mytenant:%s@someserver", pwd),
 		},
