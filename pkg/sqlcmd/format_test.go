@@ -165,7 +165,7 @@ func TestFormatterFloatFormatting(t *testing.T) {
 	// while ODBC sqlcmd uses decimal notation
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()
-	
+
 	// Test query with float values from the issue
 	query := `SELECT 
 		CAST(788991.19988463481 AS FLOAT) as Longitude1,
@@ -174,18 +174,18 @@ func TestFormatterFloatFormatting(t *testing.T) {
 		CAST(4712632.075629076 AS FLOAT) as Latitude2,
 		CAST(788569.36558582436 AS FLOAT) as Longitude3,
 		CAST(4714608.0418091472 AS FLOAT) as Latitude3`
-	
+
 	err := runSqlCmd(t, s, []string{query, "GO"})
 	assert.NoError(t, err, "runSqlCmd returned error")
-	
+
 	output := buf.buf.String()
-	
+
 	// Verify that the output contains decimal notation, not scientific notation
 	// Scientific notation would look like "4.713347310380896e+06"
 	// Decimal notation should look like "4713347.3103808956"
 	assert.NotContains(t, output, "e+", "Output should not contain scientific notation (e+)")
 	assert.NotContains(t, output, "E+", "Output should not contain scientific notation (E+)")
-	
+
 	// Verify that specific expected values are present (allowing for precision differences)
 	assert.Contains(t, output, "788991.1998846", "Output should contain decimal representation of Longitude1")
 	assert.Contains(t, output, "4713347.310380", "Output should contain decimal representation of Latitude1")
