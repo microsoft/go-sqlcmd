@@ -17,7 +17,7 @@ type Open struct {
 func (c *Open) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:         "open",
-		Short:       localizer.Sprintf("Open tools (e.g Azure Data Studio) for current context"),
+		Short:       localizer.Sprintf("Open tools (e.g Visual Studio Code) for current context"),
 		SubCommands: c.SubCommands(),
 	}
 
@@ -25,11 +25,12 @@ func (c *Open) DefineCommand(...cmdparser.CommandOptions) {
 }
 
 // SubCommands sets up the sub-commands for `sqlcmd open` such as
-// `sqlcmd open ads`
+// `sqlcmd open ads` and `sqlcmd open vscode`
 func (c *Open) SubCommands() []cmdparser.Command {
 	dependencies := c.Dependencies()
 
 	return []cmdparser.Command{
 		cmdparser.New[*open.Ads](dependencies),
+		cmdparser.New[*open.VSCode](dependencies),
 	}
 }

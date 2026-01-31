@@ -1,0 +1,35 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+package tool
+
+import (
+	"github.com/microsoft/go-sqlcmd/internal/io/file"
+	"github.com/microsoft/go-sqlcmd/internal/test"
+)
+
+type VSCode struct {
+	tool
+}
+
+func (t *VSCode) Init() {
+	t.tool.SetToolDescription(Description{
+		Name:        "vscode",
+		Purpose:     "Visual Studio Code is a code editor with support for database management through the MSSQL extension.",
+		InstallText: t.installText()})
+
+	for _, location := range t.searchLocations() {
+		if file.Exists(location) {
+			t.tool.SetExePathAndName(location)
+			break
+		}
+	}
+}
+
+func (t *VSCode) Run(args []string) (int, error) {
+	if !test.IsRunningInTestExecutor() {
+		return t.tool.Run(args)
+	} else {
+		return 0, nil
+	}
+}
