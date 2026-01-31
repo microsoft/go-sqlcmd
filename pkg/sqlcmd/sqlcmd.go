@@ -420,7 +420,7 @@ func safeColumnTypes(rows *sql.Rows) (cols []*sql.ColumnType, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			// Convert panic to error
-			err = fmt.Errorf("failed to get column types: %v (this may be due to unsupported data types like GEOGRAPHY or GEOMETRY)", r)
+			err = fmt.Errorf("failed to get column types: %v", r)
 			cols = nil
 		}
 	}()

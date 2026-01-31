@@ -719,13 +719,6 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 // wrapper ensures this panic is caught regardless of where in the ColumnTypes()
 // call stack it originates.
 func TestSafeColumnTypesHandlesPanic(t *testing.T) {
-	// Verify that the defer/recover mechanism works by triggering any panic
-	defer func() {
-		if r := recover(); r != nil {
-			t.Errorf("safeColumnTypes should not panic, but got: %v", r)
-		}
-	}()
-
 	// This will trigger a panic due to nil pointer, but safeColumnTypes should catch it
 	var rows *sql.Rows
 	cols, err := safeColumnTypes(rows)
