@@ -48,7 +48,7 @@ func (c *Ssms) run() {
 func (c *Ssms) ensureContainerIsRunning(endpoint sqlconfig.Endpoint) {
 	output := c.Output()
 	controller := container.NewController()
-	if !controller.ContainerRunning(endpoint.ContainerDetails.Id) {
+	if !controller.ContainerRunning(endpoint.Id) {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("To start the container"), localizer.Sprintf("sqlcmd start")},
 		}, localizer.Sprintf("Container is not running"))
