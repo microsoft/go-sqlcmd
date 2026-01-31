@@ -1811,20 +1811,6 @@
             "fuzzy": true
         },
         {
-            "id": "Install Azure Sql Edge",
-            "message": "Install Azure Sql Edge",
-            "translation": "SQL Azure для пограничных вычислений",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Install/Create Azure SQL Edge in a container",
-            "message": "Install/Create Azure SQL Edge in a container",
-            "translation": "Установить или создать SQL Azure для пограничных вычислений в контейнере",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Tag to use, use get-tags to see list of tags",
             "message": "Tag to use, use get-tags to see list of tags",
             "translation": "Тег для использования. Используйте команду get-tags, чтобы просмотреть список тегов",
@@ -2369,9 +2355,9 @@
             "fuzzy": true
         },
         {
-            "id": "Get tags available for Azure SQL Edge install",
-            "message": "Get tags available for Azure SQL Edge install",
-            "translation": "Получить теги, доступные для установки SQL Azure для пограничных вычислений",
+            "id": "Get tags available for mssql install",
+            "message": "Get tags available for mssql install",
+            "translation": "Получить теги, доступные для установки mssql",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2379,13 +2365,6 @@
             "id": "List tags",
             "message": "List tags",
             "translation": "Перечислить теги",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Get tags available for mssql install",
-            "message": "Get tags available for mssql install",
-            "translation": "Получить теги, доступные для установки mssql",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2400,27 +2379,6 @@
             "id": "Container is not running",
             "message": "Container is not running",
             "translation": "Контейнер не запущен",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Нажмите клавиши CTRL+C, чтобы выйти из этого процесса...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "Ошибка \"Недостаточно ресурсов памяти\" может быть вызвана слишком большим количеством учетных данных, которые уже хранятся в диспетчере учетных данных Windows",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Не удалось записать учетные данные в диспетчер учетных данных Windows",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

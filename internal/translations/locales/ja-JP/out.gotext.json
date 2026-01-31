@@ -1811,20 +1811,6 @@
             "fuzzy": true
         },
         {
-            "id": "Install Azure Sql Edge",
-            "message": "Install Azure Sql Edge",
-            "translation": "Azure Sql Edge のインストール",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Install/Create Azure SQL Edge in a container",
-            "message": "Install/Create Azure SQL Edge in a container",
-            "translation": "コンテナー内 Azure SQL Edge のインストール/作成",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Tag to use, use get-tags to see list of tags",
             "message": "Tag to use, use get-tags to see list of tags",
             "translation": "使用するタグ、タグの一覧を表示するには get-tags を使用します",
@@ -2369,9 +2355,9 @@
             "fuzzy": true
         },
         {
-            "id": "Get tags available for Azure SQL Edge install",
-            "message": "Get tags available for Azure SQL Edge install",
-            "translation": "Azure SQL Edge のインストールに使用できるタグを取得する",
+            "id": "Get tags available for mssql install",
+            "message": "Get tags available for mssql install",
+            "translation": "mssql インストールで使用可能なタグを取得する",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2379,13 +2365,6 @@
             "id": "List tags",
             "message": "List tags",
             "translation": "タグの一覧表示",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Get tags available for mssql install",
-            "message": "Get tags available for mssql install",
-            "translation": "mssql インストールで使用可能なタグを取得する",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2400,27 +2379,6 @@
             "id": "Container is not running",
             "message": "Container is not running",
             "translation": "コンテナーが実行されていません",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Ctrl + C を押して、このプロセスを終了します...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "Windows 資格情報マネージャーに既に格納されている資格情報が多すぎるため、'十分なメモリ リソースがありません' というエラーが発生した可能性があります",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Windows 資格情報マネージャーに資格情報を書き込めませんでした",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
