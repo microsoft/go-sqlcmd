@@ -14,7 +14,10 @@ import (
 // TestVSCode runs a sanity test of `sqlcmd open vscode`
 func TestVSCode(t *testing.T) {
 	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue")
+		// Skip on Linux because the tools factory initializes all tools including ADS,
+		// and ADS's searchLocations() panics on Linux (not implemented).
+		// This is a pre-existing issue with the test infrastructure, not specific to VSCode.
+		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
 	}
 
 	cmdparser.TestSetup(t)

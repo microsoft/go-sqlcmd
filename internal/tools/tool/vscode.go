@@ -29,7 +29,6 @@ func (t *VSCode) Init() {
 func (t *VSCode) Run(args []string) (int, error) {
 	if !test.IsRunningInTestExecutor() {
 		return t.tool.Run(args)
-	} else {
-		return 0, nil
 	}
+	return 0, nil
 }

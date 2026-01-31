@@ -85,8 +85,8 @@ func (c *VSCode) createConnectionProfile(endpoint sqlconfig.Endpoint, user *sqlc
 	settingsPath := c.getVSCodeSettingsPath()
 	
 	// Ensure the directory exists
-	settingsDir := filepath.Dir(settingsPath)
-	if err := os.MkdirAll(settingsDir, 0755); err != nil {
+	dir := filepath.Dir(settingsPath)
+	if err := os.MkdirAll(dir, 0755); err != nil {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("Error"), err.Error()},
 		}, localizer.Sprintf("Failed to create VS Code settings directory"))
@@ -166,7 +166,10 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 	profile := map[string]interface{}{
 		"server":      fmt.Sprintf("%s,%d", endpoint.EndpointDetails.Address, endpoint.EndpointDetails.Port),
 		"profileName": fmt.Sprintf("sqlcmd-%s", config.CurrentContextName()),
-		"encrypt":     "Optional",
+		// Set encrypt to "Optional" for compatibility with local development containers
+		// which often use self-signed certificates. Users can modify this in VS Code settings
+		// to "Mandatory" or "Strict" for production connections.
+		"encrypt": "Optional",
 	}
 
 	if user != nil && user.AuthenticationType == "basic" {
