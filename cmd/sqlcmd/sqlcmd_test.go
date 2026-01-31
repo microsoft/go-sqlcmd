@@ -72,6 +72,12 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-h", "2", "-?"}, func(args SQLCmdArguments) bool {
 			return args.Help && args.Headers == 2
 		}},
+		{[]string{"-h"}, func(args SQLCmdArguments) bool {
+			return args.Help
+		}},
+		{[]string{"-help"}, func(args SQLCmdArguments) bool {
+			return args.Help
+		}},
 		{[]string{"-u", "-A"}, func(args SQLCmdArguments) bool {
 			return args.UnicodeOutputFile && args.DedicatedAdminConnection
 		}},
@@ -583,6 +589,36 @@ func TestConvertOsArgs(t *testing.T) {
 			"X k2",
 			[]string{"-X", "-k2"},
 			[]string{"-X", "0", "-k2"},
+		},
+		{
+			"-h without argument converts to -? for help",
+			[]string{"-h"},
+			[]string{"-?"},
+		},
+		{
+			"-h with number keeps -h for headers",
+			[]string{"-h", "5"},
+			[]string{"-h", "5"},
+		},
+		{
+			"-h with negative number keeps -h for headers",
+			[]string{"-h", "-1"},
+			[]string{"-h", "-1"},
+		},
+		{
+			"-help converts to --help",
+			[]string{"-help"},
+			[]string{"--help"},
+		},
+		{
+			"-h followed by flag converts to -? for help",
+			[]string{"-h", "-E"},
+			[]string{"-?", "-E"},
+		},
+		{
+			"-h followed by non-numeric converts to -? for help",
+			[]string{"-h", "abc"},
+			[]string{"-?", "abc"},
 		},
 	}
 	for _, c := range tests {

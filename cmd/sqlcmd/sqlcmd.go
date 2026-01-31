@@ -294,6 +294,9 @@ func Execute(version string) {
 // We need to rewrite the arguments to add -i and -v in front of each space-delimited value to be Cobra-friendly.
 // For flags like -r we need to inject the default value if the user omits it
 func convertOsArgs(args []string) (cargs []string) {
+	// Pre-process to handle special help flag cases
+	args = preprocessHelpFlags(args)
+	
 	flag := ""
 	first := true
 	for i, a := range args {
@@ -321,6 +324,51 @@ func convertOsArgs(args []string) (cargs []string) {
 		}
 	}
 	return
+}
+
+// preprocessHelpFlags handles special cases for help flags to improve user experience:
+// 1. Converts "-help" to "--help" since "-help" would be parsed as "-h elp"
+// 2. Converts "-h" without an argument to "-?" to show help, since many users expect
+//    "-h" to show help (common in other CLI tools), even though in sqlcmd "-h" is
+//    traditionally used to set header count. When "-h" has a following number, it's
+//    left as-is to maintain compatibility with the traditional behavior.
+func preprocessHelpFlags(args []string) []string {
+	result := make([]string, 0, len(args))
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+		
+		// Convert "-help" to "--help"
+		if arg == "-help" {
+			result = append(result, "--help")
+			continue
+		}
+		
+		// Handle "-h" without an argument: convert to "-?" to show help
+		if arg == "-h" {
+			// Check if next arg exists
+			hasNextArg := i+1 < len(args)
+			nextIsNumber := false
+			if hasNextArg {
+				// Check if next arg looks like a number (including negative numbers)
+				// This must be checked before checking if it's a flag, because
+				// negative numbers start with '-'
+				_, err := strconv.Atoi(args[i+1])
+				nextIsNumber = err == nil
+			}
+			
+			// If -h is followed by a number, keep it as-is (header count)
+			// Otherwise, convert to -? (show help)
+			if !nextIsNumber {
+				result = append(result, "-?")
+			} else {
+				result = append(result, arg)
+			}
+			continue
+		}
+		
+		result = append(result, arg)
+	}
+	return result
 }
 
 // If args[i] is the given flag and args[i+1] is another flag, returns the value to append after the flag
