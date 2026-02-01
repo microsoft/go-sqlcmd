@@ -13,7 +13,9 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      # Pinned to commit SHA for supply chain security (CWE-829)
+      # Verify: gh api repos/google-github-actions/release-please-action/git/ref/tags/v4.1.1 --jq '.object.sha'
+      - uses: google-github-actions/release-please-action@e4dc86ba9405554aeba3c6bb2d169500e7d3b4ee # v4.1.1
         with:
           release-type: go
           package-name: sqlcmd
