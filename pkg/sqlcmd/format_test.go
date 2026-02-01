@@ -166,6 +166,10 @@ func TestFormatterFloatFormatting(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()
 
+	// Set SQLCMDMAXVARTYPEWIDTH to a non-zero value so FLOAT columns use the 24-char display width
+	// This enables the width-based fallback logic to be tested properly
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
+
 	// Test query with float values from the issue
 	query := `SELECT 
 		CAST(788991.19988463481 AS FLOAT) as Longitude1,
@@ -255,12 +259,18 @@ func TestFormatterRealFormatting(t *testing.T) {
 
 	// Verify that typical REAL values use decimal notation (not scientific)
 	assert.Contains(t, dataLine, "123.456", "Output should contain decimal representation of typical REAL value")
+	
 	// Check that the typical value portion doesn't use scientific notation
-	// by verifying characters before the extreme value don't contain 'e'
-	parts := strings.Split(dataLine, ";")
-	if len(parts) >= 2 {
-		typicalValuePart := parts[1] // Assuming TypicalValue is the second column (after RowNumber or first column)
-		assert.NotContains(t, typicalValuePart, "e", "Typical REAL value should not use scientific notation")
+	// Parse columns using whitespace (the default column separator)
+	fields := strings.Fields(dataLine)
+	if len(fields) >= 1 {
+		// Find the field containing the typical value
+		for _, field := range fields {
+			if strings.Contains(field, "123.") {
+				assert.NotContains(t, field, "e", "Typical REAL value should not use scientific notation")
+				break
+			}
+		}
 	}
 	
 	// Verify that extreme REAL values use scientific notation
