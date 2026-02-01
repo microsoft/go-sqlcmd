@@ -201,6 +201,10 @@ func TestFormatterFloatFormattingExtremeValues(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()
 
+	// Set SQLCMDMAXVARTYPEWIDTH to a non-zero value so FLOAT columns use the 24-char display width
+	// This allows the fallback behavior to be tested
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
+
 	// Test query with extreme float values that would exceed the 24-char display width
 	query := `SELECT 
 		CAST(1e100 AS FLOAT) as VeryLarge,
@@ -217,4 +221,30 @@ func TestFormatterFloatFormattingExtremeValues(t *testing.T) {
 	
 	// Verify that extremely small values use scientific notation with negative exponent
 	assert.Contains(t, output, "e-", "Output should contain scientific notation (e-) for very small values")
+}
+
+func TestFormatterRealFormatting(t *testing.T) {
+	// Test that REAL (float32) values use decimal notation for typical values
+	// and fall back to scientific notation for extreme values
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+
+	// Set SQLCMDMAXVARTYPEWIDTH to a non-zero value so REAL columns use the 14-char display width
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
+
+	// Test query with REAL values (both typical and extreme)
+	query := `SELECT 
+		CAST(123.456789 AS REAL) as TypicalValue,
+		CAST(1e30 AS REAL) as ExtremeValue`
+
+	err := runSqlCmd(t, s, []string{query, "GO"})
+	assert.NoError(t, err, "runSqlCmd returned error")
+
+	output := buf.buf.String()
+
+	// Verify that typical REAL values use decimal notation
+	assert.Contains(t, output, "123.456", "Output should contain decimal representation of typical REAL value")
+	
+	// Verify that extreme REAL values use scientific notation
+	assert.Contains(t, output, "e+", "Output should contain scientific notation for extreme REAL value")
 }
