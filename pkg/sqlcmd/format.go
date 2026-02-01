@@ -533,12 +533,26 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 				}
 			case float64:
 				// Format float64 to match ODBC sqlcmd behavior
-				// Use 'f' format with -1 precision to avoid scientific notation
-				// and to show all significant digits
-				row[n] = strconv.FormatFloat(x, 'f', -1, 64)
+				// Use 'f' format with -1 precision to avoid scientific notation for typical values
+				// Fall back to 'g' format if the result would exceed the column display width
+				formatted := strconv.FormatFloat(x, 'f', -1, 64)
+				displayWidth := f.columnDetails[n].displayWidth
+				if displayWidth > 0 && int64(len(formatted)) > displayWidth {
+					// Use 'g' format for very large/small values to avoid truncation issues
+					formatted = strconv.FormatFloat(x, 'g', -1, 64)
+				}
+				row[n] = formatted
 			case float32:
 				// Format float32 to match ODBC sqlcmd behavior
-				row[n] = strconv.FormatFloat(float64(x), 'f', -1, 32)
+				// Use 'f' format with -1 precision to avoid scientific notation for typical values
+				// Fall back to 'g' format if the result would exceed the column display width
+				formatted := strconv.FormatFloat(float64(x), 'f', -1, 32)
+				displayWidth := f.columnDetails[n].displayWidth
+				if displayWidth > 0 && int64(len(formatted)) > displayWidth {
+					// Use 'g' format for very large/small values to avoid truncation issues
+					formatted = strconv.FormatFloat(float64(x), 'g', -1, 32)
+				}
+				row[n] = formatted
 			default:
 				var err error
 				if row[n], err = fmt.Sprintf("%v", x), nil; err != nil {

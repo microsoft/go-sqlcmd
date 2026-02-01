@@ -194,3 +194,24 @@ func TestFormatterFloatFormatting(t *testing.T) {
 	assert.Contains(t, output, "788569.3655858", "Output should contain decimal representation of Longitude3")
 	assert.Contains(t, output, "4714608.041809", "Output should contain decimal representation of Latitude3")
 }
+
+func TestFormatterFloatFormattingExtremeValues(t *testing.T) {
+	// Test that extreme float values fall back to scientific notation
+	// to avoid truncation issues with very large or very small numbers
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+
+	// Test query with extreme float values that would exceed the 24-char display width
+	query := `SELECT 
+		CAST(1e100 AS FLOAT) as VeryLarge,
+		CAST(1e-100 AS FLOAT) as VerySmall`
+
+	err := runSqlCmd(t, s, []string{query, "GO"})
+	assert.NoError(t, err, "runSqlCmd returned error")
+
+	output := buf.buf.String()
+
+	// Verify that extremely large/small values use scientific notation
+	// (because decimal format would exceed the 24-char column width)
+	assert.Contains(t, output, "e+", "Output should contain scientific notation for extreme values")
+}
