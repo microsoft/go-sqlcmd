@@ -242,8 +242,26 @@ func TestFormatterRealFormatting(t *testing.T) {
 
 	output := buf.buf.String()
 
-	// Verify that typical REAL values use decimal notation
-	assert.Contains(t, output, "123.456", "Output should contain decimal representation of typical REAL value")
+	// Split output into lines to examine the data row separately from headers
+	lines := strings.Split(output, SqlcmdEol)
+	var dataLine string
+	for _, line := range lines {
+		// Find the data line (contains actual values, not headers or separators)
+		if strings.Contains(line, "123.") {
+			dataLine = line
+			break
+		}
+	}
+
+	// Verify that typical REAL values use decimal notation (not scientific)
+	assert.Contains(t, dataLine, "123.456", "Output should contain decimal representation of typical REAL value")
+	// Check that the typical value portion doesn't use scientific notation
+	// by verifying characters before the extreme value don't contain 'e'
+	parts := strings.Split(dataLine, ";")
+	if len(parts) >= 2 {
+		typicalValuePart := parts[1] // Assuming TypicalValue is the second column (after RowNumber or first column)
+		assert.NotContains(t, typicalValuePart, "e", "Typical REAL value should not use scientific notation")
+	}
 	
 	// Verify that extreme REAL values use scientific notation
 	assert.Contains(t, output, "e+", "Output should contain scientific notation for extreme REAL value")
