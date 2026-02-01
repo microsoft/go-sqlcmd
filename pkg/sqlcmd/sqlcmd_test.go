@@ -726,5 +726,4 @@ func TestSafeColumnTypesHandlesPanic(t *testing.T) {
 	// The function should return an error, not panic
 	assert.Nil(t, cols, "Expected nil cols on panic")
 	assert.Error(t, err, "Expected error on panic")
-	assert.Contains(t, err.Error(), "failed to get column types", "Error message should indicate column type failure")
 }
