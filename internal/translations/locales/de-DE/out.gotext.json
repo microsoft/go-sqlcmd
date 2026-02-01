@@ -49,7 +49,7 @@
         {
             "id": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
             "message": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
-            "translation": ""
+            "translation": "Konfigurationsdatei (unterstützte Erweiterungen: .yaml, .yml, .json, .toml, .ini, .env, .properties)"
         },
         {
             "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
