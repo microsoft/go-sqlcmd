@@ -259,11 +259,11 @@ func TestFormatterRealFormatting(t *testing.T) {
 
 	// Verify that typical REAL values use decimal notation (not scientific)
 	assert.Contains(t, dataLine, "123.456", "Output should contain decimal representation of typical REAL value")
-	
+
 	// Check that the typical value portion doesn't use scientific notation
 	// Parse columns using whitespace (the default column separator)
 	fields := strings.Fields(dataLine)
-	if len(fields) >= 1 {
+	if len(fields) > 0 {
 		// Find the field containing the typical value
 		for _, field := range fields {
 			if strings.Contains(field, "123.") {
