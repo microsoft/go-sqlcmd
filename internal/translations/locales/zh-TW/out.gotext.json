@@ -47,9 +47,18 @@
             "fuzzy": true
         },
         {
+            "id": "configuration file",
+            "message": "configuration file",
+            "translation": "設定檔",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
             "message": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
-            "translation": ""
+            "translation": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
@@ -2402,6 +2411,27 @@
             "fuzzy": true
         },
         {
+            "id": "Press Ctrl+C to exit this process...",
+            "message": "Press Ctrl+C to exit this process...",
+            "translation": "按 Ctrl+C 結束此流程...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "translation": "「記憶體資源不足」錯誤可能是由於 Windows 認證管理員中儲存太多認證所致",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to write credential to Windows Credential Manager",
+            "message": "Failed to write credential to Windows Credential Manager",
+            "translation": "無法將認證寫入 Windows 認證管理員",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "-L 參數不能與其他參數一起使用。",
@@ -2835,9 +2865,9 @@
             "fuzzy": true
         },
         {
-            "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "{_r0__1} 將嚴重性為 \u003e= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。",
+            "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "translation": "{_r0__1} 將嚴重性為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -3371,9 +3401,9 @@
             "fuzzy": true
         },
         {
-            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
-            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
-            "translation": "已停用 ED 和 !!\u003ccommand\u003e 命令、啟動指令碼和環境變數",
+            "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
+            "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
+            "translation": "已停用 ED 和 !!<command> 命令、啟動指令碼和環境變數",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

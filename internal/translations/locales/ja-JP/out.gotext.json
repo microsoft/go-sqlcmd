@@ -47,9 +47,18 @@
             "fuzzy": true
         },
         {
+            "id": "configuration file",
+            "message": "configuration file",
+            "translation": "構成ファイル",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
             "message": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
-            "translation": ""
+            "translation": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
@@ -2402,6 +2411,27 @@
             "fuzzy": true
         },
         {
+            "id": "Press Ctrl+C to exit this process...",
+            "message": "Press Ctrl+C to exit this process...",
+            "translation": "Ctrl + C を押して、このプロセスを終了します...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "translation": "Windows 資格情報マネージャーに既に格納されている資格情報が多すぎるため、'十分なメモリ リソースがありません' というエラーが発生した可能性があります",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to write credential to Windows Credential Manager",
+            "message": "Failed to write credential to Windows Credential Manager",
+            "translation": "Windows 資格情報マネージャーに資格情報を書き込めませんでした",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "-L パラメーターを他のパラメーターと組み合わせて使用することはできません。",
@@ -2835,9 +2865,9 @@
             "fuzzy": true
         },
         {
-            "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "{_r0__1} 重大度 \u003e= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。",
+            "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "translation": "{_r0__1} 重大度 >= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -3371,9 +3401,9 @@
             "fuzzy": true
         },
         {
-            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
-            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
-            "translation": "ED および !!\u003ccommand\u003e コマンド、スタートアップ スクリプト、および環境変数が無効です。",
+            "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
+            "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
+            "translation": "ED および !!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です。",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

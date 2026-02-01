@@ -47,9 +47,18 @@
             "fuzzy": true
         },
         {
+            "id": "configuration file",
+            "message": "configuration file",
+            "translation": "Konfigurationsdatei",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
             "message": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
-            "translation": "Konfigurationsdatei (unterstützte Erweiterungen: .yaml, .yml, .json, .toml, .ini, .env, .properties)"
+            "translation": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
@@ -2402,6 +2411,27 @@
             "fuzzy": true
         },
         {
+            "id": "Press Ctrl+C to exit this process...",
+            "message": "Press Ctrl+C to exit this process...",
+            "translation": "Drücken Sie STRG+C, um diesen Prozess zu beenden...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "translation": "Der Fehler \"Not enough memory resources are available\" (Nicht genügend Arbeitsspeicherressourcen sind verfügbar) kann durch zu viele Anmeldeinformationen verursacht werden, die bereits in Windows Anmeldeinformations-Manager gespeichert sind",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to write credential to Windows Credential Manager",
+            "message": "Failed to write credential to Windows Credential Manager",
+            "translation": "Fehler beim Schreiben der Anmeldeinformationen in Windows Anmeldeinformations-Manager",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "Der -L-Parameter kann nicht in Verbindung mit anderen Parametern verwendet werden.",
@@ -2835,9 +2865,9 @@
             "fuzzy": true
         },
         {
-            "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "{_r0__1} Leitet Fehlermeldungen mit Schweregrad \u003e= 11 Ausgabe an stderr um. Übergeben Sie 1, um alle Fehler einschließlich PRINT umzuleiten.",
+            "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "translation": "{_r0__1} Leitet Fehlermeldungen mit Schweregrad >= 11 Ausgabe an stderr um. Übergeben Sie 1, um alle Fehler einschließlich PRINT umzuleiten.",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -3371,9 +3401,9 @@
             "fuzzy": true
         },
         {
-            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
-            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
-            "translation": "Die Befehle \"ED\" und \"!!\u003ccommand\u003e\", Startskript und Umgebungsvariablen sind deaktiviert",
+            "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
+            "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
+            "translation": "Die Befehle \"ED\" und \"!!<command>\", Startskript und Umgebungsvariablen sind deaktiviert",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
