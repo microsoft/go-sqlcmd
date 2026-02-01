@@ -2869,9 +2869,9 @@
             "fuzzy": true
         },
         {
-            "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "translation": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -3405,9 +3405,9 @@
             "fuzzy": true
         },
         {
-            "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
-            "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-            "translation": "ED and !!<command> commands, startup script, and environment variables are disabled",
+            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "translation": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

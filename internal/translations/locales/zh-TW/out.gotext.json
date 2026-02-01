@@ -2865,9 +2865,9 @@
             "fuzzy": true
         },
         {
-            "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "{_r0__1} 將嚴重性為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。",
+            "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "translation": "{_r0__1} 將嚴重性為 \u003e= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -3401,9 +3401,9 @@
             "fuzzy": true
         },
         {
-            "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
-            "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-            "translation": "已停用 ED 和 !!<command> 命令、啟動指令碼和環境變數",
+            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "translation": "已停用 ED 和 !!\u003ccommand\u003e 命令、啟動指令碼和環境變數",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

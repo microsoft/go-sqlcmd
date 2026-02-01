@@ -2865,9 +2865,9 @@
             "fuzzy": true
         },
         {
-            "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "{_r0__1} 重大度 >= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。",
+            "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "translation": "{_r0__1} 重大度 \u003e= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -3401,9 +3401,9 @@
             "fuzzy": true
         },
         {
-            "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
-            "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-            "translation": "ED および !!<command> コマンド、スタートアップ スクリプト、および環境変数が無効です。",
+            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "translation": "ED および !!\u003ccommand\u003e コマンド、スタートアップ スクリプト、および環境変数が無効です。",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

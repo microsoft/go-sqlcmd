@@ -2865,9 +2865,9 @@
             "fuzzy": true
         },
         {
-            "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-            "translation": "{_r0__1} Redireciona mensagens de erro com gravidade >= 11 saída para stderr. Passe 1 para redirecionar todos os erros, incluindo PRINT.",
+            "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
+            "translation": "{_r0__1} Redireciona mensagens de erro com gravidade \u003e= 11 saída para stderr. Passe 1 para redirecionar todos os erros, incluindo PRINT.",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -3401,9 +3401,9 @@
             "fuzzy": true
         },
         {
-            "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
-            "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-            "translation": "Os comandos ED e !!<command>, o script de inicialização e as variáveis de ambiente estão desabilitados.",
+            "id": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "message": "ED and !!\u003ccommand\u003e commands, startup script, and environment variables are disabled",
+            "translation": "Os comandos ED e !!\u003ccommand\u003e, o script de inicialização e as variáveis de ambiente estão desabilitados.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
