@@ -211,7 +211,10 @@ func TestFormatterFloatFormattingExtremeValues(t *testing.T) {
 
 	output := buf.buf.String()
 
-	// Verify that extremely large/small values use scientific notation
+	// Verify that extremely large values use scientific notation with positive exponent
 	// (because decimal format would exceed the 24-char column width)
-	assert.Contains(t, output, "e+", "Output should contain scientific notation for extreme values")
+	assert.Contains(t, output, "e+", "Output should contain scientific notation (e+) for very large values")
+	
+	// Verify that extremely small values use scientific notation with negative exponent
+	assert.Contains(t, output, "e-", "Output should contain scientific notation (e-) for very small values")
 }
