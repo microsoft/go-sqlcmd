@@ -56,7 +56,7 @@
         {
             "id": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
             "message": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
-            "translation": "configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
+            "translation": "Konfigurationsdatei (unterstützte Erweiterungen: .yaml, .yml, .json, .toml, .ini, .env, .properties)",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
