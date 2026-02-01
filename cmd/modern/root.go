@@ -121,7 +121,7 @@ func (c *Root) addGlobalFlags() {
 		String:        &c.configFilename,
 		DefaultString: config.DefaultFileName(),
 		Name:          "sqlconfig",
-		Usage:         localizer.Sprintf("configuration file (supported extensions: .yaml, .yml, .json, .toml, .ini, .env, .properties)"),
+		Usage:         localizer.Sprintf("configuration file (YAML format, use .yaml or .yml extension)"),
 	})
 
 	/* BUG(stuartpa): - At the moment this is a top level flag, but it doesn't

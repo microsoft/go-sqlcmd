@@ -84,15 +84,7 @@ sqlcmd config view
 
 #### Custom Configuration Files
 
-You can specify a custom configuration file using the `--sqlconfig` flag. The configuration file must use one of the following supported file extensions:
-- `.yaml` or `.yml` (YAML format)
-- `.json` (JSON format)
-- `.toml` (TOML format)
-- `.ini` (INI format)
-- `.env` or `.dotenv` (Dotenv format)
-- `.properties`, `.props`, or `.prop` (Properties format)
-
-Additional formats like `.hcl` and `.tfvars` are also supported but less commonly used with sqlcmd.
+You can specify a custom configuration file using the `--sqlconfig` flag. Configuration files must be in **YAML format** and should use the `.yaml` or `.yml` file extension.
 
 Example:
 ```
@@ -100,7 +92,7 @@ sqlcmd config --sqlconfig ./myproject.yaml add-endpoint --name ep1434 --address 
 sqlcmd config --sqlconfig ./myproject.yaml view
 ```
 
-**Note:** Using unsupported file extensions (like `.sqlconfig`) will result in an "Unsupported Config Type" error when modifying the configuration (e.g., `add-endpoint`, `add-user`). Read-only commands (like `view`) may still work. The default configuration file at `~/.sqlcmd/sqlconfig` uses YAML format without an extension.
+**Note:** The default configuration file at `~/.sqlcmd/sqlconfig` uses YAML format without an extension. Using unsupported file extensions (like `.sqlconfig`) or non-YAML formats will result in errors when reading or writing the configuration.
 
 ### Versions
 
