@@ -2404,27 +2404,6 @@
             "fuzzy": true
         },
         {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Premere CTRL+C per uscire dal processo...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "Un errore 'Risorse di memoria insufficienti' può essere causato da troppe credenziali già archiviate in Gestione credenziali di Windows",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Impossibile scrivere le credenziali in Gestione credenziali di Windows",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "Il parametro -L non può essere usato in combinazione con altri parametri.",
@@ -3677,6 +3656,21 @@
             "translation": "Password:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "failed to get column types: {R}",
+            "message": "failed to get column types: {R}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "R",
+                    "string": "%[1]v",
+                    "type": "interface{}",
+                    "underlyingType": "interface{}",
+                    "argNum": 1,
+                    "expr": "r"
+                }
+            ]
         },
         {
             "id": "(1 row affected)",

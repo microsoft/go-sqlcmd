@@ -2404,27 +2404,6 @@
             "fuzzy": true
         },
         {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Drücken Sie STRG+C, um diesen Prozess zu beenden...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "Der Fehler \"Not enough memory resources are available\" (Nicht genügend Arbeitsspeicherressourcen sind verfügbar) kann durch zu viele Anmeldeinformationen verursacht werden, die bereits in Windows Anmeldeinformations-Manager gespeichert sind",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Fehler beim Schreiben der Anmeldeinformationen in Windows Anmeldeinformations-Manager",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "Der -L-Parameter kann nicht in Verbindung mit anderen Parametern verwendet werden.",
@@ -3677,6 +3656,21 @@
             "translation": "Kennwort:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "failed to get column types: {R}",
+            "message": "failed to get column types: {R}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "R",
+                    "string": "%[1]v",
+                    "type": "interface{}",
+                    "underlyingType": "interface{}",
+                    "argNum": 1,
+                    "expr": "r"
+                }
+            ]
         },
         {
             "id": "(1 row affected)",

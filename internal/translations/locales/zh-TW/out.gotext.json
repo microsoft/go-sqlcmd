@@ -2404,27 +2404,6 @@
             "fuzzy": true
         },
         {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "按 Ctrl+C 結束此流程...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "「記憶體資源不足」錯誤可能是由於 Windows 認證管理員中儲存太多認證所致",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "無法將認證寫入 Windows 認證管理員",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "-L 參數不能與其他參數一起使用。",
@@ -3677,6 +3656,21 @@
             "translation": "密碼:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "failed to get column types: {R}",
+            "message": "failed to get column types: {R}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "R",
+                    "string": "%[1]v",
+                    "type": "interface{}",
+                    "underlyingType": "interface{}",
+                    "argNum": 1,
+                    "expr": "r"
+                }
+            ]
         },
         {
             "id": "(1 row affected)",
