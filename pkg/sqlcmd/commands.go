@@ -483,7 +483,6 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	authenticationMethod := flags.String("G", "", "authentication method")
 
 	err := flags.Parse(commandArgs[1:])
-	//err := flags.Parse(args[1:])
 	if err != nil {
 		return InvalidCommandError("CONNECT", line)
 	}
