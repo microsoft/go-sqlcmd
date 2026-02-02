@@ -4,8 +4,9 @@
 package console
 
 import (
-	"golang.org/x/term"
 	"os"
+
+	"golang.org/x/term"
 )
 
 // isStdinRedirected checks if stdin is coming from a pipe or redirection

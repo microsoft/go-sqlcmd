@@ -535,17 +535,24 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 				// Format float64 to match ODBC sqlcmd behavior
 				// Use 'f' format with -1 precision to avoid scientific notation for typical values
 				// Fall back to 'g' format if the result would exceed the column display width
-				formatted := strconv.FormatFloat(x, 'f', -1, 64)
+				
+				// Use appropriate bitSize based on the SQL type (REAL=32, FLOAT=64)
+				bitSize := 64
+				if f.columnDetails[n].col.DatabaseTypeName() == "REAL" {
+					bitSize = 32
+				}
+				
+				formatted := strconv.FormatFloat(x, 'f', -1, bitSize)
 				displayWidth := f.columnDetails[n].displayWidth
 				if displayWidth > 0 && int64(len(formatted)) > displayWidth {
 					// Use 'g' format for very large/small values to avoid truncation issues
-					formatted = strconv.FormatFloat(x, 'g', -1, 64)
+					formatted = strconv.FormatFloat(x, 'g', -1, bitSize)
 				}
 				row[n] = formatted
 			case float32:
 				// Format float32 to match ODBC sqlcmd behavior
-				// Use 'f' format with -1 precision to avoid scientific notation for typical values
-				// Fall back to 'g' format if the result would exceed the column display width
+				// float32 values are rare (database/sql typically normalizes to float64)
+				// but handle them if they occur
 				formatted := strconv.FormatFloat(float64(x), 'f', -1, 32)
 				displayWidth := f.columnDetails[n].displayWidth
 				if displayWidth > 0 && int64(len(formatted)) > displayWidth {
