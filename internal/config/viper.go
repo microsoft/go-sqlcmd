@@ -5,12 +5,13 @@ package config
 
 import (
 	"bytes"
+	"path/filepath"
+	"strings"
+
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
-	"path/filepath"
-	"strings"
 )
 
 // Load loads the configuration from the file specified by the SetFileName() function.
