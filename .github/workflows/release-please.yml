@@ -17,5 +17,6 @@ jobs:
       # Verify: gh api repos/google-github-actions/release-please-action/git/ref/tags/v4.1.1 --jq '.object.sha'
       - uses: google-github-actions/release-please-action@e4dc86ba9405554aeba3c6bb2d169500e7d3b4ee # v4.1.1
         with:
-          release-type: go
-          package-name: sqlcmd
+          command: manifest
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
