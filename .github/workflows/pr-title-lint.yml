@@ -37,7 +37,7 @@ jobs:
             deps
           # Configure which scopes are allowed (empty means all scopes are allowed)
           scopes: |
-          # Configure that a scope must always be provided
+          # Configure whether a scope must be provided (false means scopes are optional)
           requireScope: false
           # For work-in-progress PRs you can typically use draft pull requests
           # Instead of allowing WIP in the title
