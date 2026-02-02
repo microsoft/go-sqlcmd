@@ -64,17 +64,17 @@ func GetConfigFileUsed() string {
 // Returns an error if the extension is not supported.
 func validateConfigFileExtension(configFile string) error {
 	ext := strings.ToLower(filepath.Ext(configFile))
-	
+
 	// Allow no extension (for default sqlconfig file)
 	if ext == "" {
 		return nil
 	}
-	
+
 	// Allow .yaml and .yml extensions
 	if ext == ".yaml" || ext == ".yml" {
 		return nil
 	}
-	
+
 	// Return error for unsupported extensions
 	return localizer.Errorf(
 		"Configuration files must use YAML format with .yaml or .yml extension.\n"+
