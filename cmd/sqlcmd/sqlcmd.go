@@ -348,18 +348,30 @@ func preprocessHelpFlags(args []string) []string {
 			// Check if next arg exists
 			hasNextArg := i+1 < len(args)
 			nextIsNumber := false
+			nextIsFlag := false
 			if hasNextArg {
+				nextArg := args[i+1]
 				// Check if next arg looks like a number (including negative numbers)
 				// This must be checked before checking if it's a flag, because
 				// negative numbers start with '-'
-				_, err := strconv.Atoi(args[i+1])
+				_, err := strconv.Atoi(nextArg)
 				nextIsNumber = err == nil
+				
+				// Check if next arg is a flag (starts with '-' but is not a number)
+				if !nextIsNumber && len(nextArg) > 0 && nextArg[0] == '-' {
+					nextIsFlag = true
+				}
 			}
 			
 			// If -h is followed by a number, keep it as-is (header count)
-			// Otherwise, convert to -? (show help)
+			// Otherwise, convert to -? (show help) and consume any non-numeric, non-flag argument
 			if !nextIsNumber {
 				result = append(result, "-?")
+				// If there was a following non-numeric, non-flag argument, consume it
+				// (Don't consume flags, as they should be processed normally)
+				if hasNextArg && !nextIsFlag {
+					i++
+				}
 			} else {
 				result = append(result, arg)
 			}

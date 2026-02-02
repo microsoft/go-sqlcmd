@@ -619,9 +619,9 @@ func TestConvertOsArgs(t *testing.T) {
 			[]string{"-?", "-E"},
 		},
 		{
-			"-h followed by non-numeric converts to -? for help",
+			"-h followed by non-numeric converts to -? for help (consuming the non-numeric arg)",
 			[]string{"-h", "abc"},
-			[]string{"-?", "abc"},
+			[]string{"-?"},
 		},
 	}
 	for _, c := range tests {
