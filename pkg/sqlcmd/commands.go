@@ -408,7 +408,9 @@ func listVarCommand(s *Sqlcmd, args []string, line uint) error {
 	sort.Strings(keys)
 	keys = append(builtinVariables, keys...)
 	for _, k := range keys {
-		fmt.Fprintf(s.GetOutput(), `%s = "%s"%s`, k, vars[k], SqlcmdEol)
+		if _, err := fmt.Fprintf(s.GetOutput(), `%s = "%s"%s`, k, vars[k], SqlcmdEol); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -543,7 +545,10 @@ func editCommand(s *Sqlcmd, args []string, line uint) error {
 		return err
 	}
 	fileName := file.Name()
-	defer os.Remove(fileName)
+	defer func() {
+		// Best-effort cleanup - ignore errors
+		_ = os.Remove(fileName)
+	}()
 	text := s.batch.String()
 	if s.batch.State() == "-" {
 		text = fmt.Sprintf("%s%s", text, SqlcmdEol)
@@ -552,7 +557,9 @@ func editCommand(s *Sqlcmd, args []string, line uint) error {
 	if err != nil {
 		return err
 	}
-	file.Close()
+	if err := file.Close(); err != nil {
+		return err
+	}
 	cmd := sysCommand(s.vars.TextEditor() + " " + `"` + fileName + `"`)
 	cmd.Stderr = s.GetError()
 	cmd.Stdout = s.GetOutput()
