@@ -227,6 +227,32 @@ func TestFormatterFloatFormattingExtremeValues(t *testing.T) {
 	assert.Contains(t, output, "e-", "Output should contain scientific notation (e-) for very small values")
 }
 
+func TestFormatterFloatFormattingExtremeValuesUnlimitedWidth(t *testing.T) {
+	// Test that extreme float values fall back to scientific notation even when
+	// displayWidth is 0 (unlimited), using type default widths as threshold
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+
+	// Leave SQLCMDMAXVARTYPEWIDTH at 0 (setupSqlCmdWithMemoryOutput default)
+	// This sets displayWidth to 0 for all columns, testing the fallback logic
+	// that uses type default widths (24 for FLOAT, 14 for REAL)
+
+	// Test query with extreme float values
+	query := `SELECT 
+		CAST(1e100 AS FLOAT) as VeryLarge,
+		CAST(1e-100 AS FLOAT) as VerySmall`
+
+	err := runSqlCmd(t, s, []string{query, "GO"})
+	assert.NoError(t, err, "runSqlCmd returned error")
+
+	output := buf.buf.String()
+
+	// Verify that extreme values still use scientific notation even with unlimited width
+	// (fallback should use type default widths to prevent unbounded output)
+	assert.Contains(t, output, "e+", "Output should contain scientific notation (e+) for very large values even with unlimited width")
+	assert.Contains(t, output, "e-", "Output should contain scientific notation (e-) for very small values even with unlimited width")
+}
+
 func TestFormatterRealFormatting(t *testing.T) {
 	// Test that REAL (float32) values use decimal notation for typical values
 	// and fall back to scientific notation for extreme values

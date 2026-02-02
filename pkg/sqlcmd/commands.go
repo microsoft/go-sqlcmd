@@ -549,6 +549,10 @@ func editCommand(s *Sqlcmd, args []string, line uint) error {
 		// Best-effort cleanup - ignore errors
 		_ = os.Remove(fileName)
 	}()
+	defer func() {
+		// Ensure file is closed on all paths
+		_ = file.Close()
+	}()
 	text := s.batch.String()
 	if s.batch.State() == "-" {
 		text = fmt.Sprintf("%s%s", text, SqlcmdEol)
@@ -557,6 +561,7 @@ func editCommand(s *Sqlcmd, args []string, line uint) error {
 	if err != nil {
 		return err
 	}
+	// Explicitly close before launching editor (defer will close again but that's safe)
 	if err := file.Close(); err != nil {
 		return err
 	}
