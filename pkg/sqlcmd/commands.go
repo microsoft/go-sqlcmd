@@ -466,7 +466,7 @@ func connectCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 
 	commandArgs := strings.Fields(args[0])
-	
+
 	// Require at least the server name parameter
 	if len(commandArgs) == 0 {
 		return InvalidCommandError("CONNECT", line)

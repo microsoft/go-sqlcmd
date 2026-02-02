@@ -546,7 +546,19 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 
 				formatted := strconv.FormatFloat(x, 'f', -1, bitSize)
 				displayWidth := f.columnDetails[n].displayWidth
-				if displayWidth > 0 && int64(len(formatted)) > displayWidth {
+				
+				// Use the type's default display width when displayWidth is 0 (unlimited)
+				// to avoid extremely long strings for extreme values
+				widthThreshold := displayWidth
+				if widthThreshold == 0 {
+					if typeName == "REAL" || typeName == "SMALLMONEY" {
+						widthThreshold = 14 // Default for REAL
+					} else {
+						widthThreshold = 24 // Default for FLOAT
+					}
+				}
+				
+				if int64(len(formatted)) > widthThreshold {
 					// Use 'g' format for very large/small values to avoid truncation issues
 					formatted = strconv.FormatFloat(x, 'g', -1, bitSize)
 				}
@@ -557,7 +569,14 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 				// Use bitSize 32 to maintain precision appropriate for the original float32 value
 				formatted := strconv.FormatFloat(float64(x), 'f', -1, 32)
 				displayWidth := f.columnDetails[n].displayWidth
-				if displayWidth > 0 && int64(len(formatted)) > displayWidth {
+				
+				// Use default REAL display width when displayWidth is 0
+				widthThreshold := displayWidth
+				if widthThreshold == 0 {
+					widthThreshold = 14
+				}
+				
+				if int64(len(formatted)) > widthThreshold {
 					// Use 'g' format for very large/small values to avoid truncation issues
 					formatted = strconv.FormatFloat(float64(x), 'g', -1, 32)
 				}
