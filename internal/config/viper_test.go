@@ -70,6 +70,51 @@ func Test_validateConfigFileExtension(t *testing.T) {
 			filename: "config.Yaml",
 			wantErr:  false,
 		},
+		{
+			name:     "multiple dots with valid extension",
+			filename: "my.config.yaml",
+			wantErr:  false,
+		},
+		{
+			name:     "multiple dots with invalid extension",
+			filename: "my.config.txt",
+			wantErr:  true,
+		},
+		{
+			name:     "backup file with valid extension",
+			filename: "config.backup.yaml",
+			wantErr:  false,
+		},
+		{
+			name:     "backup file with invalid extension",
+			filename: "config.backup.txt",
+			wantErr:  true,
+		},
+		{
+			name:     "hidden file with yaml extension",
+			filename: ".config.yaml",
+			wantErr:  false,
+		},
+		{
+			name:     "hidden file with yml extension",
+			filename: ".config.yml",
+			wantErr:  false,
+		},
+		{
+			name:     "hidden file with invalid extension",
+			filename: ".config.txt",
+			wantErr:  true,
+		},
+		{
+			name:     "file with only dot and yaml",
+			filename: ".yaml",
+			wantErr:  false,
+		},
+		{
+			name:     "file with only dot and yml",
+			filename: ".yml",
+			wantErr:  false,
+		},
 	}
 
 	for _, tt := range tests {
