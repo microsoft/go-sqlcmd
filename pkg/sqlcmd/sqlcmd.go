@@ -495,9 +495,10 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 					retcode = -100
 					qe = s.handleError(&retcode, err)
 					s.Format.AddError(err)
-				} else {
-					s.Format.BeginResultSet(cols)
+					// Skip processing this result set since we cannot get column types
+					continue
 				}
+				s.Format.BeginResultSet(cols)
 			}
 			inresult := rows.Next()
 			for inresult {
