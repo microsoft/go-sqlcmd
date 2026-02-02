@@ -60,6 +60,12 @@ const (
 	ControlReplaceConsecutive
 )
 
+const (
+	// Default display widths for float types
+	realDefaultWidth  int64 = 14 // For REAL and SMALLMONEY
+	floatDefaultWidth int64 = 24 // For FLOAT and MONEY
+)
+
 type columnDetail struct {
 	displayWidth       int64
 	leftJustify        bool
@@ -372,11 +378,11 @@ func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) ([]c
 			columnDetails[i].displayWidth = max64(21, nameLen)
 		case "REAL", "SMALLMONEY":
 			columnDetails[i].leftJustify = false
-			columnDetails[i].displayWidth = max64(14, nameLen)
+			columnDetails[i].displayWidth = max64(realDefaultWidth, nameLen)
 			columnDetails[i].zeroesAfterDecimal = true
 		case "FLOAT", "MONEY":
 			columnDetails[i].leftJustify = false
-			columnDetails[i].displayWidth = max64(24, nameLen)
+			columnDetails[i].displayWidth = max64(floatDefaultWidth, nameLen)
 			columnDetails[i].zeroesAfterDecimal = true
 		case "DECIMAL":
 			columnDetails[i].leftJustify = false
@@ -546,18 +552,18 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 
 				formatted := strconv.FormatFloat(x, 'f', -1, bitSize)
 				displayWidth := f.columnDetails[n].displayWidth
-				
+
 				// Use the type's default display width when displayWidth is 0 (unlimited)
 				// to avoid extremely long strings for extreme values
 				widthThreshold := displayWidth
 				if widthThreshold == 0 {
 					if typeName == "REAL" || typeName == "SMALLMONEY" {
-						widthThreshold = 14 // Default for REAL
+						widthThreshold = realDefaultWidth
 					} else {
-						widthThreshold = 24 // Default for FLOAT
+						widthThreshold = floatDefaultWidth
 					}
 				}
-				
+
 				if int64(len(formatted)) > widthThreshold {
 					// Use 'g' format for very large/small values to avoid truncation issues
 					formatted = strconv.FormatFloat(x, 'g', -1, bitSize)
@@ -569,13 +575,13 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 				// Use bitSize 32 to maintain precision appropriate for the original float32 value
 				formatted := strconv.FormatFloat(float64(x), 'f', -1, 32)
 				displayWidth := f.columnDetails[n].displayWidth
-				
+
 				// Use default REAL display width when displayWidth is 0
 				widthThreshold := displayWidth
 				if widthThreshold == 0 {
-					widthThreshold = 14
+					widthThreshold = realDefaultWidth
 				}
-				
+
 				if int64(len(formatted)) > widthThreshold {
 					// Use 'g' format for very large/small values to avoid truncation issues
 					formatted = strconv.FormatFloat(float64(x), 'g', -1, 32)
