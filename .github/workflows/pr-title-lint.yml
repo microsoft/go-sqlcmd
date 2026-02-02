@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
 name: PR Title Lint
 
 on:
@@ -14,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR title follows Conventional Commits
-        uses: amannn/action-semantic-pull-request@0723387faaf9b38adef4775cd42cfd5155ed6017
+        # Pinned to commit SHA for supply chain security (CWE-829)
+        # Verify: gh api repos/amannn/action-semantic-pull-request/git/ref/tags/v5.5.3 --jq '.object.sha'
+        uses: amannn/action-semantic-pull-request@0723387faaf9b38adef4775cd42cfd5155ed6017 # v5.5.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
