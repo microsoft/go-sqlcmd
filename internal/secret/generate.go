@@ -17,7 +17,7 @@ const (
 )
 
 // Generate generates a random password of a specified length. The password
-// will contain at least the specified number of special characters, 
+// will contain at least the specified number of special characters,
 // numeric digits, and upper-case letters. The remaining characters in the
 // password will be selected from a combination of lower-case letters, special
 // characters, and numeric digits. The special characters are chosen from

@@ -28,7 +28,7 @@ func TestQueryWithNonDefaultDatabase(t *testing.T) {
 	if runtime.GOOS != "windows" {
 		t.Skip("stuartpa: This is failing in the pipeline (Login failed for user 'sa'.)")
 	}
-	
+
 	cmdparser.TestSetup(t)
 
 	setupContext(t)

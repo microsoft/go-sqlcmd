@@ -28,7 +28,7 @@ func NewConsole(historyFile string) sqlcmd.Console {
 		historyFile:     historyFile,
 		stdinRedirected: isStdinRedirected(),
 	}
-	
+
 	if c.stdinRedirected {
 		c.stdinReader = bufio.NewReader(os.Stdin)
 	} else {
@@ -52,7 +52,7 @@ func (c *console) Close() {
 			f.Close()
 		}
 	}
-	
+
 	if !c.stdinRedirected {
 		c.impl.Close()
 	}
@@ -79,7 +79,7 @@ func (c *console) Readline() (string, error) {
 		}
 		return line, nil
 	}
-	
+
 	// Interactive terminal mode with prompts
 	s, err := c.impl.Prompt(c.prompt)
 	if err == liner.ErrPromptAborted {

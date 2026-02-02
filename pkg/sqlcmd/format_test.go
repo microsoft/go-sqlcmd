@@ -164,7 +164,7 @@ func TestFormatterFloatFormatting(t *testing.T) {
 	// This addresses the issue where go-sqlcmd was using scientific notation
 	// while ODBC sqlcmd uses decimal notation
 	s, buf := setupSqlCmdWithMemoryOutput(t)
-	defer buf.Close()
+	defer func() { _ = buf.Close() }()
 
 	// Set SQLCMDMAXVARTYPEWIDTH to a non-zero value so FLOAT columns use the 24-char display width
 	// This enables the width-based fallback logic to be tested properly
@@ -203,7 +203,7 @@ func TestFormatterFloatFormattingExtremeValues(t *testing.T) {
 	// Test that extreme float values fall back to scientific notation
 	// to avoid truncation issues with very large or very small numbers
 	s, buf := setupSqlCmdWithMemoryOutput(t)
-	defer buf.Close()
+	defer func() { _ = buf.Close() }()
 
 	// Set SQLCMDMAXVARTYPEWIDTH to a non-zero value so FLOAT columns use the 24-char display width
 	// This allows the fallback behavior to be tested
@@ -222,7 +222,7 @@ func TestFormatterFloatFormattingExtremeValues(t *testing.T) {
 	// Verify that extremely large values use scientific notation with positive exponent
 	// (because decimal format would exceed the 24-char column width)
 	assert.Contains(t, output, "e+", "Output should contain scientific notation (e+) for very large values")
-	
+
 	// Verify that extremely small values use scientific notation with negative exponent
 	assert.Contains(t, output, "e-", "Output should contain scientific notation (e-) for very small values")
 }
@@ -231,7 +231,7 @@ func TestFormatterRealFormatting(t *testing.T) {
 	// Test that REAL (float32) values use decimal notation for typical values
 	// and fall back to scientific notation for extreme values
 	s, buf := setupSqlCmdWithMemoryOutput(t)
-	defer buf.Close()
+	defer func() { _ = buf.Close() }()
 
 	// Set SQLCMDMAXVARTYPEWIDTH to a non-zero value so REAL columns use the 14-char display width
 	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
@@ -272,7 +272,7 @@ func TestFormatterRealFormatting(t *testing.T) {
 			}
 		}
 	}
-	
+
 	// Verify that extreme REAL values use scientific notation
 	assert.Contains(t, output, "e+", "Output should contain scientific notation for extreme REAL value")
 }
