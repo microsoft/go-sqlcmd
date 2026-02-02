@@ -5,9 +5,12 @@ package config
 
 import (
 	"bytes"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
+	"path/filepath"
+	"strings"
 )
 
 // Load loads the configuration from the file specified by the SetFileName() function.
@@ -56,16 +59,45 @@ func GetConfigFileUsed() string {
 	return viper.ConfigFileUsed()
 }
 
+// validateConfigFileExtension checks if the config file has a supported extension.
+// It allows .yaml, .yml, and no extension (for default sqlconfig file).
+// Returns an error if the extension is not supported.
+func validateConfigFileExtension(configFile string) error {
+	ext := strings.ToLower(filepath.Ext(configFile))
+	
+	// Allow no extension (for default sqlconfig file)
+	if ext == "" {
+		return nil
+	}
+	
+	// Allow .yaml and .yml extensions
+	if ext == ".yaml" || ext == ".yml" {
+		return nil
+	}
+	
+	// Return error for unsupported extensions
+	return localizer.Errorf(
+		"Configuration files must use YAML format with .yaml or .yml extension.\n"+
+		"The file '%s' has an unsupported extension '%s'.",
+		configFile, ext)
+}
+
 // configureViper initializes the Viper library with the given configuration file.
 // This function sets the configuration file type to "yaml" and sets the environment variable prefix to "SQLCMD".
 // It also sets the configuration file to use to the one provided as an argument to the function.
 // This function is intended to be called at the start of the application to configure Viper before any other code uses it.
-func configureViper(configFile string) {
+func configureViper(configFile string) error {
 	if configFile == "" {
 		panic("Must provide configFile")
+	}
+
+	// Validate file extension
+	if err := validateConfigFileExtension(configFile); err != nil {
+		return err
 	}
 
 	viper.SetConfigType("yaml")
 	viper.SetEnvPrefix("SQLCMD")
 	viper.SetConfigFile(configFile)
+	return nil
 }

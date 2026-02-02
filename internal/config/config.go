@@ -27,7 +27,8 @@ func SetFileName(name string) {
 	filename = name
 
 	file.CreateEmptyIfNotExists(filename)
-	configureViper(filename)
+	err := configureViper(filename)
+	checkErr(err)
 }
 
 func SetFileNameForTest(t *testing.T) {
