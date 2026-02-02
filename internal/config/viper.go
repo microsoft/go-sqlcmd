@@ -78,8 +78,7 @@ func validateConfigFileExtension(configFile string) error {
 
 	// Return error for unsupported extensions
 	return localizer.Errorf(
-		"Configuration files must use YAML format with .yaml or .yml extension.\n"+
-		"The file '%s' has an unsupported extension '%s'.",
+		"Configuration files must use YAML format with .yaml or .yml extension. The file '%s' has an unsupported extension '%s'.",
 		configFile, ext)
 }
 
