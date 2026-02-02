@@ -495,9 +495,11 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 				cols, err = safeColumnTypes(rows)
 				if err != nil {
 					retcode = -100
-					qe = s.handleError(&retcode, err)
 					s.Format.AddError(err)
 					beganResultSet = false
+					// Return the error directly since this is a fatal error that should stop execution
+					// handleError only returns non-nil for mssql.Error types with certain severities
+					qe = err
 				} else {
 					s.Format.BeginResultSet(cols)
 					beganResultSet = true
