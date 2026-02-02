@@ -26,8 +26,12 @@ func SetFileName(name string) {
 
 	filename = name
 
+	// Validate file extension before creating the file
+	err := validateConfigFileExtension(filename)
+	checkErr(err)
+
 	file.CreateEmptyIfNotExists(filename)
-	err := configureViper(filename)
+	err = configureViper(filename)
 	checkErr(err)
 }
 
