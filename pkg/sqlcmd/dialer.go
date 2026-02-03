@@ -16,13 +16,10 @@ type proxyDialer struct {
 	serverName string
 	targetHost string
 	targetPort string
-	dialer     *net.Dialer
+	dialer     net.Dialer
 }
 
 func (d *proxyDialer) DialContext(ctx context.Context, network, addr string) (net.Conn, error) {
-	if d.dialer == nil {
-		d.dialer = &net.Dialer{}
-	}
 	return d.dialer.DialContext(ctx, network, d.dialAddress(network, addr))
 }
 

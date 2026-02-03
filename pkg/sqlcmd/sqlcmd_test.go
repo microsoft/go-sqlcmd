@@ -75,6 +75,10 @@ func TestConnectionStringFromSqlCmd(t *testing.T) {
 			"sqlserver://someserver?pipe=sql%5Cquery&protocol=np",
 		},
 		{
+			&ConnectSettings{ServerName: `\\someserver\pipe\sql\query`, ServerNameOverride: "otherserver"},
+			"sqlserver://someserver?pipe=sql%5Cquery&protocol=np",
+		},
+		{
 			&ConnectSettings{DedicatedAdminConnection: true},
 			"sqlserver://.?protocol=admin",
 		},

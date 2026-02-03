@@ -308,6 +308,8 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 					targetHost: serverName,
 					targetPort: targetPort,
 				}
+			} else {
+				return localizer.Errorf("Server name override is not supported with the current authentication method")
 			}
 		}
 	}

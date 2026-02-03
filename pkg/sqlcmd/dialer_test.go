@@ -4,7 +4,6 @@
 package sqlcmd
 
 import (
-	"context"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -18,16 +17,6 @@ func TestProxyDialerHostName(t *testing.T) {
 func TestProxyDialerHostNameEmpty(t *testing.T) {
 	d := &proxyDialer{}
 	assert.Equal(t, "", d.HostName())
-}
-
-func TestProxyDialerInitializesNetDialer(t *testing.T) {
-	d := &proxyDialer{serverName: "test.server.net"}
-	assert.Nil(t, d.dialer)
-
-	// DialContext should fail with an invalid address, but that's fine for this test
-	// We just want to verify the dialer gets initialized
-	_, _ = d.DialContext(context.Background(), "tcp", "invalid:99999")
-	assert.NotNil(t, d.dialer)
 }
 
 func TestProxyDialerDialAddressOverridesHostAndPortForTCP(t *testing.T) {
