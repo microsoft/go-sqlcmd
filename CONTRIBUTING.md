@@ -114,8 +114,8 @@ test: add integration tests for query command
 4. **Release Please creates/updates a Release PR** that:
    - Bumps version in relevant files
    - Updates CHANGELOG.md
-   - Tags the release
 5. **Review and merge the Release PR** - This triggers:
+   - Creation of a git tag for the new version
    - Creation of a GitHub Release
    - Publishing of release artifacts
 
