@@ -148,8 +148,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 	}
 	if err == nil {
 		switch {
-		case len(a.InputFile) > 0 && (len(a.Query) > 0 || len(a.InitialQuery) > 0):
-			err = mutuallyExclusiveError("i", `-Q/-q`)
+		case len(a.InputFile) > 0 && len(a.Query) > 0:
+			err = mutuallyExclusiveError("-i", "-Q")
 		case a.UseTrustedConnection && (len(a.UserName) > 0 || len(a.Password) > 0):
 			err = mutuallyExclusiveError("-E", `-U/-P`)
 		case a.UseAad && len(a.AuthenticationMethod) > 0:
@@ -400,7 +400,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.Help, "help", "?", false, localizer.Sprintf("-? shows this syntax summary, %s shows modern sqlcmd sub-command help", localizer.HelpFlag))
 	rootCmd.Flags().StringVar(&args.TraceFile, "trace-file", "", localizer.Sprintf("Write runtime trace to the specified file. Only for advanced debugging."))
 	var inputfiles []string
-	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, localizer.Sprintf("Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s", localizer.QueryAndExitFlag, localizer.QueryFlag))
+	rootCmd.Flags().StringSliceVarP(&args.InputFile, "input-file", "i", inputfiles, localizer.Sprintf("Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s. Can be combined with %s to run an initial query before the input files", localizer.QueryAndExitFlag, localizer.QueryFlag))
 	rootCmd.Flags().StringVarP(&args.OutputFile, "output-file", "o", "", localizer.Sprintf("Identifies the file that receives output from sqlcmd"))
 	rootCmd.Flags().BoolVarP(&args.Version, "version", "", false, localizer.Sprintf("Print version information and exit"))
 	rootCmd.Flags().BoolVarP(&args.TrustServerCertificate, "trust-server-certificate", "C", false, localizer.Sprintf("Implicitly trust the server certificate without validation"))
@@ -890,14 +890,21 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 			s.Query = args.Query
 		} else if args.InitialQuery != "" {
 			s.Query = args.InitialQuery
+			if !isInteractive {
+				once = true
+			}
 		}
-		iactive := args.InputFile == nil && args.Query == ""
-		if iactive || s.Query != "" {
+
+		// Run initial query (-q) if provided, even when combined with input files (-i)
+		if s.Query != "" {
 			// If we're not in interactive mode and stdin is redirected,
 			// we want to process all input without requiring GO statements
 			processAll := !isInteractive
 			err = s.Run(once, processAll)
-		} else {
+		}
+
+		// Process input files after initial query (if any)
+		if err == nil && s.Exitcode == 0 && args.InputFile != nil {
 			for f := range args.InputFile {
 				if err = s.IncludeFile(args.InputFile[f], true); err != nil {
 					s.WriteError(s.GetError(), err)
@@ -905,6 +912,10 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 					break
 				}
 			}
+		} else if args.InputFile == nil && args.Query == "" && args.InitialQuery == "" {
+			// Interactive mode: no query, no initial query, and no input files
+			processAll := !isInteractive
+			err = s.Run(once, processAll)
 		}
 	}
 	s.SetOutput(nil)
