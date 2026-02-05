@@ -5,7 +5,9 @@ package sqlcmd
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -463,4 +465,214 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
 	}
 
+}
+func TestIsExitParenBalanced(t *testing.T) {
+	tests := []struct {
+		input    string
+		balanced bool
+	}{
+		{"()", true},
+		{"(select 1)", true},
+		{"(select 1", false},
+		{"(select (1 + 2))", true},
+		{"(select ')')", true},     // paren inside string
+		{"(select \"(\")", true},   // paren inside double-quoted string
+		{"(select [col)])", true},  // paren inside bracket-quoted identifier
+		{"(select 1) extra", true}, // balanced even with trailing text
+		{"((nested))", true},
+		{"((nested)", false},
+		{"", true},          // empty string is balanced
+		{"no parens", true}, // no parens is balanced
+		{"(", false},
+		{")", false},                       // depth goes -1, not balanced
+		{"(test))", false},                 // depth goes -1 at end
+		{"(select 'can''t')", true},        // escaped single quote
+		{"(select [col]]name])", true},     // escaped bracket identifier
+		{"(select 'it''s a )test')", true}, // escaped quote with paren
+		{"(select [a]]])", true},           // escaped bracket with paren
+		// SQL comment tests
+		{"(select 1 -- unmatched (\n)", true},        // line comment with paren
+		{"(select 1 /* ( */ )", true},                // block comment with paren
+		{"(select /* nested ( */ 1)", true},          // block comment in middle
+		{"(select 1 -- comment\n+ 2)", true},         // line comment continues to next line
+		{"(select /* multi\nline\n( */ 1)", true},    // multi-line block comment
+		{"(select 1 -- ) still need close\n)", true}, // paren in line comment doesn't count
+		{"(select 1 /* ) */ + /* ( */ 2)", true},     // multiple block comments
+		{"(select 1 -- (\n-- )\n)", true},            // multiple line comments
+		{"(select '-- not a comment (' )", true},     // -- inside string is not a comment
+		{"(select '/* not a comment (' )", true},     // /* inside string is not a comment
+		{"(select 1 /* unclosed comment", false},     // unclosed block comment, missing )
+		{"(select 1) -- trailing comment (", true},   // trailing comment after balanced
+	}
+	for _, test := range tests {
+		t.Run(test.input, func(t *testing.T) {
+			result := isExitParenBalanced(test.input)
+			assert.Equal(t, test.balanced, result, "isExitParenBalanced(%q)", test.input)
+		})
+	}
+}
+
+func TestReadExitContinuation(t *testing.T) {
+	t.Run("reads continuation lines until balanced", func(t *testing.T) {
+		s := &Sqlcmd{}
+		lines := []string{"+ 2)", ""}
+		lineIndex := 0
+		promptSet := ""
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				if lineIndex >= len(lines) {
+					return "", io.EOF
+				}
+				line := lines[lineIndex]
+				lineIndex++
+				return line, nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+		s.lineIo.SetPrompt("")
+
+		result, err := readExitContinuation(s, "(select 1")
+		assert.NoError(t, err)
+		assert.Equal(t, "(select 1"+SqlcmdEol+"+ 2)", result)
+
+		// Verify prompt was set
+		tc := s.lineIo.(*testConsole)
+		promptSet = tc.PromptText
+		assert.Equal(t, "      -> ", promptSet)
+	})
+
+	t.Run("returns error on readline failure", func(t *testing.T) {
+		s := &Sqlcmd{}
+		expectedErr := errors.New("readline error")
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				return "", expectedErr
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+
+		_, err := readExitContinuation(s, "(select 1")
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("handles multiple continuation lines", func(t *testing.T) {
+		s := &Sqlcmd{}
+		lines := []string{"+ 2", "+ 3", ")"}
+		lineIndex := 0
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				if lineIndex >= len(lines) {
+					return "", io.EOF
+				}
+				line := lines[lineIndex]
+				lineIndex++
+				return line, nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+
+		result, err := readExitContinuation(s, "(select 1")
+		assert.NoError(t, err)
+		assert.Equal(t, "(select 1"+SqlcmdEol+"+ 2"+SqlcmdEol+"+ 3"+SqlcmdEol+")", result)
+	})
+
+	t.Run("returns immediately if already balanced", func(t *testing.T) {
+		s := &Sqlcmd{}
+		readLineCalled := false
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				readLineCalled = true
+				return "", nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+
+		result, err := readExitContinuation(s, "(select 1)")
+		assert.NoError(t, err)
+		assert.Equal(t, "(select 1)", result)
+		assert.False(t, readLineCalled, "Readline should not be called for balanced input")
+	})
+
+	t.Run("restores original prompt when batch is initialized", func(t *testing.T) {
+		s := &Sqlcmd{}
+		s.batch = NewBatch(nil, nil)
+		lines := []string{")"}
+		lineIndex := 0
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				if lineIndex >= len(lines) {
+					return "", io.EOF
+				}
+				line := lines[lineIndex]
+				lineIndex++
+				return line, nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+		s.lineIo.SetPrompt("1> ")
+
+		result, err := readExitContinuation(s, "(select 1")
+		assert.NoError(t, err)
+		assert.Equal(t, "(select 1"+SqlcmdEol+")", result)
+		// After function returns, prompt should be restored to original
+		tc := s.lineIo.(*testConsole)
+		assert.Equal(t, "1> ", tc.PromptText)
+	})
+}
+
+func TestExitCommandNonInteractiveUnbalanced(t *testing.T) {
+	// Test that unbalanced parentheses in non-interactive mode returns InvalidCommandError
+	s := &Sqlcmd{}
+	s.lineIo = nil // non-interactive mode
+
+	err := exitCommand(s, []string{"(select 1"}, 1)
+	assert.EqualError(t, err, InvalidCommandError("EXIT", 1).Error(), "unbalanced parens in non-interactive should error")
+}
+
+// TestExitCommandMultiLineInteractive is an integration test that exercises the full
+// multi-line EXIT flow: starting with unbalanced parentheses, reading continuation lines
+// from the console, executing the combined query, and returning the correct exit code.
+func TestExitCommandMultiLineInteractive(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+
+	// Set up mock console to provide continuation lines
+	continuationLines := []string{"+ 2", ")"}
+	lineIndex := 0
+	s.lineIo = &testConsole{
+		OnReadLine: func() (string, error) {
+			if lineIndex >= len(continuationLines) {
+				return "", io.EOF
+			}
+			line := continuationLines[lineIndex]
+			lineIndex++
+			return line, nil
+		},
+		OnPasswordPrompt: func(prompt string) ([]byte, error) {
+			return nil, nil
+		},
+	}
+
+	// Initialize batch so exitCommand can work with it
+	s.batch = NewBatch(nil, nil)
+
+	// Call exitCommand with unbalanced parentheses - this should:
+	// 1. Detect unbalanced parens in "(select 1"
+	// 2. Read continuation lines "+ 2" and ")" from the mock console
+	// 3. Combine into "(select 1\r\n+ 2\r\n)" and execute
+	// 4. Return ErrExitRequested with Exitcode set to 3 (1+2)
+	err := exitCommand(s, []string{"(select 1"}, 1)
+
+	assert.Equal(t, ErrExitRequested, err, "exitCommand should return ErrExitRequested")
+	assert.Equal(t, 3, s.Exitcode, "Exitcode should be 3 (result of 'select 1 + 2')")
 }
