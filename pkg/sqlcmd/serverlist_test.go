@@ -77,7 +77,7 @@ func TestParseInstances(t *testing.T) {
 
 func TestServerlistCommand(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
-	defer buf.Close()
+	defer func() { _ = buf.Close() }()
 
 	// Run the serverlist command
 	c := []string{":serverlist"}

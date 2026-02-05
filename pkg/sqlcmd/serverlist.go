@@ -25,7 +25,7 @@ func ListLocalServers(w io.Writer) {
 		fmt.Fprintln(os.Stderr, err)
 	}
 	for _, s := range instances {
-		fmt.Fprintf(w, "  %s\n", s)
+		_, _ = fmt.Fprintf(w, "  %s\n", s)
 	}
 }
 
@@ -43,7 +43,7 @@ func GetLocalServerInstances() ([]string, error) {
 	if err != nil {
 		return nil, nil
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 	dl, _ := ctx.Deadline()
 	_ = conn.SetDeadline(dl)
 	_, err = conn.Write(bmsg)
