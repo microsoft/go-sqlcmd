@@ -112,23 +112,23 @@ sqlcmd
 
 If no current context exists, `sqlcmd` (with no connection parameters) reverts to the original ODBC `sqlcmd` behavior of creating an interactive session to the default local instance on port 1433 using trusted authentication, otherwise it will create an interactive session to the current context.
 
-### Interactive Mode Commands
+### Piping input to sqlcmd
 
-In interactive mode, `sqlcmd` supports several special commands. The `EXIT` command can execute a query and use its result as the exit code:
+You can pipe SQL commands directly to `sqlcmd` from the command line. This is useful for scripting and automation:
 
-```
-1> EXIT(SELECT 100)
-```
-
-For complex queries, `EXIT(query)` can span multiple lines. When parentheses are unbalanced, `sqlcmd` prompts for continuation:
-
-```
-1> EXIT(SELECT 1
-      -> + 2
-      -> + 3)
+**PowerShell:**
+```powershell
+"SELECT @@version" | sqlcmd -S myserver -d mydb -G
+"SELECT name FROM sys.databases" | sqlcmd -S myserver.database.windows.net -d mydb -G
 ```
 
-The query result (6 in this example) becomes the process exit code.
+**Bash:**
+```bash
+echo "SELECT @@version" | sqlcmd -S myserver -d mydb -G
+cat myscript.sql | sqlcmd -S myserver -d mydb -G
+```
+
+Note: When piping input, `GO` batch terminators are optional—`sqlcmd` will automatically execute the batch when the input ends. However, you can still include `GO` statements if you want to execute multiple batches.
 
 ## Sqlcmd
 
