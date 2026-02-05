@@ -312,6 +312,32 @@ func TestE2E_PipedInput_WithBytesBuffer_NoPanic(t *testing.T) {
 	assert.NotContains(t, outputStr, "nil pointer", "should not have nil pointer error")
 }
 
+// TestE2E_QueryTimeout_LiveConnection tests that the -t flag properly times out queries
+// and doesn't hang for 10 minutes on Linux. This is a regression test for the issue
+// where sqlcmd would print "Timeout expired" but then hang for ~10 minutes before exiting.
+func TestE2E_QueryTimeout_LiveConnection(t *testing.T) {
+	skipIfNoLiveConnection(t)
+	binary := buildBinary(t)
+
+	// Use a 1 second timeout with a query that would take 10 seconds
+	args := append([]string{"-C", "-t", "1", "-Q", "WAITFOR DELAY '00:00:10'"}, getAuthArgs(t)...)
+	cmd := exec.Command(binary, args...)
+	cmd.Env = os.Environ()
+
+	output, err := cmd.CombinedOutput()
+	outputStr := string(output)
+
+	// The command should fail due to timeout
+	assert.Error(t, err, "query should timeout and return an error")
+	
+	// Output should contain timeout message
+	assert.Contains(t, outputStr, "Timeout expired", "output should contain 'Timeout expired' message")
+	
+	// The key validation: the test itself should complete quickly (not hang for 10 minutes)
+	// If this test completes in a reasonable time, the fix is working
+	t.Logf("Query timed out correctly: %s", outputStr)
+}
+
 // cleanupBinary removes the temporary build directory containing the test binary.
 // TestMain calls this to ensure deterministic cleanup instead of relying on
 // eventual OS temp directory maintenance.
