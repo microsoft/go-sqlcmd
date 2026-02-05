@@ -54,6 +54,10 @@ func TestCommandParsing(t *testing.T) {
 		{`:XML ON `, "XML", []string{`ON `}},
 		{`:RESET`, "RESET", []string{""}},
 		{`RESET`, "RESET", []string{""}},
+		{`:HELP`, "HELP", []string{""}},
+		{`:help`, "HELP", []string{""}},
+		{`:PERFTRACE stderr`, "PERFTRACE", []string{"stderr"}},
+		{`:perftrace c:/logs/perf.txt`, "PERFTRACE", []string{"c:/logs/perf.txt"}},
 	}
 
 	for _, test := range commands {
@@ -457,4 +461,63 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
 	}
 
+}
+
+func TestHelpCommand(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+	s.SetOutput(buf)
+
+	err := helpCommand(s, []string{""}, 1)
+	assert.NoError(t, err, "helpCommand should not error")
+
+	output := buf.buf.String()
+	// Verify key commands are listed
+	assert.Contains(t, output, ":connect", "help should list :connect")
+	assert.Contains(t, output, ":exit", "help should list :exit")
+	assert.Contains(t, output, ":help", "help should list :help")
+	assert.Contains(t, output, ":setvar", "help should list :setvar")
+	assert.Contains(t, output, ":listvar", "help should list :listvar")
+	assert.Contains(t, output, ":out", "help should list :out")
+	assert.Contains(t, output, ":error", "help should list :error")
+	assert.Contains(t, output, ":perftrace", "help should list :perftrace")
+	assert.Contains(t, output, ":r", "help should list :r")
+	assert.Contains(t, output, "go", "help should list go")
+}
+
+func TestPerftraceCommand(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+
+	// Test empty argument returns error
+	err := perftraceCommand(s, []string{""}, 1)
+	assert.EqualError(t, err, InvalidCommandError("PERFTRACE", 1).Error(), "perftraceCommand with empty argument")
+
+	// Test redirect to stdout
+	err = perftraceCommand(s, []string{"stdout"}, 1)
+	assert.NoError(t, err, "perftraceCommand with stdout")
+	assert.Equal(t, os.Stdout, s.GetStat(), "stat set to stdout")
+
+	// Test redirect to stderr
+	err = perftraceCommand(s, []string{"stderr"}, 1)
+	assert.NoError(t, err, "perftraceCommand with stderr")
+	assert.Equal(t, os.Stderr, s.GetStat(), "stat set to stderr")
+
+	// Test redirect to file
+	file, err := os.CreateTemp("", "sqlcmdperf")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer func() { _ = os.Remove(file.Name()) }()
+	fileName := file.Name()
+	_ = file.Close()
+
+	err = perftraceCommand(s, []string{fileName}, 1)
+	assert.NoError(t, err, "perftraceCommand with file path")
+	// Clean up by setting stat to nil
+	s.SetStat(nil)
+
+	// Test variable resolution
+	s.vars.Set("myvar", "stdout")
+	err = perftraceCommand(s, []string{"$(myvar)"}, 1)
+	assert.NoError(t, err, "perftraceCommand with a variable")
+	assert.Equal(t, os.Stdout, s.GetStat(), "stat set to stdout using a variable")
 }
