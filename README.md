@@ -172,6 +172,41 @@ switches are most important to you to have implemented next in the new sqlcmd.
 - `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `--vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
+- `:help` displays a list of available sqlcmd commands.
+- `:serverlist` lists local SQL Server instances discovered via the SQL Server Browser service (UDP port 1434). The command queries the SQL Browser service and displays the server name and instance name for each discovered instance. If no instances are found or the Browser service is not running, no output is produced. Non-timeout errors are printed to stderr.
+
+```
+1> :serverlist
+MYSERVER\SQL2019
+MYSERVER\SQL2022
+```
+
+#### Using :serverlist in batch scripts
+
+When automating server discovery, you can capture the output and check for errors:
+
+```batch
+@echo off
+REM Discover local SQL Server instances and connect to the first one
+sqlcmd -Q ":serverlist" 2>nul > servers.txt
+if %errorlevel% neq 0 (
+    echo Error discovering servers
+    exit /b 1
+)
+for /f "tokens=1" %%s in (servers.txt) do (
+    echo Connecting to %%s...
+    sqlcmd -S %%s -Q "SELECT @@SERVERNAME"
+    goto :done
+)
+echo No SQL Server instances found
+:done
+```
+
+To capture stderr separately (for error logging):
+```batch
+sqlcmd -Q ":serverlist" 2>errors.log > servers.txt
+if exist errors.log if not "%%~z errors.log"=="0" type errors.log
+```
 
 ```
 1> select session_id, client_interface_name, program_name from sys.dm_exec_sessions where session_id=@@spid
