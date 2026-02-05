@@ -705,3 +705,45 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be fourth protocol")
 
 }
+
+func TestPrintStatisticsStandardFormat(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+	standardFormat := 0
+	s.PrintStatistics = &standardFormat
+	s.Connect.PacketSize = 4096
+	_, err := s.runQuery("SELECT 1")
+	assert.NoError(t, err, "runQuery failed")
+	output := buf.buf.String()
+	// Standard format should contain specific phrases
+	assert.Contains(t, output, "Network packet size (bytes): 4096", "Should contain packet size")
+	assert.Contains(t, output, "xact[s]:", "Should contain xacts label")
+	assert.Contains(t, output, "Clock Time (ms.):", "Should contain clock time label")
+	assert.Contains(t, output, "xacts per sec.", "Should contain xacts per sec")
+}
+
+func TestPrintStatisticsColonFormat(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+	colonFormat := 1
+	s.PrintStatistics = &colonFormat
+	s.Connect.PacketSize = 8192
+	_, err := s.runQuery("SELECT 1")
+	assert.NoError(t, err, "runQuery failed")
+	output := buf.buf.String()
+	// Colon format: packetSize:numBatches:totalTime:avgTime:batchesPerSec
+	// Should start with 8192:1:
+	assert.Contains(t, output, "8192:1:", "Should contain packet size and batch count in colon format")
+}
+
+func TestPrintStatisticsDisabled(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+	// PrintStatistics is nil by default (disabled)
+	_, err := s.runQuery("SELECT 1")
+	assert.NoError(t, err, "runQuery failed")
+	output := buf.buf.String()
+	// Should not contain statistics output
+	assert.NotContains(t, output, "Network packet size", "Should not contain packet size when disabled")
+	assert.NotContains(t, output, "xact[s]:", "Should not contain xacts label when disabled")
+}
