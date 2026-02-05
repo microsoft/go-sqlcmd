@@ -113,6 +113,16 @@ func newCommands() Commands {
 			action: xmlCommand,
 			name:   "XML",
 		},
+		"HELP": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:HELP(?:[ \t]+(.*$)|$)`),
+			action: helpCommand,
+			name:   "HELP",
+		},
+		"SERVERLIST": {
+			regex:  regexp.MustCompile(`(?im)^[ \t]*:SERVERLIST(?:[ \t]+(.*$)|$)`),
+			action: serverlistCommand,
+			name:   "SERVERLIST",
+		},
 	}
 }
 
@@ -593,6 +603,64 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 	} else {
 		s.Format.XmlMode(false)
 	}
+	return nil
+}
+
+// helpCommand displays the list of available sqlcmd commands
+func helpCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
+		return InvalidCommandError("HELP", line)
+	}
+	helpText := `:!! [<command>]
+  - Executes a command in the operating system shell.
+:connect server[\instance] [-l timeout] [-U user [-P password]]
+  - Connects to a SQL Server instance.
+:ed
+  - Edits the current or last executed statement cache.
+:error <dest>
+  - Redirects error output to a file, stderr, or stdout.
+:exit
+  - Quits sqlcmd immediately.
+:exit()
+  - Execute statement cache; quit with no return value.
+:exit(<query>)
+  - Execute the specified query; returns numeric result.
+go [<n>]
+  - Executes the statement cache (n times).
+:help
+  - Shows this list of commands.
+:list
+  - Prints the content of the statement cache.
+:listvar
+  - Lists the set sqlcmd scripting variables.
+:on error [exit|ignore]
+  - Action for batch or sqlcmd command errors.
+:out <filename>|stderr|stdout
+  - Redirects query output to a file, stderr, or stdout.
+:quit
+  - Quits sqlcmd immediately.
+:r <filename>
+  - Append file contents to the statement cache.
+:reset
+  - Discards the statement cache.
+:serverlist
+  - Lists local SQL Server instances.
+:setvar {variable}
+  - Removes a sqlcmd scripting variable.
+:setvar <variable> <value>
+  - Sets a sqlcmd scripting variable.
+:xml [on|off]
+  - Sets XML output mode.
+`
+	_, err := s.GetOutput().Write([]byte(helpText))
+	return err
+}
+
+func serverlistCommand(s *Sqlcmd, args []string, line uint) error {
+	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
+		return InvalidCommandError("SERVERLIST", line)
+	}
+	ListLocalServers(s.GetOutput())
 	return nil
 }
 
