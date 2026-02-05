@@ -4,10 +4,10 @@
 package file
 
 import (
-	"github.com/microsoft/go-sqlcmd/internal/io/folder"
-	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 )
 
 func CloseFile(f *os.File) {
@@ -55,7 +55,7 @@ func Exists(filename string) (exists bool) {
 }
 
 func GetContents(filename string) string {
-	b, err := ioutil.ReadFile(filename)
+	b, err := os.ReadFile(filename)
 	checkErr(err)
 
 	return string(b)
