@@ -66,6 +66,7 @@ type SQLCmdArguments struct {
 	ErrorsToStderr              *int
 	Headers                     int
 	UnicodeOutputFile           bool
+	NoBOM                       bool
 	Version                     bool
 	ColumnSeparator             string
 	ScreenWidth                 *int
@@ -171,6 +172,8 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = rangeParameterError("-t", fmt.Sprint(a.QueryTimeout), 0, 65534, true)
 		case a.ServerCertificate != "" && !encryptConnectionAllowsTLS(a.EncryptConnection):
 			err = localizer.Errorf("The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).")
+		case a.NoBOM && !a.UnicodeOutputFile:
+			err = localizer.Errorf("The --no-bom parameter requires -u (Unicode output file).")
 		}
 	}
 	if err != nil {
@@ -457,6 +460,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().IntVarP(&args.Headers, "headers", "h", 0, localizer.Sprintf("Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed"))
 
 	rootCmd.Flags().BoolVarP(&args.UnicodeOutputFile, "unicode-output-file", "u", false, localizer.Sprintf("Specifies that all output files are encoded with little-endian Unicode"))
+	rootCmd.Flags().BoolVar(&args.NoBOM, "no-bom", false, localizer.Sprintf("Omit the UTF-16 BOM from Unicode output files. Use with -u for ODBC sqlcmd compatibility"))
 	rootCmd.Flags().StringVarP(&args.ColumnSeparator, "column-separator", "s", "", localizer.Sprintf("Specifies the column separator character. Sets the %s variable.", localizer.ColSeparatorVar))
 	rootCmd.Flags().BoolVarP(&args.TrimSpaces, "trim-spaces", "W", false, localizer.Sprintf("Remove trailing spaces from a column"))
 	_ = rootCmd.Flags().BoolP("multi-subnet-failover", "M", false, localizer.Sprintf("Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster"))
@@ -816,6 +820,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	s.SetupCloseHandler()
 	defer s.StopCloseHandler()
 	s.UnicodeOutputFile = args.UnicodeOutputFile
+	s.NoBOM = args.NoBOM
 
 	if args.DisableCmd != nil {
 		s.Cmd.DisableSysCommands(args.errorOnBlockedCmd())
