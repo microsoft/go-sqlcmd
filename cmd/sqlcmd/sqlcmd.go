@@ -778,6 +778,10 @@ func isConsoleInitializationRequired(connect *sqlcmd.ConnectSettings, args *SQLC
 	} else if iactive {
 		// Interactive mode also requires console
 		needsConsole = true
+	} else if isStdinRedirected && args.InputFile == nil && args.Query == "" && len(args.ChangePasswordAndExit) == 0 {
+		// Stdin is redirected (piped input) and no input file or query specified
+		// We need a console to read from the redirected stdin (fixes #607)
+		needsConsole = true
 	}
 
 	return needsConsole, iactive
