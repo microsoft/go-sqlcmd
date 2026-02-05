@@ -321,9 +321,12 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 			return InvalidFileError(err, args[0])
 		}
 		if s.UnicodeOutputFile {
-			// ODBC sqlcmd doesn't write a BOM but we will.
-			// Maybe the endian-ness should be configurable.
-			win16le := unicode.UTF16(unicode.LittleEndian, unicode.UseBOM)
+			// By default we write a BOM, but --no-bom omits it for ODBC sqlcmd compatibility
+			bomPolicy := unicode.UseBOM
+			if s.NoBOM {
+				bomPolicy = unicode.IgnoreBOM
+			}
+			win16le := unicode.UTF16(unicode.LittleEndian, bomPolicy)
 			encoder := transform.NewWriter(o, win16le.NewEncoder())
 			s.SetOutput(encoder)
 		} else {

@@ -150,7 +150,7 @@ The following switches have different behavior in this version of `sqlcmd` compa
   - If both `-N` and `-C` are provided, sqlcmd will use their values for encryption negotiation.
   - To provide the value of the host name in the server certificate when using strict encryption, pass the host name with `-F`. Example: `-Ns -F myhost.domain.com`
   - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
-- `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
+- `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it. ODBC sqlcmd does not write a BOM; use `--no-bom` with `-u` if you need strict ODBC compatibility.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 - `-i` doesn't handle a comma `,` in a file name correctly unless the file name argument is triple quoted. For example:

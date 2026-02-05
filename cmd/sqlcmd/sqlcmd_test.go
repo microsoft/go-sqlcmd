@@ -75,6 +75,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-u", "-A"}, func(args SQLCmdArguments) bool {
 			return args.UnicodeOutputFile && args.DedicatedAdminConnection
 		}},
+		{[]string{"-u", "--no-bom"}, func(args SQLCmdArguments) bool {
+			return args.UnicodeOutputFile && args.NoBOM
+		}},
 		{[]string{"--version"}, func(args SQLCmdArguments) bool {
 			return args.Version
 		}},
@@ -220,6 +223,7 @@ func TestValidateFlags(t *testing.T) {
 		{[]string{"-a", "100"}, "'-a 100': Packet size has to be a number between 512 and 32767."},
 		{[]string{"-h-4"}, "'-h -4': header value must be either -1 or a value between 1 and 2147483647"},
 		{[]string{"-w", "6"}, "'-w 6': value must be greater than 8 and less than 65536."},
+		{[]string{"--no-bom"}, "The --no-bom parameter requires -u (Unicode output file)."},
 	}
 
 	for _, test := range commands {
@@ -294,6 +298,50 @@ func TestUnicodeOutput(t *testing.T) {
 		expectedBytes, err := os.ReadFile(outfile)
 		if assert.NoErrorf(t, err, "Unable to open %s", outfile) {
 			assert.Equalf(t, expectedBytes, bytes, "unicode output bytes should match %s", outfile)
+		}
+	}
+}
+
+func TestUnicodeOutputNoBOM(t *testing.T) {
+	o, err := os.CreateTemp("", "sqlcmdnobom")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer func() { _ = os.Remove(o.Name()) }()
+	defer func() { _ = o.Close() }()
+	args = newArguments()
+	args.InputFile = []string{"testdata/selectutf8.txt"}
+	args.OutputFile = o.Name()
+	args.UnicodeOutputFile = true
+	args.NoBOM = true
+	setAzureAuthArgIfNeeded(&args)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	fileBytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		// With --no-bom, the file should NOT start with FF FE (UTF-16 LE BOM)
+		assert.True(t, len(fileBytes) >= 2, "output file should have content")
+		hasBOM := len(fileBytes) >= 2 && fileBytes[0] == 0xFF && fileBytes[1] == 0xFE
+		assert.False(t, hasBOM, "output file should NOT have BOM when --no-bom is used")
+
+		// Verify content is valid UTF-16 LE by decoding and checking for expected text
+		// UTF-16 LE uses 2 bytes per character, so file size should be even
+		assert.Equal(t, 0, len(fileBytes)%2, "UTF-16 LE output should have even number of bytes")
+		// Decode first few bytes as UTF-16 LE and verify it contains recognizable content
+		if len(fileBytes) >= 4 {
+			// Check for ASCII-range characters encoded as UTF-16 LE (low byte first, high byte = 0)
+			// Common characters like digits, letters have high byte = 0 in UTF-16 LE
+			hasValidUtf16Pattern := false
+			for i := 0; i+1 < len(fileBytes); i += 2 {
+				// In UTF-16 LE, ASCII chars have low byte = char, high byte = 0
+				if fileBytes[i+1] == 0 && fileBytes[i] >= 0x20 && fileBytes[i] < 0x7F {
+					hasValidUtf16Pattern = true
+					break
+				}
+			}
+			assert.True(t, hasValidUtf16Pattern, "output should contain valid UTF-16 LE encoded content")
 		}
 	}
 }
