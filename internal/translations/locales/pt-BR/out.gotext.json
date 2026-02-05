@@ -54,6 +54,13 @@
             "fuzzy": true
         },
         {
+            "id": "configuration file (YAML format, use .yaml or .yml extension)",
+            "message": "configuration file (YAML format, use .yaml or .yml extension)",
+            "translation": "configuration file (YAML format, use .yaml or .yml extension)",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "log level, error=0, warn=1, info=2, debug=3, trace=4",
             "message": "log level, error=0, warn=1, info=2, debug=3, trace=4",
             "translation": "nível de log, erro=0, aviso=1, informações=2, depuração=3, rastreamento=4",
