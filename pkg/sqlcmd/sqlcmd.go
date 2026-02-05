@@ -86,8 +86,11 @@ type Sqlcmd struct {
 	UnicodeOutputFile bool
 	// EchoInput tells the GO command to print the batch text before running the query
 	EchoInput bool
-	colorizer color.Colorizer
-	termchan  chan os.Signal
+	// PrintStatistics controls printing of performance statistics after each batch
+	// nil means disabled, 0 means standard format, 1 means colon-separated format
+	PrintStatistics *int
+	colorizer       color.Colorizer
+	termchan        chan os.Signal
 }
 
 // New creates a new Sqlcmd instance.
@@ -421,6 +424,7 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 // -102: Conversion error occurred when selecting return value
 func (s *Sqlcmd) runQuery(query string) (int, error) {
 	retcode := -101
+	startTime := time.Now()
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
 	timeout := s.vars.QueryTimeoutSeconds()
@@ -508,6 +512,8 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		}
 	}
 	s.Format.EndBatch()
+	elapsedMs := time.Since(startTime).Milliseconds()
+	s.printStatistics(elapsedMs, 1)
 	return retcode, qe
 }
 
@@ -579,4 +585,38 @@ func (s *Sqlcmd) SetupCloseHandler() {
 // StopCloseHandler unsubscribes the Sqlcmd from the SIGTERM signal
 func (s *Sqlcmd) StopCloseHandler() {
 	signal.Stop(s.termchan)
+}
+
+// printStatistics prints performance statistics after a batch execution
+// if PrintStatistics is enabled
+func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int) {
+	if s.PrintStatistics == nil || numBatches <= 0 {
+		return
+	}
+
+	// Get packet size from connect settings or use default
+	packetSize := s.Connect.PacketSize
+	if packetSize <= 0 {
+		packetSize = 4096 // default packet size
+	}
+
+	// Ensure minimum 1ms for calculations
+	if elapsedMs < 1 {
+		elapsedMs = 1
+	}
+
+	avgTime := float64(elapsedMs) / float64(numBatches)
+	batchesPerSec := float64(numBatches) / (float64(elapsedMs) / 1000.0)
+
+	out := s.GetOutput()
+	if *s.PrintStatistics == 1 {
+		// Colon-separated format: n:x:t1:t2:t3
+		// packetSize:numBatches:totalTime:avgTime:batchesPerSec
+		_, _ = fmt.Fprintf(out, "\n%d:%d:%d:%.2f:%.2f\n", packetSize, numBatches, elapsedMs, avgTime, batchesPerSec)
+	} else {
+		// Standard format
+		_, _ = fmt.Fprintf(out, "\nNetwork packet size (bytes): %d\n", packetSize)
+		_, _ = fmt.Fprintf(out, "%d xact[s]:\n", numBatches)
+		_, _ = fmt.Fprintf(out, "Clock Time (ms.): total   %7d  avg   %.2f (%.2f xacts per sec.)\n", elapsedMs, avgTime, batchesPerSec)
+	}
 }
