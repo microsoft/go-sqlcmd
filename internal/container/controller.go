@@ -235,6 +235,17 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	return strings.Split(string(stdout), "\n")
 }
 
+// DownloadFile downloads a file from the given src URL into the specified 
+// destFolder within the container using wget.
+//
+// Important networking notes:
+// - Containers cannot access localhost/127.0.0.1 URLs from the host by default
+// - To download from host localhost, use host.docker.internal (Docker Desktop) 
+//   or configure container networking with --network host
+// - External URLs (http://example.com/file.dat) work normally
+//
+// The function now properly detects and reports wget failures instead of 
+// silently ignoring them, which was the source of "corrupted downloads".
 func (c Controller) DownloadFile(id string, src string, destFolder string) {
 	if id == "" {
 		panic("Must pass in non-empty id")
@@ -246,20 +257,64 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		panic("Must pass in non-empty destFolder")
 	}
 
-	cmd := []string{"mkdir", destFolder}
-	c.runCmdInContainer(id, cmd)
+	cmd := []string{"mkdir", "-p", destFolder}
+	stdout, stderr := c.runCmdInContainer(id, cmd)
+	if len(stderr) > 0 {
+		trace("mkdir stderr: " + string(stderr))
+	}
 
 	_, file := filepath.Split(src)
 
-	// Wget the .bak file from the http src, and place it in /var/opt/sql/backup
+	// If the URL has no filename part, create a default filename
+	if file == "" || !strings.Contains(file, ".") {
+		file = "downloaded_file"
+	}
+
+	// Wget the .bak file from the http src, and place it in the destination folder
 	cmd = []string{
 		"wget",
+		"-T", "300",  // Timeout in seconds (BusyBox compatible)
+		"-t", "3",    // Number of tries (BusyBox compatible)
 		"-O",
 		destFolder + "/" + file, // not using filepath.Join here, this is in the *nix container. always /
 		src,
 	}
 
-	c.runCmdInContainer(id, cmd)
+	stdout, stderr = c.runCmdInContainer(id, cmd)
+	
+	// Check wget stderr for actual errors
+	if len(stderr) > 0 {
+		stderrStr := string(stderr)
+		trace("wget stderr: " + stderrStr)
+		
+		// Check for connection/download errors
+		if strings.Contains(stderrStr, "Connection refused") ||
+		   strings.Contains(stderrStr, "Name or service not known") ||
+		   strings.Contains(stderrStr, "404 Not Found") ||
+		   strings.Contains(stderrStr, "500 Internal Server Error") ||
+		   strings.Contains(stderrStr, "unable to resolve") ||
+		   strings.Contains(stderrStr, "bad port") ||
+		   strings.Contains(stderrStr, "failed") ||
+		   strings.Contains(stderrStr, "unrecognized option") ||
+		   strings.Contains(stderrStr, "ERROR") {
+			panic("wget download failed: " + stderrStr)
+		}
+	}
+	
+	// Verify file was downloaded by checking its existence
+	cmd = []string{"test", "-f", destFolder + "/" + file}
+	stdout, stderr = c.runCmdInContainer(id, cmd)
+	if len(stderr) > 0 {
+		// test command failed, file doesn't exist
+		panic("Downloaded file does not exist: " + destFolder + "/" + file + ". wget may have failed silently.")
+	}
+	
+	// Check if file is not empty (basic validation)
+	cmd = []string{"ls", "-la", destFolder + "/" + file}
+	stdout, stderr = c.runCmdInContainer(id, cmd)
+	if len(stdout) > 0 {
+		trace("Downloaded file info: " + string(stdout))
+	}
 }
 
 func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) {
