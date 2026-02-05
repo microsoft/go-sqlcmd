@@ -1,0 +1,91 @@
+{
+    "name": "go-sqlcmd Development",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "devcontainer",
+    "workspaceFolder": "/workspaces/go-sqlcmd",
+    "shutdownAction": "stopCompose",
+
+    // Configure tool-specific properties
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "golang.go",
+                "ms-mssql.mssql",
+                "ms-azuretools.vscode-docker",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "eamodio.gitlens",
+                "EditorConfig.EditorConfig",
+                "streetsidesoftware.code-spell-checker"
+            ],
+            "settings": {
+                "go.toolsManagement.autoUpdate": false,
+                "go.useLanguageServer": true,
+                "go.lintTool": "golangci-lint",
+                "go.lintFlags": ["--fast"],
+                "go.testEnvVars": {
+                    "SQLCMDSERVER": "localhost",
+                    "SQLCMDUSER": "sa",
+                    "SQLCMDPASSWORD": "${env:SQLCMDPASSWORD}",
+                    "SQLCMDDATABASE": "master"
+                },
+                "mssql.connections": [
+                    {
+                        "server": "localhost,1433",
+                        "database": "master",
+                        "authenticationType": "SqlLogin",
+                        "user": "sa",
+                        "password": "",
+                        "savePassword": false,
+                        "profileName": "sqlcmd-container (use SQLCMDPASSWORD env var)",
+                        "encrypt": "Optional",
+                        "trustServerCertificate": true
+                    }
+                ],
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "golang.go",
+                "[go]": {
+                    "editor.formatOnSave": true,
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": "explicit"
+                    }
+                },
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    },
+
+    // Forward the SQL Server port
+    "forwardPorts": [1433],
+    "portsAttributes": {
+        "1433": {
+            "label": "SQL Server",
+            "onAutoForward": "silent"
+        }
+    },
+
+    // Use 'postCreateCommand' to run commands after the container is created
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+    // Environment variables for tests - password must match docker-compose.yml
+    // This is a development-only container credential, not a production secret.
+    // For GitHub Codespaces, you can override SQLCMDPASSWORD via Codespaces Secrets.
+    "remoteEnv": {
+        "SQLCMDSERVER": "localhost",
+        "SQLCMDUSER": "sa",
+        "SQLCMDPASSWORD": "${localEnv:SQLCMDPASSWORD:SqlCmd@2025!}",
+        "SQLCMDDATABASE": "master",
+        "SQLCMDDBNAME": "master"
+    },
+
+    // Features to add to the dev container
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "version": "latest",
+            "moby": true
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "version": "latest"
+        }
+    }
+}
