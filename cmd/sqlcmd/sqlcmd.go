@@ -294,6 +294,8 @@ func Execute(version string) {
 // We need to rewrite the arguments to add -i and -v in front of each space-delimited value to be Cobra-friendly.
 // For flags like -r we need to inject the default value if the user omits it
 func convertOsArgs(args []string) (cargs []string) {
+	args = preprocessHelpFlags(args)
+
 	flag := ""
 	first := true
 	for i, a := range args {
@@ -321,6 +323,31 @@ func convertOsArgs(args []string) (cargs []string) {
 		}
 	}
 	return
+}
+
+// preprocessHelpFlags converts -h (without number) and -help to help flags.
+// -h with a number is left alone for header count backward compatibility.
+func preprocessHelpFlags(args []string) []string {
+	result := make([]string, 0, len(args))
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+		if arg == "-help" {
+			result = append(result, "--help")
+			continue
+		}
+		if arg == "-h" {
+			if i+1 < len(args) {
+				if _, err := strconv.Atoi(args[i+1]); err == nil {
+					result = append(result, arg) // -h <number> for headers
+					continue
+				}
+			}
+			result = append(result, "-?")
+			continue
+		}
+		result = append(result, arg)
+	}
+	return result
 }
 
 // If args[i] is the given flag and args[i+1] is another flag, returns the value to append after the flag
