@@ -67,6 +67,7 @@ type Sqlcmd struct {
 	db               *sql.Conn
 	out              io.WriteCloser
 	err              io.WriteCloser
+	stat             io.WriteCloser
 	batch            *Batch
 	echoFileLines    bool
 	// Exitcode is returned to the operating system when the process exits
@@ -234,6 +235,22 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 		s.err.Close()
 	}
 	s.err = e
+}
+
+// GetStat returns the io.Writer to use for performance statistics
+func (s *Sqlcmd) GetStat() io.Writer {
+	if s.stat == nil {
+		return s.GetOutput()
+	}
+	return s.stat
+}
+
+// SetStat sets the io.WriteCloser to use for performance statistics
+func (s *Sqlcmd) SetStat(st io.WriteCloser) {
+	if s.stat != nil && s.stat != os.Stderr && s.stat != os.Stdout {
+		_ = s.stat.Close()
+	}
+	s.stat = st
 }
 
 // WriteError writes the error on specified stream
