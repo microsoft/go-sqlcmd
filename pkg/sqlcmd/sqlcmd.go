@@ -431,6 +431,9 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	}
 	retmsg := &sqlexp.ReturnMessage{}
 	rows, qe := s.db.QueryContext(ctx, query, retmsg)
+	if rows != nil {
+		defer func() { _ = rows.Close() }()
+	}
 	if qe != nil {
 		s.Format.AddError(qe)
 	}
