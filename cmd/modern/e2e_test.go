@@ -12,6 +12,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -324,7 +325,11 @@ func TestE2E_QueryTimeout_LiveConnection(t *testing.T) {
 	cmd := exec.Command(binary, args...)
 	cmd.Env = os.Environ()
 
+	// Measure execution time - this is the key validation
+	// The command should complete in a few seconds, not 10 minutes
+	start := time.Now()
 	output, err := cmd.CombinedOutput()
+	elapsed := time.Since(start)
 	outputStr := string(output)
 
 	// The command should fail due to timeout
@@ -333,9 +338,14 @@ func TestE2E_QueryTimeout_LiveConnection(t *testing.T) {
 	// Output should contain timeout message
 	assert.Contains(t, outputStr, "Timeout expired", "output should contain 'Timeout expired' message")
 
-	// The key validation: the test itself should complete quickly (not hang for 10 minutes)
-	// If this test completes in a reasonable time, the fix is working
-	t.Logf("Query timed out correctly: %s", outputStr)
+	// Critical: verify the command completed quickly (within 30 seconds, not 10 minutes)
+	// If the bug exists, this would take ~10 minutes on Linux
+	maxDuration := 30 * time.Second
+	if elapsed > maxDuration {
+		t.Errorf("Command took too long to complete: %v (expected < %v). The timeout hang bug may still exist.", elapsed, maxDuration)
+	}
+
+	t.Logf("Query timed out correctly in %v: %s", elapsed, outputStr)
 }
 
 // cleanupBinary removes the temporary build directory containing the test binary.
