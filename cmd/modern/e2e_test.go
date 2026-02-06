@@ -329,10 +329,10 @@ func TestE2E_QueryTimeout_LiveConnection(t *testing.T) {
 
 	// The command should fail due to timeout
 	assert.Error(t, err, "query should timeout and return an error")
-	
+
 	// Output should contain timeout message
 	assert.Contains(t, outputStr, "Timeout expired", "output should contain 'Timeout expired' message")
-	
+
 	// The key validation: the test itself should complete quickly (not hang for 10 minutes)
 	// If this test completes in a reasonable time, the fix is working
 	t.Logf("Query timed out correctly: %s", outputStr)
