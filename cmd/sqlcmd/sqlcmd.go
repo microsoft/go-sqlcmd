@@ -82,6 +82,9 @@ type SQLCmdArguments struct {
 	ChangePassword              string
 	ChangePasswordAndExit       string
 	TraceFile                   string
+	CodePage                    string
+	codePageSettings            *sqlcmd.CodePageSettings
+	ListCodePages               bool
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -171,6 +174,12 @@ func (a *SQLCmdArguments) Validate(c *cobra.Command) (err error) {
 			err = rangeParameterError("-t", fmt.Sprint(a.QueryTimeout), 0, 65534, true)
 		case a.ServerCertificate != "" && !encryptConnectionAllowsTLS(a.EncryptConnection):
 			err = localizer.Errorf("The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).")
+		case a.CodePage != "":
+			if codePageSettings, parseErr := sqlcmd.ParseCodePage(a.CodePage); parseErr != nil {
+				err = localizer.Errorf(`'-f %s': %v`, a.CodePage, parseErr)
+			} else {
+				a.codePageSettings = codePageSettings
+			}
 		}
 	}
 	if err != nil {
@@ -237,6 +246,17 @@ func Execute(version string) {
 					fmt.Println(localizer.Sprintf("Servers:"))
 				}
 				listLocalServers()
+				os.Exit(0)
+			}
+			// List supported codepages
+			if args.ListCodePages {
+				fmt.Println(localizer.Sprintf("Supported Code Pages:"))
+				fmt.Println()
+				fmt.Printf("%-8s %-20s %s\n", "Code", "Name", "Description")
+				fmt.Printf("%-8s %-20s %s\n", "----", "----", "-----------")
+				for _, cp := range sqlcmd.SupportedCodePages() {
+					fmt.Printf("%-8d %-20s %s\n", cp.CodePage, cp.Name, cp.Description)
+				}
 				os.Exit(0)
 			}
 			if len(argss) > 0 {
@@ -479,6 +499,8 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().BoolVarP(&args.EnableColumnEncryption, "enable-column-encryption", "g", false, localizer.Sprintf("Enable column encryption"))
 	rootCmd.Flags().StringVarP(&args.ChangePassword, "change-password", "z", "", localizer.Sprintf("New password"))
 	rootCmd.Flags().StringVarP(&args.ChangePasswordAndExit, "change-password-exit", "Z", "", localizer.Sprintf("New password and exit"))
+	rootCmd.Flags().StringVarP(&args.CodePage, "code-page", "f", "", localizer.Sprintf("Specifies the code page for input/output. Use 65001 for UTF-8. Format: codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]"))
+	rootCmd.Flags().BoolVar(&args.ListCodePages, "list-codepages", false, localizer.Sprintf("List supported code pages and exit"))
 }
 
 func setScriptVariable(v string) string {
@@ -816,6 +838,11 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	s.SetupCloseHandler()
 	defer s.StopCloseHandler()
 	s.UnicodeOutputFile = args.UnicodeOutputFile
+
+	// Apply codepage settings (already parsed and validated in Validate)
+	if args.codePageSettings != nil {
+		s.CodePage = args.codePageSettings
+	}
 
 	if args.DisableCmd != nil {
 		s.Cmd.DisableSysCommands(args.errorOnBlockedCmd())

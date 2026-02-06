@@ -464,3 +464,99 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 	}
 
 }
+
+func TestOutputCodePageCommand(t *testing.T) {
+	tests := []struct {
+		name          string
+		codepage      int
+		expectedBytes []byte
+		inputText     string
+	}{
+		{
+			name:          "UTF-8 output",
+			codepage:      65001,
+			inputText:     "café",
+			expectedBytes: []byte("café"),
+		},
+		{
+			name:          "Windows-1252 output",
+			codepage:      1252,
+			inputText:     "café",
+			expectedBytes: []byte{0x63, 0x61, 0x66, 0xe9}, // "café" in Windows-1252
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			s, buf := setupSqlCmdWithMemoryOutput(t)
+			defer func() { _ = buf.Close() }()
+
+			// Set up codepage
+			s.CodePage = &CodePageSettings{
+				OutputCodePage: tt.codepage,
+			}
+
+			// Create temp file for output
+			file, err := os.CreateTemp("", "sqlcmdout")
+			require.NoError(t, err, "os.CreateTemp")
+			defer func() { _ = os.Remove(file.Name()) }()
+			fileName := file.Name()
+			_ = file.Close()
+
+			// Run the OUT command
+			err = outCommand(s, []string{fileName}, 1)
+			require.NoError(t, err, "outCommand")
+
+			// Write some text
+			_, err = s.GetOutput().Write([]byte(tt.inputText))
+			require.NoError(t, err, "Write")
+
+			// Close to flush
+			if closer, ok := s.GetOutput().(interface{ Close() error }); ok {
+				require.NoError(t, closer.Close(), "Close output")
+			}
+
+			// Read the file and check encoding
+			content, err := os.ReadFile(fileName)
+			require.NoError(t, err, "ReadFile")
+			assert.Equal(t, tt.expectedBytes, content, "Output encoding mismatch")
+		})
+	}
+}
+
+func TestErrorCodePageCommand(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+
+	// Set up codepage for Windows-1252
+	s.CodePage = &CodePageSettings{
+		OutputCodePage: 1252,
+	}
+
+	// Create temp file for error output
+	file, err := os.CreateTemp("", "sqlcmderr")
+	require.NoError(t, err, "os.CreateTemp")
+	defer func() { _ = os.Remove(file.Name()) }()
+	fileName := file.Name()
+	_ = file.Close()
+
+	// Run the ERROR command
+	err = errorCommand(s, []string{fileName}, 1)
+	require.NoError(t, err, "errorCommand")
+
+	// Write some text with special characters
+	_, err = s.err.Write([]byte("Error: café"))
+	require.NoError(t, err, "Write")
+
+	// Close to flush
+	if closer, ok := s.err.(interface{ Close() error }); ok {
+		require.NoError(t, closer.Close(), "Close error")
+	}
+
+	// Read the file and check encoding
+	content, err := os.ReadFile(fileName)
+	require.NoError(t, err, "ReadFile")
+	// "Error: café" in Windows-1252
+	expected := []byte{0x45, 0x72, 0x72, 0x6f, 0x72, 0x3a, 0x20, 0x63, 0x61, 0x66, 0xe9}
+	assert.Equal(t, expected, content, "Error output encoding mismatch")
+}
