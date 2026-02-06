@@ -158,3 +158,30 @@ func TestFormatterXmlMode(t *testing.T) {
 	assert.NoError(t, err, "runSqlCmd returned error")
 	assert.Equal(t, `<sys.databases name="master"/>`+SqlcmdEol, buf.buf.String())
 }
+
+func TestFormatterFloatDecimalNotation(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
+	query := `SELECT CAST(4713347.3103808956 AS FLOAT) as val`
+	err := runSqlCmd(t, s, []string{query, "GO"})
+	assert.NoError(t, err)
+
+	output := buf.buf.String()
+	assert.NotContains(t, output, "e+", "typical floats should use decimal notation")
+	assert.Contains(t, output, "4713347.310380", "should contain decimal value")
+}
+
+func TestFormatterFloatScientificFallback(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+
+	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
+	query := `SELECT CAST(1e100 AS FLOAT) as val`
+	err := runSqlCmd(t, s, []string{query, "GO"})
+	assert.NoError(t, err)
+
+	output := buf.buf.String()
+	assert.Contains(t, output, "e+", "extreme values should use scientific notation")
+}
