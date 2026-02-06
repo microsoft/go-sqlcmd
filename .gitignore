@@ -36,6 +36,7 @@ linux-s390x/sqlcmd
 # Build artifacts in root
 /sqlcmd
 /sqlcmd_binary
+/modern
 
 # certificates used for local testing
 *.der
