@@ -4,11 +4,12 @@
 package tool
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestInit(t *testing.T) {
@@ -94,12 +95,9 @@ func TestHowToInstall(t *testing.T) {
 
 func TestRunWhenNotInstalled(t *testing.T) {
 	tool := &tool{}
-	assert.Panics(t, func() {
-		_, err := tool.Run([]string{})
-		if err != nil {
-			return
-		}
-	})
+	_, err := tool.Run([]string{})
+	assert.Error(t, err, "Run should return error when IsInstalled was not called first")
+	assert.Contains(t, err.Error(), "Call IsInstalled before Run")
 }
 
 func TestRun(t *testing.T) {
