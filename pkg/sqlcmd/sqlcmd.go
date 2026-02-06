@@ -413,6 +413,18 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	return b.String()
 }
 
+// safeColumnTypes wraps rows.ColumnTypes() with panic recovery.
+// The go-mssqldb driver panics for unsupported types like GEOGRAPHY/GEOMETRY (type 240).
+func safeColumnTypes(rows *sql.Rows) (cols []*sql.ColumnType, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = localizer.Errorf("unsupported column type: %v", r)
+			cols = nil
+		}
+	}()
+	return rows.ColumnTypes()
+}
+
 // runQuery runs the query and prints the results
 // The return value is based on the first cell of the last column of the last result set.
 // If it's numeric, it will be converted to int
@@ -476,7 +488,7 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		case sqlexp.MsgNext:
 			if first {
 				first = false
-				cols, err = rows.ColumnTypes()
+				cols, err = safeColumnTypes(rows)
 				if err != nil {
 					retcode = -100
 					qe = s.handleError(&retcode, err)
