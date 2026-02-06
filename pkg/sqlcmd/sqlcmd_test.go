@@ -705,3 +705,12 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be fourth protocol")
 
 }
+
+func TestSafeColumnTypesRecoversPanic(t *testing.T) {
+	// A nil *sql.Rows will panic when ColumnTypes() is called.
+	// safeColumnTypes should recover and return an error instead.
+	var rows *sql.Rows
+	cols, err := safeColumnTypes(rows)
+	assert.Nil(t, cols)
+	assert.Error(t, err)
+}
