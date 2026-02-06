@@ -32,7 +32,8 @@ func (t *tool) IsInstalled() bool {
 	}
 
 	t.installed = new(bool)
-	if file.Exists(t.exeName) {
+	// Handle case where tool wasn't found during Init (exeName is empty)
+	if t.exeName != "" && file.Exists(t.exeName) {
 		*t.installed = true
 	} else {
 		*t.installed = false
@@ -54,11 +55,32 @@ func (t *tool) HowToInstall() string {
 
 func (t *tool) Run(args []string) (int, error) {
 	if t.installed == nil {
-		panic("Call IsInstalled before Run")
+		return 1, fmt.Errorf("internal error: Call IsInstalled before Run")
 	}
 
 	cmd := t.generateCommandLine(args)
 	err := cmd.Run()
 
-	return cmd.ProcessState.ExitCode(), err
+	exitCode := 0
+	if cmd.ProcessState != nil {
+		exitCode = cmd.ProcessState.ExitCode()
+	}
+
+	return exitCode, err
+}
+
+func (t *tool) RunWithOutput(args []string) (string, int, error) {
+	if t.installed == nil {
+		return "", 1, fmt.Errorf("internal error: Call IsInstalled before RunWithOutput")
+	}
+
+	cmd := t.generateCommandLine(args)
+	output, err := cmd.Output()
+
+	exitCode := 0
+	if cmd.ProcessState != nil {
+		exitCode = cmd.ProcessState.ExitCode()
+	}
+
+	return string(output), exitCode, err
 }
