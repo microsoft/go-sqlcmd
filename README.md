@@ -151,6 +151,7 @@ The following switches have different behavior in this version of `sqlcmd` compa
   - To provide the value of the host name in the server certificate when using strict encryption, pass the host name with `-F`. Example: `-Ns -F myhost.domain.com`
   - More information about client/server encryption negotiation can be found at <https://docs.microsoft.com/openspecs/windows_protocols/ms-tds/60f56408-0188-4cd5-8b90-25c6f2423868>
 - `-u` The generated Unicode output file will have the UTF16 Little-Endian Byte-order mark (BOM) written to it.
+- `-f` Specifies the code page for input and output files. See [Code Page Support](#code-page-support) below for details and examples.
 - Some behaviors that were kept to maintain compatibility with `OSQL` may be changed, such as alignment of column headers for some data types.
 - All commands must fit on one line, even `EXIT`. Interactive mode will not check for open parentheses or quotes for commands and prompt for successive lines. The ODBC sqlcmd allows the query run by `EXIT(query)` to span multiple lines.
 - `-i` doesn't handle a comma `,` in a file name correctly unless the file name argument is triple quoted. For example:
@@ -254,6 +255,79 @@ To see a list of available styles along with colored syntax samples, use this co
 ```
 :list color
 ```
+
+### Code Page Support
+
+The `-f` flag specifies the code page for reading input files and writing output. This is useful when working with SQL scripts saved in legacy encodings or when output needs to be in a specific encoding.
+
+#### Format
+
+```
+-f codepage                         # Set both input and output to the same codepage
+-f i:codepage                       # Set input codepage only  
+-f o:codepage                       # Set output codepage only
+-f i:codepage,o:codepage            # Set input and output to different codepages
+-f o:codepage,i:codepage            # Same as above (order doesn't matter)
+```
+
+#### Common Code Pages
+
+| Code Page | Name | Description |
+|-----------|------|-------------|
+| 65001 | UTF-8 | Unicode (UTF-8) - default for most modern systems |
+| 1200 | UTF-16LE | Unicode (UTF-16 Little-Endian) |
+| 1201 | UTF-16BE | Unicode (UTF-16 Big-Endian) |
+| 1252 | Windows-1252 | Western European (Windows) |
+| 932 | Shift_JIS | Japanese |
+| 936 | GBK | Chinese Simplified |
+| 949 | EUC-KR | Korean |
+| 950 | Big5 | Chinese Traditional |
+| 437 | CP437 | OEM United States (DOS) |
+
+#### Examples
+
+**Run a script saved in Windows-1252 encoding:**
+```bash
+sqlcmd -S myserver -i legacy_script.sql -f 1252
+```
+
+**Read UTF-16 input file and write UTF-8 output:**
+```bash
+sqlcmd -S myserver -i unicode_script.sql -o results.txt -f i:1200,o:65001
+```
+
+**Process a Japanese Shift-JIS encoded script:**
+```bash
+sqlcmd -S myserver -i japanese_data.sql -f 932
+```
+
+**Write output in Windows-1252 for legacy applications:**
+```bash
+sqlcmd -S myserver -Q "SELECT * FROM Products" -o report.txt -f o:1252
+```
+
+**List all supported code pages:**
+```bash
+sqlcmd --list-codepages
+```
+
+#### Notes
+
+- When no `-f` flag is specified, sqlcmd auto-detects UTF-8/UTF-16LE/UTF-16BE BOM (Byte Order Mark) in input files and switches to the appropriate decoder. If no BOM is present, UTF-8 is assumed.
+- UTF-8 input files with BOM are handled automatically.
+- On Windows, additional codepages installed on the system are available via the Windows API, even if not shown by `--list-codepages`.
+- Use `--list-codepages` to see the built-in code pages with their names and descriptions.
+
+#### Differences from ODBC sqlcmd
+
+| Aspect | ODBC sqlcmd | go-sqlcmd |
+|--------|-------------|-----------|
+| **Default encoding (no BOM, no `-f`)** | Windows ANSI code page (locale-dependent, e.g., 1252) | UTF-8 |
+| **UTF-16 codepages (1200, 1201)** | Rejected by `IsValidCodePage()` API | Accepted |
+| **BOM detection** | Yes (UTF-8, UTF-16 LE/BE) | Yes (identical behavior) |
+| **`--list-codepages`** | Not available | Available |
+
+**Migration note**: If you have UTF-8 encoded SQL scripts without a BOM that worked with ODBC sqlcmd on Windows, they should work identically or better with go-sqlcmd since go-sqlcmd defaults to UTF-8. However, if you have scripts in Windows ANSI encoding (e.g., Windows-1252) without a BOM, you may need to explicitly specify `-f 1252` with go-sqlcmd.
 
 ### Packages
 

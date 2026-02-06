@@ -19,6 +19,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const oneRowAffected = "(1 row affected)"
@@ -229,6 +230,69 @@ func TestIncludeFileQuotedIdentifiers(t *testing.T) {
 		s.SetOutput(nil)
 		o := buf.buf.String()
 		assert.Equal(t, `ab 1 a"b`+SqlcmdEol+SqlcmdEol, o)
+	}
+}
+
+func TestIncludeFileWithInputCodePage(t *testing.T) {
+	tests := []struct {
+		name         string
+		codepage     int
+		fileContent  []byte
+		expectedText string
+	}{
+		{
+			name:         "Windows-1252 input",
+			codepage:     1252,
+			fileContent:  []byte{0x73, 0x65, 0x6c, 0x65, 0x63, 0x74, 0x20, 0x27, 0x63, 0x61, 0x66, 0xe9, 0x27}, // "select 'café'" in Windows-1252
+			expectedText: "select 'café'",
+		},
+		{
+			name:         "UTF-16 LE with BOM",
+			codepage:     1200,
+			fileContent:  []byte{0xFF, 0xFE, 0x68, 0x00, 0x69, 0x00}, // BOM + "hi" in UTF-16 LE
+			expectedText: "hi",
+		},
+		{
+			name:         "UTF-16 LE without BOM",
+			codepage:     1200,
+			fileContent:  []byte{0x68, 0x00, 0x69, 0x00}, // "hi" in UTF-16 LE (no BOM)
+			expectedText: "hi",
+		},
+		{
+			name:         "UTF-16 BE with BOM",
+			codepage:     1201,
+			fileContent:  []byte{0xFE, 0xFF, 0x00, 0x68, 0x00, 0x69}, // BOM + "hi" in UTF-16 BE
+			expectedText: "hi",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Create temp file with encoded content
+			file, err := os.CreateTemp("", "sqlcmdinput*.sql")
+			require.NoError(t, err, "os.CreateTemp")
+			defer func() { _ = os.Remove(file.Name()) }()
+
+			_, err = file.Write(tt.fileContent)
+			require.NoError(t, err, "Write")
+			err = file.Close()
+			require.NoError(t, err, "Close")
+
+			// Set up Sqlcmd with InputCodePage
+			s, buf := setupSqlCmdWithMemoryOutput(t)
+			defer func() { _ = buf.Close() }()
+			s.CodePage = &CodePageSettings{
+				InputCodePage: tt.codepage,
+			}
+
+			// Include the file but don't execute (processAll=false)
+			err = s.IncludeFile(file.Name(), false)
+			require.NoError(t, err, "IncludeFile")
+
+			// Check that the batch contains the expected decoded text
+			batchText := s.batch.String()
+			assert.Contains(t, batchText, tt.expectedText, "batch should contain decoded text")
+		})
 	}
 }
 
