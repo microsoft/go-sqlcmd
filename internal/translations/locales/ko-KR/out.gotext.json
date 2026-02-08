@@ -2404,9 +2404,25 @@
             "fuzzy": true
         },
         {
-            "id": "Temporary: To view connection information run:",
-            "message": "Temporary: To view connection information run:",
-            "translation": ""
+            "id": "Press Ctrl+C to exit this process...",
+            "message": "Press Ctrl+C to exit this process...",
+            "translation": "Ctrl+C를 눌러 이 프로세스를 종료합니다...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
+            "translation": "Windows 자격 증명 관리자에 이미 저장된 자격 증명이 너무 많으면 '사용 가능한 메모리 리소스가 부족합니다' 오류가 발생할 수 있습니다.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to write credential to Windows Credential Manager",
+            "message": "Failed to write credential to Windows Credential Manager",
+            "translation": "Windows 자격 증명 관리자에 자격 증명을 쓰지 못했습니다.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
         },
         {
             "id": "The -L parameter can not be used in combination with other parameters.",
