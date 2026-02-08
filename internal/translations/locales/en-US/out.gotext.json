@@ -2404,23 +2404,9 @@
             "fuzzy": true
         },
         {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Press Ctrl+C to exit this process...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Failed to write credential to Windows Credential Manager",
+            "id": "Temporary: To view connection information run:",
+            "message": "Temporary: To view connection information run:",
+            "translation": "Temporary: To view connection information run:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2672,6 +2658,13 @@
                     "expr": "localizer.ServerEnvVar"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+            "message": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+            "translation": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
@@ -3673,6 +3666,13 @@
                     "expr": "SqlcmdEol"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Server name override is not supported with the current authentication method",
+            "message": "Server name override is not supported with the current authentication method",
+            "translation": "Server name override is not supported with the current authentication method",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
