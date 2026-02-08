@@ -2673,6 +2673,11 @@
             "fuzzy": true
         },
         {
+            "id": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+            "message": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+            "translation": ""
+        },
+        {
             "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
             "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
             "translation": "{_X1} Disabilita i comandi che potrebbero compromettere la sicurezza del sistema. Se si passa 1, sqlcmd verrà chiuso quando vengono eseguiti comandi disabilitati.",
@@ -3670,6 +3675,11 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Server name override is not supported with the current authentication method",
+            "message": "Server name override is not supported with the current authentication method",
+            "translation": ""
         },
         {
             "id": "Password:",
