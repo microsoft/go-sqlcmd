@@ -2677,7 +2677,7 @@
     {
       "id": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
       "message": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
-      "translation": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "translation": "Especifica el nombre del servidor que se usará para la autenticación al tunelizar a través de un proxy. Use con -S para especificar la dirección de marcado independientemente del nombre del servidor enviado a SQL Server.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2974,7 +2974,7 @@
     {
       "id": "Password",
       "message": "Password",
-      "translation": "Password",
+      "translation": "Contraseña",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3030,7 +3030,7 @@
     {
       "id": "Dedicated administrator connection",
       "message": "Dedicated administrator connection",
-      "translation": "Dedicated administrator connection",
+      "translation": "Conexión de administrador dedicada",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3068,21 +3068,21 @@
     {
       "id": "Echo input",
       "message": "Echo input",
-      "translation": "Echo input",
+      "translation": "Entrada de eco",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Enable column encryption",
       "message": "Enable column encryption",
-      "translation": "Enable column encryption",
+      "translation": "Habilitar cifrado de columna",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "New password",
       "message": "New password",
-      "translation": "New password",
+      "translation": "Contraseña nueva",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3379,7 +3379,7 @@
     {
       "id": "Enter new password:",
       "message": "Enter new password:",
-      "translation": "Enter new password:",
+      "translation": "Escribir la nueva contraseña:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3400,7 +3400,7 @@
     {
       "id": "Sqlcmd: Warning:",
       "message": "Sqlcmd: Warning:",
-      "translation": "Sqlcmd: Warning:",
+      "translation": "Sqlcmd: Advertencia:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3556,7 +3556,7 @@
     {
       "id": "Timeout expired",
       "message": "Timeout expired",
-      "translation": "Timeout expired",
+      "translation": "Tiempo de espera agotado",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3685,28 +3685,28 @@
     {
       "id": "Server name override is not supported with the current authentication method",
       "message": "Server name override is not supported with the current authentication method",
-      "translation": "Server name override is not supported with the current authentication method",
+      "translation": "No se admite la invalidación del nombre del servidor con el método de autenticación actual",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Password:",
       "message": "Password:",
-      "translation": "Password:",
+      "translation": "Contraseña:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "(1 row affected)",
       "message": "(1 row affected)",
-      "translation": "(1 row affected)",
+      "translation": "(1 fila afectada)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "({Count} rows affected)",
       "message": "({Count} rows affected)",
-      "translation": "({Count} rows affected)",
+      "translation": "({Count} filas afectadas)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {

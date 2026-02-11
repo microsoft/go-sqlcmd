@@ -2677,7 +2677,7 @@
     {
       "id": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
       "message": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
-      "translation": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "translation": "프록시를 통해 터널링할 때 인증에 사용할 서버 이름을 지정합니다. -S와 함께 사용하여 SQL Server 보내는 서버 이름과 별도로 다이얼 주소를 지정합니다.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2974,7 +2974,7 @@
     {
       "id": "Password",
       "message": "Password",
-      "translation": "Password",
+      "translation": "암호",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3030,7 +3030,7 @@
     {
       "id": "Dedicated administrator connection",
       "message": "Dedicated administrator connection",
-      "translation": "Dedicated administrator connection",
+      "translation": "전용 관리자 연결",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3068,21 +3068,21 @@
     {
       "id": "Echo input",
       "message": "Echo input",
-      "translation": "Echo input",
+      "translation": "에코 입력",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Enable column encryption",
       "message": "Enable column encryption",
-      "translation": "Enable column encryption",
+      "translation": "열 암호화 활성화",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "New password",
       "message": "New password",
-      "translation": "New password",
+      "translation": "새 암호",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3379,7 +3379,7 @@
     {
       "id": "Enter new password:",
       "message": "Enter new password:",
-      "translation": "Enter new password:",
+      "translation": "새 암호 입력:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3393,14 +3393,14 @@
     {
       "id": "Sqlcmd: Error:",
       "message": "Sqlcmd: Error:",
-      "translation": "Sqlcmd: Error:",
+      "translation": "Sqlcmd: 오류:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sqlcmd: Warning:",
       "message": "Sqlcmd: Warning:",
-      "translation": "Sqlcmd: Warning:",
+      "translation": "Sqlcmd: 경고:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3556,7 +3556,7 @@
     {
       "id": "Timeout expired",
       "message": "Timeout expired",
-      "translation": "Timeout expired",
+      "translation": "시간 제한이 만료됨",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -3685,28 +3685,28 @@
     {
       "id": "Server name override is not supported with the current authentication method",
       "message": "Server name override is not supported with the current authentication method",
-      "translation": "Server name override is not supported with the current authentication method",
+      "translation": "서버 이름 재정의는 현재 인증 방법에서 지원되지 않습니다.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Password:",
       "message": "Password:",
-      "translation": "Password:",
+      "translation": "암호:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "(1 row affected)",
       "message": "(1 row affected)",
-      "translation": "(1 row affected)",
+      "translation": "(1개 행이 영향을 받음)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "({Count} rows affected)",
       "message": "({Count} rows affected)",
-      "translation": "({Count} rows affected)",
+      "translation": "({Count}개 행이 영향을 받음)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
