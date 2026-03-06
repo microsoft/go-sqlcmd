@@ -7,10 +7,11 @@
 package credman
 
 import (
-	syscall "golang.org/x/sys/windows"
 	"reflect"
 	"time"
 	"unsafe"
+
+	syscall "golang.org/x/sys/windows"
 )
 
 // Load the Windows DLL "advapi32.dll", then set up Go wrapper functions for
@@ -78,7 +79,7 @@ func EnumerateCredentials(filter string, all bool) ([]*Credential, error) {
 		Len:  count,
 		Cap:  count,
 	}))
-	credentials := make([]*Credential, count, count)
+	credentials := make([]*Credential, count)
 	for i, c := range systemCredentials {
 		credentials[i] = convertFromSystemCredential(c)
 	}
