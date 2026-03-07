@@ -12,6 +12,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -310,6 +311,22 @@ func TestE2E_PipedInput_WithBytesBuffer_NoPanic(t *testing.T) {
 	// Should not panic, regardless of whether the connection succeeds or fails
 	assert.NotContains(t, outputStr, "panic:", "should not panic when piping SQL with GO")
 	assert.NotContains(t, outputStr, "nil pointer", "should not have nil pointer error")
+}
+
+func TestE2E_QueryTimeout_NoHang(t *testing.T) {
+	skipIfNoLiveConnection(t)
+	binary := buildBinary(t)
+
+	args := append([]string{"-C", "-t", "1", "-Q", "WAITFOR DELAY '00:00:10'"}, getAuthArgs(t)...)
+	cmd := exec.Command(binary, args...)
+	cmd.Env = os.Environ()
+
+	start := time.Now()
+	output, _ := cmd.CombinedOutput()
+	elapsed := time.Since(start)
+
+	assert.Contains(t, string(output), "Timeout expired")
+	assert.Less(t, elapsed, 30*time.Second, "command hung instead of timing out")
 }
 
 // cleanupBinary removes the temporary build directory containing the test binary.
