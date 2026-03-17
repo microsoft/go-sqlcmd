@@ -82,6 +82,18 @@ sqlcmd config connection-strings
 sqlcmd config view
 ```
 
+#### Custom Configuration Files
+
+You can specify a custom configuration file using the `--sqlconfig` flag. Configuration files must be in **YAML format** and use the `.yaml` or `.yml` file extension.
+
+Example:
+```
+sqlcmd config --sqlconfig ./myproject.yaml add-endpoint --name ep1434 --address localhost --port 1434
+sqlcmd config --sqlconfig ./myproject.yaml view
+```
+
+**Note:** The default configuration file at `~/.sqlcmd/sqlconfig` is an exception and uses YAML format without an extension. When specifying a custom configuration file, always use the `.yaml` or `.yml` extension to avoid errors.
+
 ### Versions
 
 To see all version tags to choose from (2017, 2019, 2022 etc.), and install a specific version, run:
