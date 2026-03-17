@@ -123,6 +123,10 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "true", "-J", "/path/to/cert2.pem"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true" && args.ServerCertificate == "/path/to/cert2.pem"
 		}},
+		// Test -q and -i can be used together (initial query runs before input files)
+		{[]string{"-q", "SET PARSEONLY ON", "-i", "script.sql"}, func(args SQLCmdArguments) bool {
+			return args.InitialQuery == "SET PARSEONLY ON" && len(args.InputFile) == 1 && args.InputFile[0] == "script.sql"
+		}},
 	}
 
 	for _, test := range commands {
@@ -165,7 +169,7 @@ func TestInvalidCommandLine(t *testing.T) {
 	commands := []cmdLineTest{
 		{[]string{"-E", "-U", "someuser"}, "The -E and the -U/-P options are mutually exclusive."},
 		{[]string{"-L", "-q", `"select 1"`}, "The -L parameter can not be used in combination with other parameters."},
-		{[]string{"-i", "foo.sql", "-q", `"select 1"`}, "The i and the -Q/-q options are mutually exclusive."},
+		{[]string{"-i", "foo.sql", "-Q", `"select 1"`}, "The -i and the -Q options are mutually exclusive."},
 		{[]string{"-r", "5"}, "'-r 5': Unexpected argument. Argument value has to be one of [0 1]."},
 		{[]string{"-w", "x"}, "'-w x': value must be greater than 8 and less than 65536."},
 		{[]string{"-y", "111111"}, "'-y 111111': value must be greater than or equal to 0 and less than or equal to 8000."},
@@ -266,6 +270,35 @@ func TestRunInputFiles(t *testing.T) {
 	bytes, err := os.ReadFile(o.Name())
 	if assert.NoError(t, err, "os.ReadFile") {
 		assert.Equal(t, "100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol+"100"+sqlcmd.SqlcmdEol+sqlcmd.SqlcmdEol+oneRowAffected+sqlcmd.SqlcmdEol, string(bytes), "Incorrect output from run")
+	}
+}
+
+// TestInitialQueryWithInputFile verifies that -q (initial query) executes before -i (input files)
+func TestInitialQueryWithInputFile(t *testing.T) {
+	o, err := os.CreateTemp("", "sqlcmdmain")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer func() { _ = os.Remove(o.Name()) }()
+	defer func() { _ = o.Close() }()
+	args = newArguments()
+	// Use -q to set NOCOUNT ON, then -i to run a select that would normally show row count
+	// If initial query runs first, the row count message will be suppressed
+	args.InitialQuery = "SET NOCOUNT ON"
+	args.InputFile = []string{"testdata/select_init_value.sql"}
+	args.OutputFile = o.Name()
+	setAzureAuthArgIfNeeded(&args)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
+	vars.Set(sqlcmd.SQLCMDMAXVARTYPEWIDTH, "0")
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 0, exitCode, "exitCode")
+	bytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		// Verify that NOCOUNT ON from -q suppressed the row count message
+		// If -q ran first, we should see "test" without "(1 row affected)"
+		assert.Contains(t, string(bytes), "test", "Initial query should execute before input file")
+		assert.NotContains(t, string(bytes), "row affected", "SET NOCOUNT ON should suppress row count")
 	}
 }
 
