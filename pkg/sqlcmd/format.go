@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
 	"time"
 
@@ -57,6 +58,11 @@ const (
 	ControlRemove
 	// ControlReplaceConsecutive replaces multiple consecutive control characters with a single space
 	ControlReplaceConsecutive
+)
+
+const (
+	realDefaultWidth  int64 = 14 // REAL and SMALLMONEY
+	floatDefaultWidth int64 = 24 // FLOAT and MONEY
 )
 
 type columnDetail struct {
@@ -371,11 +377,11 @@ func calcColumnDetails(cols []*sql.ColumnType, fixed int64, variable int64) ([]c
 			columnDetails[i].displayWidth = max64(21, nameLen)
 		case "REAL", "SMALLMONEY":
 			columnDetails[i].leftJustify = false
-			columnDetails[i].displayWidth = max64(14, nameLen)
+			columnDetails[i].displayWidth = max64(realDefaultWidth, nameLen)
 			columnDetails[i].zeroesAfterDecimal = true
 		case "FLOAT", "MONEY":
 			columnDetails[i].leftJustify = false
-			columnDetails[i].displayWidth = max64(24, nameLen)
+			columnDetails[i].displayWidth = max64(floatDefaultWidth, nameLen)
 			columnDetails[i].zeroesAfterDecimal = true
 		case "DECIMAL":
 			columnDetails[i].leftJustify = false
@@ -530,6 +536,10 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 				} else {
 					row[n] = "0"
 				}
+			case float64:
+				row[n] = formatFloat(x, 64, f.columnDetails[n])
+			case float32:
+				row[n] = formatFloat(float64(x), 32, f.columnDetails[n])
 			default:
 				var err error
 				if row[n], err = fmt.Sprintf("%v", x), nil; err != nil {
@@ -550,6 +560,28 @@ func dateTimeFormatString(scale int, addOffset bool) string {
 		format += " -07:00"
 	}
 	return format
+}
+
+// formatFloat formats a float value to match ODBC sqlcmd behavior.
+// Uses decimal notation for typical values, falls back to scientific for extreme values.
+func formatFloat(x float64, bitSize int, col columnDetail) string {
+	formatted := strconv.FormatFloat(x, 'f', -1, bitSize)
+
+	// Determine width threshold for fallback to scientific notation
+	threshold := col.displayWidth
+	if threshold == 0 {
+		typeName := col.col.DatabaseTypeName()
+		if typeName == "REAL" || typeName == "SMALLMONEY" {
+			threshold = realDefaultWidth
+		} else {
+			threshold = floatDefaultWidth
+		}
+	}
+
+	if int64(len(formatted)) > threshold {
+		formatted = strconv.FormatFloat(x, 'g', -1, bitSize)
+	}
+	return formatted
 }
 
 // Prints the final version of a cell based on formatting variables and command line parameters
