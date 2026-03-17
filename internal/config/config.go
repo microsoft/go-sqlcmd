@@ -4,13 +4,14 @@
 package config
 
 import (
+	"os"
+	"path/filepath"
+	"testing"
+
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
-	"os"
-	"path/filepath"
-	"testing"
 )
 
 var config Sqlconfig
@@ -26,8 +27,13 @@ func SetFileName(name string) {
 
 	filename = name
 
+	// Validate extension before creating the file
+	err := validateConfigFileExtension(filename)
+	checkErr(err)
+
 	file.CreateEmptyIfNotExists(filename)
-	configureViper(filename)
+	err = configureViper(filename)
+	checkErr(err)
 }
 
 func SetFileNameForTest(t *testing.T) {
