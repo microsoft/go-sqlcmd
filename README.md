@@ -160,16 +160,19 @@ The following switches have different behavior in this version of `sqlcmd` compa
 
 ### Switches not available in the new sqlcmd (go-sqlcmd) yet
 
-There are a few switches yet to be implemented in the new `sqlcmd` (go-sqlcmd) compared
-to the original ODBC based `sqlcmd`, discussion [#293](https://github.com/microsoft/go-sqlcmd/discussions/292) 
-lists these switches. Please provide feedback in the discussion on which 
-switches are most important to you to have implemented next in the new sqlcmd.
+Most switches from the original ODBC-based `sqlcmd` have been implemented. The following switches are not yet available:
 
+| Switch | Description |
+|--------|-------------|
+| `-j` | Print raw error messages |
+| `-p[1]` | Print statistics (optional colon format) |
+
+For historical context and to provide feedback, see [discussion #292](https://github.com/microsoft/go-sqlcmd/discussions/292).
 
 ### Miscellaneous enhancements
 
 - Console output coloring (see below)
-- `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
+- `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`, `ActiveDirectoryInteractive`, `ActiveDirectoryAzCli`, `ActiveDirectoryDeviceCode`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `--vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
 
@@ -217,7 +220,7 @@ To use AAD auth, you can use one of two command line switches:
 
 `ActiveDirectoryIntegrated`
 
-This method is currently not implemented and will fall back to `ActiveDirectoryDefault`.
+This method uses integrated Windows authentication. On Windows, it uses the current user's credentials. On Linux and macOS, it uses Kerberos authentication (requires a properly configured Kerberos environment).
 
 `ActiveDirectoryPassword`
 
@@ -236,6 +239,26 @@ Use this method when running sqlcmd on an Azure VM that has either a system-assi
 `ActiveDirectoryServicePrincipal`
 
 This method authenticates the provided username as a service principal id and the password as the client secret for the service principal. Provide a username in the form `<service principal id>@<tenant id>`. Set `SQLCMDPASSWORD` variable to the client secret. If using a certificate instead of a client secret, set `AZURE_CLIENT_CERTIFICATE_PATH` environment variable to the path of the certificate file.
+
+`ActiveDirectoryAzCli`
+
+This method uses the Azure CLI to obtain an access token. You must be logged in to Azure CLI (`az login`) before using this method.
+
+`ActiveDirectoryDeviceCode`
+
+This method uses the device code flow for authentication. It displays a code that you enter at https://microsoft.com/devicelogin to authenticate.
+
+#### Additional authentication methods
+
+The following authentication methods are also supported via `--authentication-method`:
+
+- `ActiveDirectoryWorkloadIdentity` - For workload identity federation scenarios
+- `ActiveDirectoryClientAssertion` - For client assertion authentication
+- `ActiveDirectoryAzurePipelines` - For Azure Pipelines service connections
+- `ActiveDirectoryEnvironment` - Uses environment variables for authentication
+- `ActiveDirectoryAzureDeveloperCli` - Uses Azure Developer CLI credentials
+- `ActiveDirectoryServicePrincipalAccessToken` - Uses a pre-obtained access token
+- `SqlPassword` - SQL Server authentication (same as using `-U` and `-P` without `-G`)
 
 #### Environment variables for AAD auth
 
