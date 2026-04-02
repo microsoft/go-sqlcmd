@@ -4,9 +4,10 @@
 package credman
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestWriteCredential(t *testing.T) {
@@ -31,7 +32,7 @@ func TestWriteCredential(t *testing.T) {
 	assert.Equal(t, credentials[0].Persist, PersistSession, "WriteCredential wrote incorrect Persist, got: %d, want: %d", credentials[0].Persist, PersistSession)
 
 	// Cleanup the written credential
-	DeleteCredential(credential, CredTypeGeneric)
+	_ = DeleteCredential(credential, CredTypeGeneric)
 }
 
 func TestDeleteCredential(t *testing.T) {
@@ -44,7 +45,7 @@ func TestDeleteCredential(t *testing.T) {
 	}
 
 	// Write the credential first
-	WriteCredential(credential, CredTypeGeneric)
+	_ = WriteCredential(credential, CredTypeGeneric)
 
 	err := DeleteCredential(credential, CredTypeGeneric)
 	assert.NoErrorf(t, err, "DeleteCredential returned an error: %v", err)
