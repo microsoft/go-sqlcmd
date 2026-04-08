@@ -8,16 +8,15 @@ import (
 	"bytes"
 	"context"
 	"io"
+	"net/netip"
 	"path/filepath"
 	"strconv"
 	"strings"
 
-	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/filters"
-	"github.com/docker/docker/api/types/image"
-	"github.com/docker/docker/client"
-	"github.com/docker/docker/pkg/stdcopy"
-	"github.com/docker/go-connections/nat"
+	"github.com/moby/moby/api/pkg/stdcopy"
+	"github.com/moby/moby/api/types/container"
+	"github.com/moby/moby/api/types/network"
+	"github.com/moby/moby/client"
 	specs "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
@@ -33,7 +32,7 @@ type Controller struct {
 func NewController() (c *Controller) {
 	var err error
 	c = new(Controller)
-	c.cli, err = client.NewClientWithOpts(
+	c.cli, err = client.New(
 		client.FromEnv,
 		client.WithVersion("1.45"),
 	)
@@ -52,7 +51,7 @@ func (c Controller) EnsureImage(imageName string) (err error) {
 	var reader io.ReadCloser
 
 	trace("Running ImagePull for image %s", imageName)
-	reader, err = c.cli.ImagePull(context.Background(), imageName, image.PullOptions{})
+	reader, err = c.cli.ImagePull(context.Background(), imageName, client.ImagePullOptions{})
 	if reader != nil {
 		defer func() {
 			checkErr(reader.Close())
@@ -82,10 +81,10 @@ func (c Controller) ContainerRun(
 	unitTestFailure bool,
 ) string {
 	hostConfig := &container.HostConfig{
-		PortBindings: nat.PortMap{
-			nat.Port("1433/tcp"): []nat.PortBinding{
+		PortBindings: network.PortMap{
+			network.MustParsePort("1433/tcp"): []network.PortBinding{
 				{
-					HostIP:   "0.0.0.0",
+					HostIP:   netip.MustParseAddr("0.0.0.0"),
 					HostPort: strconv.Itoa(port),
 				},
 			},
@@ -97,19 +96,24 @@ func (c Controller) ContainerRun(
 		OS:           os,
 	}
 
-	resp, err := c.cli.ContainerCreate(context.Background(), &container.Config{
-		Tty:      true,
-		Image:    image,
-		Cmd:      command,
-		Env:      env,
-		Hostname: hostname,
-	}, hostConfig, nil, &platform, name)
+	resp, err := c.cli.ContainerCreate(context.Background(), client.ContainerCreateOptions{
+		Config: &container.Config{
+			Tty:      true,
+			Image:    image,
+			Cmd:      command,
+			Env:      env,
+			Hostname: hostname,
+		},
+		HostConfig: hostConfig,
+		Platform:   &platform,
+		Name:       name,
+	})
 	checkErr(err)
 
-	err = c.cli.ContainerStart(
+	_, err = c.cli.ContainerStart(
 		context.Background(),
 		resp.ID,
-		container.StartOptions{},
+		client.ContainerStartOptions{},
 	)
 	if err != nil || unitTestFailure {
 		// Remove the container, because we haven't persisted to config yet, so
@@ -134,7 +138,7 @@ func (c Controller) ContainerRun(
 // This function is useful for waiting until a specific event has occurred in the
 // container (e.g. a server has started up) before continuing with other operations.
 func (c Controller) ContainerWaitForLogEntry(id string, text string) {
-	options := container.LogsOptions{
+	options := client.ContainerLogsOptions{
 		ShowStdout: true,
 		ShowStderr: false,
 		Since:      "",
@@ -169,7 +173,7 @@ func (c Controller) ContainerStop(id string) (err error) {
 		panic("Must pass in non-empty id")
 	}
 
-	err = c.cli.ContainerStop(context.Background(), id, container.StopOptions{})
+	_, err = c.cli.ContainerStop(context.Background(), id, client.ContainerStopOptions{})
 	return
 }
 
@@ -180,7 +184,7 @@ func (c Controller) ContainerStart(id string) (err error) {
 		panic("Must pass in non-empty id")
 	}
 
-	err = c.cli.ContainerStart(context.Background(), id, container.StartOptions{})
+	_, err = c.cli.ContainerStart(context.Background(), id, client.ContainerStartOptions{})
 	return
 }
 
@@ -198,10 +202,10 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	}
 
 	cmd := []string{"find", "/", "-iname", filespec}
-	response, err := c.cli.ContainerExecCreate(
+	response, err := c.cli.ExecCreate(
 		context.Background(),
 		id,
-		container.ExecOptions{
+		client.ExecCreateOptions{
 			AttachStderr: false,
 			AttachStdout: true,
 			Cmd:          cmd,
@@ -209,10 +213,10 @@ func (c Controller) ContainerFiles(id string, filespec string) (files []string) 
 	)
 	checkErr(err)
 
-	r, err := c.cli.ContainerExecAttach(
+	r, err := c.cli.ExecAttach(
 		context.Background(),
 		response.ID,
-		container.ExecStartOptions{},
+		client.ExecAttachOptions{},
 	)
 	checkErr(err)
 	defer r.Close()
@@ -265,10 +269,10 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) {
 	trace("Running command in container: " + strings.Join(cmd, " "))
 
-	response, err := c.cli.ContainerExecCreate(
+	response, err := c.cli.ExecCreate(
 		context.Background(),
 		id,
-		container.ExecOptions{
+		client.ExecCreateOptions{
 			AttachStderr: true,
 			AttachStdout: true,
 			Cmd:          cmd,
@@ -276,10 +280,10 @@ func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) 
 	)
 	checkErr(err)
 
-	r, err := c.cli.ContainerExecAttach(
+	r, err := c.cli.ExecAttach(
 		context.Background(),
 		response.ID,
-		container.ExecStartOptions{},
+		client.ExecAttachOptions{},
 	)
 	checkErr(err)
 	defer r.Close()
@@ -315,9 +319,9 @@ func (c Controller) ContainerRunning(id string) (running bool) {
 		panic("Must pass in non-empty id")
 	}
 
-	resp, err := c.cli.ContainerInspect(context.Background(), id)
+	resp, err := c.cli.ContainerInspect(context.Background(), id, client.ContainerInspectOptions{})
 	checkErr(err)
-	running = resp.State.Running
+	running = resp.Container.State.Running
 	return
 }
 
@@ -326,18 +330,14 @@ func (c Controller) ContainerRunning(id string) (running bool) {
 // filtering by the given ID. If a container with the given ID is found, it
 // returns true; otherwise, it returns false.
 func (c Controller) ContainerExists(id string) (exists bool) {
-	f := filters.NewArgs()
-	f.Add(
-		"id", id,
-	)
 	resp, err := c.cli.ContainerList(
 		context.Background(),
-		container.ListOptions{Filters: f},
+		client.ContainerListOptions{Filters: make(client.Filters).Add("id", id)},
 	)
 	checkErr(err)
-	if len(resp) > 0 {
-		trace("%v", resp)
-		containerStatus := strings.Split(resp[0].Status, " ")
+	if len(resp.Items) > 0 {
+		trace("%v", resp.Items)
+		containerStatus := strings.Split(resp.Items[0].Status, " ")
 		status := containerStatus[0]
 		trace("%v", status)
 		exists = true
@@ -355,13 +355,13 @@ func (c Controller) ContainerRemove(id string) (err error) {
 		panic("Must pass in non-empty id")
 	}
 
-	options := container.RemoveOptions{
+	options := client.ContainerRemoveOptions{
 		RemoveVolumes: false,
 		RemoveLinks:   false,
 		Force:         false,
 	}
 
-	err = c.cli.ContainerRemove(context.Background(), id, options)
+	_, err = c.cli.ContainerRemove(context.Background(), id, options)
 
 	return
 }
