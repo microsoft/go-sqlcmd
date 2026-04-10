@@ -246,6 +246,69 @@ func TestValidateFlags(t *testing.T) {
 	}
 }
 
+func TestErrorsToStderrDefaultValue(t *testing.T) {
+	// Test that -r without a value defaults to 0 (ODBC sqlcmd compatibility)
+	arguments := &SQLCmdArguments{}
+	cmd := &cobra.Command{
+		Use: "testCommand",
+		PreRunE: func(cmd *cobra.Command, argss []string) error {
+			SetScreenWidthFlags(arguments, cmd)
+			return nil
+		},
+		Run: func(cmd *cobra.Command, argss []string) {
+		},
+		SilenceErrors: true,
+		SilenceUsage:  true,
+	}
+	setFlags(cmd, arguments)
+	// Test -r alone (bare flag)
+	cmd.SetArgs(convertOsArgs([]string{"-r"}))
+	err := cmd.Execute()
+	assert.NoError(t, err, "-r should not error")
+	assert.NotNil(t, arguments.ErrorsToStderr, "ErrorsToStderr should be set when using -r alone")
+	assert.Equal(t, 0, *arguments.ErrorsToStderr, "-r alone should default to 0")
+
+	// Test -r0 explicit
+	arguments = &SQLCmdArguments{}
+	cmd2 := &cobra.Command{
+		Use: "testCommand",
+		PreRunE: func(cmd *cobra.Command, argss []string) error {
+			SetScreenWidthFlags(arguments, cmd)
+			return nil
+		},
+		Run: func(cmd *cobra.Command, argss []string) {
+		},
+		SilenceErrors: true,
+		SilenceUsage:  true,
+	}
+	setFlags(cmd2, arguments)
+	cmd2.SetArgs([]string{"-r0"})
+	err = cmd2.Execute()
+	assert.NoError(t, err, "-r0 should not error")
+	assert.NotNil(t, arguments.ErrorsToStderr, "ErrorsToStderr should be set")
+	assert.Equal(t, 0, *arguments.ErrorsToStderr, "-r0 should set value to 0")
+
+	// Test -r1 explicit
+	arguments = &SQLCmdArguments{}
+	cmd3 := &cobra.Command{
+		Use: "testCommand",
+		PreRunE: func(cmd *cobra.Command, argss []string) error {
+			SetScreenWidthFlags(arguments, cmd)
+			return nil
+		},
+		Run: func(cmd *cobra.Command, argss []string) {
+		},
+		SilenceErrors: true,
+		SilenceUsage:  true,
+	}
+	setFlags(cmd3, arguments)
+	cmd3.SetArgs([]string{"-r1"})
+	err = cmd3.Execute()
+	assert.NoError(t, err, "-r1 should not error")
+	assert.NotNil(t, arguments.ErrorsToStderr, "ErrorsToStderr should be set")
+	assert.Equal(t, 1, *arguments.ErrorsToStderr, "-r1 should set value to 1")
+}
+
 // Simulate main() using files
 func TestRunInputFiles(t *testing.T) {
 	o, err := os.CreateTemp("", "sqlcmdmain")
