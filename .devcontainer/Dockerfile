@@ -6,6 +6,10 @@
 FROM mcr.microsoft.com/devcontainers/go:1.25-bookworm
 ENV GOTOOLCHAIN=auto
 
+# The base image sets GOPATH=/go owned by root. Override to a user-writable
+# location so GOTOOLCHAIN=auto can download patch releases without sudo.
+ENV GOPATH=/home/vscode/go
+
 # Install additional OS packages
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y curl libkrb5-dev gnupg2 \
@@ -47,6 +51,8 @@ RUN go install golang.org/x/tools/gopls@v0.21.1 \
     && go install honnef.co/go/tools/cmd/staticcheck@v0.7.0 \
     && go install golang.org/x/text/cmd/gotext@v0.35.0
 
-# Create bin directory for local sqlcmd builds
-RUN mkdir -p /home/vscode/bin && chown vscode:vscode /home/vscode/bin
+# Fix ownership: go install ran as root and populated $GOPATH with root-owned
+# files. chown the entire tree so vscode can write (GOTOOLCHAIN=auto downloads).
+RUN mkdir -p /home/vscode/bin \
+    && chown -R vscode:vscode /home/vscode/go /home/vscode/bin
 ENV PATH="/home/vscode/bin:${PATH}"
