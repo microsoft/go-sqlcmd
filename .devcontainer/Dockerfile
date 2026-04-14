@@ -39,10 +39,11 @@ RUN ARCH=$(dpkg --print-architecture) \
     && golangci-lint --version
 
 # Install additional Go tools (pinned versions for reproducibility)
-RUN go install golang.org/x/tools/gopls@v0.18.1 \
-    && go install github.com/go-delve/delve/cmd/dlv@v1.24.1 \
-    && go install honnef.co/go/tools/cmd/staticcheck@v0.6.1 \
-    && go install golang.org/x/text/cmd/gotext@v0.22.0
+# These versions must be compatible with the Go version in the base image.
+RUN go install golang.org/x/tools/gopls@v0.21.1 \
+    && go install github.com/go-delve/delve/cmd/dlv@v1.26.1 \
+    && go install honnef.co/go/tools/cmd/staticcheck@v0.7.0 \
+    && go install golang.org/x/text/cmd/gotext@v0.35.0
 
 # Create bin directory for local sqlcmd builds
 RUN mkdir -p /home/vscode/bin && chown vscode:vscode /home/vscode/bin
