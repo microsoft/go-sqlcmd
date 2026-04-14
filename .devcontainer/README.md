@@ -1,6 +1,6 @@
 # go-sqlcmd Development Container
 
-Dev Container / Codespaces environment with Go 1.24 and SQL Server 2025.
+Dev Container / Codespaces environment with Go 1.25 and SQL Server 2025.
 
 ## Quick Start
 

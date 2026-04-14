@@ -1,5 +1,8 @@
 # go-sqlcmd Development Container
-FROM mcr.microsoft.com/devcontainers/go:1.24-bookworm
+# The Go major version here must satisfy the 'go' directive in go.mod.
+# The base image sets GOTOOLCHAIN=local, so no Go toolchain is downloaded at
+# runtime — update this tag when go.mod's minimum Go version changes.
+FROM mcr.microsoft.com/devcontainers/go:1.25-bookworm
 
 # Install additional OS packages
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
