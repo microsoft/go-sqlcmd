@@ -1,8 +1,10 @@
 # go-sqlcmd Development Container
-# The Go major version here must satisfy the 'go' directive in go.mod.
-# The base image sets GOTOOLCHAIN=local, so no Go toolchain is downloaded at
-# runtime — update this tag when go.mod's minimum Go version changes.
+# The Go major.minor version here must match the 'go' directive in go.mod.
+# GOTOOLCHAIN=auto lets Go download the exact patch version (e.g. 1.25.9)
+# when the base image is slightly behind. Downloads are verified against
+# sum.golang.org.
 FROM mcr.microsoft.com/devcontainers/go:1.25-bookworm
+ENV GOTOOLCHAIN=auto
 
 # Install additional OS packages
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
