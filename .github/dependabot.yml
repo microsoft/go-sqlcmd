@@ -21,6 +21,10 @@ updates:
     commit-message:
       prefix: "deps"
       include: "scope"
+    groups:
+      go-dependencies:
+        patterns:
+          - "*"
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -34,3 +38,7 @@ updates:
       - "github-actions"
     commit-message:
       prefix: "ci"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
