@@ -7,10 +7,10 @@
 package credman
 
 import (
-	syscall "golang.org/x/sys/windows"
-	"reflect"
 	"time"
 	"unsafe"
+
+	syscall "golang.org/x/sys/windows"
 )
 
 // Load the Windows DLL "advapi32.dll", then set up Go wrapper functions for
@@ -58,7 +58,7 @@ func DeleteCredential(credential *Credential, credentialType CredentialType) err
 // Credential Manager
 func EnumerateCredentials(filter string, all bool) ([]*Credential, error) {
 	var count int
-	var systemCredential uintptr
+	var systemCredential unsafe.Pointer
 	var filterPtr *uint16
 	if !all {
 		filterPtr, _ = syscall.UTF16PtrFromString(filter)
@@ -72,13 +72,9 @@ func EnumerateCredentials(filter string, all bool) ([]*Credential, error) {
 	if ret == 0 {
 		return nil, err
 	}
-	defer credFree.Call(systemCredential)
-	systemCredentials := *(*[]*CREDENTIAL)(unsafe.Pointer(&reflect.SliceHeader{
-		Data: systemCredential,
-		Len:  count,
-		Cap:  count,
-	}))
-	credentials := make([]*Credential, count, count)
+	defer func() { _, _, _ = credFree.Call(uintptr(systemCredential)) }()
+	systemCredentials := unsafe.Slice((**CREDENTIAL)(systemCredential), count)
+	credentials := make([]*Credential, count)
 	for i, c := range systemCredentials {
 		credentials[i] = convertFromSystemCredential(c)
 	}
@@ -117,9 +113,9 @@ func convertToSystemCredential(cred *Credential) (result *CREDENTIAL) {
 	result.LastWritten = syscall.NsecToFiletime(cred.LastWritten.UnixNano())
 	result.CredentialBlobSize = uint32(len(cred.CredentialBlob))
 	if len(cred.CredentialBlob) > 0 {
-		result.CredentialBlob = uintptr(unsafe.Pointer(&cred.CredentialBlob[0]))
+		result.CredentialBlob = unsafe.Pointer(&cred.CredentialBlob[0])
 	} else {
-		result.CredentialBlob = 0
+		result.CredentialBlob = nil
 	}
 	result.Persist = uint32(cred.Persist)
 	result.TargetAlias, _ = syscall.UTF16PtrFromString(cred.TargetAlias)
@@ -128,15 +124,11 @@ func convertToSystemCredential(cred *Credential) (result *CREDENTIAL) {
 	return
 }
 
-func copyBytesToSlice(src uintptr, len uint32) (bytes []byte) {
-	if src == uintptr(0) {
+func copyBytesToSlice(src unsafe.Pointer, len uint32) (bytes []byte) {
+	if src == nil {
 		return []byte{}
 	}
 	bytes = make([]byte, len)
-	copy(bytes, *(*[]byte)(unsafe.Pointer(&reflect.SliceHeader{
-		Data: src,
-		Len:  int(len),
-		Cap:  int(len),
-	})))
+	copy(bytes, unsafe.Slice((*byte)(src), len))
 	return
 }
