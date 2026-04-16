@@ -80,6 +80,6 @@ func TestNegConvertToSystemCredential(t *testing.T) {
 }
 
 func TestNegcopyBytesToSlice(t *testing.T) {
-	b := copyBytesToSlice(uintptr(0), 0)
+	b := copyBytesToSlice(nil, 0)
 	assert.Len(t, b, 0, "bytes should be empty")
 }
