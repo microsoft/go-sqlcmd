@@ -1,0 +1,51 @@
+name: devcontainer-version-check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'go.mod'
+      - '.devcontainer/Dockerfile'
+
+permissions:
+  contents: read
+
+jobs:
+  check-go-version-alignment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Verify Dockerfile Go version satisfies go.mod
+        run: |
+          # Extract the major.minor Go version required by go.mod
+          GOMOD_VERSION=$(grep '^go ' go.mod | awk '{print $2}')
+          GOMOD_MAJOR_MINOR=$(echo "$GOMOD_VERSION" | grep -oE '^[0-9]+\.[0-9]+')
+
+          # Extract the Go version from the Dockerfile base image tag
+          DOCKERFILE_TAG=$(grep -oP 'devcontainers/go:\K[0-9]+\.[0-9]+' .devcontainer/Dockerfile)
+
+          echo "go.mod requires:        go ${GOMOD_VERSION} (major.minor: ${GOMOD_MAJOR_MINOR})"
+          echo "Dockerfile base image:  go:${DOCKERFILE_TAG}"
+
+          if [[ -z "$GOMOD_MAJOR_MINOR" || -z "$DOCKERFILE_TAG" ]]; then
+            echo "ERROR: Could not parse versions"
+            exit 1
+          fi
+
+          if [[ "$GOMOD_MAJOR_MINOR" != "$DOCKERFILE_TAG" ]]; then
+            echo ""
+            echo "ERROR: Version mismatch!"
+            echo "The devcontainer base image (go:${DOCKERFILE_TAG}) does not match"
+            echo "the Go version required by go.mod (${GOMOD_MAJOR_MINOR})."
+            echo ""
+            echo "Update .devcontainer/Dockerfile:"
+            echo "  FROM mcr.microsoft.com/devcontainers/go:${GOMOD_MAJOR_MINOR}-bookworm"
+            echo ""
+            echo "You may also need to update the pinned Go tool versions in the Dockerfile"
+            echo "(gopls, delve, staticcheck, gotext) to versions compatible with Go ${GOMOD_MAJOR_MINOR}."
+            exit 1
+          fi
+
+          echo "OK: Versions are aligned."
