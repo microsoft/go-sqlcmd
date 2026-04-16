@@ -1,0 +1,40 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+package sqlcmd
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestProxyDialerHostName(t *testing.T) {
+	d := &proxyDialer{serverName: "myserver.database.windows.net"}
+	assert.Equal(t, "myserver.database.windows.net", d.HostName())
+}
+
+func TestProxyDialerHostNameEmpty(t *testing.T) {
+	d := &proxyDialer{}
+	assert.Equal(t, "", d.HostName())
+}
+
+func TestProxyDialerDialAddressOverridesHostAndPortForTCP(t *testing.T) {
+	d := &proxyDialer{
+		targetHost: "proxy.local",
+		targetPort: "1444",
+	}
+
+	dialAddr := d.dialAddress("tcp", "server.example.com:1433")
+	assert.Equal(t, "proxy.local:1444", dialAddr)
+}
+
+func TestProxyDialerDialAddressKeepsPortForUDP(t *testing.T) {
+	d := &proxyDialer{
+		targetHost: "proxy.local",
+		targetPort: "1444",
+	}
+
+	dialAddr := d.dialAddress("udp", "server.example.com:1434")
+	assert.Equal(t, "proxy.local:1434", dialAddr)
+}
