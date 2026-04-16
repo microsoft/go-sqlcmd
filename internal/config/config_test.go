@@ -4,15 +4,16 @@
 package config
 
 import (
+	"os"
+	"reflect"
+	"strings"
+	"testing"
+
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/stretchr/testify/assert"
-	"os"
-	"reflect"
-	"strings"
-	"testing"
 )
 
 func TestConfig(t *testing.T) {
@@ -390,6 +391,13 @@ func TestNegConfig_SetFileName(t *testing.T) {
 	assert.Panics(t, func() {
 		SetFileName("")
 	})
+}
+
+func TestNegConfig_SetFileNameBadExtension(t *testing.T) {
+	assert.Panics(t, func() { SetFileName("foo.json") })
+	assert.Panics(t, func() { SetFileName("config.toml") })
+	assert.NotPanics(t, func() { SetFileName(pal.FilenameInUserHomeDotDirectory(".sqlcmd", "sqlconfig-test-yaml.yaml")) })
+	assert.NotPanics(t, func() { SetFileName(pal.FilenameInUserHomeDotDirectory(".sqlcmd", "sqlconfig-test-yml.yml")) })
 }
 
 func TestNegConfig_SetCurrentContextName(t *testing.T) {
