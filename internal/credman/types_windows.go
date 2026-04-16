@@ -4,8 +4,10 @@
 package credman
 
 import (
-	syscall "golang.org/x/sys/windows"
 	"time"
+	"unsafe"
+
+	syscall "golang.org/x/sys/windows"
 )
 
 const (
@@ -56,7 +58,7 @@ type CREDENTIAL struct {
 	Comment            *uint16
 	LastWritten        syscall.Filetime
 	CredentialBlobSize uint32
-	CredentialBlob     uintptr
+	CredentialBlob     unsafe.Pointer
 	Persist            uint32
 	AttributeCount     uint32
 	Attributes         uintptr
