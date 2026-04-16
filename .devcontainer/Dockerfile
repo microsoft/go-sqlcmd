@@ -3,7 +3,7 @@
 # GOTOOLCHAIN=auto lets Go download the exact patch version (e.g. 1.25.9)
 # when the base image is slightly behind. Downloads are verified against
 # sum.golang.org.
-FROM mcr.microsoft.com/devcontainers/go:1.25-bookworm
+FROM mcr.microsoft.com/devcontainers/go:2.1-bookworm
 ENV GOTOOLCHAIN=auto
 
 # The base image sets GOPATH=/go owned by root. Override to a user-writable
