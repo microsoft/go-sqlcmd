@@ -593,6 +593,30 @@ func TestConvertOsArgs(t *testing.T) {
 	}
 }
 
+func TestPreprocessHelpFlags(t *testing.T) {
+	type test struct {
+		name     string
+		in       []string
+		expected []string
+	}
+
+	tests := []test{
+		{"empty args", []string{}, []string{}},
+		{"-help to --help", []string{"-help"}, []string{"--help"}},
+		{"-h alone to -?", []string{"-h"}, []string{"-?"}},
+		{"-h with number stays", []string{"-h", "5"}, []string{"-h", "5"}},
+		{"-h with flag becomes -?", []string{"-h", "-S"}, []string{"-?", "-S"}},
+		{"mixed args", []string{"-S", "server", "-h", "-Q", "select 1"}, []string{"-S", "server", "-?", "-Q", "select 1"}},
+		{"preserve -h N in context", []string{"-S", "srv", "-h", "10", "-Q", "x"}, []string{"-S", "srv", "-h", "10", "-Q", "x"}},
+	}
+	for _, c := range tests {
+		t.Run(c.name, func(t *testing.T) {
+			actual := preprocessHelpFlags(c.in)
+			assert.Equal(t, c.expected, actual, "Incorrect preprocessed args")
+		})
+	}
+}
+
 func TestEncryptionOptions(t *testing.T) {
 	type test struct {
 		input  string

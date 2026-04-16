@@ -82,6 +82,7 @@ type SQLCmdArguments struct {
 	ChangePassword              string
 	ChangePasswordAndExit       string
 	TraceFile                   string
+	ServerNameOverride          string
 	// Keep Help at the end of the list
 	Help bool
 }
@@ -294,6 +295,8 @@ func Execute(version string) {
 // We need to rewrite the arguments to add -i and -v in front of each space-delimited value to be Cobra-friendly.
 // For flags like -r we need to inject the default value if the user omits it
 func convertOsArgs(args []string) (cargs []string) {
+	args = preprocessHelpFlags(args)
+
 	flag := ""
 	first := true
 	for i, a := range args {
@@ -321,6 +324,31 @@ func convertOsArgs(args []string) (cargs []string) {
 		}
 	}
 	return
+}
+
+// preprocessHelpFlags converts -h (without number) and -help to help flags.
+// -h with a number is left alone for header count backward compatibility.
+func preprocessHelpFlags(args []string) []string {
+	result := make([]string, 0, len(args))
+	for i := 0; i < len(args); i++ {
+		arg := args[i]
+		if arg == "-help" {
+			result = append(result, "--help")
+			continue
+		}
+		if arg == "-h" {
+			if i+1 < len(args) {
+				if _, err := strconv.Atoi(args[i+1]); err == nil {
+					result = append(result, arg) // -h <number> for headers
+					continue
+				}
+			}
+			result = append(result, "-?")
+			continue
+		}
+		result = append(result, arg)
+	}
+	return result
 }
 
 // If args[i] is the given flag and args[i+1] is another flag, returns the value to append after the flag
@@ -411,6 +439,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().StringVarP(&args.InitialQuery, "initial-query", "q", "", localizer.Sprintf("Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed"))
 	rootCmd.Flags().StringVarP(&args.Query, "query", "Q", "", localizer.Sprintf("Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed"))
 	rootCmd.Flags().StringVarP(&args.Server, "server", "S", "", localizer.Sprintf("%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.", localizer.ConnStrPattern, localizer.ServerEnvVar))
+	rootCmd.Flags().StringVar(&args.ServerNameOverride, "server-name", "", localizer.Sprintf("Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server."))
 	_ = rootCmd.Flags().IntP(disableCmdAndWarn, "X", 0, localizer.Sprintf("%s Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.", "-X[1]"))
 	rootCmd.Flags().StringVar(&args.AuthenticationMethod, "authentication-method", "", localizer.Sprintf(
 		"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: %s",
@@ -738,6 +767,7 @@ func setConnect(connect *sqlcmd.ConnectSettings, args *SQLCmdArguments, vars *sq
 	}
 	connect.HostNameInCertificate = args.HostNameInCertificate
 	connect.ServerCertificate = args.ServerCertificate
+	connect.ServerNameOverride = args.ServerNameOverride
 	connect.PacketSize = args.PacketSize
 	connect.WorkstationName = args.WorkstationName
 	connect.LogLevel = args.DriverLoggingLevel
