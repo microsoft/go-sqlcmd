@@ -42,16 +42,3 @@ updates:
       github-actions:
         patterns:
           - "*"
-
-  # Enable version updates for Dockerfile base images
-  - package-ecosystem: "docker"
-    directory: "/.devcontainer"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    labels:
-      - "dependencies"
-      - "devcontainer"
-    commit-message:
-      prefix: "deps"
-      include: "scope"
