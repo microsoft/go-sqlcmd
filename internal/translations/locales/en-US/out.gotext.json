@@ -47,9 +47,9 @@
             "fuzzy": true
         },
         {
-            "id": "configuration file",
-            "message": "configuration file",
-            "translation": "configuration file",
+            "id": "YAML configuration file (.yaml or .yml extension)",
+            "message": "YAML configuration file (.yaml or .yml extension)",
+            "translation": "YAML configuration file (.yaml or .yml extension)",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

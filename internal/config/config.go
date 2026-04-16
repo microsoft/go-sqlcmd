@@ -4,13 +4,16 @@
 package config
 
 import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 	"github.com/microsoft/go-sqlcmd/internal/io/folder"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
-	"os"
-	"path/filepath"
-	"testing"
 )
 
 var config Sqlconfig
@@ -22,6 +25,14 @@ var filename string
 func SetFileName(name string) {
 	if name == "" {
 		panic("name is empty")
+	}
+
+	ext := strings.ToLower(filepath.Ext(name))
+	if ext != "" && ext != ".yaml" && ext != ".yml" {
+		checkErr(fmt.Errorf(
+			"configuration file %q has unsupported extension %q (must be .yaml or .yml)",
+			name, ext))
+		return
 	}
 
 	filename = name
