@@ -147,7 +147,7 @@ When adding new commands:
 
 The project supports creating SQL Server instances using Docker or Podman:
 - Container management is in `internal/container/`
-- Supports SQL Server and Azure SQL Edge images
+- Supports SQL Server images
 
 ## Localization
 

@@ -1811,20 +1811,6 @@
             "fuzzy": true
         },
         {
-            "id": "Install Azure Sql Edge",
-            "message": "Install Azure Sql Edge",
-            "translation": "Azure SQL Edge 설치",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Install/Create Azure SQL Edge in a container",
-            "message": "Install/Create Azure SQL Edge in a container",
-            "translation": "컨테이너에 Azure SQL Edge 설치/만들기",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Tag to use, use get-tags to see list of tags",
             "message": "Tag to use, use get-tags to see list of tags",
             "translation": "사용할 태그, get-tags를 사용하여 태그 목록 보기",
@@ -2369,9 +2355,9 @@
             "fuzzy": true
         },
         {
-            "id": "Get tags available for Azure SQL Edge install",
-            "message": "Get tags available for Azure SQL Edge install",
-            "translation": "Azure SQL Edge 설치에 사용할 수 있는 태그 가져오기",
+            "id": "Get tags available for mssql install",
+            "message": "Get tags available for mssql install",
+            "translation": "mssql 설치에 사용할 수 있는 태그 가져오기",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2379,13 +2365,6 @@
             "id": "List tags",
             "message": "List tags",
             "translation": "태그 나열",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Get tags available for mssql install",
-            "message": "Get tags available for mssql install",
-            "translation": "mssql 설치에 사용할 수 있는 태그 가져오기",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
