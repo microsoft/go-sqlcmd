@@ -76,12 +76,14 @@ func TestParseInstances(t *testing.T) {
 }
 
 func TestServerlistCommand(t *testing.T) {
-	s, buf := setupSqlCmdWithMemoryOutput(t)
+	v := InitializeVariables(false)
+	s := New(nil, "", v)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
 	defer func() { _ = buf.Close() }()
 
-	// Run the serverlist command
-	c := []string{":serverlist"}
-	err := runSqlCmd(t, s, c)
+	// Run the serverlist command directly - no DB connection needed
+	err := serverlistCommand(s, []string{""}, 1)
 
 	// The command should not raise an error even if no servers are found
 	assert.NoError(t, err, ":serverlist should not raise error")

@@ -205,7 +205,7 @@ echo No SQL Server instances found
 To capture stderr separately (for error logging):
 ```batch
 sqlcmd -Q ":serverlist" 2>errors.log > servers.txt
-if exist errors.log if not "%%~z errors.log"=="0" type errors.log
+if exist errors.log for %%I in (errors.log) do if %%~zI gtr 0 type errors.log
 ```
 
 ```

@@ -470,9 +470,11 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 }
 
 func TestHelpCommand(t *testing.T) {
-	s, buf := setupSqlCmdWithMemoryOutput(t)
-	defer func() { _ = buf.Close() }()
+	v := InitializeVariables(false)
+	s := New(nil, "", v)
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
+	defer func() { _ = buf.Close() }()
 
 	err := helpCommand(s, []string{""}, 1)
 	assert.NoError(t, err, "helpCommand should not error")

@@ -80,7 +80,7 @@ func GetLocalServerInstances() ([]string, error) {
 			continue
 		}
 		if s == "MSSQLSERVER" {
-			instances = append(instances, "(local)", serverName)
+			instances = append(instances, serverName)
 		} else {
 			instances = append(instances, fmt.Sprintf(`%s\%s`, serverName, s))
 		}
