@@ -28,6 +28,11 @@ func TestVSCode(t *testing.T) {
 		t.Skip("VS Code is not installed")
 	}
 
+	// Redirect settings writes to a temp directory so the test never
+	// touches the real VS Code settings.json.
+	testSettingsPathOverride = filepath.Join(t.TempDir(), "settings.json")
+	t.Cleanup(func() { testSettingsPathOverride = "" })
+
 	cmdparser.TestSetup(t)
 	config.AddEndpoint(sqlconfig.Endpoint{
 		AssetDetails: nil,
