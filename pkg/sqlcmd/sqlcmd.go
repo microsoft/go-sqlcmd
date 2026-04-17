@@ -513,7 +513,7 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	}
 	s.Format.EndBatch()
 	elapsedMs := time.Since(startTime).Milliseconds()
-	s.printStatistics(elapsedMs, 1)
+	s.printStatistics(elapsedMs, 1, s.GetOutput())
 	return retcode, qe
 }
 
@@ -588,8 +588,10 @@ func (s *Sqlcmd) StopCloseHandler() {
 }
 
 // printStatistics prints performance statistics after a batch execution
-// if PrintStatistics is enabled
-func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int) {
+// if PrintStatistics is enabled. The out parameter controls where the
+// statistics are written (typically s.GetOutput(), or s.GetStat() when
+// :perftrace redirection is active).
+func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int, out io.Writer) {
 	if s.PrintStatistics == nil || numBatches <= 0 {
 		return
 	}
@@ -608,7 +610,6 @@ func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int) {
 	avgTime := float64(elapsedMs) / float64(numBatches)
 	batchesPerSec := float64(numBatches) / (float64(elapsedMs) / 1000.0)
 
-	out := s.GetOutput()
 	if *s.PrintStatistics == 1 {
 		// Colon-separated format: n:x:t1:t2:t3
 		// packetSize:numBatches:totalTime:avgTime:batchesPerSec
