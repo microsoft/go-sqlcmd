@@ -250,23 +250,27 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		panic("Must pass in non-empty destFolder")
 	}
 
-	cmd := []string{"mkdir", destFolder}
+	cmd := []string{"mkdir", "-p", destFolder}
 	c.runCmdInContainer(id, cmd)
 
 	_, file := filepath.Split(src)
-
-	// Wget the .bak file from the http src, and place it in /var/opt/sql/backup
-	cmd = []string{
-		"wget",
-		"-O",
-		destFolder + "/" + file, // not using filepath.Join here, this is in the *nix container. always /
-		src,
+	if file == "" {
+		panic("src URL has no filename: " + src)
 	}
+	dest := destFolder + "/" + file // not using filepath.Join here, this is in the *nix container. always /
 
-	c.runCmdInContainer(id, cmd)
+	cmd = []string{"wget", "-O", dest, src}
+	_, stderr, exitCode := c.runCmdInContainer(id, cmd)
+	if exitCode != 0 {
+		msg := "download failed: " + src
+		if len(stderr) > 0 {
+			msg += "\nwget output: " + string(stderr)
+		}
+		panic(msg)
+	}
 }
 
-func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) {
+func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte, int) {
 	trace("Running command in container: " + strings.Join(cmd, " "))
 
 	response, err := c.cli.ExecCreate(
@@ -308,7 +312,14 @@ func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte) 
 	trace("Stdout: " + string(stdout))
 	trace("Stderr: " + string(stderr))
 
-	return stdout, stderr
+	inspect, err := c.cli.ExecInspect(
+		context.Background(),
+		response.ID,
+		client.ExecInspectOptions{},
+	)
+	checkErr(err)
+
+	return stdout, stderr, inspect.ExitCode
 }
 
 // ContainerRunning returns true if the container with the given ID is running.

@@ -5,10 +5,11 @@ package container
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestController_ListTags(t *testing.T) {
@@ -54,7 +55,7 @@ func TestController_EnsureImage(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	c.DownloadFile(id, ts.URL, "test.txt")
+	c.DownloadFile(id, ts.URL+"/test.bak", "/tmp")
 
 	err = c.ContainerStop(id)
 	checkErr(err)
@@ -185,5 +186,12 @@ func TestController_DownloadFileNeg3(t *testing.T) {
 	c := NewController()
 	assert.Panics(t, func() {
 		c.DownloadFile("not_blank", "not_blank", "")
+	})
+}
+
+func TestController_DownloadFileNoFilename(t *testing.T) {
+	c := NewController()
+	assert.Panics(t, func() {
+		c.DownloadFile("not_blank", "http://host:9999/", "/tmp")
 	})
 }
