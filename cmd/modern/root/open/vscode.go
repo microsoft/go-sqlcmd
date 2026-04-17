@@ -20,6 +20,10 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
 )
 
+// testSettingsPathOverride, when non-empty, overrides getVSCodeSettingsPath
+// so tests never touch the real VS Code settings.json.
+var testSettingsPathOverride string
+
 // VSCode implements the `sqlcmd open vscode` command. It opens
 // Visual Studio Code and configures a connection profile for the
 // current context using the MSSQL extension.
@@ -281,6 +285,10 @@ func (c *VSCode) updateOrAddProfile(connections []interface{}, newProfile map[st
 }
 
 func (c *VSCode) getVSCodeSettingsPath() string {
+	if testSettingsPathOverride != "" {
+		return testSettingsPathOverride
+	}
+
 	var stableDir string
 	var insidersDir string
 
