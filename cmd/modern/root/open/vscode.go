@@ -163,7 +163,10 @@ func (c *VSCode) readSettings(path string) map[string]interface{} {
 	}
 
 	if len(data) > 0 {
-		if err := json.Unmarshal(data, &settings); err != nil {
+		// VS Code settings.json is JSONC (allows comments and trailing commas).
+		// Strip those before parsing so standard json.Unmarshal succeeds.
+		clean := stripJSONC(data)
+		if err := json.Unmarshal(clean, &settings); err != nil {
 			output := c.Output()
 			output.FatalWithHintExamples([][]string{
 				{localizer.Sprintf("Error"), err.Error()},
@@ -184,6 +187,28 @@ func (c *VSCode) writeSettings(path string, settings map[string]interface{}) {
 		}, localizer.Sprintf("Failed to encode VS Code settings"))
 	}
 
+	// Append a final newline for consistency with VS Code's own formatting
+	data = append(data, '\n')
+
+	// Atomic write: write to a temp file in the same directory, then rename.
+	// If rename fails (e.g. another process holds the file), fall back to
+	// a direct write so the command still succeeds.
+	dir := filepath.Dir(path)
+	tmp, tmpErr := os.CreateTemp(dir, ".settings-*.tmp")
+	if tmpErr == nil {
+		tmpPath := tmp.Name()
+		_, writeErr := tmp.Write(data)
+		closeErr := tmp.Close()
+		if writeErr != nil || closeErr != nil {
+			os.Remove(tmpPath)
+		} else if renameErr := os.Rename(tmpPath, path); renameErr != nil {
+			os.Remove(tmpPath)
+		} else {
+			return // atomic write succeeded
+		}
+	}
+
+	// Fallback: direct write
 	if err := os.WriteFile(path, data, 0600); err != nil {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("Error"), err.Error()},
