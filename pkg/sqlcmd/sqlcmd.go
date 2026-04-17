@@ -237,7 +237,10 @@ func (s *Sqlcmd) SetError(e io.WriteCloser) {
 	s.err = e
 }
 
-// GetStat returns the io.Writer to use for performance statistics
+// GetStat returns the io.Writer to use for performance statistics.
+// Falls back to GetOutput() when no :perftrace redirection is active.
+// After merging PR #631 (print-statistics), update the printStatistics
+// call site from s.GetOutput() to s.GetStat().
 func (s *Sqlcmd) GetStat() io.Writer {
 	if s.stat == nil {
 		return s.GetOutput()
