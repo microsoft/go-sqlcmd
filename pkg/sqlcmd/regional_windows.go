@@ -7,7 +7,6 @@ package sqlcmd
 
 import (
 	"syscall"
-	"unsafe"
 
 	"golang.org/x/text/language"
 )
@@ -28,9 +27,6 @@ func detectUserLocale() language.Tag {
 	}
 	return language.English
 }
-
-// suppressUnused is used to prevent "imported and not used" errors
-var _ = unsafe.Sizeof(0)
 
 // lcidToLanguageTag converts a Windows LCID to a BCP 47 language tag
 func lcidToLanguageTag(lcid uint32) string {

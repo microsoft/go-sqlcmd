@@ -208,8 +208,10 @@ func getDecimalSeparator(tag language.Tag) string {
 func getThousandSeparator(tag language.Tag) string {
 	base, _ := tag.Base()
 	switch base.String() {
-	case "de", "fr", "es", "it", "pt", "nl", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "tr", "el", "ru", "uk", "be", "fi", "sv", "no", "da", "is":
-		// These locales use period or space as thousand separator
+	case "fr", "ru", "uk", "be", "fi", "sv", "no", "nb", "nn":
+		// These locales use a non-breaking space as the thousand separator
+		return "\u00a0"
+	case "de", "es", "it", "pt", "nl", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "tr", "el", "da", "is":
 		return "."
 	default:
 		return ","

@@ -78,7 +78,9 @@ func TestGetThousandSeparator(t *testing.T) {
 		{"en-US", ","},
 		{"en-GB", ","},
 		{"de-DE", "."},
-		{"fr-FR", "."},
+		{"fr-FR", "\u00a0"},
+		{"sv-SE", "\u00a0"},
+		{"ru-RU", "\u00a0"},
 		{"ja-JP", ","},
 	}
 
