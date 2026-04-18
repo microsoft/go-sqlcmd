@@ -19,7 +19,8 @@ steps:
       packageSourceAuth: patAuth
       dependencyPackageSource: 'https://pkgs.dev.azure.com/msdata/_packaging/SQLDS_SSMS/nuget/v3/index.json'
       patVariable: $(System.AccessToken)
-
+      isAutoCompletePrSelected: false
+      isShouldReusePrSelected: true
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)'

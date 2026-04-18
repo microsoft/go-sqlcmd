@@ -2466,23 +2466,30 @@
       "fuzzy": true
     },
     {
+      "id": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+      "message": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+      "translation": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
       "id": "Servers:",
       "message": "Servers:",
-      "translation": "Server:",
+      "translation": "Servers:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Legal docs and information: aka.ms/SqlcmdLegal",
       "message": "Legal docs and information: aka.ms/SqlcmdLegal",
-      "translation": "Rechtliche Dokumente und Informationen: aka.ms/SqlcmdLegal",
+      "translation": "Legal docs and information: aka.ms/SqlcmdLegal",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Third party notices: aka.ms/SqlcmdNotices",
       "message": "Third party notices: aka.ms/SqlcmdNotices",
-      "translation": "Hinweise zu Drittanbietern: aka.ms/SqlcmdNotices",
+      "translation": "Third party notices: aka.ms/SqlcmdNotices",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
@@ -2513,7 +2520,7 @@
     {
       "id": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
       "message": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
-      "translation": "-? zeigt diese Syntaxzusammenfassung an, {HelpFlag} zeigt die Hilfe zu modernen sqlcmd-Unterbefehlen an",
+      "translation": "-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2530,14 +2537,14 @@
     {
       "id": "Write runtime trace to the specified file. Only for advanced debugging.",
       "message": "Write runtime trace to the specified file. Only for advanced debugging.",
-      "translation": "Laufzeitverfolgung in die angegebene Datei schreiben. Nur für fortgeschrittenes Debugging.",
+      "translation": "Write runtime trace to the specified file. Only for advanced debugging.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "message": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
-      "translation": "Identifiziert mindestens eine Datei, die Batches von SQL-Anweisungen enthält. Wenn mindestens eine Datei nicht vorhanden ist, wird sqlcmd beendet. Sich gegenseitig ausschließend mit {QueryAndExitFlag}/{QueryFlag}",
+      "translation": "Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2562,28 +2569,28 @@
     {
       "id": "Identifies the file that receives output from sqlcmd",
       "message": "Identifies the file that receives output from sqlcmd",
-      "translation": "Identifiziert die Datei, die Ausgaben von sqlcmd empfängt",
+      "translation": "Identifies the file that receives output from sqlcmd",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Print version information and exit",
       "message": "Print version information and exit",
-      "translation": "Versionsinformationen drucken und beenden",
+      "translation": "Print version information and exit",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Implicitly trust the server certificate without validation",
       "message": "Implicitly trust the server certificate without validation",
-      "translation": "Serverzertifikat ohne Überprüfung implizit als vertrauenswürdig einstufen",
+      "translation": "Implicitly trust the server certificate without validation",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
       "message": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
-      "translation": "Mit dieser Option wird die sqlcmd-Skriptvariable {DbNameVar} festgelegt. Dieser Parameter gibt die Anfangsdatenbank an. Der Standardwert ist die Standarddatenbankeigenschaft Ihrer Anmeldung. Wenn die Datenbank nicht vorhanden ist, wird eine Fehlermeldung generiert, und sqlcmd wird beendet.",
+      "translation": "This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2600,14 +2607,14 @@
     {
       "id": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
       "message": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
-      "translation": "Verwendet eine vertrauenswürdige Verbindung, anstatt einen Benutzernamen und ein Kennwort für die Anmeldung bei SQL Server zu verwenden. Umgebungsvariablen, die Benutzernamen und Kennwort definieren, werden ignoriert.",
+      "translation": "Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
       "message": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
-      "translation": "Gibt das Batchabschlusszeichen an. Der Standardwert ist {BatchTerminatorGo}",
+      "translation": "Specifies the batch terminator. The default value is {BatchTerminatorGo}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2624,28 +2631,28 @@
     {
       "id": "The login name or contained database user name.  For contained database users, you must provide the database name option",
       "message": "The login name or contained database user name.  For contained database users, you must provide the database name option",
-      "translation": "Der Anmeldename oder der enthaltene Datenbankbenutzername. Für eigenständige Datenbankbenutzer müssen Sie die Option „Datenbankname“ angeben.",
+      "translation": "The login name or contained database user name.  For contained database users, you must provide the database name option",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
       "message": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
-      "translation": "Führt eine Abfrage aus, wenn sqlcmd gestartet wird, aber beendet sqlcmd nicht, wenn die Abfrage ausgeführt wurde. Abfragen mit mehrfachem Semikolontrennzeichen können ausgeführt werden.",
+      "translation": "Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
       "message": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
-      "translation": "Führt eine Abfrage aus, wenn sqlcmd gestartet und dann sqlcmd sofort beendet wird. Abfragen mit mehrfachem Semikolontrennzeichen können ausgeführt werden",
+      "translation": "Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
       "message": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
-      "translation": "{ConnStrPattern} Gibt die Instanz von SQL Server an, mit denen eine Verbindung hergestellt werden soll. Sie legt die sqlcmd-Skriptvariable {ServerEnvVar} fest.",
+      "translation": "{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2670,7 +2677,7 @@
     {
       "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
       "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
-      "translation": "{_X1} Deaktiviert Befehle, die die Systemsicherheit gefährden könnten. Die Übergabe 1 weist sqlcmd an, beendet zu werden, wenn deaktivierte Befehle ausgeführt werden.",
+      "translation": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2687,7 +2694,7 @@
     {
       "id": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
       "message": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
-      "translation": "Gibt die SQL-Authentifizierungsmethode an, die zum Herstellen einer Verbindung mit der Azure SQL-Datenbank verwendet werden soll. Eines der folgenden Elemente: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
+      "translation": "Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2704,14 +2711,14 @@
     {
       "id": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
       "message": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
-      "translation": "Weist sqlcmd an, die ActiveDirectory-Authentifizierung zu verwenden. Wenn kein Benutzername angegeben wird, wird die Authentifizierungsmethode ActiveDirectoryDefault verwendet. Wenn ein Kennwort angegeben wird, wird ActiveDirectoryPassword verwendet. Andernfalls wird ActiveDirectoryInteractive verwendet.",
+      "translation": "Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
       "message": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
-      "translation": "Bewirkt, dass sqlcmd Skriptvariablen ignoriert. Dieser Parameter ist nützlich, wenn ein Skript viele {InsertKeyword}-Anweisungen enthält, die möglicherweise Zeichenfolgen enthalten, die das gleiche Format wie reguläre Variablen aufweisen, z. B. $(variable_name)",
+      "translation": "Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2728,14 +2735,14 @@
     {
       "id": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "message": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
-      "translation": "Erstellt eine sqlcmd-Skriptvariable, die in einem sqlcmd-Skript verwendet werden kann. Schließen Sie den Wert in Anführungszeichen ein, wenn der Wert Leerzeichen enthält. Sie können mehrere var=values-Werte angeben. Wenn Fehler in einem der angegebenen Werte vorliegen, generiert sqlcmd eine Fehlermeldung und beendet dann",
+      "translation": "Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
       "message": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
-      "translation": "Fordert ein Paket einer anderen Größe an. Mit dieser Option wird die sqlcmd-Skriptvariable {PacketSizeVar} festgelegt. packet_size muss ein Wert zwischen 512 und 32767 sein. Der Standardwert = 4096. Eine größere Paketgröße kann die Leistung für die Ausführung von Skripts mit vielen SQL-Anweisungen zwischen {BatchTerminatorGo}-Befehlen verbessern. Sie können eine größere Paketgröße anfordern. Wenn die Anforderung abgelehnt wird, verwendet sqlcmd jedoch den Serverstandard für die Paketgröße.",
+      "translation": "Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2760,7 +2767,7 @@
     {
       "id": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
       "message": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
-      "translation": "Gibt die Anzahl von Sekunden an, nach der ein Timeout für eine sqlcmd-Anmeldung beim go-mssqldb-Treiber auftritt, wenn Sie versuchen, eine Verbindung mit einem Server herzustellen. Mit dieser Option wird die sqlcmd-Skriptvariable {LoginTimeOutVar} festgelegt. Der Standardwert ist 30. 0 bedeutet unendlich",
+      "translation": "Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2777,7 +2784,7 @@
     {
       "id": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
       "message": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
-      "translation": "Mit dieser Option wird die sqlcmd-Skriptvariable {WorkstationVar} festgelegt. Der Arbeitsstationsname ist in der Hostnamenspalte der sys.sysprocesses-Katalogsicht aufgeführt und kann mithilfe der gespeicherten Prozedur sp_who zurückgegeben werden. Wenn diese Option nicht angegeben ist, wird standardmäßig der aktuelle Computername verwendet. Dieser Name kann zum Identifizieren verschiedener sqlcmd-Sitzungen verwendet werden.",
+      "translation": "This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2794,7 +2801,7 @@
     {
       "id": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
       "message": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
-      "translation": "Deklariert den Anwendungsworkloadtyp beim Herstellen einer Verbindung mit einem Server. Der einzige aktuell unterstützte Wert ist ReadOnly. Wenn {ApplicationIntentFlagShort} nicht angegeben ist, unterstützt das sqlcam-Hilfsprogramm die Konnektivität mit einem sekundären Replikat in einer Always-On-Verfügbarkeitsgruppe nicht.",
+      "translation": "Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2811,21 +2818,28 @@
     {
       "id": "This switch is used by the client to request an encrypted connection",
       "message": "This switch is used by the client to request an encrypted connection",
-      "translation": "Dieser Schalter wird vom Client verwendet, um eine verschlüsselte Verbindung anzufordern.",
+      "translation": "This switch is used by the client to request an encrypted connection",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the host name in the server certificate.",
       "message": "Specifies the host name in the server certificate.",
-      "translation": "Gibt den Hostnamen im Serverzertifikat an.",
+      "translation": "Specifies the host name in the server certificate.",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+      "message": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+      "translation": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
       "message": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
-      "translation": "Druckt die Ausgabe im vertikalen Format. Mit dieser Option wird die sqlcmd-Skriptvariable {SQLCMDFORMAT} auf „{Vert}“ festgelegt. Der Standardwert lautet FALSCH.",
+      "translation": "Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2850,7 +2864,7 @@
     {
       "id": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
       "message": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
-      "translation": "{_r0__1} Leitet Fehlermeldungen mit Schweregrad >= 11 Ausgabe an stderr um. Übergeben Sie 1, um alle Fehler einschließlich PRINT umzuleiten.",
+      "translation": "{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2867,14 +2881,14 @@
     {
       "id": "Level of mssql driver messages to print",
       "message": "Level of mssql driver messages to print",
-      "translation": "Ebene der zu druckenden MSSQL-Treibermeldungen",
+      "translation": "Level of mssql driver messages to print",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
       "message": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
-      "translation": "Gibt an, dass sqlcmd bei einem Fehler beendet wird und einen {DosErrorLevel}-Wert zurückgibt",
+      "translation": "Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2891,7 +2905,7 @@
     {
       "id": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
       "message": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
-      "translation": "Steuert, welche Fehlermeldungen an {StdoutName} gesendet werden. Nachrichten mit einem Schweregrad größer oder gleich dieser Ebene werden gesendet.",
+      "translation": "Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2908,21 +2922,21 @@
     {
       "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
       "message": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
-      "translation": "Gibt die Anzahl der Zeilen an, die zwischen den Spaltenüberschriften gedruckt werden sollen. Verwenden Sie -h-1, um anzugeben, dass Header nicht gedruckt werden",
+      "translation": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies that all output files are encoded with little-endian Unicode",
       "message": "Specifies that all output files are encoded with little-endian Unicode",
-      "translation": "Gibt an, dass alle Ausgabedateien mit Little-Endian-Unicode codiert sind",
+      "translation": "Specifies that all output files are encoded with little-endian Unicode",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
       "message": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
-      "translation": "Gibt das Spaltentrennzeichen an. Legt die {ColSeparatorVar}-Variable fest.",
+      "translation": "Specifies the column separator character. Sets the {ColSeparatorVar} variable.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2939,28 +2953,28 @@
     {
       "id": "Remove trailing spaces from a column",
       "message": "Remove trailing spaces from a column",
-      "translation": "Nachfolgende Leerzeichen aus einer Spalte entfernen",
+      "translation": "Remove trailing spaces from a column",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
       "message": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
-      "translation": "Aus Gründen der Abwärtskompatibilität bereitgestellt. Sqlcmd optimiert immer die Erkennung des aktiven Replikats eines SQL-Failoverclusters.",
+      "translation": "Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Password",
       "message": "Password",
-      "translation": "Kennwort",
+      "translation": "Password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
       "message": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
-      "translation": "Steuert den Schweregrad, mit dem die Variable {ErrorLevel} beim Beenden festgelegt wird.",
+      "translation": "Controls the severity level that is used to set the {ErrorLevel} variable on exit",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2977,14 +2991,14 @@
     {
       "id": "Specifies the screen width for output",
       "message": "Specifies the screen width for output",
-      "translation": "Gibt die Bildschirmbreite für die Ausgabe an",
+      "translation": "Specifies the screen width for output",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
       "message": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
-      "translation": "{_Lc} Server auflisten. Übergeben Sie {C}, um die Ausgabe \"Servers:\" auszulassen.",
+      "translation": "{_Lc} List servers. Pass {C} to omit 'Servers:' output.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3009,28 +3023,28 @@
     {
       "id": "Dedicated administrator connection",
       "message": "Dedicated administrator connection",
-      "translation": "Dedizierte Adminverbindung",
+      "translation": "Dedicated administrator connection",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Provided for backward compatibility. Quoted identifiers are always enabled",
       "message": "Provided for backward compatibility. Quoted identifiers are always enabled",
-      "translation": "Aus Gründen der Abwärtskompatibilität bereitgestellt. Bezeichner in Anführungszeichen sind immer aktiviert.",
+      "translation": "Provided for backward compatibility. Quoted identifiers are always enabled",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Provided for backward compatibility. Client regional settings are not used",
       "message": "Provided for backward compatibility. Client regional settings are not used",
-      "translation": "Aus Gründen der Abwärtskompatibilität bereitgestellt. Regionale Clienteinstellungen werden nicht verwendet.",
+      "translation": "Provided for backward compatibility. Client regional settings are not used",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
       "message": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
-      "translation": "{_k_12} Entfernen Sie Steuerzeichen aus der Ausgabe. Übergeben Sie 1, um ein Leerzeichen pro Zeichen zu ersetzen, 2 für ein Leerzeichen pro aufeinanderfolgende Zeichen.",
+      "translation": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3047,35 +3061,35 @@
     {
       "id": "Echo input",
       "message": "Echo input",
-      "translation": "Echoeingabe",
+      "translation": "Echo input",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Enable column encryption",
       "message": "Enable column encryption",
-      "translation": "Spaltenverschlüsselung aktivieren",
+      "translation": "Enable column encryption",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "New password",
       "message": "New password",
-      "translation": "Neues Kennwort",
+      "translation": "New password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "New password and exit",
       "message": "New password and exit",
-      "translation": "Neues Kennwort und Beenden",
+      "translation": "New password and exit",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sets the sqlcmd scripting variable {V}",
       "message": "Sets the sqlcmd scripting variable {V}",
-      "translation": "Legt die sqlcmd-Skriptvariable {V} fest",
+      "translation": "Sets the sqlcmd scripting variable {V}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3092,7 +3106,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "message": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
-      "translation": "'{Flag} {Value}': Der Wert muss größer oder gleich {Min} und kleiner oder gleich {Max} sein.",
+      "translation": "'{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3133,7 +3147,7 @@
     {
       "id": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "message": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
-      "translation": "\"{Flag} {Value}\": Der Wert muss größer als {Min} und kleiner als {Max} sein.",
+      "translation": "'{Flag} {Value}': value must be greater than {Min} and less than {Max}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3174,7 +3188,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
-      "translation": "\"{Flag} {Value}\": Unerwartetes Argument. Der Argumentwert muss {AllowedValues0} sein.",
+      "translation": "'{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3207,7 +3221,7 @@
     {
       "id": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "message": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
-      "translation": "\"{Flag} {Value}\": Unerwartetes Argument. Der Argumentwert muss einer der {AllowedValues} sein.",
+      "translation": "'{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3240,7 +3254,7 @@
     {
       "id": "The {Flag1} and the {Flag2} options are mutually exclusive.",
       "message": "The {Flag1} and the {Flag2} options are mutually exclusive.",
-      "translation": "Die Optionen {Flag1} und {Flag2} schließen sich gegenseitig aus.",
+      "translation": "The {Flag1} and the {Flag2} options are mutually exclusive.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3265,7 +3279,7 @@
     {
       "id": "'{P1}': Missing argument. Enter '-?' for help.",
       "message": "'{P1}': Missing argument. Enter '-?' for help.",
-      "translation": "'{P1}': Fehlendes Argument. Geben Sie \"-?\" ein, um die Hilfe anzuzeigen.",
+      "translation": "'{P1}': Missing argument. Enter '-?' for help.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3282,7 +3296,7 @@
     {
       "id": "'{P1}': Unknown Option. Enter '-?' for help.",
       "message": "'{P1}': Unknown Option. Enter '-?' for help.",
-      "translation": "'{P1}': Unbekannte Option. Mit \"-?\" rufen Sie die Hilfe auf.",
+      "translation": "'{P1}': Unknown Option. Enter '-?' for help.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3299,7 +3313,7 @@
     {
       "id": "failed to create trace file '{TraceFile}': {Err}",
       "message": "failed to create trace file '{TraceFile}': {Err}",
-      "translation": "Fehler beim Erstellen der Ablaufverfolgungsdatei „{TraceFile}“: {Err}",
+      "translation": "failed to create trace file '{TraceFile}': {Err}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3324,7 +3338,7 @@
     {
       "id": "failed to start trace: {Err}",
       "message": "failed to start trace: {Err}",
-      "translation": "Fehler beim Starten der Ablaufverfolgung: {Err}",
+      "translation": "failed to start trace: {Err}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3341,7 +3355,7 @@
     {
       "id": "invalid batch terminator '{BatchTerminator}'",
       "message": "invalid batch terminator '{BatchTerminator}'",
-      "translation": "Ungültiges Batchabschlusszeichen '{BatchTerminator}'",
+      "translation": "invalid batch terminator '{BatchTerminator}'",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3358,42 +3372,42 @@
     {
       "id": "Enter new password:",
       "message": "Enter new password:",
-      "translation": "Neues Kennwort eingeben:",
+      "translation": "Enter new password:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
       "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
-      "translation": "sqlcmd: SQL Server, Azure SQL und Tools installieren/erstellen/abfragen",
+      "translation": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sqlcmd: Error:",
       "message": "Sqlcmd: Error:",
-      "translation": "Sqlcmd: Fehler:",
+      "translation": "Sqlcmd: Error:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Sqlcmd: Warning:",
       "message": "Sqlcmd: Warning:",
-      "translation": "Sqlcmd: Warnung:",
+      "translation": "Sqlcmd: Warning:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "message": "ED and !!<command> commands, startup script, and environment variables are disabled",
-      "translation": "Die Befehle \"ED\" und \"!!<command>\", Startskript und Umgebungsvariablen sind deaktiviert",
+      "translation": "ED and !!<command> commands, startup script, and environment variables are disabled",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The scripting variable: '{Variable}' is read-only",
       "message": "The scripting variable: '{Variable}' is read-only",
-      "translation": "Die Skriptvariable: '{Variable}' ist schreibgeschützt.",
+      "translation": "The scripting variable: '{Variable}' is read-only",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3410,7 +3424,7 @@
     {
       "id": "'{Variable}' scripting variable not defined.",
       "message": "'{Variable}' scripting variable not defined.",
-      "translation": "Die '{Variable}'-Skriptvariable ist nicht definiert.",
+      "translation": "'{Variable}' scripting variable not defined.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3427,7 +3441,7 @@
     {
       "id": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
       "message": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
-      "translation": "Die Umgebungsvariable '{Variable}' hat einen ungültigen Wert: '{EnvVal}'.",
+      "translation": "The environment variable: '{Variable}' has invalid value: '{EnvVal}'.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3452,7 +3466,7 @@
     {
       "id": "Syntax error at line {LineNumber} near command '{Command}'.",
       "message": "Syntax error at line {LineNumber} near command '{Command}'.",
-      "translation": "Syntaxfehler in Zeile {LineNumber} in der Nähe des Befehls '{Command}'.",
+      "translation": "Syntax error at line {LineNumber} near command '{Command}'.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3477,7 +3491,7 @@
     {
       "id": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
       "message": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
-      "translation": "{ErrorPrefix} Fehler beim Öffnen oder Ausführen der Datei {Filepath} (Ursache: {Error}).",
+      "translation": "{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3510,7 +3524,7 @@
     {
       "id": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "message": "{ErrorPrefix}Syntax error at line {LineNumber}",
-      "translation": "{ErrorPrefix}Syntaxfehler in Zeile {LineNumber}",
+      "translation": "{ErrorPrefix}Syntax error at line {LineNumber}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3535,14 +3549,14 @@
     {
       "id": "Timeout expired",
       "message": "Timeout expired",
-      "translation": "Timeout abgelaufen",
+      "translation": "Timeout expired",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
-      "translation": "Meldung {Number}, Ebene {Class}, Status {State}, Server {ServerName}, Prozedur {ProcName}, Zeile {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3607,7 +3621,7 @@
     {
       "id": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
       "message": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
-      "translation": "Meldung {Number}, Ebene {Class}, Status {State}, Server {ServerName}, Zeile {LineNo}{SqlcmdEol}",
+      "translation": "Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3664,21 +3678,21 @@
     {
       "id": "Password:",
       "message": "Password:",
-      "translation": "Kennwort:",
+      "translation": "Password:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "(1 row affected)",
       "message": "(1 row affected)",
-      "translation": "(1 Zeile betroffen)",
+      "translation": "(1 row affected)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "({Count} rows affected)",
       "message": "({Count} rows affected)",
-      "translation": "({Count} Zeilen betroffen)",
+      "translation": "({Count} rows affected)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3695,7 +3709,7 @@
     {
       "id": "Invalid variable identifier {Name}",
       "message": "Invalid variable identifier {Name}",
-      "translation": "Ungültiger Variablenbezeichner {Name}",
+      "translation": "Invalid variable identifier {Name}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -3712,7 +3726,7 @@
     {
       "id": "Invalid variable value {Val}",
       "message": "Invalid variable value {Val}",
-      "translation": "Ungültiger Variablenwert {Val}",
+      "translation": "Invalid variable value {Val}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {

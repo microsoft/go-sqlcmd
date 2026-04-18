@@ -1,5 +1,7 @@
 # SQLCMD CLI
 
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](.devcontainer/README.md)
+
 This repo contains the `sqlcmd` command line tool and Go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.  
 
 Learn more about how `sqlcmd` is used from a articles/posts written by the community: [Community Buzz][].
@@ -111,6 +113,24 @@ sqlcmd
 ```
 
 If no current context exists, `sqlcmd` (with no connection parameters) reverts to the original ODBC `sqlcmd` behavior of creating an interactive session to the default local instance on port 1433 using trusted authentication, otherwise it will create an interactive session to the current context.
+
+### Piping input to sqlcmd
+
+You can pipe SQL commands directly to `sqlcmd` from the command line. This is useful for scripting and automation:
+
+**PowerShell:**
+```powershell
+"SELECT @@version" | sqlcmd -S myserver -d mydb -G
+"SELECT name FROM sys.databases" | sqlcmd -S myserver.database.windows.net -d mydb -G
+```
+
+**Bash:**
+```bash
+echo "SELECT @@version" | sqlcmd -S myserver -d mydb -G
+cat myscript.sql | sqlcmd -S myserver -d mydb -G
+```
+
+Note: When piping input, `GO` batch terminators are optional—`sqlcmd` will automatically execute the batch when the input ends. However, you can still include `GO` statements if you want to execute multiple batches.
 
 ## Sqlcmd
 
@@ -297,6 +317,52 @@ e.g.
 \git\go-sqlcmd>.\sqlcmd.exe -w 4
 sqlcmd.exe: error: sqlcmd.exe: '-w 4': Der Wert muss größer als 8 und kleiner als 65536 sein.
 ```
+
+## Development
+
+### Quick Start with Dev Containers
+
+The easiest way to develop and test sqlcmd is to use the included [Dev Container](.devcontainer/README.md), which works with:
+
+- **VS Code**: Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), open this repo, and click "Reopen in Container"
+- **GitHub Codespaces**: Click the "Code" button on GitHub and select "Create codespace"
+
+The dev container includes:
+- Go 1.24 with all development tools (golangci-lint, gopls, delve)
+- SQL Server 2025 ready for integration tests
+- Your locally built `sqlcmd` added to PATH automatically
+- Pre-configured environment variables for tests
+
+Once inside the container:
+```bash
+# Build sqlcmd from source
+ginstall
+
+# Run the test suite
+gtest
+
+# Connect to SQL Server
+sql -Q "SELECT @@VERSION"
+```
+
+### Manual Setup
+
+If you prefer to set up your environment manually:
+
+1. Install Go 1.24 or higher
+2. Clone this repository
+3. Set up a SQL Server instance (2017 or later)
+4. Configure environment variables:
+   - `SQLCMDSERVER` - Server hostname (e.g., `localhost`)
+   - `SQLCMDUSER` - Username (e.g., `sa`)
+   - `SQLCMDPASSWORD` - Password
+   - `SQLCMDDATABASE` - Database name (optional)
+
+5. Build and run:
+   ```bash
+   go build -o sqlcmd ./cmd/modern
+   ./sqlcmd --version
+   ```
 
 ## Contributing
 

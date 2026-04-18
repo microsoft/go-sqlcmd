@@ -155,6 +155,57 @@ The project supports creating SQL Server instances using Docker or Podman:
 - Use the `internal/localizer` package for localized messages
 - Supported languages: Chinese (Simplified/Traditional), English, French, German, Italian, Japanese, Korean, Portuguese (Brazil), Russian, Spanish
 
+### Adding Localizable Strings
+
+When adding user-facing strings to the code, use the `localizer` package:
+
+```go
+import "github.com/microsoft/go-sqlcmd/internal/localizer"
+
+// Use localizer.Sprintf for formatted strings
+message := localizer.Sprintf("This is a localizable message with %s", value)
+
+// Use localizer.Errorf for localized errors
+err := localizer.Errorf("Error: %s failed", operation)
+```
+
+Constants that are not user-facing (like environment variable names, command names) should be placed in `internal/localizer/constants.go` and do not need localization.
+
+### Generating Localization Files
+
+After adding new localizable strings, you **must** regenerate the translation catalog files before committing. The build scripts handle this automatically.
+
+#### On Windows
+
+```cmd
+build\build.cmd
+```
+
+This script:
+- Installs `gotext` if not already installed
+- Runs `go generate` which executes the gotext command defined in `internal/translations/translations.go`
+- Generates/updates the translation catalog in `internal/translations/catalog.go`
+- Reports any conflicting localizable strings that need to be fixed
+
+#### On Linux/macOS
+
+Run the following commands manually:
+
+```bash
+# Install gotext if not already installed
+go install golang.org/x/text/cmd/gotext@latest
+
+# Generate translation files
+go generate ./...
+```
+
+### Important Notes
+
+- Always run the build script after adding new user-facing strings
+- Check the build output for "conflicting localizable strings" warnings and resolve them
+- The `SQLCMD_LANG` environment variable controls the runtime language (e.g., `de-de`, `fr-fr`)
+- Test your changes with different language settings to ensure proper localization
+
 ## Azure Authentication
 
 - Azure AD authentication is supported via the `azidentity` package
@@ -175,6 +226,100 @@ The project supports creating SQL Server instances using Docker or Podman:
 3. Update documentation if adding new features
 4. Add tests for new functionality
 5. Keep commits focused and well-described
+
+## Commit Message Format
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) for automated version management and changelog generation via [Release Please](https://github.com/googleapis/release-please).
+
+### Required Format
+
+**ALWAYS** use conventional commit format for PR titles and commit messages:
+
+```
+<type>: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+### Commit Types and Version Bumps
+
+| Type | Version Bump | When to Use | Example |
+|------|-------------|-------------|---------|
+| `feat:` | Minor (X.Y.0) | New features or functionality | `feat: add support for SQL Server 2025` |
+| `fix:` | Patch (X.Y.Z) | Bug fixes | `fix: resolve timeout issue in query parsing` |
+| `feat!:` or `BREAKING CHANGE:` | Major (X.0.0) | Breaking changes | `feat!: change CLI flag behavior` |
+| `docs:` | No bump | Documentation only changes | `docs: update README with examples` |
+| `chore:` | No bump | Maintenance tasks | `chore: update dependencies` |
+| `deps:` | No bump | Dependency updates | `deps: bump go-mssqldb to v1.10.0` |
+| `ci:` | No bump | CI/CD changes | `ci: update GitHub Actions workflow` |
+| `test:` | No bump | Test additions or fixes | `test: add coverage for edge cases` |
+| `refactor:` | No bump | Code refactoring without behavior change | `refactor: simplify command parsing` |
+| `perf:` | Patch (X.Y.Z) | Performance improvements | `perf: optimize batch processing` |
+
+### Examples
+
+Good commit messages:
+```
+feat: add --server-name flag for tunneled connections
+fix: help flags preprocessing for -h and -help
+deps: bump go-mssqldb to v1.9.8
+ci: add release-please workflow
+```
+
+Bad commit messages:
+```
+Update README
+Bug fix
+Added new feature
+Bump go directive to go 1.25.9
+```
+
+## Code Quality Standards
+
+- **Simplicity first**: Make every change as simple as possible. Minimal code impact. Maximum modularity.
+- **No laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal impact**: Changes should only touch what's necessary. Avoid introducing bugs.
+- **Write code for the maintenance programmer**: Write clear, concise code that is easy to read and understand.
+
+### No AI Slop
+
+Applies to all output: code, tests, docstrings, comments, PR descriptions, commit messages.
+
+**Prose and comments:**
+- No filler phrases: "This ensures that...", "In order to...", "It's worth noting..."
+- No over-commenting obvious code (comments that restate what the code does)
+- No bloated docstrings with "Validates:" bullet lists or "Note:" paragraphs
+- No redundant inner docstrings on helpers inside tests
+
+**Code:**
+- No redundant logic (e.g., `strings.ToLower()` inside `strings.EqualFold()`)
+- No duplicate validation (checking the same condition twice)
+- No excessive blank lines or formatting
+- No stale examples in docstrings that don't match the actual API
+
+## Pre-Push Checklist
+
+Before `git push`, always run the repo-specific checks. Default:
+
+- `git fetch upstream && git rebase upstream/main` (avoid "out-of-date with base branch")
+- **Review your own diff** (`git diff upstream/main`) -- check for AI slop, stale docstrings, weak assertions, anti-patterns. Read every changed line as a reviewer, not the author.
+- Build
+- Run full test suite
+- Run linter
+
+If repo has `.github/copilot-instructions.md`, follow its build/test/lint instructions instead.
+
+**Rule**: Review means reading every changed line as a hostile reviewer, not the author. For each addition, ask: (1) Is this used? grep for it. (2) Is this consistent with parallel code? Check sibling maps/lists. (3) Does the docstring match the code? Compare them line by line. (4) Would a senior engineer flag this? If you can't articulate why each line is correct, you haven't reviewed it.
+
+**Tests:**
+- DAMP over DRY: tests should be Descriptive And Meaningful Phrases, each readable top-to-bottom as a self-contained story
+- Test behavior, not implementation
+- Assertions must match claims: if the test says "all types", check all of them
+- Cover what motivated the fix: the case that caused the bug is the most important assertion
+
+When in doubt: would a senior engineer roll their eyes at this?
 
 ## Common Tasks
 

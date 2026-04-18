@@ -2466,6 +2466,13 @@
             "fuzzy": true
         },
         {
+            "id": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+            "message": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+            "translation": "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Servers:",
             "message": "Servers:",
             "translation": "Servers:",
@@ -2668,6 +2675,13 @@
             "fuzzy": true
         },
         {
+            "id": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+            "message": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+            "translation": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
             "message": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
             "translation": "{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.",
@@ -2819,6 +2833,13 @@
             "id": "Specifies the host name in the server certificate.",
             "message": "Specifies the host name in the server certificate.",
             "translation": "Specifies the host name in the server certificate.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+            "message": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
+            "translation": "Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -3659,6 +3680,13 @@
                     "expr": "SqlcmdEol"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Server name override is not supported with the current authentication method",
+            "message": "Server name override is not supported with the current authentication method",
+            "translation": "Server name override is not supported with the current authentication method",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
