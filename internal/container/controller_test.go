@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -55,7 +56,12 @@ func TestController_EnsureImage(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	c.DownloadFile(id, ts.URL+"/test.bak", "/tmp")
+	// Replace 127.0.0.1/localhost with host.docker.internal so the
+	// container can reach the host's httptest server.
+	tsURL := strings.Replace(ts.URL, "127.0.0.1", "host.docker.internal", 1)
+	tsURL = strings.Replace(tsURL, "localhost", "host.docker.internal", 1)
+
+	c.DownloadFile(id, tsURL+"/test.bak", "/tmp")
 
 	err = c.ContainerStop(id)
 	checkErr(err)

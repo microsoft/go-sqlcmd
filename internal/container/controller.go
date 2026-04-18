@@ -81,6 +81,7 @@ func (c Controller) ContainerRun(
 	unitTestFailure bool,
 ) string {
 	hostConfig := &container.HostConfig{
+		ExtraHosts:   []string{"host.docker.internal:host-gateway"},
 		PortBindings: network.PortMap{
 			network.MustParsePort("1433/tcp"): []network.PortBinding{
 				{
