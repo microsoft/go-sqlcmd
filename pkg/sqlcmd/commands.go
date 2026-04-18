@@ -618,16 +618,33 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 }
 
 func helpCommand(s *Sqlcmd, args []string, line uint) error {
-	entries := make([]string, 0, len(s.Cmd))
+	// :HELP <command> shows help for a single command
+	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
+		key := strings.ToUpper(strings.TrimSpace(args[0]))
+		if cmd, ok := s.Cmd[key]; ok && cmd.help != "" {
+			_, err := s.GetOutput().Write([]byte(cmd.help))
+			return err
+		}
+		// Unknown command name -- fall through to full listing
+	}
+
+	// Collect and sort by command name for stable output order
+	type entry struct {
+		name string
+		help string
+	}
+	entries := make([]entry, 0, len(s.Cmd))
 	for _, cmd := range s.Cmd {
 		if cmd.help != "" {
-			entries = append(entries, cmd.help)
+			entries = append(entries, entry{cmd.name, cmd.help})
 		}
 	}
-	sort.Strings(entries)
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].help < entries[j].help
+	})
 	var b strings.Builder
-	for _, entry := range entries {
-		b.WriteString(entry)
+	for _, e := range entries {
+		b.WriteString(e.help)
 	}
 	_, err := s.GetOutput().Write([]byte(b.String()))
 	return err

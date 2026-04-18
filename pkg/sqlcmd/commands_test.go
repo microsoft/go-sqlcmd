@@ -56,6 +56,8 @@ func TestCommandParsing(t *testing.T) {
 		{`RESET`, "RESET", []string{""}},
 		{`:HELP`, "HELP", []string{""}},
 		{`:help`, "HELP", []string{""}},
+		{`:HELP CONNECT`, "HELP", []string{"CONNECT"}},
+		{`:help exit`, "HELP", []string{"exit"}},
 		{`:PERFTRACE stderr`, "PERFTRACE", []string{"stderr"}},
 		{`:perftrace c:/logs/perf.txt`, "PERFTRACE", []string{"c:/logs/perf.txt"}},
 	}
@@ -478,6 +480,34 @@ func TestHelpCommand(t *testing.T) {
 		if cmd.help != "" {
 			assert.Contains(t, output, cmd.help,
 				"help output missing text for command %s", name)
+		}
+	}
+
+	// :HELP <command> should show only that command's help
+	buf.buf.Reset()
+	err = helpCommand(s, []string{"CONNECT"}, 1)
+	assert.NoError(t, err, "helpCommand CONNECT should not error")
+	output = buf.buf.String()
+	assert.Contains(t, output, ":connect", "HELP CONNECT should show connect help")
+	assert.NotContains(t, output, ":exit", "HELP CONNECT should not show exit help")
+
+	// Case-insensitive lookup
+	buf.buf.Reset()
+	err = helpCommand(s, []string{"exit"}, 1)
+	assert.NoError(t, err, "helpCommand exit should not error")
+	output = buf.buf.String()
+	assert.Contains(t, output, ":exit", "HELP exit should show exit help")
+	assert.NotContains(t, output, ":connect", "HELP exit should not show connect help")
+
+	// Unknown command falls through to full listing
+	buf.buf.Reset()
+	err = helpCommand(s, []string{"NOSUCHCMD"}, 1)
+	assert.NoError(t, err, "helpCommand unknown should not error")
+	output = buf.buf.String()
+	for name, cmd := range s.Cmd {
+		if cmd.help != "" {
+			assert.Contains(t, output, cmd.help,
+				"unknown command should show full help, missing %s", name)
 		}
 	}
 }

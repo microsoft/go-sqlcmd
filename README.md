@@ -164,7 +164,7 @@ client_interface_name go-mssqldb
 program_name          sqlcmd
 ```
 
-- `:perftrace` redirects performance statistics output to a file, stderr, or stdout. Use in conjunction with `-p` flag.
+- `:perftrace` redirects performance statistics output to a file, stderr, or stdout. Requires the `-p` flag (print statistics) to produce timing data.
 
 ```
 1> :perftrace c:/logs/perf.txt
