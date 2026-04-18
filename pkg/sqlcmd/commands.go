@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"regexp"
 	"sort"
@@ -29,6 +30,9 @@ type Command struct {
 	name string
 	// whether the command is a system command
 	isSystem bool
+	// help is the text shown by :help for this command.
+	// Multiple lines are allowed. Empty means hidden from :help.
+	help string
 }
 
 // Commands is the set of sqlcmd command implementations
@@ -41,87 +45,107 @@ func newCommands() Commands {
 			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?EXIT([\( \t]+.*\)*$|$)`),
 			action: exitCommand,
 			name:   "EXIT",
+			help: ":exit\n  - Quits sqlcmd immediately.\n" +
+				":exit()\n  - Execute statement cache; quit with no return value.\n" +
+				":exit(<query>)\n  - Execute the specified query; returns numeric result.\n",
 		},
 		"QUIT": {
 			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?QUIT(?:[ \t]+(.*$)|$)`),
 			action: quitCommand,
 			name:   "QUIT",
+			help:   ":quit\n  - Quits sqlcmd immediately.\n",
 		},
 		"GO": {
 			regex:  regexp.MustCompile(batchTerminatorRegex("GO")),
 			action: goCommand,
 			name:   "GO",
+			help:   "go [<n>]\n  - Executes the statement cache (n times).\n",
 		},
 		"OUT": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:OUT(?:[ \t]+(.*$)|$)`),
 			action: outCommand,
 			name:   "OUT",
+			help:   ":out <filename>|stderr|stdout\n  - Redirects query output to a file, stderr, or stdout.\n",
 		},
 		"ERROR": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:ERROR(?:[ \t]+(.*$)|$)`),
 			action: errorCommand,
 			name:   "ERROR",
+			help:   ":error <dest>\n  - Redirects error output to a file, stderr, or stdout.\n",
 		}, "READFILE": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:R(?:[ \t]+(.*$)|$)`),
 			action: readFileCommand,
 			name:   "READFILE",
+			help:   ":r <filename>\n  - Append file contents to the statement cache.\n",
 		},
 		"SETVAR": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:SETVAR(?:[ \t]+(.*$)|$)`),
 			action: setVarCommand,
 			name:   "SETVAR",
+			help: ":setvar {variable}\n  - Removes a sqlcmd scripting variable.\n" +
+				":setvar <variable> <value>\n  - Sets a sqlcmd scripting variable.\n",
 		},
 		"LISTVAR": {
 			regex:  regexp.MustCompile(`(?im)^[\t ]*?:LISTVAR(?:[ \t]+(.*$)|$)`),
 			action: listVarCommand,
 			name:   "LISTVAR",
+			help:   ":listvar\n  - Lists the set sqlcmd scripting variables.\n",
 		},
 		"RESET": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*?:?RESET(?:[ \t]+(.*$)|$)`),
 			action: resetCommand,
 			name:   "RESET",
+			help:   ":reset\n  - Discards the statement cache.\n",
 		},
 		"LIST": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:LIST(?:[ \t]+(.*$)|$)`),
 			action: listCommand,
 			name:   "LIST",
+			help:   ":list\n  - Prints the content of the statement cache.\n",
 		},
 		"CONNECT": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:CONNECT(?:[ \t]+(.*$)|$)`),
 			action: connectCommand,
 			name:   "CONNECT",
+			help:   ":connect server[\\instance] [-l timeout] [-U user [-P password]]\n  - Connects to a SQL Server instance.\n",
 		},
 		"EXEC": {
 			regex:    regexp.MustCompile(`(?im)^[ \t]*?:?!!(.*$)`),
 			action:   execCommand,
 			name:     "EXEC",
 			isSystem: true,
+			help:     ":!! [<command>]\n  - Executes a command in the operating system shell.\n",
 		},
 		"EDIT": {
 			regex:    regexp.MustCompile(`(?im)^[\t ]*?:?ED(?:[ \t]+(.*$)|$)`),
 			action:   editCommand,
 			name:     "EDIT",
 			isSystem: true,
+			help:     ":ed\n  - Edits the current or last executed statement cache.\n",
 		},
 		"ONERROR": {
 			regex:  regexp.MustCompile(`(?im)^[\t ]*?:?ON ERROR(?:[ \t]+(.*$)|$)`),
 			action: onerrorCommand,
 			name:   "ONERROR",
+			help:   ":on error [exit|ignore]\n  - Action for batch or sqlcmd command errors.\n",
 		},
 		"XML": {
 			regex:  regexp.MustCompile(`(?im)^[\t ]*?:XML(?:[ \t]+(.*$)|$)`),
 			action: xmlCommand,
 			name:   "XML",
+			help:   ":xml [on|off]\n  - Sets XML output mode.\n",
 		},
 		"HELP": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:HELP(?:[ \t]+(.*$)|$)`),
 			action: helpCommand,
 			name:   "HELP",
+			help:   ":help\n  - Shows this list of commands.\n",
 		},
 		"PERFTRACE": {
 			regex:  regexp.MustCompile(`(?im)^[ \t]*:PERFTRACE(?:[ \t]+(.*$)|$)`),
 			action: perftraceCommand,
 			name:   "PERFTRACE",
+			help:   ":perftrace <filename>|stderr|stdout\n  - Redirects timing output to a file, stderr, or stdout.\n",
 		},
 	}
 }
@@ -310,61 +334,48 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 	return nil
 }
 
-// outCommand changes the output writer to use a file
-func outCommand(s *Sqlcmd, args []string, line uint) error {
+// redirectWriter resolves a :out/:error/:perftrace argument to stderr, stdout,
+// or a new file, then calls setter with the result.
+func redirectWriter(s *Sqlcmd, args []string, line uint, name string, setter func(io.WriteCloser)) error {
 	if len(args) == 0 || args[0] == "" {
-		return InvalidCommandError("OUT", line)
+		return InvalidCommandError(name, line)
 	}
 	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
 	if err != nil {
 		return err
 	}
-
 	switch {
-	case strings.EqualFold(filePath, "stdout"):
-		s.SetOutput(os.Stdout)
 	case strings.EqualFold(filePath, "stderr"):
-		s.SetOutput(os.Stderr)
+		setter(os.Stderr)
+	case strings.EqualFold(filePath, "stdout"):
+		setter(os.Stdout)
 	default:
 		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
 			return InvalidFileError(err, args[0])
 		}
-		if s.UnicodeOutputFile {
-			// ODBC sqlcmd doesn't write a BOM but we will.
-			// Maybe the endian-ness should be configurable.
-			win16le := unicode.UTF16(unicode.LittleEndian, unicode.UseBOM)
-			encoder := transform.NewWriter(o, win16le.NewEncoder())
-			s.SetOutput(encoder)
-		} else {
-			s.SetOutput(o)
-		}
+		setter(o)
 	}
 	return nil
 }
 
+// outCommand changes the output writer to use a file
+func outCommand(s *Sqlcmd, args []string, line uint) error {
+	if !s.UnicodeOutputFile {
+		return redirectWriter(s, args, line, "OUT", s.SetOutput)
+	}
+	return redirectWriter(s, args, line, "OUT", func(w io.WriteCloser) {
+		if w != os.Stdout && w != os.Stderr {
+			win16le := unicode.UTF16(unicode.LittleEndian, unicode.UseBOM)
+			w = transform.NewWriter(w, win16le.NewEncoder())
+		}
+		s.SetOutput(w)
+	})
+}
+
 // errorCommand changes the error writer to use a file
 func errorCommand(s *Sqlcmd, args []string, line uint) error {
-	if len(args) == 0 || args[0] == "" {
-		return InvalidCommandError("ERROR", line)
-	}
-	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
-	if err != nil {
-		return err
-	}
-	switch {
-	case strings.EqualFold(filePath, "stderr"):
-		s.SetError(os.Stderr)
-	case strings.EqualFold(filePath, "stdout"):
-		s.SetError(os.Stdout)
-	default:
-		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
-		if err != nil {
-			return InvalidFileError(err, args[0])
-		}
-		s.SetError(o)
-	}
-	return nil
+	return redirectWriter(s, args, line, "ERROR", s.SetError)
 }
 
 func readFileCommand(s *Sqlcmd, args []string, line uint) error {
@@ -607,72 +618,23 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 }
 
 func helpCommand(s *Sqlcmd, args []string, line uint) error {
-	helpText := `:!! [<command>]
-  - Executes a command in the operating system shell.
-:connect server[\instance] [-l timeout] [-U user [-P password]]
-  - Connects to a SQL Server instance.
-:ed
-  - Edits the current or last executed statement cache.
-:error <dest>
-  - Redirects error output to a file, stderr, or stdout.
-:exit
-  - Quits sqlcmd immediately.
-:exit()
-  - Execute statement cache; quit with no return value.
-:exit(<query>)
-  - Execute the specified query; returns numeric result.
-go [<n>]
-  - Executes the statement cache (n times).
-:help
-  - Shows this list of commands.
-:list
-  - Prints the content of the statement cache.
-:listvar
-  - Lists the set sqlcmd scripting variables.
-:on error [exit|ignore]
-  - Action for batch or sqlcmd command errors.
-:out <filename>|stderr|stdout
-  - Redirects query output to a file, stderr, or stdout.
-:perftrace <filename>|stderr|stdout
-  - Redirects timing output to a file, stderr, or stdout.
-:quit
-  - Quits sqlcmd immediately.
-:r <filename>
-  - Append file contents to the statement cache.
-:reset
-  - Discards the statement cache.
-:setvar {variable}
-  - Removes a sqlcmd scripting variable.
-:setvar <variable> <value>
-  - Sets a sqlcmd scripting variable.
-:xml [on|off]
-  - Sets XML output mode.
-`
-	_, err := s.GetOutput().Write([]byte(helpText))
+	entries := make([]string, 0, len(s.Cmd))
+	for _, cmd := range s.Cmd {
+		if cmd.help != "" {
+			entries = append(entries, cmd.help)
+		}
+	}
+	sort.Strings(entries)
+	var b strings.Builder
+	for _, entry := range entries {
+		b.WriteString(entry)
+	}
+	_, err := s.GetOutput().Write([]byte(b.String()))
 	return err
 }
 
 func perftraceCommand(s *Sqlcmd, args []string, line uint) error {
-	if len(args) == 0 || args[0] == "" {
-		return InvalidCommandError("PERFTRACE", line)
-	}
-	filePath, err := resolveArgumentVariables(s, []rune(args[0]), true)
-	if err != nil {
-		return err
-	}
-	switch {
-	case strings.EqualFold(filePath, "stderr"):
-		s.SetStat(os.Stderr)
-	case strings.EqualFold(filePath, "stdout"):
-		s.SetStat(os.Stdout)
-	default:
-		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
-		if err != nil {
-			return InvalidFileError(err, args[0])
-		}
-		s.SetStat(o)
-	}
-	return nil
+	return redirectWriter(s, args, line, "PERFTRACE", s.SetStat)
 }
 
 func resolveArgumentVariables(s *Sqlcmd, arg []rune, failOnUnresolved bool) (string, error) {

@@ -464,29 +464,36 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 }
 
 func TestHelpCommand(t *testing.T) {
-	s, buf := setupSqlCmdWithMemoryOutput(t)
-	defer func() { _ = buf.Close() }()
+	s := New(nil, "", InitializeVariables(false))
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
+	defer func() { _ = buf.Close() }()
 
 	err := helpCommand(s, []string{""}, 1)
 	assert.NoError(t, err, "helpCommand should not error")
 
 	output := buf.buf.String()
-	// Verify key commands are listed
-	assert.Contains(t, output, ":connect", "help should list :connect")
-	assert.Contains(t, output, ":exit", "help should list :exit")
-	assert.Contains(t, output, ":help", "help should list :help")
-	assert.Contains(t, output, ":setvar", "help should list :setvar")
-	assert.Contains(t, output, ":listvar", "help should list :listvar")
-	assert.Contains(t, output, ":out", "help should list :out")
-	assert.Contains(t, output, ":error", "help should list :error")
-	assert.Contains(t, output, ":perftrace", "help should list :perftrace")
-	assert.Contains(t, output, ":r", "help should list :r")
-	assert.Contains(t, output, "go", "help should list go")
+	// Verify every registered command with a help field appears in output
+	for name, cmd := range s.Cmd {
+		if cmd.help != "" {
+			assert.Contains(t, output, cmd.help,
+				"help output missing text for command %s", name)
+		}
+	}
+}
+
+func TestAllCommandsHaveHelp(t *testing.T) {
+	cmds := newCommands()
+	for name, cmd := range cmds {
+		assert.NotEmpty(t, cmd.help,
+			"command %q has no help text; add a help field to prevent it being hidden from :help", name)
+	}
 }
 
 func TestPerftraceCommand(t *testing.T) {
-	s, buf := setupSqlCmdWithMemoryOutput(t)
+	s := New(nil, "", InitializeVariables(false))
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
 	defer func() { _ = buf.Close() }()
 
 	// Test empty argument returns error
