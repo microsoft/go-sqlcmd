@@ -54,6 +54,12 @@ func TestCommandParsing(t *testing.T) {
 		{`:XML ON `, "XML", []string{`ON `}},
 		{`:RESET`, "RESET", []string{""}},
 		{`RESET`, "RESET", []string{""}},
+		{`:HELP`, "HELP", []string{""}},
+		{`:help`, "HELP", []string{""}},
+		{`:HELP CONNECT`, "HELP", []string{"CONNECT"}},
+		{`:help exit`, "HELP", []string{"exit"}},
+		{`:PERFTRACE stderr`, "PERFTRACE", []string{"stderr"}},
+		{`:perftrace c:/logs/perf.txt`, "PERFTRACE", []string{"c:/logs/perf.txt"}},
 	}
 
 	for _, test := range commands {
@@ -463,4 +469,98 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
 	}
 
+}
+
+func TestHelpCommand(t *testing.T) {
+	s := New(nil, "", InitializeVariables(false))
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	defer func() { _ = buf.Close() }()
+
+	err := helpCommand(s, []string{""}, 1)
+	assert.NoError(t, err, "helpCommand should not error")
+
+	output := buf.buf.String()
+	// Verify every registered command with a help field appears in output
+	for name, cmd := range s.Cmd {
+		if cmd.help != "" {
+			assert.Contains(t, output, cmd.help,
+				"help output missing text for command %s", name)
+		}
+	}
+
+	// :HELP <command> should show only that command's help
+	buf.buf.Reset()
+	err = helpCommand(s, []string{"CONNECT"}, 1)
+	assert.NoError(t, err, "helpCommand CONNECT should not error")
+	output = buf.buf.String()
+	assert.Contains(t, output, ":connect", "HELP CONNECT should show connect help")
+	assert.NotContains(t, output, ":exit", "HELP CONNECT should not show exit help")
+
+	// Case-insensitive lookup
+	buf.buf.Reset()
+	err = helpCommand(s, []string{"exit"}, 1)
+	assert.NoError(t, err, "helpCommand exit should not error")
+	output = buf.buf.String()
+	assert.Contains(t, output, ":exit", "HELP exit should show exit help")
+	assert.NotContains(t, output, ":connect", "HELP exit should not show connect help")
+
+	// Unknown command falls through to full listing
+	buf.buf.Reset()
+	err = helpCommand(s, []string{"NOSUCHCMD"}, 1)
+	assert.NoError(t, err, "helpCommand unknown should not error")
+	output = buf.buf.String()
+	for name, cmd := range s.Cmd {
+		if cmd.help != "" {
+			assert.Contains(t, output, cmd.help,
+				"unknown command should show full help, missing %s", name)
+		}
+	}
+}
+
+func TestAllCommandsHaveHelp(t *testing.T) {
+	cmds := newCommands()
+	for name, cmd := range cmds {
+		assert.NotEmpty(t, cmd.help,
+			"command %q has no help text; add a help field to prevent it being hidden from :help", name)
+	}
+}
+
+func TestPerftraceCommand(t *testing.T) {
+	s := New(nil, "", InitializeVariables(false))
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	defer func() { _ = buf.Close() }()
+
+	// Test empty argument returns error
+	err := perftraceCommand(s, []string{""}, 1)
+	assert.EqualError(t, err, InvalidCommandError("PERFTRACE", 1).Error(), "perftraceCommand with empty argument")
+
+	// Test redirect to stdout
+	err = perftraceCommand(s, []string{"stdout"}, 1)
+	assert.NoError(t, err, "perftraceCommand with stdout")
+	assert.Equal(t, os.Stdout, s.GetStat(), "stat set to stdout")
+
+	// Test redirect to stderr
+	err = perftraceCommand(s, []string{"stderr"}, 1)
+	assert.NoError(t, err, "perftraceCommand with stderr")
+	assert.Equal(t, os.Stderr, s.GetStat(), "stat set to stderr")
+
+	// Test redirect to file
+	file, err := os.CreateTemp("", "sqlcmdperf")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer func() { _ = os.Remove(file.Name()) }()
+	fileName := file.Name()
+	_ = file.Close()
+
+	err = perftraceCommand(s, []string{fileName}, 1)
+	assert.NoError(t, err, "perftraceCommand with file path")
+	// Clean up by setting stat to nil
+	s.SetStat(nil)
+
+	// Test variable resolution
+	s.vars.Set("myvar", "stdout")
+	err = perftraceCommand(s, []string{"$(myvar)"}, 1)
+	assert.NoError(t, err, "perftraceCommand with a variable")
+	assert.Equal(t, os.Stdout, s.GetStat(), "stat set to stdout using a variable")
 }
