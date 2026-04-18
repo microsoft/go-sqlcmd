@@ -8,7 +8,6 @@ import (
 	"net"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -57,16 +56,16 @@ func TestController_EnsureImage(t *testing.T) {
 	ts := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("test"))
 	}))
-	l, err := net.Listen("tcp", "0.0.0.0:0")
+	l, err := net.Listen("tcp4", "0.0.0.0:0")
 	checkErr(err)
 	ts.Listener = l
 	ts.Start()
 	defer ts.Close()
 
-	// Replace 127.0.0.1/localhost with host.docker.internal so the
-	// container can reach the host's httptest server.
-	tsURL := strings.Replace(ts.URL, "127.0.0.1", "host.docker.internal", 1)
-	tsURL = strings.Replace(tsURL, "localhost", "host.docker.internal", 1)
+	// Build URL from listener port so it works regardless of whether
+	// the OS returns 127.0.0.1, localhost, or [::] in ts.URL.
+	_, tsPort, _ := net.SplitHostPort(ts.Listener.Addr().String())
+	tsURL := fmt.Sprintf("http://host.docker.internal:%s", tsPort)
 
 	c.DownloadFile(id, tsURL+"/test.bak", "/tmp")
 
