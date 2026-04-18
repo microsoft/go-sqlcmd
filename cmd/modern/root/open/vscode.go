@@ -204,9 +204,9 @@ func (c *VSCode) writeSettings(path string, settings map[string]interface{}) {
 		_, writeErr := tmp.Write(data)
 		closeErr := tmp.Close()
 		if writeErr != nil || closeErr != nil {
-			os.Remove(tmpPath)
+			_ = os.Remove(tmpPath)
 		} else if renameErr := os.Rename(tmpPath, path); renameErr != nil {
-			os.Remove(tmpPath)
+			_ = os.Remove(tmpPath)
 		} else {
 			return // atomic write succeeded
 		}
