@@ -5,6 +5,7 @@ package container
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -51,9 +52,15 @@ func TestController_EnsureImage(t *testing.T) {
 	c.ContainerExists(id)
 	c.ContainerFiles(id, "*.mdf")
 
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// Bind to 0.0.0.0 so the container can reach the server via the
+	// Docker bridge network (host.docker.internal resolves to 172.17.0.1).
+	ts := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("test"))
 	}))
+	l, err := net.Listen("tcp", "0.0.0.0:0")
+	checkErr(err)
+	ts.Listener = l
+	ts.Start()
 	defer ts.Close()
 
 	// Replace 127.0.0.1/localhost with host.docker.internal so the
