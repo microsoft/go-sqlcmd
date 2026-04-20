@@ -32,6 +32,6 @@ func copyPasswordToClipboard(user *sqlconfig.User, out *output.Output) bool {
 		return false
 	}
 
-	out.Info(localizer.Sprintf("Password copied to clipboard - paste it when prompted"))
+	out.Info(localizer.Sprintf("Password copied to clipboard - paste it when prompted, then clear your clipboard"))
 	return true
 }
