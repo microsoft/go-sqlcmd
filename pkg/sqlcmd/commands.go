@@ -345,10 +345,10 @@ func redirectWriter(s *Sqlcmd, args []string, line uint, name string, setter fun
 		return err
 	}
 	switch {
-	case strings.EqualFold(filePath, "stderr"):
-		setter(os.Stderr)
 	case strings.EqualFold(filePath, "stdout"):
 		setter(os.Stdout)
+	case strings.EqualFold(filePath, "stderr"):
+		setter(os.Stderr)
 	default:
 		o, err := os.OpenFile(filePath, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0o644)
 		if err != nil {
@@ -359,7 +359,10 @@ func redirectWriter(s *Sqlcmd, args []string, line uint, name string, setter fun
 	return nil
 }
 
-// outCommand changes the output writer to use a file
+// outCommand changes the output writer to use a file.
+// When -u (UnicodeOutputFile) is set, file output is wrapped in a UTF-16LE
+// BOM-prefixed encoder. ODBC sqlcmd doesn't write a BOM, but go-sqlcmd does
+// for better interoperability with Windows tools that expect one.
 func outCommand(s *Sqlcmd, args []string, line uint) error {
 	if !s.UnicodeOutputFile {
 		return redirectWriter(s, args, line, "OUT", s.SetOutput)
@@ -618,20 +621,16 @@ func xmlCommand(s *Sqlcmd, args []string, line uint) error {
 }
 
 func helpCommand(s *Sqlcmd, args []string, line uint) error {
+	// :HELP always writes to stdout, not the :OUT redirect.
+	// This matches ODBC sqlcmd behavior.
+	w := os.Stdout
+
 	// :HELP <command> shows help for a single command
 	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
 		key := strings.ToUpper(strings.TrimSpace(args[0]))
-		// Look up by map key first, then by command name (handles aliases
-		// like ED->EDIT, R->READFILE where the key differs from the name)
 		if cmd, ok := s.Cmd[key]; ok && cmd.help != "" {
-			_, err := s.GetOutput().Write([]byte(cmd.help))
+			_, err := w.Write([]byte(cmd.help))
 			return err
-		}
-		for _, cmd := range s.Cmd {
-			if cmd.name == key && cmd.help != "" {
-				_, err := s.GetOutput().Write([]byte(cmd.help))
-				return err
-			}
 		}
 		return fmt.Errorf("'%s' is not a recognized command. Type :HELP for a list of commands", key)
 	}
@@ -654,7 +653,7 @@ func helpCommand(s *Sqlcmd, args []string, line uint) error {
 	for _, e := range entries {
 		b.WriteString(e.help)
 	}
-	_, err := s.GetOutput().Write([]byte(b.String()))
+	_, err := w.Write([]byte(b.String()))
 	return err
 }
 
