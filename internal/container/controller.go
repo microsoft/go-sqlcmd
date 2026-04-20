@@ -81,6 +81,9 @@ func (c Controller) ContainerRun(
 	unitTestFailure bool,
 ) string {
 	hostConfig := &container.HostConfig{
+		// On Linux Docker Engine, host.docker.internal is not set by default
+		// (Docker Desktop sets it automatically). Add it so containers can
+		// reach host services, e.g. for bak-file restore from a local HTTP server.
 		ExtraHosts:   []string{"host.docker.internal:host-gateway"},
 		PortBindings: network.PortMap{
 			network.MustParsePort("1433/tcp"): []network.PortBinding{
@@ -251,14 +254,17 @@ func (c Controller) DownloadFile(id string, src string, destFolder string) {
 		panic("Must pass in non-empty destFolder")
 	}
 
-	cmd := []string{"mkdir", "-p", destFolder}
-	c.runCmdInContainer(id, cmd)
-
 	_, file := filepath.Split(src)
 	if file == "" {
 		panic("src URL has no filename: " + src)
 	}
 	dest := destFolder + "/" + file // not using filepath.Join here, this is in the *nix container. always /
+
+	cmd := []string{"mkdir", "-p", destFolder}
+	_, _, mkdirExit := c.runCmdInContainer(id, cmd)
+	if mkdirExit != 0 {
+		panic("mkdir failed for " + destFolder)
+	}
 
 	cmd = []string{"wget", "-O", dest, src}
 	_, stderr, exitCode := c.runCmdInContainer(id, cmd)
@@ -313,6 +319,9 @@ func (c Controller) runCmdInContainer(id string, cmd []string) ([]byte, []byte, 
 	trace("Stdout: " + string(stdout))
 	trace("Stderr: " + string(stderr))
 
+	// ExecInspect may rarely return Running:true after output is drained
+	// (moby/moby#42408). In practice the race window is negligible for
+	// short-lived commands like mkdir and wget.
 	inspect, err := c.cli.ExecInspect(
 		context.Background(),
 		response.ID,
