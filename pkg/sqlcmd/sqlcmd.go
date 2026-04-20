@@ -416,13 +416,14 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	return b.String()
 }
 
-// runQuery runs the query and prints the results
-// The return value is based on the first cell of the last column of the last result set.
+// runQuery runs the query and prints the results.
+// Returns (exitcode, elapsedMs, error).
+// The exitcode is based on the first cell of the last column of the last result set.
 // If it's numeric, it will be converted to int
 // -100 : Error encountered prior to selecting return value
 // -101: No rows found
 // -102: Conversion error occurred when selecting return value
-func (s *Sqlcmd) runQuery(query string) (int, error) {
+func (s *Sqlcmd) runQuery(query string) (int, int64, error) {
 	retcode := -101
 	startTime := time.Now()
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
@@ -513,8 +514,7 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 	}
 	s.Format.EndBatch()
 	elapsedMs := time.Since(startTime).Milliseconds()
-	s.printStatistics(elapsedMs, 1, s.GetOutput())
-	return retcode, qe
+	return retcode, elapsedMs, qe
 }
 
 // returns ErrExitRequested if the error is a SQL error and satisfies the connection's error handling configuration

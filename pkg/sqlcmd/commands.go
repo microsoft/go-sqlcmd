@@ -249,7 +249,9 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 
 	if len(query1) > 0 || len(query2) > 0 {
 		query := query1 + SqlcmdEol + query2
-		s.Exitcode, _ = s.runQuery(query)
+		var elapsedMs int64
+		s.Exitcode, elapsedMs, _ = s.runQuery(query)
+		s.printStatistics(elapsedMs, 1, s.GetOutput())
 	}
 	return ErrExitRequested
 }
@@ -290,12 +292,16 @@ func goCommand(s *Sqlcmd, args []string, line uint) error {
 		return nil
 	}
 	query = s.getRunnableQuery(query)
+	var totalElapsedMs int64
 	for i := 0; i < n; i++ {
-		if retcode, err := s.runQuery(query); err != nil {
+		retcode, elapsedMs, err := s.runQuery(query)
+		totalElapsedMs += elapsedMs
+		if err != nil {
 			s.Exitcode = retcode
 			return err
 		}
 	}
+	s.printStatistics(totalElapsedMs, n, s.GetOutput())
 	s.batch.Reset(nil)
 	return nil
 }
