@@ -232,7 +232,9 @@ func Execute(version string) {
 					fmt.Println()
 					fmt.Println(localizer.Sprintf("Servers:"))
 				}
-				sqlcmd.ListLocalServers(os.Stdout)
+				if err := sqlcmd.ListLocalServers(os.Stdout); err != nil {
+					fmt.Fprintln(os.Stderr, err)
+				}
 				os.Exit(0)
 			}
 			if len(argss) > 0 {

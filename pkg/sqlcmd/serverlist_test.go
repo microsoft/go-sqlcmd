@@ -14,7 +14,10 @@ func TestListLocalServers(t *testing.T) {
 	// Test that ListLocalServers writes to the provided writer without error
 	// Note: actual server discovery depends on SQL Browser service availability
 	var buf bytes.Buffer
-	ListLocalServers(&buf)
+	err := ListLocalServers(&buf)
+	if err != nil {
+		t.Logf("ListLocalServers returned error (expected in some environments): %v", err)
+	}
 	// We can't assert specific content since it depends on environment,
 	// but we verify it doesn't panic and writes valid output
 	t.Logf("ListLocalServers output: %q", buf.String())

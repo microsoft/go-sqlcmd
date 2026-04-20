@@ -19,14 +19,15 @@ import (
 
 // ListLocalServers queries the SQL Browser service for available SQL Server instances
 // and writes the results to the provided writer.
-func ListLocalServers(w io.Writer) {
+func ListLocalServers(w io.Writer) error {
 	instances, err := GetLocalServerInstances()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		return err
 	}
 	for _, s := range instances {
 		_, _ = fmt.Fprintf(w, "  %s\n", s)
 	}
+	return nil
 }
 
 // GetLocalServerInstances queries the SQL Browser service and returns a list of
