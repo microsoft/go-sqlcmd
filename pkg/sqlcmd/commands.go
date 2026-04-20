@@ -621,11 +621,19 @@ func helpCommand(s *Sqlcmd, args []string, line uint) error {
 	// :HELP <command> shows help for a single command
 	if len(args) > 0 && strings.TrimSpace(args[0]) != "" {
 		key := strings.ToUpper(strings.TrimSpace(args[0]))
+		// Look up by map key first, then by command name (handles aliases
+		// like ED->EDIT, R->READFILE where the key differs from the name)
 		if cmd, ok := s.Cmd[key]; ok && cmd.help != "" {
 			_, err := s.GetOutput().Write([]byte(cmd.help))
 			return err
 		}
-		// Unknown command name -- fall through to full listing
+		for _, cmd := range s.Cmd {
+			if cmd.name == key && cmd.help != "" {
+				_, err := s.GetOutput().Write([]byte(cmd.help))
+				return err
+			}
+		}
+		return fmt.Errorf("'%s' is not a recognized command. Type :HELP for a list of commands", key)
 	}
 
 	// Collect and sort by command name for stable output order
@@ -640,7 +648,7 @@ func helpCommand(s *Sqlcmd, args []string, line uint) error {
 		}
 	}
 	sort.Slice(entries, func(i, j int) bool {
-		return entries[i].help < entries[j].help
+		return entries[i].name < entries[j].name
 	})
 	var b strings.Builder
 	for _, e := range entries {
