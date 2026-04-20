@@ -4,6 +4,7 @@
 package tool
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 
@@ -75,12 +76,12 @@ func (t *tool) RunWithOutput(args []string) (string, int, error) {
 	}
 
 	cmd := t.generateCommandLine(args)
-	output, err := cmd.Output()
+	err := cmd.Run()
 
 	exitCode := 0
 	if cmd.ProcessState != nil {
 		exitCode = cmd.ProcessState.ExitCode()
 	}
 
-	return string(output), exitCode, err
+	return cmd.Stdout.(*bytes.Buffer).String(), exitCode, err
 }
