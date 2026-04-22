@@ -6,6 +6,7 @@ package tool
 type Tool interface {
 	Init()
 	Name() (name string)
+	ExePath() string
 	Run(args []string) (exitCode int, err error)
 	IsInstalled() bool
 	HowToInstall() string

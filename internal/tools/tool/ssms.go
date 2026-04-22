@@ -8,25 +8,25 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/test"
 )
 
-type AzureDataStudio struct {
+type SSMS struct {
 	tool
 }
 
-func (t *AzureDataStudio) Init() {
-	t.tool.SetToolDescription(Description{
-		Name:        "ads",
-		Purpose:     "Azure Data Studio is a database tool for data professionals who use on-premises and cloud data platforms.",
+func (t *SSMS) Init() {
+	t.SetToolDescription(Description{
+		Name:        "ssms",
+		Purpose:     "SQL Server Management Studio (SSMS) is an integrated environment for managing SQL Server infrastructure.",
 		InstallText: t.installText()})
 
 	for _, location := range t.searchLocations() {
 		if file.Exists(location) {
-			t.tool.SetExePathAndName(location)
+			t.SetExePathAndName(location)
 			break
 		}
 	}
 }
 
-func (t *AzureDataStudio) Run(args []string) (int, error) {
+func (t *SSMS) Run(args []string) (int, error) {
 	if !test.IsRunningInTestExecutor() {
 		return t.Launch(args)
 	}
