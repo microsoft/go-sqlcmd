@@ -55,7 +55,10 @@ func TestGetDecimalSeparator(t *testing.T) {
 		{"en-US", "."},
 		{"en-GB", "."},
 		{"de-DE", ","},
+		{"de-CH", "."},  // Swiss German uses . for decimal
 		{"fr-FR", ","},
+		{"fr-CH", ","},  // Swiss French keeps comma
+		{"it-CH", "."},  // Swiss Italian uses . for decimal
 		{"es-ES", ","},
 		{"ja-JP", "."},
 		{"zh-CN", "."},
@@ -78,7 +81,9 @@ func TestGetThousandSeparator(t *testing.T) {
 		{"en-US", ","},
 		{"en-GB", ","},
 		{"de-DE", "."},
+		{"de-CH", "\u2019"}, // Swiss German uses typographic apostrophe
 		{"fr-FR", "\u00a0"},
+		{"fr-CH", "\u2019"}, // Swiss French uses typographic apostrophe
 		{"sv-SE", "\u00a0"},
 		{"ru-RU", "\u00a0"},
 		{"ja-JP", ","},
@@ -178,6 +183,8 @@ func TestPow10(t *testing.T) {
 		{2, 100},
 		{3, 1000},
 		{6, 1000000},
+		{-1, 1},  // negative clamped to 1
+		{-5, 1},  // negative clamped to 1
 	}
 
 	for _, tc := range tests {
@@ -217,4 +224,25 @@ func TestNewSQLCmdDefaultFormatterWithRegional(t *testing.T) {
 	// Test backward compatibility - NewSQLCmdDefaultFormatter should work
 	f3 := NewSQLCmdDefaultFormatter(false, ControlIgnore)
 	assert.NotNil(t, f3)
+}
+
+func TestFormatMoneyRounding(t *testing.T) {
+	r := &RegionalSettings{enabled: true, tag: language.MustParse("en-US")}
+
+	// Exact 4 digits - no rounding needed
+	assert.Equal(t, "1.2345", r.FormatMoney("1.2345"))
+
+	// More than 4 digits - round
+	assert.Equal(t, "1.2346", r.FormatMoney("1.23456"))  // 5th digit >= 5, round up
+	assert.Equal(t, "1.2345", r.FormatMoney("1.23454"))  // 5th digit < 5, truncate
+	assert.Equal(t, "2.0000", r.FormatMoney("1.99999"))  // carry propagates to integer
+	assert.Equal(t, "10.0000", r.FormatMoney("9.99999")) // carry propagates, integer grows
+}
+
+func TestIncrementIntString(t *testing.T) {
+	assert.Equal(t, "2", incrementIntString("1"))
+	assert.Equal(t, "10", incrementIntString("9"))
+	assert.Equal(t, "100", incrementIntString("99"))
+	assert.Equal(t, "1000", incrementIntString("999"))
+	assert.Equal(t, "124", incrementIntString("123"))
 }

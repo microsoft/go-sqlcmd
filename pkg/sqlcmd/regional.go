@@ -95,7 +95,30 @@ func (r *RegionalSettings) FormatMoney(value string) string {
 	} else if len(fracPart) < 4 {
 		fracPart = fracPart + strings.Repeat("0", 4-len(fracPart))
 	} else if len(fracPart) > 4 {
-		fracPart = fracPart[:4]
+		// Round the 5th digit instead of silent truncation
+		if fracPart[4] >= '5' {
+			// Propagate carry through the first 4 digits
+			digits := []byte(fracPart[:4])
+			carry := true
+			for i := 3; i >= 0 && carry; i-- {
+				digits[i]++
+				if digits[i] > '9' {
+					digits[i] = '0'
+				} else {
+					carry = false
+				}
+			}
+			if carry {
+				// Carry overflowed all 4 digits (e.g., .99999 -> 1.0000)
+				// Increment the integer part
+				intPart = incrementIntString(intPart)
+				fracPart = "0000"
+			} else {
+				fracPart = string(digits)
+			}
+		} else {
+			fracPart = fracPart[:4]
+		}
 	}
 
 	// Apply locale-specific thousand separators to the integer part
@@ -168,7 +191,31 @@ func (r *RegionalSettings) FormatTime(t time.Time, scale int) string {
 
 // Helper functions
 
+// incrementIntString adds 1 to a non-negative integer represented as a string.
+func incrementIntString(s string) string {
+	digits := []byte(s)
+	carry := true
+	for i := len(digits) - 1; i >= 0 && carry; i-- {
+		digits[i]++
+		if digits[i] > '9' {
+			digits[i] = '0'
+		} else {
+			carry = false
+		}
+	}
+	if carry {
+		return "1" + string(digits)
+	}
+	return string(digits)
+}
+
 func pow10(n int) int {
+	if n <= 0 {
+		return 1
+	}
+	if n > 18 {
+		n = 18 // prevent overflow for int64-range values
+	}
 	result := 1
 	for i := 0; i < n; i++ {
 		result *= 10
@@ -194,8 +241,18 @@ func formatOffset(hours, minutes int) string {
 
 // getDecimalSeparator returns the decimal separator for the given locale
 func getDecimalSeparator(tag language.Tag) string {
-	// Common decimal separators by language
+	// Check region-specific overrides first (e.g., Swiss locales use different conventions)
 	base, _ := tag.Base()
+	region, _ := tag.Region()
+	if region.String() == "CH" {
+		switch base.String() {
+		case "de", "it":
+			return "." // Swiss German/Italian use . for decimal
+		case "fr":
+			return "," // Swiss French keeps comma
+		}
+	}
+
 	switch base.String() {
 	case "de", "fr", "es", "it", "pt", "nl", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "tr", "el", "ru", "uk", "be", "fi", "sv", "no", "da", "is":
 		return ","
@@ -206,7 +263,14 @@ func getDecimalSeparator(tag language.Tag) string {
 
 // getThousandSeparator returns the thousand separator for the given locale
 func getThousandSeparator(tag language.Tag) string {
+	// Check region-specific overrides first
 	base, _ := tag.Base()
+	region, _ := tag.Region()
+	if region.String() == "CH" {
+		// Swiss locales use apostrophe as thousand separator
+		return "\u2019" // right single quotation mark (typographic apostrophe)
+	}
+
 	switch base.String() {
 	case "fr", "ru", "uk", "be", "fi", "sv", "no", "nb", "nn":
 		// These locales use a non-breaking space as the thousand separator
