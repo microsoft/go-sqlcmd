@@ -168,7 +168,7 @@ Most switches from the original ODBC-based `sqlcmd` have been implemented. The f
 |--------|-------------|
 | `-f` | Input/output code page |
 | `-j` | Print raw error messages |
-| `-p[1]` | Print statistics (optional colon format) |
+| `-p[1]` | Print performance statistics after each result set. `-p1` uses colon-separated format for machine parsing |
 
 For historical context and to provide feedback, see [discussion #292](https://github.com/microsoft/go-sqlcmd/discussions/292).
 
@@ -255,8 +255,8 @@ This method uses the device code flow for authentication. It displays a code tha
 
 The following authentication methods are also supported via `--authentication-method`:
 
-- `ActiveDirectoryWorkloadIdentity` - Uses federated token authentication for Kubernetes or GitHub Actions workloads; optionally provide `client_id@tenant_id` as username and `tokenfilepath` parameter (defaults to `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_FEDERATED_TOKEN_FILE` env vars)
-- `ActiveDirectoryClientAssertion` - Authenticates with a signed JWT assertion instead of a client secret
+- `ActiveDirectoryWorkloadIdentity` - Uses federated token authentication for Kubernetes or GitHub Actions workloads; optionally provide `client_id@tenant_id` as username and set the `tokenfilepath` connection parameter to the path of the federated token file (defaults to `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_FEDERATED_TOKEN_FILE` env vars)
+- `ActiveDirectoryClientAssertion` - Authenticates with a signed JWT assertion instead of a client secret; provide `client_id@tenant_id` as username and the signed JWT as the password (`-P` or `SQLCMDPASSWORD`)
 - `ActiveDirectoryAzurePipelines` - Authenticates using an Azure Pipelines service connection; requires `client_id@tenant_id` as username, plus `serviceconnectionid` and `systemtoken` connection parameters (or `AZURESUBSCRIPTION_CLIENT_ID`, `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID`, `SYSTEM_ACCESSTOKEN` env vars)
 - `ActiveDirectoryEnvironment` - Selects a credential type automatically based on which `AZURE_*` environment variables are set (client secret, certificate, or username/password)
 - `ActiveDirectoryAzureDeveloperCli` - Uses credentials from `azd auth login` (Azure Developer CLI)
