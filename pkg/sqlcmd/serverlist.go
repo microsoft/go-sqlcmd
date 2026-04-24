@@ -107,7 +107,9 @@ func parseInstances(msg []byte) msdsn.BrowserData {
 					if len(instanceDict) == 0 {
 						break
 					}
-					// Only add if InstanceName key exists and is non-empty
+				// Deliberate behavior change from go-mssqldb's parseInstances:
+				// skip entries with missing or empty InstanceName (e.g. malformed
+				// registry data) instead of adding them under an empty key.
 					if instName, ok := instanceDict["InstanceName"]; ok && instName != "" {
 						results[strings.ToUpper(instName)] = instanceDict
 					}
