@@ -425,7 +425,6 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 // -102: Conversion error occurred when selecting return value
 func (s *Sqlcmd) runQuery(query string) (int, int64, error) {
 	retcode := -101
-	startTime := time.Now()
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
 	timeout := s.vars.QueryTimeoutSeconds()
@@ -435,6 +434,7 @@ func (s *Sqlcmd) runQuery(query string) (int, int64, error) {
 		ctx = ct
 	}
 	retmsg := &sqlexp.ReturnMessage{}
+	startTime := time.Now()
 	rows, qe := s.db.QueryContext(ctx, query, retmsg)
 	if qe != nil {
 		s.Format.AddError(qe)
@@ -512,8 +512,8 @@ func (s *Sqlcmd) runQuery(query string) (int, int64, error) {
 			s.Format.EndResultSet()
 		}
 	}
-	s.Format.EndBatch()
 	elapsedMs := time.Since(startTime).Milliseconds()
+	s.Format.EndBatch()
 	return retcode, elapsedMs, qe
 }
 
@@ -602,22 +602,28 @@ func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int, out io.Writer)
 		packetSize = 4096 // default packet size
 	}
 
-	// Ensure minimum 1ms for calculations
-	if elapsedMs < 1 {
-		elapsedMs = 1
+	// Ensure minimum 1ms for rate calculations, but display actual 0 as "< 1"
+	displayElapsedMs := elapsedMs
+	calcElapsedMs := elapsedMs
+	if calcElapsedMs < 1 {
+		calcElapsedMs = 1
 	}
 
-	avgTime := float64(elapsedMs) / float64(numBatches)
-	batchesPerSec := float64(numBatches) / (float64(elapsedMs) / 1000.0)
+	avgTime := float64(calcElapsedMs) / float64(numBatches)
+	batchesPerSec := float64(numBatches) / (float64(calcElapsedMs) / 1000.0)
 
 	if *s.PrintStatistics == 1 {
 		// Colon-separated format: n:x:t1:t2:t3
 		// packetSize:numBatches:totalTime:avgTime:batchesPerSec
-		_, _ = fmt.Fprintf(out, "\n%d:%d:%d:%.2f:%.2f\n", packetSize, numBatches, elapsedMs, avgTime, batchesPerSec)
+		_, _ = fmt.Fprintf(out, "\n%d:%d:%d:%.2f:%.2f\n", packetSize, numBatches, displayElapsedMs, avgTime, batchesPerSec)
 	} else {
 		// Standard format
 		_, _ = fmt.Fprintf(out, "\nNetwork packet size (bytes): %d\n", packetSize)
 		_, _ = fmt.Fprintf(out, "%d xact[s]:\n", numBatches)
-		_, _ = fmt.Fprintf(out, "Clock Time (ms.): total   %7d  avg   %.2f (%.2f xacts per sec.)\n", elapsedMs, avgTime, batchesPerSec)
+		if displayElapsedMs < 1 {
+			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total     < 1  avg   %.2f (%.2f xacts per sec.)\n", avgTime, batchesPerSec)
+		} else {
+			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total   %7d  avg   %.2f (%.2f xacts per sec.)\n", displayElapsedMs, avgTime, batchesPerSec)
+		}
 	}
 }

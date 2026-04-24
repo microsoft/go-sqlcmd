@@ -749,3 +749,73 @@ func TestPrintStatisticsDisabled(t *testing.T) {
 	assert.NotContains(t, output, "Network packet size", "Should not contain packet size when disabled")
 	assert.NotContains(t, output, "xact[s]:", "Should not contain xacts label when disabled")
 }
+
+func TestPrintStatisticsUnit(t *testing.T) {
+	newSqlcmd := func(format int, packetSize int) *Sqlcmd {
+		s := &Sqlcmd{Connect: &ConnectSettings{}}
+		s.PrintStatistics = &format
+		s.Connect.PacketSize = packetSize
+		return s
+	}
+
+	t.Run("standard format", func(t *testing.T) {
+		s := newSqlcmd(0, 4096)
+		var buf bytes.Buffer
+		s.printStatistics(150, 3, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "Network packet size (bytes): 4096")
+		assert.Contains(t, out, "3 xact[s]:")
+		assert.Contains(t, out, "Clock Time (ms.): total       150")
+		assert.Contains(t, out, "xacts per sec.")
+	})
+
+	t.Run("colon format", func(t *testing.T) {
+		s := newSqlcmd(1, 8192)
+		var buf bytes.Buffer
+		s.printStatistics(200, 2, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "8192:2:200:")
+	})
+
+	t.Run("sub-millisecond standard", func(t *testing.T) {
+		s := newSqlcmd(0, 4096)
+		var buf bytes.Buffer
+		s.printStatistics(0, 1, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "total     < 1", "sub-ms should show < 1")
+	})
+
+	t.Run("sub-millisecond colon", func(t *testing.T) {
+		s := newSqlcmd(1, 4096)
+		var buf bytes.Buffer
+		s.printStatistics(0, 1, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "4096:1:0:", "colon format should show 0 for sub-ms")
+	})
+
+	t.Run("disabled", func(t *testing.T) {
+		s := &Sqlcmd{Connect: &ConnectSettings{}}
+		var buf bytes.Buffer
+		s.printStatistics(100, 1, &buf)
+		assert.Empty(t, buf.String(), "should produce no output when disabled")
+	})
+
+	t.Run("default packet size", func(t *testing.T) {
+		s := newSqlcmd(0, 0)
+		var buf bytes.Buffer
+		s.printStatistics(50, 1, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "Network packet size (bytes): 4096", "should default to 4096")
+	})
+
+	t.Run("multiple batches", func(t *testing.T) {
+		s := newSqlcmd(0, 4096)
+		var buf bytes.Buffer
+		s.printStatistics(1000, 10, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "10 xact[s]:")
+		assert.Contains(t, out, "total      1000")
+		assert.Contains(t, out, "avg   100.00")
+		assert.Contains(t, out, "10.00 xacts per sec.")
+	})
+}
