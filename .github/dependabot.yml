@@ -12,8 +12,7 @@ updates:
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
     open-pull-requests-limit: 10
     labels:
       - "dependencies"
@@ -22,16 +21,38 @@ updates:
       prefix: "deps"
       include: "scope"
     groups:
+      go-mssqldb:
+        patterns:
+          - "github.com/microsoft/go-mssqldb"
+      azure-sdk:
+        patterns:
+          - "github.com/Azure/*"
+      golang-x:
+        patterns:
+          - "golang.org/x/*"
+      auth:
+        patterns:
+          - "github.com/AzureAD/*"
+          - "github.com/golang-jwt/*"
+      testing:
+        patterns:
+          - "github.com/stretchr/*"
       go-dependencies:
         patterns:
           - "*"
+        exclude-patterns:
+          - "github.com/microsoft/go-mssqldb"
+          - "github.com/Azure/*"
+          - "golang.org/x/*"
+          - "github.com/AzureAD/*"
+          - "github.com/golang-jwt/*"
+          - "github.com/stretchr/*"
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
