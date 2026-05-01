@@ -9,7 +9,7 @@ require (
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/golang-sql/sqlexp v0.1.0
 	github.com/google/uuid v1.6.0
-	github.com/microsoft/go-mssqldb v1.9.8
+	github.com/microsoft/go-mssqldb v1.10.0
 	github.com/moby/moby/api v1.54.2
 	github.com/moby/moby/client v0.4.1
 	github.com/opencontainers/image-spec v1.1.1
@@ -27,9 +27,9 @@ require (
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.1 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys v1.4.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.2.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.6.0 // indirect
