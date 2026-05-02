@@ -37,6 +37,44 @@ func (c *Ads) DefineCommand(...cmdparser.CommandOptions) {
 // specific credential store, e.g. on Windows we use the Windows Credential
 // Manager.
 func (c *Ads) run() {
+	output := c.Output()
+	output.Warn(localizer.Sprintf("Azure Data Studio is being retired. This command will be removed in a future release."))
+
+	switch runtime.GOOS {
+	case "windows":
+		output.Info(localizer.Sprintf(`Alternatives:
+
+  VS Code:
+    winget install Microsoft.VisualStudioCode
+    sqlcmd open vscode --install-extension
+
+  SSMS:
+    winget install Microsoft.SQLServerManagementStudio
+    sqlcmd open ssms
+`))
+	case "darwin":
+		output.Info(localizer.Sprintf(`Alternatives:
+
+  VS Code:
+    brew install --cask visual-studio-code
+    sqlcmd open vscode --install-extension
+    Or download: https://code.visualstudio.com/download
+`))
+	default:
+		output.Info(localizer.Sprintf(`Alternatives:
+
+  VS Code:
+    snap install code --classic
+    sqlcmd open vscode --install-extension
+    Or download: https://code.visualstudio.com/download
+`))
+	}
+
+	tool := tools.NewTool("ads")
+	if !tool.IsInstalled() {
+		output.Fatal(localizer.Sprintf("Azure Data Studio is not installed."))
+	}
+
 	endpoint, user := config.CurrentContext()
 
 	// If the context has a local container, ensure it is running, otherwise bail out
@@ -66,7 +104,6 @@ func (c *Ads) ensureContainerIsRunning(endpoint sqlconfig.Endpoint) {
 
 // launchAds launches the Azure Data Studio using the specified server and username.
 func (c *Ads) launchAds(host string, port int, username string) {
-	output := c.Output()
 	args := []string{
 		"-r",
 		fmt.Sprintf(
@@ -89,9 +126,7 @@ func (c *Ads) launchAds(host string, port int, username string) {
 	}
 
 	tool := tools.NewTool("ads")
-	if !tool.IsInstalled() {
-		output.Fatal(tool.HowToInstall())
-	}
+	tool.IsInstalled() // precondition for Run; already verified in run()
 
 	c.displayPreLaunchInfo()
 

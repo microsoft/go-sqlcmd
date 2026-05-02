@@ -8,27 +8,27 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/test"
 )
 
-type AzureDataStudio struct {
+type VSCode struct {
 	tool
 }
 
-func (t *AzureDataStudio) Init() {
-	t.tool.SetToolDescription(Description{
-		Name:        "ads",
-		Purpose:     "Azure Data Studio is a database tool for data professionals who use on-premises and cloud data platforms.",
+func (t *VSCode) Init() {
+	t.SetToolDescription(Description{
+		Name:        "vscode",
+		Purpose:     "Visual Studio Code is a code editor with support for database management through the MSSQL extension.",
 		InstallText: t.installText()})
 
 	for _, location := range t.searchLocations() {
 		if file.Exists(location) {
-			t.tool.SetExePathAndName(location)
+			t.SetExePathAndName(location)
 			break
 		}
 	}
 }
 
-func (t *AzureDataStudio) Run(args []string) (int, error) {
+func (t *VSCode) Run(args []string) (int, error) {
 	if !test.IsRunningInTestExecutor() {
-		return t.Launch(args)
+		return t.tool.Run(args)
 	}
 	return 0, nil
 }

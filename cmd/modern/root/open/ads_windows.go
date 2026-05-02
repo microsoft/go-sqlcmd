@@ -26,8 +26,7 @@ type Ads struct {
 // Ctrl+C here.
 func (c *Ads) displayPreLaunchInfo() {
 	output := c.Output()
-
-	output.Info(localizer.Sprintf("Press Ctrl+C to exit this process..."))
+	output.Info(localizer.Sprintf("Launching Azure Data Studio..."))
 }
 
 // persistCredentialForAds stores a SQL password in the Windows Credential Manager
@@ -77,7 +76,12 @@ func (c *Ads) adsKey(instance, database, authType, user string) string {
 // the same target name as the current instance's credential.
 func (c *Ads) removePreviousCredential() {
 	credentials, err := credman.EnumerateCredentials("", true)
-	c.CheckErr(err)
+	if err != nil {
+		// ERROR_NOT_FOUND (element not found) is expected when no
+		// credentials exist yet. Any other error is non-fatal here
+		// since we're only trying to clean up a previous entry.
+		return
+	}
 
 	for _, cred := range credentials {
 		if cred.TargetName == c.credential.TargetName {
