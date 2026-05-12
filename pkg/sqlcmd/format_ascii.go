@@ -76,6 +76,19 @@ func (f *asciiFormatter) printAsciiTable() {
 		}
 	}
 
+	// Limit column width to maxWidth - 4 (border + padding)
+	// 1 (left border) + 1 (space) + content + 1 (space) + 1 (right border) = content + 4
+	maxColContentWidth := maxWidth - 4
+	if maxColContentWidth < 1 {
+		maxColContentWidth = 1
+	}
+
+	for i := range f.colWidths {
+		if f.colWidths[i] > maxColContentWidth {
+			f.colWidths[i] = maxColContentWidth
+		}
+	}
+
 	totalWidth := 1
 	for _, w := range f.colWidths {
 		totalWidth += w + 3
@@ -153,16 +166,24 @@ func (f *asciiFormatter) printTableSegment(colWidths []int, startCol, endCol int
 
 func padRightString(s string, width int) string {
 	l := utf8.RuneCountInString(s)
-	if l >= width {
-		return s
+	if l > width {
+		r := []rune(s)
+		if width >= 3 {
+			return string(r[:width-3]) + "..."
+		}
+		return string(r[:width])
 	}
 	return s + strings.Repeat(" ", width-l)
 }
 
 func padLeftString(s string, width int) string {
 	l := utf8.RuneCountInString(s)
-	if l >= width {
-		return s
+	if l > width {
+		r := []rune(s)
+		if width >= 3 {
+			return string(r[:width-3]) + "..."
+		}
+		return string(r[:width])
 	}
 	return strings.Repeat(" ", width-l) + s
 }
