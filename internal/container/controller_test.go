@@ -5,10 +5,12 @@ package container
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestController_ListTags(t *testing.T) {
@@ -49,12 +51,23 @@ func TestController_EnsureImage(t *testing.T) {
 	c.ContainerExists(id)
 	c.ContainerFiles(id, "*.mdf")
 
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// Bind to 0.0.0.0 so the container can reach the server via the
+	// Docker bridge network (host.docker.internal resolves to 172.17.0.1).
+	ts := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("test"))
 	}))
+	l, err := net.Listen("tcp4", "0.0.0.0:0")
+	checkErr(err)
+	ts.Listener = l
+	ts.Start()
 	defer ts.Close()
 
-	c.DownloadFile(id, ts.URL, "test.txt")
+	// Build URL from listener port so it works regardless of whether
+	// the OS returns 127.0.0.1, localhost, or [::] in ts.URL.
+	_, tsPort, _ := net.SplitHostPort(ts.Listener.Addr().String())
+	tsURL := fmt.Sprintf("http://host.docker.internal:%s", tsPort)
+
+	c.DownloadFile(id, tsURL+"/test.bak", "/tmp")
 
 	err = c.ContainerStop(id)
 	checkErr(err)
@@ -185,5 +198,12 @@ func TestController_DownloadFileNeg3(t *testing.T) {
 	c := NewController()
 	assert.Panics(t, func() {
 		c.DownloadFile("not_blank", "not_blank", "")
+	})
+}
+
+func TestController_DownloadFileNoFilename(t *testing.T) {
+	c := NewController()
+	assert.Panics(t, func() {
+		c.DownloadFile("not_blank", "http://host:9999/", "/tmp")
 	})
 }
