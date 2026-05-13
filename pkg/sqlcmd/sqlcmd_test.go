@@ -639,9 +639,7 @@ func setupSqlCmdWithMemoryOutput(t testing.TB) (*Sqlcmd, *memoryBuffer) {
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
 	err := s.ConnectDb(nil, true)
-	if err != nil {
-		t.Logf("ConnectDb failed: %v", err)
-	}
+	assert.NoError(t, err, "s.ConnectDB")
 	return s, buf
 }
 
