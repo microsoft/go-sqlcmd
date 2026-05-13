@@ -179,6 +179,10 @@ func (v Variables) Format() string {
 	switch v[SQLCMDFORMAT] {
 	case "vert", "vertical":
 		return "vertical"
+	case "ascii":
+		return "ascii"
+	case "horiz", "horizontal":
+		return "horizontal"
 	}
 	return "horizontal"
 }
@@ -246,6 +250,7 @@ func InitializeVariables(fromEnvironment bool) *Variables {
 		SQLCMDUSER:              "",
 		SQLCMDUSEAAD:            "",
 		SQLCMDCOLORSCHEME:       "",
+		SQLCMDFORMAT:            "",
 	}
 	hostname, _ := os.Hostname()
 	variables.Set(SQLCMDWORKSTATION, hostname)
