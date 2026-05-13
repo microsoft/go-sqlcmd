@@ -1811,20 +1811,6 @@
             "fuzzy": true
         },
         {
-            "id": "Install Azure Sql Edge",
-            "message": "Install Azure Sql Edge",
-            "translation": "Azure SQL Edge installieren",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Install/Create Azure SQL Edge in a container",
-            "message": "Install/Create Azure SQL Edge in a container",
-            "translation": "Azure SQL Edge in einem Container installieren/erstellen",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Tag to use, use get-tags to see list of tags",
             "message": "Tag to use, use get-tags to see list of tags",
             "translation": "Zu verwendende Markierung. Verwenden Sie get-tags, um eine Liste der Tags anzuzeigen.",
@@ -2369,9 +2355,9 @@
             "fuzzy": true
         },
         {
-            "id": "Get tags available for Azure SQL Edge install",
-            "message": "Get tags available for Azure SQL Edge install",
-            "translation": "Tags abrufen, die für Azure SQL Edge-Installation verfügbar sind",
+            "id": "Get tags available for mssql install",
+            "message": "Get tags available for mssql install",
+            "translation": "Verfügbare Tags für die MSSQL-Installation abrufen",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2379,13 +2365,6 @@
             "id": "List tags",
             "message": "List tags",
             "translation": "Tags auflisten",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Get tags available for mssql install",
-            "message": "Get tags available for mssql install",
-            "translation": "Verfügbare Tags für die MSSQL-Installation abrufen",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
