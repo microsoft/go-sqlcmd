@@ -47,6 +47,7 @@ func (f *asciiFormatter) AddRow(row *sql.Rows) string {
 		return ""
 	}
 	f.rows = append(f.rows, values)
+	f.rowcount++
 	for i, val := range values {
 		if i < len(f.colWidths) {
 			l := utf8.RuneCountInString(val)
