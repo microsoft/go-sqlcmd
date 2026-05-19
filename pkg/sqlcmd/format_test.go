@@ -164,42 +164,29 @@ func TestFormatterXmlMode(t *testing.T) {
 	assert.Equal(t, `<sys.databases name="master"/>`+SqlcmdEol, buf.buf.String())
 }
 
-func TestAddErrorRawErrors(t *testing.T) {
-	mssqlErr := mssql.Error{
-		Number:     50000,
-		State:      1,
-		Class:      16,
-		Message:    "Something failed",
-		ServerName: "server",
-		LineNo:     7,
-	}
+func TestAddErrorStripsMssqlPrefixByDefault(t *testing.T) {
+	out, errOut := new(strings.Builder), new(strings.Builder)
+	vars := InitializeVariables(false)
+	f := NewSQLCmdDefaultFormatter(vars, false, ControlIgnore)
+	f.BeginBatch("", vars, out, errOut)
 
-	tests := []struct {
-		name      string
-		rawErrors bool
-	}{
-		{name: "default strips mssql prefix", rawErrors: false},
-		{name: "raw preserves mssql prefix", rawErrors: true},
-	}
+	f.AddError(mssql.Error{Number: 50000, State: 1, Class: 16, Message: "Something failed", ServerName: "server", LineNo: 7})
 
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			out := new(strings.Builder)
-			errOut := new(strings.Builder)
-			vars := InitializeVariables(false)
-			f := NewSQLCmdDefaultFormatter(vars, false, ControlIgnore, WithRawErrors(tc.rawErrors))
-			f.BeginBatch("", vars, out, errOut)
+	got := errOut.String()
+	assert.Contains(t, got, "Msg 50000, Level 16, State 1, Server server, Line 7")
+	assert.Contains(t, got, "Something failed")
+	assert.NotContains(t, got, "mssql: Something failed")
+}
 
-			f.AddError(mssqlErr)
+func TestAddErrorWithRawErrorsKeepsMssqlPrefix(t *testing.T) {
+	out, errOut := new(strings.Builder), new(strings.Builder)
+	vars := InitializeVariables(false)
+	f := NewSQLCmdDefaultFormatter(vars, false, ControlIgnore, WithRawErrors(true))
+	f.BeginBatch("", vars, out, errOut)
 
-			got := errOut.String()
-			assert.Contains(t, got, "Msg 50000, Level 16, State 1, Server server, Line 7", "header should always be printed")
-			assert.Contains(t, got, "Something failed", "message body should always be printed")
-			if tc.rawErrors {
-				assert.Contains(t, got, "mssql: Something failed", "raw mode preserves the driver-supplied prefix")
-			} else {
-				assert.NotContains(t, got, "mssql: ", "default mode strips the driver-supplied prefix")
-			}
-		})
-	}
+	f.AddError(mssql.Error{Number: 50000, State: 1, Class: 16, Message: "Something failed", ServerName: "server", LineNo: 7})
+
+	got := errOut.String()
+	assert.Contains(t, got, "Msg 50000, Level 16, State 1, Server server, Line 7")
+	assert.Contains(t, got, "mssql: Something failed")
 }

@@ -91,12 +91,8 @@ type sqlCmdFormatterType struct {
 // FormatterOption configures a Formatter returned by NewSQLCmdDefaultFormatter.
 type FormatterOption func(*sqlCmdFormatterType)
 
-// WithRawErrors controls the -j "raw error messages" behavior. When enabled,
-// the error string returned by the go-mssqldb client driver is emitted verbatim
-// (the "mssql: " prefix that go-mssqldb's mssql.Error.Error() prepends is not
-// stripped). The Msg/Level/State/Server header and screen-width wrapping are
-// unaffected, matching the ODBC sqlcmd -j implementation, which likewise only
-// suppresses the prefix strip.
+// WithRawErrors implements -j: when raw is true, AddError keeps the "mssql: "
+// prefix that go-mssqldb adds to error text instead of stripping it.
 func WithRawErrors(raw bool) FormatterOption {
 	return func(f *sqlCmdFormatterType) { f.rawErrors = raw }
 }
