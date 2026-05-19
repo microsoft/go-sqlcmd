@@ -91,8 +91,9 @@ type sqlCmdFormatterType struct {
 // FormatterOption configures a Formatter returned by NewSQLCmdDefaultFormatter.
 type FormatterOption func(*sqlCmdFormatterType)
 
-// WithRawErrors implements -j: when raw is true, AddError keeps the "mssql: "
-// prefix that go-mssqldb adds to error text instead of stripping it.
+// WithRawErrors controls AddError prefix handling: when raw is true, AddError
+// keeps the "mssql: " prefix that go-mssqldb adds to error text instead of
+// stripping it.
 func WithRawErrors(raw bool) FormatterOption {
 	return func(f *sqlCmdFormatterType) { f.rawErrors = raw }
 }
