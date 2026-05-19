@@ -167,7 +167,7 @@ Most switches from the original ODBC-based `sqlcmd` have been implemented. The f
 | Switch | Description | Tracking |
 |--------|-------------|----------|
 | `-f` | Input/output code page | proposed in [#628](https://github.com/microsoft/go-sqlcmd/pull/628) (also see [#111](https://github.com/microsoft/go-sqlcmd/issues/111)) |
-| `-j` | Print raw error messages | [discussion #292](https://github.com/microsoft/go-sqlcmd/discussions/292) (earlier attempt: [#624](https://github.com/microsoft/go-sqlcmd/pull/624), closed) |
+| `-j` | Print raw error messages | [discussion #292](https://github.com/microsoft/go-sqlcmd/discussions/292) |
 | `-p[1]` | Print performance statistics after each result set. `-p1` uses colon-separated format for machine parsing | proposed in [#631](https://github.com/microsoft/go-sqlcmd/pull/631) |
 
 For historical context and to provide feedback, see [discussion #292](https://github.com/microsoft/go-sqlcmd/discussions/292).
