@@ -260,7 +260,7 @@ The following authentication methods are also supported via `--authentication-me
 - `ActiveDirectoryAzurePipelines` - Authenticates using an Azure Pipelines service connection. Requires `client_id@tenant_id` as username. The service connection ID and system access token are read from the `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID` and `SYSTEM_ACCESSTOKEN` environment variables (with `AZURESUBSCRIPTION_CLIENT_ID` as a fallback for the client ID); sqlcmd does not expose a way to pass these as connection parameters.
 - `ActiveDirectoryEnvironment` - Selects a credential type automatically based on which `AZURE_*` environment variables are set (client secret, certificate, or username/password).
 - `ActiveDirectoryAzureDeveloperCli` - Uses credentials from `azd auth login` (Azure Developer CLI).
-- `ActiveDirectoryServicePrincipalAccessToken` - Intended to use a pre-obtained bearer token. sqlcmd does not currently propagate `SQLCMDPASSWORD` (or `-P`) into the connection string for this method, so the token is not reaching the driver; fix proposed in [#756](https://github.com/microsoft/go-sqlcmd/pull/756).
+- `ActiveDirectoryServicePrincipalAccessToken` - Authenticates with a pre-obtained AAD bearer token. Pass the token as the password (`-P` or `SQLCMDPASSWORD`); the username is ignored.
 - `SqlPassword` - SQL Server authentication (equivalent to `-U` and `-P` without `-G`).
 
 #### Environment variables for AAD auth
