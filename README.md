@@ -175,7 +175,7 @@ For historical context and to provide feedback, see [discussion #292](https://gi
 ### Miscellaneous enhancements
 
 - Console output coloring (see below)
-- `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlAuthentication`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`, `ActiveDirectoryInteractive`, `ActiveDirectoryAzCli`, `ActiveDirectoryDeviceCode`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
+- `:Connect` now has an optional `-G` parameter to select one of the authentication methods for Azure SQL Database  - `SqlPassword`, `ActiveDirectoryDefault`, `ActiveDirectoryIntegrated`, `ActiveDirectoryServicePrincipal`, `ActiveDirectoryManagedIdentity`, `ActiveDirectoryPassword`, `ActiveDirectoryInteractive`, `ActiveDirectoryAzCli`, `ActiveDirectoryDeviceCode`. If `-G` is not provided, either Integrated security or SQL Authentication will be used, dependent on the presence of a `-U` username parameter.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `--vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
 
@@ -255,13 +255,13 @@ This method uses the device code flow for authentication. It displays a code tha
 
 The following authentication methods are also supported via `--authentication-method`:
 
-- `ActiveDirectoryWorkloadIdentity` - Uses federated token authentication for Kubernetes or GitHub Actions workloads; optionally provide `client_id@tenant_id` as username and set the `tokenfilepath` connection parameter to the path of the federated token file (defaults to `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_FEDERATED_TOKEN_FILE` env vars)
-- `ActiveDirectoryClientAssertion` - Authenticates with a signed JWT assertion instead of a client secret; provide `client_id@tenant_id` as username and the signed JWT as the password (`-P` or `SQLCMDPASSWORD`)
-- `ActiveDirectoryAzurePipelines` - Authenticates using an Azure Pipelines service connection; requires `client_id@tenant_id` as username, plus `serviceconnectionid` and `systemtoken` connection parameters (or `AZURESUBSCRIPTION_CLIENT_ID`, `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID`, `SYSTEM_ACCESSTOKEN` env vars)
-- `ActiveDirectoryEnvironment` - Selects a credential type automatically based on which `AZURE_*` environment variables are set (client secret, certificate, or username/password)
-- `ActiveDirectoryAzureDeveloperCli` - Uses credentials from `azd auth login` (Azure Developer CLI)
-- `ActiveDirectoryServicePrincipalAccessToken` - Uses a pre-obtained bearer token; set `SQLCMDPASSWORD` to the access token value
-- `SqlPassword` - SQL Server authentication (equivalent to `-U` and `-P` without `-G`)
+- `ActiveDirectoryWorkloadIdentity` - Uses federated token authentication for Kubernetes or GitHub Actions workloads. Optionally provide `client_id@tenant_id` as username. The token file path and tenant/client IDs are read from the `AZURE_FEDERATED_TOKEN_FILE`, `AZURE_TENANT_ID`, and `AZURE_CLIENT_ID` environment variables; sqlcmd does not expose a way to pass these as connection parameters.
+- `ActiveDirectoryClientAssertion` - Authenticates with a signed JWT assertion instead of a client secret; provide `client_id@tenant_id` as username and the signed JWT as the password (`-P` or `SQLCMDPASSWORD`).
+- `ActiveDirectoryAzurePipelines` - Authenticates using an Azure Pipelines service connection. Requires `client_id@tenant_id` as username. The service connection ID and system access token are read from the `AZURESUBSCRIPTION_SERVICE_CONNECTION_ID` and `SYSTEM_ACCESSTOKEN` environment variables (with `AZURESUBSCRIPTION_CLIENT_ID` as a fallback for the client ID); sqlcmd does not expose a way to pass these as connection parameters.
+- `ActiveDirectoryEnvironment` - Selects a credential type automatically based on which `AZURE_*` environment variables are set (client secret, certificate, or username/password).
+- `ActiveDirectoryAzureDeveloperCli` - Uses credentials from `azd auth login` (Azure Developer CLI).
+- `ActiveDirectoryServicePrincipalAccessToken` - Intended to use a pre-obtained bearer token, but sqlcmd does not currently propagate `SQLCMDPASSWORD` (or `-P`) into the connection string for this method, so the token is not passed to the driver. Do not rely on this method until that gap is closed.
+- `SqlPassword` - SQL Server authentication (equivalent to `-U` and `-P` without `-G`).
 
 #### Environment variables for AAD auth
 
