@@ -164,11 +164,11 @@ The following switches have different behavior in this version of `sqlcmd` compa
 
 Most switches from the original ODBC-based `sqlcmd` have been implemented. The following switches are not yet available:
 
-| Switch | Description |
-|--------|-------------|
-| `-f` | Input/output code page |
-| `-j` | Print raw error messages |
-| `-p[1]` | Print performance statistics after each result set. `-p1` uses colon-separated format for machine parsing |
+| Switch | Description | Tracking |
+|--------|-------------|----------|
+| `-f` | Input/output code page | proposed in [#628](https://github.com/microsoft/go-sqlcmd/pull/628) (also see [#111](https://github.com/microsoft/go-sqlcmd/issues/111)) |
+| `-j` | Print raw error messages | [discussion #292](https://github.com/microsoft/go-sqlcmd/discussions/292) |
+| `-p[1]` | Print performance statistics after each result set. `-p1` uses colon-separated format for machine parsing | [discussion #292](https://github.com/microsoft/go-sqlcmd/discussions/292) |
 
 For historical context and to provide feedback, see [discussion #292](https://github.com/microsoft/go-sqlcmd/discussions/292).
 
