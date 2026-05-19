@@ -175,7 +175,7 @@ func TestAddErrorStripsMssqlPrefixByDefault(t *testing.T) {
 	got := errOut.String()
 	assert.Contains(t, got, "Msg 50000, Level 16, State 1, Server server, Line 7")
 	assert.Contains(t, got, "Something failed")
-	assert.NotContains(t, got, "mssql: Something failed")
+	assert.NotContains(t, got, "mssql:")
 }
 
 func TestAddErrorWithRawErrorsKeepsMssqlPrefix(t *testing.T) {
