@@ -488,7 +488,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, localizer.Sprintf("Level of mssql driver messages to print"))
 	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, localizer.Sprintf("Specifies that sqlcmd exits and returns a %s value when an error occurs", localizer.DosErrorLevel))
 	rootCmd.Flags().IntVarP(&args.ErrorLevel, "error-level", "m", 0, localizer.Sprintf("Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent", localizer.StdoutName))
-	rootCmd.Flags().BoolVarP(&args.RawErrors, "raw-errors", "j", false, localizer.Sprintf("Keep the \"mssql: \" prefix that go-mssqldb adds to error messages"))
+	rootCmd.Flags().BoolVarP(&args.RawErrors, "raw-errors", "j", false, localizer.Sprintf("Do not strip the \"mssql: \" prefix from error messages"))
 
 	//Need to decide on short of Header , as "h" is already used in help command in Cobra
 	rootCmd.Flags().IntVarP(&args.Headers, "headers", "h", 0, localizer.Sprintf("Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed"))
