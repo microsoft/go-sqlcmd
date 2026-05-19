@@ -114,7 +114,9 @@ func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb C
 		ccb:                  ccb,
 	}
 	for _, opt := range opts {
-		opt(f)
+		if opt != nil {
+			opt(f)
+		}
 	}
 	return f
 }
