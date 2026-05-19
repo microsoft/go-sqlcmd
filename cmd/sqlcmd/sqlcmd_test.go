@@ -126,6 +126,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-j"}, func(args SQLCmdArguments) bool {
 			return args.RawErrors
 		}},
+		{[]string{"--raw-errors"}, func(args SQLCmdArguments) bool {
+			return args.RawErrors
+		}},
 	}
 
 	for _, test := range commands {

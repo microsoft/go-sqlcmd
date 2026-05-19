@@ -88,7 +88,8 @@ type sqlCmdFormatterType struct {
 	rawErrors            bool
 }
 
-// FormatterOption configures a Formatter returned by NewSQLCmdDefaultFormatter.
+// FormatterOption customizes the default formatter built by NewSQLCmdDefaultFormatter.
+// Use the provided With* constructors (e.g. WithRawErrors) to supply options.
 type FormatterOption func(*sqlCmdFormatterType)
 
 // WithRawErrors controls AddError prefix handling: when raw is true, AddError
@@ -100,7 +101,7 @@ func WithRawErrors(raw bool) FormatterOption {
 
 // NewSQLCmdDefaultFormatter returns a Formatter based on the configuration.
 // It returns an ASCII formatter if the format is set to "ascii", otherwise it returns a formatter that mimics the original ODBC-based sqlcmd formatter.
-// FormatterOption values (e.g. WithRawErrors) apply only to the ODBC-mimicking formatter; the ASCII formatter ignores them.
+// Any FormatterOption values passed via opts (e.g. WithRawErrors) are applied to the ODBC-mimicking formatter; the ASCII formatter ignores them.
 func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior, opts ...FormatterOption) Formatter {
 	if vars.Format() == "ascii" {
 		return NewSQLCmdAsciiFormatter(vars, removeTrailingSpaces, ccb)
