@@ -88,19 +88,20 @@ type sqlCmdFormatterType struct {
 	rawErrors            bool
 }
 
-// FormatterOption configures a Formatter returned by NewSQLCmdDefaultFormatter.
-type FormatterOption func(*sqlCmdFormatterType)
+// formatterOption configures a Formatter returned by NewSQLCmdDefaultFormatter.
+// The type is unexported so options must come from helpers in this package.
+type formatterOption func(*sqlCmdFormatterType)
 
 // WithRawErrors implements -j: when raw is true, AddError keeps the "mssql: "
 // prefix that go-mssqldb adds to error text instead of stripping it.
-func WithRawErrors(raw bool) FormatterOption {
+func WithRawErrors(raw bool) formatterOption {
 	return func(f *sqlCmdFormatterType) { f.rawErrors = raw }
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter based on the configuration.
 // It returns an ASCII formatter if the format is set to "ascii", otherwise it returns a formatter that mimics the original ODBC-based sqlcmd formatter.
-// FormatterOption values (e.g. WithRawErrors) apply only to the ODBC-mimicking formatter; the ASCII formatter ignores them.
-func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior, opts ...FormatterOption) Formatter {
+// formatterOption values (e.g. WithRawErrors) apply only to the ODBC-mimicking formatter; the ASCII formatter ignores them.
+func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior, opts ...formatterOption) Formatter {
 	if vars.Format() == "ascii" {
 		return NewSQLCmdAsciiFormatter(vars, removeTrailingSpaces, ccb)
 	}
