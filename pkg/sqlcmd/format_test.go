@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 )
@@ -161,4 +162,44 @@ func TestFormatterXmlMode(t *testing.T) {
 	err := runSqlCmd(t, s, []string{"select name from sys.databases where name='master' for xml auto ", "GO"})
 	assert.NoError(t, err, "runSqlCmd returned error")
 	assert.Equal(t, `<sys.databases name="master"/>`+SqlcmdEol, buf.buf.String())
+}
+
+func TestAddErrorRawErrors(t *testing.T) {
+	mssqlErr := mssql.Error{
+		Number:     50000,
+		State:      1,
+		Class:      16,
+		Message:    "Something failed",
+		ServerName: "server",
+		LineNo:     7,
+	}
+
+	tests := []struct {
+		name      string
+		rawErrors bool
+	}{
+		{name: "default strips mssql prefix", rawErrors: false},
+		{name: "raw preserves mssql prefix", rawErrors: true},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			out := new(strings.Builder)
+			errOut := new(strings.Builder)
+			vars := InitializeVariables(false)
+			f := NewSQLCmdDefaultFormatter(vars, false, ControlIgnore, WithRawErrors(tc.rawErrors))
+			f.BeginBatch("", vars, out, errOut)
+
+			f.AddError(mssqlErr)
+
+			got := errOut.String()
+			assert.Contains(t, got, "Msg 50000, Level 16, State 1, Server server, Line 7", "header should always be printed")
+			assert.Contains(t, got, "Something failed", "message body should always be printed")
+			if tc.rawErrors {
+				assert.Contains(t, got, "mssql: Something failed", "raw mode preserves the driver-supplied prefix")
+			} else {
+				assert.NotContains(t, got, "mssql: ", "default mode strips the driver-supplied prefix")
+			}
+		})
+	}
 }

@@ -83,6 +83,7 @@ type SQLCmdArguments struct {
 	ChangePasswordAndExit       string
 	TraceFile                   string
 	ServerNameOverride          string
+	RawErrors                   bool
 	// Keep Help at the end of the list
 	Help  bool
 	Ascii bool
@@ -487,6 +488,7 @@ func setFlags(rootCmd *cobra.Command, args *SQLCmdArguments) {
 	rootCmd.Flags().IntVar(&args.DriverLoggingLevel, "driver-logging-level", 0, localizer.Sprintf("Level of mssql driver messages to print"))
 	rootCmd.Flags().BoolVarP(&args.ExitOnError, "exit-on-error", "b", false, localizer.Sprintf("Specifies that sqlcmd exits and returns a %s value when an error occurs", localizer.DosErrorLevel))
 	rootCmd.Flags().IntVarP(&args.ErrorLevel, "error-level", "m", 0, localizer.Sprintf("Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent", localizer.StdoutName))
+	rootCmd.Flags().BoolVarP(&args.RawErrors, "raw-errors", "j", false, localizer.Sprintf("Prints raw error messages from the SQL Server driver without removing the driver-supplied prefix from the message text"))
 
 	//Need to decide on short of Header , as "h" is already used in help command in Cobra
 	rootCmd.Flags().IntVarP(&args.Headers, "headers", "h", 0, localizer.Sprintf("Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed"))
@@ -871,7 +873,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 	}
 
 	s.Connect = &connectConfig
-	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(vars, args.TrimSpaces, args.getControlCharacterBehavior())
+	s.Format = sqlcmd.NewSQLCmdDefaultFormatter(vars, args.TrimSpaces, args.getControlCharacterBehavior(), sqlcmd.WithRawErrors(args.RawErrors))
 	if args.OutputFile != "" {
 		err = s.RunCommand(s.Cmd["OUT"], []string{args.OutputFile})
 		if err != nil {

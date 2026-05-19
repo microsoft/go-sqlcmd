@@ -85,20 +85,38 @@ type sqlCmdFormatterType struct {
 	maxColNameLen        int
 	colorizer            color.Colorizer
 	xml                  bool
+	rawErrors            bool
+}
+
+// FormatterOption configures a Formatter returned by NewSQLCmdDefaultFormatter.
+type FormatterOption func(*sqlCmdFormatterType)
+
+// WithRawErrors controls the -j "raw error messages" behavior. When enabled,
+// the driver-supplied error text is emitted verbatim (the "mssql: " prefix
+// that go-mssqldb prepends is not stripped). The Msg/Level/State/Server
+// header and screen-width wrapping are unaffected, matching the ODBC sqlcmd -j
+// implementation, which also only suppresses driver-prefix stripping.
+func WithRawErrors(raw bool) FormatterOption {
+	return func(f *sqlCmdFormatterType) { f.rawErrors = raw }
 }
 
 // NewSQLCmdDefaultFormatter returns a Formatter based on the configuration.
 // It returns an ASCII formatter if the format is set to "ascii", otherwise it returns a formatter that mimics the original ODBC-based sqlcmd formatter.
-func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior) Formatter {
+// FormatterOption values (e.g. WithRawErrors) apply only to the ODBC-mimicking formatter; the ASCII formatter ignores them.
+func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior, opts ...FormatterOption) Formatter {
 	if vars.Format() == "ascii" {
 		return NewSQLCmdAsciiFormatter(vars, removeTrailingSpaces, ccb)
 	}
-	return &sqlCmdFormatterType{
+	f := &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
 		format:               "horizontal",
 		colorizer:            color.New(false),
 		ccb:                  ccb,
 	}
+	for _, opt := range opts {
+		opt(f)
+	}
+	return f
 }
 
 // Adds the given string to the current line, wrapping it based on the screen width setting
@@ -232,7 +250,9 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 			} else {
 				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
 			}
-			msg = strings.TrimPrefix(msg, "mssql: ")
+			if !f.rawErrors {
+				msg = strings.TrimPrefix(msg, "mssql: ")
+			}
 		}
 	}
 	if print {
