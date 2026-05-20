@@ -88,7 +88,7 @@ func (connect ConnectSettings) RequiresPassword() bool {
 	requiresPassword := connect.sqlAuthentication()
 	if !requiresPassword {
 		switch connect.authenticationMethod() {
-		case azuread.ActiveDirectoryApplication, azuread.ActiveDirectoryPassword, azuread.ActiveDirectoryServicePrincipal:
+		case azuread.ActiveDirectoryApplication, azuread.ActiveDirectoryPassword, azuread.ActiveDirectoryServicePrincipal, azuread.ActiveDirectoryServicePrincipalAccessToken:
 			requiresPassword = true
 		}
 	}
