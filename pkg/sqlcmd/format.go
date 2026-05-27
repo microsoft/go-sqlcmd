@@ -101,10 +101,12 @@ func WithRawErrors(raw bool) FormatterOption {
 
 // NewSQLCmdDefaultFormatter returns a Formatter based on the configuration.
 // It returns an ASCII formatter if the format is set to "ascii", otherwise it returns a formatter that mimics the original ODBC-based sqlcmd formatter.
-// Any FormatterOption values passed via opts (e.g. WithRawErrors) are applied to the ODBC-mimicking formatter; the ASCII formatter ignores them.
+// Any FormatterOption values (e.g. WithRawErrors) are applied to the returned formatter.
 func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior, opts ...FormatterOption) Formatter {
 	if vars.Format() == "ascii" {
-		return NewSQLCmdAsciiFormatter(vars, removeTrailingSpaces, ccb)
+		f := NewSQLCmdAsciiFormatter(vars, removeTrailingSpaces, ccb).(*asciiFormatter)
+		applyFormatterOptions(f.sqlCmdFormatterType, opts)
+		return f
 	}
 	f := &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
@@ -112,12 +114,16 @@ func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb C
 		colorizer:            color.New(false),
 		ccb:                  ccb,
 	}
+	applyFormatterOptions(f, opts)
+	return f
+}
+
+func applyFormatterOptions(f *sqlCmdFormatterType, opts []FormatterOption) {
 	for _, opt := range opts {
 		if opt != nil {
 			opt(f)
 		}
 	}
-	return f
 }
 
 // Adds the given string to the current line, wrapping it based on the screen width setting
