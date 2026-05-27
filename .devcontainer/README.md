@@ -28,7 +28,7 @@ First build takes ~5 minutes.
 - **Password**: `$SQLCMDPASSWORD` env var (`SqlCmd@2025!` for local dev)
 - **Database**: `master` or `SqlCmdTest`
 
-Port 1433 is forwarded — connect from host tools (ADS, SSMS) using same credentials.
+Port 1433 is forwarded — connect from host tools (VS Code, SSMS) using same credentials.
 
 ## Two sqlcmd Versions
 

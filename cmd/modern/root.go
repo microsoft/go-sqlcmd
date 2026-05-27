@@ -29,8 +29,8 @@ func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	// Example usage steps
 	steps := []string{"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak"}
 
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		steps = append(steps, "sqlcmd open ads")
+	if runtime.GOOS == "windows" {
+		steps = append(steps, "sqlcmd open ssms")
 	}
 
 	steps = append(steps, `sqlcmd query "SELECT @@version"`)

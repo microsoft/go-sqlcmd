@@ -12,7 +12,5 @@ func (t *SSMS) searchLocations() []string {
 func (t *SSMS) installText() string {
 	return `SQL Server Management Studio (SSMS) is only available on Windows.
 
-Please use:
-- Visual Studio Code with the MSSQL extension: sqlcmd open vscode
-- Azure Data Studio: sqlcmd open ads`
+Please use Visual Studio Code with the MSSQL extension: sqlcmd open vscode`
 }

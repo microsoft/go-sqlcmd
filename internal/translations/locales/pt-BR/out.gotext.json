@@ -110,11 +110,9 @@
             "fuzzy": true
         },
         {
-            "id": "Open tools (e.g Azure Data Studio) for current context",
-            "message": "Open tools (e.g Azure Data Studio) for current context",
-            "translation": "Abrir ferramentas (por exemplo, Azure Data Studio) para o contexto atual",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Open tools (e.g., Visual Studio Code, SSMS) for current context",
+            "message": "Open tools (e.g., Visual Studio Code, SSMS) for current context",
+            "translation": ""
         },
         {
             "id": "Run a query against the current context",
@@ -2404,6 +2402,166 @@
             "fuzzy": true
         },
         {
+            "id": "Could not copy password to clipboard: {Error}",
+            "message": "Could not copy password to clipboard: {Error}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
+            "id": "Password copied to clipboard - paste it when prompted, then clear your clipboard",
+            "message": "Password copied to clipboard - paste it when prompted, then clear your clipboard",
+            "translation": ""
+        },
+        {
+            "id": "Open SQL Server Management Studio and connect to current context",
+            "message": "Open SQL Server Management Studio and connect to current context",
+            "translation": ""
+        },
+        {
+            "id": "Open SSMS and connect using the current context",
+            "message": "Open SSMS and connect using the current context",
+            "translation": ""
+        },
+        {
+            "id": "Launching SQL Server Management Studio...",
+            "message": "Launching SQL Server Management Studio...",
+            "translation": ""
+        },
+        {
+            "id": "Open Visual Studio Code and configure connection for current context",
+            "message": "Open Visual Studio Code and configure connection for current context",
+            "translation": ""
+        },
+        {
+            "id": "Open VS Code and configure connection using the current context",
+            "message": "Open VS Code and configure connection using the current context",
+            "translation": ""
+        },
+        {
+            "id": "Open VS Code and install the MSSQL extension if needed",
+            "message": "Open VS Code and install the MSSQL extension if needed",
+            "translation": ""
+        },
+        {
+            "id": "Install the MSSQL extension in VS Code if not already installed",
+            "message": "Install the MSSQL extension in VS Code if not already installed",
+            "translation": ""
+        },
+        {
+            "id": "Installing MSSQL extension...",
+            "message": "Installing MSSQL extension...",
+            "translation": ""
+        },
+        {
+            "id": "Could not install MSSQL extension: {Error}",
+            "message": "Could not install MSSQL extension: {Error}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
+            "id": "MSSQL extension installed successfully",
+            "message": "MSSQL extension installed successfully",
+            "translation": ""
+        },
+        {
+            "id": "To install the MSSQL extension",
+            "message": "To install the MSSQL extension",
+            "translation": ""
+        },
+        {
+            "id": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
+            "message": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
+            "translation": ""
+        },
+        {
+            "id": "Error",
+            "message": "Error",
+            "translation": ""
+        },
+        {
+            "id": "Failed to create VS Code settings directory",
+            "message": "Failed to create VS Code settings directory",
+            "translation": ""
+        },
+        {
+            "id": "Connection profile created in VS Code settings",
+            "message": "Connection profile created in VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Failed to read VS Code settings",
+            "message": "Failed to read VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Failed to parse VS Code settings",
+            "message": "Failed to parse VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Failed to encode VS Code settings",
+            "message": "Failed to encode VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Failed to write VS Code settings",
+            "message": "Failed to write VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Could not verify MSSQL extension installation: {Error}",
+            "message": "Could not verify MSSQL extension installation: {Error}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
+            "id": "Opening VS Code...",
+            "message": "Opening VS Code...",
+            "translation": ""
+        },
+        {
+            "id": "Use the '{CurrentContextName}' connection profile to connect",
+            "message": "Use the '{CurrentContextName}' connection profile to connect",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CurrentContextName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "config.CurrentContextName()"
+                }
+            ]
+        },
+        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "O parâmetro -L não pode ser usado em combinação com outros parâmetros.",
@@ -2840,6 +2998,29 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
+                }
+            ]
         },
         {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",

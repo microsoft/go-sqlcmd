@@ -89,7 +89,7 @@ func (c *AddContext) run() {
 	context.Name = config.AddContext(context)
 	config.SetCurrentContextName(context.Name)
 	output.InfoWithHintExamples([][]string{
-		{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"},
+		{localizer.Sprintf("Open in Visual Studio Code"), "sqlcmd open vscode"},
 		{localizer.Sprintf("To start interactive query session"), "sqlcmd query"},
 		{localizer.Sprintf("To run a query"), "sqlcmd query \"SELECT @@version\""},
 	}, localizer.Sprintf("Current Context '%v'", context.Name))
