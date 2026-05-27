@@ -19,10 +19,6 @@ import (
 
 // TestVSCode runs a sanity test of `sqlcmd open vscode`
 func TestVSCode(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue")
-	}
-
 	tool := tools.NewTool("vscode")
 	if !tool.IsInstalled() {
 		t.Skip("VS Code is not installed")
@@ -56,10 +52,6 @@ func TestVSCode(t *testing.T) {
 
 // TestVSCodeCreateProfile tests that createProfile generates correct profile structure
 func TestVSCodeCreateProfile(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
-	}
-
 	cmdparser.TestSetup(t)
 
 	// Set up a context with user credentials
@@ -129,10 +121,6 @@ func TestVSCodeCreateProfile(t *testing.T) {
 
 // TestVSCodeUpdateOrAddProfile tests profile update and add logic
 func TestVSCodeUpdateOrAddProfile(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
-	}
-
 	cmdparser.TestSetup(t)
 
 	vscode := &VSCode{}
@@ -251,10 +239,6 @@ func TestVSCodeReadWriteSettings(t *testing.T) {
 
 // TestVSCodeGetConnectionsArray tests extracting connections array from settings
 func TestVSCodeGetConnectionsArray(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
-	}
-
 	cmdparser.TestSetup(t)
 
 	vscode := &VSCode{}
@@ -286,10 +270,6 @@ func TestVSCodeGetConnectionsArray(t *testing.T) {
 
 // TestVSCodeGetSettingsPath tests that settings path is correctly determined
 func TestVSCodeGetSettingsPath(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
-	}
-
 	cmdparser.TestSetup(t)
 
 	vscode := &VSCode{}
@@ -315,10 +295,6 @@ func TestVSCodeGetSettingsPath(t *testing.T) {
 
 // TestVSCodeProfileWithoutUser tests profile creation when no user is configured
 func TestVSCodeProfileWithoutUser(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
-	}
-
 	cmdparser.TestSetup(t)
 
 	config.AddEndpoint(sqlconfig.Endpoint{
@@ -365,10 +341,6 @@ func TestVSCodeProfileWithoutUser(t *testing.T) {
 }
 
 func TestVSCodeSettingsPreservesOtherKeys(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
-	}
-
 	cmdparser.TestSetup(t)
 
 	vscode := &VSCode{}

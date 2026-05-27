@@ -110,9 +110,9 @@
             "fuzzy": true
         },
         {
-            "id": "Open tools (e.g Azure Data Studio) for current context",
-            "message": "Open tools (e.g Azure Data Studio) for current context",
-            "translation": "Open tools (e.g Azure Data Studio) for current context",
+            "id": "Open tools (e.g., Visual Studio Code, SSMS) for current context",
+            "message": "Open tools (e.g., Visual Studio Code, SSMS) for current context",
+            "translation": "Open tools (e.g., Visual Studio Code, SSMS) for current context",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2404,6 +2404,214 @@
             "fuzzy": true
         },
         {
+            "id": "Could not copy password to clipboard: {Error}",
+            "message": "Could not copy password to clipboard: {Error}",
+            "translation": "Could not copy password to clipboard: {Error}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Password copied to clipboard - paste it when prompted, then clear your clipboard",
+            "message": "Password copied to clipboard - paste it when prompted, then clear your clipboard",
+            "translation": "Password copied to clipboard - paste it when prompted, then clear your clipboard",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open SQL Server Management Studio and connect to current context",
+            "message": "Open SQL Server Management Studio and connect to current context",
+            "translation": "Open SQL Server Management Studio and connect to current context",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open SSMS and connect using the current context",
+            "message": "Open SSMS and connect using the current context",
+            "translation": "Open SSMS and connect using the current context",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Launching SQL Server Management Studio...",
+            "message": "Launching SQL Server Management Studio...",
+            "translation": "Launching SQL Server Management Studio...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open Visual Studio Code and configure connection for current context",
+            "message": "Open Visual Studio Code and configure connection for current context",
+            "translation": "Open Visual Studio Code and configure connection for current context",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open VS Code and configure connection using the current context",
+            "message": "Open VS Code and configure connection using the current context",
+            "translation": "Open VS Code and configure connection using the current context",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Open VS Code and install the MSSQL extension if needed",
+            "message": "Open VS Code and install the MSSQL extension if needed",
+            "translation": "Open VS Code and install the MSSQL extension if needed",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Install the MSSQL extension in VS Code if not already installed",
+            "message": "Install the MSSQL extension in VS Code if not already installed",
+            "translation": "Install the MSSQL extension in VS Code if not already installed",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Installing MSSQL extension...",
+            "message": "Installing MSSQL extension...",
+            "translation": "Installing MSSQL extension...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Could not install MSSQL extension: {Error}",
+            "message": "Could not install MSSQL extension: {Error}",
+            "translation": "Could not install MSSQL extension: {Error}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "MSSQL extension installed successfully",
+            "message": "MSSQL extension installed successfully",
+            "translation": "MSSQL extension installed successfully",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "To install the MSSQL extension",
+            "message": "To install the MSSQL extension",
+            "translation": "To install the MSSQL extension",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
+            "message": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
+            "translation": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Error",
+            "message": "Error",
+            "translation": "Error",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to create VS Code settings directory",
+            "message": "Failed to create VS Code settings directory",
+            "translation": "Failed to create VS Code settings directory",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Connection profile created in VS Code settings",
+            "message": "Connection profile created in VS Code settings",
+            "translation": "Connection profile created in VS Code settings",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to read VS Code settings",
+            "message": "Failed to read VS Code settings",
+            "translation": "Failed to read VS Code settings",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to parse VS Code settings",
+            "message": "Failed to parse VS Code settings",
+            "translation": "Failed to parse VS Code settings",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to encode VS Code settings",
+            "message": "Failed to encode VS Code settings",
+            "translation": "Failed to encode VS Code settings",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to write VS Code settings",
+            "message": "Failed to write VS Code settings",
+            "translation": "Failed to write VS Code settings",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Could not verify MSSQL extension installation: {Error}",
+            "message": "Could not verify MSSQL extension installation: {Error}",
+            "translation": "Could not verify MSSQL extension installation: {Error}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Opening VS Code...",
+            "message": "Opening VS Code...",
+            "translation": "Opening VS Code...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Use the '{CurrentContextName}' connection profile to connect",
+            "message": "Use the '{CurrentContextName}' connection profile to connect",
+            "translation": "Use the '{CurrentContextName}' connection profile to connect",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "CurrentContextName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "config.CurrentContextName()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "The -L parameter can not be used in combination with other parameters.",
@@ -2843,6 +3051,31 @@
                     "underlyingType": "string",
                     "argNum": 2,
                     "expr": "\"vert\""
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
                 }
             ],
             "fuzzy": true
