@@ -88,20 +88,17 @@ type sqlCmdFormatterType struct {
 	rawErrors            bool
 }
 
-// FormatterOption customizes the default formatter built by NewSQLCmdDefaultFormatter.
-// Use the provided With* constructors (e.g. WithRawErrors) to supply options.
+// FormatterOption customizes the formatter returned by NewSQLCmdDefaultFormatter.
 type FormatterOption func(*sqlCmdFormatterType)
 
-// WithRawErrors controls AddError prefix handling: when raw is true, AddError
-// keeps the "mssql: " prefix that go-mssqldb adds to error text instead of
-// stripping it.
+// WithRawErrors makes AddError preserve the "mssql: " prefix that go-mssqldb
+// adds to error text instead of stripping it.
 func WithRawErrors(raw bool) FormatterOption {
 	return func(f *sqlCmdFormatterType) { f.rawErrors = raw }
 }
 
-// NewSQLCmdDefaultFormatter returns a Formatter based on the configuration.
-// It returns an ASCII formatter if the format is set to "ascii", otherwise it returns a formatter that mimics the original ODBC-based sqlcmd formatter.
-// Any FormatterOption values (e.g. WithRawErrors) are applied to the returned formatter.
+// NewSQLCmdDefaultFormatter returns an ASCII formatter when SQLCMDFORMAT is "ascii",
+// otherwise a formatter that mimics the original ODBC-based sqlcmd formatter.
 func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior, opts ...FormatterOption) Formatter {
 	if vars.Format() == "ascii" {
 		f := NewSQLCmdAsciiFormatter(vars, removeTrailingSpaces, ccb).(*asciiFormatter)

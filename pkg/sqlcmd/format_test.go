@@ -191,8 +191,6 @@ func TestAddErrorWithRawErrorsKeepsMssqlPrefix(t *testing.T) {
 	assert.Contains(t, got, "mssql: Something failed")
 }
 
-// TestAddErrorWithRawErrorsAppliesToAsciiFormatter guards against silently dropping
-// FormatterOption values when the caller has selected the ascii result format.
 func TestAddErrorWithRawErrorsAppliesToAsciiFormatter(t *testing.T) {
 	out, errOut := new(strings.Builder), new(strings.Builder)
 	vars := InitializeVariables(false)
