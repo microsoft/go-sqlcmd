@@ -123,6 +123,12 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "true", "-J", "/path/to/cert2.pem"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true" && args.ServerCertificate == "/path/to/cert2.pem"
 		}},
+		{[]string{"-j"}, func(args SQLCmdArguments) bool {
+			return args.RawErrors
+		}},
+		{[]string{"--raw-errors"}, func(args SQLCmdArguments) bool {
+			return args.RawErrors
+		}},
 	}
 
 	for _, test := range commands {

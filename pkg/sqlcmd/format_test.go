@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 )
@@ -161,4 +162,43 @@ func TestFormatterXmlMode(t *testing.T) {
 	err := runSqlCmd(t, s, []string{"select name from sys.databases where name='master' for xml auto ", "GO"})
 	assert.NoError(t, err, "runSqlCmd returned error")
 	assert.Equal(t, `<sys.databases name="master"/>`+SqlcmdEol, buf.buf.String())
+}
+
+func TestAddErrorStripsMssqlPrefixByDefault(t *testing.T) {
+	out, errOut := new(strings.Builder), new(strings.Builder)
+	vars := InitializeVariables(false)
+	f := NewSQLCmdDefaultFormatter(vars, false, ControlIgnore)
+	f.BeginBatch("", vars, out, errOut)
+
+	f.AddError(mssql.Error{Number: 50000, State: 1, Class: 16, Message: "Something failed", ServerName: "server", LineNo: 7})
+
+	got := errOut.String()
+	assert.Contains(t, got, "Msg 50000, Level 16, State 1, Server server, Line 7")
+	assert.Contains(t, got, "Something failed")
+	assert.NotContains(t, got, "mssql:")
+}
+
+func TestAddErrorWithRawErrorsKeepsMssqlPrefix(t *testing.T) {
+	out, errOut := new(strings.Builder), new(strings.Builder)
+	vars := InitializeVariables(false)
+	f := NewSQLCmdDefaultFormatter(vars, false, ControlIgnore, WithRawErrors(true))
+	f.BeginBatch("", vars, out, errOut)
+
+	f.AddError(mssql.Error{Number: 50000, State: 1, Class: 16, Message: "Something failed", ServerName: "server", LineNo: 7})
+
+	got := errOut.String()
+	assert.Contains(t, got, "Msg 50000, Level 16, State 1, Server server, Line 7")
+	assert.Contains(t, got, "mssql: Something failed")
+}
+
+func TestAddErrorWithRawErrorsAppliesToAsciiFormatter(t *testing.T) {
+	out, errOut := new(strings.Builder), new(strings.Builder)
+	vars := InitializeVariables(false)
+	vars.Set(SQLCMDFORMAT, "ascii")
+	f := NewSQLCmdDefaultFormatter(vars, false, ControlIgnore, WithRawErrors(true))
+	f.BeginBatch("", vars, out, errOut)
+
+	f.AddError(mssql.Error{Number: 50000, State: 1, Class: 16, Message: "Something failed", ServerName: "server", LineNo: 7})
+
+	assert.Contains(t, errOut.String(), "mssql: Something failed", "ascii formatter must honor WithRawErrors")
 }
