@@ -4,7 +4,6 @@
 package open
 
 import (
-	"runtime"
 	"testing"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
@@ -12,10 +11,6 @@ import (
 )
 
 func TestCopyPasswordToClipboardWithNoUser(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
-	}
-
 	cmdparser.TestSetup(t)
 
 	result := copyPasswordToClipboard(nil, nil)
@@ -25,10 +20,6 @@ func TestCopyPasswordToClipboardWithNoUser(t *testing.T) {
 }
 
 func TestCopyPasswordToClipboardWithNonBasicAuth(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Skipping on Linux due to ADS tool initialization issue in tools factory")
-	}
-
 	cmdparser.TestSetup(t)
 
 	user := &sqlconfig.User{

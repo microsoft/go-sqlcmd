@@ -25,12 +25,11 @@ func (c *Open) DefineCommand(...cmdparser.CommandOptions) {
 }
 
 // SubCommands sets up the sub-commands for `sqlcmd open` such as
-// `sqlcmd open ads`, `sqlcmd open vscode`, and `sqlcmd open ssms`
+// `sqlcmd open vscode` and `sqlcmd open ssms`
 func (c *Open) SubCommands() []cmdparser.Command {
 	dependencies := c.Dependencies()
 
 	return []cmdparser.Command{
-		cmdparser.New[*open.Ads](dependencies),
 		cmdparser.New[*open.VSCode](dependencies),
 		cmdparser.New[*open.Ssms](dependencies),
 	}

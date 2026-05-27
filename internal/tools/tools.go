@@ -8,7 +8,6 @@ import (
 )
 
 var tools = []tool.Tool{
-	&tool.AzureDataStudio{},
 	&tool.VSCode{},
 	&tool.SSMS{},
 }
