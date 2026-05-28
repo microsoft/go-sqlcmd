@@ -11,12 +11,18 @@ import (
 func (t *VSCode) searchLocations() []string {
 	userProfile := os.Getenv("HOME")
 
-	return []string{
-		filepath.Join("/", "Applications", "Visual Studio Code - Insiders.app"),
-		filepath.Join(userProfile, "Downloads", "Visual Studio Code - Insiders.app"),
-		filepath.Join("/", "Applications", "Visual Studio Code.app"),
-		filepath.Join(userProfile, "Downloads", "Visual Studio Code.app"),
+	var locations []string
+	for _, build := range t.buildsToSearch() {
+		app := "Visual Studio Code.app"
+		if build == "insiders" {
+			app = "Visual Studio Code - Insiders.app"
+		}
+		locations = append(locations,
+			filepath.Join("/", "Applications", app),
+			filepath.Join(userProfile, "Downloads", app),
+		)
 	}
+	return locations
 }
 
 func (t *VSCode) installText() string {

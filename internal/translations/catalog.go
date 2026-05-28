@@ -60,25 +60,26 @@ var messageKeyToIndex = map[string]int{
 	"%s Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable %s.":                         241,
 	"%sSyntax error at line %d": 296,
 	"%v":                        45,
-	"'%s %s': Unexpected argument. Argument value has to be %v.":                         278,
-	"'%s %s': Unexpected argument. Argument value has to be one of %v.":                  279,
-	"'%s %s': value must be greater than %#v and less than %#v.":                         277,
-	"'%s %s': value must be greater than or equal to %#v and less than or equal to %#v.": 276,
-	"'%s' scripting variable not defined.":                                               292,
-	"'%s': Missing argument. Enter '-?' for help.":                                       281,
-	"'%s': Unknown Option. Enter '-?' for help.":                                         282,
-	"'-a %#v': Packet size has to be a number between 512 and 32767.":                    222,
-	"'-h %#v': header value must be either -1 or a value between 1 and 2147483647":       223,
-	"(%d rows affected)": 302,
-	"(1 row affected)":   301,
-	"--user-database %q contains non-ASCII chars and/or quotes":             181,
-	"--using URL must be http or https":                                     191,
-	"--using URL must have a path to .bak file":                             193,
-	"--using file URL must be a .bak file":                                  194,
-	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help": 229,
-	"A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager": 219,
-	"Accept the SQL Server EULA": 164,
-	"Add a context":              50,
+	"'%s %s': Unexpected argument. Argument value has to be %v.":                         271,
+	"'%s %s': Unexpected argument. Argument value has to be one of %v.":                  272,
+	"'%s %s': value must be greater than %#v and less than %#v.":                         270,
+	"'%s %s': value must be greater than or equal to %#v and less than or equal to %#v.": 269,
+	"'%s' scripting variable not defined.":                                               285,
+	"'%s': Missing argument. Enter '-?' for help.":                                       274,
+	"'%s': Unknown Option. Enter '-?' for help.":                                         275,
+	"'--build %s' is not supported; use 'stable' or 'insiders'":                          317,
+	"'-a %#v': Packet size has to be a number between 512 and 32767.":                    215,
+	"'-h %#v': header value must be either -1 or a value between 1 and 2147483647":       216,
+	"'sqlcmd open ssms' supports SSMS %d and later; '--version %s' is not supported":     307,
+	"(%d rows affected)": 295,
+	"(1 row affected)":   294,
+	"--user-database %q contains non-ASCII chars and/or quotes":                                  178,
+	"--using URL must be http or https":                                                          188,
+	"--using URL must have a path to .bak file":                                                  190,
+	"--using file URL must be a .bak file":                                                       191,
+	"-? shows this syntax summary, %s shows modern sqlcmd sub-command help":                      222,
+	"Accept the SQL Server EULA":                                                                 161,
+	"Add a context":                                                                              50,
 	"Add a context for a local instance of SQL Server on port 1433 using trusted authentication": 51,
 	"Add a context for this endpoint": 71,
 	"Add a context manually":          35,
@@ -102,23 +103,23 @@ var messageKeyToIndex = map[string]int{
 	"Change current context": 186,
 	"Command text to run":    14,
 	"Complete the operation even if non-system (user) database files are present":      31,
-	"Connection Strings only supported for %s Auth type":                               104,
-	"Connection profile created in VS Code settings":                                   322,
+	"Connection Strings only supported for %s Auth type":                               103,
+	"Connection profile created in VS Code settings":                                   325,
 	"Container %q no longer exists, continuing to remove context...":                   43,
 	"Container is not running":                                                         217,
 	"Container is not running, unable to verify that user database files do not exist": 40,
-	"Context '%v' deleted":                                                             112,
-	"Context '%v' does not exist":                                                      113,
-	"Context name (a default context name will be created if not provided)":            162,
-	"Context name to view details of":                                                  130,
-	"Controls the severity level that is used to set the %s variable on exit":          264,
-	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent": 257,
-	"Could not copy password to clipboard: %s":                                                           306,
-	"Could not install MSSQL extension: %s":                                                              316,
-	"Could not verify MSSQL extension installation: %s":                                                  327,
-	"Create SQL Server with an empty user database":                                                      211,
-	"Create SQL Server, download and attach AdventureWorks sample database":                              209,
-	"Create SQL Server, download and attach AdventureWorks sample database with different database name": 210,
+	"Context '%v' deleted":                                                             111,
+	"Context '%v' does not exist":                                                      112,
+	"Context name (a default context name will be created if not provided)":            159,
+	"Context name to view details of":                                                  129,
+	"Controls the severity level that is used to set the %s variable on exit":          257,
+	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent": 250,
+	"Could not copy password to clipboard: %s":                                                           301,
+	"Could not install MSSQL extension: %s":                                                              319,
+	"Could not verify MSSQL extension installation: %s":                                                  330,
+	"Create SQL Server with an empty user database":                                                      208,
+	"Create SQL Server, download and attach AdventureWorks sample database":                              206,
+	"Create SQL Server, download and attach AdventureWorks sample database with different database name": 207,
 	"Create a new context with a SQL Server container ":                                                  26,
 	"Create a user database and set it as the default for login":                                         163,
 	"Create context": 33,
@@ -149,79 +150,76 @@ var messageKeyToIndex = map[string]int{
 	"Display connections strings for the current context":                                 101,
 	"Display merged sqlconfig settings or a specified sqlconfig file":                     155,
 	"Display name for the context":                                                        52,
-	"Display name for the endpoint":                                                       68,
-	"Display name for the user (this is not the username)":                                81,
-	"Display one or many contexts from the sqlconfig file":                                126,
-	"Display one or many endpoints from the sqlconfig file":                               134,
-	"Display one or many users from the sqlconfig file":                                   141,
-	"Display raw byte data":                                                               158,
-	"Display the current-context":                                                         105,
-	"Don't download image.  Use already downloaded image":                                 170,
-	"Download (into container) and attach database (.bak) from URL":                       177,
-	"Downloading %s":                                                                      197,
-	"Downloading %v":                                                                      199,
-	"ED and !!<command> commands, startup script, and environment variables are disabled": 290,
-	"EULA not accepted":                                                                   180,
-	"Echo input":                                                                          271,
-	"Either, add the %s flag to the command-line":                                         178,
-	"Enable column encryption":                                                            272,
-	"Encryption method '%v' is not valid":                                                 97,
-	"Endpoint '%v' added (address: '%v', port: '%v')":                                     76,
-	"Endpoint '%v' deleted":                                                               119,
-	"Endpoint '%v' does not exist":                                                        118,
-	"Endpoint name must be provided.  Provide endpoint name with %s flag":                 116,
-	"Endpoint name to view details of":                                                    137,
+	"Display name for the endpoint":                                                       67,
+	"Display name for the user (this is not the username)":                                80,
+	"Display one or many contexts from the sqlconfig file":                                125,
+	"Display one or many endpoints from the sqlconfig file":                               133,
+	"Display one or many users from the sqlconfig file":                                   140,
+	"Display raw byte data":                                                               157,
+	"Display the current-context":                                                         104,
+	"Do not strip the \"mssql: \" prefix from error messages":                             337,
+	"Don't download image.  Use already downloaded image":                                 167,
+	"Download (into container) and attach database (.bak) from URL":                       174,
+	"Downloading %s":                                                                      194,
+	"Downloading %v":                                                                      196,
+	"ED and !!<command> commands, startup script, and environment variables are disabled": 283,
+	"EULA not accepted":                                                                   177,
+	"Echo input":                                                                          264,
+	"Either, add the %s flag to the command-line":                                         175,
+	"Enable column encryption":                                                            265,
+	"Encryption method '%v' is not valid":                                                 96,
+	"Endpoint '%v' added (address: '%v', port: '%v')":                                     75,
+	"Endpoint '%v' deleted":                                                               118,
+	"Endpoint '%v' does not exist":                                                        117,
+	"Endpoint name must be provided.  Provide endpoint name with %s flag":                 115,
+	"Endpoint name to view details of":                                                    136,
 	"Endpoint required to add context.  Endpoint '%v' does not exist.  Use %s flag":       58,
-	"Enter new password:":                                                                 286,
-	"Error":                                                                               320,
-	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed":                             240,
-	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed": 239,
-	"Explicitly set the container hostname, it defaults to the container ID":                                                                                  173,
-	"Failed to create VS Code settings directory":                                                                                                             321,
-	"Failed to encode VS Code settings":                        325,
-	"Failed to parse VS Code settings":                         324,
-	"Failed to read VS Code settings":                          323,
-	"Failed to write VS Code settings":                         326,
-	"Failed to write credential to Windows Credential Manager": 220,
-	"File does not exist at URL":                               205,
-	"Flags:":                                                   228,
-	"Generated password length":                                165,
-	"Get tags available for Azure SQL Edge install":            213,
-	"Get tags available for mssql install":                     215,
-	"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s": 231,
-	"Identifies the file that receives output from sqlcmd":                      232,
+	"Enter new password:":                                                                 279,
+	"Error":                                                                               323,
+	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed":                             233,
+	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed": 232,
+	"Explicitly set the container hostname, it defaults to the container ID":                                                                                  170,
+	"Failed to create VS Code settings directory":                                                                                                             324,
+	"Failed to encode VS Code settings":    328,
+	"Failed to parse VS Code settings":     327,
+	"Failed to read VS Code settings":      326,
+	"Failed to write VS Code settings":     329,
+	"File does not exist at URL":           202,
+	"Flags:":                               221,
+	"Generated password length":            162,
+	"Get tags available for mssql install": 210,
+	"Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with %s/%s": 224,
+	"Identifies the file that receives output from sqlcmd":                      225,
 	"If the database is mounted, run %s":                                        46,
-	"Implicitly trust the server certificate without validation":                234,
-	"Include context details":                                                   131,
-	"Include endpoint details":                                                  138,
-	"Include user details":                                                      145,
-	"Install Azure Sql Edge":                                                    159,
-	"Install the MSSQL extension in VS Code if not already installed":           314,
-	"Install/Create Azure SQL Edge in a container":                              160,
-	"Install/Create SQL Server in a container":                                  207,
-	"Install/Create SQL Server with full logging":                               212,
+	"Implicitly trust the server certificate without validation":                227,
+	"Include context details":                                                   130,
+	"Include endpoint details":                                                  137,
+	"Include user details":                                                      144,
+	"Install the MSSQL extension in VS Code if not already installed":           313,
+	"Install/Create SQL Server in a container":                                  204,
+	"Install/Create SQL Server with full logging":                               209,
 	"Install/Create SQL Server, Azure SQL, and Tools":                           9,
 	"Install/Create, Query, Uninstall SQL Server":                               0,
-	"Installing MSSQL extension...":                                             315,
-	"Invalid --using file type":                                                 195,
-	"Invalid variable identifier %s":                                            303,
-	"Invalid variable value %s":                                                 304,
-	"Is a container runtime installed on this machine (e.g. Podman or Docker)?": 200,
-	"Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)": 203,
-	"Launching SQL Server Management Studio...":                                                            310,
-	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       225,
-	"Level of mssql driver messages to print":                                                              255,
-	"Line in errorlog to wait for before connecting":                                                       171,
-	"List all the context names in your sqlconfig file":                                                    127,
-	"List all the contexts in your sqlconfig file":                                                         128,
-	"List all the endpoints in your sqlconfig file":                                                        135,
-	"List all the users in your sqlconfig file":                                                            142,
-	"List connection strings for all client drivers":                                                       102,
-	"List tags":                                                                         214,
-	"MSSQL extension installed successfully":                                            317,
-	"Minimum number of numeric characters":                                              167,
-	"Minimum number of special characters":                                              166,
-	"Minimum number of upper characters":                                                168,
+	"Installing MSSQL extension...":                                             318,
+	"Invalid --using file type":                                                 192,
+	"Invalid variable identifier %s":                                            296,
+	"Invalid variable value %s":                                                 297,
+	"Is a container runtime installed on this machine (e.g. Podman or Docker)?": 197,
+	"Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)": 200,
+	"Launching SQL Server Management Studio...":                                                            308,
+	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       218,
+	"Level of mssql driver messages to print":                                                              248,
+	"Line in errorlog to wait for before connecting":                                                       168,
+	"List all the context names in your sqlconfig file":                                                    126,
+	"List all the contexts in your sqlconfig file":                                                         127,
+	"List all the endpoints in your sqlconfig file":                                                        134,
+	"List all the users in your sqlconfig file":                                                            141,
+	"List connection strings for all client drivers":                                                       101,
+	"List tags":                                                                         211,
+	"MSSQL extension installed successfully":                                            320,
+	"Minimum number of numeric characters":                                              164,
+	"Minimum number of special characters":                                              163,
+	"Minimum number of upper characters":                                                165,
 	"Modify sqlconfig files using subcommands like \"%s\"":                              7,
 	"Msg %#v, Level %d, State %d, Server %s, Line %#v%s":                                299,
 	"Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s":                  298,
@@ -236,70 +234,75 @@ var messageKeyToIndex = map[string]int{
 	"No context exists with the name: \"%v\"":                                           154,
 	"No current context":                                                                19,
 	"No endpoints to uninstall":                                                         49,
-	"Now ready for client connections on port %#v":                                      190,
-	"Open SQL Server Management Studio and connect to current context":                  308,
-	"Open SSMS and connect using the current context":                                   309,
-	"Open VS Code and configure connection using the current context":                   312,
-	"Open VS Code and install the MSSQL extension if needed":                            313,
-	"Open Visual Studio Code and configure connection for current context":              311,
-	"Open in Azure Data Studio":                                                         63,
-	"Open tools (e.g., Visual Studio Code, SSMS) for current context":                   305,
-	"Opening VS Code...":                                                                328,
-	"Or, set the environment variable i.e. %s %s=YES ":                                  179,
-	"Pass in the %s %s":                                                                 88,
+	"Now ready for client connections on port %#v":                                      187,
+	"Open SQL Server Management Studio and connect to current context":                  303,
+	"Open SSMS and connect using the current context":                                   304,
+	"Open VS Code and configure connection using the current context":                   310,
+	"Open VS Code and install the MSSQL extension if needed":                            311,
+	"Open Visual Studio Code and configure connection for current context":              309,
+	"Open a specific VS Code build":                                                     312,
+	"Open in SQL Server Management Studio":                                              300,
+	"Open in Visual Studio Code":                                                        299,
+	"Open the insiders build":                                                           316,
+	"Open the latest SSMS":                                                              306,
+	"Open the stable build":                                                             315,
+	"Open tools (e.g., Visual Studio Code, SSMS) for current context":                   298,
+	"Opening VS Code...":                                                                331,
+	"Or, set the environment variable i.e. %s %s=YES ":                                  176,
+	"Pass in the %s %s":                                                                 87,
 	"Pass in the flag %s to override this safety check for user (non-system) databases": 47,
-	"Password": 263,
-	"Password copied to clipboard - paste it when prompted, then clear your clipboard": 307,
-	"Password encryption method (%s) in sqlconfig file":                                84,
-	"Password:": 300,
-	"Port (next available port from 1433 upwards used by default)": 176,
-	"Press Ctrl+C to exit this process...":                         218,
-	"Print version information and exit":                           233,
-	"Prints the output in ASCII table format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false": 333,
-	"Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false":    253,
-	"Provide a username with the %s flag":                                                                                    94,
-	"Provide a valid encryption method (%s) with the %s flag":                                                                96,
-	"Provide password in the %s (or %s) environment variable":                                                                92,
-	"Provided for backward compatibility. Client regional settings are not used":                                             269,
-	"Provided for backward compatibility. Quoted identifiers are always enabled":                                             268,
-	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster": 262,
+	"Password": 256,
+	"Password copied to clipboard - paste it when prompted, then clear your clipboard": 302,
+	"Password encryption method (%s) in sqlconfig file":                                83,
+	"Password:": 293,
+	"Port (next available port from 1433 upwards used by default)": 173,
+	"Print version information and exit":                           226,
+	"Prints the output in ASCII table format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false": 336,
+	"Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false":    246,
+	"Provide a username with the %s flag":                                                                                    93,
+	"Provide a valid encryption method (%s) with the %s flag":                                                                95,
+	"Provide password in the %s (or %s) environment variable":                                                                91,
+	"Provided for backward compatibility. Client regional settings are not used":                                             262,
+	"Provided for backward compatibility. Quoted identifiers are always enabled":                                             261,
+	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster": 255,
 	"Quiet mode (do not stop for user input to confirm the operation)":                                                       30,
 	"Remove":                               189,
 	"Remove the %s flag":                   87,
 	"Remove trailing spaces from a column": 261,
 	"Removing context %s":                  41,
-	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size": 247,
-	"Restoring database %s":                                         198,
-	"Run a query":                                                   11,
-	"Run a query against the current context":                       10,
-	"Run a query using [%s] database":                               12,
-	"See all release tags for SQL Server, install previous version": 208,
-	"See connection strings":                                        188,
-	"Server name override is not supported with the current authentication method": 334,
-	"Servers:":                 224,
+	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size": 240,
+	"Restoring database %s":                   195,
+	"Run a query":                             11,
+	"Run a query against the current context": 10,
+	"Run a query using [%s] database":         12,
+	"SSMS major version to launch (for example 21); defaults to the latest installed": 305,
+	"See all release tags for SQL Server, install previous version":                   205,
+	"See connection strings": 185,
+	"Server name override is not supported with the current authentication method": 338,
+	"Servers:":                 217,
 	"Set new default database": 13,
-	"Set the current context":  148,
-	"Set the mssql context (endpoint/user) to be the current context":                                                    149,
-	"Sets the sqlcmd scripting variable %s":                                                                              275,
-	"Show sqlconfig settings and raw authentication data":                                                                157,
-	"Show sqlconfig settings, with REDACTED authentication data":                                                         156,
-	"Special character set to include in password":                                                                       169,
-	"Specifies that all output files are encoded with little-endian Unicode":                                             259,
-	"Specifies that sqlcmd exits and returns a %s value when an error occurs":                                            256,
-	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: %s":                        243,
-	"Specifies the batch terminator. The default value is %s":                                                            237,
-	"Specifies the column separator character. Sets the %s variable.":                                                    260,
-	"Specifies the host name in the server certificate.":                                                                 252,
-	"Specifies the image CPU architecture":                                                                               174,
-	"Specifies the image operating system":                                                                               175,
-	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed": 258,
-	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite":                                 248,
-	"Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.": 332,
-	"Specifies the screen width for output": 265,
-	"Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.": 331,
-	"Specify a custom name for the container rather than a randomly generated one":                                                                                                    172,
-	"Sqlcmd: Error: ":                              288,
-	"Sqlcmd: Warning: ":                            289,
+	"Set the current context":  147,
+	"Set the mssql context (endpoint/user) to be the current context":                                                    148,
+	"Sets the sqlcmd scripting variable %s":                                                                              268,
+	"Show sqlconfig settings and raw authentication data":                                                                156,
+	"Show sqlconfig settings, with REDACTED authentication data":                                                         155,
+	"Special character set to include in password":                                                                       166,
+	"Specifies that all output files are encoded with little-endian Unicode":                                             252,
+	"Specifies that sqlcmd exits and returns a %s value when an error occurs":                                            249,
+	"Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: %s":                        236,
+	"Specifies the batch terminator. The default value is %s":                                                            230,
+	"Specifies the column separator character. Sets the %s variable.":                                                    253,
+	"Specifies the host name in the server certificate.":                                                                 245,
+	"Specifies the image CPU architecture":                                                                               171,
+	"Specifies the image operating system":                                                                               172,
+	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed": 251,
+	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite":                                 241,
+	"Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.": 335,
+	"Specifies the screen width for output": 258,
+	"Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.": 334,
+	"Specify a custom name for the container rather than a randomly generated one":                                                                                                    169,
+	"Sqlcmd: Error: ":                              281,
+	"Sqlcmd: Warning: ":                            282,
 	"Start current context":                        16,
 	"Start interactive session":                    185,
 	"Start the current context":                    17,
@@ -309,28 +312,28 @@ var messageKeyToIndex = map[string]int{
 	"Stop the current context":                     24,
 	"Stopping %q for context %q":                   25,
 	"Stopping %s":                                  42,
-	"Switched to context \"%v\".":                  153,
-	"Syntax error at line %d near command '%s'.":   294,
-	"Tag to use, use get-tags to see list of tags": 161,
-	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used": 244,
-	"The %s and the %s options are mutually exclusive.":                                                                        280,
-	"The %s flag can only be used when authentication type is '%s'":                                                            89,
-	"The %s flag must be set when authentication type is '%s'":                                                                 91,
-	"The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).":                                330,
-	"The -L parameter can not be used in combination with other parameters.":                                                   221,
-	"The MSSQL extension (ms-mssql.mssql) is not installed in VS Code":                                                         319,
-	"The environment variable: '%s' has invalid value: '%s'.":                                                                  293,
-	"The login name or contained database user name.  For contained database users, you must provide the database name option": 238,
-	"The network address to connect to, e.g. 127.0.0.1 etc.":                                                                   69,
-	"The network port to connect to, e.g. 1433 etc.":                                                                           70,
-	"The scripting variable: '%s' is read-only":                                                                                291,
-	"The username (provide password in %s or %s environment variable)":                                                         83,
-	"Third party notices: aka.ms/SqlcmdNotices":                                                                                226,
-	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions": 249,
-	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits":                                                                                                     235,
-	"This switch is used by the client to request an encrypted connection": 251,
-	"Timeout expired":                                                  297,
-	"To install the MSSQL extension":                                   318,
+	"Switched to context \"%v\".":                  152,
+	"Syntax error at line %d near command '%s'.":   287,
+	"Tag to use, use get-tags to see list of tags": 158,
+	"Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used": 237,
+	"The %s and the %s options are mutually exclusive.":                                                                        273,
+	"The %s flag can only be used when authentication type is '%s'":                                                            88,
+	"The %s flag must be set when authentication type is '%s'":                                                                 90,
+	"The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).":                                333,
+	"The -L parameter can not be used in combination with other parameters.":                                                   214,
+	"The MSSQL extension (ms-mssql.mssql) is not installed in VS Code":                                                         322,
+	"The environment variable: '%s' has invalid value: '%s'.":                                                                  286,
+	"The login name or contained database user name.  For contained database users, you must provide the database name option": 231,
+	"The network address to connect to, e.g. 127.0.0.1 etc.":                                                                   68,
+	"The network port to connect to, e.g. 1433 etc.":                                                                           69,
+	"The scripting variable: '%s' is read-only":                                                                                284,
+	"The username (provide password in %s or %s environment variable)":                                                         82,
+	"Third party notices: aka.ms/SqlcmdNotices":                                                                                219,
+	"This option sets the sqlcmd scripting variable %s. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions": 242,
+	"This option sets the sqlcmd scripting variable %s. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits":                                                                                                     228,
+	"This switch is used by the client to request an encrypted connection": 244,
+	"Timeout expired":                                                  290,
+	"To install the MSSQL extension":                                   321,
 	"To override the check, use %s":                                    39,
 	"To remove:         %s":                                            152,
 	"To run a query":                                                   65,
@@ -347,20 +350,21 @@ var messageKeyToIndex = map[string]int{
 	"Uninstall/Delete the current context":                             27,
 	"Uninstall/Delete the current context, no user prompt":             28,
 	"Uninstall/Delete the current context, no user prompt and override safety check for user databases": 29,
-	"Unset one of the environment variables %s or %s":                                                   98,
-	"Use the %s flag to pass in a context name to delete":                                               111,
-	"Use the '%s' connection profile to connect":                                                        329,
-	"User %q deleted":          125,
-	"User %q does not exist":   124,
-	"User '%v' added":          100,
+	"Unset one of the environment variables %s or %s":                                                   97,
+	"Use the %s flag to pass in a context name to delete":                                               110,
+	"Use the '%s' connection profile to connect":                                                        332,
+	"User %q deleted":          124,
+	"User %q does not exist":   123,
+	"User '%v' added":          99,
 	"User '%v' does not exist": 62,
-	"User name must be provided.  Provide user name with %s flag": 122,
-	"User name to view details of":                                144,
-	"Username not provided":                                       95,
-	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password": 236,
-	"Verifying no user (non-system) database (.mdf) files": 37,
-	"Version: %v\n":              227,
-	"View all endpoints details": 74,
+	"User name must be provided.  Provide user name with %s flag": 121,
+	"User name to view details of":                                143,
+	"Username not provided":                                       94,
+	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password": 229,
+	"VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed":                                                                           314,
+	"Verifying no user (non-system) database (.mdf) files":                                                                                                                37,
+	"Version: %v\n":              220,
+	"View all endpoints details": 73,
 	"View available contexts":    32,
 	"View configuration information and connection strings": 1,
 	"View endpoint details":                                 73,
@@ -385,7 +389,7 @@ var messageKeyToIndex = map[string]int{
 	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools": 287,
 }
 
-var de_DEIndex = []uint32{ // 336 elements
+var de_DEIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x0000007e, 0x00000096,
 	0x000000d1, 0x000000e9, 0x000000fd, 0x00000148,
@@ -477,11 +481,12 @@ var de_DEIndex = []uint32{ // 336 elements
 	0x00004e3a, 0x00004e3a, 0x00004e3a, 0x00004e3a,
 	0x00004e3a, 0x00004e3a, 0x00004e3a, 0x00004e3a,
 	// Entry 140 - 15F
-	0x00004e3a, 0x00004e3a, 0x00004e3a, 0x00004e3a,
-	0x00004e3a, 0x00004e3a, 0x00004e3a, 0x00004e3a,
-	0x00004e3a, 0x00004e3a, 0x00004e3a, 0x00004e3a,
-	0x00004e3a, 0x00004e3a, 0x00004e3a, 0x00004e3a,
-} // Size: 1368 bytes
+	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
+	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
+	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
+	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
+	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
+} // Size: 1384 bytes
 
 const de_DEData string = "" + // Size: 20026 bytes
 	"\x02SQL Server installieren/erstellen, abfragen, deinstallieren\x02Konfi" +
@@ -776,7 +781,7 @@ const de_DEData string = "" + // Size: 20026 bytes
 	"]d Zeilen betroffen)\x02Ungültiger Variablenbezeichner %[1]s\x02Ungültig" +
 	"er Variablenwert %[1]s"
 
-var en_USIndex = []uint32{ // 336 elements
+var en_USIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002c, 0x00000062, 0x0000007a,
 	0x000000b3, 0x000000cb, 0x000000de, 0x00000113,
@@ -859,22 +864,23 @@ var en_USIndex = []uint32{ // 336 elements
 	0x000039ce, 0x00003a06, 0x00003a36, 0x00003a64,
 	0x00003a8f, 0x00003aac, 0x00003acd, 0x00003ae1,
 	// Entry 120 - 13F
-	0x00003b1f, 0x00003b33, 0x00003b49, 0x00003b9d,
-	0x00003bca, 0x00003bf2, 0x00003c30, 0x00003c61,
-	0x00003cb0, 0x00003cd0, 0x00003ce0, 0x00003d36,
-	0x00003d7b, 0x00003d85, 0x00003d96, 0x00003dac,
-	0x00003dce, 0x00003deb, 0x00003e2b, 0x00003e57,
-	0x00003ea8, 0x00003ee9, 0x00003f19, 0x00003f43,
-	0x00003f88, 0x00003fc8, 0x00003fff, 0x0000403f,
-	0x0000405d, 0x00004086, 0x000040ad, 0x000040cc,
+	0x00003af0, 0x00003b3f, 0x00003b5f, 0x00003b6f,
+	0x00003bc5, 0x00003c0a, 0x00003c14, 0x00003c25,
+	0x00003c3b, 0x00003c5d, 0x00003c7a, 0x00003cba,
+	0x00003cd5, 0x00003cfa, 0x00003d26, 0x00003d77,
+	0x00003db8, 0x00003de8, 0x00003e38, 0x00003e4d,
+	0x00003ea2, 0x00003ecc, 0x00003f11, 0x00003f51,
+	0x00003f88, 0x00003fa6, 0x00003fe6, 0x00004040,
+	0x00004056, 0x0000406e, 0x000040ab, 0x000040c9,
 	// Entry 140 - 15F
-	0x0000410d, 0x00004113, 0x0000413f, 0x0000416e,
-	0x0000418e, 0x000041af, 0x000041d1, 0x000041f2,
-	0x00004227, 0x0000423a, 0x00004268, 0x000042c2,
-	0x00004372, 0x0000446d, 0x000044ec, 0x00004539,
-} // Size: 1368 bytes
+	0x000040f2, 0x00004119, 0x00004138, 0x00004179,
+	0x0000417f, 0x000041ab, 0x000041da, 0x000041fa,
+	0x0000421b, 0x0000423d, 0x0000425e, 0x00004293,
+	0x000042a6, 0x000042d4, 0x0000432e, 0x000043de,
+	0x000044d9, 0x00004558, 0x0000458e, 0x000045db,
+} // Size: 1384 bytes
 
-const en_USData string = "" + // Size: 17721 bytes
+const en_USData string = "" + // Size: 17883 bytes
 	"\x02Install/Create, Query, Uninstall SQL Server\x02View configuration in" +
 	"formation and connection strings\x04\x02\x0a\x0a\x00\x12\x02Feedback:" +
 	"\x0a  %[1]s\x02help for backwards compatibility flags (-S, -U, -E etc.)" +
@@ -912,234 +918,237 @@ const en_USData string = "" + // Size: 17721 bytes
 	" new local endpoint\x02Add an already existing endpoint\x02Endpoint requ" +
 	"ired to add context.  Endpoint '%[1]v' does not exist.  Use %[2]s flag" +
 	"\x02View list of users\x02Add the user\x02Add an endpoint\x02User '%[1]v" +
-	"' does not exist\x02Open in Azure Data Studio\x02To start interactive qu" +
-	"ery session\x02To run a query\x02Current Context '%[1]v'\x02Add a defaul" +
-	"t endpoint\x02Display name for the endpoint\x02The network address to co" +
-	"nnect to, e.g. 127.0.0.1 etc.\x02The network port to connect to, e.g. 14" +
-	"33 etc.\x02Add a context for this endpoint\x02View endpoint names\x02Vie" +
-	"w endpoint details\x02View all endpoints details\x02Delete this endpoint" +
-	"\x02Endpoint '%[1]v' added (address: '%[2]v', port: '%[3]v')\x02Add a us" +
-	"er (using the SQLCMD_PASSWORD environment variable)\x02Add a user (using" +
-	" the SQLCMDPASSWORD environment variable)\x02Add a user using Windows Da" +
-	"ta Protection API to encrypt password in sqlconfig\x02Add a user\x02Disp" +
-	"lay name for the user (this is not the username)\x02Authentication type " +
-	"this user will use (basic | other)\x02The username (provide password in " +
-	"%[1]s or %[2]s environment variable)\x02Password encryption method (%[1]" +
-	"s) in sqlconfig file\x02Authentication type must be '%[1]s' or '%[2]s'" +
-	"\x02Authentication type '' is not valid %[1]v'\x02Remove the %[1]s flag" +
-	"\x02Pass in the %[1]s %[2]s\x02The %[1]s flag can only be used when auth" +
-	"entication type is '%[2]s'\x02Add the %[1]s flag\x02The %[1]s flag must " +
-	"be set when authentication type is '%[2]s'\x02Provide password in the %[" +
-	"1]s (or %[2]s) environment variable\x02Authentication Type '%[1]s' requi" +
-	"res a password\x02Provide a username with the %[1]s flag\x02Username not" +
-	" provided\x02Provide a valid encryption method (%[1]s) with the %[2]s fl" +
-	"ag\x02Encryption method '%[1]v' is not valid\x02Unset one of the environ" +
-	"ment variables %[1]s or %[2]s\x04\x00\x01 4\x02Both environment variable" +
-	"s %[1]s and %[2]s are set.\x02User '%[1]v' added\x02Display connections " +
-	"strings for the current context\x02List connection strings for all clien" +
-	"t drivers\x02Database for the connection string (default is taken from t" +
-	"he T/SQL login)\x02Connection Strings only supported for %[1]s Auth type" +
-	"\x02Display the current-context\x02Delete a context\x02Delete a context " +
-	"(including its endpoint and user)\x02Delete a context (excluding its end" +
-	"point and user)\x02Name of context to delete\x02Delete the context's end" +
-	"point and user as well\x02Use the %[1]s flag to pass in a context name t" +
-	"o delete\x02Context '%[1]v' deleted\x02Context '%[1]v' does not exist" +
-	"\x02Delete an endpoint\x02Name of endpoint to delete\x02Endpoint name mu" +
-	"st be provided.  Provide endpoint name with %[1]s flag\x02View endpoints" +
-	"\x02Endpoint '%[1]v' does not exist\x02Endpoint '%[1]v' deleted\x02Delet" +
-	"e a user\x02Name of user to delete\x02User name must be provided.  Provi" +
-	"de user name with %[1]s flag\x02View users\x02User %[1]q does not exist" +
-	"\x02User %[1]q deleted\x02Display one or many contexts from the sqlconfi" +
-	"g file\x02List all the context names in your sqlconfig file\x02List all " +
-	"the contexts in your sqlconfig file\x02Describe one context in your sqlc" +
-	"onfig file\x02Context name to view details of\x02Include context details" +
-	"\x02To view available contexts run `%[1]s`\x02error: no context exists w" +
-	"ith the name: \x22%[1]v\x22\x02Display one or many endpoints from the sq" +
-	"lconfig file\x02List all the endpoints in your sqlconfig file\x02Describ" +
-	"e one endpoint in your sqlconfig file\x02Endpoint name to view details o" +
-	"f\x02Include endpoint details\x02To view available endpoints run `%[1]s`" +
-	"\x02error: no endpoint exists with the name: \x22%[1]v\x22\x02Display on" +
-	"e or many users from the sqlconfig file\x02List all the users in your sq" +
-	"lconfig file\x02Describe one user in your sqlconfig file\x02User name to" +
-	" view details of\x02Include user details\x02To view available users run " +
-	"`%[1]s`\x02error: no user exists with the name: \x22%[1]v\x22\x02Set the" +
-	" current context\x02Set the mssql context (endpoint/user) to be the curr" +
-	"ent context\x02Name of context to set as current context\x02To run a que" +
-	"ry:    %[1]s\x02To remove:         %[1]s\x02Switched to context \x22%[1]" +
-	"v\x22.\x02No context exists with the name: \x22%[1]v\x22\x02Display merg" +
-	"ed sqlconfig settings or a specified sqlconfig file\x02Show sqlconfig se" +
-	"ttings, with REDACTED authentication data\x02Show sqlconfig settings and" +
-	" raw authentication data\x02Display raw byte data\x02Install Azure Sql E" +
-	"dge\x02Install/Create Azure SQL Edge in a container\x02Tag to use, use g" +
-	"et-tags to see list of tags\x02Context name (a default context name will" +
-	" be created if not provided)\x02Create a user database and set it as the" +
-	" default for login\x02Accept the SQL Server EULA\x02Generated password l" +
-	"ength\x02Minimum number of special characters\x02Minimum number of numer" +
-	"ic characters\x02Minimum number of upper characters\x02Special character" +
-	" set to include in password\x02Don't download image.  Use already downlo" +
-	"aded image\x02Line in errorlog to wait for before connecting\x02Specify " +
-	"a custom name for the container rather than a randomly generated one\x02" +
-	"Explicitly set the container hostname, it defaults to the container ID" +
-	"\x02Specifies the image CPU architecture\x02Specifies the image operatin" +
-	"g system\x02Port (next available port from 1433 upwards used by default)" +
-	"\x02Download (into container) and attach database (.bak) from URL\x02Eit" +
-	"her, add the %[1]s flag to the command-line\x04\x00\x01 6\x02Or, set the" +
-	" environment variable i.e. %[1]s %[2]s=YES\x02EULA not accepted\x02--use" +
-	"r-database %[1]q contains non-ASCII chars and/or quotes\x02Starting %[1]" +
-	"v\x02Created context %[1]q in \x22%[2]s\x22, configuring user account..." +
-	"\x02Disabled %[1]q account (and rotated %[2]q password). Creating user %" +
-	"[3]q\x02Start interactive session\x02Change current context\x02View sqlc" +
-	"md configuration\x02See connection strings\x02Remove\x02Now ready for cl" +
-	"ient connections on port %#[1]v\x02--using URL must be http or https\x02" +
-	"%[1]q is not a valid URL for --using flag\x02--using URL must have a pat" +
-	"h to .bak file\x02--using file URL must be a .bak file\x02Invalid --usin" +
-	"g file type\x02Creating default database [%[1]s]\x02Downloading %[1]s" +
-	"\x02Restoring database %[1]s\x02Downloading %[1]v\x02Is a container runt" +
-	"ime installed on this machine (e.g. Podman or Docker)?\x04\x01\x09\x00&" +
-	"\x02If not, download desktop engine from:\x04\x02\x09\x09\x00\x03\x02or" +
-	"\x02Is a container runtime running?  (Try `%[1]s` or `%[2]s` (list conta" +
-	"iners), does it return without error?)\x02Unable to download image %[1]s" +
-	"\x02File does not exist at URL\x02Unable to download file\x02Install/Cre" +
-	"ate SQL Server in a container\x02See all release tags for SQL Server, in" +
-	"stall previous version\x02Create SQL Server, download and attach Adventu" +
-	"reWorks sample database\x02Create SQL Server, download and attach Advent" +
-	"ureWorks sample database with different database name\x02Create SQL Serv" +
-	"er with an empty user database\x02Install/Create SQL Server with full lo" +
-	"gging\x02Get tags available for Azure SQL Edge install\x02List tags\x02G" +
-	"et tags available for mssql install\x02sqlcmd start\x02Container is not " +
-	"running\x02Press Ctrl+C to exit this process...\x02A 'Not enough memory " +
-	"resources are available' error can be caused by too many credentials alr" +
-	"eady stored in Windows Credential Manager\x02Failed to write credential " +
-	"to Windows Credential Manager\x02The -L parameter can not be used in com" +
-	"bination with other parameters.\x02'-a %#[1]v': Packet size has to be a " +
-	"number between 512 and 32767.\x02'-h %#[1]v': header value must be eithe" +
-	"r -1 or a value between 1 and 2147483647\x02Servers:\x02Legal docs and i" +
-	"nformation: aka.ms/SqlcmdLegal\x02Third party notices: aka.ms/SqlcmdNoti" +
-	"ces\x04\x00\x01\x0a\x0f\x02Version: %[1]v\x02Flags:\x02-? shows this syn" +
-	"tax summary, %[1]s shows modern sqlcmd sub-command help\x02Write runtime" +
-	" trace to the specified file. Only for advanced debugging.\x02Identifies" +
-	" one or more files that contain batches of SQL statements. If one or mor" +
-	"e files do not exist, sqlcmd will exit. Mutually exclusive with %[1]s/%[" +
-	"2]s\x02Identifies the file that receives output from sqlcmd\x02Print ver" +
-	"sion information and exit\x02Implicitly trust the server certificate wit" +
-	"hout validation\x02This option sets the sqlcmd scripting variable %[1]s." +
-	" This parameter specifies the initial database. The default is your logi" +
-	"n's default-database property. If the database does not exist, an error " +
-	"message is generated and sqlcmd exits\x02Uses a trusted connection inste" +
-	"ad of using a user name and password to sign in to SQL Server, ignoring " +
-	"any environment variables that define user name and password\x02Specifie" +
-	"s the batch terminator. The default value is %[1]s\x02The login name or " +
-	"contained database user name.  For contained database users, you must pr" +
-	"ovide the database name option\x02Executes a query when sqlcmd starts, b" +
-	"ut does not exit sqlcmd when the query has finished running. Multiple-se" +
-	"micolon-delimited queries can be executed\x02Executes a query when sqlcm" +
-	"d starts and then immediately exits sqlcmd. Multiple-semicolon-delimited" +
-	" queries can be executed\x02%[1]s Specifies the instance of SQL Server t" +
-	"o which to connect. It sets the sqlcmd scripting variable %[2]s.\x02%[1]" +
-	"s Disables commands that might compromise system security. Passing 1 tel" +
-	"ls sqlcmd to exit when disabled commands are run.\x02Specifies the SQL a" +
-	"uthentication method to use to connect to Azure SQL Database. One of: %[" +
-	"1]s\x02Tells sqlcmd to use ActiveDirectory authentication. If no user na" +
-	"me is provided, authentication method ActiveDirectoryDefault is used. If" +
-	" a password is provided, ActiveDirectoryPassword is used. Otherwise Acti" +
-	"veDirectoryInteractive is used\x02Causes sqlcmd to ignore scripting vari" +
-	"ables. This parameter is useful when a script contains many %[1]s statem" +
-	"ents that may contain strings that have the same format as regular varia" +
-	"bles, such as $(variable_name)\x02Creates a sqlcmd scripting variable th" +
-	"at can be used in a sqlcmd script. Enclose the value in quotation marks " +
-	"if the value contains spaces. You can specify multiple var=values values" +
-	". If there are errors in any of the values specified, sqlcmd generates a" +
-	"n error message and then exits\x02Requests a packet of a different size." +
-	" This option sets the sqlcmd scripting variable %[1]s. packet_size must " +
-	"be a value between 512 and 32767. The default = 4096. A larger packet si" +
-	"ze can enhance performance for execution of scripts that have lots of SQ" +
-	"L statements between %[2]s commands. You can request a larger packet siz" +
-	"e. However, if the request is denied, sqlcmd uses the server default for" +
-	" packet size\x02Specifies the number of seconds before a sqlcmd login to" +
-	" the go-mssqldb driver times out when you try to connect to a server. Th" +
-	"is option sets the sqlcmd scripting variable %[1]s. The default value is" +
-	" 30. 0 means infinite\x02This option sets the sqlcmd scripting variable " +
-	"%[1]s. The workstation name is listed in the hostname column of the sys." +
-	"sysprocesses catalog view and can be returned using the stored procedure" +
-	" sp_who. If this option is not specified, the default is the current com" +
-	"puter name. This name can be used to identify different sqlcmd sessions" +
-	"\x02Declares the application workload type when connecting to a server. " +
-	"The only currently supported value is ReadOnly. If %[1]s is not specifie" +
-	"d, the sqlcmd utility will not support connectivity to a secondary repli" +
-	"ca in an Always On availability group\x02This switch is used by the clie" +
-	"nt to request an encrypted connection\x02Specifies the host name in the " +
-	"server certificate.\x02Prints the output in vertical format. This option" +
-	" sets the sqlcmd scripting variable %[1]s to '%[2]s'. The default is fal" +
-	"se\x02%[1]s Redirects error messages with severity >= 11 output to stder" +
-	"r. Pass 1 to to redirect all errors including PRINT.\x02Level of mssql d" +
-	"river messages to print\x02Specifies that sqlcmd exits and returns a %[1" +
-	"]s value when an error occurs\x02Controls which error messages are sent " +
-	"to %[1]s. Messages that have severity level greater than or equal to thi" +
-	"s level are sent\x02Specifies the number of rows to print between the co" +
-	"lumn headings. Use -h-1 to specify that headers not be printed\x02Specif" +
-	"ies that all output files are encoded with little-endian Unicode\x02Spec" +
-	"ifies the column separator character. Sets the %[1]s variable.\x02Remove" +
-	" trailing spaces from a column\x02Provided for backward compatibility. S" +
-	"qlcmd always optimizes detection of the active replica of a SQL Failover" +
-	" Cluster\x02Password\x02Controls the severity level that is used to set " +
-	"the %[1]s variable on exit\x02Specifies the screen width for output\x02%" +
-	"[1]s List servers. Pass %[2]s to omit 'Servers:' output.\x02Dedicated ad" +
-	"ministrator connection\x02Provided for backward compatibility. Quoted id" +
-	"entifiers are always enabled\x02Provided for backward compatibility. Cli" +
-	"ent regional settings are not used\x02%[1]s Remove control characters fr" +
-	"om output. Pass 1 to substitute a space per character, 2 for a space per" +
-	" consecutive characters\x02Echo input\x02Enable column encryption\x02New" +
-	" password\x02New password and exit\x02Sets the sqlcmd scripting variable" +
-	" %[1]s\x02'%[1]s %[2]s': value must be greater than or equal to %#[3]v a" +
-	"nd less than or equal to %#[4]v.\x02'%[1]s %[2]s': value must be greater" +
-	" than %#[3]v and less than %#[4]v.\x02'%[1]s %[2]s': Unexpected argument" +
-	". Argument value has to be %[3]v.\x02'%[1]s %[2]s': Unexpected argument." +
-	" Argument value has to be one of %[3]v.\x02The %[1]s and the %[2]s optio" +
-	"ns are mutually exclusive.\x02'%[1]s': Missing argument. Enter '-?' for " +
-	"help.\x02'%[1]s': Unknown Option. Enter '-?' for help.\x02failed to crea" +
-	"te trace file '%[1]s': %[2]v\x02failed to start trace: %[1]v\x02invalid " +
-	"batch terminator '%[1]s'\x02Enter new password:\x02sqlcmd: Install/Creat" +
-	"e/Query SQL Server, Azure SQL, and Tools\x04\x00\x01 \x0f\x02Sqlcmd: Err" +
-	"or:\x04\x00\x01 \x11\x02Sqlcmd: Warning:\x02ED and !!<command> commands," +
-	" startup script, and environment variables are disabled\x02The scripting" +
-	" variable: '%[1]s' is read-only\x02'%[1]s' scripting variable not define" +
-	"d.\x02The environment variable: '%[1]s' has invalid value: '%[2]s'.\x02S" +
-	"yntax error at line %[1]d near command '%[2]s'.\x02%[1]s Error occurred " +
-	"while opening or operating on file %[2]s (Reason: %[3]s).\x02%[1]sSyntax" +
-	" error at line %[2]d\x02Timeout expired\x02Msg %#[1]v, Level %[2]d, Stat" +
-	"e %[3]d, Server %[4]s, Procedure %[5]s, Line %#[6]v%[7]s\x02Msg %#[1]v, " +
-	"Level %[2]d, State %[3]d, Server %[4]s, Line %#[5]v%[6]s\x02Password:" +
-	"\x02(1 row affected)\x02(%[1]d rows affected)\x02Invalid variable identi" +
-	"fier %[1]s\x02Invalid variable value %[1]s\x02Open tools (e.g., Visual S" +
-	"tudio Code, SSMS) for current context\x02Could not copy password to clip" +
-	"board: %[1]s\x02Password copied to clipboard - paste it when prompted, t" +
-	"hen clear your clipboard\x02Open SQL Server Management Studio and connec" +
-	"t to current context\x02Open SSMS and connect using the current context" +
-	"\x02Launching SQL Server Management Studio...\x02Open Visual Studio Code" +
-	" and configure connection for current context\x02Open VS Code and config" +
-	"ure connection using the current context\x02Open VS Code and install the" +
-	" MSSQL extension if needed\x02Install the MSSQL extension in VS Code if " +
-	"not already installed\x02Installing MSSQL extension...\x02Could not inst" +
-	"all MSSQL extension: %[1]s\x02MSSQL extension installed successfully\x02" +
-	"To install the MSSQL extension\x02The MSSQL extension (ms-mssql.mssql) i" +
-	"s not installed in VS Code\x02Error\x02Failed to create VS Code settings" +
-	" directory\x02Connection profile created in VS Code settings\x02Failed t" +
-	"o read VS Code settings\x02Failed to parse VS Code settings\x02Failed to" +
-	" encode VS Code settings\x02Failed to write VS Code settings\x02Could no" +
-	"t verify MSSQL extension installation: %[1]s\x02Opening VS Code...\x02Us" +
-	"e the '%[1]s' connection profile to connect\x02The -J parameter requires" +
-	" encryption to be enabled (-N true, -N mandatory, or -N strict).\x02Spec" +
-	"ifies the server name to use for authentication when tunneling through a" +
-	" proxy. Use with -S to specify the dial address separately from the serv" +
-	"er name sent to SQL Server.\x02Specifies the path to a server certificat" +
-	"e file (PEM, DER, or CER) to match against the server's TLS certificate." +
-	" Use when encryption is enabled (-N true, -N mandatory, or -N strict) fo" +
-	"r certificate pinning instead of standard certificate validation.\x02Pri" +
-	"nts the output in ASCII table format. This option sets the sqlcmd script" +
-	"ing variable %[1]s to '%[2]s'. The default is false\x02Server name overr" +
-	"ide is not supported with the current authentication method"
+	"' does not exist\x02To start interactive query session\x02To run a query" +
+	"\x02Current Context '%[1]v'\x02Add a default endpoint\x02Display name fo" +
+	"r the endpoint\x02The network address to connect to, e.g. 127.0.0.1 etc." +
+	"\x02The network port to connect to, e.g. 1433 etc.\x02Add a context for " +
+	"this endpoint\x02View endpoint names\x02View endpoint details\x02View al" +
+	"l endpoints details\x02Delete this endpoint\x02Endpoint '%[1]v' added (a" +
+	"ddress: '%[2]v', port: '%[3]v')\x02Add a user (using the SQLCMD_PASSWORD" +
+	" environment variable)\x02Add a user (using the SQLCMDPASSWORD environme" +
+	"nt variable)\x02Add a user using Windows Data Protection API to encrypt " +
+	"password in sqlconfig\x02Add a user\x02Display name for the user (this i" +
+	"s not the username)\x02Authentication type this user will use (basic | o" +
+	"ther)\x02The username (provide password in %[1]s or %[2]s environment va" +
+	"riable)\x02Password encryption method (%[1]s) in sqlconfig file\x02Authe" +
+	"ntication type must be '%[1]s' or '%[2]s'\x02Authentication type '' is n" +
+	"ot valid %[1]v'\x02Remove the %[1]s flag\x02Pass in the %[1]s %[2]s\x02T" +
+	"he %[1]s flag can only be used when authentication type is '%[2]s'\x02Ad" +
+	"d the %[1]s flag\x02The %[1]s flag must be set when authentication type " +
+	"is '%[2]s'\x02Provide password in the %[1]s (or %[2]s) environment varia" +
+	"ble\x02Authentication Type '%[1]s' requires a password\x02Provide a user" +
+	"name with the %[1]s flag\x02Username not provided\x02Provide a valid enc" +
+	"ryption method (%[1]s) with the %[2]s flag\x02Encryption method '%[1]v' " +
+	"is not valid\x02Unset one of the environment variables %[1]s or %[2]s" +
+	"\x04\x00\x01 4\x02Both environment variables %[1]s and %[2]s are set." +
+	"\x02User '%[1]v' added\x02Display connections strings for the current co" +
+	"ntext\x02List connection strings for all client drivers\x02Database for " +
+	"the connection string (default is taken from the T/SQL login)\x02Connect" +
+	"ion Strings only supported for %[1]s Auth type\x02Display the current-co" +
+	"ntext\x02Delete a context\x02Delete a context (including its endpoint an" +
+	"d user)\x02Delete a context (excluding its endpoint and user)\x02Name of" +
+	" context to delete\x02Delete the context's endpoint and user as well\x02" +
+	"Use the %[1]s flag to pass in a context name to delete\x02Context '%[1]v" +
+	"' deleted\x02Context '%[1]v' does not exist\x02Delete an endpoint\x02Nam" +
+	"e of endpoint to delete\x02Endpoint name must be provided.  Provide endp" +
+	"oint name with %[1]s flag\x02View endpoints\x02Endpoint '%[1]v' does not" +
+	" exist\x02Endpoint '%[1]v' deleted\x02Delete a user\x02Name of user to d" +
+	"elete\x02User name must be provided.  Provide user name with %[1]s flag" +
+	"\x02View users\x02User %[1]q does not exist\x02User %[1]q deleted\x02Dis" +
+	"play one or many contexts from the sqlconfig file\x02List all the contex" +
+	"t names in your sqlconfig file\x02List all the contexts in your sqlconfi" +
+	"g file\x02Describe one context in your sqlconfig file\x02Context name to" +
+	" view details of\x02Include context details\x02To view available context" +
+	"s run `%[1]s`\x02error: no context exists with the name: \x22%[1]v\x22" +
+	"\x02Display one or many endpoints from the sqlconfig file\x02List all th" +
+	"e endpoints in your sqlconfig file\x02Describe one endpoint in your sqlc" +
+	"onfig file\x02Endpoint name to view details of\x02Include endpoint detai" +
+	"ls\x02To view available endpoints run `%[1]s`\x02error: no endpoint exis" +
+	"ts with the name: \x22%[1]v\x22\x02Display one or many users from the sq" +
+	"lconfig file\x02List all the users in your sqlconfig file\x02Describe on" +
+	"e user in your sqlconfig file\x02User name to view details of\x02Include" +
+	" user details\x02To view available users run `%[1]s`\x02error: no user e" +
+	"xists with the name: \x22%[1]v\x22\x02Set the current context\x02Set the" +
+	" mssql context (endpoint/user) to be the current context\x02Name of cont" +
+	"ext to set as current context\x02To run a query:    %[1]s\x02To remove: " +
+	"        %[1]s\x02Switched to context \x22%[1]v\x22.\x02No context exists" +
+	" with the name: \x22%[1]v\x22\x02Display merged sqlconfig settings or a " +
+	"specified sqlconfig file\x02Show sqlconfig settings, with REDACTED authe" +
+	"ntication data\x02Show sqlconfig settings and raw authentication data" +
+	"\x02Display raw byte data\x02Tag to use, use get-tags to see list of tag" +
+	"s\x02Context name (a default context name will be created if not provide" +
+	"d)\x02Create a user database and set it as the default for login\x02Acce" +
+	"pt the SQL Server EULA\x02Generated password length\x02Minimum number of" +
+	" special characters\x02Minimum number of numeric characters\x02Minimum n" +
+	"umber of upper characters\x02Special character set to include in passwor" +
+	"d\x02Don't download image.  Use already downloaded image\x02Line in erro" +
+	"rlog to wait for before connecting\x02Specify a custom name for the cont" +
+	"ainer rather than a randomly generated one\x02Explicitly set the contain" +
+	"er hostname, it defaults to the container ID\x02Specifies the image CPU " +
+	"architecture\x02Specifies the image operating system\x02Port (next avail" +
+	"able port from 1433 upwards used by default)\x02Download (into container" +
+	") and attach database (.bak) from URL\x02Either, add the %[1]s flag to t" +
+	"he command-line\x04\x00\x01 6\x02Or, set the environment variable i.e. %" +
+	"[1]s %[2]s=YES\x02EULA not accepted\x02--user-database %[1]q contains no" +
+	"n-ASCII chars and/or quotes\x02Starting %[1]v\x02Created context %[1]q i" +
+	"n \x22%[2]s\x22, configuring user account...\x02Disabled %[1]q account (" +
+	"and rotated %[2]q password). Creating user %[3]q\x02Start interactive se" +
+	"ssion\x02Change current context\x02View sqlcmd configuration\x02See conn" +
+	"ection strings\x02Remove\x02Now ready for client connections on port %#[" +
+	"1]v\x02--using URL must be http or https\x02%[1]q is not a valid URL for" +
+	" --using flag\x02--using URL must have a path to .bak file\x02--using fi" +
+	"le URL must be a .bak file\x02Invalid --using file type\x02Creating defa" +
+	"ult database [%[1]s]\x02Downloading %[1]s\x02Restoring database %[1]s" +
+	"\x02Downloading %[1]v\x02Is a container runtime installed on this machin" +
+	"e (e.g. Podman or Docker)?\x04\x01\x09\x00&\x02If not, download desktop " +
+	"engine from:\x04\x02\x09\x09\x00\x03\x02or\x02Is a container runtime run" +
+	"ning?  (Try `%[1]s` or `%[2]s` (list containers), does it return without" +
+	" error?)\x02Unable to download image %[1]s\x02File does not exist at URL" +
+	"\x02Unable to download file\x02Install/Create SQL Server in a container" +
+	"\x02See all release tags for SQL Server, install previous version\x02Cre" +
+	"ate SQL Server, download and attach AdventureWorks sample database\x02Cr" +
+	"eate SQL Server, download and attach AdventureWorks sample database with" +
+	" different database name\x02Create SQL Server with an empty user databas" +
+	"e\x02Install/Create SQL Server with full logging\x02Get tags available f" +
+	"or mssql install\x02List tags\x02sqlcmd start\x02Container is not runnin" +
+	"g\x02The -L parameter can not be used in combination with other paramete" +
+	"rs.\x02'-a %#[1]v': Packet size has to be a number between 512 and 32767" +
+	".\x02'-h %#[1]v': header value must be either -1 or a value between 1 an" +
+	"d 2147483647\x02Servers:\x02Legal docs and information: aka.ms/SqlcmdLeg" +
+	"al\x02Third party notices: aka.ms/SqlcmdNotices\x04\x00\x01\x0a\x0f\x02V" +
+	"ersion: %[1]v\x02Flags:\x02-? shows this syntax summary, %[1]s shows mod" +
+	"ern sqlcmd sub-command help\x02Write runtime trace to the specified file" +
+	". Only for advanced debugging.\x02Identifies one or more files that cont" +
+	"ain batches of SQL statements. If one or more files do not exist, sqlcmd" +
+	" will exit. Mutually exclusive with %[1]s/%[2]s\x02Identifies the file t" +
+	"hat receives output from sqlcmd\x02Print version information and exit" +
+	"\x02Implicitly trust the server certificate without validation\x02This o" +
+	"ption sets the sqlcmd scripting variable %[1]s. This parameter specifies" +
+	" the initial database. The default is your login's default-database prop" +
+	"erty. If the database does not exist, an error message is generated and " +
+	"sqlcmd exits\x02Uses a trusted connection instead of using a user name a" +
+	"nd password to sign in to SQL Server, ignoring any environment variables" +
+	" that define user name and password\x02Specifies the batch terminator. T" +
+	"he default value is %[1]s\x02The login name or contained database user n" +
+	"ame.  For contained database users, you must provide the database name o" +
+	"ption\x02Executes a query when sqlcmd starts, but does not exit sqlcmd w" +
+	"hen the query has finished running. Multiple-semicolon-delimited queries" +
+	" can be executed\x02Executes a query when sqlcmd starts and then immedia" +
+	"tely exits sqlcmd. Multiple-semicolon-delimited queries can be executed" +
+	"\x02%[1]s Specifies the instance of SQL Server to which to connect. It s" +
+	"ets the sqlcmd scripting variable %[2]s.\x02%[1]s Disables commands that" +
+	" might compromise system security. Passing 1 tells sqlcmd to exit when d" +
+	"isabled commands are run.\x02Specifies the SQL authentication method to " +
+	"use to connect to Azure SQL Database. One of: %[1]s\x02Tells sqlcmd to u" +
+	"se ActiveDirectory authentication. If no user name is provided, authenti" +
+	"cation method ActiveDirectoryDefault is used. If a password is provided," +
+	" ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive i" +
+	"s used\x02Causes sqlcmd to ignore scripting variables. This parameter is" +
+	" useful when a script contains many %[1]s statements that may contain st" +
+	"rings that have the same format as regular variables, such as $(variable" +
+	"_name)\x02Creates a sqlcmd scripting variable that can be used in a sqlc" +
+	"md script. Enclose the value in quotation marks if the value contains sp" +
+	"aces. You can specify multiple var=values values. If there are errors in" +
+	" any of the values specified, sqlcmd generates an error message and then" +
+	" exits\x02Requests a packet of a different size. This option sets the sq" +
+	"lcmd scripting variable %[1]s. packet_size must be a value between 512 a" +
+	"nd 32767. The default = 4096. A larger packet size can enhance performan" +
+	"ce for execution of scripts that have lots of SQL statements between %[2" +
+	"]s commands. You can request a larger packet size. However, if the reque" +
+	"st is denied, sqlcmd uses the server default for packet size\x02Specifie" +
+	"s the number of seconds before a sqlcmd login to the go-mssqldb driver t" +
+	"imes out when you try to connect to a server. This option sets the sqlcm" +
+	"d scripting variable %[1]s. The default value is 30. 0 means infinite" +
+	"\x02This option sets the sqlcmd scripting variable %[1]s. The workstatio" +
+	"n name is listed in the hostname column of the sys.sysprocesses catalog " +
+	"view and can be returned using the stored procedure sp_who. If this opti" +
+	"on is not specified, the default is the current computer name. This name" +
+	" can be used to identify different sqlcmd sessions\x02Declares the appli" +
+	"cation workload type when connecting to a server. The only currently sup" +
+	"ported value is ReadOnly. If %[1]s is not specified, the sqlcmd utility " +
+	"will not support connectivity to a secondary replica in an Always On ava" +
+	"ilability group\x02This switch is used by the client to request an encry" +
+	"pted connection\x02Specifies the host name in the server certificate." +
+	"\x02Prints the output in vertical format. This option sets the sqlcmd sc" +
+	"ripting variable %[1]s to '%[2]s'. The default is false\x02%[1]s Redirec" +
+	"ts error messages with severity >= 11 output to stderr. Pass 1 to to red" +
+	"irect all errors including PRINT.\x02Level of mssql driver messages to p" +
+	"rint\x02Specifies that sqlcmd exits and returns a %[1]s value when an er" +
+	"ror occurs\x02Controls which error messages are sent to %[1]s. Messages " +
+	"that have severity level greater than or equal to this level are sent" +
+	"\x02Specifies the number of rows to print between the column headings. U" +
+	"se -h-1 to specify that headers not be printed\x02Specifies that all out" +
+	"put files are encoded with little-endian Unicode\x02Specifies the column" +
+	" separator character. Sets the %[1]s variable.\x02Remove trailing spaces" +
+	" from a column\x02Provided for backward compatibility. Sqlcmd always opt" +
+	"imizes detection of the active replica of a SQL Failover Cluster\x02Pass" +
+	"word\x02Controls the severity level that is used to set the %[1]s variab" +
+	"le on exit\x02Specifies the screen width for output\x02%[1]s List server" +
+	"s. Pass %[2]s to omit 'Servers:' output.\x02Dedicated administrator conn" +
+	"ection\x02Provided for backward compatibility. Quoted identifiers are al" +
+	"ways enabled\x02Provided for backward compatibility. Client regional set" +
+	"tings are not used\x02%[1]s Remove control characters from output. Pass " +
+	"1 to substitute a space per character, 2 for a space per consecutive cha" +
+	"racters\x02Echo input\x02Enable column encryption\x02New password\x02New" +
+	" password and exit\x02Sets the sqlcmd scripting variable %[1]s\x02'%[1]s" +
+	" %[2]s': value must be greater than or equal to %#[3]v and less than or " +
+	"equal to %#[4]v.\x02'%[1]s %[2]s': value must be greater than %#[3]v and" +
+	" less than %#[4]v.\x02'%[1]s %[2]s': Unexpected argument. Argument value" +
+	" has to be %[3]v.\x02'%[1]s %[2]s': Unexpected argument. Argument value " +
+	"has to be one of %[3]v.\x02The %[1]s and the %[2]s options are mutually " +
+	"exclusive.\x02'%[1]s': Missing argument. Enter '-?' for help.\x02'%[1]s'" +
+	": Unknown Option. Enter '-?' for help.\x02failed to create trace file '%" +
+	"[1]s': %[2]v\x02failed to start trace: %[1]v\x02invalid batch terminator" +
+	" '%[1]s'\x02Enter new password:\x02sqlcmd: Install/Create/Query SQL Serv" +
+	"er, Azure SQL, and Tools\x04\x00\x01 \x0f\x02Sqlcmd: Error:\x04\x00\x01 " +
+	"\x11\x02Sqlcmd: Warning:\x02ED and !!<command> commands, startup script," +
+	" and environment variables are disabled\x02The scripting variable: '%[1]" +
+	"s' is read-only\x02'%[1]s' scripting variable not defined.\x02The enviro" +
+	"nment variable: '%[1]s' has invalid value: '%[2]s'.\x02Syntax error at l" +
+	"ine %[1]d near command '%[2]s'.\x02%[1]s Error occurred while opening or" +
+	" operating on file %[2]s (Reason: %[3]s).\x02%[1]sSyntax error at line %" +
+	"[2]d\x02Timeout expired\x02Msg %#[1]v, Level %[2]d, State %[3]d, Server " +
+	"%[4]s, Procedure %[5]s, Line %#[6]v%[7]s\x02Msg %#[1]v, Level %[2]d, Sta" +
+	"te %[3]d, Server %[4]s, Line %#[5]v%[6]s\x02Password:\x02(1 row affected" +
+	")\x02(%[1]d rows affected)\x02Invalid variable identifier %[1]s\x02Inval" +
+	"id variable value %[1]s\x02Open tools (e.g., Visual Studio Code, SSMS) f" +
+	"or current context\x02Open in Visual Studio Code\x02Open in SQL Server M" +
+	"anagement Studio\x02Could not copy password to clipboard: %[1]s\x02Passw" +
+	"ord copied to clipboard - paste it when prompted, then clear your clipbo" +
+	"ard\x02Open SQL Server Management Studio and connect to current context" +
+	"\x02Open SSMS and connect using the current context\x02SSMS major versio" +
+	"n to launch (for example 21); defaults to the latest installed\x02Open t" +
+	"he latest SSMS\x02'sqlcmd open ssms' supports SSMS %[1]d and later; '--v" +
+	"ersion %[2]s' is not supported\x02Launching SQL Server Management Studio" +
+	"...\x02Open Visual Studio Code and configure connection for current cont" +
+	"ext\x02Open VS Code and configure connection using the current context" +
+	"\x02Open VS Code and install the MSSQL extension if needed\x02Open a spe" +
+	"cific VS Code build\x02Install the MSSQL extension in VS Code if not alr" +
+	"eady installed\x02VS Code build to open: 'stable' or 'insiders'; default" +
+	"s to stable when both are installed\x02Open the stable build\x02Open the" +
+	" insiders build\x02'--build %[1]s' is not supported; use 'stable' or 'in" +
+	"siders'\x02Installing MSSQL extension...\x02Could not install MSSQL exte" +
+	"nsion: %[1]s\x02MSSQL extension installed successfully\x02To install the" +
+	" MSSQL extension\x02The MSSQL extension (ms-mssql.mssql) is not installe" +
+	"d in VS Code\x02Error\x02Failed to create VS Code settings directory\x02" +
+	"Connection profile created in VS Code settings\x02Failed to read VS Code" +
+	" settings\x02Failed to parse VS Code settings\x02Failed to encode VS Cod" +
+	"e settings\x02Failed to write VS Code settings\x02Could not verify MSSQL" +
+	" extension installation: %[1]s\x02Opening VS Code...\x02Use the '%[1]s' " +
+	"connection profile to connect\x02The -J parameter requires encryption to" +
+	" be enabled (-N true, -N mandatory, or -N strict).\x02Specifies the serv" +
+	"er name to use for authentication when tunneling through a proxy. Use wi" +
+	"th -S to specify the dial address separately from the server name sent t" +
+	"o SQL Server.\x02Specifies the path to a server certificate file (PEM, D" +
+	"ER, or CER) to match against the server's TLS certificate. Use when encr" +
+	"yption is enabled (-N true, -N mandatory, or -N strict) for certificate " +
+	"pinning instead of standard certificate validation.\x02Prints the output" +
+	" in ASCII table format. This option sets the sqlcmd scripting variable %" +
+	"[1]s to '%[2]s'. The default is false\x02Do not strip the \x22mssql: " +
+	"\x22 prefix from error messages\x02Server name override is not supported" +
+	" with the current authentication method"
 
-var es_ESIndex = []uint32{ // 336 elements
+var es_ESIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000032, 0x00000081, 0x0000009c,
 	0x000000ec, 0x0000010d, 0x00000127, 0x0000017f,
@@ -1231,11 +1240,12 @@ var es_ESIndex = []uint32{ // 336 elements
 	0x00004df6, 0x00004df6, 0x00004df6, 0x00004df6,
 	0x00004df6, 0x00004df6, 0x00004df6, 0x00004df6,
 	// Entry 140 - 15F
-	0x00004df6, 0x00004df6, 0x00004df6, 0x00004df6,
-	0x00004df6, 0x00004df6, 0x00004df6, 0x00004df6,
-	0x00004df6, 0x00004df6, 0x00004df6, 0x00004df6,
-	0x00004df6, 0x00004df6, 0x00004df6, 0x00004df6,
-} // Size: 1368 bytes
+	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
+	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
+	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
+	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
+	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
+} // Size: 1384 bytes
 
 const es_ESData string = "" + // Size: 19958 bytes
 	"\x02Instalar/Crear, Consultar, Desinstalar SQL Server\x02Visualización d" +
@@ -1528,7 +1538,7 @@ const es_ESData string = "" + // Size: 19958 bytes
 	" afectadas)\x02Identificador de variable %[1]s no válido\x02Valor de var" +
 	"iable %[1]s no válido"
 
-var fr_FRIndex = []uint32{ // 336 elements
+var fr_FRIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000037, 0x0000007f, 0x0000009d,
 	0x000000e1, 0x000000fe, 0x00000117, 0x00000169,
@@ -1620,11 +1630,12 @@ var fr_FRIndex = []uint32{ // 336 elements
 	0x0000512a, 0x0000512a, 0x0000512a, 0x0000512a,
 	0x0000512a, 0x0000512a, 0x0000512a, 0x0000512a,
 	// Entry 140 - 15F
-	0x0000512a, 0x0000512a, 0x0000512a, 0x0000512a,
-	0x0000512a, 0x0000512a, 0x0000512a, 0x0000512a,
-	0x0000512a, 0x0000512a, 0x0000512a, 0x0000512a,
-	0x0000512a, 0x0000512a, 0x0000512a, 0x0000512a,
-} // Size: 1368 bytes
+	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
+	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
+	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
+	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
+	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
+} // Size: 1384 bytes
 
 const fr_FRData string = "" + // Size: 20778 bytes
 	"\x02Installer/créer, interroger, désinstaller SQL Server\x02Afficher les" +
@@ -1927,7 +1938,7 @@ const fr_FRData string = "" + // Size: 20778 bytes
 	"\x02Identifiant de variable invalide %[1]s\x02Valeur de variable invalid" +
 	"e %[1]s"
 
-var it_ITIndex = []uint32{ // 336 elements
+var it_ITIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x00000088, 0x000000a0,
 	0x000000f7, 0x00000114, 0x0000012b, 0x0000016a,
@@ -2019,11 +2030,12 @@ var it_ITIndex = []uint32{ // 336 elements
 	0x00004b9c, 0x00004b9c, 0x00004b9c, 0x00004b9c,
 	0x00004b9c, 0x00004b9c, 0x00004b9c, 0x00004b9c,
 	// Entry 140 - 15F
-	0x00004b9c, 0x00004b9c, 0x00004b9c, 0x00004b9c,
-	0x00004b9c, 0x00004b9c, 0x00004b9c, 0x00004b9c,
-	0x00004b9c, 0x00004b9c, 0x00004b9c, 0x00004b9c,
-	0x00004b9c, 0x00004b9c, 0x00004b9c, 0x00004b9c,
-} // Size: 1368 bytes
+	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
+	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
+	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
+	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
+	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
+} // Size: 1384 bytes
 
 const it_ITData string = "" + // Size: 19356 bytes
 	"\x02Installare/creare, eseguire query, disinstallare SQL Server\x02Visua" +
@@ -2308,7 +2320,7 @@ const it_ITData string = "" + // Size: 19356 bytes
 	"riga interessata)\x02(%[1]d righe interessate)\x02Identificatore della v" +
 	"ariabile %[1]s non valido\x02Valore della variabile %[1]s non valido"
 
-var ja_JPIndex = []uint32{ // 336 elements
+var ja_JPIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x00000077, 0x0000009d,
 	0x000000d8, 0x000000f8, 0x0000010b, 0x0000014c,
@@ -2400,11 +2412,12 @@ var ja_JPIndex = []uint32{ // 336 elements
 	0x00005ed6, 0x00005ed6, 0x00005ed6, 0x00005ed6,
 	0x00005ed6, 0x00005ed6, 0x00005ed6, 0x00005ed6,
 	// Entry 140 - 15F
-	0x00005ed6, 0x00005ed6, 0x00005ed6, 0x00005ed6,
-	0x00005ed6, 0x00005ed6, 0x00005ed6, 0x00005ed6,
-	0x00005ed6, 0x00005ed6, 0x00005ed6, 0x00005ed6,
-	0x00005ed6, 0x00005ed6, 0x00005ed6, 0x00005ed6,
-} // Size: 1368 bytes
+	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
+	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
+	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
+	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
+	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
+} // Size: 1384 bytes
 
 const ja_JPData string = "" + // Size: 24278 bytes
 	"\x02インストール/作成、クエリ、SQL Server のアンインストール\x02構成情報と接続文字列の表示\x04\x02\x0a\x0a" +
@@ -2570,7 +2583,7 @@ const ja_JPData string = "" + // Size: 24278 bytes
 	"\x02パスワード:\x02(1 行が影響を受けます)\x02(%[1]d 行が影響を受けます)\x02変数識別子 %[1]s が無効です" +
 	"\x02変数値の %[1]s が無効です"
 
-var ko_KRIndex = []uint32{ // 336 elements
+var ko_KRIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000029, 0x00000053, 0x0000006c,
 	0x000000b8, 0x000000d0, 0x000000de, 0x00000121,
@@ -2662,11 +2675,12 @@ var ko_KRIndex = []uint32{ // 336 elements
 	0x00004e2b, 0x00004e2b, 0x00004e2b, 0x00004e2b,
 	0x00004e2b, 0x00004e2b, 0x00004e2b, 0x00004e2b,
 	// Entry 140 - 15F
-	0x00004e2b, 0x00004e2b, 0x00004e2b, 0x00004e2b,
-	0x00004e2b, 0x00004e2b, 0x00004e2b, 0x00004e2b,
-	0x00004e2b, 0x00004e2b, 0x00004e2b, 0x00004e2b,
-	0x00004e2b, 0x00004e2b, 0x00004e2b, 0x00004e2b,
-} // Size: 1368 bytes
+	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
+	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
+	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
+	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
+	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
+} // Size: 1384 bytes
 
 const ko_KRData string = "" + // Size: 20011 bytes
 	"\x02SQL Server 설치/생성, 쿼리, 제거\x02구성 정보 및 연결 문자열 보기\x04\x02\x0a\x0a\x00" +
@@ -2823,7 +2837,7 @@ const ko_KRData string = "" + // Size: 20011 bytes
 	"]d, 상태 %[3]d, 서버 %[4]s, 줄 %#[5]v%[6]s\x02암호:\x02(1개 행 적용됨)\x02(영향을 받은 행 " +
 	"%[1]d개)\x02잘못된 변수 식별자 %[1]s\x02잘못된 변수 값 %[1]s"
 
-var pt_BRIndex = []uint32{ // 336 elements
+var pt_BRIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000034, 0x00000071, 0x0000008d,
 	0x000000e3, 0x00000103, 0x0000011e, 0x0000016d,
@@ -2915,11 +2929,12 @@ var pt_BRIndex = []uint32{ // 336 elements
 	0x00004a94, 0x00004a94, 0x00004a94, 0x00004a94,
 	0x00004a94, 0x00004a94, 0x00004a94, 0x00004a94,
 	// Entry 140 - 15F
-	0x00004a94, 0x00004a94, 0x00004a94, 0x00004a94,
-	0x00004a94, 0x00004a94, 0x00004a94, 0x00004a94,
-	0x00004a94, 0x00004a94, 0x00004a94, 0x00004a94,
-	0x00004a94, 0x00004a94, 0x00004a94, 0x00004a94,
-} // Size: 1368 bytes
+	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
+	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
+	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
+	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
+	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
+} // Size: 1384 bytes
 
 const pt_BRData string = "" + // Size: 19092 bytes
 	"\x02Instalar/Criar, Consultar, Desinstalar o SQL Server\x02Exibir inform" +
@@ -3198,7 +3213,7 @@ const pt_BRData string = "" + // Size: 19092 bytes
 	"fetada)\x02(%[1]d linhas afetadas)\x02Identificador de variável %[1]s in" +
 	"válido\x02Valor de variável inválido %[1]s"
 
-var ru_RUIndex = []uint32{ // 336 elements
+var ru_RUIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000056, 0x000000c1, 0x000000ec,
 	0x00000151, 0x00000172, 0x00000195, 0x0000023b,
@@ -3290,11 +3305,12 @@ var ru_RUIndex = []uint32{ // 336 elements
 	0x00008103, 0x00008103, 0x00008103, 0x00008103,
 	0x00008103, 0x00008103, 0x00008103, 0x00008103,
 	// Entry 140 - 15F
-	0x00008103, 0x00008103, 0x00008103, 0x00008103,
-	0x00008103, 0x00008103, 0x00008103, 0x00008103,
-	0x00008103, 0x00008103, 0x00008103, 0x00008103,
-	0x00008103, 0x00008103, 0x00008103, 0x00008103,
-} // Size: 1368 bytes
+	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
+	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
+	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
+	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
+	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
+} // Size: 1384 bytes
 
 const ru_RUData string = "" + // Size: 33027 bytes
 	"\x02Установка или создание, запрос, удаление SQL Server\x02Просмотреть с" +
@@ -3582,7 +3598,7 @@ const ru_RUData string = "" + // Size: 33027 bytes
 	"идентификатор переменной %[1]s\x02Недопустимое значение переменной %[1]" +
 	"s"
 
-var zh_CNIndex = []uint32{ // 336 elements
+var zh_CNIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002b, 0x00000050, 0x00000065,
 	0x00000096, 0x000000ab, 0x000000b8, 0x000000fc,
@@ -3674,11 +3690,12 @@ var zh_CNIndex = []uint32{ // 336 elements
 	0x00003945, 0x00003945, 0x00003945, 0x00003945,
 	0x00003945, 0x00003945, 0x00003945, 0x00003945,
 	// Entry 140 - 15F
-	0x00003945, 0x00003945, 0x00003945, 0x00003945,
-	0x00003945, 0x00003945, 0x00003945, 0x00003945,
-	0x00003945, 0x00003945, 0x00003945, 0x00003945,
-	0x00003945, 0x00003945, 0x00003945, 0x00003945,
-} // Size: 1368 bytes
+	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
+	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
+	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
+	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
+	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
+} // Size: 1384 bytes
 
 const zh_CNData string = "" + // Size: 14661 bytes
 	"\x02安装/创建、查询、卸载 SQL Server\x02查看配置信息和连接字符串\x04\x02\x0a\x0a\x00\x0f\x02反馈" +
@@ -3800,7 +3817,7 @@ const zh_CNData string = "" + // Size: 14661 bytes
 	"[4]s，行 %#[5]v%[6]s\x02密码:\x02(1 行受影响)\x02(%[1]d 行受影响)\x02变量标识符 %[1]s 无效" +
 	"\x02变量值 %[1]s 无效"
 
-var zh_TWIndex = []uint32{ // 336 elements
+var zh_TWIndex = []uint32{ // 340 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000031, 0x00000053, 0x0000006e,
 	0x000000a1, 0x000000b8, 0x000000c2, 0x00000106,
@@ -3892,11 +3909,12 @@ var zh_TWIndex = []uint32{ // 336 elements
 	0x000039ae, 0x000039ae, 0x000039ae, 0x000039ae,
 	0x000039ae, 0x000039ae, 0x000039ae, 0x000039ae,
 	// Entry 140 - 15F
-	0x000039ae, 0x000039ae, 0x000039ae, 0x000039ae,
-	0x000039ae, 0x000039ae, 0x000039ae, 0x000039ae,
-	0x000039ae, 0x000039ae, 0x000039ae, 0x000039ae,
-	0x000039ae, 0x000039ae, 0x000039ae, 0x000039ae,
-} // Size: 1368 bytes
+	0x00003870, 0x00003870, 0x00003870, 0x00003870,
+	0x00003870, 0x00003870, 0x00003870, 0x00003870,
+	0x00003870, 0x00003870, 0x00003870, 0x00003870,
+	0x00003870, 0x00003870, 0x00003870, 0x00003870,
+	0x00003870, 0x00003870, 0x00003870, 0x00003870,
+} // Size: 1384 bytes
 
 const zh_TWData string = "" + // Size: 14766 bytes
 	"\x02安裝/建立、查詢、解除安裝 SQL Server\x02檢視組態資訊和連接字串\x04\x02\x0a\x0a\x00\x15\x02意" +
@@ -4015,4 +4033,4 @@ const zh_TWData string = "" + // Size: 14766 bytes
 	"%[7]s\x02訊息 %#[1]v、層級 %[2]d、狀態 %[3]d、伺服器 %[4]s、行 %#[5]v%[6]s\x02密碼:\x02(" +
 	"1 個資料列受影響)\x02(%[1]d 個資料列受影響)\x02無效的變數識別碼 %[1]s\x02變數值 %[1]s 無效"
 
-	// Total table size 238722 bytes (233KiB); checksum: 9CF9BEEC
+	// Total table size 234063 bytes (228KiB); checksum: 274A797

@@ -5,19 +5,29 @@ package tool
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
 func (t *VSCode) searchLocations() []string {
 	userProfile := os.Getenv("HOME")
 
-	return []string{
-		filepath.Join("/", "usr", "bin", "code-insiders"),
-		filepath.Join("/", "usr", "bin", "code"),
-		filepath.Join(userProfile, ".local", "bin", "code-insiders"),
-		filepath.Join(userProfile, ".local", "bin", "code"),
-		filepath.Join("/", "snap", "bin", "code"),
+	var locations []string
+	for _, build := range t.buildsToSearch() {
+		cli := "code"
+		if build == "insiders" {
+			cli = "code-insiders"
+		}
+		if p, err := exec.LookPath(cli); err == nil {
+			locations = append(locations, p)
+		}
+		locations = append(locations,
+			filepath.Join("/", "usr", "bin", cli),
+			filepath.Join(userProfile, ".local", "bin", cli),
+			filepath.Join("/", "snap", "bin", cli),
+		)
 	}
+	return locations
 }
 
 func (t *VSCode) installText() string {
