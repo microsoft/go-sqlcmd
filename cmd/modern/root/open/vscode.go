@@ -6,6 +6,7 @@ package open
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -16,6 +17,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
 	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
 )
@@ -86,7 +88,7 @@ func (c *VSCode) run() {
 	copyPasswordToClipboard(user, c.Output())
 
 	// Launch VS Code
-	c.launchVSCode(build)
+	c.launchVSCode(build, endpoint, user, isLocalConnection)
 }
 
 // resolveBuild validates an explicit --build value and otherwise picks the
@@ -136,7 +138,7 @@ func (c *VSCode) ensureContainerIsRunning(containerID string) {
 }
 
 // launchVSCode launches Visual Studio Code
-func (c *VSCode) launchVSCode(build string) {
+func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) {
 	output := c.Output()
 
 	t := tools.NewTool("vscode")
@@ -167,9 +169,43 @@ func (c *VSCode) launchVSCode(build string) {
 
 	c.displayPreLaunchInfo()
 
-	// Open VS Code
-	_, err := t.Run([]string{})
+	if test.IsRunningInTestExecutor() {
+		return
+	}
+
+	// Open the connection through the mssql extension's protocol handler by
+	// passing a vscode://ms-mssql.mssql/connect URI to the targeted build with
+	// --open-url. This launches VS Code (or focuses it), routes the URI to the
+	// extension, and initiates the connection without opening an extra empty
+	// window. The password is on the clipboard for the single sign-in prompt.
+	connectURI := buildConnectURI(endpoint, user, isLocalConnection)
+	_, err := t.Run([]string{"--open-url", connectURI})
 	c.CheckErr(err)
+}
+
+// buildConnectURI creates a vscode://ms-mssql.mssql/connect URI with query
+// params matching the connection profile. The mssql extension's protocol
+// handler parses these to find the matching profile and initiate the
+// connection.
+func buildConnectURI(endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) string {
+	params := url.Values{}
+	params.Set("server", fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port))
+	params.Set("profileName", config.CurrentContextName())
+
+	if isLocalConnection {
+		params.Set("encrypt", "Optional")
+		params.Set("trustServerCertificate", "true")
+	} else {
+		params.Set("encrypt", "Mandatory")
+		params.Set("trustServerCertificate", "false")
+	}
+
+	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
+		params.Set("user", user.BasicAuth.Username)
+		params.Set("authenticationType", "SqlLogin")
+	}
+
+	return "vscode://ms-mssql.mssql/connect?" + params.Encode()
 }
 
 // createConnectionProfile creates or updates a connection profile in VS Code's user settings
