@@ -3,19 +3,23 @@
 
 package tool
 
-import "golang.org/x/sys/windows/registry"
+import (
+	"os"
+	"path/filepath"
+)
 
-// urlHandlerRegistered reports whether the ssms:// URL handler is registered
-// on this machine. SSMS installers (legacy MSI for 18/19/20 and the VS
-// Installer for SSMS 21+) register HKEY_CLASSES_ROOT\ssms\shell\open\command,
-// so its presence is a reliable install signal regardless of install path.
-func (t *SSMS) urlHandlerRegistered() bool {
-	k, err := registry.OpenKey(registry.CLASSES_ROOT, `ssms\shell\open\command`, registry.QUERY_VALUE)
-	if err != nil {
-		return false
+func (t *SSMS) searchLocations() []string {
+	programFiles := os.Getenv("ProgramFiles")
+	programFilesX86 := os.Getenv("ProgramFiles(x86)")
+
+	return []string{
+		filepath.Join(programFiles, "Microsoft SQL Server Management Studio 20\\Common7\\IDE\\Ssms.exe"),
+		filepath.Join(programFilesX86, "Microsoft SQL Server Management Studio 20\\Common7\\IDE\\Ssms.exe"),
+		filepath.Join(programFiles, "Microsoft SQL Server Management Studio 19\\Common7\\IDE\\Ssms.exe"),
+		filepath.Join(programFilesX86, "Microsoft SQL Server Management Studio 19\\Common7\\IDE\\Ssms.exe"),
+		filepath.Join(programFiles, "Microsoft SQL Server Management Studio 18\\Common7\\IDE\\Ssms.exe"),
+		filepath.Join(programFilesX86, "Microsoft SQL Server Management Studio 18\\Common7\\IDE\\Ssms.exe"),
 	}
-	k.Close()
-	return true
 }
 
 func (t *SSMS) installText() string {
