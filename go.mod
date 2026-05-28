@@ -3,7 +3,7 @@ module github.com/microsoft/go-sqlcmd
 go 1.26
 
 require (
-	github.com/alecthomas/chroma/v2 v2.25.0
+	github.com/alecthomas/chroma/v2 v2.26.0
 	github.com/billgraziano/dpapi v0.5.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
