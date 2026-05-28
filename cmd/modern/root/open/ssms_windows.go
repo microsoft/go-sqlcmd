@@ -13,6 +13,10 @@ import (
 // context
 type Ssms struct {
 	cmdparser.Cmd
+
+	// version pins the SSMS major version to launch (for example "21"). Empty
+	// means the latest installed version.
+	version string
 }
 
 // On Windows, display info before launching

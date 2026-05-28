@@ -7,6 +7,7 @@ package open
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
@@ -15,7 +16,13 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
+	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
 )
+
+// minSsmsVersion is the oldest SSMS major version this command supports. SSMS
+// 21+ registers with the Visual Studio Installer and is discoverable via
+// vswhere; older releases (legacy MSI) are out of support.
+const minSsmsVersion = 21
 
 // Ssms implements the `sqlcmd open ssms` command. It opens
 // SQL Server Management Studio and connects to the current context using the
@@ -31,10 +38,18 @@ func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 	}
 
 	c.Cmd.DefineCommand(options)
+
+	c.AddFlag(cmdparser.FlagOptions{
+		String: &c.version,
+		Name:   "version",
+		Usage:  localizer.Sprintf("SSMS major version to launch (for example 21); defaults to the latest installed"),
+	})
 }
 
 // Launch SSMS and connect to the current context
 func (c *Ssms) run() {
+	c.validateVersion()
+
 	endpoint, user := config.CurrentContext()
 
 	// Check if this is a local container connection
@@ -47,6 +62,19 @@ func (c *Ssms) run() {
 
 	// Launch SSMS with connection parameters
 	c.launchSsms(endpoint.Address, endpoint.Port, user, isLocalConnection)
+}
+
+// validateVersion rejects --version values below the supported SSMS floor.
+func (c *Ssms) validateVersion() {
+	if c.version == "" {
+		return
+	}
+	major, err := strconv.Atoi(c.version)
+	if err != nil || major < minSsmsVersion {
+		c.Output().FatalWithHintExamples([][]string{
+			{localizer.Sprintf("Open the latest SSMS"), "sqlcmd open ssms"},
+		}, localizer.Sprintf("'sqlcmd open ssms' supports SSMS %d and later; '--version %s' is not supported", minSsmsVersion, c.version))
+	}
 }
 
 func (c *Ssms) ensureContainerIsRunning(containerID string) {
@@ -86,13 +114,16 @@ func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User, isLocalCo
 		copyPasswordToClipboard(user, output)
 	}
 
-	tool := tools.NewTool("ssms")
-	if !tool.IsInstalled() {
-		output.Fatal(tool.HowToInstall())
+	t := tools.NewTool("ssms")
+	if ssms, ok := t.(*tool.SSMS); ok {
+		ssms.SetVersion(c.version)
+	}
+	if !t.IsInstalled() {
+		output.Fatal(t.HowToInstall())
 	}
 
 	c.displayPreLaunchInfo()
 
-	_, err := tool.Run(args)
+	_, err := t.Run(args)
 	c.CheckErr(err)
 }
