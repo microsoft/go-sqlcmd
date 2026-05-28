@@ -90,8 +90,8 @@ func TestVSCodeCreateProfile(t *testing.T) {
 	profile := vscode.createProfile(endpoint, user, true) // true for local connection
 
 	// Verify profile structure
-	if profile["server"] != "localhost,1433" {
-		t.Errorf("Expected server 'localhost,1433', got '%v'", profile["server"])
+	if profile["server"] != "tcp:localhost,1433" {
+		t.Errorf("Expected server 'tcp:localhost,1433', got '%v'", profile["server"])
 	}
 
 	if profile["profileName"] != "my-database" {
@@ -106,8 +106,8 @@ func TestVSCodeCreateProfile(t *testing.T) {
 		t.Errorf("Expected user 'sa', got '%v'", profile["user"])
 	}
 
-	if profile["encrypt"] != "Optional" {
-		t.Errorf("Expected encrypt 'Optional', got '%v'", profile["encrypt"])
+	if profile["encrypt"] != "true" {
+		t.Errorf("Expected encrypt 'true', got '%v'", profile["encrypt"])
 	}
 
 	if profile["trustServerCertificate"] != true {
@@ -341,8 +341,8 @@ func TestVSCodeProfileWithoutUser(t *testing.T) {
 	}
 
 	// Verify secure TLS settings for non-local connections
-	if profile["encrypt"] != "Mandatory" {
-		t.Errorf("Expected encrypt 'Mandatory' for non-local connection, got '%v'", profile["encrypt"])
+	if profile["encrypt"] != "true" {
+		t.Errorf("Expected encrypt 'true' for non-local connection, got '%v'", profile["encrypt"])
 	}
 
 	if profile["trustServerCertificate"] != false {
