@@ -6,6 +6,7 @@ package tool
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
@@ -60,6 +61,18 @@ func (t *tool) Run(args []string) (int, error) {
 	}
 
 	cmd := t.generateCommandLine(args)
+
+	// Redirect stdio to the null device so exec.Cmd does not spawn pipe
+	// drainer goroutines. Without this, Start leaves goroutines blocked on
+	// the child's stdout/stderr until the GUI tool exits, which keeps
+	// sqlcmd's process tree alive even after Process.Release.
+	if devNull, err := os.OpenFile(os.DevNull, os.O_RDWR, 0); err == nil {
+		cmd.Stdin = devNull
+		cmd.Stdout = devNull
+		cmd.Stderr = devNull
+		defer devNull.Close()
+	}
+
 	if err := cmd.Start(); err != nil {
 		return 1, err
 	}
