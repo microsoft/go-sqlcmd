@@ -15,6 +15,10 @@ import (
 type VSCode struct {
 	cmdparser.Cmd
 	installExtension bool
+
+	// build pins which VS Code build to configure and launch: "stable",
+	// "insiders", or "" to prefer stable then insiders.
+	build string
 }
 
 func (c *VSCode) displayPreLaunchInfo() {

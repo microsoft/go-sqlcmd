@@ -40,6 +40,10 @@ func (c *VSCode) DefineCommand(...cmdparser.CommandOptions) {
 				Description: localizer.Sprintf("Open VS Code and install the MSSQL extension if needed"),
 				Steps:       []string{"sqlcmd open vscode --install-extension"},
 			},
+			{
+				Description: localizer.Sprintf("Open a specific VS Code build"),
+				Steps:       []string{"sqlcmd open vscode --build insiders"},
+			},
 		},
 		Run: c.run,
 	}
@@ -51,6 +55,12 @@ func (c *VSCode) DefineCommand(...cmdparser.CommandOptions) {
 		Name:  "install-extension",
 		Usage: localizer.Sprintf("Install the MSSQL extension in VS Code if not already installed"),
 	})
+
+	c.AddFlag(cmdparser.FlagOptions{
+		String: &c.build,
+		Name:   "build",
+		Usage:  localizer.Sprintf("VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed"),
+	})
 }
 
 // Launch VS Code and configure connection profile for the current context.
@@ -58,6 +68,8 @@ func (c *VSCode) DefineCommand(...cmdparser.CommandOptions) {
 // with the MSSQL extension.
 func (c *VSCode) run() {
 	endpoint, user := config.CurrentContext()
+
+	build := c.resolveBuild()
 
 	// Check if this is a local container connection
 	isLocalConnection := isLocalEndpoint(endpoint)
@@ -68,13 +80,49 @@ func (c *VSCode) run() {
 	}
 
 	// Create or update connection profile in VS Code settings
-	c.createConnectionProfile(endpoint, user, isLocalConnection)
+	c.createConnectionProfile(build, endpoint, user, isLocalConnection)
 
 	// Copy password to clipboard if using SQL authentication
 	copyPasswordToClipboard(user, c.Output())
 
 	// Launch VS Code
-	c.launchVSCode()
+	c.launchVSCode(build)
+}
+
+// resolveBuild validates an explicit --build value and otherwise picks the
+// build to configure and launch. An unset --build prefers stable, then
+// insiders; if neither is installed it returns stable so the settings path is
+// deterministic and launchVSCode reports how to install.
+func (c *VSCode) resolveBuild() string {
+	switch strings.ToLower(c.build) {
+	case "":
+		for _, b := range []string{"stable", "insiders"} {
+			if vsCodeBuildInstalled(b) {
+				return b
+			}
+		}
+		return "stable"
+	case "stable":
+		return "stable"
+	case "insiders":
+		return "insiders"
+	default:
+		c.Output().FatalWithHintExamples([][]string{
+			{localizer.Sprintf("Open the stable build"), "sqlcmd open vscode --build stable"},
+			{localizer.Sprintf("Open the insiders build"), "sqlcmd open vscode --build insiders"},
+		}, localizer.Sprintf("'--build %s' is not supported; use 'stable' or 'insiders'", c.build))
+		return ""
+	}
+}
+
+// vsCodeBuildInstalled reports whether the given VS Code build resolves to an
+// installed executable.
+func vsCodeBuildInstalled(build string) bool {
+	t := tools.NewTool("vscode")
+	if vs, ok := t.(*tool.VSCode); ok {
+		vs.SetBuild(build)
+	}
+	return t.IsInstalled()
 }
 
 func (c *VSCode) ensureContainerIsRunning(containerID string) {
@@ -88,18 +136,21 @@ func (c *VSCode) ensureContainerIsRunning(containerID string) {
 }
 
 // launchVSCode launches Visual Studio Code
-func (c *VSCode) launchVSCode() {
+func (c *VSCode) launchVSCode(build string) {
 	output := c.Output()
 
-	tool := tools.NewTool("vscode")
-	if !tool.IsInstalled() {
-		output.Fatal(tool.HowToInstall())
+	t := tools.NewTool("vscode")
+	if vs, ok := t.(*tool.VSCode); ok {
+		vs.SetBuild(build)
+	}
+	if !t.IsInstalled() {
+		output.Fatal(t.HowToInstall())
 	}
 
 	// Install the MSSQL extension if explicitly requested
 	if c.installExtension {
 		output.Info(localizer.Sprintf("Installing MSSQL extension..."))
-		_, err := tool.Run([]string{"--install-extension", "ms-mssql.mssql", "--force"})
+		_, err := t.Run([]string{"--install-extension", "ms-mssql.mssql", "--force"})
 		if err != nil {
 			output.Warn(localizer.Sprintf("Could not install MSSQL extension: %s", err.Error()))
 		} else {
@@ -107,7 +158,7 @@ func (c *VSCode) launchVSCode() {
 		}
 	} else {
 		// Check if MSSQL extension is installed, warn if not
-		if !c.isMssqlExtensionInstalled(tool) {
+		if !c.isMssqlExtensionInstalled(t) {
 			output.FatalWithHintExamples([][]string{
 				{localizer.Sprintf("To install the MSSQL extension"), "sqlcmd open vscode --install-extension"},
 			}, localizer.Sprintf("The MSSQL extension (ms-mssql.mssql) is not installed in VS Code"))
@@ -117,15 +168,15 @@ func (c *VSCode) launchVSCode() {
 	c.displayPreLaunchInfo()
 
 	// Open VS Code
-	_, err := tool.Run([]string{})
+	_, err := t.Run([]string{})
 	c.CheckErr(err)
 }
 
 // createConnectionProfile creates or updates a connection profile in VS Code's user settings
-func (c *VSCode) createConnectionProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) {
+func (c *VSCode) createConnectionProfile(build string, endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) {
 	output := c.Output()
 
-	settingsPath := c.getVSCodeSettingsPath()
+	settingsPath := c.getVSCodeSettingsPath(build)
 
 	// Ensure the directory exists
 	dir := filepath.Dir(settingsPath)
@@ -284,13 +335,17 @@ func (c *VSCode) updateOrAddProfile(connections []interface{}, newProfile map[st
 	return append(connections, newProfile)
 }
 
-func (c *VSCode) getVSCodeSettingsPath() string {
+func (c *VSCode) getVSCodeSettingsPath(build string) string {
 	if testSettingsPathOverride != "" {
 		return testSettingsPathOverride
 	}
 
-	var stableDir string
-	var insidersDir string
+	stableName := "Code"
+	insidersName := "Code - Insiders"
+	appName := stableName
+	if build == "insiders" {
+		appName = insidersName
+	}
 
 	getHomeDir := func() string {
 		if home := os.Getenv("HOME"); home != "" {
@@ -302,6 +357,7 @@ func (c *VSCode) getVSCodeSettingsPath() string {
 		return "."
 	}
 
+	var configDir string
 	switch runtime.GOOS {
 	case "windows":
 		base := os.Getenv("APPDATA")
@@ -313,23 +369,13 @@ func (c *VSCode) getVSCodeSettingsPath() string {
 				base = "."
 			}
 		}
-		stableDir = filepath.Join(base, "Code", "User")
-		insidersDir = filepath.Join(base, "Code - Insiders", "User")
+		configDir = filepath.Join(base, appName, "User")
 	case "darwin":
 		base := filepath.Join(getHomeDir(), "Library", "Application Support")
-		stableDir = filepath.Join(base, "Code", "User")
-		insidersDir = filepath.Join(base, "Code - Insiders", "User")
+		configDir = filepath.Join(base, appName, "User")
 	default: // linux and others
 		base := filepath.Join(getHomeDir(), ".config")
-		stableDir = filepath.Join(base, "Code", "User")
-		insidersDir = filepath.Join(base, "Code - Insiders", "User")
-	}
-
-	// Prefer VS Code Insiders settings if the directory exists, since the tool
-	// searches for and launches Insiders first. Fall back to stable Code.
-	configDir := stableDir
-	if info, err := os.Stat(insidersDir); err == nil && info.IsDir() {
-		configDir = insidersDir
+		configDir = filepath.Join(base, appName, "User")
 	}
 
 	return filepath.Join(configDir, "settings.json")
