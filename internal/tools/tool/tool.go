@@ -70,7 +70,7 @@ func (t *tool) Run(args []string) (int, error) {
 		cmd.Stdin = devNull
 		cmd.Stdout = devNull
 		cmd.Stderr = devNull
-		defer devNull.Close()
+		defer func() { _ = devNull.Close() }()
 	}
 
 	if err := cmd.Start(); err != nil {

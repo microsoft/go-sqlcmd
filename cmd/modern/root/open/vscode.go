@@ -303,15 +303,11 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 	// extension still accepts the legacy boolean-string "true" as Mandatory
 	// and it is what the extension itself writes today.
 	encrypt := "true"
-	trustServerCertificate := false
-
 	// Local connections (containers, localhost) commonly use self-signed
 	// certificates. Encryption stays mandatory; trustServerCertificate makes
 	// the cert acceptable. Users can still adjust these values in VS Code
 	// settings.
-	if isLocalConnection {
-		trustServerCertificate = true
-	}
+	trustServerCertificate := isLocalConnection
 
 	profile := map[string]interface{}{
 		"applicationName":        "vscode-mssql",
