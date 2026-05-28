@@ -327,6 +327,18 @@ func (c Controller) ContainerRunning(id string) (running bool) {
 	return
 }
 
+// ContainerName returns the human-readable name assigned to the container.
+// The docker API returns names with a leading "/" which is stripped here.
+func (c Controller) ContainerName(id string) string {
+	if id == "" {
+		panic("Must pass in non-empty id")
+	}
+
+	resp, err := c.cli.ContainerInspect(context.Background(), id, client.ContainerInspectOptions{})
+	checkErr(err)
+	return strings.TrimPrefix(resp.Container.Name, "/")
+}
+
 // ContainerExists checks if a container with the given ID exists in the system.
 // It does this by using the container runtime API to list all containers and
 // filtering by the given ID. If a container with the given ID is found, it
