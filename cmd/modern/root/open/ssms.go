@@ -15,6 +15,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
+	"github.com/microsoft/go-sqlcmd/internal/test"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
 	"github.com/microsoft/go-sqlcmd/internal/tools/tool"
 )
@@ -123,6 +124,10 @@ func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User, isLocalCo
 	}
 
 	c.displayPreLaunchInfo()
+
+	if test.IsRunningInTestExecutor() {
+		return
+	}
 
 	_, err := t.Run(args)
 	c.CheckErr(err)
