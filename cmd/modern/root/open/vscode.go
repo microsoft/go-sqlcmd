@@ -12,6 +12,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -84,11 +85,10 @@ func (c *VSCode) run() {
 	// Create or update connection profile in VS Code settings
 	c.createConnectionProfile(build, endpoint, user, isLocalConnection)
 
-	// Copy password to clipboard if using SQL authentication
-	copyPasswordToClipboard(user, c.Output())
-
-	// Launch VS Code
-	c.launchVSCode(build, endpoint, user, isLocalConnection)
+	// Launch VS Code and tell the mssql extension to connect to the profile
+	// we just wrote. This focuses the SQL Server activity bar view instead of
+	// landing on whatever was open last.
+	c.launchVSCode(build, endpoint, user)
 }
 
 // resolveBuild validates an explicit --build value and otherwise picks the
@@ -138,7 +138,7 @@ func (c *VSCode) ensureContainerIsRunning(containerID string) {
 }
 
 // launchVSCode launches Visual Studio Code
-func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) {
+func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *sqlconfig.User) {
 	output := c.Output()
 
 	t := tools.NewTool("vscode")
@@ -159,8 +159,11 @@ func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *s
 			output.Info(localizer.Sprintf("MSSQL extension installed successfully"))
 		}
 	} else {
-		// Check if MSSQL extension is installed, warn if not
-		if !c.isMssqlExtensionInstalled(t) {
+		// Check if MSSQL extension is installed, warn if not.
+		// Inspect the extensions directory directly rather than shelling out to
+		// `code --list-extensions`, which on Windows attaches to an already
+		// running VS Code instance and blocks until that instance exits.
+		if !isMssqlExtensionInstalled() {
 			output.FatalWithHintExamples([][]string{
 				{localizer.Sprintf("To install the MSSQL extension"), "sqlcmd open vscode --install-extension"},
 			}, localizer.Sprintf("The MSSQL extension (ms-mssql.mssql) is not installed in VS Code"))
@@ -173,39 +176,8 @@ func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *s
 		return
 	}
 
-	// Open the connection through the mssql extension's protocol handler by
-	// passing a vscode://ms-mssql.mssql/connect URI to the targeted build with
-	// --open-url. This launches VS Code (or focuses it), routes the URI to the
-	// extension, and initiates the connection without opening an extra empty
-	// window. The password is on the clipboard for the single sign-in prompt.
-	connectURI := buildConnectURI(endpoint, user, isLocalConnection)
-	_, err := t.Run([]string{"--open-url", connectURI})
+	_, err := t.Run([]string{"--open-url", mssqlConnectURI(endpoint, user)})
 	c.CheckErr(err)
-}
-
-// buildConnectURI creates a vscode://ms-mssql.mssql/connect URI with query
-// params matching the connection profile. The mssql extension's protocol
-// handler parses these to find the matching profile and initiate the
-// connection.
-func buildConnectURI(endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) string {
-	params := url.Values{}
-	params.Set("server", fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port))
-	params.Set("profileName", config.CurrentContextName())
-
-	if isLocalConnection {
-		params.Set("encrypt", "Optional")
-		params.Set("trustServerCertificate", "true")
-	} else {
-		params.Set("encrypt", "Mandatory")
-		params.Set("trustServerCertificate", "false")
-	}
-
-	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
-		params.Set("user", user.BasicAuth.Username)
-		params.Set("authenticationType", "SqlLogin")
-	}
-
-	return "vscode://ms-mssql.mssql/connect?" + params.Encode()
 }
 
 // createConnectionProfile creates or updates a connection profile in VS Code's user settings
@@ -232,6 +204,11 @@ func (c *VSCode) createConnectionProfile(build string, endpoint sqlconfig.Endpoi
 	connections := c.getConnectionsArray(settings)
 	connections = c.updateOrAddProfile(connections, profile)
 	settings["mssql.connections"] = connections
+
+	// Ensure the referenced connection group exists; the mssql extension
+	// logs a warning and ignores profiles whose groupId points at a missing
+	// group entry.
+	settings["mssql.connectionGroups"] = ensureRootGroup(settings["mssql.connectionGroups"])
 
 	// Write settings back
 	c.writeSettings(settingsPath, settings)
@@ -322,22 +299,43 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 	// and matches what they use with sqlcmd commands
 	contextName := config.CurrentContextName()
 
-	// Default to secure settings for production connections
-	encrypt := "Mandatory"
+	// Default to secure settings for production connections. The mssql
+	// extension still accepts the legacy boolean-string "true" as Mandatory
+	// and it is what the extension itself writes today.
+	encrypt := "true"
 	trustServerCertificate := false
 
-	// Relax settings for local connections (containers, localhost) that commonly use
-	// self-signed certificates. Users can still adjust these values in VS Code settings.
+	// Local connections (containers, localhost) commonly use self-signed
+	// certificates. Encryption stays mandatory; trustServerCertificate makes
+	// the cert acceptable. Users can still adjust these values in VS Code
+	// settings.
 	if isLocalConnection {
-		encrypt = "Optional"
 		trustServerCertificate = true
 	}
 
 	profile := map[string]interface{}{
-		"server":                 fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port),
-		"profileName":            contextName,
+		"applicationName":        "vscode-mssql",
+		"commandTimeout":         30,
+		"connectRetryCount":      1,
+		"connectRetryInterval":   10,
+		"connectTimeout":         30,
+		"database":               "master",
 		"encrypt":                encrypt,
+		"groupId":                rootGroupID,
+		"id":                     uuid.NewString(),
+		"port":                   endpoint.Port,
+		"profileName":            contextName,
+		"server":                 fmt.Sprintf("tcp:%s,%d", endpoint.Address, endpoint.Port),
 		"trustServerCertificate": trustServerCertificate,
+	}
+
+	// If the endpoint is backed by a local container, surface the container
+	// name so the mssql extension can show docker actions in its connection
+	// tree.
+	if asset := endpoint.AssetDetails; asset != nil && asset.ContainerDetails != nil {
+		if name := container.NewController().ContainerName(asset.Id); name != "" {
+			profile["containerName"] = name
+		}
 	}
 
 	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
@@ -345,6 +343,14 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 		// SQL authentication contexts use SqlLogin
 		profile["authenticationType"] = "SqlLogin"
 		profile["savePassword"] = true
+
+		// Include the decrypted password so the mssql extension can
+		// auto-connect without prompting. The extension reads it from the
+		// profile on first use and migrates it to the OS credential store,
+		// removing it from settings.json.
+		if _, _, password := config.GetCurrentContextInfo(); password != "" {
+			profile["password"] = password
+		}
 	}
 
 	return profile
@@ -361,6 +367,14 @@ func (c *VSCode) updateOrAddProfile(connections []interface{}, newProfile map[st
 	for i, conn := range connections {
 		if connMap, ok := conn.(map[string]interface{}); ok {
 			if name, ok := connMap["profileName"].(string); ok && name == profileName {
+				// Preserve the user's existing group assignment and the
+				// extension-assigned id so credentials stay linked.
+				if existingGroup, ok := connMap["groupId"].(string); ok && existingGroup != "" {
+					newProfile["groupId"] = existingGroup
+				}
+				if existingID, ok := connMap["id"].(string); ok && existingID != "" {
+					newProfile["id"] = existingID
+				}
 				connections[i] = newProfile
 				return connections
 			}
@@ -369,6 +383,27 @@ func (c *VSCode) updateOrAddProfile(connections []interface{}, newProfile map[st
 
 	// Add new profile
 	return append(connections, newProfile)
+}
+
+// rootGroupID is the stable id of the default connection group the mssql
+// extension creates for ungrouped profiles.
+const rootGroupID = "ROOT"
+
+// ensureRootGroup returns a connectionGroups array that contains a ROOT entry,
+// preserving any other groups the user already has.
+func ensureRootGroup(existing interface{}) []interface{} {
+	groups, _ := existing.([]interface{})
+	for _, g := range groups {
+		if gm, ok := g.(map[string]interface{}); ok {
+			if id, _ := gm["id"].(string); id == rootGroupID {
+				return groups
+			}
+		}
+	}
+	return append(groups, map[string]interface{}{
+		"id":   rootGroupID,
+		"name": rootGroupID,
+	})
 }
 
 func (c *VSCode) getVSCodeSettingsPath(build string) string {
@@ -417,19 +452,41 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 	return filepath.Join(configDir, "settings.json")
 }
 
-// isMssqlExtensionInstalled checks if the MSSQL extension is installed in VS Code
-func (c *VSCode) isMssqlExtensionInstalled(t tool.Tool) bool {
-	output, _, err := t.RunWithOutput([]string{"--list-extensions"})
+func isMssqlExtensionInstalled() bool {
+	home, err := os.UserHomeDir()
 	if err != nil {
-		// If we can't list extensions, assume it's installed to avoid blocking the user,
-		// but emit a warning so the user is aware that verification failed.
-		c.Output().Warn(localizer.Sprintf("Could not verify MSSQL extension installation: %s", err.Error()))
-		return true
+		return false
 	}
+	for _, dir := range []string{".vscode", ".vscode-insiders"} {
+		entries, err := os.ReadDir(filepath.Join(home, dir, "extensions"))
+		if err != nil {
+			continue
+		}
+		for _, e := range entries {
+			if !e.IsDir() {
+				continue
+			}
+			if strings.HasPrefix(strings.ToLower(e.Name()), "ms-mssql.mssql-") {
+				return true
+			}
+		}
+	}
+	return false
+}
 
-	// Check if the MSSQL extension is in the list (case-insensitive)
-	extensions := strings.ToLower(output)
-	return strings.Contains(extensions, "ms-mssql.mssql")
+// mssqlConnectURI builds a vscode:// URI that the mssql extension's protocol
+// handler uses to find the matching saved profile, open an Object Explorer
+// session, and focus the SQL Server view.
+func mssqlConnectURI(endpoint sqlconfig.Endpoint, user *sqlconfig.User) string {
+	q := url.Values{}
+	q.Set("profileName", config.CurrentContextName())
+	q.Set("server", fmt.Sprintf("tcp:%s,%d", endpoint.Address, endpoint.Port))
+	q.Set("database", "master")
+	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
+		q.Set("user", user.BasicAuth.Username)
+		q.Set("authenticationType", "SqlLogin")
+	}
+	return "vscode://ms-mssql.mssql/connect?" + q.Encode()
 }
 
 // isLocalEndpoint checks if the endpoint is a local connection (container, localhost, etc.)
