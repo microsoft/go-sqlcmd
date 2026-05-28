@@ -60,14 +60,14 @@ func (t *tool) Run(args []string) (int, error) {
 	}
 
 	cmd := t.generateCommandLine(args)
-	err := cmd.Run()
-
-	exitCode := 0
-	if cmd.ProcessState != nil {
-		exitCode = cmd.ProcessState.ExitCode()
+	if err := cmd.Start(); err != nil {
+		return 1, err
 	}
 
-	return exitCode, err
+	// Detach so the launched tool keeps running after sqlcmd exits. GUI tools
+	// such as SSMS are the long-running process themselves, so waiting would
+	// block until the user closes them.
+	return 0, cmd.Process.Release()
 }
 
 func (t *tool) RunWithOutput(args []string) (string, int, error) {
