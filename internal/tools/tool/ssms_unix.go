@@ -5,7 +5,9 @@
 
 package tool
 
-func (t *SSMS) urlHandlerRegistered() bool { return false }
+func (t *SSMS) searchLocations() []string {
+	return []string{}
+}
 
 func (t *SSMS) installText() string {
 	return `SQL Server Management Studio (SSMS) is only available on Windows.

@@ -7,8 +7,7 @@ package open
 
 import (
 	"fmt"
-	"net/url"
-	"os/exec"
+	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -34,17 +33,20 @@ func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 	c.Cmd.DefineCommand(options)
 }
 
-// run launches SSMS via the ssms:// URL handler with connection parameters
-// from the current context.
+// Launch SSMS and connect to the current context
 func (c *Ssms) run() {
 	endpoint, user := config.CurrentContext()
+
+	// Check if this is a local container connection
+	isLocalConnection := isLocalEndpoint(endpoint)
 
 	// If the context has a local container, ensure it is running, otherwise bail out
 	if asset := endpoint.AssetDetails; asset != nil && asset.ContainerDetails != nil {
 		c.ensureContainerIsRunning(asset.Id)
 	}
 
-	c.launchSsms(endpoint.Address, endpoint.Port, user)
+	// Launch SSMS with connection parameters
+	c.launchSsms(endpoint.Address, endpoint.Port, user, isLocalConnection)
 }
 
 func (c *Ssms) ensureContainerIsRunning(containerID string) {
@@ -57,51 +59,40 @@ func (c *Ssms) ensureContainerIsRunning(containerID string) {
 	}
 }
 
-// launchSsms hands off the connection to SSMS through the ssms:// URL handler.
-// The handler resolves to Microsoft.VisualStudio.SSMSProtocolSelector.exe
-// (SSMS 21+) or Ssms.exe (legacy MSI installs) and accepts short-form keys
-// s, d, u, a, p observed in the SQL database in Fabric "Open in SSMS" link.
-func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User) {
+// launchSsms launches SQL Server Management Studio using the specified server and user credentials.
+func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User, isLocalConnection bool) {
 	output := c.Output()
+
+	// Build server connection string
+	serverArg := fmt.Sprintf("%s,%d", host, port)
+
+	args := []string{
+		"-S", serverArg,
+		"-nosplash",
+	}
+
+	// Only add -C (trust server certificate) for local connections with self-signed certs
+	if isLocalConnection {
+		args = append(args, "-C")
+	}
+
+	// Use SQL authentication if configured (commonly used for SQL Server containers)
+	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
+		// Escape double quotes in username (SQL Server allows " in login names)
+		username := strings.ReplaceAll(user.BasicAuth.Username, `"`, `\"`)
+		args = append(args, "-U", username)
+		// Note: -P parameter was removed in SSMS 18+ for security reasons
+		// Copy password to clipboard so user can paste it in the login dialog
+		copyPasswordToClipboard(user, output)
+	}
 
 	tool := tools.NewTool("ssms")
 	if !tool.IsInstalled() {
 		output.Fatal(tool.HowToInstall())
 	}
 
-	var password string
-	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
-		_, _, password = config.GetCurrentContextInfo()
-	}
-	ssmsURL := buildSsmsURL(host, port, user, password)
+	c.displayPreLaunchInfo()
 
-	output.Info(localizer.Sprintf("Launching SQL Server Management Studio..."))
-
-	// cmd /c start "" "<url>" routes the URL through ShellExecute,
-	// which uses the HKCR\ssms\shell\open\command registration.
-	cmd := exec.Command("cmd", "/c", "start", "", ssmsURL)
-	err := cmd.Start()
+	_, err := tool.Run(args)
 	c.CheckErr(err)
-}
-
-// buildSsmsURL constructs an ssms://connect URL for the supplied connection.
-// The grammar follows the Fabric "Open in SSMS" link format:
-//
-//	ssms://connect?s=<server,port>&u=<user>&a=<auth>&p=<password>
-//
-// Database (d) and other parameters are omitted because the current sqlcmd
-// context does not carry a database name.
-func buildSsmsURL(host string, port int, user *sqlconfig.User, password string) string {
-	q := url.Values{}
-	q.Set("s", fmt.Sprintf("%s,%d", host, port))
-
-	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
-		q.Set("u", user.BasicAuth.Username)
-		q.Set("a", "SqlLogin")
-		if password != "" {
-			q.Set("p", password)
-		}
-	}
-
-	return "ssms://connect?" + q.Encode()
 }
