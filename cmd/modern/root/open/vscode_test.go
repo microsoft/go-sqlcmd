@@ -268,27 +268,37 @@ func TestVSCodeGetConnectionsArray(t *testing.T) {
 	}
 }
 
-// TestVSCodeGetSettingsPath tests that settings path is correctly determined
+// TestVSCodeGetSettingsPath tests that the settings path routes to the
+// requested build's user directory.
 func TestVSCodeGetSettingsPath(t *testing.T) {
 	cmdparser.TestSetup(t)
 
 	vscode := &VSCode{}
-	path := vscode.getVSCodeSettingsPath()
 
-	// Verify path ends with settings.json
-	if filepath.Base(path) != "settings.json" {
-		t.Errorf("Expected path to end with 'settings.json', got '%s'", filepath.Base(path))
+	stable := vscode.getVSCodeSettingsPath("stable")
+	insiders := vscode.getVSCodeSettingsPath("insiders")
+
+	for _, path := range []string{stable, insiders} {
+		if filepath.Base(path) != "settings.json" {
+			t.Errorf("Expected path to end with 'settings.json', got '%s'", filepath.Base(path))
+		}
 	}
 
-	// Verify path contains expected directory components
+	if !strings.Contains(insiders, "Code - Insiders") {
+		t.Errorf("Expected insiders path to contain 'Code - Insiders', got '%s'", insiders)
+	}
+	if strings.Contains(stable, "Code - Insiders") {
+		t.Errorf("Expected stable path to not contain 'Code - Insiders', got '%s'", stable)
+	}
+
 	switch runtime.GOOS {
 	case "windows":
-		if !strings.Contains(path, "Code") {
-			t.Errorf("Expected path to contain 'Code' on Windows, got '%s'", path)
+		if !strings.Contains(stable, "Code") {
+			t.Errorf("Expected path to contain 'Code' on Windows, got '%s'", stable)
 		}
 	case "darwin":
-		if !strings.Contains(path, "Application Support") {
-			t.Errorf("Expected path to contain 'Application Support' on macOS, got '%s'", path)
+		if !strings.Contains(stable, "Application Support") {
+			t.Errorf("Expected path to contain 'Application Support' on macOS, got '%s'", stable)
 		}
 	}
 }

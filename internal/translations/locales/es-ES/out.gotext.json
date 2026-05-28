@@ -2432,6 +2432,53 @@
             "translation": ""
         },
         {
+            "id": "SSMS major version to launch (for example 21); defaults to the latest installed",
+            "message": "SSMS major version to launch (for example 21); defaults to the latest installed",
+            "translation": ""
+        },
+        {
+            "id": "Open the latest SSMS",
+            "message": "Open the latest SSMS",
+            "translation": ""
+        },
+        {
+            "id": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
+            "message": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "MinSsmsVersion",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "minSsmsVersion"
+                },
+                {
+                    "id": "Version",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "c.version"
+                }
+            ]
+        },
+        {
+            "id": "sqlcmd start",
+            "message": "sqlcmd start",
+            "translation": "inicio de sqlcmd",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Container is not running",
+            "message": "Container is not running",
+            "translation": "El contenedor no se está ejecutando",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Launching SQL Server Management Studio...",
             "message": "Launching SQL Server Management Studio...",
             "translation": ""
@@ -2452,9 +2499,44 @@
             "translation": ""
         },
         {
+            "id": "Open a specific VS Code build",
+            "message": "Open a specific VS Code build",
+            "translation": ""
+        },
+        {
             "id": "Install the MSSQL extension in VS Code if not already installed",
             "message": "Install the MSSQL extension in VS Code if not already installed",
             "translation": ""
+        },
+        {
+            "id": "VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed",
+            "message": "VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed",
+            "translation": ""
+        },
+        {
+            "id": "Open the stable build",
+            "message": "Open the stable build",
+            "translation": ""
+        },
+        {
+            "id": "Open the insiders build",
+            "message": "Open the insiders build",
+            "translation": ""
+        },
+        {
+            "id": "'--build {Build}' is not supported; use 'stable' or 'insiders'",
+            "message": "'--build {Build}' is not supported; use 'stable' or 'insiders'",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Build",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.build"
+                }
+            ]
         },
         {
             "id": "Installing MSSQL extension...",
