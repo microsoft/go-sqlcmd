@@ -299,14 +299,11 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 	// and matches what they use with sqlcmd commands
 	contextName := config.CurrentContextName()
 
-	// Default to secure settings for production connections. The mssql
-	// extension still accepts the legacy boolean-string "true" as Mandatory
-	// and it is what the extension itself writes today.
-	encrypt := "true"
-	// Local connections (containers, localhost) commonly use self-signed
-	// certificates. Encryption stays mandatory; trustServerCertificate makes
-	// the cert acceptable. Users can still adjust these values in VS Code
-	// settings.
+	// Encryption is always required. For local connections (containers,
+	// localhost) trustServerCertificate accepts the self-signed cert most
+	// SQL Server images ship with. Users can adjust either field in VS Code
+	// settings afterwards.
+	encrypt := "Mandatory"
 	trustServerCertificate := isLocalConnection
 
 	profile := map[string]interface{}{
@@ -449,12 +446,18 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 }
 
 func isMssqlExtensionInstalled() bool {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return false
+	var dirs []string
+	if envDir := os.Getenv("VSCODE_EXTENSIONS"); envDir != "" {
+		dirs = append(dirs, envDir)
 	}
-	for _, dir := range []string{".vscode", ".vscode-insiders"} {
-		entries, err := os.ReadDir(filepath.Join(home, dir, "extensions"))
+	if home, err := os.UserHomeDir(); err == nil {
+		dirs = append(dirs,
+			filepath.Join(home, ".vscode", "extensions"),
+			filepath.Join(home, ".vscode-insiders", "extensions"),
+		)
+	}
+	for _, dir := range dirs {
+		entries, err := os.ReadDir(dir)
 		if err != nil {
 			continue
 		}
