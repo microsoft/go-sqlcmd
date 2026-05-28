@@ -327,7 +327,8 @@ func (c Controller) ContainerRunning(id string) (running bool) {
 	return
 }
 
-// ContainerName returns the human-readable name assigned to the container.
+// ContainerName returns the human-readable name assigned to the container,
+// or "" if the container can't be inspected (missing, daemon down, etc.).
 // The docker API returns names with a leading "/" which is stripped here.
 func (c Controller) ContainerName(id string) string {
 	if id == "" {
@@ -335,7 +336,9 @@ func (c Controller) ContainerName(id string) string {
 	}
 
 	resp, err := c.cli.ContainerInspect(context.Background(), id, client.ContainerInspectOptions{})
-	checkErr(err)
+	if err != nil {
+		return ""
+	}
 	return strings.TrimPrefix(resp.Container.Name, "/")
 }
 
