@@ -4,8 +4,8 @@
 package open
 
 import (
+	"net/url"
 	"runtime"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -21,10 +21,10 @@ func TestSsms(t *testing.T) {
 		t.Skip("SSMS is only available on Windows")
 	}
 
-	// Skip if SSMS is not installed
+	// Skip if the ssms:// URL handler isn't registered (SSMS not installed).
 	tool := tools.NewTool("ssms")
 	if !tool.IsInstalled() {
-		t.Skip("SSMS is not installed")
+		t.Skip("SSMS is not installed (ssms:// URL handler not registered)")
 	}
 
 	cmdparser.TestSetup(t)
@@ -48,166 +48,119 @@ func TestSsms(t *testing.T) {
 	cmdparser.TestCmd[*Ssms]()
 }
 
-func TestSsmsCommandLineArgs(t *testing.T) {
-	// Test server argument format
-	host := "localhost"
-	port := 1433
-	serverArg := buildServerArg(host, port)
-
-	expected := "localhost,1433"
-	if serverArg != expected {
-		t.Errorf("Expected server arg '%s', got '%s'", expected, serverArg)
-	}
-
-	// Test with non-default port
-	port = 2000
-	serverArg = buildServerArg(host, port)
-
-	expected = "localhost,2000"
-	if serverArg != expected {
-		t.Errorf("Expected server arg '%s', got '%s'", expected, serverArg)
-	}
-
-	// Test with different host
-	host = "myserver.database.windows.net"
-	serverArg = buildServerArg(host, port)
-
-	expected = "myserver.database.windows.net,2000"
-	if serverArg != expected {
-		t.Errorf("Expected server arg '%s', got '%s'", expected, serverArg)
-	}
-}
-
-// TestSsmsUsernameEscaping tests that special characters in usernames are escaped
-func TestSsmsUsernameEscaping(t *testing.T) {
-	// Test escaping double quotes in username
-	username := `admin"user`
-	escaped := strings.ReplaceAll(username, `"`, `\"`)
-
-	expected := `admin\"user`
-	if escaped != expected {
-		t.Errorf("Expected escaped username '%s', got '%s'", expected, escaped)
-	}
-
-	// Test username without special characters
-	username = "sa"
-	escaped = strings.ReplaceAll(username, `"`, `\"`)
-
-	if escaped != "sa" {
-		t.Errorf("Expected unchanged username 'sa', got '%s'", escaped)
-	}
-
-	// Test username with multiple quotes
-	username = `user"with"quotes`
-	escaped = strings.ReplaceAll(username, `"`, `\"`)
-
-	expected = `user\"with\"quotes`
-	if escaped != expected {
-		t.Errorf("Expected escaped username '%s', got '%s'", expected, escaped)
-	}
-}
-
-// TestSsmsContextWithUser tests SSMS setup with user credentials
-func TestSsmsContextWithUser(t *testing.T) {
+// TestBuildSsmsURLNoUser covers the integrated-auth case: only the server
+// parameter is set.
+func TestBuildSsmsURLNoUser(t *testing.T) {
 	if runtime.GOOS != "windows" {
-		t.Skip("SSMS is only available on Windows")
+		t.Skip("buildSsmsURL is Windows-only")
+	}
+	got := buildSsmsURL("myserver.database.windows.net", 1433, nil, "")
+
+	parsed, err := url.Parse(got)
+	if err != nil {
+		t.Fatalf("invalid URL %q: %v", got, err)
+	}
+	if parsed.Scheme != "ssms" || parsed.Host != "connect" {
+		t.Fatalf("expected ssms://connect, got scheme=%q host=%q", parsed.Scheme, parsed.Host)
 	}
 
+	q := parsed.Query()
+	if q.Get("s") != "myserver.database.windows.net,1433" {
+		t.Errorf("s param: got %q", q.Get("s"))
+	}
+	for _, k := range []string{"u", "a", "p"} {
+		if q.Has(k) {
+			t.Errorf("did not expect %q for integrated auth, got %q", k, q.Get(k))
+		}
+	}
+}
+
+// TestBuildSsmsURLBasicAuth covers SQL login with username but no password:
+// the URL must include u and a=SqlLogin, and the username must be URL-encoded.
+func TestBuildSsmsURLBasicAuth(t *testing.T) {
+	if runtime.GOOS != "windows" {
+		t.Skip("buildSsmsURL is Windows-only")
+	}
 	cmdparser.TestSetup(t)
+	addBasicContext(t, "localhost", 1433, "admin user", "")
 
-	// Set up context with SQL authentication user
+	user := userPointerFromContext(t)
+	got := buildSsmsURL("localhost", 1433, user, "")
+
+	parsed, err := url.Parse(got)
+	if err != nil {
+		t.Fatalf("invalid URL %q: %v", got, err)
+	}
+	q := parsed.Query()
+	if q.Get("s") != "localhost,1433" {
+		t.Errorf("s param: got %q", q.Get("s"))
+	}
+	if q.Get("u") != "admin user" {
+		t.Errorf("u param: got %q", q.Get("u"))
+	}
+	if q.Get("a") != "SqlLogin" {
+		t.Errorf("a param: got %q, want SqlLogin", q.Get("a"))
+	}
+	if q.Has("p") {
+		t.Errorf("p param should be omitted when password is empty, got %q", q.Get("p"))
+	}
+	// Spaces must be percent-encoded in the raw URL so SSMS receives the original username.
+	if !strings.Contains(got, "u=admin+user") && !strings.Contains(got, "u=admin%20user") {
+		t.Errorf("expected username to be URL-encoded in %q", got)
+	}
+}
+
+// TestBuildSsmsURLBasicAuthWithPassword verifies the password parameter is
+// included and URL-encoded when the context carries one.
+func TestBuildSsmsURLBasicAuthWithPassword(t *testing.T) {
+	if runtime.GOOS != "windows" {
+		t.Skip("buildSsmsURL is Windows-only")
+	}
+	cmdparser.TestSetup(t)
+	addBasicContext(t, "localhost", 1433, "sa", "P@ss w0rd&=?")
+
+	user := userPointerFromContext(t)
+	got := buildSsmsURL("localhost", 1433, user, "P@ss w0rd&=?")
+
+	parsed, err := url.Parse(got)
+	if err != nil {
+		t.Fatalf("invalid URL %q: %v", got, err)
+	}
+	q := parsed.Query()
+	if q.Get("p") != "P@ss w0rd&=?" {
+		t.Errorf("p param: got %q, want %q", q.Get("p"), "P@ss w0rd&=?")
+	}
+}
+
+// addBasicContext sets up a SQL-login context for a buildSsmsURL test.
+func addBasicContext(t *testing.T, address string, port int, username, password string) {
+	t.Helper()
 	config.AddEndpoint(sqlconfig.Endpoint{
-		AssetDetails: nil,
-		EndpointDetails: sqlconfig.EndpointDetails{
-			Address: "localhost",
-			Port:    1433,
-		},
-		Name: "ssms-test-endpoint",
+		EndpointDetails: sqlconfig.EndpointDetails{Address: address, Port: port},
+		Name:            "ssms-url-endpoint",
 	})
-
 	config.AddUser(sqlconfig.User{
 		AuthenticationType: "basic",
 		BasicAuth: &sqlconfig.BasicAuthDetails{
-			Username:           "sa",
+			Username:           username,
 			PasswordEncryption: "",
-			Password:           "TestPassword123",
+			Password:           password,
 		},
-		Name: "ssms-test-user",
+		Name: "ssms-url-user",
 	})
-
+	userName := "ssms-url-user"
 	config.AddContext(sqlconfig.Context{
-		ContextDetails: sqlconfig.ContextDetails{
-			Endpoint: "ssms-test-endpoint",
-			User:     strPtr("ssms-test-user"),
-		},
-		Name: "ssms-test-context",
+		ContextDetails: sqlconfig.ContextDetails{Endpoint: "ssms-url-endpoint", User: &userName},
+		Name:           "ssms-url-context",
 	})
-	config.SetCurrentContextName("ssms-test-context")
+	config.SetCurrentContextName("ssms-url-context")
+}
 
-	// Verify context is set up correctly
-	endpoint, user := config.CurrentContext()
-
-	if endpoint.Address != "localhost" {
-		t.Errorf("Expected address 'localhost', got '%s'", endpoint.Address)
-	}
-
-	if endpoint.Port != 1433 {
-		t.Errorf("Expected port 1433, got %d", endpoint.Port)
-	}
-
+func userPointerFromContext(t *testing.T) *sqlconfig.User {
+	t.Helper()
+	_, user := config.CurrentContext()
 	if user == nil {
-		t.Fatal("Expected user to be set")
+		t.Fatal("expected user in current context")
 	}
-
-	if user.AuthenticationType != "basic" {
-		t.Errorf("Expected auth type 'basic', got '%s'", user.AuthenticationType)
-	}
-
-	if user.BasicAuth.Username != "sa" {
-		t.Errorf("Expected username 'sa', got '%s'", user.BasicAuth.Username)
-	}
-}
-
-// TestSsmsContextWithoutUser tests SSMS setup without user credentials
-func TestSsmsContextWithoutUser(t *testing.T) {
-	if runtime.GOOS != "windows" {
-		t.Skip("SSMS is only available on Windows")
-	}
-
-	cmdparser.TestSetup(t)
-
-	// Set up context without user (e.g., for Windows authentication scenarios)
-	config.AddEndpoint(sqlconfig.Endpoint{
-		AssetDetails: nil,
-		EndpointDetails: sqlconfig.EndpointDetails{
-			Address: "myserver",
-			Port:    1433,
-		},
-		Name: "ssms-no-user-endpoint",
-	})
-
-	config.AddContext(sqlconfig.Context{
-		ContextDetails: sqlconfig.ContextDetails{
-			Endpoint: "ssms-no-user-endpoint",
-			User:     nil,
-		},
-		Name: "ssms-no-user-context",
-	})
-	config.SetCurrentContextName("ssms-no-user-context")
-
-	// Verify context is set up correctly
-	endpoint, user := config.CurrentContext()
-
-	if endpoint.Address != "myserver" {
-		t.Errorf("Expected address 'myserver', got '%s'", endpoint.Address)
-	}
-
-	if user != nil {
-		t.Error("Expected user to be nil")
-	}
-}
-
-// Helper function to build server argument string
-func buildServerArg(host string, port int) string {
-	return host + "," + strconv.Itoa(port)
+	return user
 }
