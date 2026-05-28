@@ -295,14 +295,10 @@ func (c *VSCode) getConnectionsArray(settings map[string]interface{}) []interfac
 }
 
 func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) map[string]interface{} {
-	// Use context name as the profile name - this is the user's chosen identifier
-	// and matches what they use with sqlcmd commands
 	contextName := config.CurrentContextName()
 
-	// Encryption is always required. For local connections (containers,
-	// localhost) trustServerCertificate accepts the self-signed cert most
-	// SQL Server images ship with. Users can adjust either field in VS Code
-	// settings afterwards.
+	// trustServerCertificate=true accepts the self-signed certs that local
+	// SQL Server containers ship with; encrypt stays Mandatory either way.
 	encrypt := "Mandatory"
 	trustServerCertificate := isLocalConnection
 
@@ -333,7 +329,6 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 
 	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
 		profile["user"] = user.BasicAuth.Username
-		// SQL authentication contexts use SqlLogin
 		profile["authenticationType"] = "SqlLogin"
 		profile["savePassword"] = true
 
@@ -352,11 +347,9 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 func (c *VSCode) updateOrAddProfile(connections []interface{}, newProfile map[string]interface{}) []interface{} {
 	profileName, ok := newProfile["profileName"].(string)
 	if !ok {
-		// If profileName is not a valid string, just append the profile
 		return append(connections, newProfile)
 	}
 
-	// Check if profile with same name exists and update it
 	for i, conn := range connections {
 		if connMap, ok := conn.(map[string]interface{}); ok {
 			if name, ok := connMap["profileName"].(string); ok && name == profileName {
@@ -374,7 +367,6 @@ func (c *VSCode) updateOrAddProfile(connections []interface{}, newProfile map[st
 		}
 	}
 
-	// Add new profile
 	return append(connections, newProfile)
 }
 
@@ -488,15 +480,10 @@ func mssqlConnectURI(endpoint sqlconfig.Endpoint, user *sqlconfig.User) string {
 	return "vscode://ms-mssql.mssql/connect?" + q.Encode()
 }
 
-// isLocalEndpoint checks if the endpoint is a local connection (container, localhost, etc.)
-// This is used to determine whether to use relaxed TLS settings.
 func isLocalEndpoint(endpoint sqlconfig.Endpoint) bool {
-	// Check if this is a container-based connection
 	if asset := endpoint.AssetDetails; asset != nil && asset.ContainerDetails != nil {
 		return true
 	}
-
-	// Check for common local addresses
 	addr := strings.ToLower(endpoint.Address)
 	return addr == "localhost" || addr == "127.0.0.1" || addr == "::1" || addr == "host.docker.internal"
 }
