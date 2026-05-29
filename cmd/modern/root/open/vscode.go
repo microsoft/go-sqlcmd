@@ -147,12 +147,12 @@ func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *s
 	}
 
 	if c.installExtension {
-		output.Info(localizer.Sprintf("Installing MSSQL extension..."))
-		_, err := t.Run([]string{"--install-extension", "ms-mssql.mssql", "--force"})
-		if err != nil {
-			output.Warn(localizer.Sprintf("Could not install MSSQL extension: %s", err.Error()))
-		} else {
-			output.Info(localizer.Sprintf("MSSQL extension installed successfully"))
+		// Run is fire-and-forget (Process.Release), so we cannot report the
+		// install's real outcome here. Tell the user it was requested and
+		// point them at VS Code's own progress in case it fails.
+		output.Info(localizer.Sprintf("Requested MSSQL extension install; watch VS Code for progress"))
+		if _, err := t.Run([]string{"--install-extension", "ms-mssql.mssql", "--force"}); err != nil {
+			output.Warn(localizer.Sprintf("Could not start MSSQL extension install: %s", err.Error()))
 		}
 	} else {
 		// Check if MSSQL extension is installed, warn if not.
