@@ -64,16 +64,3 @@ func (t *VSCode) Run(args []string) (int, error) {
 	}
 	return 0, nil
 }
-
-func (t *VSCode) RunWithOutput(args []string) (string, int, error) {
-	if !test.IsRunningInTestExecutor() {
-		return t.tool.RunWithOutput(args)
-	}
-	// In test mode, simulate extension list output
-	for _, arg := range args {
-		if arg == "--list-extensions" {
-			return "ms-mssql.mssql\n", 0, nil
-		}
-	}
-	return "", 0, nil
-}

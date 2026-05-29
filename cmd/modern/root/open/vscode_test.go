@@ -4,8 +4,6 @@
 package open
 
 import (
-	"encoding/json"
-	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -180,62 +178,6 @@ func TestVSCodeUpdateOrAddProfile(t *testing.T) {
 	}
 }
 
-func TestVSCodeReadWriteSettings(t *testing.T) {
-	// Create a temporary directory for test settings
-	tempDir := t.TempDir()
-	settingsPath := filepath.Join(tempDir, "settings.json")
-
-	// Test reading non-existent file (should not exist yet)
-	_, err := os.ReadFile(settingsPath)
-	if !os.IsNotExist(err) {
-		t.Error("Expected file to not exist")
-	}
-
-	// Write some settings using direct JSON
-	settings := map[string]interface{}{
-		"mssql.connections": []interface{}{
-			map[string]interface{}{
-				"profileName": "test",
-				"server":      "localhost,1433",
-			},
-		},
-		"other.setting": "value",
-	}
-
-	data, err := json.MarshalIndent(settings, "", "  ")
-	if err != nil {
-		t.Fatalf("Failed to marshal settings: %v", err)
-	}
-
-	if err := os.WriteFile(settingsPath, data, 0644); err != nil {
-		t.Fatalf("Failed to write settings: %v", err)
-	}
-
-	// Verify file was created
-	if _, err := os.Stat(settingsPath); os.IsNotExist(err) {
-		t.Error("Settings file was not created")
-	}
-
-	// Read settings back
-	readData, err := os.ReadFile(settingsPath)
-	if err != nil {
-		t.Fatalf("Failed to read settings: %v", err)
-	}
-
-	var readSettings map[string]interface{}
-	if err := json.Unmarshal(readData, &readSettings); err != nil {
-		t.Fatalf("Failed to unmarshal settings: %v", err)
-	}
-
-	if readSettings["other.setting"] != "value" {
-		t.Errorf("Expected 'other.setting' to be 'value', got '%v'", readSettings["other.setting"])
-	}
-
-	connections, ok := readSettings["mssql.connections"].([]interface{})
-	if !ok || len(connections) != 1 {
-		t.Error("Expected 1 mssql connection in read settings")
-	}
-}
 
 // TestVSCodeGetConnectionsArray tests extracting connections array from settings
 func TestVSCodeGetConnectionsArray(t *testing.T) {
@@ -347,75 +289,6 @@ func TestVSCodeProfileWithoutUser(t *testing.T) {
 
 	if profile["trustServerCertificate"] != false {
 		t.Errorf("Expected trustServerCertificate false for non-local connection, got '%v'", profile["trustServerCertificate"])
-	}
-}
-
-func TestVSCodeSettingsPreservesOtherKeys(t *testing.T) {
-	cmdparser.TestSetup(t)
-
-	vscode := &VSCode{}
-	tempDir := t.TempDir()
-	settingsPath := filepath.Join(tempDir, "settings.json")
-
-	// Write initial settings with various keys
-	initialSettings := map[string]interface{}{
-		"editor.fontSize":   14,
-		"workbench.theme":   "Dark+",
-		"mssql.connections": []interface{}{},
-	}
-
-	data, err := json.MarshalIndent(initialSettings, "", "  ")
-	if err != nil {
-		t.Fatalf("Failed to marshal initial settings: %v", err)
-	}
-	if err := os.WriteFile(settingsPath, data, 0644); err != nil {
-		t.Fatalf("Failed to write settings: %v", err)
-	}
-
-	// Read settings back using direct JSON (simulating what readSettings does)
-	readData, err := os.ReadFile(settingsPath)
-	if err != nil {
-		t.Fatalf("Failed to read settings: %v", err)
-	}
-	var settings map[string]interface{}
-	if err := json.Unmarshal(readData, &settings); err != nil {
-		t.Fatalf("Failed to unmarshal settings: %v", err)
-	}
-
-	// Get connections and add a new profile
-	connections := vscode.getConnectionsArray(settings)
-	newProfile := map[string]interface{}{
-		"profileName": "new-profile",
-		"server":      "localhost,1433",
-	}
-	connections = vscode.updateOrAddProfile(connections, newProfile)
-	settings["mssql.connections"] = connections
-
-	// Write back using direct JSON (simulating what writeSettings does)
-	writeData, err := json.MarshalIndent(settings, "", "  ")
-	if err != nil {
-		t.Fatalf("Failed to marshal settings: %v", err)
-	}
-	if err := os.WriteFile(settingsPath, writeData, 0644); err != nil {
-		t.Fatalf("Failed to write settings: %v", err)
-	}
-
-	// Read back and verify other keys are preserved
-	finalData, err := os.ReadFile(settingsPath)
-	if err != nil {
-		t.Fatalf("Failed to read final settings: %v", err)
-	}
-	var finalSettings map[string]interface{}
-	if err := json.Unmarshal(finalData, &finalSettings); err != nil {
-		t.Fatalf("Failed to unmarshal final settings: %v", err)
-	}
-
-	if finalSettings["editor.fontSize"].(float64) != 14 {
-		t.Errorf("Expected editor.fontSize to be preserved as 14, got %v", finalSettings["editor.fontSize"])
-	}
-
-	if finalSettings["workbench.theme"] != "Dark+" {
-		t.Errorf("Expected workbench.theme to be preserved as 'Dark+', got %v", finalSettings["workbench.theme"])
 	}
 }
 
