@@ -21,7 +21,7 @@ type Ssms struct {
 func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "ssms",
-		Short: localizer.Sprintf("Open SQL Server Management Studio and connect to current context"),
+		Short: localizer.Sprintf("Open SQL Server Management Studio and connect to current context (Windows only)"),
 		Examples: []cmdparser.ExampleOptions{{
 			Description: localizer.Sprintf("Open SSMS and connect using the current context"),
 			Steps:       []string{"sqlcmd open ssms"}}},

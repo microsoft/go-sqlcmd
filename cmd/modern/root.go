@@ -27,7 +27,10 @@ type Root struct {
 // It also provides usage examples for sqlcmd.
 func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	// Example usage steps
-	steps := []string{"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak"}
+	steps := []string{
+		"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak",
+		"sqlcmd open vscode",
+	}
 
 	if runtime.GOOS == "windows" {
 		steps = append(steps, "sqlcmd open ssms")
