@@ -660,11 +660,9 @@
             "fuzzy": true
         },
         {
-            "id": "Open in Azure Data Studio",
-            "message": "Open in Azure Data Studio",
-            "translation": "Abrir no Azure Data Studio",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Open in Visual Studio Code",
+            "message": "Open in Visual Studio Code",
+            "translation": ""
         },
         {
             "id": "To start interactive query session",
@@ -2069,6 +2067,11 @@
             "fuzzy": true
         },
         {
+            "id": "Open in SQL Server Management Studio",
+            "message": "Open in SQL Server Management Studio",
+            "translation": ""
+        },
+        {
             "id": "Start interactive session",
             "message": "Start interactive session",
             "translation": "Iniciar sessão interativa",
@@ -2363,41 +2366,6 @@
             "id": "List tags",
             "message": "List tags",
             "translation": "Listar marcas",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "sqlcmd start",
-            "message": "sqlcmd start",
-            "translation": "Início do sqlcmd",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Container is not running",
-            "message": "Container is not running",
-            "translation": "O contêiner não está em execução",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Pressione Ctrl+C para sair desse processo...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "Um erro \"Não há recursos de memória suficientes disponíveis\" pode ser causado por ter muitas credenciais já armazenadas no Gerenciador de Credenciais do Windows",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Falha ao gravar credencial no Gerenciador de Credenciais do Windows",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -3131,6 +3099,11 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": ""
         },
         {
             "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
