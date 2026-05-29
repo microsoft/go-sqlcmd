@@ -82,14 +82,9 @@ sqlcmd open vscode
 
 This command will:
 1. **Create a connection profile** in VS Code's user settings with the current context name
-2. **Copy the password to clipboard** so you can paste it when prompted
-3. **Launch VS Code** ready to connect
+2. **Launch VS Code** via the `vscode://` URL handler, which opens the MSSQL extension on the new profile
 
-To also install the MSSQL extension (if not already installed), add the `--install-extension` flag:
-
-```
-sqlcmd open vscode --install-extension
-```
+If the MSSQL extension is not installed, VS Code prompts to install it the first time the URL is opened.
 
 Once VS Code opens, use the MSSQL extension's Object Explorer to connect using the profile. When you connect to the container, VS Code will automatically detect it as a Docker container and provide additional container management features (start/stop/delete) directly from the Object Explorer.
 
