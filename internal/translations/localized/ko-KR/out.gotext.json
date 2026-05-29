@@ -1811,142 +1811,128 @@
       "fuzzy": true
     },
     {
-      "id": "Install Azure Sql Edge",
-      "message": "Install Azure Sql Edge",
-      "translation": "Azure SQL Edge 설치",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "Install/Create Azure SQL Edge in a container",
-      "message": "Install/Create Azure SQL Edge in a container",
-      "translation": "컨테이너에 Azure SQL Edge 설치/만들기",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
       "id": "Tag to use, use get-tags to see list of tags",
       "message": "Tag to use, use get-tags to see list of tags",
-      "translation": "사용할 태그, get-tags를 사용하여 태그 목록 보기",
+      "translation": "Tag to use, use get-tags to see list of tags",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Context name (a default context name will be created if not provided)",
       "message": "Context name (a default context name will be created if not provided)",
-      "translation": "컨텍스트 이름(제공하지 않으면 기본 컨텍스트 이름이 생성됨)",
+      "translation": "Context name (a default context name will be created if not provided)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create a user database and set it as the default for login",
       "message": "Create a user database and set it as the default for login",
-      "translation": "사용자 데이터베이스를 생성하고 로그인을 위한 기본값으로 설정",
+      "translation": "Create a user database and set it as the default for login",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Accept the SQL Server EULA",
       "message": "Accept the SQL Server EULA",
-      "translation": "SQL Server EULA에 동의",
+      "translation": "Accept the SQL Server EULA",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Generated password length",
       "message": "Generated password length",
-      "translation": "생성된 암호 길이",
+      "translation": "Generated password length",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of special characters",
       "message": "Minimum number of special characters",
-      "translation": "최소 특수 문자 수",
+      "translation": "Minimum number of special characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of numeric characters",
       "message": "Minimum number of numeric characters",
-      "translation": "숫자의 최소 수",
+      "translation": "Minimum number of numeric characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of upper characters",
       "message": "Minimum number of upper characters",
-      "translation": "최소 대문자 수",
+      "translation": "Minimum number of upper characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Special character set to include in password",
       "message": "Special character set to include in password",
-      "translation": "암호에 포함할 특수 문자 세트",
+      "translation": "Special character set to include in password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Don't download image.  Use already downloaded image",
       "message": "Don't download image.  Use already downloaded image",
-      "translation": "이미지를 다운로드하지 마세요.  이미 다운로드한 이미지 사용",
+      "translation": "Don't download image.  Use already downloaded image",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Line in errorlog to wait for before connecting",
       "message": "Line in errorlog to wait for before connecting",
-      "translation": "연결하기 전에 대기할 오류 로그 라인",
+      "translation": "Line in errorlog to wait for before connecting",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specify a custom name for the container rather than a randomly generated one",
       "message": "Specify a custom name for the container rather than a randomly generated one",
-      "translation": "임의로 생성된 이름이 아닌 컨테이너의 사용자 지정 이름을 지정하세요.",
+      "translation": "Specify a custom name for the container rather than a randomly generated one",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Explicitly set the container hostname, it defaults to the container ID",
       "message": "Explicitly set the container hostname, it defaults to the container ID",
-      "translation": "컨테이너 호스트 이름을 명시적으로 설정합니다. 기본값은 컨테이너 ID입니다.",
+      "translation": "Explicitly set the container hostname, it defaults to the container ID",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the image CPU architecture",
       "message": "Specifies the image CPU architecture",
-      "translation": "이미지 CPU 아키텍처를 지정합니다.",
+      "translation": "Specifies the image CPU architecture",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the image operating system",
       "message": "Specifies the image operating system",
-      "translation": "이미지 운영 체제를 지정합니다.",
+      "translation": "Specifies the image operating system",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Port (next available port from 1433 upwards used by default)",
       "message": "Port (next available port from 1433 upwards used by default)",
-      "translation": "포트(기본적으로 사용되는 1433 이상에서 사용 가능한 다음 포트)",
+      "translation": "Port (next available port from 1433 upwards used by default)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Download (into container) and attach database (.bak) from URL",
       "message": "Download (into container) and attach database (.bak) from URL",
-      "translation": "URL에서 (컨테이너로) 다운로드 및 데이터베이스(.bak) 연결",
+      "translation": "Download (into container) and attach database (.bak) from URL",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Either, add the {AcceptEulaFlag} flag to the command-line",
       "message": "Either, add the {AcceptEulaFlag} flag to the command-line",
-      "translation": "명령줄에 {AcceptEulaFlag} 플래그를 추가합니다.",
+      "translation": "Either, add the {AcceptEulaFlag} flag to the command-line",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1963,7 +1949,7 @@
     {
       "id": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
       "message": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
-      "translation": "또는 환경 변수를 설정합니다. 즉, {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "translation": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1988,14 +1974,14 @@
     {
       "id": "EULA not accepted",
       "message": "EULA not accepted",
-      "translation": "EULA가 수락되지 않음",
+      "translation": "EULA not accepted",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
       "message": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
-      "translation": "--user-database {DefaultDatabase}는 ASCII가 아닌 문자 및/또는 따옴표를 포함합니다.",
+      "translation": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2012,7 +1998,7 @@
     {
       "id": "Starting {ImageName}",
       "message": "Starting {ImageName}",
-      "translation": "{ImageName} 시작 중",
+      "translation": "Starting {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2029,7 +2015,7 @@
     {
       "id": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
       "message": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
-      "translation": "\"{ConfigFileUsed}\"에서 컨텍스트 {CurrentContextName} 생성, 사용자 계정 구성 중...",
+      "translation": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2054,7 +2040,7 @@
     {
       "id": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
       "message": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
-      "translation": "비활성화된 {Sa} 계정(및 회전된 {Sa_1} 암호). {UserName} 사용자 생성",
+      "translation": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2087,42 +2073,42 @@
     {
       "id": "Start interactive session",
       "message": "Start interactive session",
-      "translation": "대화형 세션 시작",
+      "translation": "Start interactive session",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Change current context",
       "message": "Change current context",
-      "translation": "현재 컨텍스트 변경",
+      "translation": "Change current context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "View sqlcmd configuration",
       "message": "View sqlcmd configuration",
-      "translation": "sqlcmd 구성 보기",
+      "translation": "View sqlcmd configuration",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "See connection strings",
       "message": "See connection strings",
-      "translation": "연결 문자열 보기",
+      "translation": "See connection strings",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Remove",
       "message": "Remove",
-      "translation": "제거",
+      "translation": "Remove",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Now ready for client connections on port {Port}",
       "message": "Now ready for client connections on port {Port}",
-      "translation": "이제 포트 {Port}에서 클라이언트 연결 준비 완료",
+      "translation": "Now ready for client connections on port {Port}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2139,14 +2125,14 @@
     {
       "id": "--using URL must be http or https",
       "message": "--using URL must be http or https",
-      "translation": "--using URL은 http 또는 https여야 합니다.",
+      "translation": "--using URL must be http or https",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{UsingDatabaseUrl} is not a valid URL for --using flag",
       "message": "{UsingDatabaseUrl} is not a valid URL for --using flag",
-      "translation": "{UsingDatabaseUrl}은 --using 플래그에 유효한 URL이 아닙니다.",
+      "translation": "{UsingDatabaseUrl} is not a valid URL for --using flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2163,28 +2149,28 @@
     {
       "id": "--using URL must have a path to .bak file",
       "message": "--using URL must have a path to .bak file",
-      "translation": "--using URL에는 .bak 파일에 대한 경로가 있어야 합니다.",
+      "translation": "--using URL must have a path to .bak file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "--using file URL must be a .bak file",
       "message": "--using file URL must be a .bak file",
-      "translation": "--using 파일 URL은 .bak 파일이어야 합니다.",
+      "translation": "--using file URL must be a .bak file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Invalid --using file type",
       "message": "Invalid --using file type",
-      "translation": "잘못된 --using 파일 형식",
+      "translation": "Invalid --using file type",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Creating default database [{DefaultDatabase}]",
       "message": "Creating default database [{DefaultDatabase}]",
-      "translation": "기본 데이터베이스 생성 [{DefaultDatabase}]",
+      "translation": "Creating default database [{DefaultDatabase}]",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2201,7 +2187,7 @@
     {
       "id": "Downloading {File}",
       "message": "Downloading {File}",
-      "translation": "{File} 다운로드 중",
+      "translation": "Downloading {File}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2218,7 +2204,7 @@
     {
       "id": "Restoring database {DatabaseName}",
       "message": "Restoring database {DatabaseName}",
-      "translation": "{DatabaseName} 데이터베이스 복원 중",
+      "translation": "Restoring database {DatabaseName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2235,7 +2221,7 @@
     {
       "id": "Downloading {ImageName}",
       "message": "Downloading {ImageName}",
-      "translation": "{ImageName} 다운로드 중",
+      "translation": "Downloading {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2252,28 +2238,28 @@
     {
       "id": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
       "message": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
-      "translation": "이 컴퓨터에 컨테이너 런타임이 설치되어 있습니까(예: Podman 또는 Docker)?",
+      "translation": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "If not, download desktop engine from:",
       "message": "If not, download desktop engine from:",
-      "translation": "그렇지 않은 경우 다음에서 데스크톱 엔진을 다운로드하세요.",
+      "translation": "If not, download desktop engine from:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "or",
       "message": "or",
-      "translation": "또는",
+      "translation": "or",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
       "message": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
-      "translation": "컨테이너 런타임이 실행 중인가요? (`{PodmanPsCommand}` 또는 `{DockerPsCommand}`(컨테이너 나열)을(를) 시도하면 오류 없이 반환됩니까?)",
+      "translation": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2298,7 +2284,7 @@
     {
       "id": "Unable to download image {ImageName}",
       "message": "Unable to download image {ImageName}",
-      "translation": "{ImageName} 이미지를 다운로드할 수 없습니다.",
+      "translation": "Unable to download image {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2315,126 +2301,119 @@
     {
       "id": "File does not exist at URL",
       "message": "File does not exist at URL",
-      "translation": "URL에 파일이 없습니다.",
+      "translation": "File does not exist at URL",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Unable to download file",
       "message": "Unable to download file",
-      "translation": "파일을 다운로드할 수 없습니다.",
+      "translation": "Unable to download file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create SQL Server in a container",
       "message": "Install/Create SQL Server in a container",
-      "translation": "컨테이너에 SQL Server 설치/만들기",
+      "translation": "Install/Create SQL Server in a container",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "See all release tags for SQL Server, install previous version",
       "message": "See all release tags for SQL Server, install previous version",
-      "translation": "SQL Server의 모든 릴리스 태그 보기, 이전 버전 설치",
+      "translation": "See all release tags for SQL Server, install previous version",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server, download and attach AdventureWorks sample database",
       "message": "Create SQL Server, download and attach AdventureWorks sample database",
-      "translation": "SQL Server 생성, AdventureWorks 샘플 데이터베이스 다운로드 및 연결",
+      "translation": "Create SQL Server, download and attach AdventureWorks sample database",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
       "message": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
-      "translation": "SQL Server 생성, 다른 데이터베이스 이름으로 AdventureWorks 샘플 데이터베이스 다운로드 및 연결",
+      "translation": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server with an empty user database",
       "message": "Create SQL Server with an empty user database",
-      "translation": "빈 사용자 데이터베이스로 SQL Server 만들기",
+      "translation": "Create SQL Server with an empty user database",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create SQL Server with full logging",
       "message": "Install/Create SQL Server with full logging",
-      "translation": "전체 로깅으로 SQL Server 설치/만들기",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "Get tags available for Azure SQL Edge install",
-      "message": "Get tags available for Azure SQL Edge install",
-      "translation": "Azure SQL Edge 설치에 사용할 수 있는 태그 가져오기",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "List tags",
-      "message": "List tags",
-      "translation": "태그 나열",
+      "translation": "Install/Create SQL Server with full logging",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Get tags available for mssql install",
       "message": "Get tags available for mssql install",
-      "translation": "mssql 설치에 사용할 수 있는 태그 가져오기",
+      "translation": "Get tags available for mssql install",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List tags",
+      "message": "List tags",
+      "translation": "List tags",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "sqlcmd start",
       "message": "sqlcmd start",
-      "translation": "sqlcmd 시작",
+      "translation": "sqlcmd start",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Container is not running",
       "message": "Container is not running",
-      "translation": "컨테이너가 실행되고 있지 않습니다.",
+      "translation": "Container is not running",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Press Ctrl+C to exit this process...",
       "message": "Press Ctrl+C to exit this process...",
-      "translation": "Ctrl+C를 눌러 이 프로세스를 종료합니다...",
+      "translation": "Press Ctrl+C to exit this process...",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
       "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-      "translation": "Windows 자격 증명 관리자에 이미 저장된 자격 증명이 너무 많으면 '사용 가능한 메모리 리소스가 부족합니다' 오류가 발생할 수 있습니다.",
+      "translation": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Failed to write credential to Windows Credential Manager",
       "message": "Failed to write credential to Windows Credential Manager",
-      "translation": "Windows 자격 증명 관리자에 자격 증명을 쓰지 못했습니다.",
+      "translation": "Failed to write credential to Windows Credential Manager",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The -L parameter can not be used in combination with other parameters.",
       "message": "The -L parameter can not be used in combination with other parameters.",
-      "translation": "-L 매개 변수는 다른 매개 변수와 함께 사용할 수 없습니다.",
+      "translation": "The -L parameter can not be used in combination with other parameters.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
       "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
-      "translation": "'-a {PacketSize}': 패킷 크기는 512에서 32767 사이의 숫자여야 합니다.",
+      "translation": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2451,7 +2430,7 @@
     {
       "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
       "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-      "translation": "'-h {Headers}': 헤더 값은 -1 또는 1과 2147483647 사이의 값이어야 합니다.",
+      "translation": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2672,6 +2651,13 @@
           "expr": "localizer.ServerEnvVar"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "message": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "translation": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
@@ -3673,6 +3659,13 @@
           "expr": "SqlcmdEol"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Server name override is not supported with the current authentication method",
+      "message": "Server name override is not supported with the current authentication method",
+      "translation": "Server name override is not supported with the current authentication method",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {

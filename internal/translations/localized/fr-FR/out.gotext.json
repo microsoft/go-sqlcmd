@@ -1811,142 +1811,128 @@
       "fuzzy": true
     },
     {
-      "id": "Install Azure Sql Edge",
-      "message": "Install Azure Sql Edge",
-      "translation": "Installer Azure SQL Edge",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "Install/Create Azure SQL Edge in a container",
-      "message": "Install/Create Azure SQL Edge in a container",
-      "translation": "Installer/Créer Azure SQL Edge dans un conteneur",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
       "id": "Tag to use, use get-tags to see list of tags",
       "message": "Tag to use, use get-tags to see list of tags",
-      "translation": "Balise à utiliser, utilisez get-tags pour voir la liste des balises",
+      "translation": "Tag to use, use get-tags to see list of tags",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Context name (a default context name will be created if not provided)",
       "message": "Context name (a default context name will be created if not provided)",
-      "translation": "Nom du contexte (un nom de contexte par défaut sera créé s'il n'est pas fourni)",
+      "translation": "Context name (a default context name will be created if not provided)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create a user database and set it as the default for login",
       "message": "Create a user database and set it as the default for login",
-      "translation": "Créez une base de données d'utilisateurs et définissez-la par défaut pour la connexion",
+      "translation": "Create a user database and set it as the default for login",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Accept the SQL Server EULA",
       "message": "Accept the SQL Server EULA",
-      "translation": "Acceptez le CLUF de SQL Server",
+      "translation": "Accept the SQL Server EULA",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Generated password length",
       "message": "Generated password length",
-      "translation": "Longueur du mot de passe généré",
+      "translation": "Generated password length",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of special characters",
       "message": "Minimum number of special characters",
-      "translation": "Nombre minimal de caractères spéciaux",
+      "translation": "Minimum number of special characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of numeric characters",
       "message": "Minimum number of numeric characters",
-      "translation": "Nombre minimal de caractères numériques",
+      "translation": "Minimum number of numeric characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of upper characters",
       "message": "Minimum number of upper characters",
-      "translation": "Nombre minimum de caractères supérieurs",
+      "translation": "Minimum number of upper characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Special character set to include in password",
       "message": "Special character set to include in password",
-      "translation": "Jeu de caractères spéciaux à inclure dans le mot de passe",
+      "translation": "Special character set to include in password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Don't download image.  Use already downloaded image",
       "message": "Don't download image.  Use already downloaded image",
-      "translation": "Ne pas télécharger l'image. Utiliser l'image déjà téléchargée",
+      "translation": "Don't download image.  Use already downloaded image",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Line in errorlog to wait for before connecting",
       "message": "Line in errorlog to wait for before connecting",
-      "translation": "Ligne dans le journal des erreurs à attendre avant de se connecter",
+      "translation": "Line in errorlog to wait for before connecting",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specify a custom name for the container rather than a randomly generated one",
       "message": "Specify a custom name for the container rather than a randomly generated one",
-      "translation": "Spécifiez un nom personnalisé pour le conteneur plutôt qu'un nom généré aléatoirement",
+      "translation": "Specify a custom name for the container rather than a randomly generated one",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Explicitly set the container hostname, it defaults to the container ID",
       "message": "Explicitly set the container hostname, it defaults to the container ID",
-      "translation": "Définissez explicitement le nom d'hôte du conteneur, il s'agit par défaut de l'ID du conteneur",
+      "translation": "Explicitly set the container hostname, it defaults to the container ID",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the image CPU architecture",
       "message": "Specifies the image CPU architecture",
-      "translation": "Spécifie l'architecture du processeur de l'image",
+      "translation": "Specifies the image CPU architecture",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the image operating system",
       "message": "Specifies the image operating system",
-      "translation": "Spécifie le système d'exploitation de l'image",
+      "translation": "Specifies the image operating system",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Port (next available port from 1433 upwards used by default)",
       "message": "Port (next available port from 1433 upwards used by default)",
-      "translation": "Port (prochain port disponible à partir de 1433 utilisé par défaut)",
+      "translation": "Port (next available port from 1433 upwards used by default)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Download (into container) and attach database (.bak) from URL",
       "message": "Download (into container) and attach database (.bak) from URL",
-      "translation": "Télécharger (dans le conteneur) et joindre la base de données (.bak) à partir de l'URL",
+      "translation": "Download (into container) and attach database (.bak) from URL",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Either, add the {AcceptEulaFlag} flag to the command-line",
       "message": "Either, add the {AcceptEulaFlag} flag to the command-line",
-      "translation": "Soit, ajoutez le drapeau {AcceptEulaFlag} à la ligne de commande",
+      "translation": "Either, add the {AcceptEulaFlag} flag to the command-line",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1963,7 +1949,7 @@
     {
       "id": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
       "message": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
-      "translation": "Ou, définissez la variable d'environnement, c'est-à-dire {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "translation": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1988,14 +1974,14 @@
     {
       "id": "EULA not accepted",
       "message": "EULA not accepted",
-      "translation": "CLUF non accepté",
+      "translation": "EULA not accepted",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
       "message": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
-      "translation": "--user-database {DefaultDatabase} contient des caractères et/ou des guillemets non-ASCII",
+      "translation": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2012,7 +1998,7 @@
     {
       "id": "Starting {ImageName}",
       "message": "Starting {ImageName}",
-      "translation": "Démarrage de {ImageName}",
+      "translation": "Starting {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2029,7 +2015,7 @@
     {
       "id": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
       "message": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
-      "translation": "Création du contexte {CurrentContextName} dans \"{ConfigFileUsed}\", configuration du compte utilisateur...",
+      "translation": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2054,7 +2040,7 @@
     {
       "id": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
       "message": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
-      "translation": "Désactivation du compte {Sa} (et rotation du mot de passe {Sa_1}). Création de l'utilisateur {UserName}",
+      "translation": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2087,42 +2073,42 @@
     {
       "id": "Start interactive session",
       "message": "Start interactive session",
-      "translation": "Démarrer la session interactive",
+      "translation": "Start interactive session",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Change current context",
       "message": "Change current context",
-      "translation": "Changer le contexte actuel",
+      "translation": "Change current context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "View sqlcmd configuration",
       "message": "View sqlcmd configuration",
-      "translation": "Afficher la configuration de sqlcmd",
+      "translation": "View sqlcmd configuration",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "See connection strings",
       "message": "See connection strings",
-      "translation": "Voir les chaînes de connexion",
+      "translation": "See connection strings",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Remove",
       "message": "Remove",
-      "translation": "Supprimer",
+      "translation": "Remove",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Now ready for client connections on port {Port}",
       "message": "Now ready for client connections on port {Port}",
-      "translation": "Maintenant prêt pour les connexions client sur le port {Port}",
+      "translation": "Now ready for client connections on port {Port}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2139,14 +2125,14 @@
     {
       "id": "--using URL must be http or https",
       "message": "--using URL must be http or https",
-      "translation": "--using URL doit être http ou https",
+      "translation": "--using URL must be http or https",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{UsingDatabaseUrl} is not a valid URL for --using flag",
       "message": "{UsingDatabaseUrl} is not a valid URL for --using flag",
-      "translation": "{UsingDatabaseUrl} n'est pas une URL valide pour l'indicateur --using",
+      "translation": "{UsingDatabaseUrl} is not a valid URL for --using flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2163,28 +2149,28 @@
     {
       "id": "--using URL must have a path to .bak file",
       "message": "--using URL must have a path to .bak file",
-      "translation": "--using URL doit avoir un chemin vers le fichier .bak",
+      "translation": "--using URL must have a path to .bak file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "--using file URL must be a .bak file",
       "message": "--using file URL must be a .bak file",
-      "translation": "--using l'URL du fichier doit être un fichier .bak",
+      "translation": "--using file URL must be a .bak file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Invalid --using file type",
       "message": "Invalid --using file type",
-      "translation": "Non valide --using type de fichier",
+      "translation": "Invalid --using file type",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Creating default database [{DefaultDatabase}]",
       "message": "Creating default database [{DefaultDatabase}]",
-      "translation": "Création de la base de données par défaut [{DefaultDatabase}]",
+      "translation": "Creating default database [{DefaultDatabase}]",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2201,7 +2187,7 @@
     {
       "id": "Downloading {File}",
       "message": "Downloading {File}",
-      "translation": "Téléchargement de {File}",
+      "translation": "Downloading {File}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2218,7 +2204,7 @@
     {
       "id": "Restoring database {DatabaseName}",
       "message": "Restoring database {DatabaseName}",
-      "translation": "Restauration de la base de données {DatabaseName}",
+      "translation": "Restoring database {DatabaseName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2235,7 +2221,7 @@
     {
       "id": "Downloading {ImageName}",
       "message": "Downloading {ImageName}",
-      "translation": "Téléchargement de {ImageName}",
+      "translation": "Downloading {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2252,28 +2238,28 @@
     {
       "id": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
       "message": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
-      "translation": "Un environnement d'exécution de conteneur est-il installé sur cette machine (par exemple, Podman ou Docker) ?",
+      "translation": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "If not, download desktop engine from:",
       "message": "If not, download desktop engine from:",
-      "translation": "Sinon, téléchargez le moteur de bureau à partir de :",
+      "translation": "If not, download desktop engine from:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "or",
       "message": "or",
-      "translation": "ou",
+      "translation": "or",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
       "message": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
-      "translation": "Un environnement d'exécution de conteneur est-il en cours d'exécution ? (Essayez `{PodmanPsCommand}` ou `{DockerPsCommand}` (liste des conteneurs), est-ce qu'il retourne sans erreur ?)",
+      "translation": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2298,7 +2284,7 @@
     {
       "id": "Unable to download image {ImageName}",
       "message": "Unable to download image {ImageName}",
-      "translation": "Impossible de télécharger l'image {ImageName}",
+      "translation": "Unable to download image {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2315,126 +2301,119 @@
     {
       "id": "File does not exist at URL",
       "message": "File does not exist at URL",
-      "translation": "Le fichier n'existe pas à l'URL",
+      "translation": "File does not exist at URL",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Unable to download file",
       "message": "Unable to download file",
-      "translation": "Impossible de télécharger le fichier",
+      "translation": "Unable to download file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create SQL Server in a container",
       "message": "Install/Create SQL Server in a container",
-      "translation": "Installer/Créer SQL Server dans un conteneur",
+      "translation": "Install/Create SQL Server in a container",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "See all release tags for SQL Server, install previous version",
       "message": "See all release tags for SQL Server, install previous version",
-      "translation": "Voir toutes les balises de version pour SQL Server, installer la version précédente",
+      "translation": "See all release tags for SQL Server, install previous version",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server, download and attach AdventureWorks sample database",
       "message": "Create SQL Server, download and attach AdventureWorks sample database",
-      "translation": "Créer SQL Server, télécharger et attacher l'exemple de base de données AdventureWorks",
+      "translation": "Create SQL Server, download and attach AdventureWorks sample database",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
       "message": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
-      "translation": "Créez SQL Server, téléchargez et attachez un exemple de base de données AdventureWorks avec un nom de base de données différent",
+      "translation": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server with an empty user database",
       "message": "Create SQL Server with an empty user database",
-      "translation": "Créer SQL Server avec une base de données utilisateur vide",
+      "translation": "Create SQL Server with an empty user database",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create SQL Server with full logging",
       "message": "Install/Create SQL Server with full logging",
-      "translation": "Installer/Créer SQL Server avec une journalisation complète",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "Get tags available for Azure SQL Edge install",
-      "message": "Get tags available for Azure SQL Edge install",
-      "translation": "Obtenir les balises disponibles pour l'installation d'Azure SQL Edge",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "List tags",
-      "message": "List tags",
-      "translation": "Liste des balises",
+      "translation": "Install/Create SQL Server with full logging",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Get tags available for mssql install",
       "message": "Get tags available for mssql install",
-      "translation": "Obtenir les balises disponibles pour l'installation de mssql",
+      "translation": "Get tags available for mssql install",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List tags",
+      "message": "List tags",
+      "translation": "List tags",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "sqlcmd start",
       "message": "sqlcmd start",
-      "translation": "démarrage sqlcmd",
+      "translation": "sqlcmd start",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Container is not running",
       "message": "Container is not running",
-      "translation": "Le conteneur ne fonctionne pas",
+      "translation": "Container is not running",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Press Ctrl+C to exit this process...",
       "message": "Press Ctrl+C to exit this process...",
-      "translation": "Appuyez sur Ctrl+C pour quitter ce processus...",
+      "translation": "Press Ctrl+C to exit this process...",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
       "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-      "translation": "Une erreur \"Pas assez de ressources mémoire disponibles\" peut être causée par trop d'informations d'identification déjà stockées dans Windows Credential Manager",
+      "translation": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Failed to write credential to Windows Credential Manager",
       "message": "Failed to write credential to Windows Credential Manager",
-      "translation": "Échec de l'écriture des informations d'identification dans le gestionnaire d'informations d'identification Windows",
+      "translation": "Failed to write credential to Windows Credential Manager",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The -L parameter can not be used in combination with other parameters.",
       "message": "The -L parameter can not be used in combination with other parameters.",
-      "translation": "Le paramètre -L ne peut pas être utilisé en combinaison avec d'autres paramètres.",
+      "translation": "The -L parameter can not be used in combination with other parameters.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
       "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
-      "translation": "'-a {PacketSize}' : la taille du paquet doit être un nombre compris entre 512 et 32767.",
+      "translation": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2451,7 +2430,7 @@
     {
       "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
       "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-      "translation": "'-h {Headers}' : la valeur de l'en-tête doit être soit -1, soit une valeur comprise entre 1 et 2147483647",
+      "translation": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2672,6 +2651,13 @@
           "expr": "localizer.ServerEnvVar"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "message": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "translation": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
@@ -3673,6 +3659,13 @@
           "expr": "SqlcmdEol"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Server name override is not supported with the current authentication method",
+      "message": "Server name override is not supported with the current authentication method",
+      "translation": "Server name override is not supported with the current authentication method",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {

@@ -1811,142 +1811,128 @@
       "fuzzy": true
     },
     {
-      "id": "Install Azure Sql Edge",
-      "message": "Install Azure Sql Edge",
-      "translation": "安裝 Azure Sql Edge",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "Install/Create Azure SQL Edge in a container",
-      "message": "Install/Create Azure SQL Edge in a container",
-      "translation": "在容器中安裝/建立 Azure SQL Edge",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
       "id": "Tag to use, use get-tags to see list of tags",
       "message": "Tag to use, use get-tags to see list of tags",
-      "translation": "要使用的標籤，使用 get-tags 查看標籤清單",
+      "translation": "Tag to use, use get-tags to see list of tags",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Context name (a default context name will be created if not provided)",
       "message": "Context name (a default context name will be created if not provided)",
-      "translation": "內容名稱 (若未提供則會建立預設內容名稱)",
+      "translation": "Context name (a default context name will be created if not provided)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create a user database and set it as the default for login",
       "message": "Create a user database and set it as the default for login",
-      "translation": "建立使用者資料庫，並將它設定為登入的預設值",
+      "translation": "Create a user database and set it as the default for login",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Accept the SQL Server EULA",
       "message": "Accept the SQL Server EULA",
-      "translation": "接受 SQL Server EULA",
+      "translation": "Accept the SQL Server EULA",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Generated password length",
       "message": "Generated password length",
-      "translation": "產生的密碼長度",
+      "translation": "Generated password length",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of special characters",
       "message": "Minimum number of special characters",
-      "translation": "特殊字元的數目下限",
+      "translation": "Minimum number of special characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of numeric characters",
       "message": "Minimum number of numeric characters",
-      "translation": "數字字元的數目下限",
+      "translation": "Minimum number of numeric characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Minimum number of upper characters",
       "message": "Minimum number of upper characters",
-      "translation": "上層字元數目下限",
+      "translation": "Minimum number of upper characters",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Special character set to include in password",
       "message": "Special character set to include in password",
-      "translation": "要包含在密碼中的特殊字元集",
+      "translation": "Special character set to include in password",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Don't download image.  Use already downloaded image",
       "message": "Don't download image.  Use already downloaded image",
-      "translation": "不要下載映像。使用已下載的影像",
+      "translation": "Don't download image.  Use already downloaded image",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Line in errorlog to wait for before connecting",
       "message": "Line in errorlog to wait for before connecting",
-      "translation": "連線前，在錯誤記錄中等候的行",
+      "translation": "Line in errorlog to wait for before connecting",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specify a custom name for the container rather than a randomly generated one",
       "message": "Specify a custom name for the container rather than a randomly generated one",
-      "translation": "指定容器的自訂名稱，而非隨機產生的名稱",
+      "translation": "Specify a custom name for the container rather than a randomly generated one",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Explicitly set the container hostname, it defaults to the container ID",
       "message": "Explicitly set the container hostname, it defaults to the container ID",
-      "translation": "明確設定容器主機名稱，預設為容器識別碼",
+      "translation": "Explicitly set the container hostname, it defaults to the container ID",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the image CPU architecture",
       "message": "Specifies the image CPU architecture",
-      "translation": "指定映像 CPU 結構",
+      "translation": "Specifies the image CPU architecture",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Specifies the image operating system",
       "message": "Specifies the image operating system",
-      "translation": "指定映像作業系統",
+      "translation": "Specifies the image operating system",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Port (next available port from 1433 upwards used by default)",
       "message": "Port (next available port from 1433 upwards used by default)",
-      "translation": "連接埠 (預設從 1433 向上使用的下一個可用連接埠)",
+      "translation": "Port (next available port from 1433 upwards used by default)",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Download (into container) and attach database (.bak) from URL",
       "message": "Download (into container) and attach database (.bak) from URL",
-      "translation": "從 URL 下載 (至容器) 並附加資料庫 (.bak)",
+      "translation": "Download (into container) and attach database (.bak) from URL",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Either, add the {AcceptEulaFlag} flag to the command-line",
       "message": "Either, add the {AcceptEulaFlag} flag to the command-line",
-      "translation": "或者，將 {AcceptEulaFlag} 旗標新增至命令列",
+      "translation": "Either, add the {AcceptEulaFlag} flag to the command-line",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1963,7 +1949,7 @@
     {
       "id": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
       "message": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
-      "translation": "或者，設定環境變數，例如 {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
+      "translation": "Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -1988,14 +1974,14 @@
     {
       "id": "EULA not accepted",
       "message": "EULA not accepted",
-      "translation": "不接受 EULA",
+      "translation": "EULA not accepted",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
       "message": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
-      "translation": "--user-database {DefaultDatabase} 包含非 ASCII 字元和/或引號",
+      "translation": "--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2012,7 +1998,7 @@
     {
       "id": "Starting {ImageName}",
       "message": "Starting {ImageName}",
-      "translation": "正在啟動 {ImageName}",
+      "translation": "Starting {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2029,7 +2015,7 @@
     {
       "id": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
       "message": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
-      "translation": "已在 \"{ConfigFileUsed}\" 中建立內容{CurrentContextName}，正在設定使用者帳戶...",
+      "translation": "Created context {CurrentContextName} in \"{ConfigFileUsed}\", configuring user account...",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2054,7 +2040,7 @@
     {
       "id": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
       "message": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
-      "translation": "已停用 {Sa} 帳戶 (和旋轉 {Sa_1} 密碼)。正在建立使用者 {UserName}",
+      "translation": "Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2087,42 +2073,42 @@
     {
       "id": "Start interactive session",
       "message": "Start interactive session",
-      "translation": "開始互動式工作階段",
+      "translation": "Start interactive session",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Change current context",
       "message": "Change current context",
-      "translation": "變更目前的內容",
+      "translation": "Change current context",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "View sqlcmd configuration",
       "message": "View sqlcmd configuration",
-      "translation": "檢視 sqlcmd 設定",
+      "translation": "View sqlcmd configuration",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "See connection strings",
       "message": "See connection strings",
-      "translation": "請參閱連接字串",
+      "translation": "See connection strings",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Remove",
       "message": "Remove",
-      "translation": "移除",
+      "translation": "Remove",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Now ready for client connections on port {Port}",
       "message": "Now ready for client connections on port {Port}",
-      "translation": "連接埠 {Port} 上的用戶端連線現在已就緒",
+      "translation": "Now ready for client connections on port {Port}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2139,14 +2125,14 @@
     {
       "id": "--using URL must be http or https",
       "message": "--using URL must be http or https",
-      "translation": "--using URL 必須是 HTTP 或 HTTPS",
+      "translation": "--using URL must be http or https",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "{UsingDatabaseUrl} is not a valid URL for --using flag",
       "message": "{UsingDatabaseUrl} is not a valid URL for --using flag",
-      "translation": "{UsingDatabaseUrl} 不是 --using 旗標的有效 URL",
+      "translation": "{UsingDatabaseUrl} is not a valid URL for --using flag",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2163,28 +2149,28 @@
     {
       "id": "--using URL must have a path to .bak file",
       "message": "--using URL must have a path to .bak file",
-      "translation": "--using URL 必須有 .bak 檔案的路徑",
+      "translation": "--using URL must have a path to .bak file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "--using file URL must be a .bak file",
       "message": "--using file URL must be a .bak file",
-      "translation": "--using 檔案 URL 必須是 .bak 檔案",
+      "translation": "--using file URL must be a .bak file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Invalid --using file type",
       "message": "Invalid --using file type",
-      "translation": "無效 --使用檔案類型",
+      "translation": "Invalid --using file type",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Creating default database [{DefaultDatabase}]",
       "message": "Creating default database [{DefaultDatabase}]",
-      "translation": "正在建立預設資料庫 [{DefaultDatabase}]",
+      "translation": "Creating default database [{DefaultDatabase}]",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2201,7 +2187,7 @@
     {
       "id": "Downloading {File}",
       "message": "Downloading {File}",
-      "translation": "正在下載 {File}",
+      "translation": "Downloading {File}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2218,7 +2204,7 @@
     {
       "id": "Restoring database {DatabaseName}",
       "message": "Restoring database {DatabaseName}",
-      "translation": "正在還原資料庫 {DatabaseName}",
+      "translation": "Restoring database {DatabaseName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2235,7 +2221,7 @@
     {
       "id": "Downloading {ImageName}",
       "message": "Downloading {ImageName}",
-      "translation": "正在下載 {ImageName}",
+      "translation": "Downloading {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2252,28 +2238,28 @@
     {
       "id": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
       "message": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
-      "translation": "此機器上是否已安裝容器執行時間 (例如 Podman 或 Docker)?",
+      "translation": "Is a container runtime installed on this machine (e.g. Podman or Docker)?",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "If not, download desktop engine from:",
       "message": "If not, download desktop engine from:",
-      "translation": "如果沒有，請從下列來源下載桌面引擎:",
+      "translation": "If not, download desktop engine from:",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "or",
       "message": "or",
-      "translation": "或",
+      "translation": "or",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
       "message": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
-      "translation": "容器執行時間是否正在執行? (請嘗試 '{PodmanPsCommand}' 或 '{DockerPsCommand}'(清單容器)，是否在沒有錯誤的情況下傳回?)",
+      "translation": "Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2298,7 +2284,7 @@
     {
       "id": "Unable to download image {ImageName}",
       "message": "Unable to download image {ImageName}",
-      "translation": "無法下載映像 {ImageName}",
+      "translation": "Unable to download image {ImageName}",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2315,126 +2301,119 @@
     {
       "id": "File does not exist at URL",
       "message": "File does not exist at URL",
-      "translation": "檔案不存在於 URL",
+      "translation": "File does not exist at URL",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Unable to download file",
       "message": "Unable to download file",
-      "translation": "無法下載檔案",
+      "translation": "Unable to download file",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create SQL Server in a container",
       "message": "Install/Create SQL Server in a container",
-      "translation": "在容器中安裝/建立 SQL Server",
+      "translation": "Install/Create SQL Server in a container",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "See all release tags for SQL Server, install previous version",
       "message": "See all release tags for SQL Server, install previous version",
-      "translation": "查看 SQL Server 的所有發行版本標籤，安裝之前的版本",
+      "translation": "See all release tags for SQL Server, install previous version",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server, download and attach AdventureWorks sample database",
       "message": "Create SQL Server, download and attach AdventureWorks sample database",
-      "translation": "建立 SQL Server、下載並附加 AdventureWorks 範例資料庫",
+      "translation": "Create SQL Server, download and attach AdventureWorks sample database",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
       "message": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
-      "translation": "使用不同的資料庫名稱建立 SQL Server、下載及附加 AdventureWorks 範例資料庫",
+      "translation": "Create SQL Server, download and attach AdventureWorks sample database with different database name",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Create SQL Server with an empty user database",
       "message": "Create SQL Server with an empty user database",
-      "translation": "使用空白使用者資料庫建立 SQL Server",
+      "translation": "Create SQL Server with an empty user database",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Install/Create SQL Server with full logging",
       "message": "Install/Create SQL Server with full logging",
-      "translation": "使用完整記錄安裝/建立 SQL Server",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "Get tags available for Azure SQL Edge install",
-      "message": "Get tags available for Azure SQL Edge install",
-      "translation": "取得可用於 Azure SQL Edge 安裝的標籤",
-      "translatorComment": "Copied from source.",
-      "fuzzy": true
-    },
-    {
-      "id": "List tags",
-      "message": "List tags",
-      "translation": "列出標籤",
+      "translation": "Install/Create SQL Server with full logging",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Get tags available for mssql install",
       "message": "Get tags available for mssql install",
-      "translation": "取得可用於 mssql 安裝的標籤",
+      "translation": "Get tags available for mssql install",
+      "translatorComment": "Copied from source.",
+      "fuzzy": true
+    },
+    {
+      "id": "List tags",
+      "message": "List tags",
+      "translation": "List tags",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "sqlcmd start",
       "message": "sqlcmd start",
-      "translation": "sqlcmd 啟動",
+      "translation": "sqlcmd start",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Container is not running",
       "message": "Container is not running",
-      "translation": "容器未執行",
+      "translation": "Container is not running",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Press Ctrl+C to exit this process...",
       "message": "Press Ctrl+C to exit this process...",
-      "translation": "按 Ctrl+C 結束此流程...",
+      "translation": "Press Ctrl+C to exit this process...",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
       "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-      "translation": "「記憶體資源不足」錯誤可能是由於 Windows 認證管理員中儲存太多認證所致",
+      "translation": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "Failed to write credential to Windows Credential Manager",
       "message": "Failed to write credential to Windows Credential Manager",
-      "translation": "無法將認證寫入 Windows 認證管理員",
+      "translation": "Failed to write credential to Windows Credential Manager",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "The -L parameter can not be used in combination with other parameters.",
       "message": "The -L parameter can not be used in combination with other parameters.",
-      "translation": "-L 參數不能與其他參數一起使用。",
+      "translation": "The -L parameter can not be used in combination with other parameters.",
       "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
       "id": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
       "message": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
-      "translation": "'-a {PacketSize}': 封包大小必須是介於 512 到 32767 之間的數字。",
+      "translation": "'-a {PacketSize}': Packet size has to be a number between 512 and 32767.",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2451,7 +2430,7 @@
     {
       "id": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
       "message": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
-      "translation": "'-h {Headers}': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值",
+      "translation": "'-h {Headers}': header value must be either -1 or a value between 1 and 2147483647",
       "translatorComment": "Copied from source.",
       "placeholders": [
         {
@@ -2672,6 +2651,13 @@
           "expr": "localizer.ServerEnvVar"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "message": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "translation": "Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
@@ -3673,6 +3659,13 @@
           "expr": "SqlcmdEol"
         }
       ],
+      "fuzzy": true
+    },
+    {
+      "id": "Server name override is not supported with the current authentication method",
+      "message": "Server name override is not supported with the current authentication method",
+      "translation": "Server name override is not supported with the current authentication method",
+      "translatorComment": "Copied from source.",
       "fuzzy": true
     },
     {
