@@ -2516,23 +2516,9 @@
             "fuzzy": true
         },
         {
-            "id": "Open VS Code and install the MSSQL extension if needed",
-            "message": "Open VS Code and install the MSSQL extension if needed",
-            "translation": "Open VS Code and install the MSSQL extension if needed",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Open a specific VS Code build",
             "message": "Open a specific VS Code build",
             "translation": "Open a specific VS Code build",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Install the MSSQL extension in VS Code if not already installed",
-            "message": "Install the MSSQL extension in VS Code if not already installed",
-            "translation": "Install the MSSQL extension in VS Code if not already installed",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2575,51 +2561,6 @@
             "fuzzy": true
         },
         {
-            "id": "Installing MSSQL extension...",
-            "message": "Installing MSSQL extension...",
-            "translation": "Installing MSSQL extension...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Could not install MSSQL extension: {Error}",
-            "message": "Could not install MSSQL extension: {Error}",
-            "translation": "Could not install MSSQL extension: {Error}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Error",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "err.Error()"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
-            "id": "MSSQL extension installed successfully",
-            "message": "MSSQL extension installed successfully",
-            "translation": "MSSQL extension installed successfully",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "To install the MSSQL extension",
-            "message": "To install the MSSQL extension",
-            "translation": "To install the MSSQL extension",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
-            "message": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
-            "translation": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Error",
             "message": "Error",
             "translation": "Error",
@@ -2648,6 +2589,40 @@
             "fuzzy": true
         },
         {
+            "id": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
+            "message": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
+            "translation": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Backup",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "backup"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
+            "message": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
+            "translation": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "Failed to parse VS Code settings",
             "message": "Failed to parse VS Code settings",
             "translation": "Failed to parse VS Code settings",
@@ -2666,23 +2641,6 @@
             "message": "Failed to write VS Code settings",
             "translation": "Failed to write VS Code settings",
             "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Could not verify MSSQL extension installation: {Error}",
-            "message": "Could not verify MSSQL extension installation: {Error}",
-            "translation": "Could not verify MSSQL extension installation: {Error}",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Error",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "err.Error()"
-                }
-            ],
             "fuzzy": true
         },
         {
