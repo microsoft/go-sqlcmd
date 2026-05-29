@@ -43,6 +43,22 @@ func TestSSMSNotInstalledWhenVswhereEmpty(t *testing.T) {
 	}
 }
 
+// TestSSMSNotInstalledWhenSsmsExeMissing covers a partial install where the VS
+// instance is registered but Ssms.exe is absent from Common7\IDE (a corrupt
+// install or another VS product registered under the same productID).
+func TestSSMSNotInstalledWhenSsmsExeMissing(t *testing.T) {
+	root := t.TempDir() // no Ssms.exe created under root
+	stubVswhereReturning(t, root)
+
+	ssms := SSMS{}
+	ssms.Init()
+	ssms.SetVersion("21")
+
+	if ssms.IsInstalled() {
+		t.Errorf("expected SSMS not installed when vswhere root %q has no Ssms.exe", root)
+	}
+}
+
 // stubVswhereReturning makes vswhereFind succeed and emit the given install
 // root (empty root simulates "no instance found").
 func stubVswhereReturning(t *testing.T, root string) {
