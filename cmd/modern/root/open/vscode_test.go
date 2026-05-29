@@ -12,6 +12,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
+	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/microsoft/go-sqlcmd/internal/tools"
 )
 
@@ -66,8 +67,8 @@ func TestVSCodeCreateProfile(t *testing.T) {
 		AuthenticationType: "basic",
 		BasicAuth: &sqlconfig.BasicAuthDetails{
 			Username:           "sa",
-			PasswordEncryption: "",
-			Password:           "testpassword",
+			PasswordEncryption: "none",
+			Password:           secret.Encode("testpassword", "none"),
 		},
 		Name: "test-user",
 	})
@@ -88,8 +89,8 @@ func TestVSCodeCreateProfile(t *testing.T) {
 	profile := vscode.createProfile(endpoint, user, true) // true for local connection
 
 	// Verify profile structure
-	if profile["server"] != "tcp:localhost,1433" {
-		t.Errorf("Expected server 'tcp:localhost,1433', got '%v'", profile["server"])
+	if profile["server"] != "localhost,1433" {
+		t.Errorf("Expected server 'localhost,1433', got '%v'", profile["server"])
 	}
 
 	if profile["profileName"] != "my-database" {
