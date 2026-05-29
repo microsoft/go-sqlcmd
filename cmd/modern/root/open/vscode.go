@@ -4,8 +4,6 @@
 package open
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
@@ -124,7 +122,6 @@ func (c *VSCode) ensureContainerIsRunning(containerID string) {
 	}
 }
 
-// launchVSCode launches Visual Studio Code
 func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *sqlconfig.User) {
 	output := c.Output()
 
@@ -158,7 +155,6 @@ func (c *VSCode) createConnectionProfile(build string, endpoint sqlconfig.Endpoi
 
 	settingsPath := c.getVSCodeSettingsPath(build)
 
-	// Ensure the directory exists
 	dir := filepath.Dir(settingsPath)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		output.FatalWithHintExamples([][]string{
@@ -166,84 +162,56 @@ func (c *VSCode) createConnectionProfile(build string, endpoint sqlconfig.Endpoi
 		}, localizer.Sprintf("Failed to create VS Code settings directory"))
 	}
 
-	// Read existing settings or create new
-	settings := c.readSettings(settingsPath)
-
-	// Create connection profile
+	original, settings := c.readSettings(settingsPath)
 	profile := c.createProfile(endpoint, user, isLocalConnection)
 
-	// Add or update the connection profile
 	connections := c.getConnectionsArray(settings)
 	connections = c.updateOrAddProfile(connections, profile)
-	settings["mssql.connections"] = connections
 
-	// Ensure the referenced connection group exists; the mssql extension
-	// logs a warning and ignores profiles whose groupId points at a missing
-	// group entry.
-	settings["mssql.connectionGroups"] = ensureRootGroup(settings["mssql.connectionGroups"])
-
-	// Write settings back
-	c.writeSettings(settingsPath, settings)
+	// Patch only the two keys we own so hand-edited user settings round-trip.
+	updates := map[string]interface{}{
+		"mssql.connections":      connections,
+		"mssql.connectionGroups": ensureRootGroup(settings["mssql.connectionGroups"]),
+	}
+	out, err := applyJSONCSettingsUpdates(original, updates)
+	if err != nil {
+		output.FatalWithHintExamples([][]string{
+			{localizer.Sprintf("Error"), err.Error()},
+		}, localizer.Sprintf("Failed to update VS Code settings"))
+	}
+	c.writeSettings(settingsPath, out)
 
 	output.Info(localizer.Sprintf("Connection profile created in VS Code settings"))
 }
 
-func (c *VSCode) readSettings(path string) map[string]interface{} {
-	settings := make(map[string]interface{})
-
+// readSettings reads settings.json, returning both the original bytes (for AST
+// preservation on write) and the parsed map (for reading existing values).
+// A missing file is treated as empty.
+func (c *VSCode) readSettings(path string) ([]byte, map[string]interface{}) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return settings
+			return nil, make(map[string]interface{})
 		}
-		output := c.Output()
-		output.FatalWithHintExamples([][]string{
+		c.Output().FatalWithHintExamples([][]string{
 			{localizer.Sprintf("Error"), err.Error()},
 		}, localizer.Sprintf("Failed to read VS Code settings"))
 	}
 
-	if len(data) > 0 {
-		// VS Code settings.json is JSONC (allows comments and trailing commas).
-		// json.Unmarshal can't parse those, so strip them. Because we round-trip
-		// through encoding/json on write, comments the user authored by hand
-		// would be lost silently. Back up the original alongside settings.json
-		// and warn so they can restore anything important.
-		clean := stripJSONC(data)
-		if !bytes.Equal(clean, data) {
-			backup := path + ".sqlcmd-backup"
-			if err := os.WriteFile(backup, data, 0600); err == nil {
-				c.Output().Warn(localizer.Sprintf("VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to %s", backup))
-			} else {
-				c.Output().Warn(localizer.Sprintf("VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: %s)", err.Error()))
-			}
-		}
-		if err := json.Unmarshal(clean, &settings); err != nil {
-			output := c.Output()
-			output.FatalWithHintExamples([][]string{
-				{localizer.Sprintf("Error"), err.Error()},
-			}, localizer.Sprintf("Failed to parse VS Code settings"))
-		}
+	settings, err := parseJSONCSettings(data)
+	if err != nil {
+		c.Output().FatalWithHintExamples([][]string{
+			{localizer.Sprintf("Error"), err.Error()},
+		}, localizer.Sprintf("Failed to parse VS Code settings"))
 	}
-
-	return settings
+	return data, settings
 }
 
-func (c *VSCode) writeSettings(path string, settings map[string]interface{}) {
+func (c *VSCode) writeSettings(path string, data []byte) {
 	output := c.Output()
 
-	data, err := json.MarshalIndent(settings, "", "  ")
-	if err != nil {
-		output.FatalWithHintExamples([][]string{
-			{localizer.Sprintf("Error"), err.Error()},
-		}, localizer.Sprintf("Failed to encode VS Code settings"))
-	}
-
-	// Append a final newline for consistency with VS Code's own formatting
-	data = append(data, '\n')
-
-	// Atomic write: write to a temp file in the same directory, then rename.
-	// If rename fails (e.g. another process holds the file), fall back to
-	// a direct write so the command still succeeds.
+	// Write to a sibling temp file and rename for atomicity; fall back to a
+	// direct write if another process holds the file.
 	dir := filepath.Dir(path)
 	tmp, tmpErr := os.CreateTemp(dir, ".settings-*.tmp")
 	if tmpErr == nil {
@@ -255,11 +223,10 @@ func (c *VSCode) writeSettings(path string, settings map[string]interface{}) {
 		} else if renameErr := os.Rename(tmpPath, path); renameErr != nil {
 			_ = os.Remove(tmpPath)
 		} else {
-			return // atomic write succeeded
+			return
 		}
 	}
 
-	// Fallback: direct write
 	if err := os.WriteFile(path, data, 0600); err != nil {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("Error"), err.Error()},
@@ -401,7 +368,6 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 	case "windows":
 		base := os.Getenv("APPDATA")
 		if base == "" {
-			// Fallback to deriving APPDATA from user home
 			if home, err := os.UserHomeDir(); err == nil {
 				base = filepath.Join(home, "AppData", "Roaming")
 			} else {
