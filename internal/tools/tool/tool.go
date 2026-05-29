@@ -23,6 +23,12 @@ func (t *tool) SetExePathAndName(exeName string) {
 	t.exeName = exeName
 }
 
+// ExePath returns the resolved executable path, or "" if the tool was not
+// found. Valid only after Init (and SetBuild, where supported).
+func (t *tool) ExePath() string {
+	return t.exeName
+}
+
 func (t *tool) SetToolDescription(description Description) {
 	t.description = description
 }

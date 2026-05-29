@@ -346,21 +346,16 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 		return testSettingsPathOverride
 	}
 
-	stableName := "Code"
-	insidersName := "Code - Insiders"
-	appName := stableName
+	appName := "Code"
 	if build == "insiders" {
-		appName = insidersName
+		appName = "Code - Insiders"
 	}
 
-	getHomeDir := func() string {
-		if home := os.Getenv("HOME"); home != "" {
-			return home
-		}
-		if home, err := os.UserHomeDir(); err == nil {
-			return home
-		}
-		return "."
+	home, err := os.UserHomeDir()
+	if err != nil || home == "" {
+		c.Output().FatalWithHintExamples([][]string{
+			{localizer.Sprintf("Set the HOME environment variable"), "export HOME=/your/home"},
+		}, localizer.Sprintf("Could not resolve home directory: %v", err))
 	}
 
 	var configDir string
@@ -368,22 +363,51 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 	case "windows":
 		base := os.Getenv("APPDATA")
 		if base == "" {
-			if home, err := os.UserHomeDir(); err == nil {
-				base = filepath.Join(home, "AppData", "Roaming")
-			} else {
-				base = "."
-			}
+			base = filepath.Join(home, "AppData", "Roaming")
 		}
 		configDir = filepath.Join(base, appName, "User")
 	case "darwin":
-		base := filepath.Join(getHomeDir(), "Library", "Application Support")
-		configDir = filepath.Join(base, appName, "User")
+		configDir = filepath.Join(home, "Library", "Application Support", appName, "User")
 	default: // linux and others
-		base := filepath.Join(getHomeDir(), ".config")
-		configDir = filepath.Join(base, appName, "User")
+		configDir = linuxVSCodeConfigDir(home, appName, build, vsCodeExePath(build), os.Getenv("XDG_CONFIG_HOME"))
 	}
 
 	return filepath.Join(configDir, "settings.json")
+}
+
+// linuxVSCodeConfigDir resolves the VS Code User config directory on Linux.
+// Snap installs are sandboxed so their settings live under
+// $HOME/snap/<snapName>/current/.config/<appName>/User regardless of
+// XDG_CONFIG_HOME; non-snap installs honor XDG_CONFIG_HOME and fall back to
+// $HOME/.config.
+func linuxVSCodeConfigDir(home, appName, build, exePath, xdgConfigHome string) string {
+	if strings.HasPrefix(exePath, "/snap/") {
+		snapName := "code"
+		if build == "insiders" {
+			snapName = "code-insiders"
+		}
+		return filepath.Join(home, "snap", snapName, "current", ".config", appName, "User")
+	}
+	base := xdgConfigHome
+	if base == "" {
+		base = filepath.Join(home, ".config")
+	}
+	return filepath.Join(base, appName, "User")
+}
+
+// vsCodeExePath returns the resolved VS Code executable path for the given
+// build, or "" if VS Code is not installed.
+func vsCodeExePath(build string) string {
+	t := tools.NewTool("vscode")
+	vs, ok := t.(*tool.VSCode)
+	if !ok {
+		return ""
+	}
+	vs.SetBuild(build)
+	if !t.IsInstalled() {
+		return ""
+	}
+	return vs.ExePath()
 }
 
 // mssqlConnectURI builds a vscode:// URI that the mssql extension's protocol
