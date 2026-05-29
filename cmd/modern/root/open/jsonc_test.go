@@ -5,135 +5,157 @@ package open
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 )
 
-func TestStripJSONC_LineComments(t *testing.T) {
+func TestParseJSONCSettings_Empty(t *testing.T) {
+	m, err := parseJSONCSettings(nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(m) != 0 {
+		t.Errorf("expected empty map, got %v", m)
+	}
+}
+
+func TestParseJSONCSettings_StripsCommentsAndTrailingCommas(t *testing.T) {
 	input := []byte(`{
-  // This is a comment
-  "key": "value" // inline comment
+  // line comment
+  "key": "value", // inline comment
+  /* block
+     comment */
+  "nums": [1, 2, 3,],
 }`)
-	result := stripJSONC(input)
-	var m map[string]interface{}
-	if err := json.Unmarshal(result, &m); err != nil {
-		t.Fatalf("Failed to parse stripped JSONC: %v\nResult: %s", err, result)
+	m, err := parseJSONCSettings(input)
+	if err != nil {
+		t.Fatalf("parse failed: %v\ninput: %s", err, input)
 	}
 	if m["key"] != "value" {
-		t.Errorf("Expected 'value', got %v", m["key"])
+		t.Errorf("expected key=value, got %v", m["key"])
+	}
+	if nums, ok := m["nums"].([]interface{}); !ok || len(nums) != 3 {
+		t.Errorf("expected nums=[1,2,3], got %v", m["nums"])
 	}
 }
 
-func TestStripJSONC_BlockComments(t *testing.T) {
-	input := []byte(`{
-  /* block comment */
-  "key": "value",
-  /*
-   * multi-line
-   * block comment
-   */
-  "other": 42
-}`)
-	result := stripJSONC(input)
-	var m map[string]interface{}
-	if err := json.Unmarshal(result, &m); err != nil {
-		t.Fatalf("Failed to parse stripped JSONC: %v\nResult: %s", err, result)
-	}
-	if m["key"] != "value" {
-		t.Errorf("Expected 'value', got %v", m["key"])
-	}
-	if m["other"] != float64(42) {
-		t.Errorf("Expected 42, got %v", m["other"])
-	}
-}
-
-func TestStripJSONC_TrailingCommas(t *testing.T) {
-	input := []byte(`{
-  "a": 1,
-  "b": [1, 2, 3,],
-  "c": {"x": 1,},
-}`)
-	result := stripJSONC(input)
-	var m map[string]interface{}
-	if err := json.Unmarshal(result, &m); err != nil {
-		t.Fatalf("Failed to parse stripped JSONC: %v\nResult: %s", err, result)
-	}
-	if m["a"] != float64(1) {
-		t.Errorf("Expected 1, got %v", m["a"])
-	}
-}
-
-func TestStripJSONC_CommentsInStringsPreserved(t *testing.T) {
+func TestParseJSONCSettings_StringsWithCommentLikeContent(t *testing.T) {
 	input := []byte(`{
   "url": "http://example.com",
   "note": "has // slashes and /* stars */",
   "path": "C:\\Users\\test"
 }`)
-	result := stripJSONC(input)
-	var m map[string]interface{}
-	if err := json.Unmarshal(result, &m); err != nil {
-		t.Fatalf("Failed to parse stripped JSONC: %v\nResult: %s", err, result)
-	}
-	if m["url"] != "http://example.com" {
-		t.Errorf("URL mangled: %v", m["url"])
+	m, err := parseJSONCSettings(input)
+	if err != nil {
+		t.Fatalf("parse failed: %v", err)
 	}
 	if m["note"] != "has // slashes and /* stars */" {
-		t.Errorf("String with comment-like content mangled: %v", m["note"])
+		t.Errorf("string with comment-like content mangled: %v", m["note"])
 	}
 	if m["path"] != `C:\Users\test` {
-		t.Errorf("Escaped path mangled: %v", m["path"])
+		t.Errorf("escaped path mangled: %v", m["path"])
 	}
 }
 
-func TestStripJSONC_RealWorldVSCodeSettings(t *testing.T) {
-	// Realistic VS Code settings.json with JSONC features
-	input := []byte(`{
+func TestParseJSONCSettings_InvalidReturnsError(t *testing.T) {
+	if _, err := parseJSONCSettings([]byte(`{"unterminated`)); err == nil {
+		t.Error("expected error on invalid JSONC, got nil")
+	}
+}
+
+func TestApplyJSONCSettingsUpdates_PreservesComments(t *testing.T) {
+	original := []byte(`{
   // Editor settings
   "editor.fontSize": 14,
   "editor.tabSize": 2,
 
-  /* Database connections */
+  /* mssql */
   "mssql.connections": [
-    {
-      "server": "localhost,1433",
-      "profileName": "my-db",
-      "encrypt": "Optional",
-      "trustServerCertificate": true,
-    },
+    {"profileName": "old", "server": "old,1433"},
   ],
 
   // Terminal settings
   "terminal.integrated.fontSize": 12,
 }`)
-	result := stripJSONC(input)
-	var m map[string]interface{}
-	if err := json.Unmarshal(result, &m); err != nil {
-		t.Fatalf("Failed to parse real-world JSONC: %v\nResult: %s", err, result)
+	updates := map[string]interface{}{
+		"mssql.connections": []interface{}{
+			map[string]interface{}{"profileName": "new", "server": "new,1433"},
+		},
 	}
-	if m["editor.fontSize"] != float64(14) {
-		t.Errorf("Expected fontSize 14, got %v", m["editor.fontSize"])
+	out, err := applyJSONCSettingsUpdates(original, updates)
+	if err != nil {
+		t.Fatalf("apply failed: %v", err)
 	}
-	conns, ok := m["mssql.connections"].([]interface{})
-	if !ok || len(conns) != 1 {
-		t.Fatalf("Expected 1 connection, got %v", m["mssql.connections"])
+	s := string(out)
+	for _, want := range []string{
+		"// Editor settings",
+		"// Terminal settings",
+		"/* mssql */",
+		`"editor.fontSize": 14`,
+		`"terminal.integrated.fontSize": 12`,
+		`"profileName": "new"`,
+	} {
+		if !strings.Contains(s, want) {
+			t.Errorf("output missing %q\nfull output:\n%s", want, s)
+		}
+	}
+	if strings.Contains(s, `"profileName": "old"`) {
+		t.Errorf("old profile not replaced\nfull output:\n%s", s)
 	}
 }
 
-func TestStripJSONC_EmptyInput(t *testing.T) {
-	result := stripJSONC([]byte{})
-	if len(result) != 0 {
-		t.Errorf("Expected empty result, got %s", result)
+func TestApplyJSONCSettingsUpdates_AddsMissingKeys(t *testing.T) {
+	original := []byte(`{
+  "editor.fontSize": 14,
+  "editor.tabSize": 2
+}`)
+	updates := map[string]interface{}{
+		"mssql.connections":      []interface{}{},
+		"mssql.connectionGroups": []interface{}{},
+	}
+	out, err := applyJSONCSettingsUpdates(original, updates)
+	if err != nil {
+		t.Fatalf("apply failed: %v", err)
+	}
+	m, err := parseJSONCSettings(out)
+	if err != nil {
+		t.Fatalf("re-parse failed: %v\noutput: %s", err, out)
+	}
+	for _, k := range []string{"editor.fontSize", "editor.tabSize", "mssql.connections", "mssql.connectionGroups"} {
+		if _, ok := m[k]; !ok {
+			t.Errorf("key %q missing after add\noutput: %s", k, out)
+		}
 	}
 }
 
-func TestStripJSONC_PureJSON(t *testing.T) {
-	// No comments, no trailing commas - should pass through cleanly
-	input := []byte(`{"key": "value", "num": 42}`)
-	result := stripJSONC(input)
-	var m map[string]interface{}
-	if err := json.Unmarshal(result, &m); err != nil {
-		t.Fatalf("Failed to parse pure JSON: %v", err)
+func TestApplyJSONCSettingsUpdates_EmptyOriginalReturnsFreshJSON(t *testing.T) {
+	updates := map[string]interface{}{
+		"mssql.connections": []interface{}{},
 	}
-	if m["key"] != "value" || m["num"] != float64(42) {
-		t.Errorf("Values changed: %v", m)
+	out, err := applyJSONCSettingsUpdates(nil, updates)
+	if err != nil {
+		t.Fatalf("apply failed: %v", err)
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(out, &m); err != nil {
+		t.Fatalf("fresh output is not valid JSON: %v\noutput: %s", err, out)
+	}
+	if _, ok := m["mssql.connections"]; !ok {
+		t.Errorf("expected mssql.connections in fresh output, got %v", m)
+	}
+}
+
+func TestJSONPointerEscape(t *testing.T) {
+	cases := []struct{ in, want string }{
+		{"plain", "plain"},
+		{"mssql.connections", "mssql.connections"},
+		{"a/b", "a~1b"},
+		{"a~b", "a~0b"},
+		{"a~/b", "a~0~1b"},
+	}
+	for _, c := range cases {
+		if got := jsonPointerEscape(c.in); got != c.want {
+			t.Errorf("escape(%q) = %q, want %q", c.in, got, c.want)
+		}
 	}
 }
