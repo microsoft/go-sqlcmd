@@ -39,9 +39,8 @@ Or download the latest version from:
 
     https://code.visualstudio.com/download
 
-After installation, install the MSSQL extension:
-
-    sqlcmd open vscode --install-extension
-
-Or install it directly in VS Code via Extensions (Cmd+Shift+X) and search for "SQL Server (mssql)"`
+After installation, the MSSQL extension is required. Running "sqlcmd open vscode"
+opens a vscode:// URL that prompts VS Code to install the extension on first use.
+You can also install it directly via Extensions (Cmd+Shift+X) and search for
+"SQL Server (mssql)".`
 }
