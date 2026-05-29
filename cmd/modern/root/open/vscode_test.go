@@ -178,7 +178,6 @@ func TestVSCodeUpdateOrAddProfile(t *testing.T) {
 	}
 }
 
-
 // TestVSCodeGetConnectionsArray tests extracting connections array from settings
 func TestVSCodeGetConnectionsArray(t *testing.T) {
 	cmdparser.TestSetup(t)
@@ -235,12 +234,19 @@ func TestVSCodeGetSettingsPath(t *testing.T) {
 
 	switch runtime.GOOS {
 	case "windows":
-		if !strings.Contains(stable, "Code") {
-			t.Errorf("Expected path to contain 'Code' on Windows, got '%s'", stable)
+		want := filepath.Join("AppData", "Roaming", "Code", "User", "settings.json")
+		if !strings.HasSuffix(stable, want) {
+			t.Errorf("Expected Windows path to end with %q, got %q", want, stable)
 		}
 	case "darwin":
-		if !strings.Contains(stable, "Application Support") {
-			t.Errorf("Expected path to contain 'Application Support' on macOS, got '%s'", stable)
+		want := filepath.Join("Library", "Application Support", "Code", "User", "settings.json")
+		if !strings.HasSuffix(stable, want) {
+			t.Errorf("Expected macOS path to end with %q, got %q", want, stable)
+		}
+	default:
+		want := filepath.Join(".config", "Code", "User", "settings.json")
+		if !strings.HasSuffix(stable, want) {
+			t.Errorf("Expected Linux path to end with %q, got %q", want, stable)
 		}
 	}
 }
