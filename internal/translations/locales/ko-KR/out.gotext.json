@@ -660,11 +660,9 @@
             "fuzzy": true
         },
         {
-            "id": "Open in Azure Data Studio",
-            "message": "Open in Azure Data Studio",
-            "translation": "Azure Data Studio에서 열기",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Open in Visual Studio Code",
+            "message": "Open in Visual Studio Code",
+            "translation": ""
         },
         {
             "id": "To start interactive query session",
@@ -2069,6 +2067,11 @@
             "fuzzy": true
         },
         {
+            "id": "Open in SQL Server Management Studio",
+            "message": "Open in SQL Server Management Studio",
+            "translation": ""
+        },
+        {
             "id": "Start interactive session",
             "message": "Start interactive session",
             "translation": "대화형 세션 시작",
@@ -2363,41 +2366,6 @@
             "id": "List tags",
             "message": "List tags",
             "translation": "태그 나열",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "sqlcmd start",
-            "message": "sqlcmd start",
-            "translation": "sqlcmd 시작",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Container is not running",
-            "message": "Container is not running",
-            "translation": "컨테이너가 실행되고 있지 않습니다.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Ctrl+C를 눌러 이 프로세스를 종료합니다...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "Windows 자격 증명 관리자에 이미 저장된 자격 증명이 너무 많으면 '사용 가능한 메모리 리소스가 부족합니다' 오류가 발생할 수 있습니다.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Windows 자격 증명 관리자에 자격 증명을 쓰지 못했습니다.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -3131,6 +3099,11 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": ""
         },
         {
             "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
