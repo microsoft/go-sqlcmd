@@ -4,6 +4,7 @@
 package open
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/url"
@@ -73,16 +74,12 @@ func (c *VSCode) run() {
 	endpoint, user := config.CurrentContext()
 
 	build := c.resolveBuild()
-
-	// Check if this is a local container connection
 	isLocalConnection := isLocalEndpoint(endpoint)
 
-	// If the context has a local container, ensure it is running, otherwise bail out
 	if asset := endpoint.AssetDetails; asset != nil && asset.ContainerDetails != nil {
 		c.ensureContainerIsRunning(asset.Id)
 	}
 
-	// Create or update connection profile in VS Code settings
 	c.createConnectionProfile(build, endpoint, user, isLocalConnection)
 
 	// Launch VS Code and tell the mssql extension to connect to the profile
@@ -149,7 +146,6 @@ func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *s
 		output.Fatal(t.HowToInstall())
 	}
 
-	// Install the MSSQL extension if explicitly requested
 	if c.installExtension {
 		output.Info(localizer.Sprintf("Installing MSSQL extension..."))
 		_, err := t.Run([]string{"--install-extension", "ms-mssql.mssql", "--force"})
@@ -232,8 +228,19 @@ func (c *VSCode) readSettings(path string) map[string]interface{} {
 
 	if len(data) > 0 {
 		// VS Code settings.json is JSONC (allows comments and trailing commas).
-		// Strip those before parsing so standard json.Unmarshal succeeds.
+		// json.Unmarshal can't parse those, so strip them. Because we round-trip
+		// through encoding/json on write, comments the user authored by hand
+		// would be lost silently. Back up the original alongside settings.json
+		// and warn so they can restore anything important.
 		clean := stripJSONC(data)
+		if !bytes.Equal(clean, data) {
+			backup := path + ".sqlcmd-backup"
+			if err := os.WriteFile(backup, data, 0600); err == nil {
+				c.Output().Warn(localizer.Sprintf("VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to %s", backup))
+			} else {
+				c.Output().Warn(localizer.Sprintf("VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: %s)", err.Error()))
+			}
+		}
 		if err := json.Unmarshal(clean, &settings); err != nil {
 			output := c.Output()
 			output.FatalWithHintExamples([][]string{
