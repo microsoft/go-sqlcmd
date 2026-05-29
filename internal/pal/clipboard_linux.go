@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"os/exec"
 	"strings"
-
-	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
 func copyToClipboard(text string) error {
@@ -49,6 +47,8 @@ func copyToClipboard(text string) error {
 		return nil
 	}
 
-	// All attempts failed - return combined error message
-	return localizer.Errorf("failed to copy to clipboard; tried xclip, xsel, wl-copy: %s", strings.Join(attempts, "; "))
+	// All attempts failed - return combined error message. Plain fmt.Errorf
+	// because gotext only scans cmd/modern, cmd/sqlcmd, and pkg/sqlcmd; calling
+	// localizer.Errorf from internal/pal would never make it into the catalog.
+	return fmt.Errorf("failed to copy to clipboard; tried xclip, xsel, wl-copy: %s", strings.Join(attempts, "; "))
 }
