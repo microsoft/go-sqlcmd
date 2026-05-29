@@ -245,10 +245,68 @@ func TestVSCodeGetSettingsPath(t *testing.T) {
 			t.Errorf("Expected macOS path to end with %q, got %q", want, stable)
 		}
 	default:
-		want := filepath.Join(".config", "Code", "User", "settings.json")
-		if !strings.HasSuffix(stable, want) {
-			t.Errorf("Expected Linux path to end with %q, got %q", want, stable)
+		// Real linux path depends on env (XDG_CONFIG_HOME) and snap detection;
+		// pure-function behavior is covered by TestLinuxVSCodeConfigDir.
+		if !strings.Contains(stable, filepath.Join("Code", "User")) {
+			t.Errorf("Expected Linux path to contain Code/User, got %q", stable)
 		}
+	}
+}
+
+func TestLinuxVSCodeConfigDir(t *testing.T) {
+	home := filepath.FromSlash("/home/user")
+
+	cases := []struct {
+		name    string
+		appName string
+		build   string
+		exe     string
+		xdg     string
+		want    string
+	}{
+		{
+			name:    "stable defaults to ~/.config",
+			appName: "Code",
+			build:   "stable",
+			want:    filepath.Join(home, ".config", "Code", "User"),
+		},
+		{
+			name:    "insiders defaults to ~/.config/Code - Insiders",
+			appName: "Code - Insiders",
+			build:   "insiders",
+			want:    filepath.Join(home, ".config", "Code - Insiders", "User"),
+		},
+		{
+			name:    "XDG_CONFIG_HOME overrides ~/.config",
+			appName: "Code",
+			build:   "stable",
+			xdg:     filepath.FromSlash("/custom/xdg"),
+			want:    filepath.FromSlash("/custom/xdg/Code/User"),
+		},
+		{
+			name:    "snap stable redirects under ~/snap/code",
+			appName: "Code",
+			build:   "stable",
+			exe:     "/snap/bin/code",
+			xdg:     filepath.FromSlash("/custom/xdg"), // ignored under snap confinement
+			want:    filepath.Join(home, "snap", "code", "current", ".config", "Code", "User"),
+		},
+		{
+			name:    "snap insiders redirects under ~/snap/code-insiders",
+			appName: "Code - Insiders",
+			build:   "insiders",
+			exe:     "/snap/bin/code-insiders",
+			want:    filepath.Join(home, "snap", "code-insiders", "current", ".config", "Code - Insiders", "User"),
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := linuxVSCodeConfigDir(home, tc.appName, tc.build, tc.exe, tc.xdg)
+			if got != tc.want {
+				t.Errorf("linuxVSCodeConfigDir = %q, want %q", got, tc.want)
+			}
+		})
 	}
 }
 
