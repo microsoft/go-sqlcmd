@@ -8,7 +8,6 @@ package open
 import (
 	"fmt"
 	"strconv"
-	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -52,16 +51,12 @@ func (c *Ssms) run() {
 	c.validateVersion()
 
 	endpoint, user := config.CurrentContext()
-
-	// Check if this is a local container connection
 	isLocalConnection := isLocalEndpoint(endpoint)
 
-	// If the context has a local container, ensure it is running, otherwise bail out
 	if asset := endpoint.AssetDetails; asset != nil && asset.ContainerDetails != nil {
 		c.ensureContainerIsRunning(asset.Id)
 	}
 
-	// Launch SSMS with connection parameters
 	c.launchSsms(endpoint.Address, endpoint.Port, user, isLocalConnection)
 }
 
@@ -92,26 +87,19 @@ func (c *Ssms) ensureContainerIsRunning(containerID string) {
 func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User, isLocalConnection bool) {
 	output := c.Output()
 
-	// Build server connection string
-	serverArg := fmt.Sprintf("%s,%d", host, port)
-
 	args := []string{
-		"-S", serverArg,
+		"-S", fmt.Sprintf("%s,%d", host, port),
 		"-nosplash",
 	}
 
-	// Only add -C (trust server certificate) for local connections with self-signed certs
+	// -C trusts the self-signed cert that local SQL Server containers ship with.
 	if isLocalConnection {
 		args = append(args, "-C")
 	}
 
-	// Use SQL authentication if configured (commonly used for SQL Server containers)
 	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
-		// Escape double quotes in username (SQL Server allows " in login names)
-		username := strings.ReplaceAll(user.BasicAuth.Username, `"`, `\"`)
-		args = append(args, "-U", username)
-		// Note: -P parameter was removed in SSMS 18+ for security reasons
-		// Copy password to clipboard so user can paste it in the login dialog
+		// SSMS removed -P in 18+; hand the password off via the clipboard.
+		args = append(args, "-U", user.BasicAuth.Username)
 		copyPasswordToClipboard(user, output)
 	}
 
