@@ -804,9 +804,21 @@
       </Item>
       <Item ItemId=";messages[160].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install Azure Sql Edge]]></Val>
+          <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[安裝 Azure Sql Edge]]></Val>
+            <Val><![CDATA[要使用的標籤，使用 get-tags 查看標籤清單]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Install Azure Sql Edge]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[161].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[內容名稱 (若未提供則會建立預設內容名稱)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create Azure SQL Edge in a container]]></Val>
@@ -814,11 +826,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[161].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[162].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install/Create Azure SQL Edge in a container]]></Val>
+          <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在容器中安裝/建立 Azure SQL Edge]]></Val>
+            <Val><![CDATA[建立使用者資料庫，並將它設定為登入的預設值]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
@@ -826,11 +838,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[162].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[163].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
+          <Val><![CDATA[Accept the SQL Server EULA]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[要使用的標籤，使用 get-tags 查看標籤清單]]></Val>
+            <Val><![CDATA[接受 SQL Server EULA]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
@@ -838,11 +850,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[163].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[164].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
+          <Val><![CDATA[Generated password length]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[內容名稱 (若未提供則會建立預設內容名稱)]]></Val>
+            <Val><![CDATA[產生的密碼長度]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
@@ -850,11 +862,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[164].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[165].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
+          <Val><![CDATA[Minimum number of special characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[建立使用者資料庫，並將它設定為登入的預設值]]></Val>
+            <Val><![CDATA[特殊字元的數目下限]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Accept the SQL Server EULA]]></Val>
@@ -862,11 +874,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[165].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[166].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Accept the SQL Server EULA]]></Val>
+          <Val><![CDATA[Minimum number of numeric characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[接受 SQL Server EULA]]></Val>
+            <Val><![CDATA[數字字元的數目下限]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Generated password length]]></Val>
@@ -874,11 +886,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[166].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[167].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Generated password length]]></Val>
+          <Val><![CDATA[Minimum number of upper characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[產生的密碼長度]]></Val>
+            <Val><![CDATA[上層字元數目下限]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of special characters]]></Val>
@@ -886,11 +898,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[167].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[168].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Minimum number of special characters]]></Val>
+          <Val><![CDATA[Special character set to include in password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[特殊字元的數目下限]]></Val>
+            <Val><![CDATA[要包含在密碼中的特殊字元集]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of numeric characters]]></Val>
@@ -898,26 +910,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[168].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[169].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Minimum number of numeric characters]]></Val>
+          <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[數字字元的數目下限]]></Val>
+            <Val><![CDATA[不要下載映像。使用已下載的影像]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of upper characters]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[169].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Minimum number of upper characters]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[上層字元數目下限]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Special character set to include in password]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -933,9 +933,21 @@
       </Item>
       <Item ItemId=";messages[170].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Special character set to include in password]]></Val>
+          <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[要包含在密碼中的特殊字元集]]></Val>
+            <Val><![CDATA[連線前，在錯誤記錄中等候的行]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Special character set to include in password]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[171].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[指定容器的自訂名稱，而非隨機產生的名稱]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
@@ -943,11 +955,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[171].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[172].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
+          <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[不要下載映像。使用已下載的影像]]></Val>
+            <Val><![CDATA[明確設定容器主機名稱，預設為容器識別碼]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
@@ -955,11 +967,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[172].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[173].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
+          <Val><![CDATA[Specifies the image CPU architecture]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[連線前，在錯誤記錄中等候的行]]></Val>
+            <Val><![CDATA[指定映像 CPU 結構]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
@@ -967,11 +979,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[173].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[174].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
+          <Val><![CDATA[Specifies the image operating system]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定容器的自訂名稱，而非隨機產生的名稱]]></Val>
+            <Val><![CDATA[指定映像作業系統]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
@@ -979,11 +991,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[174].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[175].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
+          <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[明確設定容器主機名稱，預設為容器識別碼]]></Val>
+            <Val><![CDATA[連接埠 (預設從 1433 向上使用的下一個可用連接埠)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the image CPU architecture]]></Val>
@@ -991,11 +1003,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[175].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[176].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the image CPU architecture]]></Val>
+          <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定映像 CPU 結構]]></Val>
+            <Val><![CDATA[從 URL 下載 (至容器) 並附加資料庫 (.bak)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the image operating system]]></Val>
@@ -1003,11 +1015,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[176].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[177].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the image operating system]]></Val>
+          <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定映像作業系統]]></Val>
+            <Val><![CDATA[或者，將 {AcceptEulaFlag} 旗標新增至命令列]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
@@ -1015,11 +1027,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[177].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[178].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
+          <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[連接埠 (預設從 1433 向上使用的下一個可用連接埠)]]></Val>
+            <Val><![CDATA[或者，設定環境變數，例如 {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
@@ -1027,26 +1039,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[178].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[179].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
+          <Val><![CDATA[EULA not accepted]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[從 URL 下載 (至容器) 並附加資料庫 (.bak)]]></Val>
+            <Val><![CDATA[未接受 EULA]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[179].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[或者，將 {AcceptEulaFlag} 旗標新增至命令列]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1062,9 +1062,21 @@
       </Item>
       <Item ItemId=";messages[180].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
+          <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[或者，設定環境變數，例如 {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
+            <Val><![CDATA[--user-database {DefaultDatabase} 包含非 ASCII 字元和/或引號]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[181].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Starting {ImageName}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[正在啟動 {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[EULA not accepted]]></Val>
@@ -1072,11 +1084,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[181].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[182].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[EULA not accepted]]></Val>
+          <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[不接受 EULA]]></Val>
+            <Val><![CDATA[已在 "{ConfigFileUsed}" 中建立內容{CurrentContextName}，正在設定使用者帳戶...]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
@@ -1084,11 +1096,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[182].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[183].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
+          <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--user-database {DefaultDatabase} 包含非 ASCII 字元和/或引號]]></Val>
+            <Val><![CDATA[已停用 {Sa} 帳戶 (和旋轉 {Sa_1} 密碼)。正在建立使用者 {UserName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Starting {ImageName}]]></Val>
@@ -1096,11 +1108,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[183].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[184].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Starting {ImageName}]]></Val>
+          <Val><![CDATA[Start interactive session]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在啟動 {ImageName}]]></Val>
+            <Val><![CDATA[開始互動式工作階段]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
@@ -1108,11 +1120,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[184].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[185].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
+          <Val><![CDATA[Change current context]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已在 "{ConfigFileUsed}" 中建立內容{CurrentContextName}，正在設定使用者帳戶...]]></Val>
+            <Val><![CDATA[變更目前的內容]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
@@ -1120,11 +1132,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[185].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[186].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
+          <Val><![CDATA[View sqlcmd configuration]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已停用 {Sa} 帳戶 (和旋轉 {Sa_1} 密碼)。正在建立使用者 {UserName}]]></Val>
+            <Val><![CDATA[檢視 sqlcmd 設定]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Start interactive session]]></Val>
@@ -1132,11 +1144,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[186].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[187].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Start interactive session]]></Val>
+          <Val><![CDATA[See connection strings]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[開始互動式工作階段]]></Val>
+            <Val><![CDATA[查看連接字串]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Change current context]]></Val>
@@ -1144,11 +1156,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[187].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[188].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Change current context]]></Val>
+          <Val><![CDATA[Remove]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[變更目前的內容]]></Val>
+            <Val><![CDATA[移除]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[View sqlcmd configuration]]></Val>
@@ -1156,26 +1168,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[188].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[189].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[View sqlcmd configuration]]></Val>
+          <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[檢視 sqlcmd 設定]]></Val>
+            <Val><![CDATA[連接埠 {Port} 上的用戶端連線現在已就緒]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[See connection strings]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[189].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[See connection strings]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[請參閱連接字串]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Remove]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1191,9 +1191,21 @@
       </Item>
       <Item ItemId=";messages[190].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Remove]]></Val>
+          <Val><![CDATA[--using URL must be http or https]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[移除]]></Val>
+            <Val><![CDATA[--using URL 必須是 HTTP 或 HTTPS]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Remove]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[191].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{UsingDatabaseUrl} 不是 --using 旗標的有效 URL]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
@@ -1201,11 +1213,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[191].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[192].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
+          <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[連接埠 {Port} 上的用戶端連線現在已就緒]]></Val>
+            <Val><![CDATA[--using URL 必須有 .bak 檔案的路徑]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using URL must be http or https]]></Val>
@@ -1213,11 +1225,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[192].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[193].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using URL must be http or https]]></Val>
+          <Val><![CDATA[--using file URL must be a .bak file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--using URL 必須是 HTTP 或 HTTPS]]></Val>
+            <Val><![CDATA[--using 檔案 URL 必須是 .bak 檔案]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
@@ -1225,11 +1237,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[193].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[194].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
+          <Val><![CDATA[Invalid --using file type]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{UsingDatabaseUrl} 不是 --using 旗標的有效 URL]]></Val>
+            <Val><![CDATA[無效 --使用檔案類型]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
@@ -1237,11 +1249,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[194].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[195].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
+          <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--using URL 必須有 .bak 檔案的路徑]]></Val>
+            <Val><![CDATA[正在建立預設資料庫 [{DefaultDatabase}]5D;]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using file URL must be a .bak file]]></Val>
@@ -1249,11 +1261,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[195].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[196].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using file URL must be a .bak file]]></Val>
+          <Val><![CDATA[Downloading {File}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--using 檔案 URL 必須是 .bak 檔案]]></Val>
+            <Val><![CDATA[正在下載 {File}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Invalid --using file type]]></Val>
@@ -1261,11 +1273,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[196].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[197].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid --using file type]]></Val>
+          <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[無效 --使用檔案類型]]></Val>
+            <Val><![CDATA[正在還原資料庫 {DatabaseName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
@@ -1273,11 +1285,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[197].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[198].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
+          <Val><![CDATA[Downloading {ImageName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在建立預設資料庫 [{DefaultDatabase}]5D;]]></Val>
+            <Val><![CDATA[正在下載 {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Downloading {File}]]></Val>
@@ -1285,26 +1297,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[198].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[199].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Downloading {File}]]></Val>
+          <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在下載 {File}]]></Val>
+            <Val><![CDATA[此機器上是否已安裝容器執行時間 (例如 Podman 或 Docker)?]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[199].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在還原資料庫 {DatabaseName}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Downloading {ImageName}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1329,9 +1329,21 @@
       </Item>
       <Item ItemId=";messages[200].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Downloading {ImageName}]]></Val>
+          <Val><![CDATA[If not, download desktop engine from:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[正在下載 {ImageName}]]></Val>
+            <Val><![CDATA[如果沒有，請從下列來源下載桌面引擎:]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Downloading {ImageName}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[201].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[or]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[或]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
@@ -1339,11 +1351,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[201].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[202].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
+          <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[此機器上是否已安裝容器執行時間 (例如 Podman 或 Docker)?]]></Val>
+            <Val><![CDATA[容器執行時間是否正在執行? (請嘗試 '{PodmanPsCommand}' 或 '{DockerPsCommand}'(清單容器)，是否在沒有錯誤的情況下傳回?)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[If not, download desktop engine from:]]></Val>
@@ -1351,11 +1363,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[202].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[203].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[If not, download desktop engine from:]]></Val>
+          <Val><![CDATA[Unable to download image {ImageName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[如果沒有，請從下列來源下載桌面引擎:]]></Val>
+            <Val><![CDATA[無法下載映像 {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[or]]></Val>
@@ -1363,11 +1375,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[203].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[204].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[or]]></Val>
+          <Val><![CDATA[File does not exist at URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[或]]></Val>
+            <Val><![CDATA[檔案不存在於 URL]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
@@ -1375,11 +1387,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[204].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[205].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
+          <Val><![CDATA[Unable to download file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[容器執行時間是否正在執行? (請嘗試 '{PodmanPsCommand}' 或 '{DockerPsCommand}'(清單容器)，是否在沒有錯誤的情況下傳回?)]]></Val>
+            <Val><![CDATA[無法下載檔案]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Unable to download image {ImageName}]]></Val>
@@ -1387,11 +1399,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[205].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[206].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unable to download image {ImageName}]]></Val>
+          <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[無法下載映像 {ImageName}]]></Val>
+            <Val><![CDATA[在容器中安裝/建立 SQL Server]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[File does not exist at URL]]></Val>
@@ -1399,11 +1411,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[206].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[207].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[File does not exist at URL]]></Val>
+          <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[檔案不存在於 URL]]></Val>
+            <Val><![CDATA[查看 SQL Server 的所有發行版本標籤，安裝之前的版本]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Unable to download file]]></Val>
@@ -1411,11 +1423,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[207].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[208].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unable to download file]]></Val>
+          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[無法下載檔案]]></Val>
+            <Val><![CDATA[建立 SQL Server、下載並附加 AdventureWorks 範例資料庫]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
@@ -1423,26 +1435,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[208].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[209].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
+          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在容器中安裝/建立 SQL Server]]></Val>
+            <Val><![CDATA[使用不同的資料庫名稱建立 SQL Server、下載及附加 AdventureWorks 範例資料庫]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[209].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[查看 SQL Server 的所有發行版本標籤，安裝之前的版本]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1458,9 +1458,21 @@
       </Item>
       <Item ItemId=";messages[210].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
+          <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[建立 SQL Server、下載並附加 AdventureWorks 範例資料庫]]></Val>
+            <Val><![CDATA[使用空白使用者資料庫建立 SQL Server]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[211].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[使用完整記錄安裝/建立 SQL Server]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
@@ -1468,11 +1480,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[211].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[212].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
+          <Val><![CDATA[Get tags available for mssql install]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[使用不同的資料庫名稱建立 SQL Server、下載及附加 AdventureWorks 範例資料庫]]></Val>
+            <Val><![CDATA[取得可用於 mssql 安裝的標籤]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
@@ -1480,11 +1492,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[212].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[213].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
+          <Val><![CDATA[List tags]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[使用空白使用者資料庫建立 SQL Server]]></Val>
+            <Val><![CDATA[列出標籤]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
@@ -1492,11 +1504,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[213].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[214].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
+          <Val><![CDATA[sqlcmd start]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[使用完整記錄安裝/建立 SQL Server]]></Val>
+            <Val><![CDATA[sqlcmd 啟動]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Get tags available for Azure SQL Edge install]]></Val>
@@ -1504,11 +1516,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[214].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[215].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Get tags available for Azure SQL Edge install]]></Val>
+          <Val><![CDATA[Container is not running]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[取得可用於 Azure SQL Edge 安裝的標籤]]></Val>
+            <Val><![CDATA[容器未執行]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[List tags]]></Val>
@@ -1516,11 +1528,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[215].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[216].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[List tags]]></Val>
+          <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[列出標籤]]></Val>
+            <Val><![CDATA[按 Ctrl+C 結束此流程...]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Get tags available for mssql install]]></Val>
@@ -1528,50 +1540,38 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[216].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Get tags available for mssql install]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[取得可用於 mssql 安裝的標籤]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";messages[217].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd start]]></Val>
+          <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd 啟動]]></Val>
+            <Val><![CDATA[「記憶體資源不足」錯誤可能是由於 Windows 認證管理員中儲存太多認證所致]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
+            <Val><![CDATA[sqlcmd start]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[218].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Container is not running]]></Val>
+          <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[容器未執行]]></Val>
+            <Val><![CDATA[無法將認證寫入 Windows 認證管理員]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
+            <Val><![CDATA[Container is not running]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[219].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
+          <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[按 Ctrl+C 結束此流程...]]></Val>
+            <Val><![CDATA[-L 參數不能與其他參數一起使用。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Servers:]]></Val>
+            <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1590,69 +1590,81 @@
       </Item>
       <Item ItemId=";messages[220].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
+          <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[「記憶體資源不足」錯誤可能是由於 Windows 認證管理員中儲存太多認證所致]]></Val>
+            <Val><![CDATA['-a {PacketSize}': 封包大小必須是介於 512 到 32767 之間的數字。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
+            <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[221].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
+          <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[無法將認證寫入 Windows 認證管理員]]></Val>
+            <Val><![CDATA['-h {Headers}': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
+            <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[222].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
+          <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[-L 參數不能與其他參數一起使用。]]></Val>
+            <Val><![CDATA[-J 參數要求必須啟用加密 (-N true、-N mandatory 或 -N strict)。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Version {Version}]]></Val>
+            <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[223].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
+          <Val><![CDATA[Servers:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['-a {PacketSize}': 封包大小必須是介於 512 到 32767 之間的數字。]]></Val>
+            <Val><![CDATA[伺服器:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Flags:]]></Val>
+            <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[224].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
+          <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['-h {Headers}': 標頭值必須是 -1 或介於 -1 和 2147483647 之間的值]]></Val>
+            <Val><![CDATA[法律文件和資訊: aka.ms/SqlcmdLegal]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
+            <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[225].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
+          <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[-J 參數要求必須啟用加密 (-N true、-N mandatory 或 -N strict)。]]></Val>
+            <Val><![CDATA[協力廠商聲明: aka.ms/SqlcmdNotices]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[226].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Version: {Version}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[版本: {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Servers:]]></Val>
@@ -1660,11 +1672,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[226].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[227].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Servers:]]></Val>
+          <Val><![CDATA[Flags:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[伺服器:]]></Val>
+            <Val><![CDATA[旗標:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
@@ -1672,11 +1684,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[227].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
+          <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[法律文件和資訊: aka.ms/SqlcmdLegal]]></Val>
+            <Val><![CDATA[-? 顯示此語法摘要，{HelpFlag} 顯示新式 sqlcmd 子命令說明]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
@@ -1684,26 +1696,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[229].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
+          <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[協力廠商聲明: aka.ms/SqlcmdNotices]]></Val>
+            <Val><![CDATA[將執行階段追蹤寫入指定的檔案。僅供進階偵錯使用。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Version: {Version}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[229].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Version: {Version}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[版本: {Version}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Flags:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1719,9 +1719,21 @@
       </Item>
       <Item ItemId=";messages[230].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Flags:]]></Val>
+          <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[旗標: ]]></Val>
+            <Val><![CDATA[識別一或多個包含 SQL 語句批次的檔案。如果一或多個檔案不存在，sqlcmd 將會結束。與 {QueryAndExitFlag}/{QueryFlag} 互斥]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Flags:]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[231].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[識別從 sqlcmd 接收輸出的檔案]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
@@ -1729,11 +1741,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[231].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[232].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
+          <Val><![CDATA[Print version information and exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[-? 顯示此語法摘要，{HelpFlag} 顯示新式 sqlcmd 子命令說明]]></Val>
+            <Val><![CDATA[列印版本資訊並結束]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
@@ -1741,11 +1753,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[232].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[233].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
+          <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[將執行階段追蹤寫入指定的檔案。僅供進階偵錯使用。]]></Val>
+            <Val><![CDATA[隱含地信任沒有驗證的伺服器憑證]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
@@ -1753,11 +1765,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[233].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[234].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
+          <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[識別一或多個包含 SQL 語句批次的檔案。如果一或多個檔案不存在，sqlcmd 將會結束。與 {QueryAndExitFlag}/{QueryFlag} 互斥]]></Val>
+            <Val><![CDATA[此選項可設定 sqlcmd 指令碼變數 {DbNameVar}。此參數指定初始資料庫。預設值是您登入的預設資料庫屬性。如果資料庫不存在，則會產生錯誤訊息並結束 sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
@@ -1765,11 +1777,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[234].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[235].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
+          <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[識別從 sqlcmd 接收輸出的檔案]]></Val>
+            <Val><![CDATA[使用信任的連線，而非使用使用者名稱和密碼登入 SQL Server，忽略任何定義使用者名稱和密碼的環境變數]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Print version information and exit]]></Val>
@@ -1777,11 +1789,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[235].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[236].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Print version information and exit]]></Val>
+          <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[列印版本資訊並結束]]></Val>
+            <Val><![CDATA[指定批次結束字元。預設值為 {BatchTerminatorGo}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
@@ -1789,11 +1801,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[236].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[237].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
+          <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[隱含地信任沒有驗證的伺服器憑證]]></Val>
+            <Val><![CDATA[登入名稱或包含資料庫使用者名稱。對於容器資料庫使用者，您必須提供資料庫名稱選項]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
@@ -1801,11 +1813,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[237].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[238].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
+          <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[此選項可設定 sqlcmd 指令碼變數 {DbNameVar}。此參數指定初始資料庫。預設值是您登入的預設資料庫屬性。如果資料庫不存在，則會產生錯誤訊息並結束 sqlcmd]]></Val>
+            <Val><![CDATA[sqlcmd 啟動時執行查詢，但查詢完成執行時不會結束 sqlcmd。可以執行以分號分隔的多重查詢]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
@@ -1813,26 +1825,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[238].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[239].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
+          <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[使用信任的連線，而非使用使用者名稱和密碼登入 SQL Server，忽略任何定義使用者名稱和密碼的環境變數]]></Val>
+            <Val><![CDATA[在 sqlcmd 啟動時執行查詢，然後立即結束 sqlcmd。可以執行以分號分隔的多重查詢]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[239].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定批次結束字元。預設值為 {BatchTerminatorGo}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1848,9 +1848,21 @@
       </Item>
       <Item ItemId=";messages[240].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
+          <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[登入名稱或包含資料庫使用者名稱。對於容器資料庫使用者，您必須提供資料庫名稱選項]]></Val>
+            <Val><![CDATA[{ConnStrPattern} 指定要連線的 SQL Server 執行個體。它會設定 sqlcmd 指令碼變數 {ServerEnvVar}。]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[241].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[指定透過 Proxy 進行傳輸時，用於驗證的伺服器名稱。搭配 -S 使用，將撥號位址與要傳送到 SQL Server 的伺服器名稱分開指定。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
@@ -1858,11 +1870,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[241].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
+          <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd 啟動時執行查詢，但查詢完成執行時不會結束 sqlcmd。可以執行以分號分隔的多重查詢]]></Val>
+            <Val><![CDATA[{_X1} 停用可能會危害系統安全性的命令。傳遞 1 會告訴 sqlcmd 在執行停用的命令時結束。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
@@ -1870,11 +1882,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
+          <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在 sqlcmd 啟動時執行查詢，然後立即結束 sqlcmd。可以執行以分號分隔的多重查詢]]></Val>
+            <Val><![CDATA[指定要用來連接到 Azure SQL 資料庫的 SQL 驗證方法。下列其中一項: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
@@ -1882,35 +1894,35 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ConnStrPattern} 指定要連線的 SQL Server 執行個體。它會設定 sqlcmd 指令碼變數 {ServerEnvVar}。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";messages[244].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
+          <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定透過 Proxy 進行傳輸時，用於驗證的伺服器名稱。搭配 -S 使用，將撥號位址與要傳送到 SQL Server 的伺服器名稱分開指定。]]></Val>
+            <Val><![CDATA[告訴 sqlcmd 使用 ActiveDirectory 驗證。若未提供使用者名稱，則會使用驗證方法 ActiveDirectoryDefault。如果提供密碼，就會使用 ActiveDirectoryPassword。否則會使用 ActiveDirectoryInteractive]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+            <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[245].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_X1} 停用可能會危害系統安全性的命令。傳遞 1 會告訴 sqlcmd 在執行停用的命令時結束。]]></Val>
+            <Val><![CDATA[導致 sqlcmd 忽略指令碼變數。當指令碼包含許多可能包含格式與一般變數相同之字串的 {InsertKeyword} 陳述式時，此參數會很有用，例如 $(variable_name)]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[246].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[建立可在 sqlcmd 指令碼中使用的 sqlcmd 指令碼變數。如果值包含空格，請將值括在引號中。您可以指定多個 var=values 值。如果指定的任何值有錯誤，sqlcmd 會產生錯誤訊息，然後結束]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
@@ -1918,11 +1930,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[246].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[247].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
+          <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定要用來連接到 Azure SQL 資料庫的 SQL 驗證方法。下列其中一項: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
+            <Val><![CDATA[要求不同大小的封包。此選項可設定 sqlcmd 指令碼變數 {PacketSizeVar}。packet_size 必須是介於 512 到 32767 之間的值。預設值 = 4096。較大的封包大小可以提高在 {BatchTerminatorGo} 命令之間包含大量 SQL 語句的指令碼的執行性能。您可以要求較大的封包大小。不過，如果要求遭到拒絕，sqlcmd 會使用伺服器預設的封包大小]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
@@ -1930,11 +1942,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[247].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[248].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
+          <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[告訴 sqlcmd 使用 ActiveDirectory 驗證。若未提供使用者名稱，則會使用驗證方法 ActiveDirectoryDefault。如果提供密碼，就會使用 ActiveDirectoryPassword。否則會使用 ActiveDirectoryInteractive]]></Val>
+            <Val><![CDATA[指定當您嘗試連線到伺服器時，sqlcmd 登入 go-mssqldb 驅動程式逾時前的秒數。此選項可設定 sqlcmd 指令碼變數 {LoginTimeOutVar}。預設值是 30。0 表示無限]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
@@ -1942,26 +1954,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[248].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[249].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
+          <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[導致 sqlcmd 忽略指令碼變數。當指令碼包含許多可能包含格式與一般變數相同之字串的 {InsertKeyword} 陳述式時，此參數會很有用，例如 $(variable_name)]]></Val>
+            <Val><![CDATA[此選項可設定 sqlcmd 指令碼變數 {WorkstationVar}。工作站名稱列在 sys.sysprocesses 目錄檢視的主機名稱資料行中，而且可以使用預存程式 sp_who 傳回。如果未指定這個選項，預設值是目前的電腦名稱稱。此名稱可用來識別不同的 sqlcmd 工作階段]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[249].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[建立可在 sqlcmd 指令碼中使用的 sqlcmd 指令碼變數。如果值包含空格，請將值括在引號中。您可以指定多個 var=values 值。如果指定的任何值有錯誤，sqlcmd 會產生錯誤訊息，然後結束]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1977,9 +1977,21 @@
       </Item>
       <Item ItemId=";messages[250].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
+          <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[要求不同大小的封包。此選項可設定 sqlcmd 指令碼變數 {PacketSizeVar}。packet_size 必須是介於 512 到 32767 之間的值。預設值 = 4096。較大的封包大小可以提高在 {BatchTerminatorGo} 命令之間包含大量 SQL 語句的指令碼的執行性能。您可以要求較大的封包大小。不過，如果要求遭到拒絕，sqlcmd 會使用伺服器預設的封包大小]]></Val>
+            <Val><![CDATA[在連線到伺服器時宣告應用程式工作負載類型。目前唯一支援的值是 ReadOnly。如果未指定{ApplicationIntentFlagShort}，sqlcmd 公用程式將不支援連線到 Always On 可用性群組中的次要複本]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[251].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[用戶端會使用此切換來要求加密連線]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
@@ -1987,11 +1999,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[251].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[252].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
+          <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定當您嘗試連線到伺服器時，sqlcmd 登入 go-mssqldb 驅動程式逾時前的秒數。此選項可設定 sqlcmd 指令碼變數 {LoginTimeOutVar}。預設值是 30。0 表示無限]]></Val>
+            <Val><![CDATA[指定伺服器憑證中的主機名稱。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
@@ -1999,11 +2011,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[252].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
+          <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[此選項可設定 sqlcmd 指令碼變數 {WorkstationVar}。工作站名稱列在 sys.sysprocesses 目錄檢視的主機名稱資料行中，而且可以使用預存程式 sp_who 傳回。如果未指定這個選項，預設值是目前的電腦名稱稱。此名稱可用來識別不同的 sqlcmd 工作階段]]></Val>
+            <Val><![CDATA[指定伺服器憑證檔案 (PEM、DER 或 CER) 的路徑，以與伺服器的 TLS 憑證進行比對。當啟用加密 (-N true、-N mandatory 或 -N strict) 時，使用此參數進行憑證釘選，而非標準憑證驗證。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
@@ -2011,11 +2023,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[254].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
+          <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[在連線到伺服器時宣告應用程式工作負載類型。目前唯一支援的值是 ReadOnly。如果未指定{ApplicationIntentFlagShort}，sqlcmd 公用程式將不支援連線到 Always On 可用性群組中的次要複本]]></Val>
+            <Val><![CDATA[以垂直格式列印輸出。此選項會將 sqlcmd 指令碼變數 {SQLCMDFORMAT} 設定為 '{Vert}'。預設值為 false]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
@@ -2023,11 +2035,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[254].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[255].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
+          <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[用戶端會使用此切換來要求加密連線]]></Val>
+            <Val><![CDATA[{_r0__1} 將嚴重性為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
@@ -2035,11 +2047,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[255].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[256].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
+          <Val><![CDATA[Level of mssql driver messages to print]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定伺服器憑證中的主機名稱。]]></Val>
+            <Val><![CDATA[要列印的 mssql 驅動程式訊息層級]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
@@ -2047,11 +2059,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[256].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[257].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
+          <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定伺服器憑證檔案 (PEM、DER 或 CER) 的路徑，以與伺服器的 TLS 憑證進行比對。當啟用加密 (-N true、-N mandatory 或 -N strict) 時，使用此參數進行憑證釘選，而非標準憑證驗證。]]></Val>
+            <Val><![CDATA[指定 sqlcmd 在發生錯誤時結束並傳回{DosErrorLevel} 值]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
@@ -2059,11 +2071,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[257].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[258].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
+          <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[以垂直格式列印輸出。此選項會將 sqlcmd 指令碼變數 {SQLCMDFORMAT} 設定為 '{Vert}'。預設值為 false]]></Val>
+            <Val><![CDATA[控制要傳送哪些錯誤訊息給 {StdoutName}。會傳送嚴重性層級大於或等於此層級的訊息]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
@@ -2071,26 +2083,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[258].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[259].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
+          <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_r0__1} 將嚴重性為 >= 11 的錯誤訊息重新導向至 stderr。傳遞 1 以重新導向所有錯誤，包括 PRINT。]]></Val>
+            <Val><![CDATA[指定資料行標題之間要列印的資料列數目。使用 -h-1 指定不要列印標頭]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Level of mssql driver messages to print]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[259].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Level of mssql driver messages to print]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[要列印的 mssql 驅動程式訊息層級]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2106,9 +2106,21 @@
       </Item>
       <Item ItemId=";messages[260].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
+          <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定 sqlcmd 在發生錯誤時結束並傳回{DosErrorLevel} 值]]></Val>
+            <Val><![CDATA[指定所有輸出檔案都以小端點 Unicode 編碼]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[261].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[指定資料行分隔符號字元。設定 {ColSeparatorVar} 變數。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
@@ -2116,11 +2128,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[261].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[262].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
+          <Val><![CDATA[Remove trailing spaces from a column]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[控制要傳送哪些錯誤訊息給 {StdoutName}。會傳送嚴重性層級大於或等於此層級的訊息]]></Val>
+            <Val><![CDATA[從資料行移除尾端空格]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
@@ -2128,11 +2140,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[262].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[263].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定資料行標題之間要列印的資料列數目。使用 -h-1 指定不要列印標頭]]></Val>
+            <Val><![CDATA[為回溯相容性提供。Sqlcmd 一律最佳化 SQL 容錯移轉叢集作用中複本的偵測]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
@@ -2140,11 +2152,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[263].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[264].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
+          <Val><![CDATA[Password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定所有輸出檔案都以小端點 Unicode 編碼]]></Val>
+            <Val><![CDATA[密碼]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
@@ -2152,11 +2164,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[264].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[265].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
+          <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定資料行分隔符號字元。設定 {ColSeparatorVar} 變數。]]></Val>
+            <Val><![CDATA[控制結束時用來設定 {ErrorLevel} 變數的嚴重性層級]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Remove trailing spaces from a column]]></Val>
@@ -2164,11 +2176,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[265].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Remove trailing spaces from a column]]></Val>
+          <Val><![CDATA[Specifies the screen width for output]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[從資料行移除尾端空格]]></Val>
+            <Val><![CDATA[指定輸出的螢幕寬度]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
@@ -2176,11 +2188,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
+          <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[為回溯相容性提供。Sqlcmd 一律最佳化 SQL 容錯移轉叢集作用中複本的偵測]]></Val>
+            <Val><![CDATA[{_Lc} 列出伺服器。傳遞 {C} 以省略 'Servers:' 輸出。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Password]]></Val>
@@ -2188,11 +2200,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[268].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password]]></Val>
+          <Val><![CDATA[Dedicated administrator connection]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[密碼]]></Val>
+            <Val><![CDATA[專用系統管理員連線]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
@@ -2200,26 +2212,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[268].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[269].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[控制結束時用來設定 {ErrorLevel} 變數的嚴重性層級]]></Val>
+            <Val><![CDATA[為回溯相容性提供。一律啟用引號識別項]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the screen width for output]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[269].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the screen width for output]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指定輸出的螢幕寬度]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2238,9 +2238,21 @@
       </Item>
       <Item ItemId=";messages[270].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_Lc} 列出伺服器。傳遞 {C} 以省略 'Servers:' 輸出。]]></Val>
+            <Val><![CDATA[為回溯相容性提供。未使用用戶端地區設定]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_k_12} 從輸出移除控制字元。傳遞 1 以取代每個字元的空格，2 表示每個連續字元一個空格]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Dedicated administrator connection]]></Val>
@@ -2248,11 +2260,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[272].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Dedicated administrator connection]]></Val>
+          <Val><![CDATA[Echo input]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[專用系統管理員連線]]></Val>
+            <Val><![CDATA[回應輸入]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
@@ -2260,11 +2272,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[272].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
+          <Val><![CDATA[Enable column encryption]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[為回溯相容性提供。一律啟用引號識別項]]></Val>
+            <Val><![CDATA[啟用資料行加密]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
@@ -2272,11 +2284,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[274].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
+          <Val><![CDATA[New password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[為回溯相容性提供。未使用用戶端地區設定]]></Val>
+            <Val><![CDATA[新密碼]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
@@ -2284,11 +2296,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[274].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[275].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
+          <Val><![CDATA[New password and exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_k_12} 從輸出移除控制字元。傳遞 1 以取代每個字元的空格，2 表示每個連續字元一個空格]]></Val>
+            <Val><![CDATA[新增密碼並結束]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Echo input]]></Val>
@@ -2296,11 +2308,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[275].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[276].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Echo input]]></Val>
+          <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[回應輸入]]></Val>
+            <Val><![CDATA[設定 sqlcmd 指令碼變數 {V}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Enable column encryption]]></Val>
@@ -2308,11 +2320,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[276].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[277].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enable column encryption]]></Val>
+          <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[啟用資料行加密]]></Val>
+            <Val><![CDATA['{Flag} {Value}': 值必須大於或等於 {Min} 且小於或等於 {Max}。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[New password]]></Val>
@@ -2320,11 +2332,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[277].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[278].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[New password]]></Val>
+          <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[新密碼]]></Val>
+            <Val><![CDATA['{Flag} {Value}': 值必須大於 {Min} 且小於 {Max}。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[New password and exit]]></Val>
@@ -2332,26 +2344,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[278].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[279].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[New password and exit]]></Val>
+          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[新增密碼並結束]]></Val>
+            <Val><![CDATA['{Flag} {Value}': 非預期的引數。引數值必須是 {AllowedValues0}。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[279].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[設定 sqlcmd 指令碼變數 {V}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2367,9 +2367,21 @@
       </Item>
       <Item ItemId=";messages[280].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
+          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 值必須大於或等於 {Min} 且小於或等於 {Max}。]]></Val>
+            <Val><![CDATA['{Flag} {Value}': 非預期的引數。引數值必須是 {AllowedValues} 的其中一個。]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[281].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{Flag1} 和 {Flag2} 選項互斥。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
@@ -2377,11 +2389,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[281].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[282].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
+          <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 值必須大於 {Min} 且小於 {Max}。]]></Val>
+            <Val><![CDATA['{P1}': 遺漏引數。輸入 '-?' 以取得說明。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
@@ -2389,11 +2401,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[282].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[283].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
+          <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 非預期的引數。引數值必須是 {AllowedValues0}。]]></Val>
+            <Val><![CDATA['{P1}': 未知的選項。輸入 '-?' 以取得說明。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
@@ -2401,11 +2413,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[283].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
+          <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': 非預期的引數。引數值必須是 {AllowedValues} 的其中一個。]]></Val>
+            <Val><![CDATA[無法建立追蹤檔案 '{TraceFile}': {Err}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
@@ -2413,11 +2425,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
+          <Val><![CDATA[failed to start trace: {Err}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{Flag1} 和 {Flag2} 選項互斥。]]></Val>
+            <Val><![CDATA[無法啟動追蹤: {Err}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
@@ -2425,11 +2437,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
+          <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{P1}': 遺漏引數。輸入 '-?' 以取得說明。]]></Val>
+            <Val><![CDATA[批次結束字元 '{BatchTerminator}' 無效]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
@@ -2437,11 +2449,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
+          <Val><![CDATA[Enter new password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{P1}': 未知的選項。輸入 '-?' 以取得說明。]]></Val>
+            <Val><![CDATA[輸入新密碼:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
@@ -2449,11 +2461,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
+          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[無法建立追蹤檔案 '{TraceFile}': {Err}]]></Val>
+            <Val><![CDATA[sqlcmd: 安裝/建立/查詢 SQL Server、Azure SQL 與工具]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[failed to start trace: {Err}]]></Val>
@@ -2461,26 +2473,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[failed to start trace: {Err}]]></Val>
+          <Val><![CDATA[Sqlcmd: Error:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[無法啟動追蹤: {Err}]]></Val>
+            <Val><![CDATA[Sqlcmd: 錯誤:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[批次結束字元 '{BatchTerminator}' 無效]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Enter new password:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2496,9 +2496,21 @@
       </Item>
       <Item ItemId=";messages[290].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enter new password:]]></Val>
+          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[輸入新密碼:]]></Val>
+            <Val><![CDATA[Sqlcmd: 警告:]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enter new password:]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[已停用 ED 和 !!<command> 命令、啟動指令碼和環境變數]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
@@ -2506,11 +2518,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
+          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd: 安裝/建立/查詢 SQL Server、Azure SQL 與工具]]></Val>
+            <Val><![CDATA[指令碼變數: '{Variable}' 是唯讀]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Error:]]></Val>
@@ -2518,11 +2530,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Error:]]></Val>
+          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: 錯誤:]]></Val>
+            <Val><![CDATA[未定義'{Variable}' 指令碼變數。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Warning:]]></Val>
@@ -2530,11 +2542,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
+          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: 警告:]]></Val>
+            <Val><![CDATA[環境變數: '{Variable}' 具有不正確值: '{EnvVal}'。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
@@ -2542,11 +2554,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已停用 ED 和 !!<command> 命令、啟動指令碼和環境變數]]></Val>
+            <Val><![CDATA[接近命令 '{Command}' 的行 {LineNumber} 語法錯誤。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
@@ -2554,11 +2566,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
+          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[指令碼變數: '{Variable}' 是唯讀]]></Val>
+            <Val><![CDATA[開啟或操作檔案 {Filepath} 時發生 {ErrorPrefix} 錯誤 (原因: {Error})。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
@@ -2566,11 +2578,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
+          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[未定義'{Variable}' 指令碼變數。]]></Val>
+            <Val><![CDATA[第 {LineNumber} 行發生 {ErrorPrefix} 語法錯誤]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
@@ -2578,11 +2590,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+          <Val><![CDATA[Timeout expired]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[環境變數: '{Variable}' 具有不正確值: '{EnvVal}'。]]></Val>
+            <Val><![CDATA[逾時已過期]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
@@ -2590,26 +2602,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[接近命令 '{Command}' 的行 {LineNumber} 語法錯誤。]]></Val>
+            <Val><![CDATA[訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、程序 {ProcName}、行 {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[開啟或操作檔案 {Filepath} 時發生 {ErrorPrefix} 錯誤 (原因: {Error})。]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2637,9 +2637,21 @@
       </Item>
       <Item ItemId=";messages[300].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[第 {LineNumber} 行發生 {ErrorPrefix} 語法錯誤]]></Val>
+            <Val><![CDATA[訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、行 {LineNo}{SqlcmdEol}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[301].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[目前的驗證方法不支援伺服器名稱覆寫]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Timeout expired]]></Val>
@@ -2647,11 +2659,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[301].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[302].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Timeout expired]]></Val>
+          <Val><![CDATA[Password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[逾時已過期]]></Val>
+            <Val><![CDATA[密碼:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
@@ -2659,11 +2671,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[302].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[303].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[(1 row affected)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、程序 {ProcName}、行 {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[(1 個資料列受影響)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
@@ -2671,11 +2683,23 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[303].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[304].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[({Count} rows affected)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[訊息 {Number}、層級 {Class}、狀態 {State}、伺服器 {ServerName}、行 {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[({Count} 個資料列受影響)]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[305].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[無效的變數識別碼 {Name}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Password:]]></Val>
@@ -2683,69 +2707,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[304].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[目前的驗證方法不支援伺服器名稱覆寫]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[(1 row affected)]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[305].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Password:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[密碼:]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[({Count} rows affected)]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";messages[306].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[(1 row affected)]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[(1 個資料列受影響)]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[307].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[({Count} rows affected)]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[({Count} 個資料列受影響)]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable value {Val}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[308].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[無效的變數識別碼 {Name}]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[309].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid variable value {Val}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[變數值 {Val} 無效]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[(1 row affected)]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
