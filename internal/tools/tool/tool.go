@@ -4,7 +4,6 @@
 package tool
 
 import (
-	"bytes"
 	"fmt"
 	"os"
 	"strings"
@@ -88,20 +87,4 @@ func (t *tool) Run(args []string) (int, error) {
 	// such as SSMS are the long-running process themselves, so waiting would
 	// block until the user closes them.
 	return 0, cmd.Process.Release()
-}
-
-func (t *tool) RunWithOutput(args []string) (string, int, error) {
-	if t.installed == nil {
-		return "", 1, fmt.Errorf("internal error: Call IsInstalled before RunWithOutput")
-	}
-
-	cmd := t.generateCommandLine(args)
-	err := cmd.Run()
-
-	exitCode := 0
-	if cmd.ProcessState != nil {
-		exitCode = cmd.ProcessState.ExitCode()
-	}
-
-	return cmd.Stdout.(*bytes.Buffer).String(), exitCode, err
 }
