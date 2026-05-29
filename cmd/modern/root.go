@@ -76,8 +76,7 @@ func (c *Root) SubCommands() []cmdparser.Command {
 		cmdparser.New[*root.Uninstall](dependencies),
 	}
 
-	// BUG(stuartpa): - Add Linux support
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
+	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" || runtime.GOOS == "linux" {
 		subCommands = append(subCommands, cmdparser.New[*root.Open](dependencies))
 	}
 
