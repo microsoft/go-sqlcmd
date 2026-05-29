@@ -5,6 +5,7 @@ package config
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
@@ -88,9 +89,14 @@ func (c *AddContext) run() {
 
 	context.Name = config.AddContext(context)
 	config.SetCurrentContextName(context.Name)
-	output.InfoWithHintExamples([][]string{
-		{localizer.Sprintf("Open in Visual Studio Code"), "sqlcmd open vscode"},
-		{localizer.Sprintf("To start interactive query session"), "sqlcmd query"},
-		{localizer.Sprintf("To run a query"), "sqlcmd query \"SELECT @@version\""},
-	}, localizer.Sprintf("Current Context '%v'", context.Name))
+	hints := [][]string{}
+	if runtime.GOOS == "windows" {
+		hints = append(hints, []string{localizer.Sprintf("Open in SQL Server Management Studio"), "sqlcmd open ssms"})
+	}
+	hints = append(hints,
+		[]string{localizer.Sprintf("Open in Visual Studio Code"), "sqlcmd open vscode"},
+		[]string{localizer.Sprintf("To start interactive query session"), "sqlcmd query"},
+		[]string{localizer.Sprintf("To run a query"), "sqlcmd query \"SELECT @@version\""},
+	)
+	output.InfoWithHintExamples(hints, localizer.Sprintf("Current Context '%v'", context.Name))
 }
