@@ -41,10 +41,6 @@ func (c *VSCode) DefineCommand(...cmdparser.CommandOptions) {
 				Steps:       []string{"sqlcmd open vscode"},
 			},
 			{
-				Description: localizer.Sprintf("Open VS Code and install the MSSQL extension if needed"),
-				Steps:       []string{"sqlcmd open vscode --install-extension"},
-			},
-			{
 				Description: localizer.Sprintf("Open a specific VS Code build"),
 				Steps:       []string{"sqlcmd open vscode --build insiders"},
 			},
@@ -53,12 +49,6 @@ func (c *VSCode) DefineCommand(...cmdparser.CommandOptions) {
 	}
 
 	c.Cmd.DefineCommand(options)
-
-	c.AddFlag(cmdparser.FlagOptions{
-		Bool:  &c.installExtension,
-		Name:  "install-extension",
-		Usage: localizer.Sprintf("Install the MSSQL extension in VS Code if not already installed"),
-	})
 
 	c.AddFlag(cmdparser.FlagOptions{
 		String: &c.build,
@@ -146,25 +136,11 @@ func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *s
 		output.Fatal(t.HowToInstall())
 	}
 
-	if c.installExtension {
-		// Run is fire-and-forget (Process.Release), so we cannot report the
-		// install's real outcome here. Tell the user it was requested and
-		// point them at VS Code's own progress in case it fails.
-		output.Info(localizer.Sprintf("Requested MSSQL extension install; watch VS Code for progress"))
-		if _, err := t.Run([]string{"--install-extension", "ms-mssql.mssql", "--force"}); err != nil {
-			output.Warn(localizer.Sprintf("Could not start MSSQL extension install: %s", err.Error()))
-		}
-	} else {
-		// Check if MSSQL extension is installed, warn if not.
-		// Inspect the extensions directory directly rather than shelling out to
-		// `code --list-extensions`, which on Windows attaches to an already
-		// running VS Code instance and blocks until that instance exits.
-		if !isMssqlExtensionInstalled() {
-			output.FatalWithHintExamples([][]string{
-				{localizer.Sprintf("To install the MSSQL extension"), "sqlcmd open vscode --install-extension"},
-			}, localizer.Sprintf("The MSSQL extension (ms-mssql.mssql) is not installed in VS Code"))
-		}
-	}
+	// Don't pre-check or install the mssql extension ourselves. When VS Code
+	// follows the vscode://ms-mssql.mssql/... URL and the extension isn't
+	// installed, it prompts the user to install it. That UX is better than
+	// our fire-and-forget `--install-extension` shell-out, which couldn't
+	// report success or failure anyway.
 
 	c.displayPreLaunchInfo()
 
@@ -442,34 +418,6 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 	}
 
 	return filepath.Join(configDir, "settings.json")
-}
-
-func isMssqlExtensionInstalled() bool {
-	var dirs []string
-	if envDir := os.Getenv("VSCODE_EXTENSIONS"); envDir != "" {
-		dirs = append(dirs, envDir)
-	}
-	if home, err := os.UserHomeDir(); err == nil {
-		dirs = append(dirs,
-			filepath.Join(home, ".vscode", "extensions"),
-			filepath.Join(home, ".vscode-insiders", "extensions"),
-		)
-	}
-	for _, dir := range dirs {
-		entries, err := os.ReadDir(dir)
-		if err != nil {
-			continue
-		}
-		for _, e := range entries {
-			if !e.IsDir() {
-				continue
-			}
-			if strings.HasPrefix(strings.ToLower(e.Name()), "ms-mssql.mssql-") {
-				return true
-			}
-		}
-	}
-	return false
 }
 
 // mssqlConnectURI builds a vscode:// URI that the mssql extension's protocol

@@ -2494,18 +2494,8 @@
             "translation": ""
         },
         {
-            "id": "Open VS Code and install the MSSQL extension if needed",
-            "message": "Open VS Code and install the MSSQL extension if needed",
-            "translation": ""
-        },
-        {
             "id": "Open a specific VS Code build",
             "message": "Open a specific VS Code build",
-            "translation": ""
-        },
-        {
-            "id": "Install the MSSQL extension in VS Code if not already installed",
-            "message": "Install the MSSQL extension in VS Code if not already installed",
             "translation": ""
         },
         {
@@ -2539,41 +2529,6 @@
             ]
         },
         {
-            "id": "Installing MSSQL extension...",
-            "message": "Installing MSSQL extension...",
-            "translation": ""
-        },
-        {
-            "id": "Could not install MSSQL extension: {Error}",
-            "message": "Could not install MSSQL extension: {Error}",
-            "translation": "",
-            "placeholders": [
-                {
-                    "id": "Error",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "err.Error()"
-                }
-            ]
-        },
-        {
-            "id": "MSSQL extension installed successfully",
-            "message": "MSSQL extension installed successfully",
-            "translation": ""
-        },
-        {
-            "id": "To install the MSSQL extension",
-            "message": "To install the MSSQL extension",
-            "translation": ""
-        },
-        {
-            "id": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
-            "message": "The MSSQL extension (ms-mssql.mssql) is not installed in VS Code",
-            "translation": ""
-        },
-        {
             "id": "Error",
             "message": "Error",
             "translation": ""
@@ -2594,6 +2549,36 @@
             "translation": ""
         },
         {
+            "id": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
+            "message": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Backup",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "backup"
+                }
+            ]
+        },
+        {
+            "id": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
+            "message": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
             "id": "Failed to parse VS Code settings",
             "message": "Failed to parse VS Code settings",
             "translation": ""
@@ -2607,21 +2592,6 @@
             "id": "Failed to write VS Code settings",
             "message": "Failed to write VS Code settings",
             "translation": ""
-        },
-        {
-            "id": "Could not verify MSSQL extension installation: {Error}",
-            "message": "Could not verify MSSQL extension installation: {Error}",
-            "translation": "",
-            "placeholders": [
-                {
-                    "id": "Error",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "err.Error()"
-                }
-            ]
         },
         {
             "id": "Opening VS Code...",
