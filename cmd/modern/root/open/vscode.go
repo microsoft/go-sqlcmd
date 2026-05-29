@@ -297,7 +297,7 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 		"id":                     uuid.NewString(),
 		"port":                   endpoint.Port,
 		"profileName":            contextName,
-		"server":                 fmt.Sprintf("tcp:%s,%d", endpoint.Address, endpoint.Port),
+		"server":                 fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port),
 		"trustServerCertificate": trustServerCertificate,
 	}
 
@@ -426,7 +426,7 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 func mssqlConnectURI(endpoint sqlconfig.Endpoint, user *sqlconfig.User) string {
 	q := url.Values{}
 	q.Set("profileName", config.CurrentContextName())
-	q.Set("server", fmt.Sprintf("tcp:%s,%d", endpoint.Address, endpoint.Port))
+	q.Set("server", fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port))
 	q.Set("database", "master")
 	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
 		q.Set("user", user.BasicAuth.Username)
