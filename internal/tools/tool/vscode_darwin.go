@@ -5,33 +5,26 @@ package tool
 
 import (
 	"os"
-	"os/exec"
 	"path/filepath"
 )
 
+// searchLocations returns the .app bundle paths to probe. tool_darwin.go's
+// generateCommandLine launches via "open -a <path> --args ...", which expects
+// either a registered app name or a .app bundle path; pointing it at the
+// in-bundle code binary would fail with "Unable to find application".
 func (t *VSCode) searchLocations() []string {
 	userProfile := os.Getenv("HOME")
 
-	// The .app bundle is a directory; the launchable binary lives at
-	// Contents/Resources/app/bin/<cli>. Prefer the PATH shim the user
-	// installs via "Shell Command: Install 'code' command in PATH", then
-	// fall back to the in-bundle binary at the standard install locations.
 	var locations []string
 	for _, build := range t.buildsToSearch() {
-		cli := "code"
 		app := "Visual Studio Code.app"
 		if build == "insiders" {
-			cli = "code-insiders"
 			app = "Visual Studio Code - Insiders.app"
 		}
-		if p, err := exec.LookPath(cli); err == nil {
-			locations = append(locations, p)
-		}
-		binPath := filepath.Join("Contents", "Resources", "app", "bin", cli)
 		locations = append(locations,
-			filepath.Join("/", "Applications", app, binPath),
-			filepath.Join(userProfile, "Applications", app, binPath),
-			filepath.Join(userProfile, "Downloads", app, binPath),
+			filepath.Join("/", "Applications", app),
+			filepath.Join(userProfile, "Applications", app),
+			filepath.Join(userProfile, "Downloads", app),
 		)
 	}
 	return locations
