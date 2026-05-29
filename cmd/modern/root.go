@@ -70,14 +70,11 @@ func (c *Root) SubCommands() []cmdparser.Command {
 	subCommands := []cmdparser.Command{
 		cmdparser.New[*root.Config](dependencies),
 		cmdparser.New[*root.Install](dependencies),
+		cmdparser.New[*root.Open](dependencies),
 		cmdparser.New[*root.Query](dependencies),
 		cmdparser.New[*root.Start](dependencies),
 		cmdparser.New[*root.Stop](dependencies),
 		cmdparser.New[*root.Uninstall](dependencies),
-	}
-
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" || runtime.GOOS == "linux" {
-		subCommands = append(subCommands, cmdparser.New[*root.Open](dependencies))
 	}
 
 	return subCommands
