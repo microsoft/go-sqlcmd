@@ -65,12 +65,19 @@ func (t *tool) Run(args []string) (int, error) {
 	// Redirect stdio to the null device so exec.Cmd does not spawn pipe
 	// drainer goroutines. Without this, Start leaves goroutines blocked on
 	// the child's stdout/stderr until the GUI tool exits, which keeps
-	// sqlcmd's process tree alive even after Process.Release.
+	// sqlcmd's process tree alive even after Process.Release. If opening
+	// the null device fails, fall back to inheriting the parent's stdio
+	// (also goroutine-free) rather than leaving the bytes.Buffer pipes
+	// generateCommandLine attached.
 	if devNull, err := os.OpenFile(os.DevNull, os.O_RDWR, 0); err == nil {
 		cmd.Stdin = devNull
 		cmd.Stdout = devNull
 		cmd.Stderr = devNull
 		defer func() { _ = devNull.Close() }()
+	} else {
+		cmd.Stdin = nil
+		cmd.Stdout = nil
+		cmd.Stderr = nil
 	}
 
 	if err := cmd.Start(); err != nil {
