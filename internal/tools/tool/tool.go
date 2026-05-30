@@ -80,9 +80,9 @@ func (t *tool) Run(args []string) (int, error) {
 		cmd.Stderr = devNull
 		defer func() { _ = devNull.Close() }()
 	} else {
-		cmd.Stdin = nil
-		cmd.Stdout = nil
-		cmd.Stderr = nil
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
 	}
 
 	if err := cmd.Start(); err != nil {
