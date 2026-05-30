@@ -2421,6 +2421,13 @@
             "fuzzy": true
         },
         {
+            "id": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "message": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "translation": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Open the latest SSMS",
             "message": "Open the latest SSMS",
             "translation": "Open the latest SSMS",

@@ -39,3 +39,10 @@ func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 		Usage:  localizer.Sprintf("SSMS major version to launch (for example 21); defaults to the latest installed"),
 	})
 }
+
+// ssmsUnsupportedPlatformMessage is defined in this untagged file so gotext
+// extracts the string regardless of host GOOS. The non-Windows run() stub
+// calls this helper.
+func ssmsUnsupportedPlatformMessage() string {
+	return localizer.Sprintf("SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.")
+}
