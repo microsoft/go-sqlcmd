@@ -355,9 +355,15 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 
 	home, err := os.UserHomeDir()
 	if err != nil || home == "" {
-		c.Output().FatalWithHintExamples([][]string{
+		hint := [][]string{
 			{localizer.Sprintf("Set the HOME environment variable"), "export HOME=/your/home"},
-		}, localizer.Sprintf("Could not resolve home directory: %v", err))
+		}
+		if runtime.GOOS == "windows" {
+			hint = [][]string{
+				{localizer.Sprintf("Set the USERPROFILE environment variable"), `set USERPROFILE=C:\Users\you`},
+			}
+		}
+		c.Output().FatalWithHintExamples(hint, localizer.Sprintf("Could not resolve home directory: %v", err))
 	}
 
 	var configDir string
