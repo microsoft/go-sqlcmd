@@ -34,5 +34,5 @@ func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 // run fails immediately on non-Windows platforms
 func (c *Ssms) run() {
 	output := c.Output()
-	output.Fatal("SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.")
+	output.Fatal(localizer.Sprintf("SSMS is only available on Windows. Use 'sqlcmd open vscode' instead."))
 }
