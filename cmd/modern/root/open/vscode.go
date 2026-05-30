@@ -263,7 +263,6 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 		"encrypt":                encrypt,
 		"groupId":                rootGroupID,
 		"id":                     uuid.NewString(),
-		"port":                   endpoint.Port,
 		"profileName":            contextName,
 		"server":                 fmt.Sprintf("%s,%d", endpoint.Address, endpoint.Port),
 		"trustServerCertificate": trustServerCertificate,
