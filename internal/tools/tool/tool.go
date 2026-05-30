@@ -4,12 +4,21 @@
 package tool
 
 import (
+	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 )
+
+// earlyExitWindow is how long Run waits after Start before considering the
+// launched tool successfully detached. If the child exits within this window
+// Run returns its exit code and error so callers can surface install help or
+// other troubleshooting hints instead of silently reporting success.
+const earlyExitWindow = 750 * time.Millisecond
 
 func (t *tool) Init() {
 	panic("Do not call directly")
@@ -97,8 +106,24 @@ func (t *tool) Run(args []string) (int, error) {
 		return 1, err
 	}
 
-	// Detach so the launched tool keeps running after sqlcmd exits. GUI tools
-	// such as SSMS are the long-running process themselves, so waiting would
-	// block until the user closes them.
-	return 0, cmd.Process.Release()
+	// Wait briefly for the child to fail fast (invalid args, missing
+	// dependency). If it survives the window, treat the launch as successful
+	// and let the GUI tool keep running; the Wait goroutine dies with sqlcmd
+	// and the child is reparented (Unix) or unaffected (Windows).
+	done := make(chan error, 1)
+	go func() { done <- cmd.Wait() }()
+
+	select {
+	case err := <-done:
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			return exitErr.ExitCode(), exitErr
+		}
+		if err != nil {
+			return 1, err
+		}
+		return 0, nil
+	case <-time.After(earlyExitWindow):
+		return 0, nil
+	}
 }

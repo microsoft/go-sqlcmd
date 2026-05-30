@@ -114,7 +114,30 @@ func TestRun(t *testing.T) {
 	}
 
 	*tool.installed = true
-	exitCode, err := tool.Run([]string{"arg1", "arg2"})
-	assert.Equal(t, exitCode, 0)
+	// ping -n 3 runs ~2s, comfortably past earlyExitWindow, so Run should
+	// report a successful launch rather than picking up the child's exit code.
+	exitCode, err := tool.Run([]string{"/c", "ping", "-n", "3", "127.0.0.1"})
+	assert.Equal(t, 0, exitCode)
 	assert.NoError(t, err)
+}
+
+func TestRunReportsEarlyExit(t *testing.T) {
+	if runtime.GOOS == "linux" {
+		t.Skip("Not implemented for Linux yet.")
+	}
+
+	t.Parallel()
+
+	tool := &tool{
+		exeName:   os.Getenv("COMSPEC"),
+		installed: new(bool),
+	}
+	*tool.installed = true
+
+	// `cmd /c exit 7` finishes immediately with code 7; Run must surface it
+	// so callers (e.g. `sqlcmd open ssms`) can display install help on a
+	// fast-failing launch instead of silently reporting success.
+	exitCode, err := tool.Run([]string{"/c", "exit", "7"})
+	assert.Equal(t, 7, exitCode)
+	assert.Error(t, err)
 }

@@ -2452,6 +2452,21 @@
             "fuzzy": true
         },
         {
+            "id": "SSMS exited with code {ExitCode} shortly after launch",
+            "message": "SSMS exited with code {ExitCode} shortly after launch",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ExitCode",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "exitCode"
+                }
+            ]
+        },
+        {
             "id": "Launching SQL Server Management Studio...",
             "message": "Launching SQL Server Management Studio...",
             "translation": ""
