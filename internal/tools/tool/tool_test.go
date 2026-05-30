@@ -101,8 +101,8 @@ func TestRunWhenNotInstalled(t *testing.T) {
 }
 
 func TestRun(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Not implemented for Linux yet.")
+	if runtime.GOOS != "windows" {
+		t.Skip("Uses COMSPEC/cmd.exe; Windows-only.")
 	}
 
 	t.Parallel()
@@ -122,8 +122,8 @@ func TestRun(t *testing.T) {
 }
 
 func TestRunReportsEarlyExit(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Not implemented for Linux yet.")
+	if runtime.GOOS != "windows" {
+		t.Skip("Uses COMSPEC/cmd.exe; Windows-only.")
 	}
 
 	t.Parallel()
