@@ -100,6 +100,12 @@ func (c *SSMS) launchSsms(host string, port int, user *sqlconfig.User, isLocalCo
 		return
 	}
 
-	_, err := t.Run(args)
-	c.CheckErr(err)
+	exitCode, err := t.Run(args)
+	if err != nil {
+		// SSMS exited within the early-exit window. Show the install help in
+		// case the failure is a missing/broken install (vswhere found the
+		// product but the launcher is unusable) before surfacing the error.
+		output.Info(t.HowToInstall())
+		output.FatalErrorWithHints(err, []string{}, localizer.Sprintf("SSMS exited with code %d shortly after launch", exitCode))
+	}
 }
