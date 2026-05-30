@@ -438,10 +438,12 @@ func mssqlConnectURI(endpoint sqlconfig.Endpoint, user *sqlconfig.User) string {
 	return "vscode://ms-mssql.mssql/connect?" + q.Encode()
 }
 
+// isLocalEndpoint reports whether the endpoint is a sqlcmd-managed local
+// container. Only container-backed endpoints get the "local dev" treatment
+// (trusting the self-signed cert and writing a plaintext password into VS
+// Code settings); loopback hosts that happen to be port-forwards to remote
+// servers must not opt into those tradeoffs.
 func isLocalEndpoint(endpoint sqlconfig.Endpoint) bool {
-	if asset := endpoint.AssetDetails; asset != nil && asset.ContainerDetails != nil {
-		return true
-	}
-	addr := strings.ToLower(endpoint.Address)
-	return addr == "localhost" || addr == "127.0.0.1" || addr == "::1" || addr == "host.docker.internal"
+	asset := endpoint.AssetDetails
+	return asset != nil && asset.ContainerDetails != nil
 }
