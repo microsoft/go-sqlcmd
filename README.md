@@ -96,10 +96,7 @@ On Windows, use `sqlcmd open ssms` to open SQL Server Management Studio pre-conf
 sqlcmd open ssms
 ```
 
-This command will:
-1. **Copy the password to clipboard** so you can paste it in the login dialog
-2. **Launch SSMS** with the server and username pre-filled
-3. You'll be prompted for the password - just paste from clipboard (Ctrl+V)
+This command launches SSMS with the server and username pre-filled. When the current context uses SQL authentication, sqlcmd also copies the password to the clipboard so you can paste it (Ctrl+V) into the SSMS login dialog. Contexts using integrated (Windows) authentication skip the clipboard step and connect without a password prompt.
 
 ### The ~/.sqlcmd/sqlconfig file
 
