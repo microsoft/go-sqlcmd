@@ -30,7 +30,7 @@ const minSsmsVersion = 21
 func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "ssms",
-		Short: localizer.Sprintf("Open SQL Server Management Studio and connect to current context (Windows only)"),
+		Short: localizer.Sprintf("Open SQL Server Management Studio and connect to current context"),
 		Examples: []cmdparser.ExampleOptions{{
 			Description: localizer.Sprintf("Open SSMS and connect using the current context"),
 			Steps:       []string{"sqlcmd open ssms"}}},
