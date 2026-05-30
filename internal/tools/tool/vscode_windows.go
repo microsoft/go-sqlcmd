@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"golang.org/x/sys/windows/registry"
 )
@@ -31,10 +32,19 @@ func vscodeWindowsLocations(build string) []string {
 
 	var locations []string
 
-	// Tier 1: PATH. The shim lives at <install>\bin\<cli>.cmd; the launchable
-	// exe is <install>\<exe>.
-	if shim, err := exec.LookPath(cliName); err == nil {
-		install := filepath.Dir(filepath.Dir(shim))
+	// Tier 1: PATH. The shim normally lives at <install>\bin\<cli>.cmd, so the
+	// launchable exe is two directories up. Some setups (enterprise images,
+	// portable installs added to PATH directly) instead expose Code.exe itself,
+	// in which case the install root is just one directory up. Detect the `bin`
+	// shim before walking up two.
+	if resolved, err := exec.LookPath(cliName); err == nil {
+		parent := filepath.Dir(resolved)
+		var install string
+		if strings.EqualFold(filepath.Base(parent), "bin") {
+			install = filepath.Dir(parent)
+		} else {
+			install = parent
+		}
 		locations = append(locations, filepath.Join(install, exeName))
 	}
 
