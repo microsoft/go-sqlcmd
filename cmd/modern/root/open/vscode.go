@@ -177,7 +177,7 @@ func (c *VSCode) createConnectionProfile(build string, endpoint sqlconfig.Endpoi
 	if err != nil {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("Error"), err.Error()},
-		}, localizer.Sprintf("Failed to update VS Code settings"))
+		}, localizer.Sprintf("Failed to encode VS Code settings"))
 	}
 	c.writeSettings(settingsPath, out)
 

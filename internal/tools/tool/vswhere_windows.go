@@ -43,6 +43,10 @@ func vswhereFind(productID, version string) string {
 	} else if major, err := strconv.Atoi(version); err == nil {
 		// vswhere range syntax: "[21.0,22.0)" matches the 21.x line.
 		args = append(args, "-version", fmt.Sprintf("[%d.0,%d.0)", major, major+1))
+	} else {
+		// Without -latest or -version vswhere returns an arbitrary instance;
+		// treat an unparseable version as "no match" instead.
+		return ""
 	}
 
 	out, err := execCommand(vswhere, args...).Output()

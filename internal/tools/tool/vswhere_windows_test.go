@@ -124,6 +124,19 @@ func TestVswhereFindReturnsEmptyWhenInstallerMissing(t *testing.T) {
 	}
 }
 
+func TestVswhereFindReturnsEmptyOnNonIntegerVersion(t *testing.T) {
+	args := stubVswhere(t, "C:\\VS\\SSMS", false)
+
+	// Without -latest or -version, vswhere returns an arbitrary instance; an
+	// unparseable version must short-circuit to "" instead of querying.
+	if got := vswhereFind("Microsoft.VisualStudio.Product.Ssms", "not-a-number"); got != "" {
+		t.Errorf("expected empty string for non-integer version, got %q", got)
+	}
+	if len(*args) != 0 {
+		t.Errorf("expected vswhere not to be invoked for invalid version, captured args: %v", *args)
+	}
+}
+
 func contains(s []string, want string) bool {
 	for _, v := range s {
 		if strings.Contains(v, want) {
