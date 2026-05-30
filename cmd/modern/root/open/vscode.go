@@ -280,14 +280,16 @@ func (c *VSCode) createProfile(endpoint sqlconfig.Endpoint, user *sqlconfig.User
 	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
 		profile["user"] = user.BasicAuth.Username
 		profile["authenticationType"] = "SqlLogin"
-		profile["savePassword"] = true
 
-		// Include the decrypted password so the mssql extension can
-		// auto-connect without prompting. The extension reads it from the
-		// profile on first use and migrates it to the OS credential store,
-		// removing it from settings.json.
-		if _, _, password := config.GetCurrentContextInfo(); password != "" {
-			profile["password"] = password
+		// Only persist the decrypted password for the local-container dev
+		// flow. For remote servers, the user can save credentials through
+		// the mssql extension's own prompt rather than have sqlcmd write
+		// them into settings.json.
+		if isLocalConnection {
+			if _, _, password := config.GetCurrentContextInfo(); password != "" {
+				profile["savePassword"] = true
+				profile["password"] = password
+			}
 		}
 	}
 
