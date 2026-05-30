@@ -64,6 +64,17 @@ func (c *VSCode) run() {
 	build := c.resolveBuild()
 	isLocalConnection := isLocalEndpoint(endpoint)
 
+	// Verify VS Code is installed before touching settings.json. Otherwise a
+	// failed launch would leave behind a freshly written settings file (and a
+	// plaintext local-context password) that the user never asked for.
+	t := tools.NewTool("vscode")
+	if vs, ok := t.(*tool.VSCode); ok {
+		vs.SetBuild(build)
+	}
+	if !t.IsInstalled() {
+		c.Output().Fatal(t.HowToInstall())
+	}
+
 	if asset := endpoint.AssetDetails; asset != nil && asset.ContainerDetails != nil {
 		c.ensureContainerIsRunning(asset.Id)
 	}
@@ -73,7 +84,7 @@ func (c *VSCode) run() {
 	// Launch VS Code and tell the mssql extension to connect to the profile
 	// we just wrote. This focuses the SQL Server activity bar view instead of
 	// landing on whatever was open last.
-	c.launchVSCode(build, endpoint, user)
+	c.launchVSCode(t, endpoint, user)
 }
 
 // resolveBuild validates an explicit --build value and otherwise picks the
@@ -122,17 +133,7 @@ func (c *VSCode) ensureContainerIsRunning(containerID string) {
 	}
 }
 
-func (c *VSCode) launchVSCode(build string, endpoint sqlconfig.Endpoint, user *sqlconfig.User) {
-	output := c.Output()
-
-	t := tools.NewTool("vscode")
-	if vs, ok := t.(*tool.VSCode); ok {
-		vs.SetBuild(build)
-	}
-	if !t.IsInstalled() {
-		output.Fatal(t.HowToInstall())
-	}
-
+func (c *VSCode) launchVSCode(t tool.Tool, endpoint sqlconfig.Endpoint, user *sqlconfig.User) {
 	// Don't pre-check or install the mssql extension ourselves. When VS Code
 	// follows the vscode://ms-mssql.mssql/... URL and the extension isn't
 	// installed, it prompts the user to install it. That UX is better than
