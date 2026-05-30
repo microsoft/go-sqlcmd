@@ -22,7 +22,7 @@ import (
 const minSsmsVersion = 21
 
 // Launch SSMS and connect to the current context
-func (c *Ssms) run() {
+func (c *SSMS) run() {
 	c.validateVersion()
 
 	endpoint, user := config.CurrentContext()
@@ -36,7 +36,7 @@ func (c *Ssms) run() {
 }
 
 // validateVersion rejects --version values below the supported SSMS floor.
-func (c *Ssms) validateVersion() {
+func (c *SSMS) validateVersion() {
 	if c.version == "" {
 		return
 	}
@@ -48,7 +48,7 @@ func (c *Ssms) validateVersion() {
 	}
 }
 
-func (c *Ssms) ensureContainerIsRunning(containerID string) {
+func (c *SSMS) ensureContainerIsRunning(containerID string) {
 	output := c.Output()
 	controller := container.NewController()
 	if !controller.ContainerRunning(containerID) {
@@ -59,7 +59,7 @@ func (c *Ssms) ensureContainerIsRunning(containerID string) {
 }
 
 // launchSsms launches SQL Server Management Studio using the specified server and user credentials.
-func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User, isLocalConnection bool) {
+func (c *SSMS) launchSsms(host string, port int, user *sqlconfig.User, isLocalConnection bool) {
 	output := c.Output()
 
 	args := []string{

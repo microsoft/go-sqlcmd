@@ -31,6 +31,6 @@ func (c *Open) SubCommands() []cmdparser.Command {
 
 	return []cmdparser.Command{
 		cmdparser.New[*open.VSCode](dependencies),
-		cmdparser.New[*open.Ssms](dependencies),
+		cmdparser.New[*open.SSMS](dependencies),
 	}
 }
