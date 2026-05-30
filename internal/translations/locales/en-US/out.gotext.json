@@ -662,6 +662,13 @@
             "fuzzy": true
         },
         {
+            "id": "Open in SQL Server Management Studio",
+            "message": "Open in SQL Server Management Studio",
+            "translation": "Open in SQL Server Management Studio",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Open in Visual Studio Code",
             "message": "Open in Visual Studio Code",
             "translation": "Open in Visual Studio Code",
@@ -2071,13 +2078,6 @@
             "fuzzy": true
         },
         {
-            "id": "Open in SQL Server Management Studio",
-            "message": "Open in SQL Server Management Studio",
-            "translation": "Open in SQL Server Management Studio",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Start interactive session",
             "message": "Start interactive session",
             "translation": "Start interactive session",
@@ -2414,62 +2414,9 @@
             "fuzzy": true
         },
         {
-            "id": "SSMS major version to launch (for example 21); defaults to the latest installed",
-            "message": "SSMS major version to launch (for example 21); defaults to the latest installed",
-            "translation": "SSMS major version to launch (for example 21); defaults to the latest installed",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Open the latest SSMS",
-            "message": "Open the latest SSMS",
-            "translation": "Open the latest SSMS",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
-            "message": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
-            "translation": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
-            "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "MinSsmsVersion",
-                    "string": "%[1]d",
-                    "type": "int",
-                    "underlyingType": "int",
-                    "argNum": 1,
-                    "expr": "minSsmsVersion"
-                },
-                {
-                    "id": "Version",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "c.version"
-                }
-            ],
-            "fuzzy": true
-        },
-        {
-            "id": "sqlcmd start",
-            "message": "sqlcmd start",
-            "translation": "sqlcmd start",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Container is not running",
-            "message": "Container is not running",
-            "translation": "Container is not running",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Launching SQL Server Management Studio...",
-            "message": "Launching SQL Server Management Studio...",
-            "translation": "Launching SQL Server Management Studio...",
+            "id": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "message": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "translation": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2533,6 +2480,20 @@
             "fuzzy": true
         },
         {
+            "id": "sqlcmd start",
+            "message": "sqlcmd start",
+            "translation": "sqlcmd start",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Container is not running",
+            "message": "Container is not running",
+            "translation": "Container is not running",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Error",
             "message": "Error",
             "translation": "Error",
@@ -2543,6 +2504,13 @@
             "id": "Failed to create VS Code settings directory",
             "message": "Failed to create VS Code settings directory",
             "translation": "Failed to create VS Code settings directory",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Failed to encode VS Code settings",
+            "message": "Failed to encode VS Code settings",
+            "translation": "Failed to encode VS Code settings",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2561,26 +2529,37 @@
             "fuzzy": true
         },
         {
-            "id": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
-            "message": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
-            "translation": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
+            "id": "Failed to parse VS Code settings",
+            "message": "Failed to parse VS Code settings",
+            "translation": "Failed to parse VS Code settings",
             "translatorComment": "Copied from source.",
-            "placeholders": [
-                {
-                    "id": "Backup",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "backup"
-                }
-            ],
             "fuzzy": true
         },
         {
-            "id": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
-            "message": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
-            "translation": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
+            "id": "Failed to write VS Code settings",
+            "message": "Failed to write VS Code settings",
+            "translation": "Failed to write VS Code settings",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Set the HOME environment variable",
+            "message": "Set the HOME environment variable",
+            "translation": "Set the HOME environment variable",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Set the USERPROFILE environment variable",
+            "message": "Set the USERPROFILE environment variable",
+            "translation": "Set the USERPROFILE environment variable",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Could not resolve home directory: {Error}",
+            "message": "Could not resolve home directory: {Error}",
+            "translation": "Could not resolve home directory: {Error}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -2592,27 +2571,6 @@
                     "expr": "err.Error()"
                 }
             ],
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to parse VS Code settings",
-            "message": "Failed to parse VS Code settings",
-            "translation": "Failed to parse VS Code settings",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to encode VS Code settings",
-            "message": "Failed to encode VS Code settings",
-            "translation": "Failed to encode VS Code settings",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write VS Code settings",
-            "message": "Failed to write VS Code settings",
-            "translation": "Failed to write VS Code settings",
-            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
