@@ -660,6 +660,11 @@
             "fuzzy": true
         },
         {
+            "id": "Open in SQL Server Management Studio",
+            "message": "Open in SQL Server Management Studio",
+            "translation": ""
+        },
+        {
             "id": "Open in Visual Studio Code",
             "message": "Open in Visual Studio Code",
             "translation": ""
@@ -2067,11 +2072,6 @@
             "fuzzy": true
         },
         {
-            "id": "Open in SQL Server Management Studio",
-            "message": "Open in SQL Server Management Studio",
-            "translation": ""
-        },
-        {
             "id": "Start interactive session",
             "message": "Start interactive session",
             "translation": "開始互動式工作階段",
@@ -2400,55 +2400,8 @@
             "translation": ""
         },
         {
-            "id": "SSMS major version to launch (for example 21); defaults to the latest installed",
-            "message": "SSMS major version to launch (for example 21); defaults to the latest installed",
-            "translation": ""
-        },
-        {
-            "id": "Open the latest SSMS",
-            "message": "Open the latest SSMS",
-            "translation": ""
-        },
-        {
-            "id": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
-            "message": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
-            "translation": "",
-            "placeholders": [
-                {
-                    "id": "MinSsmsVersion",
-                    "string": "%[1]d",
-                    "type": "int",
-                    "underlyingType": "int",
-                    "argNum": 1,
-                    "expr": "minSsmsVersion"
-                },
-                {
-                    "id": "Version",
-                    "string": "%[2]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 2,
-                    "expr": "c.version"
-                }
-            ]
-        },
-        {
-            "id": "sqlcmd start",
-            "message": "sqlcmd start",
-            "translation": "sqlcmd 啟動",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Container is not running",
-            "message": "Container is not running",
-            "translation": "容器未執行",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Launching SQL Server Management Studio...",
-            "message": "Launching SQL Server Management Studio...",
+            "id": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "message": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
             "translation": ""
         },
         {
@@ -2497,6 +2450,20 @@
             ]
         },
         {
+            "id": "sqlcmd start",
+            "message": "sqlcmd start",
+            "translation": "sqlcmd 啟動",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Container is not running",
+            "message": "Container is not running",
+            "translation": "容器未執行",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Error",
             "message": "Error",
             "translation": ""
@@ -2504,6 +2471,11 @@
         {
             "id": "Failed to create VS Code settings directory",
             "message": "Failed to create VS Code settings directory",
+            "translation": ""
+        },
+        {
+            "id": "Failed to encode VS Code settings",
+            "message": "Failed to encode VS Code settings",
             "translation": ""
         },
         {
@@ -2517,23 +2489,28 @@
             "translation": ""
         },
         {
-            "id": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
-            "message": "VS Code settings.json contains comments or trailing commas that will not be preserved; original saved to {Backup}",
-            "translation": "",
-            "placeholders": [
-                {
-                    "id": "Backup",
-                    "string": "%[1]s",
-                    "type": "string",
-                    "underlyingType": "string",
-                    "argNum": 1,
-                    "expr": "backup"
-                }
-            ]
+            "id": "Failed to parse VS Code settings",
+            "message": "Failed to parse VS Code settings",
+            "translation": ""
         },
         {
-            "id": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
-            "message": "VS Code settings.json contains comments or trailing commas that will not be preserved (backup failed: {Error})",
+            "id": "Failed to write VS Code settings",
+            "message": "Failed to write VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Set the HOME environment variable",
+            "message": "Set the HOME environment variable",
+            "translation": ""
+        },
+        {
+            "id": "Set the USERPROFILE environment variable",
+            "message": "Set the USERPROFILE environment variable",
+            "translation": ""
+        },
+        {
+            "id": "Could not resolve home directory: {Error}",
+            "message": "Could not resolve home directory: {Error}",
             "translation": "",
             "placeholders": [
                 {
@@ -2545,21 +2522,6 @@
                     "expr": "err.Error()"
                 }
             ]
-        },
-        {
-            "id": "Failed to parse VS Code settings",
-            "message": "Failed to parse VS Code settings",
-            "translation": ""
-        },
-        {
-            "id": "Failed to encode VS Code settings",
-            "message": "Failed to encode VS Code settings",
-            "translation": ""
-        },
-        {
-            "id": "Failed to write VS Code settings",
-            "message": "Failed to write VS Code settings",
-            "translation": ""
         },
         {
             "id": "Opening VS Code...",
