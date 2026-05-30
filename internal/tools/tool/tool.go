@@ -67,6 +67,14 @@ func (t *tool) Run(args []string) (int, error) {
 
 	cmd := t.generateCommandLine(args)
 
+	// Normalize argv[0] so it matches cmd.Path on every platform. The darwin
+	// implementation builds Args starting at "-a" because it shells out via
+	// /usr/bin/open; without this fix the launched process sees "-a" as argv[0]
+	// and mis-parses subsequent flags.
+	if len(cmd.Args) == 0 || cmd.Args[0] != cmd.Path {
+		cmd.Args = append([]string{cmd.Path}, cmd.Args...)
+	}
+
 	// Redirect stdio to the null device so exec.Cmd does not spawn pipe
 	// drainer goroutines. Without this, Start leaves goroutines blocked on
 	// the child's stdout/stderr until the GUI tool exits, which keeps

@@ -100,6 +100,9 @@ func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User, isLocalCo
 	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
 		// SSMS removed -P in 18+; hand the password off via the clipboard.
 		args = append(args, "-U", user.BasicAuth.Username)
+	} else {
+		// No SQL credentials in the context, so connect with Windows integrated auth.
+		args = append(args, "-E")
 	}
 
 	t := tools.NewTool("ssms")
