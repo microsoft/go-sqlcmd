@@ -21,7 +21,7 @@ type Ssms struct {
 func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "ssms",
-		Short: localizer.Sprintf("Open SQL Server Management Studio and connect to current context (Windows only)"),
+		Short: localizer.Sprintf("Open SQL Server Management Studio and connect to current context"),
 		Examples: []cmdparser.ExampleOptions{{
 			Description: localizer.Sprintf("Open SSMS and connect using the current context"),
 			Steps:       []string{"sqlcmd open ssms"}}},
@@ -34,5 +34,5 @@ func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
 // run fails immediately on non-Windows platforms
 func (c *Ssms) run() {
 	output := c.Output()
-	output.Fatal(localizer.Sprintf("SSMS is only available on Windows. Use 'sqlcmd open vscode' instead."))
+	output.Fatal("SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.")
 }
