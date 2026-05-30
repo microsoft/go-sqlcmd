@@ -8,10 +8,10 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/localizer"
 )
 
-// Type Ssms implements the `sqlcmd open ssms` command. The struct and command
+// Type SSMS implements the `sqlcmd open ssms` command. The struct and command
 // surface live in an untagged file so that gotext extracts the localizable
 // strings on every GOOS; the actual run() body is platform-specific.
-type Ssms struct {
+type SSMS struct {
 	cmdparser.Cmd
 
 	// version pins the SSMS major version to launch (for example "21"). Empty
@@ -21,7 +21,7 @@ type Ssms struct {
 }
 
 // DefineCommand registers `sqlcmd open ssms` with its flags and examples.
-func (c *Ssms) DefineCommand(...cmdparser.CommandOptions) {
+func (c *SSMS) DefineCommand(...cmdparser.CommandOptions) {
 	options := cmdparser.CommandOptions{
 		Use:   "ssms",
 		Short: localizer.Sprintf("Open SQL Server Management Studio and connect to current context"),

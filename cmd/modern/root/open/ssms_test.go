@@ -42,5 +42,5 @@ func TestSsms(t *testing.T) {
 	})
 	config.SetCurrentContextName("context")
 
-	cmdparser.TestCmd[*Ssms]()
+	cmdparser.TestCmd[*SSMS]()
 }
