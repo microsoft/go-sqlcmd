@@ -118,6 +118,48 @@ func TestVSCodeCreateProfile(t *testing.T) {
 	}
 }
 
+// TestVSCodeCreateProfileRemoteDoesNotPersistPassword asserts that for non-local
+// connections we hand the credentials off to the mssql extension's own prompt
+// rather than writing the plaintext password into settings.json.
+func TestVSCodeCreateProfileRemoteDoesNotPersistPassword(t *testing.T) {
+	cmdparser.TestSetup(t)
+
+	config.AddEndpoint(sqlconfig.Endpoint{
+		EndpointDetails: sqlconfig.EndpointDetails{Address: "remote.example.com", Port: 1433},
+		Name:            "remote-endpoint",
+	})
+	config.AddUser(sqlconfig.User{
+		AuthenticationType: "basic",
+		BasicAuth: &sqlconfig.BasicAuthDetails{
+			Username:           "sa",
+			PasswordEncryption: "none",
+			Password:           secret.Encode("testpassword", "none"),
+		},
+		Name: "remote-user",
+	})
+	config.AddContext(sqlconfig.Context{
+		ContextDetails: sqlconfig.ContextDetails{
+			Endpoint: "remote-endpoint",
+			User:     strPtr("remote-user"),
+		},
+		Name: "remote-context",
+	})
+	config.SetCurrentContextName("remote-context")
+
+	endpoint, user := config.CurrentContext()
+	profile := (&VSCode{}).createProfile(endpoint, user, false)
+
+	if profile["user"] != "sa" {
+		t.Errorf("Expected user 'sa', got %v", profile["user"])
+	}
+	if _, ok := profile["savePassword"]; ok {
+		t.Error("Expected savePassword to be absent for remote connections")
+	}
+	if _, ok := profile["password"]; ok {
+		t.Error("Expected password to be absent for remote connections")
+	}
+}
+
 // TestVSCodeUpdateOrAddProfile tests profile update and add logic
 func TestVSCodeUpdateOrAddProfile(t *testing.T) {
 	cmdparser.TestSetup(t)

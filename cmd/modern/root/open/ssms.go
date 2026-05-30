@@ -100,7 +100,6 @@ func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User, isLocalCo
 	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
 		// SSMS removed -P in 18+; hand the password off via the clipboard.
 		args = append(args, "-U", user.BasicAuth.Username)
-		copyPasswordToClipboard(user, output)
 	}
 
 	t := tools.NewTool("ssms")
@@ -109,6 +108,12 @@ func (c *Ssms) launchSsms(host string, port int, user *sqlconfig.User, isLocalCo
 	}
 	if !t.IsInstalled() {
 		output.Fatal(t.HowToInstall())
+	}
+
+	// Copy the password only after confirming SSMS is installed; otherwise a
+	// fatal install message would leave the password sitting in the clipboard.
+	if user != nil && user.AuthenticationType == "basic" && user.BasicAuth != nil {
+		copyPasswordToClipboard(user, output)
 	}
 
 	c.displayPreLaunchInfo()
