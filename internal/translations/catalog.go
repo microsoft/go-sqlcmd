@@ -67,9 +67,10 @@ var messageKeyToIndex = map[string]int{
 	"'%s' scripting variable not defined.":                                               285,
 	"'%s': Missing argument. Enter '-?' for help.":                                       274,
 	"'%s': Unknown Option. Enter '-?' for help.":                                         275,
-	"'--build %s' is not supported; use 'stable' or 'insiders'":                          312,
+	"'--build %s' is not supported; use 'stable' or 'insiders'":                          315,
 	"'-a %#v': Packet size has to be a number between 512 and 32767.":                    215,
 	"'-h %#v': header value must be either -1 or a value between 1 and 2147483647":       216,
+	"'sqlcmd open ssms' supports SSMS %d and later; '--version %s' is not supported":     307,
 	"(%d rows affected)": 295,
 	"(1 row affected)":   294,
 	"--user-database %q contains non-ASCII chars and/or quotes":                                  178,
@@ -103,7 +104,7 @@ var messageKeyToIndex = map[string]int{
 	"Command text to run":    14,
 	"Complete the operation even if non-system (user) database files are present":      31,
 	"Connection Strings only supported for %s Auth type":                               103,
-	"Connection profile created in VS Code settings":                                   316,
+	"Connection profile created in VS Code settings":                                   319,
 	"Container %q no longer exists, continuing to remove context...":                   43,
 	"Container is not running":                                                         213,
 	"Container is not running, unable to verify that user database files do not exist": 40,
@@ -114,7 +115,7 @@ var messageKeyToIndex = map[string]int{
 	"Controls the severity level that is used to set the %s variable on exit":          257,
 	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent": 250,
 	"Could not copy password to clipboard: %s":                                                           301,
-	"Could not resolve home directory: %s":                                                               323,
+	"Could not resolve home directory: %s":                                                               326,
 	"Create SQL Server with an empty user database":                                                      208,
 	"Create SQL Server, download and attach AdventureWorks sample database":                              206,
 	"Create SQL Server, download and attach AdventureWorks sample database with different database name": 207,
@@ -155,7 +156,7 @@ var messageKeyToIndex = map[string]int{
 	"Display one or many users from the sqlconfig file":                                   140,
 	"Display raw byte data":                                                               157,
 	"Display the current-context":                                                         104,
-	"Do not strip the \"mssql: \" prefix from error messages":                             330,
+	"Do not strip the \"mssql: \" prefix from error messages":                             333,
 	"Don't download image.  Use already downloaded image":                                 167,
 	"Download (into container) and attach database (.bak) from URL":                       174,
 	"Downloading %s":                                                                      194,
@@ -173,15 +174,15 @@ var messageKeyToIndex = map[string]int{
 	"Endpoint name to view details of":                                                    136,
 	"Endpoint required to add context.  Endpoint '%v' does not exist.  Use %s flag":       58,
 	"Enter new password:":                                                                 279,
-	"Error":                                                                               313,
+	"Error":                                                                               316,
 	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed":                             233,
 	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed": 232,
 	"Explicitly set the container hostname, it defaults to the container ID":                                                                                  170,
-	"Failed to create VS Code settings directory":                                                                                                             314,
-	"Failed to encode VS Code settings":    315,
-	"Failed to parse VS Code settings":     318,
-	"Failed to read VS Code settings":      317,
-	"Failed to write VS Code settings":     319,
+	"Failed to create VS Code settings directory":                                                                                                             317,
+	"Failed to encode VS Code settings":    318,
+	"Failed to parse VS Code settings":     321,
+	"Failed to read VS Code settings":      320,
+	"Failed to write VS Code settings":     322,
 	"File does not exist at URL":           202,
 	"Flags:":                               221,
 	"Generated password length":            162,
@@ -202,6 +203,7 @@ var messageKeyToIndex = map[string]int{
 	"Invalid variable value %s":                                                 297,
 	"Is a container runtime installed on this machine (e.g. Podman or Docker)?": 197,
 	"Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)": 200,
+	"Launching SQL Server Management Studio...":                                                            308,
 	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       218,
 	"Level of mssql driver messages to print":                                                              248,
 	"Line in errorlog to wait for before connecting":                                                       168,
@@ -231,15 +233,16 @@ var messageKeyToIndex = map[string]int{
 	"Now ready for client connections on port %#v":                                      187,
 	"Open SQL Server Management Studio and connect to current context":                  303,
 	"Open SSMS and connect using the current context":                                   304,
-	"Open VS Code and configure connection using the current context":                   307,
-	"Open Visual Studio Code and configure connection for current context":              306,
-	"Open a specific VS Code build":                                                     308,
+	"Open VS Code and configure connection using the current context":                   310,
+	"Open Visual Studio Code and configure connection for current context":              309,
+	"Open a specific VS Code build":                                                     311,
 	"Open in SQL Server Management Studio":                                              299,
 	"Open in Visual Studio Code":                                                        300,
-	"Open the insiders build":                                                           311,
-	"Open the stable build":                                                             310,
+	"Open the insiders build":                                                           314,
+	"Open the latest SSMS":                                                              306,
+	"Open the stable build":                                                             313,
 	"Open tools (e.g., Visual Studio Code, SSMS) for current context":                   298,
-	"Opening VS Code...":                                                                324,
+	"Opening VS Code...":                                                                327,
 	"Or, set the environment variable i.e. %s %s=YES ":                                  176,
 	"Pass in the %s %s":                                                                 87,
 	"Pass in the flag %s to override this safety check for user (non-system) databases": 47,
@@ -249,7 +252,7 @@ var messageKeyToIndex = map[string]int{
 	"Password:": 293,
 	"Port (next available port from 1433 upwards used by default)": 173,
 	"Print version information and exit":                           226,
-	"Prints the output in ASCII table format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false": 329,
+	"Prints the output in ASCII table format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false": 332,
 	"Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false":    246,
 	"Provide a username with the %s flag":                                                                                    93,
 	"Provide a valid encryption method (%s) with the %s flag":                                                                95,
@@ -267,14 +270,14 @@ var messageKeyToIndex = map[string]int{
 	"Run a query":                             11,
 	"Run a query against the current context": 10,
 	"Run a query using [%s] database":         12,
-	"SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.": 305,
-	"See all release tags for SQL Server, install previous version":        205,
+	"SSMS major version to launch (for example 21); defaults to the latest installed": 305,
+	"See all release tags for SQL Server, install previous version":                   205,
 	"See connection strings": 185,
-	"Server name override is not supported with the current authentication method": 331,
+	"Server name override is not supported with the current authentication method": 334,
 	"Servers:":                                 217,
 	"Set new default database":                 13,
-	"Set the HOME environment variable":        320,
-	"Set the USERPROFILE environment variable": 321,
+	"Set the HOME environment variable":        323,
+	"Set the USERPROFILE environment variable": 324,
 	"Set the current context":                  147,
 	"Set the mssql context (endpoint/user) to be the current context":                                                    148,
 	"Sets the sqlcmd scripting variable %s":                                                                              268,
@@ -291,9 +294,9 @@ var messageKeyToIndex = map[string]int{
 	"Specifies the image operating system":                                                                               172,
 	"Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed": 251,
 	"Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable %s. The default value is 30. 0 means infinite":                                 241,
-	"Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.": 328,
+	"Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.": 331,
 	"Specifies the screen width for output": 258,
-	"Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.": 327,
+	"Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.": 330,
 	"Specify a custom name for the container rather than a randomly generated one":                                                                                                    169,
 	"Sqlcmd: Error: ":                              281,
 	"Sqlcmd: Warning: ":                            282,
@@ -313,7 +316,7 @@ var messageKeyToIndex = map[string]int{
 	"The %s and the %s options are mutually exclusive.":                                                                        273,
 	"The %s flag can only be used when authentication type is '%s'":                                                            88,
 	"The %s flag must be set when authentication type is '%s'":                                                                 90,
-	"The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).":                                326,
+	"The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).":                                329,
 	"The -L parameter can not be used in combination with other parameters.":                                                   214,
 	"The environment variable: '%s' has invalid value: '%s'.":                                                                  286,
 	"The login name or contained database user name.  For contained database users, you must provide the database name option": 231,
@@ -344,7 +347,7 @@ var messageKeyToIndex = map[string]int{
 	"Uninstall/Delete the current context, no user prompt and override safety check for user databases": 29,
 	"Unset one of the environment variables %s or %s":                                                   97,
 	"Use the %s flag to pass in a context name to delete":                                               110,
-	"Use the '%s' connection profile to connect":                                                        325,
+	"Use the '%s' connection profile to connect":                                                        328,
 	"User %q deleted":          124,
 	"User %q does not exist":   123,
 	"User '%v' added":          99,
@@ -353,7 +356,7 @@ var messageKeyToIndex = map[string]int{
 	"User name to view details of":                                143,
 	"Username not provided":                                       94,
 	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password": 229,
-	"VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed":                                                                           309,
+	"VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed":                                                                           312,
 	"Verifying no user (non-system) database (.mdf) files":                                                                                                                37,
 	"Version: %v\n":              220,
 	"View all endpoints details": 73,
@@ -368,7 +371,7 @@ var messageKeyToIndex = map[string]int{
 	"View users":                                            122,
 	"Write runtime trace to the specified file. Only for advanced debugging.": 223,
 	"configuration file":                                            5,
-	"empty home directory":                                          322,
+	"empty home directory":                                          325,
 	"error: no context exists with the name: \"%v\"":                132,
 	"error: no endpoint exists with the name: \"%v\"":               139,
 	"error: no user exists with the name: \"%v\"":                   146,
@@ -382,7 +385,7 @@ var messageKeyToIndex = map[string]int{
 	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools": 280,
 }
 
-var de_DEIndex = []uint32{ // 333 elements
+var de_DEIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x0000007e, 0x00000096,
 	0x000000d1, 0x000000e9, 0x000000fd, 0x00000148,
@@ -477,8 +480,8 @@ var de_DEIndex = []uint32{ // 333 elements
 	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
 	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
 	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
-	0x00004c07,
-} // Size: 1356 bytes
+	0x00004c07, 0x00004c07, 0x00004c07, 0x00004c07,
+} // Size: 1368 bytes
 
 const de_DEData string = "" + // Size: 19463 bytes
 	"\x02SQL Server installieren/erstellen, abfragen, deinstallieren\x02Konfi" +
@@ -765,7 +768,7 @@ const de_DEData string = "" + // Size: 19463 bytes
 	"offen)\x02Ungültiger Variablenbezeichner %[1]s\x02Ungültiger Variablenwe" +
 	"rt %[1]s"
 
-var en_USIndex = []uint32{ // 333 elements
+var en_USIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002c, 0x00000062, 0x0000007a,
 	0x000000b3, 0x000000cb, 0x000000de, 0x00000113,
@@ -852,18 +855,18 @@ var en_USIndex = []uint32{ // 333 elements
 	0x00003bc5, 0x00003c0a, 0x00003c14, 0x00003c25,
 	0x00003c3b, 0x00003c5d, 0x00003c7a, 0x00003cba,
 	0x00003cdf, 0x00003cfa, 0x00003d26, 0x00003d77,
-	0x00003db8, 0x00003de8, 0x00003e2d, 0x00003e72,
-	0x00003eb2, 0x00003ed0, 0x00003f2a, 0x00003f40,
-	0x00003f58, 0x00003f95, 0x00003f9b, 0x00003fc7,
-	0x00003fe9, 0x00004018, 0x00004038, 0x00004059,
+	0x00003db8, 0x00003de8, 0x00003e38, 0x00003e4d,
+	0x00003ea2, 0x00003ecc, 0x00003f11, 0x00003f51,
+	0x00003f6f, 0x00003fc9, 0x00003fdf, 0x00003ff7,
+	0x00004034, 0x0000403a, 0x00004066, 0x00004088,
 	// Entry 140 - 15F
-	0x0000407a, 0x0000409c, 0x000040c5, 0x000040da,
-	0x00004102, 0x00004115, 0x00004143, 0x0000419d,
-	0x0000424d, 0x00004348, 0x000043c7, 0x000043fd,
-	0x0000444a,
-} // Size: 1356 bytes
+	0x000040b7, 0x000040d7, 0x000040f8, 0x00004119,
+	0x0000413b, 0x00004164, 0x00004179, 0x000041a1,
+	0x000041b4, 0x000041e2, 0x0000423c, 0x000042ec,
+	0x000043e7, 0x00004466, 0x0000449c, 0x000044e9,
+} // Size: 1368 bytes
 
-const en_USData string = "" + // Size: 17482 bytes
+const en_USData string = "" + // Size: 17641 bytes
 	"\x02Install/Create, Query, Uninstall SQL Server\x02View configuration in" +
 	"formation and connection strings\x04\x02\x0a\x0a\x00\x12\x02Feedback:" +
 	"\x0a  %[1]s\x02help for backwards compatibility flags (-S, -U, -E etc.)" +
@@ -1099,33 +1102,36 @@ const en_USData string = "" + // Size: 17482 bytes
 	"sual Studio Code\x02Could not copy password to clipboard: %[1]s\x02Passw" +
 	"ord copied to clipboard - paste it when prompted, then clear your clipbo" +
 	"ard\x02Open SQL Server Management Studio and connect to current context" +
-	"\x02Open SSMS and connect using the current context\x02SSMS is only avai" +
-	"lable on Windows. Use 'sqlcmd open vscode' instead.\x02Open Visual Studi" +
-	"o Code and configure connection for current context\x02Open VS Code and " +
-	"configure connection using the current context\x02Open a specific VS Cod" +
-	"e build\x02VS Code build to open: 'stable' or 'insiders'; defaults to st" +
-	"able when both are installed\x02Open the stable build\x02Open the inside" +
-	"rs build\x02'--build %[1]s' is not supported; use 'stable' or 'insiders'" +
-	"\x02Error\x02Failed to create VS Code settings directory\x02Failed to en" +
-	"code VS Code settings\x02Connection profile created in VS Code settings" +
-	"\x02Failed to read VS Code settings\x02Failed to parse VS Code settings" +
-	"\x02Failed to write VS Code settings\x02Set the HOME environment variabl" +
-	"e\x02Set the USERPROFILE environment variable\x02empty home directory" +
-	"\x02Could not resolve home directory: %[1]s\x02Opening VS Code...\x02Use" +
-	" the '%[1]s' connection profile to connect\x02The -J parameter requires " +
-	"encryption to be enabled (-N true, -N mandatory, or -N strict).\x02Speci" +
-	"fies the server name to use for authentication when tunneling through a " +
-	"proxy. Use with -S to specify the dial address separately from the serve" +
-	"r name sent to SQL Server.\x02Specifies the path to a server certificate" +
-	" file (PEM, DER, or CER) to match against the server's TLS certificate. " +
-	"Use when encryption is enabled (-N true, -N mandatory, or -N strict) for" +
-	" certificate pinning instead of standard certificate validation.\x02Prin" +
-	"ts the output in ASCII table format. This option sets the sqlcmd scripti" +
-	"ng variable %[1]s to '%[2]s'. The default is false\x02Do not strip the " +
-	"\x22mssql: \x22 prefix from error messages\x02Server name override is no" +
-	"t supported with the current authentication method"
+	"\x02Open SSMS and connect using the current context\x02SSMS major versio" +
+	"n to launch (for example 21); defaults to the latest installed\x02Open t" +
+	"he latest SSMS\x02'sqlcmd open ssms' supports SSMS %[1]d and later; '--v" +
+	"ersion %[2]s' is not supported\x02Launching SQL Server Management Studio" +
+	"...\x02Open Visual Studio Code and configure connection for current cont" +
+	"ext\x02Open VS Code and configure connection using the current context" +
+	"\x02Open a specific VS Code build\x02VS Code build to open: 'stable' or " +
+	"'insiders'; defaults to stable when both are installed\x02Open the stabl" +
+	"e build\x02Open the insiders build\x02'--build %[1]s' is not supported; " +
+	"use 'stable' or 'insiders'\x02Error\x02Failed to create VS Code settings" +
+	" directory\x02Failed to encode VS Code settings\x02Connection profile cr" +
+	"eated in VS Code settings\x02Failed to read VS Code settings\x02Failed t" +
+	"o parse VS Code settings\x02Failed to write VS Code settings\x02Set the " +
+	"HOME environment variable\x02Set the USERPROFILE environment variable" +
+	"\x02empty home directory\x02Could not resolve home directory: %[1]s\x02O" +
+	"pening VS Code...\x02Use the '%[1]s' connection profile to connect\x02Th" +
+	"e -J parameter requires encryption to be enabled (-N true, -N mandatory," +
+	" or -N strict).\x02Specifies the server name to use for authentication w" +
+	"hen tunneling through a proxy. Use with -S to specify the dial address s" +
+	"eparately from the server name sent to SQL Server.\x02Specifies the path" +
+	" to a server certificate file (PEM, DER, or CER) to match against the se" +
+	"rver's TLS certificate. Use when encryption is enabled (-N true, -N mand" +
+	"atory, or -N strict) for certificate pinning instead of standard certifi" +
+	"cate validation.\x02Prints the output in ASCII table format. This option" +
+	" sets the sqlcmd scripting variable %[1]s to '%[2]s'. The default is fal" +
+	"se\x02Do not strip the \x22mssql: \x22 prefix from error messages\x02Ser" +
+	"ver name override is not supported with the current authentication metho" +
+	"d"
 
-var es_ESIndex = []uint32{ // 333 elements
+var es_ESIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000032, 0x00000081, 0x0000009c,
 	0x000000ec, 0x0000010d, 0x00000127, 0x0000017f,
@@ -1220,8 +1226,8 @@ var es_ESIndex = []uint32{ // 333 elements
 	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
 	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
 	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
-	0x00004c19,
-} // Size: 1356 bytes
+	0x00004c19, 0x00004c19, 0x00004c19, 0x00004c19,
+} // Size: 1368 bytes
 
 const es_ESData string = "" + // Size: 19481 bytes
 	"\x02Instalar/Crear, Consultar, Desinstalar SQL Server\x02Visualización d" +
@@ -1509,7 +1515,7 @@ const es_ESData string = "" + // Size: 19481 bytes
 	"(%[1]d filas afectadas)\x02Identificador de variable %[1]s no válido\x02" +
 	"Valor de variable %[1]s no válido"
 
-var fr_FRIndex = []uint32{ // 333 elements
+var fr_FRIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000037, 0x0000007f, 0x0000009d,
 	0x000000e1, 0x000000fe, 0x00000117, 0x00000169,
@@ -1604,8 +1610,8 @@ var fr_FRIndex = []uint32{ // 333 elements
 	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
 	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
 	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
-	0x00004f30,
-} // Size: 1356 bytes
+	0x00004f30, 0x00004f30, 0x00004f30, 0x00004f30,
+} // Size: 1368 bytes
 
 const fr_FRData string = "" + // Size: 20272 bytes
 	"\x02Installer/créer, interroger, désinstaller SQL Server\x02Afficher les" +
@@ -1902,7 +1908,7 @@ const fr_FRData string = "" + // Size: 20272 bytes
 	"\x02(1\u00a0ligne affectée)\x02(%[1]d lignes affectées)\x02Identifiant d" +
 	"e variable invalide %[1]s\x02Valeur de variable invalide %[1]s"
 
-var it_ITIndex = []uint32{ // 333 elements
+var it_ITIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x00000088, 0x000000a0,
 	0x000000f7, 0x00000114, 0x0000012b, 0x0000016a,
@@ -1997,8 +2003,8 @@ var it_ITIndex = []uint32{ // 333 elements
 	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
 	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
 	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
-	0x000049f0,
-} // Size: 1356 bytes
+	0x000049f0, 0x000049f0, 0x000049f0, 0x000049f0,
+} // Size: 1368 bytes
 
 const it_ITData string = "" + // Size: 18928 bytes
 	"\x02Installare/creare, eseguire query, disinstallare SQL Server\x02Visua" +
@@ -2280,7 +2286,7 @@ const it_ITData string = "" + // Size: 18928 bytes
 	"della variabile %[1]s non valido\x02Valore della variabile %[1]s non val" +
 	"ido"
 
-var ja_JPIndex = []uint32{ // 333 elements
+var ja_JPIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x00000077, 0x0000009d,
 	0x000000d8, 0x000000f8, 0x0000010b, 0x0000014c,
@@ -2375,8 +2381,8 @@ var ja_JPIndex = []uint32{ // 333 elements
 	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
 	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
 	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
-	0x00005c9d,
-} // Size: 1356 bytes
+	0x00005c9d, 0x00005c9d, 0x00005c9d, 0x00005c9d,
+} // Size: 1368 bytes
 
 const ja_JPData string = "" + // Size: 23709 bytes
 	"\x02インストール/作成、クエリ、SQL Server のアンインストール\x02構成情報と接続文字列の表示\x04\x02\x0a\x0a" +
@@ -2538,7 +2544,7 @@ const ja_JPData string = "" + // Size: 23709 bytes
 	"\x02パスワード:\x02(1 行が影響を受けます)\x02(%[1]d 行が影響を受けます)\x02変数識別子 %[1]s が無効です" +
 	"\x02変数値の %[1]s が無効です"
 
-var ko_KRIndex = []uint32{ // 333 elements
+var ko_KRIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000029, 0x00000053, 0x0000006c,
 	0x000000b8, 0x000000d0, 0x000000de, 0x00000121,
@@ -2633,8 +2639,8 @@ var ko_KRIndex = []uint32{ // 333 elements
 	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
 	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
 	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
-	0x00004c4a,
-} // Size: 1356 bytes
+	0x00004c4a, 0x00004c4a, 0x00004c4a, 0x00004c4a,
+} // Size: 1368 bytes
 
 const ko_KRData string = "" + // Size: 19530 bytes
 	"\x02SQL Server 설치/생성, 쿼리, 제거\x02구성 정보 및 연결 문자열 보기\x04\x02\x0a\x0a\x00" +
@@ -2788,7 +2794,7 @@ const ko_KRData string = "" + // Size: 19530 bytes
 	"호:\x02(1개 행 적용됨)\x02(영향을 받은 행 %[1]d개)\x02잘못된 변수 식별자 %[1]s\x02잘못된 변수 값 " +
 	"%[1]s"
 
-var pt_BRIndex = []uint32{ // 333 elements
+var pt_BRIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000034, 0x00000071, 0x0000008d,
 	0x000000e3, 0x00000103, 0x0000011e, 0x0000016d,
@@ -2883,8 +2889,8 @@ var pt_BRIndex = []uint32{ // 333 elements
 	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
 	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
 	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
-	0x000048cc,
-} // Size: 1356 bytes
+	0x000048cc, 0x000048cc, 0x000048cc, 0x000048cc,
+} // Size: 1368 bytes
 
 const pt_BRData string = "" + // Size: 18636 bytes
 	"\x02Instalar/Criar, Consultar, Desinstalar o SQL Server\x02Exibir inform" +
@@ -3159,7 +3165,7 @@ const pt_BRData string = "" + // Size: 18636 bytes
 	"etadas)\x02Identificador de variável %[1]s inválido\x02Valor de variável" +
 	" inválido %[1]s"
 
-var ru_RUIndex = []uint32{ // 333 elements
+var ru_RUIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000056, 0x000000c1, 0x000000ec,
 	0x00000151, 0x00000172, 0x00000195, 0x0000023b,
@@ -3254,8 +3260,8 @@ var ru_RUIndex = []uint32{ // 333 elements
 	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
 	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
 	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
-	0x00007da4,
-} // Size: 1356 bytes
+	0x00007da4, 0x00007da4, 0x00007da4, 0x00007da4,
+} // Size: 1368 bytes
 
 const ru_RUData string = "" + // Size: 32164 bytes
 	"\x02Установка или создание, запрос, удаление SQL Server\x02Просмотреть с" +
@@ -3538,7 +3544,7 @@ const ru_RUData string = "" + // Size: 32164 bytes
 	"%[1]d)\x02Недопустимый идентификатор переменной %[1]s\x02Недопустимое зн" +
 	"ачение переменной %[1]s"
 
-var zh_CNIndex = []uint32{ // 333 elements
+var zh_CNIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002b, 0x00000050, 0x00000065,
 	0x00000096, 0x000000ab, 0x000000b8, 0x000000fc,
@@ -3633,8 +3639,8 @@ var zh_CNIndex = []uint32{ // 333 elements
 	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
 	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
 	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
-	0x000037f5,
-} // Size: 1356 bytes
+	0x000037f5, 0x000037f5, 0x000037f5, 0x000037f5,
+} // Size: 1368 bytes
 
 const zh_CNData string = "" + // Size: 14325 bytes
 	"\x02安装/创建、查询、卸载 SQL Server\x02查看配置信息和连接字符串\x04\x02\x0a\x0a\x00\x0f\x02反馈" +
@@ -3753,7 +3759,7 @@ const zh_CNData string = "" + // Size: 14325 bytes
 	"\x02Msg %#[1]v，级别 %[2]d，状态 %[3]d，服务器 %[4]s，行 %#[5]v%[6]s\x02密码:\x02(1 行受" +
 	"影响)\x02(%[1]d 行受影响)\x02变量标识符 %[1]s 无效\x02变量值 %[1]s 无效"
 
-var zh_TWIndex = []uint32{ // 333 elements
+var zh_TWIndex = []uint32{ // 336 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000031, 0x00000053, 0x0000006e,
 	0x000000a1, 0x000000b8, 0x000000c2, 0x00000106,
@@ -3848,8 +3854,8 @@ var zh_TWIndex = []uint32{ // 333 elements
 	0x00003870, 0x00003870, 0x00003870, 0x00003870,
 	0x00003870, 0x00003870, 0x00003870, 0x00003870,
 	0x00003870, 0x00003870, 0x00003870, 0x00003870,
-	0x00003870,
-} // Size: 1356 bytes
+	0x00003870, 0x00003870, 0x00003870, 0x00003870,
+} // Size: 1368 bytes
 
 const zh_TWData string = "" + // Size: 14448 bytes
 	"\x02安裝/建立、查詢、解除安裝 SQL Server\x02檢視組態資訊和連接字串\x04\x02\x0a\x0a\x00\x15\x02意" +
@@ -3966,4 +3972,4 @@ const zh_TWData string = "" + // Size: 14448 bytes
 	"\x02密碼:\x02(1 個資料列受影響)\x02(%[1]d 個資料列受影響)\x02無效的變數識別碼 %[1]s\x02變數值 %[1]s" +
 	" 無效"
 
-	// Total table size 233354 bytes (227KiB); checksum: 1E791AD3
+	// Total table size 233645 bytes (228KiB); checksum: C990663C

@@ -2400,8 +2400,55 @@
             "translation": ""
         },
         {
-            "id": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
-            "message": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "id": "SSMS major version to launch (for example 21); defaults to the latest installed",
+            "message": "SSMS major version to launch (for example 21); defaults to the latest installed",
+            "translation": ""
+        },
+        {
+            "id": "Open the latest SSMS",
+            "message": "Open the latest SSMS",
+            "translation": ""
+        },
+        {
+            "id": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
+            "message": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "MinSsmsVersion",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "minSsmsVersion"
+                },
+                {
+                    "id": "Version",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "c.version"
+                }
+            ]
+        },
+        {
+            "id": "sqlcmd start",
+            "message": "sqlcmd start",
+            "translation": "Início do sqlcmd",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Container is not running",
+            "message": "Container is not running",
+            "translation": "O contêiner não está em execução",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Launching SQL Server Management Studio...",
+            "message": "Launching SQL Server Management Studio...",
             "translation": ""
         },
         {
@@ -2448,20 +2495,6 @@
                     "expr": "c.build"
                 }
             ]
-        },
-        {
-            "id": "sqlcmd start",
-            "message": "sqlcmd start",
-            "translation": "Início do sqlcmd",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Container is not running",
-            "message": "Container is not running",
-            "translation": "O contêiner não está em execução",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
         },
         {
             "id": "Error",
