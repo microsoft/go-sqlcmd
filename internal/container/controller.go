@@ -328,11 +328,12 @@ func (c Controller) ContainerRunning(id string) (running bool) {
 }
 
 // ContainerName returns the human-readable name assigned to the container,
-// or "" if the container can't be inspected (missing, daemon down, etc.).
-// The docker API returns names with a leading "/" which is stripped here.
+// or "" if id is empty or the container can't be inspected (missing, daemon
+// down, etc.). The docker API returns names with a leading "/" which is
+// stripped here.
 func (c Controller) ContainerName(id string) string {
 	if id == "" {
-		panic("Must pass in non-empty id")
+		return ""
 	}
 
 	resp, err := c.cli.ContainerInspect(context.Background(), id, client.ContainerInspectOptions{})
