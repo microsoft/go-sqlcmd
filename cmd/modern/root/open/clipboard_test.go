@@ -30,3 +30,17 @@ func TestCopyPasswordToClipboardWithNonBasicAuth(t *testing.T) {
 		t.Error("Expected false when auth type is not 'basic'")
 	}
 }
+
+func TestCopyPasswordToClipboardWithNilOutput(t *testing.T) {
+	cmdparser.TestSetup(t)
+
+	user := &sqlconfig.User{
+		AuthenticationType: "basic",
+		Name:               "test-user",
+		BasicAuth:          &sqlconfig.BasicAuthDetails{Username: "sa"},
+	}
+
+	if copyPasswordToClipboard(user, nil) {
+		t.Error("Expected false when out is nil; helper must not panic on Warn/Info")
+	}
+}

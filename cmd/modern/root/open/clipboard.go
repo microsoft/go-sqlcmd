@@ -14,7 +14,7 @@ import (
 // copyPasswordToClipboard copies the password for the current context to the clipboard
 // if the user is using SQL authentication. Returns true if a password was copied.
 func copyPasswordToClipboard(user *sqlconfig.User, out *output.Output) bool {
-	if user == nil || user.AuthenticationType != "basic" || user.BasicAuth == nil {
+	if out == nil || user == nil || user.AuthenticationType != "basic" || user.BasicAuth == nil {
 		return false
 	}
 
