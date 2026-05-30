@@ -2557,18 +2557,25 @@
             "fuzzy": true
         },
         {
-            "id": "Could not resolve home directory: {Error}",
-            "message": "Could not resolve home directory: {Error}",
-            "translation": "Could not resolve home directory: {Error}",
+            "id": "empty home directory",
+            "message": "empty home directory",
+            "translation": "empty home directory",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Could not resolve home directory: {Reason}",
+            "message": "Could not resolve home directory: {Reason}",
+            "translation": "Could not resolve home directory: {Reason}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "Error",
+                    "id": "Reason",
                     "string": "%[1]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "err.Error()"
+                    "expr": "reason"
                 }
             ],
             "fuzzy": true

@@ -363,7 +363,11 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 				{localizer.Sprintf("Set the USERPROFILE environment variable"), `set USERPROFILE=C:\Users\you`},
 			}
 		}
-		c.Output().FatalWithHintExamples(hint, localizer.Sprintf("Could not resolve home directory: %s", err.Error()))
+		reason := localizer.Sprintf("empty home directory")
+		if err != nil {
+			reason = err.Error()
+		}
+		c.Output().FatalWithHintExamples(hint, localizer.Sprintf("Could not resolve home directory: %s", reason))
 	}
 
 	var configDir string
