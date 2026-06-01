@@ -12,11 +12,14 @@ import (
 func copyToClipboard(text string) error {
 	var attempts []string
 	tryCmd := func(name string, args ...string) bool {
-		if _, err := exec.LookPath(name); err != nil {
+		// Use the resolved absolute path so a later PATH change can't redirect
+		// the SQL password to a different binary between lookup and exec.
+		resolved, err := exec.LookPath(name)
+		if err != nil {
 			attempts = append(attempts, fmt.Sprintf("%s not found", name))
 			return false
 		}
-		cmd := exec.Command(name, args...)
+		cmd := exec.Command(resolved, args...)
 		cmd.Stdin = strings.NewReader(text)
 		if err := cmd.Run(); err != nil {
 			attempts = append(attempts, fmt.Sprintf("%s failed: %v", name, err))
