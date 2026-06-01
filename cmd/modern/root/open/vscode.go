@@ -166,7 +166,9 @@ func (c *VSCode) createConnectionProfile(build string, endpoint sqlconfig.Endpoi
 	settingsPath := c.getVSCodeSettingsPath(build)
 
 	dir := filepath.Dir(settingsPath)
-	if err := os.MkdirAll(dir, 0755); err != nil {
+	// 0700: settings.json may contain a plaintext SQL password for local-container
+	// contexts, so avoid widening directory permissions if we're the one creating it.
+	if err := os.MkdirAll(dir, 0700); err != nil {
 		output.FatalWithHintExamples([][]string{
 			{localizer.Sprintf("Error"), err.Error()},
 		}, localizer.Sprintf("Failed to create VS Code settings directory"))

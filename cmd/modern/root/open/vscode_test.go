@@ -54,6 +54,7 @@ func TestVSCode(t *testing.T) {
 // TestVSCodeCreateProfile tests that createProfile generates correct profile structure
 func TestVSCodeCreateProfile(t *testing.T) {
 	cmdparser.TestSetup(t)
+	t.Cleanup(config.Clean)
 
 	// Set up a context with user credentials
 	config.AddEndpoint(sqlconfig.Endpoint{
@@ -125,6 +126,7 @@ func TestVSCodeCreateProfile(t *testing.T) {
 // rather than writing the plaintext password into settings.json.
 func TestVSCodeCreateProfileRemoteDoesNotPersistPassword(t *testing.T) {
 	cmdparser.TestSetup(t)
+	t.Cleanup(config.Clean)
 
 	config.AddEndpoint(sqlconfig.Endpoint{
 		EndpointDetails: sqlconfig.EndpointDetails{Address: "remote.example.com", Port: 1433},
@@ -357,6 +359,7 @@ func TestLinuxVSCodeConfigDir(t *testing.T) {
 // TestVSCodeProfileWithoutUser tests profile creation when no user is configured
 func TestVSCodeProfileWithoutUser(t *testing.T) {
 	cmdparser.TestSetup(t)
+	t.Cleanup(config.Clean)
 
 	config.AddEndpoint(sqlconfig.Endpoint{
 		AssetDetails: nil,
