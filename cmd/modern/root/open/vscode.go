@@ -87,7 +87,7 @@ func (c *VSCode) run() {
 	// Launch VS Code and tell the mssql extension to connect to the profile
 	// we just wrote. This focuses the SQL Server activity bar view instead of
 	// landing on whatever was open last.
-	c.launchVSCode(t, endpoint, user)
+	c.launchVSCode(t, endpoint, user, isLocalConnection)
 }
 
 // resolveBuild validates an explicit --build value and otherwise picks the
@@ -136,12 +136,19 @@ func (c *VSCode) ensureContainerIsRunning(containerID string) {
 	}
 }
 
-func (c *VSCode) launchVSCode(t tool.Tool, endpoint sqlconfig.Endpoint, user *sqlconfig.User) {
+func (c *VSCode) launchVSCode(t tool.Tool, endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) {
 	// Don't pre-check or install the mssql extension ourselves. When VS Code
 	// follows the vscode://ms-mssql.mssql/... URL and the extension isn't
 	// installed, it prompts the user to install it. That UX is better than
 	// our fire-and-forget `--install-extension` shell-out, which couldn't
 	// report success or failure anyway.
+
+	// For remote SQL auth, the password isn't written to settings.json, so the
+	// mssql extension will prompt for it. Stage it on the clipboard so the user
+	// can paste rather than retype.
+	if !isLocalConnection {
+		copyPasswordToClipboard(user, c.Output())
+	}
 
 	c.displayPreLaunchInfo()
 
