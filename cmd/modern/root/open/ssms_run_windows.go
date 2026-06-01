@@ -25,6 +25,12 @@ const minSsmsVersion = 21
 func (c *SSMS) run() {
 	c.validateVersion()
 
+	if config.CurrentContextName() == "" {
+		c.Output().FatalWithHintExamples([][]string{
+			{localizer.Sprintf("To view available contexts"), "sqlcmd config get-contexts"},
+		}, localizer.Sprintf("No current context"))
+	}
+
 	endpoint, user := config.CurrentContext()
 	isLocalConnection := isLocalEndpoint(endpoint)
 

@@ -59,6 +59,12 @@ func (c *VSCode) DefineCommand(...cmdparser.CommandOptions) {
 // The connection profile will be added to VS Code's user settings to work
 // with the MSSQL extension.
 func (c *VSCode) run() {
+	if config.CurrentContextName() == "" {
+		c.Output().FatalWithHintExamples([][]string{
+			{localizer.Sprintf("To view available contexts"), "sqlcmd config get-contexts"},
+		}, localizer.Sprintf("No current context"))
+	}
+
 	endpoint, user := config.CurrentContext()
 
 	build := c.resolveBuild()
