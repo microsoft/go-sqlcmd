@@ -25,6 +25,8 @@ func TestSsms(t *testing.T) {
 	}
 
 	cmdparser.TestSetup(t)
+	// reset shared package-level config so this test is order-independent with vscode_test.go.
+	t.Cleanup(config.Clean)
 	config.AddEndpoint(sqlconfig.Endpoint{
 		AssetDetails: nil,
 		EndpointDetails: sqlconfig.EndpointDetails{
