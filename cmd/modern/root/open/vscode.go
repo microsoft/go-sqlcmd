@@ -199,7 +199,7 @@ func (c *VSCode) readSettings(path string) ([]byte, map[string]interface{}) {
 		}, localizer.Sprintf("Failed to read VS Code settings"))
 	}
 
-	settings, err := parseJSONCSettings(data)
+	settings, err := parseJSONCSettings(append([]byte(nil), data...))
 	if err != nil {
 		c.Output().FatalWithHintExamples([][]string{
 			{localizer.Sprintf("Error"), err.Error()},
@@ -344,17 +344,8 @@ func ensureRootGroup(existing interface{}) []interface{} {
 }
 
 func (c *VSCode) getVSCodeSettingsPath(build string) string {
-	if testSettingsPathOverride != "" {
-		return testSettingsPathOverride
-	}
-
-	appName := "Code"
-	if build == "insiders" {
-		appName = "Code - Insiders"
-	}
-
-	home, err := os.UserHomeDir()
-	if err != nil || home == "" {
+	path, err := vsCodeSettingsPath(build)
+	if err != nil {
 		hint := [][]string{
 			{localizer.Sprintf("Set the HOME environment variable"), "export HOME=/your/home"},
 		}
@@ -363,11 +354,30 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 				{localizer.Sprintf("Set the USERPROFILE environment variable"), `set USERPROFILE=C:\Users\you`},
 			}
 		}
-		reason := localizer.Sprintf("empty home directory")
-		if err != nil {
-			reason = err.Error()
-		}
-		c.Output().FatalWithHintExamples(hint, localizer.Sprintf("Could not resolve home directory: %s", reason))
+		c.Output().FatalWithHintExamples(hint, localizer.Sprintf("Could not resolve home directory: %s", err.Error()))
+	}
+	return path
+}
+
+// vsCodeSettingsPath resolves the settings.json path for the given VS Code
+// build without exiting on failure, so callers like the uninstall cleanup
+// path can degrade gracefully when the home directory is unavailable.
+func vsCodeSettingsPath(build string) (string, error) {
+	if testSettingsPathOverride != "" {
+		return testSettingsPathOverride, nil
+	}
+
+	appName := "Code"
+	if build == "insiders" {
+		appName = "Code - Insiders"
+	}
+
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	if home == "" {
+		return "", fmt.Errorf("empty home directory")
 	}
 
 	var configDir string
@@ -384,7 +394,7 @@ func (c *VSCode) getVSCodeSettingsPath(build string) string {
 		configDir = linuxVSCodeConfigDir(home, appName, build, vsCodeExePath(build), os.Getenv("XDG_CONFIG_HOME"))
 	}
 
-	return filepath.Join(configDir, "settings.json")
+	return filepath.Join(configDir, "settings.json"), nil
 }
 
 // linuxVSCodeConfigDir resolves the VS Code User config directory on Linux.
@@ -445,4 +455,81 @@ func mssqlConnectURI(endpoint sqlconfig.Endpoint, user *sqlconfig.User) string {
 func isLocalEndpoint(endpoint sqlconfig.Endpoint) bool {
 	asset := endpoint.AssetDetails
 	return asset != nil && asset.ContainerDetails != nil
+}
+
+// RemoveContextFromVSCodeSettings deletes any mssql connection profile named
+// contextName from each known VS Code build's settings.json. It is best
+// effort: missing files, unresolvable home dirs, and parse/write errors are
+// swallowed so `sqlcmd delete` never fails on cleanup. Returns the list of
+// settings paths that were actually modified, so callers can report what
+// they cleaned up.
+func RemoveContextFromVSCodeSettings(contextName string) []string {
+	if contextName == "" {
+		return nil
+	}
+	var cleaned []string
+	seen := map[string]bool{}
+	for _, build := range []string{"stable", "insiders"} {
+		path, err := vsCodeSettingsPath(build)
+		if err != nil || path == "" || seen[path] {
+			continue
+		}
+		seen[path] = true
+		removed, err := removeProfileFromVSCodeSettings(path, contextName)
+		if err == nil && removed {
+			cleaned = append(cleaned, path)
+		}
+	}
+	return cleaned
+}
+
+// removeProfileFromVSCodeSettings rewrites settings.json with any
+// mssql.connections entry whose profileName matches contextName stripped out.
+// Returns (true, nil) when the file was modified, (false, nil) when no
+// matching profile was present or the file does not exist.
+func removeProfileFromVSCodeSettings(settingsPath, contextName string) (bool, error) {
+	data, err := os.ReadFile(settingsPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	// parseJSONCSettings may mutate the input bytes via hujson.Standardize,
+	// so peek on a copy and keep the pristine original for the JSONC-aware
+	// rewrite below.
+	settings, err := parseJSONCSettings(append([]byte(nil), data...))
+	if err != nil {
+		return false, err
+	}
+
+	existing, ok := settings["mssql.connections"].([]interface{})
+	if !ok || len(existing) == 0 {
+		return false, nil
+	}
+
+	filtered := make([]interface{}, 0, len(existing))
+	for _, conn := range existing {
+		if connMap, ok := conn.(map[string]interface{}); ok {
+			if name, _ := connMap["profileName"].(string); name == contextName {
+				continue
+			}
+		}
+		filtered = append(filtered, conn)
+	}
+	if len(filtered) == len(existing) {
+		return false, nil
+	}
+
+	out, err := applyJSONCSettingsUpdates(data, map[string]interface{}{
+		"mssql.connections": filtered,
+	})
+	if err != nil {
+		return false, err
+	}
+	if err := os.WriteFile(settingsPath, out, 0600); err != nil {
+		return false, err
+	}
+	return true, nil
 }
