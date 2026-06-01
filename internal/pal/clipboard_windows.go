@@ -10,8 +10,6 @@ import (
 	"strings"
 )
 
-// copyToClipboard copies text to the Windows clipboard using the built-in clip.exe command.
-// This is simpler and safer than using Win32 API calls directly.
 func copyToClipboard(text string) error {
 	cmd := exec.Command(clipExePath())
 	cmd.Stdin = strings.NewReader(text)
