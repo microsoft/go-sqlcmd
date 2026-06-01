@@ -48,7 +48,6 @@ func (t *tool) IsInstalled() bool {
 	}
 
 	t.installed = new(bool)
-	// Handle case where tool wasn't found during Init (exeName is empty)
 	if t.exeName != "" && file.Exists(t.exeName) {
 		*t.installed = true
 	} else {
