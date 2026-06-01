@@ -53,11 +53,16 @@ func vscodeWindowsLocations(build string) []string {
 		locations = append(locations, filepath.Join(install, exeName))
 	}
 
-	// Tier 3: standard default install directories.
-	locations = append(locations,
-		filepath.Join(userDir, exeName),
-		filepath.Join(systemDir, exeName),
-	)
+	// Tier 3: standard default install directories. Skip any whose base env
+	// var was empty -- filepath.Join with an empty base yields a relative
+	// path (e.g. AppData\...\Code.exe) that could match an unintended binary
+	// in the working directory.
+	if userDir != "" {
+		locations = append(locations, filepath.Join(userDir, exeName))
+	}
+	if systemDir != "" {
+		locations = append(locations, filepath.Join(systemDir, exeName))
+	}
 
 	return locations
 }
@@ -67,15 +72,25 @@ func vscodeWindowsBuildInfo(build string) (cliName, exeName, userDir, systemDir 
 	programFiles := os.Getenv("ProgramFiles")
 
 	if build == "insiders" {
-		return "code-insiders",
-			"Code - Insiders.exe",
-			filepath.Join(userProfile, "AppData", "Local", "Programs", "Microsoft VS Code Insiders"),
-			filepath.Join(programFiles, "Microsoft VS Code Insiders")
+		cliName = "code-insiders"
+		exeName = "Code - Insiders.exe"
+		if userProfile != "" {
+			userDir = filepath.Join(userProfile, "AppData", "Local", "Programs", "Microsoft VS Code Insiders")
+		}
+		if programFiles != "" {
+			systemDir = filepath.Join(programFiles, "Microsoft VS Code Insiders")
+		}
+		return
 	}
-	return "code",
-		"Code.exe",
-		filepath.Join(userProfile, "AppData", "Local", "Programs", "Microsoft VS Code"),
-		filepath.Join(programFiles, "Microsoft VS Code")
+	cliName = "code"
+	exeName = "Code.exe"
+	if userProfile != "" {
+		userDir = filepath.Join(userProfile, "AppData", "Local", "Programs", "Microsoft VS Code")
+	}
+	if programFiles != "" {
+		systemDir = filepath.Join(programFiles, "Microsoft VS Code")
+	}
+	return
 }
 
 // vscodeRegistryInstallLocation reads InstallLocation from the Inno Setup
