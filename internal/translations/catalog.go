@@ -67,10 +67,10 @@ var messageKeyToIndex = map[string]int{
 	"'%s' scripting variable not defined.":                                               285,
 	"'%s': Missing argument. Enter '-?' for help.":                                       274,
 	"'%s': Unknown Option. Enter '-?' for help.":                                         275,
-	"'--build %s' is not supported; use 'stable' or 'insiders'":                          317,
+	"'--build %s' is not supported; use 'stable' or 'insiders'":                          318,
 	"'-a %#v': Packet size has to be a number between 512 and 32767.":                    215,
 	"'-h %#v': header value must be either -1 or a value between 1 and 2147483647":       216,
-	"'sqlcmd open ssms' supports SSMS %d and later; '--version %s' is not supported":     308,
+	"'sqlcmd open ssms' supports SSMS %d and later; '--version %s' is not supported":     309,
 	"(%d rows affected)": 295,
 	"(1 row affected)":   294,
 	"--user-database %q contains non-ASCII chars and/or quotes":                                  178,
@@ -104,7 +104,7 @@ var messageKeyToIndex = map[string]int{
 	"Command text to run":    14,
 	"Complete the operation even if non-system (user) database files are present":      31,
 	"Connection Strings only supported for %s Auth type":                               103,
-	"Connection profile created in VS Code settings":                                   321,
+	"Connection profile created in VS Code settings":                                   322,
 	"Container %q no longer exists, continuing to remove context...":                   43,
 	"Container is not running":                                                         213,
 	"Container is not running, unable to verify that user database files do not exist": 40,
@@ -114,7 +114,7 @@ var messageKeyToIndex = map[string]int{
 	"Context name to view details of":                                                  129,
 	"Controls the severity level that is used to set the %s variable on exit":          257,
 	"Controls which error messages are sent to %s. Messages that have severity level greater than or equal to this level are sent": 250,
-	"Could not copy password to clipboard: %s":                                                           301,
+	"Could not copy password to clipboard: %s":                                                           302,
 	"Could not resolve home directory: %s":                                                               328,
 	"Create SQL Server with an empty user database":                                                      208,
 	"Create SQL Server, download and attach AdventureWorks sample database":                              206,
@@ -174,15 +174,15 @@ var messageKeyToIndex = map[string]int{
 	"Endpoint name to view details of":                                                    136,
 	"Endpoint required to add context.  Endpoint '%v' does not exist.  Use %s flag":       58,
 	"Enter new password:":                                                                 279,
-	"Error":                                                                               318,
+	"Error":                                                                               319,
 	"Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed":                             233,
 	"Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed": 232,
 	"Explicitly set the container hostname, it defaults to the container ID":                                                                                  170,
-	"Failed to create VS Code settings directory":                                                                                                             319,
-	"Failed to encode VS Code settings":    320,
-	"Failed to parse VS Code settings":     323,
-	"Failed to read VS Code settings":      322,
-	"Failed to write VS Code settings":     324,
+	"Failed to create VS Code settings directory":                                                                                                             320,
+	"Failed to encode VS Code settings":    321,
+	"Failed to parse VS Code settings":     324,
+	"Failed to read VS Code settings":      323,
+	"Failed to write VS Code settings":     325,
 	"File does not exist at URL":           202,
 	"Flags:":                               221,
 	"Generated password length":            162,
@@ -203,7 +203,7 @@ var messageKeyToIndex = map[string]int{
 	"Invalid variable value %s":                                                 297,
 	"Is a container runtime installed on this machine (e.g. Podman or Docker)?": 197,
 	"Is a container runtime running?  (Try `%s` or `%s` (list containers), does it return without error?)": 200,
-	"Launching SQL Server Management Studio...":                                                            310,
+	"Launching SQL Server Management Studio...":                                                            311,
 	"Legal docs and information: aka.ms/SqlcmdLegal":                                                       218,
 	"Level of mssql driver messages to print":                                                              248,
 	"Line in errorlog to wait for before connecting":                                                       168,
@@ -231,23 +231,23 @@ var messageKeyToIndex = map[string]int{
 	"No current context":                                                                19,
 	"No endpoints to uninstall":                                                         49,
 	"Now ready for client connections on port %#v":                                      187,
-	"Open SQL Server Management Studio and connect to current context":                  303,
-	"Open SSMS and connect using the current context":                                   304,
-	"Open VS Code and configure connection using the current context":                   312,
-	"Open Visual Studio Code and configure connection for current context":              311,
-	"Open a specific VS Code build":                                                     313,
-	"Open in SQL Server Management Studio":                                              299,
-	"Open in Visual Studio Code":                                                        300,
-	"Open the insiders build":                                                           316,
-	"Open the latest SSMS":                                                              307,
-	"Open the stable build":                                                             315,
+	"Open SQL Server Management Studio and connect to current context":                  304,
+	"Open SSMS and connect using the current context":                                   305,
+	"Open VS Code and configure connection using the current context":                   313,
+	"Open Visual Studio Code and configure connection for current context":              312,
+	"Open a specific VS Code build":                                                     314,
+	"Open in SQL Server Management Studio":                                              300,
+	"Open in Visual Studio Code":                                                        301,
+	"Open the insiders build":                                                           317,
+	"Open the latest SSMS":                                                              308,
+	"Open the stable build":                                                             316,
 	"Open tools (e.g., Visual Studio Code, SSMS) for current context":                   298,
 	"Opening VS Code...":                                                                329,
 	"Or, set the environment variable i.e. %s %s=YES ":                                  176,
 	"Pass in the %s %s":                                                                 87,
 	"Pass in the flag %s to override this safety check for user (non-system) databases": 47,
 	"Password": 256,
-	"Password copied to clipboard - paste it when prompted, then clear your clipboard": 302,
+	"Password copied to clipboard - paste it when prompted, then clear your clipboard": 303,
 	"Password encryption method (%s) in sqlconfig file":                                83,
 	"Password:": 293,
 	"Port (next available port from 1433 upwards used by default)": 173,
@@ -261,25 +261,26 @@ var messageKeyToIndex = map[string]int{
 	"Provided for backward compatibility. Quoted identifiers are always enabled":                                             261,
 	"Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster": 255,
 	"Quiet mode (do not stop for user input to confirm the operation)":                                                       30,
-	"Remove":                               186,
-	"Remove the %s flag":                   86,
-	"Remove trailing spaces from a column": 254,
-	"Removing context %s":                  41,
+	"Remove":                                     186,
+	"Remove the %s flag":                         86,
+	"Remove trailing spaces from a column":       254,
+	"Removed VS Code connection profile from %s": 299,
+	"Removing context %s":                        41,
 	"Requests a packet of a different size. This option sets the sqlcmd scripting variable %s. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between %s commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size": 240,
 	"Restoring database %s":                                                           195,
 	"Run a query":                                                                     11,
 	"Run a query against the current context":                                         10,
 	"Run a query using [%s] database":                                                 12,
-	"SSMS exited with code %d shortly after launch":                                   309,
-	"SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.":            306,
-	"SSMS major version to launch (for example 21); defaults to the latest installed": 305,
+	"SSMS exited with code %d shortly after launch":                                   310,
+	"SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.":            307,
+	"SSMS major version to launch (for example 21); defaults to the latest installed": 306,
 	"See all release tags for SQL Server, install previous version":                   205,
 	"See connection strings":                                                          185,
 	"Server name override is not supported with the current authentication method":    336,
 	"Servers:":                                 217,
 	"Set new default database":                 13,
-	"Set the HOME environment variable":        325,
-	"Set the USERPROFILE environment variable": 326,
+	"Set the HOME environment variable":        326,
+	"Set the USERPROFILE environment variable": 327,
 	"Set the current context":                  147,
 	"Set the mssql context (endpoint/user) to be the current context":                                                    148,
 	"Sets the sqlcmd scripting variable %s":                                                                              268,
@@ -358,7 +359,7 @@ var messageKeyToIndex = map[string]int{
 	"User name to view details of":                                143,
 	"Username not provided":                                       94,
 	"Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password": 229,
-	"VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed":                                                                           314,
+	"VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed":                                                                           315,
 	"Verifying no user (non-system) database (.mdf) files":                                                                                                                37,
 	"Version: %v\n":              220,
 	"View all endpoints details": 73,
@@ -373,7 +374,6 @@ var messageKeyToIndex = map[string]int{
 	"View users":                                            122,
 	"Write runtime trace to the specified file. Only for advanced debugging.": 223,
 	"configuration file":                                            5,
-	"empty home directory":                                          327,
 	"error: no context exists with the name: \"%v\"":                132,
 	"error: no endpoint exists with the name: \"%v\"":               139,
 	"error: no user exists with the name: \"%v\"":                   146,
@@ -857,20 +857,20 @@ var en_USIndex = []uint32{ // 338 elements
 	0x00003af0, 0x00003b3f, 0x00003b5f, 0x00003b6f,
 	0x00003bc5, 0x00003c0a, 0x00003c14, 0x00003c25,
 	0x00003c3b, 0x00003c5d, 0x00003c7a, 0x00003cba,
-	0x00003cdf, 0x00003cfa, 0x00003d26, 0x00003d77,
-	0x00003db8, 0x00003de8, 0x00003e38, 0x00003e7d,
-	0x00003e92, 0x00003ee7, 0x00003f18, 0x00003f42,
-	0x00003f87, 0x00003fc7, 0x00003fe5, 0x0000403f,
-	0x00004055, 0x0000406d, 0x000040aa, 0x000040b0,
+	0x00003ce8, 0x00003d0d, 0x00003d28, 0x00003d54,
+	0x00003da5, 0x00003de6, 0x00003e16, 0x00003e66,
+	0x00003eab, 0x00003ec0, 0x00003f15, 0x00003f46,
+	0x00003f70, 0x00003fb5, 0x00003ff5, 0x00004013,
+	0x0000406d, 0x00004083, 0x0000409b, 0x000040d8,
 	// Entry 140 - 15F
-	0x000040dc, 0x000040fe, 0x0000412d, 0x0000414d,
-	0x0000416e, 0x0000418f, 0x000041b1, 0x000041da,
-	0x000041ef, 0x00004217, 0x0000422a, 0x00004258,
-	0x000042b2, 0x00004362, 0x0000445d, 0x000044dc,
-	0x00004512, 0x0000455f,
+	0x000040de, 0x0000410a, 0x0000412c, 0x0000415b,
+	0x0000417b, 0x0000419c, 0x000041bd, 0x000041df,
+	0x00004208, 0x00004230, 0x00004243, 0x00004271,
+	0x000042cb, 0x0000437b, 0x00004476, 0x000044f5,
+	0x0000452b, 0x00004578,
 } // Size: 1376 bytes
 
-const en_USData string = "" + // Size: 17759 bytes
+const en_USData string = "" + // Size: 17784 bytes
 	"\x02Install/Create, Query, Uninstall SQL Server\x02View configuration in" +
 	"formation and connection strings\x04\x02\x0a\x0a\x00\x12\x02Feedback:" +
 	"\x0a  %[1]s\x02help for backwards compatibility flags (-S, -U, -E etc.)" +
@@ -1102,39 +1102,39 @@ const en_USData string = "" + // Size: 17759 bytes
 	"te %[3]d, Server %[4]s, Line %#[5]v%[6]s\x02Password:\x02(1 row affected" +
 	")\x02(%[1]d rows affected)\x02Invalid variable identifier %[1]s\x02Inval" +
 	"id variable value %[1]s\x02Open tools (e.g., Visual Studio Code, SSMS) f" +
-	"or current context\x02Open in SQL Server Management Studio\x02Open in Vi" +
-	"sual Studio Code\x02Could not copy password to clipboard: %[1]s\x02Passw" +
-	"ord copied to clipboard - paste it when prompted, then clear your clipbo" +
-	"ard\x02Open SQL Server Management Studio and connect to current context" +
-	"\x02Open SSMS and connect using the current context\x02SSMS major versio" +
-	"n to launch (for example 21); defaults to the latest installed\x02SSMS i" +
-	"s only available on Windows. Use 'sqlcmd open vscode' instead.\x02Open t" +
-	"he latest SSMS\x02'sqlcmd open ssms' supports SSMS %[1]d and later; '--v" +
-	"ersion %[2]s' is not supported\x02SSMS exited with code %[1]d shortly af" +
-	"ter launch\x02Launching SQL Server Management Studio...\x02Open Visual S" +
-	"tudio Code and configure connection for current context\x02Open VS Code " +
-	"and configure connection using the current context\x02Open a specific VS" +
-	" Code build\x02VS Code build to open: 'stable' or 'insiders'; defaults t" +
-	"o stable when both are installed\x02Open the stable build\x02Open the in" +
-	"siders build\x02'--build %[1]s' is not supported; use 'stable' or 'insid" +
-	"ers'\x02Error\x02Failed to create VS Code settings directory\x02Failed t" +
-	"o encode VS Code settings\x02Connection profile created in VS Code setti" +
-	"ngs\x02Failed to read VS Code settings\x02Failed to parse VS Code settin" +
-	"gs\x02Failed to write VS Code settings\x02Set the HOME environment varia" +
-	"ble\x02Set the USERPROFILE environment variable\x02empty home directory" +
-	"\x02Could not resolve home directory: %[1]s\x02Opening VS Code...\x02Use" +
-	" the '%[1]s' connection profile to connect\x02The -J parameter requires " +
-	"encryption to be enabled (-N true, -N mandatory, or -N strict).\x02Speci" +
-	"fies the server name to use for authentication when tunneling through a " +
-	"proxy. Use with -S to specify the dial address separately from the serve" +
-	"r name sent to SQL Server.\x02Specifies the path to a server certificate" +
-	" file (PEM, DER, or CER) to match against the server's TLS certificate. " +
-	"Use when encryption is enabled (-N true, -N mandatory, or -N strict) for" +
-	" certificate pinning instead of standard certificate validation.\x02Prin" +
-	"ts the output in ASCII table format. This option sets the sqlcmd scripti" +
-	"ng variable %[1]s to '%[2]s'. The default is false\x02Do not strip the " +
-	"\x22mssql: \x22 prefix from error messages\x02Server name override is no" +
-	"t supported with the current authentication method"
+	"or current context\x02Removed VS Code connection profile from %[1]s\x02O" +
+	"pen in SQL Server Management Studio\x02Open in Visual Studio Code\x02Cou" +
+	"ld not copy password to clipboard: %[1]s\x02Password copied to clipboard" +
+	" - paste it when prompted, then clear your clipboard\x02Open SQL Server " +
+	"Management Studio and connect to current context\x02Open SSMS and connec" +
+	"t using the current context\x02SSMS major version to launch (for example" +
+	" 21); defaults to the latest installed\x02SSMS is only available on Wind" +
+	"ows. Use 'sqlcmd open vscode' instead.\x02Open the latest SSMS\x02'sqlcm" +
+	"d open ssms' supports SSMS %[1]d and later; '--version %[2]s' is not sup" +
+	"ported\x02SSMS exited with code %[1]d shortly after launch\x02Launching " +
+	"SQL Server Management Studio...\x02Open Visual Studio Code and configure" +
+	" connection for current context\x02Open VS Code and configure connection" +
+	" using the current context\x02Open a specific VS Code build\x02VS Code b" +
+	"uild to open: 'stable' or 'insiders'; defaults to stable when both are i" +
+	"nstalled\x02Open the stable build\x02Open the insiders build\x02'--build" +
+	" %[1]s' is not supported; use 'stable' or 'insiders'\x02Error\x02Failed " +
+	"to create VS Code settings directory\x02Failed to encode VS Code setting" +
+	"s\x02Connection profile created in VS Code settings\x02Failed to read VS" +
+	" Code settings\x02Failed to parse VS Code settings\x02Failed to write VS" +
+	" Code settings\x02Set the HOME environment variable\x02Set the USERPROFI" +
+	"LE environment variable\x02Could not resolve home directory: %[1]s\x02Op" +
+	"ening VS Code...\x02Use the '%[1]s' connection profile to connect\x02The" +
+	" -J parameter requires encryption to be enabled (-N true, -N mandatory, " +
+	"or -N strict).\x02Specifies the server name to use for authentication wh" +
+	"en tunneling through a proxy. Use with -S to specify the dial address se" +
+	"parately from the server name sent to SQL Server.\x02Specifies the path " +
+	"to a server certificate file (PEM, DER, or CER) to match against the ser" +
+	"ver's TLS certificate. Use when encryption is enabled (-N true, -N manda" +
+	"tory, or -N strict) for certificate pinning instead of standard certific" +
+	"ate validation.\x02Prints the output in ASCII table format. This option " +
+	"sets the sqlcmd scripting variable %[1]s to '%[2]s'. The default is fals" +
+	"e\x02Do not strip the \x22mssql: \x22 prefix from error messages\x02Serv" +
+	"er name override is not supported with the current authentication method"
 
 var es_ESIndex = []uint32{ // 338 elements
 	// Entry 0 - 1F
@@ -3986,4 +3986,4 @@ const zh_TWData string = "" + // Size: 14448 bytes
 	"\x02密碼:\x02(1 個資料列受影響)\x02(%[1]d 個資料列受影響)\x02無效的變數識別碼 %[1]s\x02變數值 %[1]s" +
 	" 無效"
 
-	// Total table size 233851 bytes (228KiB); checksum: EB728F96
+	// Total table size 233876 bytes (228KiB); checksum: DAAFC994

@@ -449,6 +449,21 @@
             "fuzzy": true
         },
         {
+            "id": "Removed VS Code connection profile from {Path}",
+            "message": "Removed VS Code connection profile from {Path}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Path",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "path"
+                }
+            ]
+        },
+        {
             "id": "Current context is now {NewContextName}",
             "message": "Current context is now {NewContextName}",
             "translation": "O contexto atual agora é {NewContextName}",
@@ -2562,22 +2577,17 @@
             "translation": ""
         },
         {
-            "id": "empty home directory",
-            "message": "empty home directory",
-            "translation": ""
-        },
-        {
-            "id": "Could not resolve home directory: {Reason}",
-            "message": "Could not resolve home directory: {Reason}",
+            "id": "Could not resolve home directory: {Error}",
+            "message": "Could not resolve home directory: {Error}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "Reason",
+                    "id": "Error",
                     "string": "%[1]s",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "reason"
+                    "expr": "err.Error()"
                 }
             ]
         },
