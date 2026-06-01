@@ -3,8 +3,7 @@
 
 package pal
 
-// CopyToClipboard copies the given text to the system clipboard.
-// Returns an error if the clipboard operation fails.
+// CopyToClipboard copies text to the system clipboard.
 func CopyToClipboard(text string) error {
 	return copyToClipboard(text)
 }

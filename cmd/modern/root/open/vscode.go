@@ -55,9 +55,6 @@ func (c *VSCode) DefineCommand(...cmdparser.CommandOptions) {
 	})
 }
 
-// Launch VS Code and configure connection profile for the current context.
-// The connection profile will be added to VS Code's user settings to work
-// with the MSSQL extension.
 func (c *VSCode) run() {
 	if config.CurrentContextName() == "" {
 		c.Output().FatalWithHintExamples([][]string{
@@ -156,7 +153,6 @@ func (c *VSCode) launchVSCode(t tool.Tool, endpoint sqlconfig.Endpoint, user *sq
 	c.CheckErr(err)
 }
 
-// createConnectionProfile creates or updates a connection profile in VS Code's user settings
 func (c *VSCode) createConnectionProfile(build string, endpoint sqlconfig.Endpoint, user *sqlconfig.User, isLocalConnection bool) {
 	output := c.Output()
 

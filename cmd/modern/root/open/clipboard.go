@@ -11,23 +11,20 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 )
 
-// copyPasswordToClipboard copies the password for the current context to the clipboard
-// if the user is using SQL authentication. Returns true if a password was copied.
+// copyPasswordToClipboard copies the current context's password to the clipboard for SQL auth.
+// Returns true when a password was actually copied.
 func copyPasswordToClipboard(user *sqlconfig.User, out *output.Output) bool {
 	if out == nil || user == nil || user.AuthenticationType != "basic" || user.BasicAuth == nil {
 		return false
 	}
 
-	// Get the decrypted password from the current context
 	_, _, password := config.GetCurrentContextInfo()
-
 	if password == "" {
 		return false
 	}
 
-	err := pal.CopyToClipboard(password)
-	if err != nil {
-		// Don't fail the command if clipboard copy fails, just warn the user
+	if err := pal.CopyToClipboard(password); err != nil {
+		// Don't fail the launch over a clipboard hiccup; warn and continue.
 		out.Warn(localizer.Sprintf("Could not copy password to clipboard: %s", err.Error()))
 		return false
 	}
