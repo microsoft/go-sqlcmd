@@ -40,8 +40,11 @@ func copyToClipboard(text string) error {
 
 	// gotext only scans cmd/modern, cmd/sqlcmd, and pkg/sqlcmd, so this stays plain fmt.Errorf.
 	return fmt.Errorf(
-		"failed to copy to clipboard; tried xclip, xsel, wl-copy: %s. "+
-			"Install one with your distro's package manager (xclip or xsel on X11, wl-clipboard on Wayland) and use your own judgement on which fits your environment",
+		"failed to copy to clipboard; tried xclip, xsel, wl-copy: %s\n"+
+			"Install one and re-run (use your own judgement on what fits your environment):\n"+
+			"  X11:     sudo apt install xclip   (or xsel)\n"+
+			"  Wayland: sudo apt install wl-clipboard   (provides wl-copy)\n"+
+			"On dnf/pacman-based distros substitute your package manager",
 		strings.Join(attempts, "; "),
 	)
 }
