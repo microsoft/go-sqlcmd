@@ -23,7 +23,14 @@ func (t *VSCode) searchLocations() []string {
 		}
 		locations = append(locations,
 			filepath.Join("/", "usr", "bin", cli),
-			filepath.Join(userProfile, ".local", "bin", cli),
+		)
+		// Skip the per-user path when $HOME is empty -- filepath.Join would
+		// produce a relative ".local/bin/<cli>" that could match an unintended
+		// binary in the working directory.
+		if userProfile != "" {
+			locations = append(locations, filepath.Join(userProfile, ".local", "bin", cli))
+		}
+		locations = append(locations,
 			filepath.Join("/", "snap", "bin", cli),
 		)
 	}

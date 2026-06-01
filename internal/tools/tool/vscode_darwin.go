@@ -21,11 +21,16 @@ func (t *VSCode) searchLocations() []string {
 		if build == "insiders" {
 			app = "Visual Studio Code - Insiders.app"
 		}
-		locations = append(locations,
-			filepath.Join("/", "Applications", app),
-			filepath.Join(userProfile, "Applications", app),
-			filepath.Join(userProfile, "Downloads", app),
-		)
+		locations = append(locations, filepath.Join("/", "Applications", app))
+		// Skip the per-user paths when $HOME is empty -- filepath.Join would
+		// produce a relative "Applications/..." that could match a directory
+		// in the working directory.
+		if userProfile != "" {
+			locations = append(locations,
+				filepath.Join(userProfile, "Applications", app),
+				filepath.Join(userProfile, "Downloads", app),
+			)
+		}
 	}
 	return locations
 }
