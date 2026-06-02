@@ -60,7 +60,7 @@ func (t *VSCode) buildsToSearch() []string {
 
 func (t *VSCode) Run(args []string) (int, error) {
 	if !test.IsRunningInTestExecutor() {
-		return t.tool.Run(args)
+		return t.launch(args)
 	}
 	return 0, nil
 }
