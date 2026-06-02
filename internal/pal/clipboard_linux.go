@@ -12,8 +12,7 @@ import (
 func copyToClipboard(text string) error {
 	var attempts []string
 	tryCmd := func(name string, args ...string) bool {
-		// Use the resolved absolute path so a later PATH change can't redirect
-		// the SQL password to a different binary between lookup and exec.
+		// Pin the resolved path so PATH order can't redirect the SQL password between lookup and exec.
 		resolved, err := exec.LookPath(name)
 		if err != nil {
 			attempts = append(attempts, fmt.Sprintf("%s not found", name))
@@ -38,7 +37,6 @@ func copyToClipboard(text string) error {
 		return nil
 	}
 
-	// gotext only scans cmd/modern, cmd/sqlcmd, and pkg/sqlcmd, so this stays plain fmt.Errorf.
 	return fmt.Errorf(
 		"failed to copy to clipboard; tried xclip, xsel, wl-copy: %s\n"+
 			"Install one and re-run (use your own judgement on what fits your environment):\n"+
