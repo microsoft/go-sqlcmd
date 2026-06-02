@@ -81,5 +81,5 @@ func (c *AddEndpoint) run() {
 		{localizer.Sprintf("View all endpoints details"), "sqlcmd config get-endpoints --detailed"},
 		{localizer.Sprintf("Delete this endpoint"), fmt.Sprintf("sqlcmd config delete-endpoint %v", uniqueEndpointName)},
 	},
-		localizer.Sprintf("Endpoint '%v' added (address: '%v', port: '%v')", uniqueEndpointName, c.address, c.port))
+		localizer.Sprintf("Endpoint '%v' added (address: '%v', port: '%v')", uniqueEndpointName, c.address, fmt.Sprintf("%d", c.port)))
 }
