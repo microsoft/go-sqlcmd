@@ -4,14 +4,17 @@
 package tool
 
 import (
+	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
-// searchLocations returns the .app bundle paths to probe. tool_darwin.go's
-// generateCommandLine launches via "open -a <path> --args ...", which expects
-// either a registered app name or a .app bundle path; pointing it at the
-// in-bundle code binary would fail with "Unable to find application".
+// searchLocations returns the .app bundle paths to probe. We resolve at the
+// bundle level (not the in-bundle `code` CLI) so IsInstalled keeps working
+// when the bundle exists but the optional CLI shim is missing, and so
+// tests/users can point --build at the bundle they care about. launch()
+// derives the in-bundle CLI from the bundle path at execution time.
 func (t *VSCode) searchLocations() []string {
 	userProfile := os.Getenv("HOME")
 
@@ -33,6 +36,20 @@ func (t *VSCode) searchLocations() []string {
 		}
 	}
 	return locations
+}
+
+// launch executes VS Code with the given args. macOS's `open -a <App> --args`
+// only forwards args on a cold launch; when VS Code is already running the
+// args (including the vscode:// URL we use to drive the mssql extension) are
+// silently dropped. Bypass `open` entirely and exec the in-bundle `code` CLI,
+// which handles --open-url whether or not VS Code is already running.
+func (t *VSCode) launch(args []string) (int, error) {
+	cliPath := filepath.Join(t.exeName, "Contents", "Resources", "app", "bin", "code")
+	if _, err := os.Stat(cliPath); err != nil {
+		return 1, fmt.Errorf("VS Code CLI not found at %q: %w", cliPath, err)
+	}
+	cmd := exec.Command(cliPath, args...)
+	return t.runCmd(cmd)
 }
 
 func (t *VSCode) installText() string {

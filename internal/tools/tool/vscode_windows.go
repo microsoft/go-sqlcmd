@@ -131,6 +131,13 @@ func vscodeRegistryInstallLocation(build string) string {
 	return ""
 }
 
+// launch executes VS Code with the given args. On Windows exeName is Code.exe,
+// which handles --open-url correctly whether or not VS Code is already
+// running, so we go through the standard tool.Run path.
+func (t *VSCode) launch(args []string) (int, error) {
+	return t.tool.Run(args)
+}
+
 func (t *VSCode) installText() string {
 	return `Install using a package manager:
 
