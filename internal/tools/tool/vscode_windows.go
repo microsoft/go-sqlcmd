@@ -53,10 +53,7 @@ func vscodeWindowsLocations(build string) []string {
 		locations = append(locations, filepath.Join(install, exeName))
 	}
 
-	// Tier 3: standard default install directories. Skip any whose base env
-	// var was empty -- filepath.Join with an empty base yields a relative
-	// path (e.g. AppData\...\Code.exe) that could match an unintended binary
-	// in the working directory.
+	// Tier 3: standard install dirs. Skip when the base env var is empty: filepath.Join would yield a relative match.
 	if userDir != "" {
 		locations = append(locations, filepath.Join(userDir, exeName))
 	}
