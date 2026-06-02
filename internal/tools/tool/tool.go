@@ -73,8 +73,15 @@ func (t *tool) Run(args []string) (int, error) {
 		return 1, fmt.Errorf("internal error: Call IsInstalled before Run")
 	}
 
-	cmd := t.generateCommandLine(args)
+	return t.runCmd(t.generateCommandLine(args))
+}
 
+// runCmd starts cmd, waits briefly for an early failure, and otherwise treats
+// the launch as successful and lets the GUI tool keep running. Callers that
+// need to bypass generateCommandLine (e.g. VS Code on darwin, which must exec
+// the in-bundle `code` CLI directly rather than `open -a`) build their own
+// *exec.Cmd and call this helper.
+func (t *tool) runCmd(cmd *exec.Cmd) (int, error) {
 	// Normalize argv[0] so it matches cmd.Path on every platform. The darwin
 	// implementation builds Args starting at "-a" because it shells out via
 	// /usr/bin/open; without this fix the launched process sees "-a" as argv[0]
