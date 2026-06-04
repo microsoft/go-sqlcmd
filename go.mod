@@ -2,6 +2,8 @@ module github.com/microsoft/go-sqlcmd
 
 go 1.26
 
+toolchain go1.26.4
+
 require (
 	github.com/alecthomas/chroma/v2 v2.26.1
 	github.com/billgraziano/dpapi v0.5.0
