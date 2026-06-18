@@ -23,8 +23,10 @@ jobs:
           GOMOD_VERSION=$(grep '^go ' go.mod | awk '{print $2}')
           GOMOD_MAJOR_MINOR=$(echo "$GOMOD_VERSION" | grep -oE '^[0-9]+\.[0-9]+')
 
-          # Extract the Go version from the Dockerfile base image tag
-          DOCKERFILE_TAG=$(grep -oP 'devcontainers/go:\K[0-9]+\.[0-9]+' .devcontainer/Dockerfile)
+          # Extract the Go version from the Dockerfile base image tag.
+          # Accept both the legacy form (go:1.26-bookworm) and the variant-prefixed
+          # form (go:2-1.26-bookworm) published on mcr.microsoft.com.
+          DOCKERFILE_TAG=$(grep -oP 'devcontainers/go:(?:[0-9]+-)?\K[0-9]+\.[0-9]+' .devcontainer/Dockerfile)
 
           echo "go.mod requires:        go ${GOMOD_VERSION} (major.minor: ${GOMOD_MAJOR_MINOR})"
           echo "Dockerfile base image:  go:${DOCKERFILE_TAG}"
