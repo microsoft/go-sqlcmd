@@ -207,7 +207,8 @@ func (a SQLCmdArguments) authenticationMethod(hasPassword bool) string {
 	if a.UseAad {
 		switch {
 		case a.UserName == "":
-			return azuread.ActiveDirectoryIntegrated
+			// Default walks the Azure credential chain; works in non-interactive shells (issue #699).
+			return azuread.ActiveDirectoryDefault
 		case hasPassword:
 			return azuread.ActiveDirectoryPassword
 		default:

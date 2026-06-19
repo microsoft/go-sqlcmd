@@ -525,6 +525,26 @@ func TestConditionsForPasswordPrompt(t *testing.T) {
 	}
 }
 
+func TestAuthenticationMethodForUseAad(t *testing.T) {
+	tests := []struct {
+		name        string
+		userName    string
+		hasPassword bool
+		expected    string
+	}{
+		{"-G no username picks Default", "", false, azuread.ActiveDirectoryDefault},
+		{"-G no username, password ignored", "", true, azuread.ActiveDirectoryDefault},
+		{"-G with username, no password picks Interactive", "user@contoso", false, azuread.ActiveDirectoryInteractive},
+		{"-G with username and password picks Password", "user@contoso", true, azuread.ActiveDirectoryPassword},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			a := SQLCmdArguments{UseAad: true, UserName: tc.userName}
+			assert.Equal(t, tc.expected, a.authenticationMethod(tc.hasPassword))
+		})
+	}
+}
+
 func TestStartupScript(t *testing.T) {
 	o, err := os.CreateTemp("", "sqlcmdmain")
 	assert.NoError(t, err, "os.CreateTemp")
