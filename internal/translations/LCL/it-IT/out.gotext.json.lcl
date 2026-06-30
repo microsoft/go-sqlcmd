@@ -804,21 +804,9 @@
       </Item>
       <Item ItemId=";messages[160].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
+          <Val><![CDATA[Install Azure Sql Edge]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Tag da usare, usare get-tags per visualizzare l'elenco dei tag]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Install Azure Sql Edge]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[161].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nome contesto (se non specificato, verrà creato un nome di contesto predefinito)]]></Val>
+            <Val><![CDATA[Installa SQL Edge di Azure]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create Azure SQL Edge in a container]]></Val>
@@ -826,11 +814,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[162].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[161].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
+          <Val><![CDATA[Install/Create Azure SQL Edge in a container]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Creare un database utente e impostarlo come predefinito per l'account di accesso]]></Val>
+            <Val><![CDATA[Installare/creare SQL Edge di Azure in un contenitore]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
@@ -838,11 +826,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[163].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[162].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Accept the SQL Server EULA]]></Val>
+          <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Accettare il contratto di licenza di SQL Server]]></Val>
+            <Val><![CDATA[Tag da usare, usare get-tags per visualizzare l'elenco dei tag]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
@@ -850,11 +838,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[164].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[163].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Generated password length]]></Val>
+          <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Lunghezza password generata]]></Val>
+            <Val><![CDATA[Nome contesto (se non specificato, verrà creato un nome di contesto predefinito)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
@@ -862,11 +850,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[165].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[164].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Minimum number of special characters]]></Val>
+          <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Numero minimo di caratteri speciali]]></Val>
+            <Val><![CDATA[Creare un database utente e impostarlo come predefinito per l'account di accesso]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Accept the SQL Server EULA]]></Val>
@@ -874,11 +862,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[166].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[165].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Minimum number of numeric characters]]></Val>
+          <Val><![CDATA[Accept the SQL Server EULA]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Numero minimo di caratteri numerici]]></Val>
+            <Val><![CDATA[Accettare il contratto di licenza di SQL Server]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Generated password length]]></Val>
@@ -886,11 +874,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[167].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[166].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Minimum number of upper characters]]></Val>
+          <Val><![CDATA[Generated password length]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Numero minimo di caratteri maiuscoli]]></Val>
+            <Val><![CDATA[Lunghezza password generata]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of special characters]]></Val>
@@ -898,11 +886,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[168].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[167].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Special character set to include in password]]></Val>
+          <Val><![CDATA[Minimum number of special characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Set di caratteri speciali da includere nella password]]></Val>
+            <Val><![CDATA[Numero minimo di caratteri speciali]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of numeric characters]]></Val>
@@ -910,14 +898,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[169].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[168].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
+          <Val><![CDATA[Minimum number of numeric characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Non scaricare l'immagine. Usare un'immagine già scaricata]]></Val>
+            <Val><![CDATA[Numero minimo di caratteri numerici]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of upper characters]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[169].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Minimum number of upper characters]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Numero minimo di caratteri maiuscoli]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Special character set to include in password]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -933,21 +933,9 @@
       </Item>
       <Item ItemId=";messages[170].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
+          <Val><![CDATA[Special character set to include in password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Riga nel log degli errori da attendere prima della connessione]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Special character set to include in password]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[171].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specificare un nome personalizzato per il contenitore anziché un nome generato in modo casuale]]></Val>
+            <Val><![CDATA[Set di caratteri speciali da includere nella password]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
@@ -955,11 +943,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[172].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[171].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
+          <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Impostare in modo esplicito il nome host del contenitore, per impostazione predefinita è l'ID contenitore]]></Val>
+            <Val><![CDATA[Non scaricare l'immagine. Usare un'immagine già scaricata]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
@@ -967,11 +955,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[173].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[172].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the image CPU architecture]]></Val>
+          <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica l'architettura della CPU dell'immagine]]></Val>
+            <Val><![CDATA[Riga nel log degli errori da attendere prima della connessione]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
@@ -979,11 +967,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[174].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[173].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the image operating system]]></Val>
+          <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il sistema operativo dell'immagine]]></Val>
+            <Val><![CDATA[Specificare un nome personalizzato per il contenitore anziché un nome generato in modo casuale]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
@@ -991,11 +979,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[175].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[174].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
+          <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Porta (porta successiva disponibile da 1433 in poi usata per impostazione predefinita)]]></Val>
+            <Val><![CDATA[Impostare in modo esplicito il nome host del contenitore, per impostazione predefinita è l'ID contenitore]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the image CPU architecture]]></Val>
@@ -1003,11 +991,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[176].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[175].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
+          <Val><![CDATA[Specifies the image CPU architecture]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Scaricare (nel contenitore) e collegare il database (.bak) dall'URL]]></Val>
+            <Val><![CDATA[Specifica l'architettura della CPU dell'immagine]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the image operating system]]></Val>
@@ -1015,11 +1003,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[177].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[176].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
+          <Val><![CDATA[Specifies the image operating system]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Aggiungere il flag {AcceptEulaFlag} alla riga di comando]]></Val>
+            <Val><![CDATA[Specifica il sistema operativo dell'immagine]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
@@ -1027,11 +1015,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[178].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[177].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
+          <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[In alternativa, impostare la variabile di ambiente, ad esempio {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
+            <Val><![CDATA[Porta (porta successiva disponibile da 1433 in poi usata per impostazione predefinita)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
@@ -1039,14 +1027,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[179].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[178].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[EULA not accepted]]></Val>
+          <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Condizioni di licenza non accettate]]></Val>
+            <Val><![CDATA[Scaricare (nel contenitore) e collegare il database (.bak) dall'URL]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[179].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Aggiungere il flag {AcceptEulaFlag} alla riga di comando]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1062,21 +1062,9 @@
       </Item>
       <Item ItemId=";messages[180].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
+          <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--user-database {DefaultDatabase} contiene caratteri e/o virgolette non ASCII]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[181].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Starting {ImageName}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Avvio di {ImageName}]]></Val>
+            <Val><![CDATA[In alternativa, impostare la variabile di ambiente, ad esempio {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[EULA not accepted]]></Val>
@@ -1084,11 +1072,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[182].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[181].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
+          <Val><![CDATA[EULA not accepted]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Contesto {CurrentContextName} creato in "{ConfigFileUsed}", configurazione dell'account utente...]]></Val>
+            <Val><![CDATA[Condizioni di licenza non accettate]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
@@ -1096,11 +1084,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[183].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[182].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
+          <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Account {Sa} disabilitato (e password {Sa_1} ruotata). Creazione dell'utente {UserName}]]></Val>
+            <Val><![CDATA[--user-database {DefaultDatabase} contiene caratteri e/o virgolette non ASCII]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Starting {ImageName}]]></Val>
@@ -1108,11 +1096,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[184].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[183].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Start interactive session]]></Val>
+          <Val><![CDATA[Starting {ImageName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Avviare sessione interattiva]]></Val>
+            <Val><![CDATA[Avvio di {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
@@ -1120,11 +1108,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[185].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[184].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Change current context]]></Val>
+          <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Modificare contesto corrente]]></Val>
+            <Val><![CDATA[Contesto {CurrentContextName} creato in "{ConfigFileUsed}", configurazione dell'account utente...]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
@@ -1132,11 +1120,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[186].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[185].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[View sqlcmd configuration]]></Val>
+          <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Visualizzare la configurazione di sqlcmd]]></Val>
+            <Val><![CDATA[Account {Sa} disabilitato (e password {Sa_1} ruotata). Creazione dell'utente {UserName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Start interactive session]]></Val>
@@ -1144,11 +1132,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[187].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[186].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[See connection strings]]></Val>
+          <Val><![CDATA[Start interactive session]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Vedere stringhe di connessione]]></Val>
+            <Val><![CDATA[Avviare una sessione interattiva]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Change current context]]></Val>
@@ -1156,11 +1144,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[188].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[187].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Remove]]></Val>
+          <Val><![CDATA[Change current context]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Rimuovi]]></Val>
+            <Val><![CDATA[Modificare contesto corrente]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[View sqlcmd configuration]]></Val>
@@ -1168,14 +1156,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[189].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[188].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
+          <Val><![CDATA[View sqlcmd configuration]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ora è pronto per le connessioni client sulla porta {Port}]]></Val>
+            <Val><![CDATA[Visualizzare la configurazione di sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[See connection strings]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[189].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[See connection strings]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Vedere le stringhe di connessione]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Remove]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1191,21 +1191,9 @@
       </Item>
       <Item ItemId=";messages[190].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using URL must be http or https]]></Val>
+          <Val><![CDATA[Remove]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[L'URL --using deve essere http o https]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Remove]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[191].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{UsingDatabaseUrl} non è un URL valido per il flag --using]]></Val>
+            <Val><![CDATA[Rimuovere]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
@@ -1213,11 +1201,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[192].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[191].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
+          <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[L'URL --using deve avere un percorso del file .bak]]></Val>
+            <Val><![CDATA[Ora è pronto per le connessioni client sulla porta {Port}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using URL must be http or https]]></Val>
@@ -1225,11 +1213,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[193].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[192].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using file URL must be a .bak file]]></Val>
+          <Val><![CDATA[--using URL must be http or https]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[L'URL del file --using deve essere un file .bak]]></Val>
+            <Val><![CDATA[L'URL --using deve essere http o https]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
@@ -1237,11 +1225,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[194].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[193].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid --using file type]]></Val>
+          <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Tipo di file --using non valido]]></Val>
+            <Val><![CDATA[{UsingDatabaseUrl} non è un URL valido per il flag --using]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
@@ -1249,11 +1237,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[195].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[194].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
+          <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Creazione del database predefinito [{DefaultDatabase}]5D;]]></Val>
+            <Val><![CDATA[L'URL --using deve avere un percorso del file .bak]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using file URL must be a .bak file]]></Val>
@@ -1261,11 +1249,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[196].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[195].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Downloading {File}]]></Val>
+          <Val><![CDATA[--using file URL must be a .bak file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Download di {File}]]></Val>
+            <Val><![CDATA[L'URL del file --using deve essere un file .bak]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Invalid --using file type]]></Val>
@@ -1273,11 +1261,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[197].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[196].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
+          <Val><![CDATA[Invalid --using file type]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ripristino del database {DatabaseName}]]></Val>
+            <Val><![CDATA[Tipo di file --using non valido]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
@@ -1285,11 +1273,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[198].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[197].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Downloading {ImageName}]]></Val>
+          <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Download di {ImageName}]]></Val>
+            <Val><![CDATA[Creazione del database predefinito [{DefaultDatabase}]5D;]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Downloading {File}]]></Val>
@@ -1297,14 +1285,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[199].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[198].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
+          <Val><![CDATA[Downloading {File}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[In questo computer è installato un runtime del contenitore, ad esempio Podman o Docker?]]></Val>
+            <Val><![CDATA[Download di {File}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[199].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ripristino del database {DatabaseName}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Downloading {ImageName}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1329,21 +1329,9 @@
       </Item>
       <Item ItemId=";messages[200].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[If not, download desktop engine from:]]></Val>
+          <Val><![CDATA[Downloading {ImageName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[In alternativa, scaricare il motore desktop da:]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Downloading {ImageName}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[201].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[or]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[oppure]]></Val>
+            <Val><![CDATA[Download di {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
@@ -1351,11 +1339,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[202].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[201].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
+          <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[È in esecuzione un runtime del contenitore? Provare '{PodmanPsCommand}' o '{DockerPsCommand}' (elenco contenitori). Viene restituito senza errori?]]></Val>
+            <Val><![CDATA[In questo computer è installato un runtime del contenitore, ad esempio Podman o Docker?]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[If not, download desktop engine from:]]></Val>
@@ -1363,11 +1351,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[203].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[202].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unable to download image {ImageName}]]></Val>
+          <Val><![CDATA[If not, download desktop engine from:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Non è possibile scaricare l'immagine {ImageName}]]></Val>
+            <Val><![CDATA[In alternativa, scaricare il motore desktop da:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[or]]></Val>
@@ -1375,11 +1363,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[204].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[203].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[File does not exist at URL]]></Val>
+          <Val><![CDATA[or]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Il file non esiste nell'URL]]></Val>
+            <Val><![CDATA[o]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
@@ -1387,11 +1375,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[205].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[204].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unable to download file]]></Val>
+          <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Non è possibile scaricare il file]]></Val>
+            <Val><![CDATA[È in esecuzione un runtime del contenitore? Provare '{PodmanPsCommand}' o '{DockerPsCommand}' (elenco contenitori). Viene restituito senza errori?]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Unable to download image {ImageName}]]></Val>
@@ -1399,11 +1387,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[206].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[205].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
+          <Val><![CDATA[Unable to download image {ImageName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Installare/creare l'istanza di SQL Server in un contenitore]]></Val>
+            <Val><![CDATA[Non è possibile scaricare l'immagine {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[File does not exist at URL]]></Val>
@@ -1411,11 +1399,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[207].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[206].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
+          <Val><![CDATA[File does not exist at URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Visualizzare tutti i tag di versione per SQL Server, installare la versione precedente]]></Val>
+            <Val><![CDATA[Il file non esiste nell'URL]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Unable to download file]]></Val>
@@ -1423,11 +1411,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[208].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[207].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
+          <Val><![CDATA[Unable to download file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Creare un'istanza di SQL Server, scaricare e collegare il database di esempio AdventureWorks]]></Val>
+            <Val><![CDATA[Non è possibile scaricare il file]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
@@ -1435,14 +1423,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[209].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[208].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
+          <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Creare un'istanza di SQL Server, scaricare e collegare il database di esempio AdventureWorks con un nome di database diverso]]></Val>
+            <Val><![CDATA[Installare/creare l'istanza di SQL Server in un contenitore]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[209].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Visualizzare tutti i tag di versione per SQL Server, installare la versione precedente]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1458,21 +1458,9 @@
       </Item>
       <Item ItemId=";messages[210].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
+          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Creare l'istanza di SQL Server con un database utente vuoto]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[211].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Installare/creare un'istanza di SQL Server con registrazione completa]]></Val>
+            <Val><![CDATA[Creare un'istanza di SQL Server, scaricare e collegare il database di esempio AdventureWorks]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
@@ -1480,11 +1468,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[212].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[211].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Get tags available for mssql install]]></Val>
+          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Recuperare i tag disponibili per l'installazione di mssql]]></Val>
+            <Val><![CDATA[Creare un'istanza di SQL Server, scaricare e collegare il database di esempio AdventureWorks con un nome di database diverso]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
@@ -1492,11 +1480,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[213].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[212].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[List tags]]></Val>
+          <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Elencare i tag]]></Val>
+            <Val><![CDATA[Creare l'istanza di SQL Server con un database utente vuoto]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
@@ -1504,11 +1492,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[214].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[213].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd start]]></Val>
+          <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Avvio di sqlcmd]]></Val>
+            <Val><![CDATA[Installare/creare un'istanza di SQL Server con registrazione completa]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Get tags available for Azure SQL Edge install]]></Val>
@@ -1516,11 +1504,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[215].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[214].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Container is not running]]></Val>
+          <Val><![CDATA[Get tags available for Azure SQL Edge install]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Il contenitore non è in esecuzione]]></Val>
+            <Val><![CDATA[Recuperare i tag disponibili per l'installazione di SQL Edge di Azure]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[List tags]]></Val>
@@ -1528,11 +1516,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[216].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[215].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
+          <Val><![CDATA[List tags]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Premere CTRL+C per uscire dal processo...]]></Val>
+            <Val><![CDATA[Elencare i tag]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Get tags available for mssql install]]></Val>
@@ -1540,38 +1528,50 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[217].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[216].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
+          <Val><![CDATA[Get tags available for mssql install]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Un errore 'Risorse di memoria insufficienti' può essere causato da troppe credenziali già archiviate in Gestione credenziali di Windows]]></Val>
+            <Val><![CDATA[Recuperare i tag disponibili per l'installazione di mssql]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[sqlcmd start]]></Val>
+            <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[217].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[sqlcmd start]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[avvio sqlcmd]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[218].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
+          <Val><![CDATA[Container is not running]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Impossibile scrivere le credenziali in Gestione credenziali di Windows]]></Val>
+            <Val><![CDATA[Il contenitore non è in esecuzione]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Container is not running]]></Val>
+            <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[219].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
+          <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Il parametro -L non può essere usato in combinazione con altri parametri.]]></Val>
+            <Val><![CDATA[Premere CTRL+C per uscire dal processo...]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
+            <Val><![CDATA[Servers:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1590,93 +1590,9 @@
       </Item>
       <Item ItemId=";messages[220].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
+          <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['-a {PacketSize}': le dimensioni del pacchetto devono essere costituite da un numero compreso tra 512 e 32767.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[221].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['-h {Headers}': il valore di intestazione deve essere -1 o un valore compreso tra 1 e 2147483647]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[222].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Il parametro -J richiede l'abilitazione della crittografia (-N true, -N mandatory o -N strict).]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[223].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Servers:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Server:]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[224].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Documenti e informazioni legali: aka.ms/SqlcmdLegal]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[225].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Comunicazioni di terze parti: aka.ms/SqlcmdNotices]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[226].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Version: {Version}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Versione: {Version}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Servers:]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[227].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Flags:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Flag:]]></Val>
+            <Val><![CDATA[Un errore 'Risorse di memoria insufficienti' può essere causato da troppe credenziali già archiviate in Gestione credenziali di Windows]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
@@ -1684,11 +1600,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[221].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
+          <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[-? mostra il riepilogo della sintassi, {HelpFlag} visualizza la Guida moderna del sottocomando sqlcmd]]></Val>
+            <Val><![CDATA[Impossibile scrivere le credenziali in Gestione credenziali di Windows]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
@@ -1696,14 +1612,98 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[229].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[222].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
+          <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Scrivi la traccia di runtime nel file specificato. Solo per il debug avanzato.]]></Val>
+            <Val><![CDATA[Il parametro -L non può essere usato in combinazione con altri parametri.]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Version {Version}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[223].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['-a {PacketSize}': le dimensioni del pacchetto devono essere costituite da un numero compreso tra 512 e 32767.]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Flags:]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[224].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['-h {Headers}': il valore di intestazione deve essere -1 o un valore compreso tra 1 e 2147483647]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[225].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Il parametro -J richiede l'abilitazione della crittografia (-N true, -N mandatory o -N strict).]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Servers:]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[226].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Servers:]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Server:]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[227].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Documenti e informazioni legali: aka.ms/SqlcmdLegal]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Comunicazioni di terze parti: aka.ms/SqlcmdNotices]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Version: {Version}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[229].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Version: {Version}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Versione: {Version}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Flags:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1719,21 +1719,9 @@
       </Item>
       <Item ItemId=";messages[230].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
+          <Val><![CDATA[Flags:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Identifica uno o più file che contengono batch di istruzioni SQL. Se uno o più file non esistono, sqlcmd terminerà. Si esclude a vicenda con {QueryAndExitFlag}/{QueryFlag}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Flags:]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[231].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Identifica il file che riceve l'output da sqlcmd]]></Val>
+            <Val><![CDATA[Flag:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
@@ -1741,11 +1729,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[232].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[231].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Print version information and exit]]></Val>
+          <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Stampare le informazioni sulla versione e uscire]]></Val>
+            <Val><![CDATA[-? mostra il riepilogo della sintassi, {HelpFlag} visualizza la Guida moderna del sottocomando sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
@@ -1753,11 +1741,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[233].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[232].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
+          <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Considerare attendibile in modo implicito il certificato del server senza convalida]]></Val>
+            <Val><![CDATA[Scrivi la traccia di runtime nel file specificato. Solo per il debug avanzato.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
@@ -1765,11 +1753,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[234].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[233].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
+          <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Questa opzione consente di impostare la variabile di scripting sqlcmd {DbNameVar}. Questo parametro specifica il database iniziale. L'impostazione predefinita è la proprietà default-database dell'account di accesso. Se il database non esiste, verrà generato un messaggio di errore e sqlcmd termina]]></Val>
+            <Val><![CDATA[Identifica uno o più file che contengono batch di istruzioni SQL. Se uno o più file non esistono, sqlcmd terminerà. Si esclude a vicenda con {QueryAndExitFlag}/{QueryFlag}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
@@ -1777,11 +1765,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[235].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[234].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
+          <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Usa una connessione trusted invece di usare un nome utente e una password per accedere a SQL Server, ignorando tutte le variabili di ambiente che definiscono nome utente e password]]></Val>
+            <Val><![CDATA[Identifica il file che riceve l'output da sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Print version information and exit]]></Val>
@@ -1789,11 +1777,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[236].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[235].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
+          <Val><![CDATA[Print version information and exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il carattere di terminazione del batch. Il valore predefinito è {BatchTerminatorGo}]]></Val>
+            <Val><![CDATA[Stampare le informazioni sulla versione e uscire]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
@@ -1801,11 +1789,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[237].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[236].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
+          <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nome di accesso o nome utente del database indipendente. Per gli utenti di database indipendenti, è necessario specificare l'opzione del nome del database]]></Val>
+            <Val><![CDATA[Considerare attendibile in modo implicito il certificato del server senza convalida]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
@@ -1813,11 +1801,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[238].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[237].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
+          <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Esegue una query all'avvio di sqlcmd, ma non esce da sqlcmd al termine dell'esecuzione della query. È possibile eseguire query delimitate da più punti e virgola]]></Val>
+            <Val><![CDATA[Questa opzione consente di impostare la variabile di scripting sqlcmd {DbNameVar}. Questo parametro specifica il database iniziale. L'impostazione predefinita è la proprietà default-database dell'account di accesso. Se il database non esiste, verrà generato un messaggio di errore e sqlcmd termina]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
@@ -1825,14 +1813,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[239].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[238].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
+          <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Esegue una query all'avvio di sqlcmd e quindi esce immediatamente da sqlcmd. È possibile eseguire query delimitate da più punti e virgola]]></Val>
+            <Val><![CDATA[Usa una connessione trusted invece di usare un nome utente e una password per accedere a SQL Server, ignorando tutte le variabili di ambiente che definiscono nome utente e password]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[239].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Specifica il carattere di terminazione del batch. Il valore predefinito è {BatchTerminatorGo}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1848,21 +1848,9 @@
       </Item>
       <Item ItemId=";messages[240].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
+          <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ConnStrPattern} Specifica l'istanza di SQL Server a cui connettersi. Imposta la variabile di scripting sqlcmd {ServerEnvVar}.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[241].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il nome del server da usare per l'autenticazione durante il tunneling tramite un proxy. Usare con -S per indicare l'indirizzo di composizione separatamente dal nome del server inviato a SQL Server.]]></Val>
+            <Val><![CDATA[Nome di accesso o nome utente del database indipendente. Per gli utenti di database indipendenti, è necessario specificare l'opzione del nome del database]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
@@ -1870,11 +1858,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[241].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_X1} Disabilita i comandi che potrebbero compromettere la sicurezza del sistema. Se si passa 1, sqlcmd verrà chiuso quando vengono eseguiti comandi disabilitati.]]></Val>
+            <Val><![CDATA[Esegue una query all'avvio di sqlcmd, ma non esce da sqlcmd al termine dell'esecuzione della query. È possibile eseguire query delimitate da più punti e virgola]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
@@ -1882,11 +1870,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
+          <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il metodo di autenticazione SQL da usare per connettersi al database SQL di Azure. Uno di: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
+            <Val><![CDATA[Esegue una query all'avvio di sqlcmd e quindi esce immediatamente da sqlcmd. È possibile eseguire query delimitate da più punti e virgola]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
@@ -1894,23 +1882,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[244].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
+          <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Indica a sqlcmd di usare l'autenticazione ActiveDirectory. Se non viene specificato alcun nome utente, verrà utilizzato il metodo di autenticazione ActiveDirectoryDefault. Se viene specificata una password, viene utilizzato ActiveDirectoryPassword. In caso contrario, viene usato ActiveDirectoryInteractive]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[245].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Fa in modo che sqlcmd ignori le variabili di scripting. Questo parametro è utile quando uno script contiene molte istruzioni {InsertKeyword} che possono contenere stringhe con lo stesso formato delle variabili regolari, ad esempio $(variable_name)]]></Val>
+            <Val><![CDATA[{ConnStrPattern} Specifica l'istanza di SQL Server a cui connettersi. Imposta la variabile di scripting sqlcmd {ServerEnvVar}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
@@ -1918,11 +1894,23 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[246].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[244].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
+          <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Crea una variabile di scripting sqlcmd utilizzabile in uno script sqlcmd. Racchiudere il valore tra virgolette se il valore contiene spazi. È possibile specificare più valori var=values. Se sono presenti errori in uno dei valori specificati, sqlcmd genera un messaggio di errore e quindi termina]]></Val>
+            <Val><![CDATA[Specifica il nome del server da usare per l'autenticazione durante il tunneling tramite un proxy. Usare con -S per indicare l'indirizzo di composizione separatamente dal nome del server inviato a SQL Server.]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[245].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_X1} Disabilita i comandi che potrebbero compromettere la sicurezza del sistema. Se si passa 1, sqlcmd verrà chiuso quando vengono eseguiti comandi disabilitati.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
@@ -1930,11 +1918,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[247].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[246].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
+          <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Richiede un pacchetto di dimensioni diverse. Questa opzione consente di impostare la variabile di scripting sqlcmd {PacketSizeVar}. packet_size deve essere un valore compreso tra 512 e 32767. Valore predefinito = 4096. Dimensioni del pacchetto maggiori possono migliorare le prestazioni per l'esecuzione di script con molte istruzioni SQL tra i comandi {BatchTerminatorGo}. È possibile richiedere dimensioni del pacchetto maggiori. Tuttavia, se la richiesta viene negata, sqlcmd utilizza l'impostazione predefinita del server per le dimensioni del pacchetto]]></Val>
+            <Val><![CDATA[Specifica il metodo di autenticazione SQL da usare per connettersi al database SQL di Azure. Uno di: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
@@ -1942,11 +1930,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[248].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[247].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
+          <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il numero di secondi prima del timeout di un account di accesso sqlcmd al driver go-mssqldb quando si prova a connettersi a un server. Questa opzione consente di impostare la variabile di scripting sqlcmd {LoginTimeOutVar}. Il valore predefinito è 30. 0 significa infinito]]></Val>
+            <Val><![CDATA[Indica a sqlcmd di usare l'autenticazione ActiveDirectory. Se non viene specificato alcun nome utente, verrà utilizzato il metodo di autenticazione ActiveDirectoryDefault. Se viene specificata una password, viene utilizzato ActiveDirectoryPassword. In caso contrario, viene usato ActiveDirectoryInteractive]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
@@ -1954,14 +1942,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[249].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[248].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
+          <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Questa opzione consente di impostare la variabile di scripting sqlcmd {WorkstationVar}. Il nome della workstation è elencato nella colonna nome host della vista del catalogo sys.sysprocesses e può essere restituito con la stored procedure sp_who. Se questa opzione non è specificata, il nome predefinito è il nome del computer corrente. Questo nome può essere usato per identificare diverse sessioni sqlcmd]]></Val>
+            <Val><![CDATA[Fa in modo che sqlcmd ignori le variabili di scripting. Questo parametro è utile quando uno script contiene molte istruzioni {InsertKeyword} che possono contenere stringhe con lo stesso formato delle variabili regolari, ad esempio $(variable_name)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[249].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Crea una variabile di scripting sqlcmd utilizzabile in uno script sqlcmd. Racchiudere il valore tra virgolette se il valore contiene spazi. È possibile specificare più valori var=values. Se sono presenti errori in uno dei valori specificati, sqlcmd genera un messaggio di errore e quindi termina]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1977,21 +1977,9 @@
       </Item>
       <Item ItemId=";messages[250].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
+          <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Dichiara il tipo di carico di lavoro dell'applicazione durante la connessione a un server. L'unico valore attualmente supportato è ReadOnly. Se non si specifica {ApplicationIntentFlagShort}, l'utilità sqlcmd non supporterà la connettività a una replica secondaria in un gruppo di disponibilità Always On]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[251].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Questa opzione viene usata dal client per richiedere una connessione crittografata]]></Val>
+            <Val><![CDATA[Richiede un pacchetto di dimensioni diverse. Questa opzione consente di impostare la variabile di scripting sqlcmd {PacketSizeVar}. packet_size deve essere un valore compreso tra 512 e 32767. Valore predefinito = 4096. Dimensioni del pacchetto maggiori possono migliorare le prestazioni per l'esecuzione di script con molte istruzioni SQL tra i comandi {BatchTerminatorGo}. È possibile richiedere dimensioni del pacchetto maggiori. Tuttavia, se la richiesta viene negata, sqlcmd utilizza l'impostazione predefinita del server per le dimensioni del pacchetto]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
@@ -1999,11 +1987,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[252].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[251].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
+          <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il nome host nel certificato del server.]]></Val>
+            <Val><![CDATA[Specifica il numero di secondi prima del timeout di un account di accesso sqlcmd al driver go-mssqldb quando si prova a connettersi a un server. Questa opzione consente di impostare la variabile di scripting sqlcmd {LoginTimeOutVar}. Il valore predefinito è 30. 0 significa infinito]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
@@ -2011,11 +1999,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[252].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
+          <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il percorso di un file di certificato server (PEM, DER o CER) da confrontare con il certificato TLS del server. Usarlo quando la crittografia è abilitata (-N true, -N mandatory o -N strict) per l'associazione del certificato invece della convalida standard.]]></Val>
+            <Val><![CDATA[Questa opzione consente di impostare la variabile di scripting sqlcmd {WorkstationVar}. Il nome della workstation è elencato nella colonna nome host della vista del catalogo sys.sysprocesses e può essere restituito con la stored procedure sp_who. Se questa opzione non è specificata, il nome predefinito è il nome del computer corrente. Questo nome può essere usato per identificare diverse sessioni sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
@@ -2023,11 +2011,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[254].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
+          <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Stampa l'output in formato verticale. Questa opzione imposta la variabile di scripting sqlcmd {SQLCMDFORMAT} su '{Vert}'. L'impostazione predefinita è false]]></Val>
+            <Val><![CDATA[Dichiara il tipo di carico di lavoro dell'applicazione durante la connessione a un server. L'unico valore attualmente supportato è ReadOnly. Se non si specifica {ApplicationIntentFlagShort}, l'utilità sqlcmd non supporterà la connettività a una replica secondaria in un gruppo di disponibilità Always On]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
@@ -2035,11 +2023,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[255].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[254].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
+          <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_r0__1} Reindirizza i messaggi di errore con gravità >= 11 output a stderr. Passare 1 per reindirizzare tutti gli errori, incluso PRINT.]]></Val>
+            <Val><![CDATA[Questa opzione viene usata dal client per richiedere una connessione crittografata]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
@@ -2047,11 +2035,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[256].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[255].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Level of mssql driver messages to print]]></Val>
+          <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Livello di messaggi del driver mssql da stampare]]></Val>
+            <Val><![CDATA[Specifica il nome host nel certificato del server.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
@@ -2059,11 +2047,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[257].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[256].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
+          <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica che sqlcmd termina e restituisce un valore {DosErrorLevel} quando si verifica un errore]]></Val>
+            <Val><![CDATA[Specifica il percorso di un file di certificato server (PEM, DER o CER) da confrontare con il certificato TLS del server. Usarlo quando la crittografia è abilitata (-N true, -N mandatory o -N strict) per l'associazione del certificato invece della convalida standard.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
@@ -2071,11 +2059,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[258].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[257].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
+          <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Controlla quali messaggi di errore vengono inviati a {StdoutName}. Vengono inviati i messaggi con livello di gravità maggiore o uguale a questo livello]]></Val>
+            <Val><![CDATA[Stampa l'output in formato verticale. Questa opzione imposta la variabile di scripting sqlcmd {SQLCMDFORMAT} su '{Vert}'. L'impostazione predefinita è false]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
@@ -2083,14 +2071,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[259].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[258].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
+          <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il numero di righe da stampare tra le intestazioni di colonna. Usare -h-1 per specificare che le intestazioni non devono essere stampate]]></Val>
+            <Val><![CDATA[{_r0__1} Reindirizza i messaggi di errore con gravità >= 11 output a stderr. Passare 1 per reindirizzare tutti gli errori, incluso PRINT.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Level of mssql driver messages to print]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[259].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Level of mssql driver messages to print]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Livello di messaggi del driver mssql da stampare]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2106,21 +2106,9 @@
       </Item>
       <Item ItemId=";messages[260].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
+          <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica che tutti i file di output sono codificati con Unicode little-endian]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[261].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica il carattere separatore di colonna. Imposta la variabile {ColSeparatorVar}.]]></Val>
+            <Val><![CDATA[Specifica che sqlcmd termina e restituisce un valore {DosErrorLevel} quando si verifica un errore]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
@@ -2128,11 +2116,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[262].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[261].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Remove trailing spaces from a column]]></Val>
+          <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Rimuovere gli spazi finali da una colonna]]></Val>
+            <Val><![CDATA[Controlla quali messaggi di errore vengono inviati a {StdoutName}. Vengono inviati i messaggi con livello di gravità maggiore o uguale a questo livello]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
@@ -2140,11 +2128,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[263].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[262].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
+          <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Fornito per la compatibilità con le versioni precedenti. Sqlcmd ottimizza sempre il rilevamento della replica attiva di un cluster di failover SQL]]></Val>
+            <Val><![CDATA[Specifica il numero di righe da stampare tra le intestazioni di colonna. Usare -h-1 per specificare che le intestazioni non devono essere stampate]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
@@ -2152,11 +2140,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[264].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[263].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password]]></Val>
+          <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Password]]></Val>
+            <Val><![CDATA[Specifica che tutti i file di output sono codificati con Unicode little-endian]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
@@ -2164,11 +2152,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[265].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[264].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
+          <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Controlla il livello di gravità usato per impostare la variabile {ErrorLevel} all'uscita]]></Val>
+            <Val><![CDATA[Specifica il carattere separatore di colonna. Imposta la variabile {ColSeparatorVar}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Remove trailing spaces from a column]]></Val>
@@ -2176,11 +2164,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[265].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the screen width for output]]></Val>
+          <Val><![CDATA[Remove trailing spaces from a column]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Specifica la larghezza dello schermo per l'output]]></Val>
+            <Val><![CDATA[Rimuovere gli spazi finali da una colonna]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
@@ -2188,11 +2176,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_Lc} Elenca i server. Passare {C} per omettere l'output 'Servers:'.]]></Val>
+            <Val><![CDATA[Fornito per la compatibilità con le versioni precedenti. Sqlcmd ottimizza sempre il rilevamento della replica attiva di un cluster di failover SQL]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Password]]></Val>
@@ -2200,11 +2188,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[268].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Dedicated administrator connection]]></Val>
+          <Val><![CDATA[Password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Connessione amministrativa dedicata]]></Val>
+            <Val><![CDATA[Password]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
@@ -2212,14 +2200,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[269].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[268].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
+          <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Fornito per la compatibilità con le versioni precedenti. Gli identificatori delimitati sono sempre abilitati]]></Val>
+            <Val><![CDATA[Controlla il livello di gravità usato per impostare la variabile {ErrorLevel} all'uscita]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the screen width for output]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[269].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the screen width for output]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Specifica la larghezza dello schermo per l'output]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2238,21 +2238,9 @@
       </Item>
       <Item ItemId=";messages[270].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
+          <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Fornito per la compatibilità con le versioni precedenti. Le impostazioni locali del client non sono utilizzate]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_k_12} Rimuovere i caratteri di controllo dall'output. Passare 1 per sostituire uno spazio per carattere, 2 per uno spazio per caratteri consecutivi]]></Val>
+            <Val><![CDATA[{_Lc} Elenca i server. Passare {C} per omettere l'output 'Servers:'.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Dedicated administrator connection]]></Val>
@@ -2260,11 +2248,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[272].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Echo input]]></Val>
+          <Val><![CDATA[Dedicated administrator connection]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Input eco]]></Val>
+            <Val><![CDATA[Connessione amministratore dedicata]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
@@ -2272,11 +2260,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[272].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enable column encryption]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Abilita la crittografia delle colonne]]></Val>
+            <Val><![CDATA[Fornito per la compatibilità con le versioni precedenti. Gli identificatori delimitati sono sempre abilitati]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
@@ -2284,11 +2272,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[274].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[New password]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nuova password]]></Val>
+            <Val><![CDATA[Fornito per la compatibilità con le versioni precedenti. Le impostazioni locali del client non sono utilizzate]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
@@ -2296,11 +2284,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[275].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[274].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[New password and exit]]></Val>
+          <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Nuova password e chiudi]]></Val>
+            <Val><![CDATA[{_k_12} Rimuovere i caratteri di controllo dall'output. Passare 1 per sostituire uno spazio per carattere, 2 per uno spazio per caratteri consecutivi]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Echo input]]></Val>
@@ -2308,11 +2296,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[276].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[275].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
+          <Val><![CDATA[Echo input]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Imposta la variabile di scripting sqlcmd {V}]]></Val>
+            <Val><![CDATA[Input echo]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Enable column encryption]]></Val>
@@ -2320,11 +2308,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[277].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[276].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
+          <Val><![CDATA[Enable column encryption]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': il valore deve essere maggiore o uguale a {Min} e minore o uguale a {Max}.]]></Val>
+            <Val><![CDATA[Abilitare crittografia colonne]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[New password]]></Val>
@@ -2332,11 +2320,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[278].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[277].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
+          <Val><![CDATA[New password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': il valore deve essere maggiore di {Min} e minore di {Max}.]]></Val>
+            <Val><![CDATA[Nuova password]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[New password and exit]]></Val>
@@ -2344,14 +2332,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[279].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[278].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
+          <Val><![CDATA[New password and exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': argomento imprevisto. Il valore dell'argomento deve essere {AllowedValues0}.]]></Val>
+            <Val><![CDATA[Nuova password e chiudi]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[279].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Imposta la variabile di scripting sqlcmd {V}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2367,21 +2367,9 @@
       </Item>
       <Item ItemId=";messages[280].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
+          <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': argomento imprevisto. Il valore dell'argomento deve essere uno di {AllowedValues}.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[281].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Le opzioni {Flag1} e {Flag2} si escludono a vicenda.]]></Val>
+            <Val><![CDATA['{Flag} {Value}': il valore deve essere maggiore o uguale a {Min} e minore o uguale a {Max}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
@@ -2389,11 +2377,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[282].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[281].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
+          <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{P1}': argomento mancante. Immettere '-?' per visualizzare la Guida.]]></Val>
+            <Val><![CDATA['{Flag} {Value}': il valore deve essere maggiore di {Min} e minore di {Max}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
@@ -2401,11 +2389,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[283].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[282].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
+          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{P1}': opzione sconosciuta. Immettere '-?' per visualizzare la Guida.]]></Val>
+            <Val><![CDATA['{Flag} {Value}': argomento imprevisto. Il valore dell'argomento deve essere {AllowedValues0}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
@@ -2413,11 +2401,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[283].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
+          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Non è stato possibile creare il file di traccia '{TraceFile}': {Err}]]></Val>
+            <Val><![CDATA['{Flag} {Value}': argomento imprevisto. Il valore dell'argomento deve essere uno di {AllowedValues}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
@@ -2425,11 +2413,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[failed to start trace: {Err}]]></Val>
+          <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[non è stato possibile avviare la traccia: {Err}]]></Val>
+            <Val><![CDATA[Le opzioni {Flag1} e {Flag2} si escludono a vicenda.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
@@ -2437,11 +2425,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
+          <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[carattere di terminazione del batch '{BatchTerminator}' non valido]]></Val>
+            <Val><![CDATA['{P1}': argomento mancante. Immettere '-?' per visualizzare la Guida.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
@@ -2449,11 +2437,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enter new password:]]></Val>
+          <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Immetti la nuova password:]]></Val>
+            <Val><![CDATA['{P1}': opzione sconosciuta. Immettere '-?' per visualizzare la Guida.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
@@ -2461,11 +2449,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
+          <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd: installare/creare/eseguire query su SQL Server, Azure SQL e strumenti]]></Val>
+            <Val><![CDATA[Non è stato possibile creare il file di traccia '{TraceFile}': {Err}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[failed to start trace: {Err}]]></Val>
@@ -2473,14 +2461,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Error:]]></Val>
+          <Val><![CDATA[failed to start trace: {Err}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: errore:]]></Val>
+            <Val><![CDATA[non è stato possibile avviare la traccia: {Err}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[carattere di terminazione del batch '{BatchTerminator}' non valido]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enter new password:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2496,21 +2496,9 @@
       </Item>
       <Item ItemId=";messages[290].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
+          <Val><![CDATA[Enter new password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: avviso:]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Enter new password:]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[I comandi ED e !!<command>, lo script di avvio e le variabili di ambiente sono disabilitati.]]></Val>
+            <Val><![CDATA[Immettere nuova password:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
@@ -2518,11 +2506,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
+          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[La variabile di scripting '{Variable}' è di sola lettura]]></Val>
+            <Val><![CDATA[sqlcmd: installare/creare/eseguire query su SQL Server, Azure SQL e strumenti]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Error:]]></Val>
@@ -2530,11 +2518,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
+          <Val><![CDATA[Sqlcmd: Error:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Variabile di scripting '{Variable}' non definita.]]></Val>
+            <Val><![CDATA[Sqlcmd: errore:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Warning:]]></Val>
@@ -2542,11 +2530,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[La variabile di ambiente '{Variable}' contiene un valore non valido: '{EnvVal}'.]]></Val>
+            <Val><![CDATA[Sqlcmd: avviso:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
@@ -2554,11 +2542,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Errore di sintassi alla riga {LineNumber} vicino al comando '{Command}'.]]></Val>
+            <Val><![CDATA[I comandi ED e !!<command>, lo script di avvio e le variabili di ambiente sono disabilitati.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
@@ -2566,11 +2554,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix} Si è verificato un errore durante l'apertura o l'utilizzo del file {Filepath} (motivo: {Error}).]]></Val>
+            <Val><![CDATA[La variabile di scripting '{Variable}' è di sola lettura]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
@@ -2578,11 +2566,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix} Errore di sintassi alla riga {LineNumber}]]></Val>
+            <Val><![CDATA[Variabile di scripting '{Variable}' non definita.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
@@ -2590,11 +2578,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Timeout expired]]></Val>
+          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Timeout scaduto]]></Val>
+            <Val><![CDATA[La variabile di ambiente '{Variable}' contiene un valore non valido: '{EnvVal}'.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
@@ -2602,14 +2590,26 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Messaggio {Number}, Livello {Class}, Stato {State}, Server {ServerName}, Procedura {ProcName}, Riga {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[Errore di sintassi alla riga {LineNumber} vicino al comando '{Command}'.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{ErrorPrefix} Si è verificato un errore durante l'apertura o l'utilizzo del file {Filepath} (motivo: {Error}).]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2637,21 +2637,9 @@
       </Item>
       <Item ItemId=";messages[300].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Messaggio {Number}, Livello {Class}, Stato {State}, Server {ServerName}, Riga {LineNo}{SqlcmdEol}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[301].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[L'override del nome del server non è supportato con il metodo di autenticazione attuale]]></Val>
+            <Val><![CDATA[{ErrorPrefix} Errore di sintassi alla riga {LineNumber}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Timeout expired]]></Val>
@@ -2659,11 +2647,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[302].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[301].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password:]]></Val>
+          <Val><![CDATA[Timeout expired]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Password:]]></Val>
+            <Val><![CDATA[Timeout scaduto]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
@@ -2671,11 +2659,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[303].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[302].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[(1 row affected)]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[(1 riga interessata)]]></Val>
+            <Val><![CDATA[Messaggio {Number}, Livello {Class}, Stato {State}, Server {ServerName}, Procedura {ProcName}, Riga {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
@@ -2683,23 +2671,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[304].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[303].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[({Count} rows affected)]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[({Count} righe interessate)]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[305].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Identificatore della variabile {Name} non valido]]></Val>
+            <Val><![CDATA[Messaggio {Number}, Livello {Class}, Stato {State}, Server {ServerName}, Riga {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Password:]]></Val>
@@ -2707,15 +2683,69 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";messages[304].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[L'override del nome del server non è supportato con il metodo di autenticazione attuale]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[(1 row affected)]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[305].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Password:]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Password:]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[({Count} rows affected)]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";messages[306].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[(1 row affected)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[(1 riga interessata)]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[307].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[({Count} rows affected)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[({Count} righe interessate)]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Invalid variable value {Val}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[308].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Identificatore della variabile {Name} non valido]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[309].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid variable value {Val}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Valore della variabile {Val} non valido]]></Val>
           </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[(1 row affected)]]></Val>
-          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

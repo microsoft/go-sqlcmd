@@ -4,11 +4,21 @@
 package tool
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/microsoft/go-sqlcmd/internal/io/file"
 )
+
+// earlyExitWindow is how long Run waits after Start before considering the
+// launched tool successfully detached. If the child exits within this window
+// Run returns its exit code and error so callers can surface install help or
+// other troubleshooting hints instead of silently reporting success.
+const earlyExitWindow = 750 * time.Millisecond
 
 func (t *tool) Init() {
 	panic("Do not call directly")
@@ -22,6 +32,12 @@ func (t *tool) SetExePathAndName(exeName string) {
 	t.exeName = exeName
 }
 
+// ExePath returns the resolved executable path, or "" if the tool was not
+// found. Valid only after Init (and SetBuild, where supported).
+func (t *tool) ExePath() string {
+	return t.exeName
+}
+
 func (t *tool) SetToolDescription(description Description) {
 	t.description = description
 }
@@ -32,7 +48,7 @@ func (t *tool) IsInstalled() bool {
 	}
 
 	t.installed = new(bool)
-	if file.Exists(t.exeName) {
+	if t.exeName != "" && file.Exists(t.exeName) {
 		*t.installed = true
 	} else {
 		*t.installed = false
@@ -54,11 +70,66 @@ func (t *tool) HowToInstall() string {
 
 func (t *tool) Run(args []string) (int, error) {
 	if t.installed == nil {
-		panic("Call IsInstalled before Run")
+		return 1, fmt.Errorf("internal error: Call IsInstalled before Run")
 	}
 
-	cmd := t.generateCommandLine(args)
-	err := cmd.Run()
+	return t.runCmd(t.generateCommandLine(args))
+}
 
-	return cmd.ProcessState.ExitCode(), err
+// runCmd starts cmd, waits briefly for an early failure, and otherwise treats
+// the launch as successful and lets the GUI tool keep running. Callers that
+// need to bypass generateCommandLine (e.g. VS Code on darwin, which must exec
+// the in-bundle `code` CLI directly rather than `open -a`) build their own
+// *exec.Cmd and call this helper.
+func (t *tool) runCmd(cmd *exec.Cmd) (int, error) {
+	// Normalize argv[0] so it matches cmd.Path on every platform. The darwin
+	// implementation builds Args starting at "-a" because it shells out via
+	// /usr/bin/open; without this fix the launched process sees "-a" as argv[0]
+	// and mis-parses subsequent flags.
+	if len(cmd.Args) == 0 || cmd.Args[0] != cmd.Path {
+		cmd.Args = append([]string{cmd.Path}, cmd.Args...)
+	}
+
+	// Redirect stdio to the null device so exec.Cmd does not spawn pipe
+	// drainer goroutines. Without this, Start leaves goroutines blocked on
+	// the child's stdout/stderr until the GUI tool exits, which keeps
+	// sqlcmd's Wait goroutine alive past the early-exit window. If opening
+	// the null device fails, fall back to inheriting the parent's stdio
+	// (also goroutine-free) rather than leaving the bytes.Buffer pipes
+	// generateCommandLine attached.
+	if devNull, err := os.OpenFile(os.DevNull, os.O_RDWR, 0); err == nil {
+		cmd.Stdin = devNull
+		cmd.Stdout = devNull
+		cmd.Stderr = devNull
+		defer func() { _ = devNull.Close() }()
+	} else {
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+	}
+
+	if err := cmd.Start(); err != nil {
+		return 1, err
+	}
+
+	// Wait briefly for the child to fail fast (invalid args, missing
+	// dependency). If it survives the window, treat the launch as successful
+	// and let the GUI tool keep running; the Wait goroutine dies with sqlcmd
+	// and the child is reparented (Unix) or unaffected (Windows).
+	done := make(chan error, 1)
+	go func() { done <- cmd.Wait() }()
+
+	select {
+	case err := <-done:
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			return exitErr.ExitCode(), exitErr
+		}
+		if err != nil {
+			return 1, err
+		}
+		return 0, nil
+	case <-time.After(earlyExitWindow):
+		return 0, nil
+	}
 }

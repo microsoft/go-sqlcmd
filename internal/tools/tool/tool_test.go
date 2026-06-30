@@ -4,11 +4,12 @@
 package tool
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestInit(t *testing.T) {
@@ -94,17 +95,14 @@ func TestHowToInstall(t *testing.T) {
 
 func TestRunWhenNotInstalled(t *testing.T) {
 	tool := &tool{}
-	assert.Panics(t, func() {
-		_, err := tool.Run([]string{})
-		if err != nil {
-			return
-		}
-	})
+	_, err := tool.Run([]string{})
+	assert.Error(t, err, "Run should return error when IsInstalled was not called first")
+	assert.Contains(t, err.Error(), "Call IsInstalled before Run")
 }
 
 func TestRun(t *testing.T) {
-	if runtime.GOOS == "linux" {
-		t.Skip("Not implemented for Linux yet.")
+	if runtime.GOOS != "windows" {
+		t.Skip("Uses COMSPEC/cmd.exe; Windows-only.")
 	}
 
 	t.Parallel()
@@ -116,7 +114,30 @@ func TestRun(t *testing.T) {
 	}
 
 	*tool.installed = true
-	exitCode, err := tool.Run([]string{"arg1", "arg2"})
-	assert.Equal(t, exitCode, 0)
+	// ping -n 3 runs ~2s, comfortably past earlyExitWindow, so Run should
+	// report a successful launch rather than picking up the child's exit code.
+	exitCode, err := tool.Run([]string{"/c", "ping", "-n", "3", "127.0.0.1"})
+	assert.Equal(t, 0, exitCode)
 	assert.NoError(t, err)
+}
+
+func TestRunReportsEarlyExit(t *testing.T) {
+	if runtime.GOOS != "windows" {
+		t.Skip("Uses COMSPEC/cmd.exe; Windows-only.")
+	}
+
+	t.Parallel()
+
+	tool := &tool{
+		exeName:   os.Getenv("COMSPEC"),
+		installed: new(bool),
+	}
+	*tool.installed = true
+
+	// `cmd /c exit 7` finishes immediately with code 7; Run must surface it
+	// so callers (e.g. `sqlcmd open ssms`) can display install help on a
+	// fast-failing launch instead of silently reporting success.
+	exitCode, err := tool.Run([]string{"/c", "exit", "7"})
+	assert.Equal(t, 7, exitCode)
+	assert.Error(t, err)
 }

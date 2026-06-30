@@ -12,7 +12,7 @@ func (t *tool) generateCommandLine(args []string) *exec.Cmd {
 	var stdout, stderr bytes.Buffer
 	cmd := &exec.Cmd{
 		Path:   t.exeName,
-		Args:   args,
+		Args:   append([]string{t.exeName}, args...),
 		Stdout: &stdout,
 		Stderr: &stderr,
 	}
