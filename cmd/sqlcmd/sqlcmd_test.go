@@ -123,6 +123,12 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "true", "-J", "/path/to/cert2.pem"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true" && args.ServerCertificate == "/path/to/cert2.pem"
 		}},
+		{[]string{"-j"}, func(args SQLCmdArguments) bool {
+			return args.RawErrors
+		}},
+		{[]string{"--raw-errors"}, func(args SQLCmdArguments) bool {
+			return args.RawErrors
+		}},
 	}
 
 	for _, test := range commands {
@@ -516,6 +522,26 @@ func TestConditionsForPasswordPrompt(t *testing.T) {
 		needsConsole, _ := isConsoleInitializationRequired(&connectConfig, &args)
 		assert.Equal(t, testcase.expectedResult, needsConsole, "Unexpected test result encountered for console initialization")
 		assert.Equal(t, testcase.expectedResult, connectConfig.RequiresPassword() && connectConfig.Password == "", "Unexpected test result encountered for password prompt conditions")
+	}
+}
+
+func TestAuthenticationMethodForUseAad(t *testing.T) {
+	tests := []struct {
+		name        string
+		userName    string
+		hasPassword bool
+		expected    string
+	}{
+		{"-G no username picks Default", "", false, azuread.ActiveDirectoryDefault},
+		{"-G no username, password ignored", "", true, azuread.ActiveDirectoryDefault},
+		{"-G with username, no password picks Interactive", "user@contoso", false, azuread.ActiveDirectoryInteractive},
+		{"-G with username and password picks Password", "user@contoso", true, azuread.ActiveDirectoryPassword},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			a := SQLCmdArguments{UseAad: true, UserName: tc.userName}
+			assert.Equal(t, tc.expected, a.authenticationMethod(tc.hasPassword))
+		})
 	}
 }
 

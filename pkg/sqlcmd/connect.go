@@ -88,7 +88,7 @@ func (connect ConnectSettings) RequiresPassword() bool {
 	requiresPassword := connect.sqlAuthentication()
 	if !requiresPassword {
 		switch connect.authenticationMethod() {
-		case azuread.ActiveDirectoryApplication, azuread.ActiveDirectoryPassword, azuread.ActiveDirectoryServicePrincipal:
+		case azuread.ActiveDirectoryApplication, azuread.ActiveDirectoryPassword, azuread.ActiveDirectoryServicePrincipal, azuread.ActiveDirectoryServicePrincipalAccessToken:
 			requiresPassword = true
 		}
 	}
@@ -125,7 +125,7 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 		Path:   instance,
 	}
 
-	if connect.sqlAuthentication() || connect.authenticationMethod() == azuread.ActiveDirectoryPassword || connect.authenticationMethod() == azuread.ActiveDirectoryServicePrincipal || connect.authenticationMethod() == azuread.ActiveDirectoryApplication {
+	if connect.sqlAuthentication() || connect.authenticationMethod() == azuread.ActiveDirectoryPassword || connect.authenticationMethod() == azuread.ActiveDirectoryServicePrincipal || connect.authenticationMethod() == azuread.ActiveDirectoryApplication || connect.authenticationMethod() == azuread.ActiveDirectoryServicePrincipalAccessToken {
 		connectionURL.User = url.UserPassword(connect.UserName, connect.Password)
 	}
 	if (connect.authenticationMethod() == azuread.ActiveDirectoryMSI || connect.authenticationMethod() == azuread.ActiveDirectoryManagedIdentity) && connect.UserName != "" {

@@ -804,9 +804,21 @@
       </Item>
       <Item ItemId=";messages[160].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install Azure Sql Edge]]></Val>
+          <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[SQL Azure для пограничных вычислений]]></Val>
+            <Val><![CDATA[Тег для использования. Используйте команду get-tags, чтобы просмотреть список тегов]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Install Azure Sql Edge]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[161].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Имя контекста (если не указать, будет использовано имя контекста по умолчанию)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create Azure SQL Edge in a container]]></Val>
@@ -814,11 +826,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[161].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[162].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install/Create Azure SQL Edge in a container]]></Val>
+          <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Установить или создать SQL Azure для пограничных вычислений в контейнере]]></Val>
+            <Val><![CDATA[Создать пользовательскую базу данных и установить ее для входа по умолчанию]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
@@ -826,11 +838,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[162].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[163].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Tag to use, use get-tags to see list of tags]]></Val>
+          <Val><![CDATA[Accept the SQL Server EULA]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Тег для использования. Используйте команду get-tags, чтобы просмотреть список тегов]]></Val>
+            <Val><![CDATA[Принять условия лицензионного пользовательского соглашения SQL Server]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
@@ -838,11 +850,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[163].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[164].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Context name (a default context name will be created if not provided)]]></Val>
+          <Val><![CDATA[Generated password length]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Имя контекста (если не указать, будет использовано имя контекста по умолчанию)]]></Val>
+            <Val><![CDATA[Длина сгенерированного пароля]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
@@ -850,11 +862,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[164].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[165].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create a user database and set it as the default for login]]></Val>
+          <Val><![CDATA[Minimum number of special characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Создать пользовательскую базу данных и установить ее для входа по умолчанию]]></Val>
+            <Val><![CDATA[Число специальных символов должно быть не менее]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Accept the SQL Server EULA]]></Val>
@@ -862,11 +874,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[165].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[166].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Accept the SQL Server EULA]]></Val>
+          <Val><![CDATA[Minimum number of numeric characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Принять условия лицензионного пользовательского соглашения SQL Server]]></Val>
+            <Val><![CDATA[Число цифр должно быть не менее]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Generated password length]]></Val>
@@ -874,11 +886,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[166].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[167].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Generated password length]]></Val>
+          <Val><![CDATA[Minimum number of upper characters]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Длина сгенерированного пароля]]></Val>
+            <Val><![CDATA[Минимальное число символов верхнего регистра]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of special characters]]></Val>
@@ -886,11 +898,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[167].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[168].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Minimum number of special characters]]></Val>
+          <Val><![CDATA[Special character set to include in password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Число специальных символов должно быть не менее]]></Val>
+            <Val><![CDATA[Набор спецсимволов, которые следует включить в пароль]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of numeric characters]]></Val>
@@ -898,26 +910,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[168].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[169].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Minimum number of numeric characters]]></Val>
+          <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Число цифр должно быть не менее]]></Val>
+            <Val><![CDATA[Не скачивать изображение.  Использовать уже загруженное изображение]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Minimum number of upper characters]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[169].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Minimum number of upper characters]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Минимальное число символов верхнего регистра]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Special character set to include in password]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -933,9 +933,21 @@
       </Item>
       <Item ItemId=";messages[170].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Special character set to include in password]]></Val>
+          <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Набор спецсимволов, которые следует включить в пароль]]></Val>
+            <Val><![CDATA[Строка в журнале ошибок для ожидания перед подключением]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Special character set to include in password]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[171].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Задать для контейнера пользовательское имя вместо сгенерированного случайным образом]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
@@ -943,11 +955,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[171].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[172].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Don't download image.  Use already downloaded image]]></Val>
+          <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Не скачивать изображение.  Использовать уже загруженное изображение]]></Val>
+            <Val><![CDATA[Явно задайте имя узла контейнера, по умолчанию используется идентификатор контейнера]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
@@ -955,11 +967,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[172].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[173].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Line in errorlog to wait for before connecting]]></Val>
+          <Val><![CDATA[Specifies the image CPU architecture]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Строка в журнале ошибок для ожидания перед подключением]]></Val>
+            <Val><![CDATA[Задает архитектуру ЦП образа]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
@@ -967,11 +979,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[173].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[174].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specify a custom name for the container rather than a randomly generated one]]></Val>
+          <Val><![CDATA[Specifies the image operating system]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Задать для контейнера пользовательское имя вместо сгенерированного случайным образом]]></Val>
+            <Val><![CDATA[Указывает операционную систему образа]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
@@ -979,11 +991,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[174].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[175].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Explicitly set the container hostname, it defaults to the container ID]]></Val>
+          <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Явно задайте имя узла контейнера, по умолчанию используется идентификатор контейнера]]></Val>
+            <Val><![CDATA[Порт (по умолчанию используется следующий доступный порт начиная от 1433 и выше)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the image CPU architecture]]></Val>
@@ -991,11 +1003,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[175].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[176].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the image CPU architecture]]></Val>
+          <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Задает архитектуру ЦП образа]]></Val>
+            <Val><![CDATA[Скачать (в контейнер) и присоединить базу данных (.bak) с URL-адреса]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the image operating system]]></Val>
@@ -1003,11 +1015,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[176].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[177].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the image operating system]]></Val>
+          <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает операционную систему образа]]></Val>
+            <Val><![CDATA[Либо добавьте флажок {AcceptEulaFlag} в командную строку]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
@@ -1015,11 +1027,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[177].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[178].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Port (next available port from 1433 upwards used by default)]]></Val>
+          <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Порт (по умолчанию используется следующий доступный порт начиная от 1433 и выше)]]></Val>
+            <Val><![CDATA[Или задайте переменную среды, например {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
@@ -1027,26 +1039,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[178].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[179].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Download (into container) and attach database (.bak) from URL]]></Val>
+          <Val><![CDATA[EULA not accepted]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Скачать (в контейнер) и присоединить базу данных (.bak) с URL-адреса]]></Val>
+            <Val><![CDATA[Условия лицензионного соглашения не приняты]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[179].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Either, add the {AcceptEulaFlag} flag to the command-line]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Либо добавьте флажок {AcceptEulaFlag} в командную строку]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1062,9 +1062,21 @@
       </Item>
       <Item ItemId=";messages[180].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
+          <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Или задайте переменную среды, например {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
+            <Val><![CDATA[--user-database {DefaultDatabase} содержит отличные от ASCII символы и (или) кавычки]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Or, set the environment variable i.e. {CreateEnvVarKeyword} {AcceptEulaEnvVar}=YES]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[181].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Starting {ImageName}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Производится запуск {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[EULA not accepted]]></Val>
@@ -1072,11 +1084,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[181].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[182].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[EULA not accepted]]></Val>
+          <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Условия лицензионного соглашения не приняты]]></Val>
+            <Val><![CDATA[Создан контекст {CurrentContextName} с использованием "{ConfigFileUsed}", производится настройка учетной записи пользователя...]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
@@ -1084,11 +1096,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[182].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[183].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--user-database {DefaultDatabase} contains non-ASCII chars and/or quotes]]></Val>
+          <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--user-database {DefaultDatabase} содержит отличные от ASCII символы и (или) кавычки]]></Val>
+            <Val><![CDATA[Отключена учетная запись {Sa} и произведена смена пароля {Sa_1}. Производится создание пользователя {UserName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Starting {ImageName}]]></Val>
@@ -1096,11 +1108,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[183].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[184].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Starting {ImageName}]]></Val>
+          <Val><![CDATA[Start interactive session]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Производится запуск {ImageName}]]></Val>
+            <Val><![CDATA[Запустить интерактивный сеанс]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
@@ -1108,11 +1120,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[184].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[185].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Created context {CurrentContextName} in "{ConfigFileUsed}", configuring user account...]]></Val>
+          <Val><![CDATA[Change current context]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Создан контекст {CurrentContextName} с использованием "{ConfigFileUsed}", производится настройка учетной записи пользователя...]]></Val>
+            <Val><![CDATA[Изменить текущий контекст]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
@@ -1120,11 +1132,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[185].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[186].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
+          <Val><![CDATA[View sqlcmd configuration]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Отключена учетная запись {Sa} и произведена смена пароля {Sa_1}. Производится создание пользователя {UserName}]]></Val>
+            <Val><![CDATA[Просмотреть конфигурацию sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Start interactive session]]></Val>
@@ -1132,11 +1144,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[186].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[187].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Start interactive session]]></Val>
+          <Val><![CDATA[See connection strings]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Запустить интерактивный сеанс]]></Val>
+            <Val><![CDATA[Просмотреть строки подключения]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Change current context]]></Val>
@@ -1144,11 +1156,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[187].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[188].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Change current context]]></Val>
+          <Val><![CDATA[Remove]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Изменить текущий контекст]]></Val>
+            <Val><![CDATA[Удалить]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[View sqlcmd configuration]]></Val>
@@ -1156,26 +1168,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[188].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[189].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[View sqlcmd configuration]]></Val>
+          <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Просмотреть конфигурацию sqlcmd]]></Val>
+            <Val><![CDATA[Теперь готово для клиентских подключений через порт {Port}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[See connection strings]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[189].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[See connection strings]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Просмотреть строки подключения]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Remove]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1191,9 +1191,21 @@
       </Item>
       <Item ItemId=";messages[190].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Remove]]></Val>
+          <Val><![CDATA[--using URL must be http or https]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Удалить]]></Val>
+            <Val><![CDATA[--using: URL-адрес должен иметь тип http или https]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Remove]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[191].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{UsingDatabaseUrl} не является допустимым URL-адресом для флага --using]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
@@ -1201,11 +1213,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[191].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[192].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Now ready for client connections on port {Port}]]></Val>
+          <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Теперь готово для клиентских подключений через порт {Port}]]></Val>
+            <Val><![CDATA[--using: URL-адрес должен содержать путь к .bak-файлу]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using URL must be http or https]]></Val>
@@ -1213,11 +1225,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[192].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[193].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using URL must be http or https]]></Val>
+          <Val><![CDATA[--using file URL must be a .bak file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--using: URL-адрес должен иметь тип http или https]]></Val>
+            <Val><![CDATA[--using: файл, находящийся по URL-адресу, должен иметь расширение .bak]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
@@ -1225,11 +1237,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[193].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[194].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{UsingDatabaseUrl} is not a valid URL for --using flag]]></Val>
+          <Val><![CDATA[Invalid --using file type]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{UsingDatabaseUrl} не является допустимым URL-адресом для флага --using]]></Val>
+            <Val><![CDATA[Недопустимый тип файла в параметре флага --using]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
@@ -1237,11 +1249,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[194].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[195].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using URL must have a path to .bak file]]></Val>
+          <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--using: URL-адрес должен содержать путь к .bak-файлу]]></Val>
+            <Val><![CDATA[Производится создание базы данных по умолчанию [{DefaultDatabase}]5D;]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[--using file URL must be a .bak file]]></Val>
@@ -1249,11 +1261,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[195].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[196].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[--using file URL must be a .bak file]]></Val>
+          <Val><![CDATA[Downloading {File}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[--using: файл, находящийся по URL-адресу, должен иметь расширение .bak]]></Val>
+            <Val><![CDATA[Скачивание {File}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Invalid --using file type]]></Val>
@@ -1261,11 +1273,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[196].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[197].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Invalid --using file type]]></Val>
+          <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Недопустимый тип файла в параметре флага --using]]></Val>
+            <Val><![CDATA[Идет восстановление базы данных {DatabaseName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
@@ -1273,11 +1285,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[197].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[198].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Creating default database [{DefaultDatabase}]5D;]]></Val>
+          <Val><![CDATA[Downloading {ImageName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Производится создание базы данных по умолчанию [{DefaultDatabase}]5D;]]></Val>
+            <Val><![CDATA[Скачивание {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Downloading {File}]]></Val>
@@ -1285,26 +1297,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[198].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[199].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Downloading {File}]]></Val>
+          <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Скачивание {File}]]></Val>
+            <Val><![CDATA[Установлена ли на этом компьютере среда выполнения контейнера (например, Podman или Docker)?]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[199].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Restoring database {DatabaseName}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Идет восстановление базы данных {DatabaseName}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Downloading {ImageName}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1329,9 +1329,21 @@
       </Item>
       <Item ItemId=";messages[200].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Downloading {ImageName}]]></Val>
+          <Val><![CDATA[If not, download desktop engine from:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Скачивание {ImageName}]]></Val>
+            <Val><![CDATA[Если нет, скачайте подсистему рабочего стола по адресу:]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Downloading {ImageName}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[201].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[or]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[или]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
@@ -1339,11 +1351,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[201].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[202].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Is a container runtime installed on this machine (e.g. Podman or Docker)?]]></Val>
+          <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Установлена ли на этом компьютере среда выполнения контейнера (например, Podman или Docker)?]]></Val>
+            <Val><![CDATA[Запущена ли среда выполнения контейнера?  (Попробуйте ввести "{PodmanPsCommand}" или "{DockerPsCommand}" (список контейнеров). Не возвращает ли эта команда ошибку?)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[If not, download desktop engine from:]]></Val>
@@ -1351,11 +1363,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[202].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[203].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[If not, download desktop engine from:]]></Val>
+          <Val><![CDATA[Unable to download image {ImageName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Если нет, скачайте подсистему рабочего стола по адресу:]]></Val>
+            <Val><![CDATA[Не удалось скачать образ {ImageName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[or]]></Val>
@@ -1363,11 +1375,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[203].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[204].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[or]]></Val>
+          <Val><![CDATA[File does not exist at URL]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[или]]></Val>
+            <Val><![CDATA[Файл по URL-адресу не существует]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
@@ -1375,11 +1387,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[204].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[205].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Is a container runtime running?  (Try `{PodmanPsCommand}` or `{DockerPsCommand}` (list containers), does it return without error?)]]></Val>
+          <Val><![CDATA[Unable to download file]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Запущена ли среда выполнения контейнера?  (Попробуйте ввести "{PodmanPsCommand}" или "{DockerPsCommand}" (список контейнеров). Не возвращает ли эта команда ошибку?)]]></Val>
+            <Val><![CDATA[Не удалось скачать файл]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Unable to download image {ImageName}]]></Val>
@@ -1387,11 +1399,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[205].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[206].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unable to download image {ImageName}]]></Val>
+          <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Не удалось скачать образ {ImageName}]]></Val>
+            <Val><![CDATA[Установить или создать SQL Server в контейнере]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[File does not exist at URL]]></Val>
@@ -1399,11 +1411,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[206].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[207].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[File does not exist at URL]]></Val>
+          <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Файл по URL-адресу не существует]]></Val>
+            <Val><![CDATA[Просмотреть все теги выпуска для SQL Server, установить предыдущую версию]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Unable to download file]]></Val>
@@ -1411,11 +1423,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[207].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[208].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Unable to download file]]></Val>
+          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Не удалось скачать файл]]></Val>
+            <Val><![CDATA[Создайте SQL Server, скачайте и присоедините пример базы данных AdventureWorks]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
@@ -1423,26 +1435,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[208].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[209].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install/Create SQL Server in a container]]></Val>
+          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Установить или создать SQL Server в контейнере]]></Val>
+            <Val><![CDATA[Создайте SQL Server, скачайте и присоедините пример базы данных AdventureWorks с другим именем]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[209].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[See all release tags for SQL Server, install previous version]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Просмотреть все теги выпуска для SQL Server, установить предыдущую версию]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1458,9 +1458,21 @@
       </Item>
       <Item ItemId=";messages[210].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
+          <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Создайте SQL Server, скачайте и присоедините пример базы данных AdventureWorks]]></Val>
+            <Val><![CDATA[Создать SQL Server с пустой пользовательской базой данных]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[211].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Установить или создать SQL Server с полным ведением журнала]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
@@ -1468,11 +1480,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[211].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[212].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server, download and attach AdventureWorks sample database with different database name]]></Val>
+          <Val><![CDATA[Get tags available for mssql install]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Создайте SQL Server, скачайте и присоедините пример базы данных AdventureWorks с другим именем]]></Val>
+            <Val><![CDATA[Получить теги, доступные для установки mssql]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
@@ -1480,11 +1492,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[212].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[213].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Create SQL Server with an empty user database]]></Val>
+          <Val><![CDATA[List tags]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Создать SQL Server с пустой пользовательской базой данных]]></Val>
+            <Val><![CDATA[Перечислить теги]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
@@ -1492,11 +1504,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[213].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[214].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Install/Create SQL Server with full logging]]></Val>
+          <Val><![CDATA[sqlcmd start]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Установить или создать SQL Server с полным ведением журнала]]></Val>
+            <Val><![CDATA[Запуск sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Get tags available for Azure SQL Edge install]]></Val>
@@ -1504,11 +1516,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[214].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[215].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Get tags available for Azure SQL Edge install]]></Val>
+          <Val><![CDATA[Container is not running]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Получить теги, доступные для установки SQL Azure для пограничных вычислений]]></Val>
+            <Val><![CDATA[Контейнер не запущен]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[List tags]]></Val>
@@ -1516,11 +1528,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[215].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[216].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[List tags]]></Val>
+          <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Перечислить теги]]></Val>
+            <Val><![CDATA[Нажмите клавиши CTRL+C, чтобы выйти из этого процесса...]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Get tags available for mssql install]]></Val>
@@ -1528,50 +1540,38 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[216].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Get tags available for mssql install]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Получить теги, доступные для установки mssql]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";messages[217].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd start]]></Val>
+          <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Запуск sqlcmd]]></Val>
+            <Val><![CDATA[Ошибка "Недостаточно ресурсов памяти" может быть вызвана слишком большим количеством учетных данных, которые уже хранятся в диспетчере учетных данных Windows]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
+            <Val><![CDATA[sqlcmd start]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[218].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Container is not running]]></Val>
+          <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Контейнер не запущен]]></Val>
+            <Val><![CDATA[Не удалось записать учетные данные в диспетчер учетных данных Windows]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
+            <Val><![CDATA[Container is not running]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[219].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
+          <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Нажмите клавиши CTRL+C, чтобы выйти из этого процесса...]]></Val>
+            <Val><![CDATA[Нельзя использовать параметр -L в сочетании с другими параметрами.]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Servers:]]></Val>
+            <Val><![CDATA[Press Ctrl+C to exit this process...]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1590,69 +1590,81 @@
       </Item>
       <Item ItemId=";messages[220].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
+          <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Ошибка "Недостаточно ресурсов памяти" может быть вызвана слишком большим количеством учетных данных, которые уже хранятся в диспетчере учетных данных Windows]]></Val>
+            <Val><![CDATA["-a {PacketSize}": размер пакета должен быть числом от 512 до 32767.]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
+            <Val><![CDATA[A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[221].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
+          <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Не удалось записать учетные данные в диспетчер учетных данных Windows]]></Val>
+            <Val><![CDATA["-h {Headers}": значение заголовка должно быть либо -1 , либо величиной в интервале между 1 и 2147483647]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
+            <Val><![CDATA[Failed to write credential to Windows Credential Manager]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[222].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
+          <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Нельзя использовать параметр -L в сочетании с другими параметрами.]]></Val>
+            <Val><![CDATA[Параметр "-J" требует включения шифрования ("-N true", "-N mandatory" или "-N strict").]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Version {Version}]]></Val>
+            <Val><![CDATA[The -L parameter can not be used in combination with other parameters.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[223].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
+          <Val><![CDATA[Servers:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["-a {PacketSize}": размер пакета должен быть числом от 512 до 32767.]]></Val>
+            <Val><![CDATA[Серверы:]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[Flags:]]></Val>
+            <Val><![CDATA['-a {PacketSize}': Packet size has to be a number between 512 and 32767.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[224].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
+          <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["-h {Headers}": значение заголовка должно быть либо -1 , либо величиной в интервале между 1 и 2147483647]]></Val>
+            <Val><![CDATA[Юридические документы и сведения: aka.ms/SqlcmdLegal]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
+            <Val><![CDATA['-h {Headers}': header value must be either -1 or a value between 1 and 2147483647]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[225].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
+          <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Параметр "-J" требует включения шифрования ("-N true", "-N mandatory" или "-N strict").]]></Val>
+            <Val><![CDATA[Уведомления третьих лиц: aka.ms/SqlcmdNotices]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict).]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[226].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Version: {Version}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Версия {Version}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Servers:]]></Val>
@@ -1660,11 +1672,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[226].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[227].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Servers:]]></Val>
+          <Val><![CDATA[Flags:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Серверы:]]></Val>
+            <Val><![CDATA[Флаги:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
@@ -1672,11 +1684,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[227].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Legal docs and information: aka.ms/SqlcmdLegal]]></Val>
+          <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Юридические документы и сведения: aka.ms/SqlcmdLegal]]></Val>
+            <Val><![CDATA[-? показывает краткую справку по синтаксису, {HelpFlag} выводит современную справку по подкомандам sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
@@ -1684,26 +1696,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[228].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[229].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Third party notices: aka.ms/SqlcmdNotices]]></Val>
+          <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Уведомления третьих лиц: aka.ms/SqlcmdNotices]]></Val>
+            <Val><![CDATA[Запись трассировки во время выполнения в указанный файл. Только для расширенной отладки.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Version: {Version}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[229].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Version: {Version}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Версия {Version}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Flags:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1719,9 +1719,21 @@
       </Item>
       <Item ItemId=";messages[230].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Flags:]]></Val>
+          <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Флаги:]]></Val>
+            <Val><![CDATA[Задает один или несколько файлов, содержащих пакеты операторов SQL. Если одного или нескольких файлов не существует, sqlcmd завершит работу. Этот параметр является взаимоисключающим с {QueryAndExitFlag}/{QueryFlag}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Flags:]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[231].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Определяет файл, который получает выходные данные из sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
@@ -1729,11 +1741,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[231].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[232].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[-? shows this syntax summary, {HelpFlag} shows modern sqlcmd sub-command help]]></Val>
+          <Val><![CDATA[Print version information and exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[-? показывает краткую справку по синтаксису, {HelpFlag} выводит современную справку по подкомандам sqlcmd]]></Val>
+            <Val><![CDATA[Печать сведений о версии и выход]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
@@ -1741,11 +1753,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[232].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[233].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Write runtime trace to the specified file. Only for advanced debugging.]]></Val>
+          <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Запись трассировки во время выполнения в указанный файл. Только для расширенной отладки.]]></Val>
+            <Val><![CDATA[Неявно доверять сертификату сервера без проверки]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
@@ -1753,11 +1765,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[233].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[234].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Identifies one or more files that contain batches of SQL statements. If one or more files do not exist, sqlcmd will exit. Mutually exclusive with {QueryAndExitFlag}/{QueryFlag}]]></Val>
+          <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Задает один или несколько файлов, содержащих пакеты операторов SQL. Если одного или нескольких файлов не существует, sqlcmd завершит работу. Этот параметр является взаимоисключающим с {QueryAndExitFlag}/{QueryFlag}]]></Val>
+            <Val><![CDATA[Этот параметр задает переменную скрипта sqlcmd {DbNameVar}. Этот параметр указывает исходную базу данных. По умолчанию используется свойство "база данных по умолчанию". Если базы данных не существует, выдается сообщение об ошибке и sqlcmd завершает работу]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
@@ -1765,11 +1777,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[234].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[235].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Identifies the file that receives output from sqlcmd]]></Val>
+          <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Определяет файл, который получает выходные данные из sqlcmd]]></Val>
+            <Val><![CDATA[Использует доверенное подключение (вместо имени пользователя и пароля) для входа в SQL Server, игнорируя все переменные среды, определяющие имя пользователя и пароль]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Print version information and exit]]></Val>
@@ -1777,11 +1789,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[235].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[236].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Print version information and exit]]></Val>
+          <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Печать сведений о версии и выход]]></Val>
+            <Val><![CDATA[Задает завершающее значение пакета. Значение по умолчанию — {BatchTerminatorGo}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
@@ -1789,11 +1801,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[236].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[237].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Implicitly trust the server certificate without validation]]></Val>
+          <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Неявно доверять сертификату сервера без проверки]]></Val>
+            <Val><![CDATA[Имя для входа или имя пользователя контейнированной базы данных.  При использовании имени пользователя контейнированной базы данных необходимо указать параметр имени базы данных]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
@@ -1801,11 +1813,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[237].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[238].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This option sets the sqlcmd scripting variable {DbNameVar}. This parameter specifies the initial database. The default is your login's default-database property. If the database does not exist, an error message is generated and sqlcmd exits]]></Val>
+          <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Этот параметр задает переменную скрипта sqlcmd {DbNameVar}. Этот параметр указывает исходную базу данных. По умолчанию используется свойство "база данных по умолчанию". Если базы данных не существует, выдается сообщение об ошибке и sqlcmd завершает работу]]></Val>
+            <Val><![CDATA[Выполняет запрос при запуске sqlcmd, но не завершает работу sqlcmd по завершении выполнения запроса. Может выполнять несколько запросов, разделенных точками с запятой]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
@@ -1813,26 +1825,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[238].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[239].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Uses a trusted connection instead of using a user name and password to sign in to SQL Server, ignoring any environment variables that define user name and password]]></Val>
+          <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Использует доверенное подключение (вместо имени пользователя и пароля) для входа в SQL Server, игнорируя все переменные среды, определяющие имя пользователя и пароль]]></Val>
+            <Val><![CDATA[Выполняет запрос при запуске sqlcmd, а затем немедленно завершает работу sqlcmd. Можно выполнять сразу несколько запросов, разделенных точками с запятой]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[239].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the batch terminator. The default value is {BatchTerminatorGo}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Задает завершающее значение пакета. Значение по умолчанию — {BatchTerminatorGo}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1848,9 +1848,21 @@
       </Item>
       <Item ItemId=";messages[240].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
+          <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Имя для входа или имя пользователя контейнированной базы данных.  При использовании имени пользователя контейнированной базы данных необходимо указать параметр имени базы данных]]></Val>
+            <Val><![CDATA[{ConnStrPattern} Указывает экземпляр SQL Server, к которому нужно подключиться. Задает переменную скриптов sqlcmd {ServerEnvVar}.]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The login name or contained database user name.  For contained database users, you must provide the database name option]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[241].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Указывает имя сервера, используемого для проверки подлинности при туннелировании через прокси-сервер. Используйте вместе с параметром -S, чтобы указать адрес набора номера отдельно от имени сервера, отправляемого в SQL Server.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
@@ -1858,11 +1870,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[241].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Executes a query when sqlcmd starts, but does not exit sqlcmd when the query has finished running. Multiple-semicolon-delimited queries can be executed]]></Val>
+          <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Выполняет запрос при запуске sqlcmd, но не завершает работу sqlcmd по завершении выполнения запроса. Может выполнять несколько запросов, разделенных точками с запятой]]></Val>
+            <Val><![CDATA[{_X1} Отключение команд, которые могут скомпрометировать безопасность системы. Передача 1 сообщает sqlcmd о необходимости выхода при выполнении отключенных команд.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
@@ -1870,11 +1882,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[242].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Executes a query when sqlcmd starts and then immediately exits sqlcmd. Multiple-semicolon-delimited queries can be executed]]></Val>
+          <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Выполняет запрос при запуске sqlcmd, а затем немедленно завершает работу sqlcmd. Можно выполнять сразу несколько запросов, разделенных точками с запятой]]></Val>
+            <Val><![CDATA[Указывает метод проверки подлинности SQL, используемый для подключения к базе данных SQL Azure. Один из следующих вариантов: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
@@ -1882,35 +1894,35 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[243].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{ConnStrPattern} Specifies the instance of SQL Server to which to connect. It sets the sqlcmd scripting variable {ServerEnvVar}.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ConnStrPattern} Указывает экземпляр SQL Server, к которому нужно подключиться. Задает переменную скриптов sqlcmd {ServerEnvVar}.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";messages[244].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
+          <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает имя сервера, используемого для проверки подлинности при туннелировании через прокси-сервер. Используйте вместе с параметром -S, чтобы указать адрес набора номера отдельно от имени сервера, отправляемого в SQL Server.]]></Val>
+            <Val><![CDATA[Указывает sqlcmd, что следует использовать проверку подлинности ActiveDirectory. Если имя пользователя не указано, используется метод проверки подлинности ActiveDirectoryDefault. Если указан пароль, используется ActiveDirectoryPassword. В противном случае используется ActiveDirectoryInteractive]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+            <Val><![CDATA[Specifies the server name to use for authentication when tunneling through a proxy. Use with -S to specify the dial address separately from the server name sent to SQL Server.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";messages[245].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_X1} Отключение команд, которые могут скомпрометировать безопасность системы. Передача 1 сообщает sqlcmd о необходимости выхода при выполнении отключенных команд.]]></Val>
+            <Val><![CDATA[Сообщает sqlcmd, что следует игнорировать переменные скрипта. Этот параметр полезен, если сценарий содержит множество инструкций {InsertKeyword}, в которых могут содержаться строки, совпадающие по формату с обычными переменными, например $(variable_name)]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_X1} Disables commands that might compromise system security. Passing 1 tells sqlcmd to exit when disabled commands are run.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[246].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Создает переменную скрипта sqlcmd, которую можно использовать в скрипте sqlcmd. Если значение содержит пробелы, его следует заключить в кавычки. Можно указать несколько значений var=values. Если в любом из указанных значений имеются ошибки, sqlcmd генерирует сообщение об ошибке, а затем завершает работу]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
@@ -1918,11 +1930,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[246].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[247].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the SQL authentication method to use to connect to Azure SQL Database. One of: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
+          <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает метод проверки подлинности SQL, используемый для подключения к базе данных SQL Azure. Один из следующих вариантов: {ActiveDirectoryAzureDeveloperCli__SqlPassword___}]]></Val>
+            <Val><![CDATA[Запрашивает пакет другого размера. Этот параметр задает переменную скрипта sqlcmd {PacketSizeVar}. packet_size должно быть значением от 512 до 32767. Значение по умолчанию = 4096. Более крупный размер пакета может повысить производительность выполнения сценариев, содержащих много инструкций SQL вперемешку с командами {BatchTerminatorGo}. Можно запросить больший размер пакета. Однако если запрос отклонен, sqlcmd использует для размера пакета значение по умолчанию]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
@@ -1930,11 +1942,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[247].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[248].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Tells sqlcmd to use ActiveDirectory authentication. If no user name is provided, authentication method ActiveDirectoryDefault is used. If a password is provided, ActiveDirectoryPassword is used. Otherwise ActiveDirectoryInteractive is used]]></Val>
+          <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает sqlcmd, что следует использовать проверку подлинности ActiveDirectory. Если имя пользователя не указано, используется метод проверки подлинности ActiveDirectoryDefault. Если указан пароль, используется ActiveDirectoryPassword. В противном случае используется ActiveDirectoryInteractive]]></Val>
+            <Val><![CDATA[Указывает время ожидания входа sqlcmd в драйвер go-mssqldb в секундах при попытке подключения к серверу. Этот параметр задает переменную скрипта sqlcmd {LoginTimeOutVar}. Значение по умолчанию — 30. 0 означает бесконечное значение.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
@@ -1942,26 +1954,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[248].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[249].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Causes sqlcmd to ignore scripting variables. This parameter is useful when a script contains many {InsertKeyword} statements that may contain strings that have the same format as regular variables, such as $(variable_name)]]></Val>
+          <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Сообщает sqlcmd, что следует игнорировать переменные скрипта. Этот параметр полезен, если сценарий содержит множество инструкций {InsertKeyword}, в которых могут содержаться строки, совпадающие по формату с обычными переменными, например $(variable_name)]]></Val>
+            <Val><![CDATA[Этот параметр задает переменную скрипта sqlcmd {WorkstationVar}. Имя рабочей станции указано в столбце hostname ("Имя узла") представления каталога sys.sysprocesses. Его можно получить с помощью хранимой процедуры sp_who. Если этот параметр не указан, по умолчанию используется имя используемого в данный момент компьютера. Это имя можно использовать для идентификации различных сеансов sqlcmd]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[249].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Creates a sqlcmd scripting variable that can be used in a sqlcmd script. Enclose the value in quotation marks if the value contains spaces. You can specify multiple var=values values. If there are errors in any of the values specified, sqlcmd generates an error message and then exits]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Создает переменную скрипта sqlcmd, которую можно использовать в скрипте sqlcmd. Если значение содержит пробелы, его следует заключить в кавычки. Можно указать несколько значений var=values. Если в любом из указанных значений имеются ошибки, sqlcmd генерирует сообщение об ошибке, а затем завершает работу]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -1977,9 +1977,21 @@
       </Item>
       <Item ItemId=";messages[250].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
+          <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Запрашивает пакет другого размера. Этот параметр задает переменную скрипта sqlcmd {PacketSizeVar}. packet_size должно быть значением от 512 до 32767. Значение по умолчанию = 4096. Более крупный размер пакета может повысить производительность выполнения сценариев, содержащих много инструкций SQL вперемешку с командами {BatchTerminatorGo}. Можно запросить больший размер пакета. Однако если запрос отклонен, sqlcmd использует для размера пакета значение по умолчанию]]></Val>
+            <Val><![CDATA[Объявляет тип рабочей нагрузки приложения при подключении к серверу. Сейчас поддерживается только значение ReadOnly. Если параметр {ApplicationIntentFlagShort} не задан, служебная программа sqlcmd не поддерживает подключение к вторичному серверу репликации в группе доступности Always On.]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Requests a packet of a different size. This option sets the sqlcmd scripting variable {PacketSizeVar}. packet_size must be a value between 512 and 32767. The default = 4096. A larger packet size can enhance performance for execution of scripts that have lots of SQL statements between {BatchTerminatorGo} commands. You can request a larger packet size. However, if the request is denied, sqlcmd uses the server default for packet size]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[251].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Этот переключатель используется клиентом для запроса зашифрованного подключения]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
@@ -1987,11 +1999,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[251].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[252].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the number of seconds before a sqlcmd login to the go-mssqldb driver times out when you try to connect to a server. This option sets the sqlcmd scripting variable {LoginTimeOutVar}. The default value is 30. 0 means infinite]]></Val>
+          <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает время ожидания входа sqlcmd в драйвер go-mssqldb в секундах при попытке подключения к серверу. Этот параметр задает переменную скрипта sqlcmd {LoginTimeOutVar}. Значение по умолчанию — 30. 0 означает бесконечное значение.]]></Val>
+            <Val><![CDATA[Указывает имя узла в сертификате сервера.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
@@ -1999,11 +2011,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[252].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This option sets the sqlcmd scripting variable {WorkstationVar}. The workstation name is listed in the hostname column of the sys.sysprocesses catalog view and can be returned using the stored procedure sp_who. If this option is not specified, the default is the current computer name. This name can be used to identify different sqlcmd sessions]]></Val>
+          <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Этот параметр задает переменную скрипта sqlcmd {WorkstationVar}. Имя рабочей станции указано в столбце hostname ("Имя узла") представления каталога sys.sysprocesses. Его можно получить с помощью хранимой процедуры sp_who. Если этот параметр не указан, по умолчанию используется имя используемого в данный момент компьютера. Это имя можно использовать для идентификации различных сеансов sqlcmd]]></Val>
+            <Val><![CDATA[Указывает путь к файлу сертификата сервера (PEM, DER или CER) для сопоставления с TLS-сертификатом сервера. Используется при включённом шифровании ("-N true", "-N mandatory" или "-N strict") для закрепления сертификата вместо стандартной проверки.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
@@ -2011,11 +2023,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[253].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[254].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Declares the application workload type when connecting to a server. The only currently supported value is ReadOnly. If {ApplicationIntentFlagShort} is not specified, the sqlcmd utility will not support connectivity to a secondary replica in an Always On availability group]]></Val>
+          <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Объявляет тип рабочей нагрузки приложения при подключении к серверу. Сейчас поддерживается только значение ReadOnly. Если параметр {ApplicationIntentFlagShort} не задан, служебная программа sqlcmd не поддерживает подключение к вторичному серверу репликации в группе доступности Always On.]]></Val>
+            <Val><![CDATA[Выводит данные в вертикальном формате. Этот параметр задает для переменной создания скрипта sqlcmd {SQLCMDFORMAT} значение "{Vert}". Значение по умолчанию — false]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
@@ -2023,11 +2035,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[254].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[255].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[This switch is used by the client to request an encrypted connection]]></Val>
+          <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Этот переключатель используется клиентом для запроса зашифрованного подключения]]></Val>
+            <Val><![CDATA[{_r0__1} Перенаправление сообщений об ошибках с выходными данными уровня серьезности >= 11 в stderr. Передайте 1, чтобы перенаправлять все ошибки, включая PRINT.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
@@ -2035,11 +2047,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[255].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[256].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the host name in the server certificate.]]></Val>
+          <Val><![CDATA[Level of mssql driver messages to print]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает имя узла в сертификате сервера.]]></Val>
+            <Val><![CDATA[Уровень сообщений драйвера mssql для печати]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
@@ -2047,11 +2059,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[256].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[257].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the path to a server certificate file (PEM, DER, or CER) to match against the server's TLS certificate. Use when encryption is enabled (-N true, -N mandatory, or -N strict) for certificate pinning instead of standard certificate validation.]]></Val>
+          <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает путь к файлу сертификата сервера (PEM, DER или CER) для сопоставления с TLS-сертификатом сервера. Используется при включённом шифровании ("-N true", "-N mandatory" или "-N strict") для закрепления сертификата вместо стандартной проверки.]]></Val>
+            <Val><![CDATA[Указывает, что при возникновении ошибки sqlcmd завершает работу и возвращает {DosErrorLevel}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
@@ -2059,11 +2071,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[257].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[258].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Prints the output in vertical format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Vert}'. The default is false]]></Val>
+          <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Выводит данные в вертикальном формате. Этот параметр задает для переменной создания скрипта sqlcmd {SQLCMDFORMAT} значение "{Vert}". Значение по умолчанию — false]]></Val>
+            <Val><![CDATA[Определяет, какие сообщения об ошибках следует отправлять в {StdoutName}. Отправляются сообщения, уровень серьезности которых не меньше указанного]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
@@ -2071,26 +2083,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[258].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[259].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_r0__1} Redirects error messages with severity >= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.]]></Val>
+          <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_r0__1} Перенаправление сообщений об ошибках с выходными данными уровня серьезности >= 11 в stderr. Передайте 1, чтобы перенаправлять все ошибки, включая PRINT.]]></Val>
+            <Val><![CDATA[Указывает число строк для печати между заголовками столбцов. Используйте -h-1, чтобы заголовки не печатались]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Level of mssql driver messages to print]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[259].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Level of mssql driver messages to print]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Уровень сообщений драйвера mssql для печати]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2106,9 +2106,21 @@
       </Item>
       <Item ItemId=";messages[260].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
+          <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает, что при возникновении ошибки sqlcmd завершает работу и возвращает {DosErrorLevel}]]></Val>
+            <Val><![CDATA[Указывает, что все выходные файлы имеют кодировку Юникод с прямым порядком]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Specifies that sqlcmd exits and returns a {DosErrorLevel} value when an error occurs]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[261].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Указывает символ разделителя столбцов. Задает значение переменной {ColSeparatorVar}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
@@ -2116,11 +2128,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[261].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[262].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls which error messages are sent to {StdoutName}. Messages that have severity level greater than or equal to this level are sent]]></Val>
+          <Val><![CDATA[Remove trailing spaces from a column]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Определяет, какие сообщения об ошибках следует отправлять в {StdoutName}. Отправляются сообщения, уровень серьезности которых не меньше указанного]]></Val>
+            <Val><![CDATA[Удалить конечные пробелы из столбца]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
@@ -2128,11 +2140,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[262].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[263].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает число строк для печати между заголовками столбцов. Используйте -h-1, чтобы заголовки не печатались]]></Val>
+            <Val><![CDATA[Предоставлено для обратной совместимости. Sqlcmd всегда оптимизирует обнаружение активной реплики кластера отработки отказа SQL]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
@@ -2140,11 +2152,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[263].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[264].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies that all output files are encoded with little-endian Unicode]]></Val>
+          <Val><![CDATA[Password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает, что все выходные файлы имеют кодировку Юникод с прямым порядком]]></Val>
+            <Val><![CDATA[Пароль]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
@@ -2152,11 +2164,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[264].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[265].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Specifies the column separator character. Sets the {ColSeparatorVar} variable.]]></Val>
+          <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Указывает символ разделителя столбцов. Задает значение переменной {ColSeparatorVar}.]]></Val>
+            <Val><![CDATA[Управляет уровнем серьезности, используемым для задания переменной {ErrorLevel} при выходе]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Remove trailing spaces from a column]]></Val>
@@ -2164,11 +2176,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[265].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Remove trailing spaces from a column]]></Val>
+          <Val><![CDATA[Specifies the screen width for output]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Удалить конечные пробелы из столбца]]></Val>
+            <Val><![CDATA[Задает ширину экрана для вывода]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
@@ -2176,11 +2188,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[266].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Sqlcmd always optimizes detection of the active replica of a SQL Failover Cluster]]></Val>
+          <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Предоставлено для обратной совместимости. Sqlcmd всегда оптимизирует обнаружение активной реплики кластера отработки отказа SQL]]></Val>
+            <Val><![CDATA[{_Lc} Перечисление серверов. Передайте {C} для пропуска выходных данных "Servers:".]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Password]]></Val>
@@ -2188,11 +2200,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[267].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[268].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Password]]></Val>
+          <Val><![CDATA[Dedicated administrator connection]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Пароль]]></Val>
+            <Val><![CDATA[Выделенное административное соединение]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
@@ -2200,26 +2212,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[268].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[269].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Controls the severity level that is used to set the {ErrorLevel} variable on exit]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Управляет уровнем серьезности, используемым для задания переменной {ErrorLevel} при выходе]]></Val>
+            <Val><![CDATA[Предоставлено для обратной совместимости. Нестандартные идентификаторы всегда включены]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Specifies the screen width for output]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[269].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Specifies the screen width for output]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Задает ширину экрана для вывода]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2238,9 +2238,21 @@
       </Item>
       <Item ItemId=";messages[270].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
+          <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_Lc} Перечисление серверов. Передайте {C} для пропуска выходных данных "Servers:".]]></Val>
+            <Val><![CDATA[Предоставлено для обратной совместимости. Региональные параметры клиента не используются]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{_Lc} List servers. Pass {C} to omit 'Servers:' output.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{_k_12} Удалить управляющие символы из выходных данных. Передайте 1, чтобы заменить пробел для каждого символа, и 2 с целью замены пробела для последовательных символов]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Dedicated administrator connection]]></Val>
@@ -2248,11 +2260,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[271].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[272].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Dedicated administrator connection]]></Val>
+          <Val><![CDATA[Echo input]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Выделенное административное подключение]]></Val>
+            <Val><![CDATA[Вывод на экран входных данных]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
@@ -2260,11 +2272,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[272].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Quoted identifiers are always enabled]]></Val>
+          <Val><![CDATA[Enable column encryption]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Предоставлено для обратной совместимости. Нестандартные идентификаторы всегда включены]]></Val>
+            <Val><![CDATA[Включить шифрование столбцов]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
@@ -2272,11 +2284,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[273].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[274].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Provided for backward compatibility. Client regional settings are not used]]></Val>
+          <Val><![CDATA[New password]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Предоставлено для обратной совместимости. Региональные параметры клиента не используются]]></Val>
+            <Val><![CDATA[Новый пароль]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
@@ -2284,11 +2296,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[274].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[275].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters]]></Val>
+          <Val><![CDATA[New password and exit]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{_k_12} Удалить управляющие символы из выходных данных. Передайте 1, чтобы заменить пробел для каждого символа, и 2 с целью замены пробела для последовательных символов]]></Val>
+            <Val><![CDATA[Новый пароль и выход]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Echo input]]></Val>
@@ -2296,11 +2308,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[275].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[276].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Echo input]]></Val>
+          <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Вывод вводимых данных на экран]]></Val>
+            <Val><![CDATA[Задает переменную скриптов sqlcmd {V}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Enable column encryption]]></Val>
@@ -2308,11 +2320,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[276].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[277].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enable column encryption]]></Val>
+          <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Включить шифрование столбцов]]></Val>
+            <Val><![CDATA['{Flag} {Value}': значение должно быть не меньше {Min} и не больше {Max}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[New password]]></Val>
@@ -2320,11 +2332,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[277].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[278].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[New password]]></Val>
+          <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Новый пароль]]></Val>
+            <Val><![CDATA["{Flag} {Value}": значение должно быть больше {Min} и меньше {Max}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[New password and exit]]></Val>
@@ -2332,26 +2344,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[278].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[279].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[New password and exit]]></Val>
+          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Новый пароль и выход]]></Val>
+            <Val><![CDATA['{Flag} {Value}': непредвиденный аргумент. Значение аргумента должно быть {AllowedValues0}.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[279].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Sets the sqlcmd scripting variable {V}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Задает переменную скриптов sqlcmd {V}]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2367,9 +2367,21 @@
       </Item>
       <Item ItemId=";messages[280].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
+          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': значение должно быть не меньше {Min} и не больше {Max}.]]></Val>
+            <Val><![CDATA["{Flag} {Value}": непредвиденный аргумент. Значение аргумента должно быть одним из следующих: {AllowedValues}.]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA['{Flag} {Value}': value must be greater than or equal to {Min} and less than or equal to {Max}.]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[281].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Параметры {Flag1} и {Flag2} являются взаимоисключающими.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
@@ -2377,11 +2389,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[281].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[282].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': value must be greater than {Min} and less than {Max}.]]></Val>
+          <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["{Flag} {Value}": значение должно быть больше {Min} и меньше {Max}.]]></Val>
+            <Val><![CDATA["{P1}": аргумент отсутствует. Для справки введите "-?".]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
@@ -2389,11 +2401,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[282].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[283].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be {AllowedValues0}.]]></Val>
+          <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{Flag} {Value}': непредвиденный аргумент. Значение аргумента должно быть {AllowedValues0}.]]></Val>
+            <Val><![CDATA["{P1}": неизвестный параметр. Введите "?" для получения справки.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
@@ -2401,11 +2413,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[283].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Flag} {Value}': Unexpected argument. Argument value has to be one of {AllowedValues}.]]></Val>
+          <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["{Flag} {Value}": непредвиденный аргумент. Значение аргумента должно быть одним из следующих: {AllowedValues}.]]></Val>
+            <Val><![CDATA[не удалось создать файл трассировки "{TraceFile}": {Err}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
@@ -2413,11 +2425,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[284].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The {Flag1} and the {Flag2} options are mutually exclusive.]]></Val>
+          <Val><![CDATA[failed to start trace: {Err}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Параметры {Flag1} и {Flag2} являются взаимоисключающими.]]></Val>
+            <Val><![CDATA[не удалось запустить трассировку: {Err}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
@@ -2425,11 +2437,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[285].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{P1}': Missing argument. Enter '-?' for help.]]></Val>
+          <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["{P1}": аргумент отсутствует. Для справки введите "-?".]]></Val>
+            <Val><![CDATA[недопустимый код конца пакета "{BatchTerminator}"]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
@@ -2437,11 +2449,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[286].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{P1}': Unknown Option. Enter '-?' for help.]]></Val>
+          <Val><![CDATA[Enter new password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["{P1}": неизвестный параметр. Введите "?" для получения справки.]]></Val>
+            <Val><![CDATA[Введите новый пароль:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
@@ -2449,11 +2461,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[287].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[failed to create trace file '{TraceFile}': {Err}]]></Val>
+          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[не удалось создать файл трассировки "{TraceFile}": {Err}]]></Val>
+            <Val><![CDATA[sqlcmd: установка, создание и запрос SQL Server, Azure SQL и инструментов]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[failed to start trace: {Err}]]></Val>
@@ -2461,26 +2473,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[288].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[failed to start trace: {Err}]]></Val>
+          <Val><![CDATA[Sqlcmd: Error:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[не удалось запустить трассировку: {Err}]]></Val>
+            <Val><![CDATA[Sqlcmd: ошибка:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[289].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[invalid batch terminator '{BatchTerminator}']]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[недопустимый код конца пакета "{BatchTerminator}"]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Enter new password:]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2496,9 +2496,21 @@
       </Item>
       <Item ItemId=";messages[290].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Enter new password:]]></Val>
+          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Введите новый пароль:]]></Val>
+            <Val><![CDATA[Sqlcmd: предупреждение:]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Enter new password:]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ED, а также команды !!<command>, скрипт запуска и переменные среды отключены]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
@@ -2506,11 +2518,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[291].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools]]></Val>
+          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[sqlcmd: установка, создание и запрос SQL Server, Azure SQL и инструментов]]></Val>
+            <Val><![CDATA[Переменная скрипта "{Variable}" доступна только для чтения]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Error:]]></Val>
@@ -2518,11 +2530,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[292].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Error:]]></Val>
+          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: ошибка:]]></Val>
+            <Val><![CDATA[Переменная скрипта "{Variable}" не определена.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Sqlcmd: Warning:]]></Val>
@@ -2530,11 +2542,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[293].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Sqlcmd: Warning:]]></Val>
+          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Sqlcmd: предупреждение:]]></Val>
+            <Val><![CDATA[Переменная среды "{Variable}" имеет недопустимое значение "{EnvVal}".]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
@@ -2542,11 +2554,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[294].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[ED and !!<command> commands, startup script, and environment variables are disabled]]></Val>
+          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[ED, а также команды !!<command>, скрипт запуска и переменные среды отключены]]></Val>
+            <Val><![CDATA[Синтаксическая ошибка в строке {LineNumber} рядом с командой "{Command}"]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
@@ -2554,11 +2566,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[295].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The scripting variable: '{Variable}' is read-only]]></Val>
+          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Переменная скрипта "{Variable}" доступна только для чтения]]></Val>
+            <Val><![CDATA[{ErrorPrefix} Произошла ошибка при открытии или использовании файла {Filepath} (причина: {Error}).]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
@@ -2566,11 +2578,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[296].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{Variable}' scripting variable not defined.]]></Val>
+          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Переменная скрипта "{Variable}" не определена.]]></Val>
+            <Val><![CDATA[{ErrorPrefix}Синтаксическая ошибка в строке {LineNumber}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
@@ -2578,11 +2590,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[297].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable: '{Variable}' has invalid value: '{EnvVal}'.]]></Val>
+          <Val><![CDATA[Timeout expired]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Переменная среды "{Variable}" имеет недопустимое значение "{EnvVal}".]]></Val>
+            <Val><![CDATA[Время ожидания истекло]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
@@ -2590,26 +2602,14 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[298].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Syntax error at line {LineNumber} near command '{Command}'.]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Синтаксическая ошибка в строке {LineNumber} рядом с командой "{Command}"]]></Val>
+            <Val><![CDATA[Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, процедура {ProcName}, строка {LineNo}{SqlcmdEol}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[299].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix} Error occurred while opening or operating on file {Filepath} (Reason: {Error}).]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix} Произошла ошибка при открытии или использовании файла {Filepath} (причина: {Error}).]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2637,9 +2637,21 @@
       </Item>
       <Item ItemId=";messages[300].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{ErrorPrefix}Синтаксическая ошибка в строке {LineNumber}]]></Val>
+            <Val><![CDATA[Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, строка {LineNo}{SqlcmdEol}]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[{ErrorPrefix}Syntax error at line {LineNumber}]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[301].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Переопределение имени сервера не поддерживается текущим методом проверки подлинности]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Timeout expired]]></Val>
@@ -2647,11 +2659,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[301].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[302].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Timeout expired]]></Val>
+          <Val><![CDATA[Password:]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Время ожидания истекло]]></Val>
+            <Val><![CDATA[Пароль:]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
@@ -2659,11 +2671,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[302].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[303].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Procedure {ProcName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[(1 row affected)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, процедура {ProcName}, строка {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[(затронута 1 строка)]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
@@ -2671,11 +2683,23 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[303].translation" ItemType="0" PsrId="306" Leaf="true">
+      <Item ItemId=";messages[304].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Msg {Number}, Level {Class}, State {State}, Server {ServerName}, Line {LineNo}{SqlcmdEol}]]></Val>
+          <Val><![CDATA[({Count} rows affected)]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Сообщение {Number}, уровень {Class}, состояние {State}, сервер {ServerName}, строка {LineNo}{SqlcmdEol}]]></Val>
+            <Val><![CDATA[(затронуто строк: {Count})]]></Val>
+          </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
+          </Prev>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";messages[305].translation" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Недопустимый идентификатор переменной {Name}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Password:]]></Val>
@@ -2683,69 +2707,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";messages[304].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Server name override is not supported with the current authentication method]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Переопределение имени сервера не поддерживается текущим методом проверки подлинности]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[(1 row affected)]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[305].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Password:]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Пароль:]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[({Count} rows affected)]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";messages[306].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[(1 row affected)]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[(затронута 1 строка)]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[307].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[({Count} rows affected)]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[(затронуто строк: {Count})]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Invalid variable value {Val}]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[308].translation" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Invalid variable identifier {Name}]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Недопустимый идентификатор переменной {Name}]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";messages[309].translation" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid variable value {Val}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Недопустимое значение переменной {Val}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[(1 row affected)]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
