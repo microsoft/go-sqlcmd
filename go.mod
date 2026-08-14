@@ -23,7 +23,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sys v0.47.0
 	golang.org/x/term v0.45.0
-	golang.org/x/text v0.40.0
+	golang.org/x/text v0.41.0
 	golang.org/x/tools v0.48.0
 	gopkg.in/yaml.v2 v2.4.0
 )
