@@ -74,7 +74,9 @@ func GetLocalServerInstances() ([]string, error) {
 }
 
 func isBrowserUnavailableError(err error) bool {
-	return errors.Is(err, os.ErrDeadlineExceeded) || errors.Is(err, syscall.ECONNREFUSED)
+	return errors.Is(err, os.ErrDeadlineExceeded) ||
+		errors.Is(err, syscall.ECONNREFUSED) ||
+		errors.Is(err, syscall.ECONNRESET)
 }
 
 func localServerInstanceNames(data msdsn.BrowserData) []string {

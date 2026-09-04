@@ -91,6 +91,7 @@ func TestLocalServerInstanceNamesSkipsMissingServerNames(t *testing.T) {
 
 func TestIsBrowserUnavailableError(t *testing.T) {
 	assert.True(t, isBrowserUnavailableError(fmt.Errorf("browser unavailable: %w", syscall.ECONNREFUSED)))
+	assert.True(t, isBrowserUnavailableError(fmt.Errorf("browser unavailable: %w", syscall.ECONNRESET)))
 	assert.False(t, isBrowserUnavailableError(errors.New("network failure")))
 }
 
@@ -111,4 +112,21 @@ func TestServerlistCommand(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, "  MYSERVER\\SQL2019"+SqlcmdEol, buf.buf.String())
+}
+
+func TestServerlistCommandWritesErrors(t *testing.T) {
+	discoveryErr := errors.New("network failure")
+	original := getLocalServerInstances
+	getLocalServerInstances = func() ([]string, error) {
+		return nil, discoveryErr
+	}
+	defer func() { getLocalServerInstances = original }()
+
+	s := New(nil, "", InitializeVariables(false))
+	errBuf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetError(errBuf)
+	defer func() { _ = errBuf.Close() }()
+
+	assert.NoError(t, serverlistCommand(s, []string{""}, 1))
+	assert.Equal(t, discoveryErr.Error()+SqlcmdEol, errBuf.buf.String())
 }

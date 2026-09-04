@@ -662,7 +662,7 @@ func serverlistCommand(s *Sqlcmd, args []string, line uint) error {
 		return InvalidCommandError("SERVERLIST", line)
 	}
 	if err := ListLocalServers(s.GetOutput()); err != nil {
-		_, _ = fmt.Fprintln(s.GetError(), err)
+		s.WriteError(s.GetError(), err)
 	}
 	return nil
 }
