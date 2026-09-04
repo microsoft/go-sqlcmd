@@ -18,6 +18,8 @@ import (
 	"github.com/microsoft/go-mssqldb/msdsn"
 )
 
+const serverListTimeout = 5 * time.Second
+
 var getLocalServerInstances = GetLocalServerInstances
 
 // ListLocalServers queries the SQL Browser service for available SQL Server instances
@@ -42,7 +44,7 @@ func GetLocalServerInstances() ([]string, error) {
 	bmsg := []byte{byte(msdsn.BrowserAllInstances)}
 	resp := make([]byte, 16*1024-1)
 	dialer := &net.Dialer{}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
+	ctx, cancel := context.WithTimeout(context.Background(), serverListTimeout)
 	defer cancel()
 	conn, err := dialer.DialContext(ctx, "udp", ":1434")
 	// silently ignore failures to connect, same as ODBC
