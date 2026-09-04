@@ -486,6 +486,7 @@ func TestIsExitParenBalanced(t *testing.T) {
 		{"(", false},
 		{")", false},                       // depth goes -1, not balanced
 		{"(test))", false},                 // depth goes -1 at end
+		{"()())(()", false},                // depth goes negative before returning to zero
 		{"(select 'can''t')", true},        // escaped single quote
 		{"(select [col]]name])", true},     // escaped bracket identifier
 		{"(select 'it''s a )test')", true}, // escaped quote with paren
