@@ -305,27 +305,27 @@ func TestExitInitialQuery(t *testing.T) {
 func TestExitCodeSetOnError(t *testing.T) {
 	s, _ := setupSqlCmdWithMemoryOutput(t)
 	s.Connect.ErrorSeverityLevel = 12
-	retcode, err := s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
+	retcode, _, err := s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
 	assert.NoError(t, err, "!ExitOnError 11")
 	assert.Equal(t, -101, retcode, "Raiserror below ErrorSeverityLevel")
-	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 14, 1)")
+	retcode, _, err = s.runQuery("RAISERROR (N'Testing!' , 14, 1)")
 	assert.NoError(t, err, "!ExitOnError 14")
 	assert.Equal(t, 14, retcode, "Raiserror above ErrorSeverityLevel")
 	s.Connect.ExitOnError = true
-	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
+	retcode, _, err = s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
 	assert.NoError(t, err, "ExitOnError and Raiserror below ErrorSeverityLevel")
 	assert.Equal(t, -101, retcode, "Raiserror below ErrorSeverityLevel")
-	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 14, 1)")
+	retcode, _, err = s.runQuery("RAISERROR (N'Testing!' , 14, 1)")
 	assert.ErrorIs(t, err, ErrExitRequested, "ExitOnError and Raiserror above ErrorSeverityLevel")
 	assert.Equal(t, 14, retcode, "ExitOnError and Raiserror above ErrorSeverityLevel")
 	s.Connect.ErrorSeverityLevel = 0
-	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
+	retcode, _, err = s.runQuery("RAISERROR (N'Testing!' , 11, 1)")
 	assert.ErrorIs(t, err, ErrExitRequested, "ExitOnError and ErrorSeverityLevel = 0, Raiserror above 10")
 	assert.Equal(t, 1, retcode, "ExitOnError and ErrorSeverityLevel = 0, Raiserror above 10")
-	retcode, err = s.runQuery("RAISERROR (N'Testing!' , 5, 1)")
+	retcode, _, err = s.runQuery("RAISERROR (N'Testing!' , 5, 1)")
 	assert.NoError(t, err, "ExitOnError and ErrorSeverityLevel = 0, Raiserror below 10")
 	assert.Equal(t, -101, retcode, "ExitOnError and ErrorSeverityLevel = 0, Raiserror below 10")
-	retcode, err = s.runQuery("RAISERROR (15002, 10, 127, 'param')")
+	retcode, _, err = s.runQuery("RAISERROR (15002, 10, 127, 'param')")
 	assert.ErrorIs(t, err, ErrExitRequested, "RAISERROR with state 127")
 	assert.Equal(t, 15002, retcode, "RAISERROR (15002, 10, 127, 'param')")
 }
@@ -457,7 +457,7 @@ func TestVerticalLayoutNoColumns(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()
 	s.vars.Set(SQLCMDFORMAT, "vert")
-	_, err := s.runQuery("SELECT 100 as 'column1', 2000 as 'col2', 300")
+	_, _, err := s.runQuery("SELECT 100 as 'column1', 2000 as 'col2', 300")
 	assert.NoError(t, err, "runQuery failed")
 	assert.Equal(t,
 		"100"+SqlcmdEol+"2000"+SqlcmdEol+"300"+SqlcmdEol+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol,
@@ -467,7 +467,7 @@ func TestVerticalLayoutNoColumns(t *testing.T) {
 func TestSelectGuidColumn(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()
-	_, err := s.runQuery("select convert(uniqueidentifier, N'3ddba21e-ff0f-4d24-90b4-f355864d7865')")
+	_, _, err := s.runQuery("select convert(uniqueidentifier, N'3ddba21e-ff0f-4d24-90b4-f355864d7865')")
 	assert.NoError(t, err, "runQuery failed")
 	assert.Equal(t, "3ddba21e-ff0f-4d24-90b4-f355864d7865"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, buf.buf.String(), "select a uniqueidentifier should work")
 }
@@ -475,7 +475,7 @@ func TestSelectGuidColumn(t *testing.T) {
 func TestSelectNullGuidColumn(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()
-	_, err := s.runQuery("select convert(uniqueidentifier,null)")
+	_, _, err := s.runQuery("select convert(uniqueidentifier,null)")
 	assert.NoError(t, err, "runQuery failed")
 	assert.Equal(t, "NULL"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, buf.buf.String(), "select a null uniqueidentifier should work")
 }
@@ -485,7 +485,7 @@ func TestVerticalLayoutWithColumns(t *testing.T) {
 	defer buf.Close()
 	s.vars.Set(SQLCMDFORMAT, "vert")
 	s.vars.Set(SQLCMDMAXVARTYPEWIDTH, "256")
-	_, err := s.runQuery("SELECT 100 as 'column1', 2000 as 'col2', 300")
+	_, _, err := s.runQuery("SELECT 100 as 'column1', 2000 as 'col2', 300")
 	assert.NoError(t, err, "runQuery failed")
 	assert.Equal(t,
 		"column1 100"+SqlcmdEol+"col2    2000"+SqlcmdEol+"        300"+SqlcmdEol+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol,
@@ -607,7 +607,7 @@ func TestQueryTimeout(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()
 	s.vars.Set(SQLCMDSTATTIMEOUT, "1")
-	i, err := s.runQuery("waitfor delay '00:00:10'")
+	i, _, err := s.runQuery("waitfor delay '00:00:10'")
 	if assert.NoError(t, err, "runQuery returned an error") {
 		assert.Equal(t, -100, i, "return from runQuery")
 		assert.Equal(t, "Timeout expired"+SqlcmdEol, buf.buf.String(), "Query should have timed out")
@@ -720,4 +720,122 @@ func TestSqlcmdPrefersSharedMemoryProtocol(t *testing.T) {
 	assert.EqualValuesf(t, "tcp", msdsn.ProtocolParsers[0].Protocol(), "tcp should be first protocol")
 	assert.EqualValuesf(t, "np", msdsn.ProtocolParsers[3].Protocol(), "np should be fourth protocol")
 
+}
+
+func TestPrintStatisticsStandardFormat(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+	standardFormat := 0
+	s.PrintStatistics = &standardFormat
+	s.Connect.PacketSize = 4096
+	_, elapsedMs, err := s.runQuery("SELECT 1")
+	assert.NoError(t, err, "runQuery failed")
+	s.printStatistics(elapsedMs, 1, s.GetOutput())
+	output := buf.buf.String()
+	// Standard format should contain specific phrases
+	assert.Contains(t, output, "Network packet size (bytes): 4096", "Should contain packet size")
+	assert.Contains(t, output, "xact(s):", "Should contain xacts label")
+	assert.Contains(t, output, "Clock Time (ms.):", "Should contain clock time label")
+	assert.Contains(t, output, "xacts per sec.", "Should contain xacts per sec")
+}
+
+func TestPrintStatisticsColonFormat(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+	colonFormat := 1
+	s.PrintStatistics = &colonFormat
+	s.Connect.PacketSize = 8192
+	_, elapsedMs, err := s.runQuery("SELECT 1")
+	assert.NoError(t, err, "runQuery failed")
+	s.printStatistics(elapsedMs, 1, s.GetOutput())
+	output := buf.buf.String()
+	// Colon format: packetSize:numBatches:totalTime:avgTime:batchesPerSec
+	// Should start with 8192:1:
+	assert.Contains(t, output, "8192:1:", "Should contain packet size and batch count in colon format")
+}
+
+func TestPrintStatisticsDisabled(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() { _ = buf.Close() }()
+	// PrintStatistics is nil by default (disabled)
+	_, _, err := s.runQuery("SELECT 1")
+	assert.NoError(t, err, "runQuery failed")
+	output := buf.buf.String()
+	// Should not contain statistics output
+	assert.NotContains(t, output, "Network packet size", "Should not contain packet size when disabled")
+	assert.NotContains(t, output, "xact(s):", "Should not contain xacts label when disabled")
+}
+
+func TestPrintStatisticsUnit(t *testing.T) {
+	newSqlcmd := func(format int, packetSize int) *Sqlcmd {
+		s := &Sqlcmd{Connect: &ConnectSettings{}}
+		s.PrintStatistics = &format
+		s.Connect.PacketSize = packetSize
+		return s
+	}
+
+	t.Run("standard format", func(t *testing.T) {
+		s := newSqlcmd(0, 4096)
+		var buf bytes.Buffer
+		s.printStatistics(150, 3, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "Network packet size (bytes): 4096")
+		assert.Contains(t, out, "3 xact(s):")
+		assert.Contains(t, out, "Clock Time (ms.): total       150")
+		assert.Contains(t, out, "xacts per sec.")
+	})
+
+	t.Run("colon format", func(t *testing.T) {
+		s := newSqlcmd(1, 8192)
+		var buf bytes.Buffer
+		s.printStatistics(200, 2, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "8192:2:200:")
+	})
+
+	t.Run("sub-millisecond standard", func(t *testing.T) {
+		s := newSqlcmd(0, 4096)
+		var buf bytes.Buffer
+		s.printStatistics(0, 1, &buf)
+		out := buf.String()
+		assert.Equal(t, SqlcmdEol+
+			"Network packet size (bytes): 4096"+SqlcmdEol+
+			"1 xact(s):"+SqlcmdEol+
+			"Clock Time (ms.): total     < 1  avg   0.00 (1000.00 xacts per sec.)"+SqlcmdEol,
+			out)
+	})
+
+	t.Run("sub-millisecond colon", func(t *testing.T) {
+		s := newSqlcmd(1, 4096)
+		var buf bytes.Buffer
+		s.printStatistics(0, 1, &buf)
+		out := buf.String()
+		assert.Equal(t, SqlcmdEol+"4096:1:0:0.00:1000.00"+SqlcmdEol, out)
+	})
+
+	t.Run("disabled", func(t *testing.T) {
+		s := &Sqlcmd{Connect: &ConnectSettings{}}
+		var buf bytes.Buffer
+		s.printStatistics(100, 1, &buf)
+		assert.Empty(t, buf.String(), "should produce no output when disabled")
+	})
+
+	t.Run("default packet size", func(t *testing.T) {
+		s := newSqlcmd(0, 0)
+		var buf bytes.Buffer
+		s.printStatistics(50, 1, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "Network packet size (bytes): 4096", "should default to 4096")
+	})
+
+	t.Run("multiple batches", func(t *testing.T) {
+		s := newSqlcmd(0, 4096)
+		var buf bytes.Buffer
+		s.printStatistics(1000, 10, &buf)
+		out := buf.String()
+		assert.Contains(t, out, "10 xact(s):")
+		assert.Contains(t, out, "total      1000")
+		assert.Contains(t, out, "avg   100.00")
+		assert.Contains(t, out, "10.00 xacts per sec.")
+	})
 }
