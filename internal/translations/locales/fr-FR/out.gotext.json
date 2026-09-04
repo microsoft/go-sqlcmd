@@ -2842,6 +2842,29 @@
             "fuzzy": true
         },
         {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
+                }
+            ]
+        },
+        {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translation": "{_r0__1} Redirige les messages d’erreur avec la gravité \u003e= 11 sortie vers stderr. Passez 1 pour rediriger toutes les erreurs, y compris PRINT.",
@@ -2898,6 +2921,11 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": ""
         },
         {
             "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
@@ -3044,6 +3072,21 @@
             "translation": "Entrée d’écho",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "{_p1} Print performance statistics after each batch. Pass 1 for colon-separated format",
+            "message": "{_p1} Print performance statistics after each batch. Pass 1 for colon-separated format",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "_p1",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "\"-p[1]\""
+                }
+            ]
         },
         {
             "id": "Enable column encryption",
