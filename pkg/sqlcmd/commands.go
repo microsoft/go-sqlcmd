@@ -569,9 +569,9 @@ func onerrorCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 	params := strings.TrimSpace(args[0])
 
-	if strings.EqualFold(strings.ToLower(params), "exit") {
+	if strings.EqualFold(params, "exit") {
 		s.Connect.ExitOnError = true
-	} else if strings.EqualFold(strings.ToLower(params), "ignore") {
+	} else if strings.EqualFold(params, "ignore") {
 		s.Connect.IgnoreError = true
 		s.Connect.ExitOnError = false
 	} else {
