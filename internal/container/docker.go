@@ -5,9 +5,10 @@ package container
 
 import (
 	"context"
-	"github.com/docker/distribution/reference"
-	"github.com/docker/distribution/registry/client"
 	"net/http"
+
+	"github.com/distribution/reference"
+	"github.com/docker/distribution/registry/client"
 )
 
 // ListTags lists all tags for a container image located at a given
