@@ -14,6 +14,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type failingWriter struct {
+	err error
+}
+
+func (w failingWriter) Write([]byte) (int, error) {
+	return 0, w.err
+}
+
 func TestListLocalServers(t *testing.T) {
 	original := getLocalServerInstances
 	getLocalServerInstances = func() ([]string, error) {
@@ -25,6 +33,9 @@ func TestListLocalServers(t *testing.T) {
 
 	assert.NoError(t, ListLocalServers(&buf))
 	assert.Equal(t, "  MYSERVER\\SQL2019\n  MYSERVER\\SQL2022\n", buf.String())
+
+	writeErr := errors.New("write failed")
+	assert.ErrorIs(t, ListLocalServers(failingWriter{err: writeErr}), writeErr)
 }
 
 func TestParseInstances(t *testing.T) {

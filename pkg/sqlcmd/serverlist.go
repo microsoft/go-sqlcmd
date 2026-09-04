@@ -28,7 +28,9 @@ func ListLocalServers(w io.Writer) error {
 		return err
 	}
 	for _, s := range instances {
-		_, _ = fmt.Fprintf(w, "  %s\n", s)
+		if _, err := fmt.Fprintf(w, "  %s\n", s); err != nil {
+			return err
+		}
 	}
 	return nil
 }
