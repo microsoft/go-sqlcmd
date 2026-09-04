@@ -1,0 +1,143 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+package sqlcmd
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"net"
+	"os"
+	"sort"
+	"strings"
+	"syscall"
+	"time"
+
+	"github.com/microsoft/go-mssqldb/msdsn"
+)
+
+const serverListTimeout = 5 * time.Second
+
+var getLocalServerInstances = GetLocalServerInstances
+
+// ListLocalServers queries the SQL Browser service for available SQL Server instances
+// and writes the results to the provided writer.
+func ListLocalServers(w io.Writer) error {
+	instances, err := getLocalServerInstances()
+	if err != nil {
+		return err
+	}
+	for _, s := range instances {
+		if _, err := fmt.Fprintf(w, "  %s%s", s, SqlcmdEol); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// GetLocalServerInstances queries the SQL Browser service and returns a list of
+// available SQL Server instances on the local machine. An unavailable Browser
+// service returns no instances; other post-connect network failures are returned.
+func GetLocalServerInstances() ([]string, error) {
+	bmsg := []byte{byte(msdsn.BrowserAllInstances)}
+	resp := make([]byte, 16*1024-1)
+	dialer := &net.Dialer{}
+	ctx, cancel := context.WithTimeout(context.Background(), serverListTimeout)
+	defer cancel()
+	conn, err := dialer.DialContext(ctx, "udp", ":1434")
+	// silently ignore failures to connect, same as ODBC
+	if err != nil {
+		return nil, nil
+	}
+	defer func() { _ = conn.Close() }()
+	dl, _ := ctx.Deadline()
+	_ = conn.SetDeadline(dl)
+	_, err = conn.Write(bmsg)
+	if err != nil {
+		if isBrowserUnavailableError(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	read, err := conn.Read(resp)
+	if err != nil {
+		if isBrowserUnavailableError(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	data := parseInstances(resp[:read])
+	return localServerInstanceNames(data), nil
+}
+
+func isBrowserUnavailableError(err error) bool {
+	return errors.Is(err, os.ErrDeadlineExceeded) ||
+		errors.Is(err, syscall.ECONNREFUSED) ||
+		errors.Is(err, syscall.ECONNRESET)
+}
+
+func localServerInstanceNames(data msdsn.BrowserData) []string {
+	instances := make([]string, 0, len(data))
+
+	// Sort instance names for deterministic output
+	instanceNames := make([]string, 0, len(data))
+	for s := range data {
+		instanceNames = append(instanceNames, s)
+	}
+	sort.Strings(instanceNames)
+
+	for _, s := range instanceNames {
+		serverName := data[s]["ServerName"]
+		if serverName == "" {
+			// Skip instances without a ServerName
+			continue
+		}
+		if s == "MSSQLSERVER" {
+			instances = append(instances, serverName)
+		} else {
+			instances = append(instances, fmt.Sprintf(`%s\%s`, serverName, s))
+		}
+	}
+	return instances
+}
+
+func parseInstances(msg []byte) msdsn.BrowserData {
+	results := msdsn.BrowserData{}
+	if len(msg) > 3 && msg[0] == 5 {
+		outStr := string(msg[3:])
+		tokens := strings.Split(outStr, ";")
+		instanceDict := map[string]string{}
+		gotName := false
+		var name string
+		addInstance := func() {
+			if instName, ok := instanceDict["InstanceName"]; ok && instName != "" {
+				results[strings.ToUpper(instName)] = instanceDict
+			}
+		}
+		for _, token := range tokens {
+			if gotName {
+				instanceDict[name] = token
+				gotName = false
+			} else {
+				name = token
+				if len(name) == 0 {
+					if len(instanceDict) == 0 {
+						break
+					}
+					// Skip malformed responses without a valid instance name.
+					addInstance()
+					instanceDict = map[string]string{}
+					continue
+				}
+				gotName = true
+			}
+		}
+		if !gotName && len(instanceDict) > 0 {
+			addInstance()
+		}
+	}
+	return results
+}
