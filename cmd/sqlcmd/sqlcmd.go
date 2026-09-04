@@ -235,11 +235,11 @@ func Execute(version string) {
 			// emulate -L returning no servers
 			if args.ListServers != "" {
 				if args.ListServers != "c" {
-					fmt.Println()
-					fmt.Println(localizer.Sprintf("Servers:"))
+					fmt.Fprint(os.Stdout, sqlcmd.SqlcmdEol)
+					fmt.Fprintf(os.Stdout, "%s%s", localizer.Sprintf("Servers:"), sqlcmd.SqlcmdEol)
 				}
 				if err := sqlcmd.ListLocalServers(os.Stdout); err != nil {
-					fmt.Fprintln(os.Stderr, err)
+					fmt.Fprintf(os.Stderr, "%s%s", err, sqlcmd.SqlcmdEol)
 				}
 				os.Exit(0)
 			}
