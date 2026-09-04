@@ -12,15 +12,18 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/microsoft/go-mssqldb/msdsn"
 )
 
+var getLocalServerInstances = GetLocalServerInstances
+
 // ListLocalServers queries the SQL Browser service for available SQL Server instances
 // and writes the results to the provided writer.
 func ListLocalServers(w io.Writer) error {
-	instances, err := GetLocalServerInstances()
+	instances, err := getLocalServerInstances()
 	if err != nil {
 		return err
 	}
@@ -31,8 +34,8 @@ func ListLocalServers(w io.Writer) error {
 }
 
 // GetLocalServerInstances queries the SQL Browser service and returns a list of
-// available SQL Server instances on the local machine.
-// Returns an error for non-timeout network errors.
+// available SQL Server instances on the local machine. An unavailable Browser
+// service returns no instances; other post-connect network failures are returned.
 func GetLocalServerInstances() ([]string, error) {
 	bmsg := []byte{byte(msdsn.BrowserAllInstances)}
 	resp := make([]byte, 16*1024-1)
@@ -49,23 +52,25 @@ func GetLocalServerInstances() ([]string, error) {
 	_ = conn.SetDeadline(dl)
 	_, err = conn.Write(bmsg)
 	if err != nil {
-		// Only return error if it's not a timeout
-		if !errors.Is(err, os.ErrDeadlineExceeded) {
-			return nil, err
+		if isBrowserUnavailableError(err) {
+			return nil, nil
 		}
-		return nil, nil
+		return nil, err
 	}
 	read, err := conn.Read(resp)
 	if err != nil {
-		// Only return error if it's not a timeout
-		if !errors.Is(err, os.ErrDeadlineExceeded) {
-			return nil, err
+		if isBrowserUnavailableError(err) {
+			return nil, nil
 		}
-		return nil, nil
+		return nil, err
 	}
 
 	data := parseInstances(resp[:read])
 	return localServerInstanceNames(data), nil
+}
+
+func isBrowserUnavailableError(err error) bool {
+	return errors.Is(err, os.ErrDeadlineExceeded) || errors.Is(err, syscall.ECONNREFUSED)
 }
 
 func localServerInstanceNames(data msdsn.BrowserData) []string {

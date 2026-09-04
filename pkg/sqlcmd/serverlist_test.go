@@ -5,6 +5,9 @@ package sqlcmd
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
+	"syscall"
 	"testing"
 
 	"github.com/microsoft/go-mssqldb/msdsn"
@@ -12,35 +15,21 @@ import (
 )
 
 func TestListLocalServers(t *testing.T) {
-	// Test that ListLocalServers writes to the provided writer without error
-	// Note: actual server discovery depends on SQL Browser service availability
-	var buf bytes.Buffer
-	err := ListLocalServers(&buf)
-	if err != nil {
-		t.Logf("ListLocalServers returned error (expected in some environments): %v", err)
+	original := getLocalServerInstances
+	getLocalServerInstances = func() ([]string, error) {
+		return []string{`MYSERVER\SQL2019`, `MYSERVER\SQL2022`}, nil
 	}
-	// We can't assert specific content since it depends on environment,
-	// but we verify it doesn't panic and writes valid output
-	t.Logf("ListLocalServers output: %q", buf.String())
-}
+	defer func() { getLocalServerInstances = original }()
 
-func TestGetLocalServerInstances(t *testing.T) {
-	// Test that GetLocalServerInstances returns a slice (may be empty if no servers)
-	instances, err := GetLocalServerInstances()
-	// instances may be nil or empty if no SQL Browser is running, that's OK
-	// err may be non-nil for non-timeout network errors
-	if err != nil {
-		t.Logf("GetLocalServerInstances returned error (expected in some environments): %v", err)
-	}
-	t.Logf("Found %d instances", len(instances))
-	for _, inst := range instances {
-		assert.NotEmpty(t, inst, "Instance name should not be empty")
-	}
+	var buf bytes.Buffer
+
+	assert.NoError(t, ListLocalServers(&buf))
+	assert.Equal(t, "  MYSERVER\\SQL2019\n  MYSERVER\\SQL2022\n", buf.String())
 }
 
 func TestParseInstances(t *testing.T) {
 	// Test parsing of SQL Browser response
-	// Format: 0x05 (response type), 2 bytes length, then semicolon-separated key=value pairs
+	// Format: 0x05 (response type), 2 bytes length, then alternating key;value tokens
 	// Each instance ends with two semicolons
 
 	t.Run("empty response", func(t *testing.T) {
@@ -89,18 +78,26 @@ func TestLocalServerInstanceNamesSkipsMissingServerNames(t *testing.T) {
 	assert.Equal(t, []string{`MYSERVER\VALID`}, localServerInstanceNames(data))
 }
 
+func TestIsBrowserUnavailableError(t *testing.T) {
+	assert.True(t, isBrowserUnavailableError(fmt.Errorf("browser unavailable: %w", syscall.ECONNREFUSED)))
+	assert.False(t, isBrowserUnavailableError(errors.New("network failure")))
+}
+
 func TestServerlistCommand(t *testing.T) {
+	original := getLocalServerInstances
+	getLocalServerInstances = func() ([]string, error) {
+		return []string{`MYSERVER\SQL2019`}, nil
+	}
+	defer func() { getLocalServerInstances = original }()
+
 	v := InitializeVariables(false)
 	s := New(nil, "", v)
 	buf := &memoryBuffer{buf: new(bytes.Buffer)}
 	s.SetOutput(buf)
 	defer func() { _ = buf.Close() }()
 
-	// Run the serverlist command directly - no DB connection needed
 	err := serverlistCommand(s, []string{""}, 1)
 
-	// The command should not raise an error even if no servers are found
-	assert.NoError(t, err, ":serverlist should not raise error")
-	// Output may be empty if no SQL Browser is running
-	t.Logf("Serverlist output: %q", buf.buf.String())
+	assert.NoError(t, err)
+	assert.Equal(t, "  MYSERVER\\SQL2019\n", buf.buf.String())
 }
