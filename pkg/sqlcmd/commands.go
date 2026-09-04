@@ -212,7 +212,7 @@ func (c Commands) SetBatchTerminator(terminator string) error {
 // It tracks quotes to avoid counting parens inside string literals.
 // It handles SQL Server's quote escaping: '' inside single-quoted strings, "" inside double-quoted strings, and ]] inside bracket identifiers.
 // It also ignores parentheses inside SQL comments (-- single-line and /* multi-line */).
-func isExitParenBalanced(s string) bool {
+func exitParenDepth(s string) int {
 	depth := 0
 	var quote rune
 	inLineComment := false
@@ -268,16 +268,20 @@ func isExitParenBalanced(s string) bool {
 		case c == ')':
 			depth--
 			if depth < 0 {
-				return false
+				return -1
 			}
 		}
 	}
-	return depth == 0
+	return depth
+}
+
+func isExitParenBalanced(s string) bool {
+	return exitParenDepth(s) == 0
 }
 
 // readExitContinuation reads additional lines from the console until the EXIT
 // parentheses are balanced. This enables multi-line EXIT(query) in interactive mode.
-func readExitContinuation(s *Sqlcmd, params string) (string, error) {
+func readExitContinuation(s *Sqlcmd, params string, commandLine uint) (string, error) {
 	var builder strings.Builder
 	builder.WriteString(params)
 
@@ -287,7 +291,15 @@ func readExitContinuation(s *Sqlcmd, params string) (string, error) {
 		defer s.lineIo.SetPrompt(originalPrompt)
 	}
 
-	for !isExitParenBalanced(builder.String()) {
+	for {
+		depth := exitParenDepth(builder.String())
+		if depth < 0 {
+			return "", InvalidCommandError("EXIT", commandLine)
+		}
+		if depth == 0 {
+			return builder.String(), nil
+		}
+
 		// Show continuation prompt
 		s.lineIo.SetPrompt("      -> ")
 		line, err := s.lineIo.Readline()
@@ -297,7 +309,6 @@ func readExitContinuation(s *Sqlcmd, params string) (string, error) {
 		builder.WriteString(SqlcmdEol)
 		builder.WriteString(line)
 	}
-	return builder.String(), nil
 }
 
 // exitCommand has 3 modes.
@@ -319,14 +330,19 @@ func exitCommand(s *Sqlcmd, args []string, line uint) error {
 		return InvalidCommandError("EXIT", line)
 	}
 
+	depth := exitParenDepth(params)
+	if depth < 0 {
+		return InvalidCommandError("EXIT", line)
+	}
+
 	// If parentheses are unbalanced, try to read continuation lines (interactive mode only)
-	if !isExitParenBalanced(params) {
+	if depth > 0 {
 		if s.lineIo == nil {
 			// Not in interactive mode, can't read more lines
 			return InvalidCommandError("EXIT", line)
 		}
 		var err error
-		params, err = readExitContinuation(s, params)
+		params, err = readExitContinuation(s, params, line)
 		if err != nil {
 			return err
 		}

@@ -534,7 +534,7 @@ func TestReadExitContinuation(t *testing.T) {
 		}
 		s.lineIo.SetPrompt("")
 
-		result, err := readExitContinuation(s, "(select 1")
+		result, err := readExitContinuation(s, "(select 1", 1)
 		assert.NoError(t, err)
 		assert.Equal(t, "(select 1"+SqlcmdEol+"+ 2)", result)
 
@@ -556,7 +556,7 @@ func TestReadExitContinuation(t *testing.T) {
 			},
 		}
 
-		_, err := readExitContinuation(s, "(select 1")
+		_, err := readExitContinuation(s, "(select 1", 1)
 		assert.Equal(t, expectedErr, err)
 	})
 
@@ -578,7 +578,7 @@ func TestReadExitContinuation(t *testing.T) {
 			},
 		}
 
-		result, err := readExitContinuation(s, "(select 1")
+		result, err := readExitContinuation(s, "(select 1", 1)
 		assert.NoError(t, err)
 		assert.Equal(t, "(select 1"+SqlcmdEol+"+ 2"+SqlcmdEol+"+ 3"+SqlcmdEol+")", result)
 	})
@@ -596,7 +596,7 @@ func TestReadExitContinuation(t *testing.T) {
 			},
 		}
 
-		result, err := readExitContinuation(s, "(select 1)")
+		result, err := readExitContinuation(s, "(select 1)", 1)
 		assert.NoError(t, err)
 		assert.Equal(t, "(select 1)", result)
 		assert.False(t, readLineCalled, "Readline should not be called for balanced input")
@@ -622,12 +622,28 @@ func TestReadExitContinuation(t *testing.T) {
 		}
 		s.lineIo.SetPrompt("1> ")
 
-		result, err := readExitContinuation(s, "(select 1")
+		result, err := readExitContinuation(s, "(select 1", 1)
 		assert.NoError(t, err)
 		assert.Equal(t, "(select 1"+SqlcmdEol+")", result)
 		// After function returns, prompt should be restored to original
 		tc := s.lineIo.(*testConsole)
 		assert.Equal(t, "1> ", tc.PromptText)
+	})
+
+	t.Run("returns invalid command after unmatched closing parenthesis", func(t *testing.T) {
+		s := &Sqlcmd{}
+		s.lineIo = &testConsole{
+			OnReadLine: func() (string, error) {
+				return "))", nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		}
+
+		_, err := readExitContinuation(s, "(select 1", 7)
+
+		assert.EqualError(t, err, InvalidCommandError("EXIT", 7).Error())
 	})
 }
 
@@ -638,6 +654,26 @@ func TestExitCommandNonInteractiveUnbalanced(t *testing.T) {
 
 	err := exitCommand(s, []string{"(select 1"}, 1)
 	assert.EqualError(t, err, InvalidCommandError("EXIT", 1).Error(), "unbalanced parens in non-interactive should error")
+}
+
+func TestExitCommandInteractiveOverclosedDoesNotReadContinuation(t *testing.T) {
+	readLineCalled := false
+	s := &Sqlcmd{
+		lineIo: &testConsole{
+			OnReadLine: func() (string, error) {
+				readLineCalled = true
+				return "", nil
+			},
+			OnPasswordPrompt: func(prompt string) ([]byte, error) {
+				return nil, nil
+			},
+		},
+	}
+
+	err := exitCommand(s, []string{"(select 1))"}, 4)
+
+	assert.EqualError(t, err, InvalidCommandError("EXIT", 4).Error())
+	assert.False(t, readLineCalled)
 }
 
 // TestExitCommandMultiLineInteractive is an integration test that exercises the full
