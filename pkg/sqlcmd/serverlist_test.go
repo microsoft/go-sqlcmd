@@ -32,7 +32,7 @@ func TestListLocalServers(t *testing.T) {
 	var buf bytes.Buffer
 
 	assert.NoError(t, ListLocalServers(&buf))
-	assert.Equal(t, "  MYSERVER\\SQL2019\n  MYSERVER\\SQL2022\n", buf.String())
+	assert.Equal(t, "  MYSERVER\\SQL2019"+SqlcmdEol+"  MYSERVER\\SQL2022"+SqlcmdEol, buf.String())
 
 	writeErr := errors.New("write failed")
 	assert.ErrorIs(t, ListLocalServers(failingWriter{err: writeErr}), writeErr)
@@ -110,5 +110,5 @@ func TestServerlistCommand(t *testing.T) {
 	err := serverlistCommand(s, []string{""}, 1)
 
 	assert.NoError(t, err)
-	assert.Equal(t, "  MYSERVER\\SQL2019\n", buf.buf.String())
+	assert.Equal(t, "  MYSERVER\\SQL2019"+SqlcmdEol, buf.buf.String())
 }
