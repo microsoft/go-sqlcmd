@@ -27,10 +27,13 @@ type Root struct {
 // It also provides usage examples for sqlcmd.
 func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	// Example usage steps
-	steps := []string{"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak"}
+	steps := []string{
+		"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak",
+		"sqlcmd open vscode",
+	}
 
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		steps = append(steps, "sqlcmd open ads")
+	if runtime.GOOS == "windows" {
+		steps = append(steps, "sqlcmd open ssms")
 	}
 
 	steps = append(steps, `sqlcmd query "SELECT @@version"`)
@@ -67,15 +70,11 @@ func (c *Root) SubCommands() []cmdparser.Command {
 	subCommands := []cmdparser.Command{
 		cmdparser.New[*root.Config](dependencies),
 		cmdparser.New[*root.Install](dependencies),
+		cmdparser.New[*root.Open](dependencies),
 		cmdparser.New[*root.Query](dependencies),
 		cmdparser.New[*root.Start](dependencies),
 		cmdparser.New[*root.Stop](dependencies),
 		cmdparser.New[*root.Uninstall](dependencies),
-	}
-
-	// BUG(stuartpa): - Add Linux support
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		subCommands = append(subCommands, cmdparser.New[*root.Open](dependencies))
 	}
 
 	return subCommands

@@ -110,11 +110,9 @@
             "fuzzy": true
         },
         {
-            "id": "Open tools (e.g Azure Data Studio) for current context",
-            "message": "Open tools (e.g Azure Data Studio) for current context",
-            "translation": "Открыть инструменты (например, Azure Data Studio) для текущего контекста",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Open tools (e.g., Visual Studio Code, SSMS) for current context",
+            "message": "Open tools (e.g., Visual Studio Code, SSMS) for current context",
+            "translation": ""
         },
         {
             "id": "Run a query against the current context",
@@ -451,6 +449,21 @@
             "fuzzy": true
         },
         {
+            "id": "Removed VS Code connection profile from {Path}",
+            "message": "Removed VS Code connection profile from {Path}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Path",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "path"
+                }
+            ]
+        },
+        {
             "id": "Current context is now {NewContextName}",
             "message": "Current context is now {NewContextName}",
             "translation": "Теперь текущим контекстом является {NewContextName}",
@@ -662,11 +675,14 @@
             "fuzzy": true
         },
         {
-            "id": "Open in Azure Data Studio",
-            "message": "Open in Azure Data Studio",
-            "translation": "Открыть в Azure Data Studio",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Open in SQL Server Management Studio",
+            "message": "Open in SQL Server Management Studio",
+            "translation": ""
+        },
+        {
+            "id": "Open in Visual Studio Code",
+            "message": "Open in Visual Studio Code",
+            "translation": ""
         },
         {
             "id": "To start interactive query session",
@@ -2369,6 +2385,74 @@
             "fuzzy": true
         },
         {
+            "id": "Could not copy password to clipboard: {Error}",
+            "message": "Could not copy password to clipboard: {Error}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
+            "id": "Password copied to clipboard - paste it when prompted, then clear your clipboard",
+            "message": "Password copied to clipboard - paste it when prompted, then clear your clipboard",
+            "translation": ""
+        },
+        {
+            "id": "Open SQL Server Management Studio and connect to current context",
+            "message": "Open SQL Server Management Studio and connect to current context",
+            "translation": ""
+        },
+        {
+            "id": "Open SSMS and connect using the current context",
+            "message": "Open SSMS and connect using the current context",
+            "translation": ""
+        },
+        {
+            "id": "SSMS major version to launch (for example 21); defaults to the latest installed",
+            "message": "SSMS major version to launch (for example 21); defaults to the latest installed",
+            "translation": ""
+        },
+        {
+            "id": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "message": "SSMS is only available on Windows. Use 'sqlcmd open vscode' instead.",
+            "translation": ""
+        },
+        {
+            "id": "Open the latest SSMS",
+            "message": "Open the latest SSMS",
+            "translation": ""
+        },
+        {
+            "id": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
+            "message": "'sqlcmd open ssms' supports SSMS {MinSsmsVersion} and later; '--version {Version}' is not supported",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "MinSsmsVersion",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "minSsmsVersion"
+                },
+                {
+                    "id": "Version",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "c.version"
+                }
+            ]
+        },
+        {
             "id": "sqlcmd start",
             "message": "sqlcmd start",
             "translation": "Запуск sqlcmd",
@@ -2383,25 +2467,149 @@
             "fuzzy": true
         },
         {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Нажмите клавиши CTRL+C, чтобы выйти из этого процесса...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "SSMS exited with code {ExitCode} shortly after launch",
+            "message": "SSMS exited with code {ExitCode} shortly after launch",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ExitCode",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "exitCode"
+                }
+            ]
         },
         {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "Ошибка \"Недостаточно ресурсов памяти\" может быть вызвана слишком большим количеством учетных данных, которые уже хранятся в диспетчере учетных данных Windows",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Launching SQL Server Management Studio...",
+            "message": "Launching SQL Server Management Studio...",
+            "translation": ""
         },
         {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Не удалось записать учетные данные в диспетчер учетных данных Windows",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Open Visual Studio Code and configure connection for current context",
+            "message": "Open Visual Studio Code and configure connection for current context",
+            "translation": ""
+        },
+        {
+            "id": "Open VS Code and configure connection using the current context",
+            "message": "Open VS Code and configure connection using the current context",
+            "translation": ""
+        },
+        {
+            "id": "Open a specific VS Code build",
+            "message": "Open a specific VS Code build",
+            "translation": ""
+        },
+        {
+            "id": "VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed",
+            "message": "VS Code build to open: 'stable' or 'insiders'; defaults to stable when both are installed",
+            "translation": ""
+        },
+        {
+            "id": "Open the stable build",
+            "message": "Open the stable build",
+            "translation": ""
+        },
+        {
+            "id": "Open the insiders build",
+            "message": "Open the insiders build",
+            "translation": ""
+        },
+        {
+            "id": "'--build {Build}' is not supported; use 'stable' or 'insiders'",
+            "message": "'--build {Build}' is not supported; use 'stable' or 'insiders'",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Build",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "c.build"
+                }
+            ]
+        },
+        {
+            "id": "Error",
+            "message": "Error",
+            "translation": ""
+        },
+        {
+            "id": "Failed to create VS Code settings directory",
+            "message": "Failed to create VS Code settings directory",
+            "translation": ""
+        },
+        {
+            "id": "Failed to encode VS Code settings",
+            "message": "Failed to encode VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Connection profile created in VS Code settings",
+            "message": "Connection profile created in VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Failed to read VS Code settings",
+            "message": "Failed to read VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Failed to parse VS Code settings",
+            "message": "Failed to parse VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Failed to write VS Code settings",
+            "message": "Failed to write VS Code settings",
+            "translation": ""
+        },
+        {
+            "id": "Set the HOME environment variable",
+            "message": "Set the HOME environment variable",
+            "translation": ""
+        },
+        {
+            "id": "Set the USERPROFILE environment variable",
+            "message": "Set the USERPROFILE environment variable",
+            "translation": ""
+        },
+        {
+            "id": "Could not resolve home directory: {Error}",
+            "message": "Could not resolve home directory: {Error}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Error",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "err.Error()"
+                }
+            ]
+        },
+        {
+            "id": "Opening VS Code...",
+            "message": "Opening VS Code...",
+            "translation": ""
+        },
+        {
+            "id": "Use the '{CurrentContextName}' connection profile to connect",
+            "message": "Use the '{CurrentContextName}' connection profile to connect",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CurrentContextName",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "config.CurrentContextName()"
+                }
+            ]
         },
         {
             "id": "The -L parameter can not be used in combination with other parameters.",
@@ -2842,6 +3050,29 @@
             "fuzzy": true
         },
         {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
+                }
+            ]
+        },
+        {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translation": "{_r0__1} Перенаправление сообщений об ошибках с выходными данными уровня серьезности \u003e= 11 в stderr. Передайте 1, чтобы перенаправлять все ошибки, включая PRINT.",
@@ -2898,6 +3129,11 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": ""
         },
         {
             "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",

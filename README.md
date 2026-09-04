@@ -61,17 +61,42 @@ The Homebrew package manager may be used on Linux and Windows Subsystem for Linu
 
 Use `sqlcmd` to create SQL Server instances using a local container runtime (e.g. [Docker][] or [Podman][])
 
-### Create SQL Server instance using local container runtime and connect using Azure Data Studio
+### Create SQL Server instance using local container runtime
 
-To create a local SQL Server instance with the AdventureWorksLT database restored, query it, and connect to it using Azure Data Studio, run:
+To create a local SQL Server instance with the AdventureWorksLT database restored, run:
 
 ```
 sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak
 sqlcmd query "SELECT DB_NAME()"
-sqlcmd open ads
 ```
 
 Use `sqlcmd --help` to view all the available sub-commands.  Use `sqlcmd -?` to view the original ODBC `sqlcmd` flags.
+
+### Connect using Visual Studio Code
+
+Use `sqlcmd open vscode` to open Visual Studio Code with a connection profile configured for the current context:
+
+```
+sqlcmd open vscode
+```
+
+This command will:
+1. **Create a connection profile** in VS Code's user settings with the current context name
+2. **Launch VS Code** via the `vscode://` URL handler, which opens the MSSQL extension on the new profile
+
+If the MSSQL extension is not installed, VS Code prompts to install it the first time the URL is opened.
+
+Once VS Code opens, use the MSSQL extension's Object Explorer to connect using the profile. When you connect to the container, VS Code will automatically detect it as a Docker container and provide additional container management features (start/stop/delete) directly from the Object Explorer.
+
+### Connect using SQL Server Management Studio (Windows)
+
+On Windows, use `sqlcmd open ssms` to open SQL Server Management Studio pre-configured to connect to the current context:
+
+```
+sqlcmd open ssms
+```
+
+This command launches SSMS with the server and username pre-filled. When the current context uses SQL authentication, sqlcmd also copies the password to the clipboard so you can paste it (Ctrl+V) into the SSMS login dialog. Contexts using integrated (Windows) authentication skip the clipboard step and connect without a password prompt.
 
 ### The ~/.sqlcmd/sqlconfig file
 
