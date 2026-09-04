@@ -490,5 +490,5 @@ func TestHelpCommand(t *testing.T) {
 	assert.Contains(t, output, ":error", "help should list :error")
 	assert.Contains(t, output, ":r", "help should list :r")
 	assert.Contains(t, output, ":serverlist", "help should list :serverlist")
-	assert.Contains(t, output, "go", "help should list go")
+	assert.Contains(t, output, "go [<n>]", "help should list go")
 }

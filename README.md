@@ -184,7 +184,7 @@ switches are most important to you to have implemented next in the new sqlcmd.
 - The new `--driver-logging-level` command line parameter allows you to see traces from the `go-mssqldb` client driver. Use `64` to see all traces.
 - Sqlcmd can now print results using a vertical format. Use the new `--vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
 - `:help` displays a list of available sqlcmd commands.
-- `:serverlist` lists local SQL Server instances discovered via the SQL Server Browser service (UDP port 1434). The command queries the SQL Browser service and displays the server name and instance name for each discovered instance. If no instances are found or the Browser service is not running, no output is produced. Non-timeout errors are printed to stderr.
+- `:serverlist` lists local SQL Server instances discovered via the SQL Server Browser service (UDP port 1434). The command queries the SQL Browser service and displays the server name and instance name for each discovered instance. If no instances are found or the Browser service cannot be reached, no output is produced. Other post-connect errors are printed to stderr.
 - Sqlcmd defaults to a horizontal output format (space separated, no borders). To use the new ASCII table format, use the new `--ascii` command line option or set `SQLCMDFORMAT` to `ascii` (`-v SQLCMDFORMAT=ascii`). Note that when using the ASCII table format, individual column widths are determined by the content, but the `SQLCMDCOLWIDTH` variable and the `-w` parameter are still used to control the maximum screen width, determining when columns wrap into separate table segments. The following variables are ignored: `SQLCMDMAXFIXEDTYPEWIDTH`, `SQLCMDMAXVARTYPEWIDTH`, and `SQLCMDHEADERS`.
 
 ```
@@ -195,14 +195,14 @@ switches are most important to you to have implemented next in the new sqlcmd.
 
 #### Using :serverlist in batch scripts
 
-When automating server discovery, you can capture the output and check for errors:
+When automating server discovery, capture output and errors separately:
 
 ```batch
 @echo off
 REM Discover local SQL Server instances and connect to the first one
-sqlcmd -Q ":serverlist" 2>nul > servers.txt
-if %errorlevel% neq 0 (
-    echo Error discovering servers
+sqlcmd -Q ":serverlist" 2> errors.log > servers.txt
+if exist errors.log for %%I in (errors.log) do if %%~zI gtr 0 (
+    type errors.log
     exit /b 1
 )
 for /f "tokens=1" %%s in (servers.txt) do (
@@ -212,12 +212,6 @@ for /f "tokens=1" %%s in (servers.txt) do (
 )
 echo No SQL Server instances found
 :done
-```
-
-To capture stderr separately (for error logging):
-```batch
-sqlcmd -Q ":serverlist" 2>errors.log > servers.txt
-if exist errors.log for %%I in (errors.log) do if %%~zI gtr 0 type errors.log
 ```
 
 ```
