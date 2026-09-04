@@ -376,8 +376,11 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 			return err
 		}
 		if enc != nil {
-			// Transform from specified encoding to UTF-8
-			reader = transform.NewReader(f, enc.NewDecoder())
+			var decoder transform.Transformer = enc.NewDecoder()
+			if s.CodePage.InputCodePage == 1200 || s.CodePage.InputCodePage == 1201 {
+				decoder = unicode.BOMOverride(decoder)
+			}
+			reader = transform.NewReader(f, decoder)
 		}
 		// If enc is nil, it's UTF-8, no transformation needed
 	} else {

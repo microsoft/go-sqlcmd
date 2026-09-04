@@ -10,6 +10,7 @@ import (
 	"io"
 	"os"
 	"os/user"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
@@ -173,6 +174,33 @@ func TestIncludeFileNoExecutions(t *testing.T) {
 				assert.Equal(t, "100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"string"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol+"100"+SqlcmdEol+SqlcmdEol+oneRowAffected+SqlcmdEol, string(bytes), "Incorrect output from Run")
 			}
 		}
+	}
+}
+
+func TestIncludeFileConsumesUTF16BOM(t *testing.T) {
+	tests := []struct {
+		name     string
+		codePage int
+		content  []byte
+	}{
+		{"little endian", 1200, []byte{0xff, 0xfe, 's', 0, 'e', 0, 'l', 0, 'e', 0, 'c', 0, 't', 0, ' ', 0, '1', 0}},
+		{"big endian", 1201, []byte{0xfe, 0xff, 0, 's', 0, 'e', 0, 'l', 0, 'e', 0, 'c', 0, 't', 0, ' ', 0, '1'}},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "input.sql")
+			if !assert.NoError(t, os.WriteFile(path, tc.content, 0o600)) {
+				return
+			}
+
+			vars := InitializeVariables(true)
+			s := New(nil, "", vars)
+			s.CodePage = &CodePageSettings{InputCodePage: tc.codePage}
+
+			assert.NoError(t, s.IncludeFile(path, false))
+			assert.Equal(t, "select 1", s.batch.String())
+		})
 	}
 }
 

@@ -4,7 +4,6 @@
 package sqlcmd
 
 import (
-	"strconv"
 	"strings"
 	"time"
 
@@ -144,35 +143,22 @@ func (r *RegionalSettings) FormatDate(t time.Time) string {
 // FormatDateTime formats a datetime value using locale-specific format
 // Used for DATETIME, DATETIME2, SMALLDATETIME types
 func (r *RegionalSettings) FormatDateTime(t time.Time, scale int, addOffset bool) string {
+	scale = clampTimeScale(scale)
 	if !r.enabled {
 		return t.Format(dateTimeFormatString(scale, addOffset))
 	}
 
-	// Combine date and time in regional format
-	datePart := t.Format(r.dateFmt)
-	timePart := t.Format(r.timeFmt)
-
-	result := datePart + " " + timePart
-	if scale > 0 {
-		// Add fractional seconds
-		frac := t.Nanosecond() / (1000000000 / pow10(scale))
-		result += getDecimalSeparator(r.tag) + padLeftStr(strconv.Itoa(frac), scale, '0')
-	}
+	layout := r.dateFmt + " " + regionalTimeLayout(r.timeFmt, getDecimalSeparator(r.tag), scale)
 	if addOffset {
-		_, offset := t.Zone()
-		hours := offset / 3600
-		minutes := (offset % 3600) / 60
-		if minutes < 0 {
-			minutes = -minutes
-		}
-		result += " " + formatOffset(hours, minutes)
+		layout += " -07:00"
 	}
-	return result
+	return t.Format(layout)
 }
 
 // FormatTime formats a time value using locale-specific time format
 // Used for TIME type
 func (r *RegionalSettings) FormatTime(t time.Time, scale int) string {
+	scale = clampTimeScale(scale)
 	if !r.enabled {
 		format := "15:04:05"
 		if scale > 0 {
@@ -181,12 +167,28 @@ func (r *RegionalSettings) FormatTime(t time.Time, scale int) string {
 		return t.Format(format)
 	}
 
-	result := t.Format(r.timeFmt)
-	if scale > 0 {
-		frac := t.Nanosecond() / (1000000000 / pow10(scale))
-		result += getDecimalSeparator(r.tag) + padLeftStr(strconv.Itoa(frac), scale, '0')
+	return t.Format(regionalTimeLayout(r.timeFmt, getDecimalSeparator(r.tag), scale))
+}
+
+func clampTimeScale(scale int) int {
+	if scale < 0 {
+		return 0
 	}
-	return result
+	if scale > 9 {
+		return 9
+	}
+	return scale
+}
+
+func regionalTimeLayout(layout, decimalSeparator string, scale int) string {
+	if scale == 0 {
+		return layout
+	}
+	fraction := decimalSeparator + strings.Repeat("0", scale)
+	if strings.HasSuffix(layout, " PM") {
+		return strings.TrimSuffix(layout, " PM") + fraction + " PM"
+	}
+	return layout + fraction
 }
 
 // Helper functions
@@ -207,36 +209,6 @@ func incrementIntString(s string) string {
 		return "1" + string(digits)
 	}
 	return string(digits)
-}
-
-func pow10(n int) int {
-	if n <= 0 {
-		return 1
-	}
-	if n > 18 {
-		n = 18 // prevent overflow for int64-range values
-	}
-	result := 1
-	for i := 0; i < n; i++ {
-		result *= 10
-	}
-	return result
-}
-
-func padLeftStr(s string, length int, pad rune) string {
-	for len(s) < length {
-		s = string(pad) + s
-	}
-	return s
-}
-
-func formatOffset(hours, minutes int) string {
-	sign := "+"
-	if hours < 0 {
-		sign = "-"
-		hours = -hours
-	}
-	return sign + padLeftStr(strconv.Itoa(hours), 2, '0') + ":" + padLeftStr(strconv.Itoa(minutes), 2, '0')
 }
 
 // getDecimalSeparator returns the decimal separator for the given locale

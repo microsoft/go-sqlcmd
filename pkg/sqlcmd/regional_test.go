@@ -151,67 +151,6 @@ func TestGetLocaleDateTimeFormats(t *testing.T) {
 	}
 }
 
-func TestFormatOffset(t *testing.T) {
-	tests := []struct {
-		hours    int
-		minutes  int
-		expected string
-	}{
-		{0, 0, "+00:00"},
-		{5, 30, "+05:30"},
-		{-5, 0, "-05:00"},
-		{-8, 0, "-08:00"},
-		{12, 45, "+12:45"},
-		{-12, 0, "-12:00"},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.expected, func(t *testing.T) {
-			result := formatOffset(tc.hours, tc.minutes)
-			assert.Equal(t, tc.expected, result)
-		})
-	}
-}
-
-func TestPow10(t *testing.T) {
-	tests := []struct {
-		n        int
-		expected int
-	}{
-		{0, 1},
-		{1, 10},
-		{2, 100},
-		{3, 1000},
-		{6, 1000000},
-		{-1, 1}, // negative clamped to 1
-		{-5, 1}, // negative clamped to 1
-	}
-
-	for _, tc := range tests {
-		result := pow10(tc.n)
-		assert.Equal(t, tc.expected, result)
-	}
-}
-
-func TestPadLeftStr(t *testing.T) {
-	tests := []struct {
-		input    string
-		length   int
-		pad      rune
-		expected string
-	}{
-		{"5", 2, '0', "05"},
-		{"12", 2, '0', "12"},
-		{"1", 4, '0', "0001"},
-		{"abc", 5, ' ', "  abc"},
-	}
-
-	for _, tc := range tests {
-		result := padLeftStr(tc.input, tc.length, tc.pad)
-		assert.Equal(t, tc.expected, result)
-	}
-}
-
 func TestNewSQLCmdDefaultFormatterWithRegionalSettings(t *testing.T) {
 	vars := Variables{}
 
@@ -224,6 +163,30 @@ func TestNewSQLCmdDefaultFormatterWithRegionalSettings(t *testing.T) {
 	vars[SQLCMDFORMAT] = "ascii"
 	f = NewSQLCmdDefaultFormatter(&vars, false, ControlIgnore, WithRegionalSettings(true))
 	assert.True(t, f.(*asciiFormatter).regional.IsEnabled())
+}
+
+func TestRegionalDateTimeFormatting(t *testing.T) {
+	r := &RegionalSettings{
+		enabled: true,
+		tag:     language.MustParse("en-US"),
+		dateFmt: "01/02/2006",
+		timeFmt: "03:04:05 PM",
+	}
+	value := time.Date(2024, 1, 15, 14, 30, 45, 123456789, time.FixedZone("", -30*60))
+
+	assert.Equal(t, "01/15/2024 02:30:45.123 PM -00:30", r.FormatDateTime(value, 3, true))
+	assert.Equal(t, "01/15/2024 02:30:45.123456789 PM -00:30", r.FormatDateTime(value, 10, true))
+}
+
+func TestRegionalTimeFormatting(t *testing.T) {
+	value := time.Date(2024, 1, 15, 14, 30, 45, 123456789, time.UTC)
+
+	us := &RegionalSettings{enabled: true, tag: language.MustParse("en-US"), timeFmt: "03:04:05 PM"}
+	assert.Equal(t, "02:30:45.123 PM", us.FormatTime(value, 3))
+	assert.Equal(t, "02:30:45 PM", us.FormatTime(value, -1))
+
+	fr := &RegionalSettings{enabled: true, tag: language.MustParse("fr-FR"), timeFmt: "15:04:05"}
+	assert.Equal(t, "14:30:45,123", fr.FormatTime(value, 3))
 }
 
 func TestFormatMoneyRounding(t *testing.T) {
