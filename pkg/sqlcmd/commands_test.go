@@ -644,7 +644,9 @@ func TestExitCommandNonInteractiveUnbalanced(t *testing.T) {
 // from the console, executing the combined query, and returning the correct exit code.
 func TestExitCommandMultiLineInteractive(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
-	defer buf.Close()
+	defer func() {
+		assert.NoError(t, buf.Close())
+	}()
 
 	// Set up mock console to provide continuation lines
 	continuationLines := []string{"+ 2", ")"}
