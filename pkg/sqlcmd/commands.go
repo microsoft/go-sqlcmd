@@ -613,7 +613,7 @@ func helpCommand(s *Sqlcmd, args []string, line uint) error {
 	}
 	helpText := `:!! [<command>]
   - Executes a command in the operating system shell.
-:connect server[\instance] [-l timeout] [-U user [-P password]]
+:connect server[\instance] [-l timeout] [-U user [-P password]] [-D database] [-G authentication-method]
   - Connects to a SQL Server instance.
 :ed
   - Edits the current or last executed statement cache.
@@ -645,7 +645,7 @@ go [<n>]
   - Discards the statement cache.
 :serverlist
   - Lists local SQL Server instances.
-:setvar {variable}
+:setvar <variable>
   - Removes a sqlcmd scripting variable.
 :setvar <variable> <value>
   - Sets a sqlcmd scripting variable.

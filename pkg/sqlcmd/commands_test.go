@@ -491,4 +491,7 @@ func TestHelpCommand(t *testing.T) {
 	assert.Contains(t, output, ":r", "help should list :r")
 	assert.Contains(t, output, ":serverlist", "help should list :serverlist")
 	assert.Contains(t, output, "go [<n>]", "help should list go")
+	assert.Contains(t, output, `:connect server[\instance] [-l timeout] [-U user [-P password]] [-D database] [-G authentication-method]`)
+	assert.Contains(t, output, ":setvar <variable>")
+	assert.NotContains(t, output, ":setvar {variable}")
 }
