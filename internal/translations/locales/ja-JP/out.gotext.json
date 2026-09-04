@@ -2485,6 +2485,21 @@
             "translation": ""
         },
         {
+            "id": "Code",
+            "message": "Code",
+            "translation": ""
+        },
+        {
+            "id": "Name",
+            "message": "Name",
+            "translation": ""
+        },
+        {
+            "id": "Description",
+            "message": "Description",
+            "translation": ""
+        },
+        {
             "id": "Legal docs and information: aka.ms/SqlcmdLegal",
             "message": "Legal docs and information: aka.ms/SqlcmdLegal",
             "translation": "法的なドキュメントと情報: aka.ms/SqlcmdLegal",

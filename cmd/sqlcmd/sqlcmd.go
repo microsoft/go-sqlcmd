@@ -256,7 +256,7 @@ func Execute(version string) {
 			if args.ListCodePages {
 				fmt.Println(localizer.Sprintf("Supported Code Pages:"))
 				fmt.Println()
-				fmt.Printf("%-8s %-20s %s\n", "Code", "Name", "Description")
+				fmt.Printf("%-8s %-20s %s\n", localizer.Sprintf("Code"), localizer.Sprintf("Name"), localizer.Sprintf("Description"))
 				fmt.Printf("%-8s %-20s %s\n", "----", "----", "-----------")
 				for _, cp := range sqlcmd.SupportedCodePages() {
 					fmt.Printf("%-8d %-20s %s\n", cp.CodePage, cp.Name, cp.Description)
