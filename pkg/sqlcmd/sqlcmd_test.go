@@ -177,12 +177,13 @@ func TestIncludeFileNoExecutions(t *testing.T) {
 	}
 }
 
-func TestIncludeFileConsumesUTF16BOM(t *testing.T) {
+func TestIncludeFileConsumesBOM(t *testing.T) {
 	tests := []struct {
 		name     string
 		codePage int
 		content  []byte
 	}{
+		{"UTF-8", 65001, []byte{0xef, 0xbb, 0xbf, 's', 'e', 'l', 'e', 'c', 't', ' ', '1'}},
 		{"little endian", 1200, []byte{0xff, 0xfe, 's', 0, 'e', 0, 'l', 0, 'e', 0, 'c', 0, 't', 0, ' ', 0, '1', 0}},
 		{"big endian", 1201, []byte{0xfe, 0xff, 0, 's', 0, 'e', 0, 'l', 0, 'e', 0, 'c', 0, 't', 0, ' ', 0, '1'}},
 	}

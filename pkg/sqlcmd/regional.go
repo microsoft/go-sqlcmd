@@ -226,7 +226,7 @@ func getDecimalSeparator(tag language.Tag) string {
 	}
 
 	switch base.String() {
-	case "de", "fr", "es", "it", "pt", "nl", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "tr", "el", "ru", "uk", "be", "fi", "sv", "no", "da", "is":
+	case "de", "fr", "es", "it", "pt", "nl", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "tr", "el", "ru", "uk", "be", "fi", "sv", "no", "nb", "nn", "da", "is":
 		return ","
 	default:
 		return "."

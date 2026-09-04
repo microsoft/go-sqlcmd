@@ -60,6 +60,8 @@ func TestGetDecimalSeparator(t *testing.T) {
 		{"fr-CH", ","}, // Swiss French keeps comma
 		{"it-CH", "."}, // Swiss Italian uses . for decimal
 		{"es-ES", ","},
+		{"nb-NO", ","},
+		{"nn-NO", ","},
 		{"ja-JP", "."},
 		{"zh-CN", "."},
 	}

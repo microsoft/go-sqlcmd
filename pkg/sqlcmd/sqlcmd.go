@@ -375,14 +375,15 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 		if err != nil {
 			return err
 		}
-		if enc != nil {
+		if enc == nil {
+			reader = transform.NewReader(f, unicode.BOMOverride(unicode.UTF8.NewDecoder()))
+		} else {
 			var decoder transform.Transformer = enc.NewDecoder()
 			if s.CodePage.InputCodePage == 1200 || s.CodePage.InputCodePage == 1201 {
 				decoder = unicode.BOMOverride(decoder)
 			}
 			reader = transform.NewReader(f, decoder)
 		}
-		// If enc is nil, it's UTF-8, no transformation needed
 	} else {
 		// Default: auto-detect BOM for UTF-16, fallback to UTF-8
 		utf16bom := unicode.BOMOverride(unicode.UTF8.NewDecoder())
