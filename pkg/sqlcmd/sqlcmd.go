@@ -620,10 +620,7 @@ func (s *Sqlcmd) StopCloseHandler() {
 	signal.Stop(s.termchan)
 }
 
-// printStatistics prints performance statistics after a batch execution
-// if PrintStatistics is enabled. The out parameter controls where the
-// statistics are written (typically s.GetOutput(), or s.GetStat() when
-// :perftrace redirection is active).
+// printStatistics writes batch performance statistics when enabled.
 func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int, out io.Writer) {
 	if s.PrintStatistics == nil || numBatches <= 0 {
 		return
@@ -642,7 +639,7 @@ func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int, out io.Writer)
 		calcElapsedMs = 1
 	}
 
-	avgTime := float64(calcElapsedMs) / float64(numBatches)
+	avgTime := float64(displayElapsedMs) / float64(numBatches)
 	batchesPerSec := float64(numBatches) / (float64(calcElapsedMs) / 1000.0)
 
 	if *s.PrintStatistics == 1 {
@@ -652,7 +649,7 @@ func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int, out io.Writer)
 	} else {
 		// Standard format
 		_, _ = fmt.Fprintf(out, "\nNetwork packet size (bytes): %d\n", packetSize)
-		_, _ = fmt.Fprintf(out, "%d xact[s]:\n", numBatches)
+		_, _ = fmt.Fprintf(out, "%d xact(s):\n", numBatches)
 		if displayElapsedMs < 1 {
 			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total     < 1  avg   %.2f (%.2f xacts per sec.)\n", avgTime, batchesPerSec)
 		} else {

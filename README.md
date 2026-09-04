@@ -190,7 +190,7 @@ switches are most important to you to have implemented next in the new sqlcmd.
 2> go
 
 Network packet size (bytes): 4096
-1 xact[s]:
+1 xact(s):
 Clock Time (ms.): total         5  avg   5.00 (200.00 xacts per sec.)
 ```
 

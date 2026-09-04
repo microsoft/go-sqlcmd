@@ -734,7 +734,7 @@ func TestPrintStatisticsStandardFormat(t *testing.T) {
 	output := buf.buf.String()
 	// Standard format should contain specific phrases
 	assert.Contains(t, output, "Network packet size (bytes): 4096", "Should contain packet size")
-	assert.Contains(t, output, "xact[s]:", "Should contain xacts label")
+	assert.Contains(t, output, "xact(s):", "Should contain xacts label")
 	assert.Contains(t, output, "Clock Time (ms.):", "Should contain clock time label")
 	assert.Contains(t, output, "xacts per sec.", "Should contain xacts per sec")
 }
@@ -763,7 +763,7 @@ func TestPrintStatisticsDisabled(t *testing.T) {
 	output := buf.buf.String()
 	// Should not contain statistics output
 	assert.NotContains(t, output, "Network packet size", "Should not contain packet size when disabled")
-	assert.NotContains(t, output, "xact[s]:", "Should not contain xacts label when disabled")
+	assert.NotContains(t, output, "xact(s):", "Should not contain xacts label when disabled")
 }
 
 func TestPrintStatisticsUnit(t *testing.T) {
@@ -780,7 +780,7 @@ func TestPrintStatisticsUnit(t *testing.T) {
 		s.printStatistics(150, 3, &buf)
 		out := buf.String()
 		assert.Contains(t, out, "Network packet size (bytes): 4096")
-		assert.Contains(t, out, "3 xact[s]:")
+		assert.Contains(t, out, "3 xact(s):")
 		assert.Contains(t, out, "Clock Time (ms.): total       150")
 		assert.Contains(t, out, "xacts per sec.")
 	})
@@ -799,6 +799,7 @@ func TestPrintStatisticsUnit(t *testing.T) {
 		s.printStatistics(0, 1, &buf)
 		out := buf.String()
 		assert.Contains(t, out, "total     < 1", "sub-ms should show < 1")
+		assert.Contains(t, out, "avg   0.00")
 	})
 
 	t.Run("sub-millisecond colon", func(t *testing.T) {
@@ -806,7 +807,7 @@ func TestPrintStatisticsUnit(t *testing.T) {
 		var buf bytes.Buffer
 		s.printStatistics(0, 1, &buf)
 		out := buf.String()
-		assert.Contains(t, out, "4096:1:0:", "colon format should show 0 for sub-ms")
+		assert.Contains(t, out, "4096:1:0:0.00:", "colon format should show zero total and average")
 	})
 
 	t.Run("disabled", func(t *testing.T) {
@@ -829,7 +830,7 @@ func TestPrintStatisticsUnit(t *testing.T) {
 		var buf bytes.Buffer
 		s.printStatistics(1000, 10, &buf)
 		out := buf.String()
-		assert.Contains(t, out, "10 xact[s]:")
+		assert.Contains(t, out, "10 xact(s):")
 		assert.Contains(t, out, "total      1000")
 		assert.Contains(t, out, "avg   100.00")
 		assert.Contains(t, out, "10.00 xacts per sec.")
