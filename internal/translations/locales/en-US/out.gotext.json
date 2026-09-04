@@ -2452,9 +2452,62 @@
             "fuzzy": true
         },
         {
+            "id": "'-f {CodePage}': {ParseErr}",
+            "message": "'-f {CodePage}': {ParseErr}",
+            "translation": "'-f {CodePage}': {ParseErr}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "CodePage",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "a.CodePage"
+                },
+                {
+                    "id": "ParseErr",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "parseErr"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "Servers:",
             "message": "Servers:",
             "translation": "Servers:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Supported Code Pages:",
+            "message": "Supported Code Pages:",
+            "translation": "Supported Code Pages:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Code",
+            "message": "Code",
+            "translation": "Code",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Name",
+            "message": "Name",
+            "translation": "Name",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Description",
+            "message": "Description",
+            "translation": "Description",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -2848,6 +2901,31 @@
             "fuzzy": true
         },
         {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translation": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
@@ -2903,6 +2981,13 @@
                     "expr": "localizer.StdoutName"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": "Do not strip the \"mssql: \" prefix from error messages",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
@@ -3021,9 +3106,9 @@
             "fuzzy": true
         },
         {
-            "id": "Provided for backward compatibility. Client regional settings are not used",
-            "message": "Provided for backward compatibility. Client regional settings are not used",
-            "translation": "Provided for backward compatibility. Client regional settings are not used",
+            "id": "Use client regional settings for currency, date, and time formatting",
+            "message": "Use client regional settings for currency, date, and time formatting",
+            "translation": "Use client regional settings for currency, date, and time formatting",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -3069,6 +3154,20 @@
             "id": "New password and exit",
             "message": "New password and exit",
             "translation": "New password and exit",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Specifies the code page for input/output. Use 65001 for UTF-8. Format: codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]",
+            "message": "Specifies the code page for input/output. Use 65001 for UTF-8. Format: codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]",
+            "translation": "Specifies the code page for input/output. Use 65001 for UTF-8. Format: codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "List supported code pages and exit",
+            "message": "List supported code pages and exit",
+            "translation": "List supported code pages and exit",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -3325,6 +3424,23 @@
             "id": "failed to start trace: {Err}",
             "message": "failed to start trace: {Err}",
             "translation": "failed to start trace: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Invalid code page: {Err}",
+            "message": "Invalid code page: {Err}",
+            "translation": "Invalid code page: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {

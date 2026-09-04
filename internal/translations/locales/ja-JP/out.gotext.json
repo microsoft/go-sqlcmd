@@ -2450,11 +2450,54 @@
             "translation": ""
         },
         {
+            "id": "'-f {CodePage}': {ParseErr}",
+            "message": "'-f {CodePage}': {ParseErr}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CodePage",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "a.CodePage"
+                },
+                {
+                    "id": "ParseErr",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "parseErr"
+                }
+            ]
+        },
+        {
             "id": "Servers:",
             "message": "Servers:",
             "translation": "サーバー:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "Supported Code Pages:",
+            "message": "Supported Code Pages:",
+            "translation": ""
+        },
+        {
+            "id": "Code",
+            "message": "Code",
+            "translation": ""
+        },
+        {
+            "id": "Name",
+            "message": "Name",
+            "translation": ""
+        },
+        {
+            "id": "Description",
+            "message": "Description",
+            "translation": ""
         },
         {
             "id": "Legal docs and information: aka.ms/SqlcmdLegal",
@@ -2842,6 +2885,29 @@
             "fuzzy": true
         },
         {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
+                }
+            ]
+        },
+        {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translation": "{_r0__1} 重大度 \u003e= 11 のエラー メッセージを stderr にリダイレクトします。PRINT を含むすべてのエラーをリダイレクトするには、1 を渡します。",
@@ -2898,6 +2964,11 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": ""
         },
         {
             "id": "Specifies the number of rows to print between the column headings. Use -h-1 to specify that headers not be printed",
@@ -3015,11 +3086,9 @@
             "fuzzy": true
         },
         {
-            "id": "Provided for backward compatibility. Client regional settings are not used",
-            "message": "Provided for backward compatibility. Client regional settings are not used",
-            "translation": "下位互換性のために提供されます。クライアントの地域設定は使用されていません",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "id": "Use client regional settings for currency, date, and time formatting",
+            "message": "Use client regional settings for currency, date, and time formatting",
+            "translation": ""
         },
         {
             "id": "{_k_12} Remove control characters from output. Pass 1 to substitute a space per character, 2 for a space per consecutive characters",
@@ -3065,6 +3134,16 @@
             "translation": "新しいパスワードと終了",
             "translatorComment": "Copied from source.",
             "fuzzy": true
+        },
+        {
+            "id": "Specifies the code page for input/output. Use 65001 for UTF-8. Format: codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]",
+            "message": "Specifies the code page for input/output. Use 65001 for UTF-8. Format: codepage | i:codepage[,o:codepage] | o:codepage[,i:codepage]",
+            "translation": ""
+        },
+        {
+            "id": "List supported code pages and exit",
+            "message": "List supported code pages and exit",
+            "translation": ""
         },
         {
             "id": "Sets the sqlcmd scripting variable {V}",
@@ -3331,6 +3410,21 @@
                 }
             ],
             "fuzzy": true
+        },
+        {
+            "id": "Invalid code page: {Err}",
+            "message": "Invalid code page: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
         },
         {
             "id": "invalid batch terminator '{BatchTerminator}'",

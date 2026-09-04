@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -29,6 +30,26 @@ type Command struct {
 	name string
 	// whether the command is a system command
 	isSystem bool
+}
+
+type encodingWriteCloser struct {
+	writer *transform.Writer
+	file   *os.File
+}
+
+func newEncodingWriteCloser(file *os.File, transformer transform.Transformer) *encodingWriteCloser {
+	return &encodingWriteCloser{
+		writer: transform.NewWriter(file, transformer),
+		file:   file,
+	}
+}
+
+func (w *encodingWriteCloser) Write(p []byte) (int, error) {
+	return w.writer.Write(p)
+}
+
+func (w *encodingWriteCloser) Close() error {
+	return errors.Join(w.writer.Close(), w.file.Close())
 }
 
 // Commands is the set of sqlcmd command implementations
@@ -324,8 +345,21 @@ func outCommand(s *Sqlcmd, args []string, line uint) error {
 			// ODBC sqlcmd doesn't write a BOM but we will.
 			// Maybe the endian-ness should be configurable.
 			win16le := unicode.UTF16(unicode.LittleEndian, unicode.UseBOM)
-			encoder := transform.NewWriter(o, win16le.NewEncoder())
-			s.SetOutput(encoder)
+			s.SetOutput(newEncodingWriteCloser(o, win16le.NewEncoder()))
+		} else if s.CodePage != nil && s.CodePage.OutputCodePage != 0 {
+			// Use specified output codepage
+			enc, err := GetEncoding(s.CodePage.OutputCodePage)
+			if err != nil {
+				_ = o.Close()
+				return err
+			}
+			if enc != nil {
+				// Transform from UTF-8 to specified encoding
+				s.SetOutput(newEncodingWriteCloser(o, enc.NewEncoder()))
+			} else {
+				// UTF-8, no transformation needed
+				s.SetOutput(o)
+			}
 		} else {
 			s.SetOutput(o)
 		}
@@ -352,7 +386,24 @@ func errorCommand(s *Sqlcmd, args []string, line uint) error {
 		if err != nil {
 			return InvalidFileError(err, args[0])
 		}
-		s.SetError(o)
+		// Apply output codepage if configured
+		if s.CodePage != nil && s.CodePage.OutputCodePage != 0 {
+			enc, err := GetEncoding(s.CodePage.OutputCodePage)
+			if err != nil {
+				if cerr := o.Close(); cerr != nil {
+					return fmt.Errorf("%w (and closing error file %s failed: %v)", err, filePath, cerr)
+				}
+				return err
+			}
+			if enc == nil {
+				// No transformation required (e.g., UTF-8), write directly
+				s.SetError(o)
+			} else {
+				s.SetError(newEncodingWriteCloser(o, enc.NewEncoder()))
+			}
+		} else {
+			s.SetError(o)
+		}
 	}
 	return nil
 }

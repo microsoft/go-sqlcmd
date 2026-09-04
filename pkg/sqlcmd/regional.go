@@ -1,0 +1,316 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+package sqlcmd
+
+import (
+	"strings"
+	"time"
+
+	"golang.org/x/text/language"
+)
+
+// RegionalSettings provides locale-aware formatting for output when -R is used
+type RegionalSettings struct {
+	enabled bool
+	tag     language.Tag
+	dateFmt string
+	timeFmt string
+}
+
+// NewRegionalSettings creates a new RegionalSettings instance
+// If enabled is false, all format methods return values unchanged
+func NewRegionalSettings(enabled bool) *RegionalSettings {
+	r := &RegionalSettings{enabled: enabled}
+	if enabled {
+		r.tag = detectUserLocale()
+		r.dateFmt, r.timeFmt = getLocaleDateTimeFormats(r.tag)
+	}
+	return r
+}
+
+// IsEnabled returns whether regional formatting is active
+func (r *RegionalSettings) IsEnabled() bool {
+	return r.enabled
+}
+
+// FormatNumber formats a numeric value with locale-specific thousand separators
+// Used for DECIMAL and NUMERIC types. Formatting is done purely by string
+// manipulation to preserve all digits of high-precision values.
+func (r *RegionalSettings) FormatNumber(value string) string {
+	if !r.enabled || value == "" || value == "NULL" {
+		return value
+	}
+
+	// Handle leading sign
+	negative := strings.HasPrefix(value, "-")
+	if negative {
+		value = value[1:]
+	}
+
+	// Split into integer and decimal parts using the SQL-style decimal point.
+	// We do not change any digits; we only insert locale-specific separators.
+	parts := strings.SplitN(value, ".", 2)
+	intPart := parts[0]
+
+	// Add thousand separators using locale convention (pure string manipulation)
+	formatted := addThousandSeparators(intPart, r.tag)
+	if len(parts) > 1 {
+		formatted += getDecimalSeparator(r.tag) + parts[1]
+	}
+	if negative {
+		formatted = "-" + formatted
+	}
+	return formatted
+}
+
+// FormatMoney formats a currency value with locale-specific formatting
+// Used for MONEY and SMALLMONEY types
+// Uses pure string manipulation to preserve precision for large values
+func (r *RegionalSettings) FormatMoney(value string) string {
+	if !r.enabled || value == "" || value == "NULL" {
+		return value
+	}
+
+	// MONEY/SMALLMONEY are fixed-point with 4 decimal places.
+	// Avoid float64 to prevent rounding of large values; format via string operations.
+	negative := strings.HasPrefix(value, "-")
+	cleanValue := value
+	if negative {
+		cleanValue = value[1:]
+	}
+
+	// Split into integer and fractional parts
+	parts := strings.SplitN(cleanValue, ".", 2)
+	intPart := parts[0]
+	fracPart := ""
+	if len(parts) > 1 {
+		fracPart = parts[1]
+	}
+
+	// Normalize fractional part to exactly 4 digits, matching SQL Server MONEY display
+	if len(fracPart) == 0 {
+		fracPart = "0000"
+	} else if len(fracPart) < 4 {
+		fracPart = fracPart + strings.Repeat("0", 4-len(fracPart))
+	} else if len(fracPart) > 4 {
+		// Round the 5th digit instead of silent truncation
+		if fracPart[4] >= '5' {
+			// Propagate carry through the first 4 digits
+			digits := []byte(fracPart[:4])
+			carry := true
+			for i := 3; i >= 0 && carry; i-- {
+				digits[i]++
+				if digits[i] > '9' {
+					digits[i] = '0'
+				} else {
+					carry = false
+				}
+			}
+			if carry {
+				// Carry overflowed all 4 digits (e.g., .99999 -> 1.0000)
+				// Increment the integer part
+				intPart = incrementIntString(intPart)
+				fracPart = "0000"
+			} else {
+				fracPart = string(digits)
+			}
+		} else {
+			fracPart = fracPart[:4]
+		}
+	}
+
+	// Apply locale-specific thousand separators to the integer part
+	formattedInt := addThousandSeparators(intPart, r.tag)
+
+	// Combine with locale-specific decimal separator
+	formatted := formattedInt + getDecimalSeparator(r.tag) + fracPart
+	if negative {
+		formatted = "-" + formatted
+	}
+	return formatted
+}
+
+// FormatDate formats a date value using locale-specific date format
+// Used for DATE type
+func (r *RegionalSettings) FormatDate(t time.Time) string {
+	if !r.enabled {
+		return t.Format("2006-01-02")
+	}
+	return t.Format(r.dateFmt)
+}
+
+// FormatDateTime formats a datetime value using locale-specific format
+// Used for DATETIME, DATETIME2, SMALLDATETIME types
+func (r *RegionalSettings) FormatDateTime(t time.Time, scale int, addOffset bool) string {
+	scale = clampTimeScale(scale)
+	if !r.enabled {
+		return t.Format(dateTimeFormatString(scale, addOffset))
+	}
+
+	layout := r.dateFmt + " " + regionalTimeLayout(r.timeFmt, getDecimalSeparator(r.tag), scale)
+	if addOffset {
+		layout += " -07:00"
+	}
+	return t.Format(layout)
+}
+
+// FormatTime formats a time value using locale-specific time format
+// Used for TIME type
+func (r *RegionalSettings) FormatTime(t time.Time, scale int) string {
+	scale = clampTimeScale(scale)
+	if !r.enabled {
+		format := "15:04:05"
+		if scale > 0 {
+			format = format + "." + strings.Repeat("0", scale)
+		}
+		return t.Format(format)
+	}
+
+	return t.Format(regionalTimeLayout(r.timeFmt, getDecimalSeparator(r.tag), scale))
+}
+
+func clampTimeScale(scale int) int {
+	if scale < 0 {
+		return 0
+	}
+	if scale > 9 {
+		return 9
+	}
+	return scale
+}
+
+func regionalTimeLayout(layout, decimalSeparator string, scale int) string {
+	if scale == 0 {
+		return layout
+	}
+	fraction := decimalSeparator + strings.Repeat("0", scale)
+	if strings.HasSuffix(layout, " PM") {
+		return strings.TrimSuffix(layout, " PM") + fraction + " PM"
+	}
+	return layout + fraction
+}
+
+// Helper functions
+
+// incrementIntString adds 1 to a non-negative integer represented as a string.
+func incrementIntString(s string) string {
+	digits := []byte(s)
+	carry := true
+	for i := len(digits) - 1; i >= 0 && carry; i-- {
+		digits[i]++
+		if digits[i] > '9' {
+			digits[i] = '0'
+		} else {
+			carry = false
+		}
+	}
+	if carry {
+		return "1" + string(digits)
+	}
+	return string(digits)
+}
+
+// getDecimalSeparator returns the decimal separator for the given locale
+func getDecimalSeparator(tag language.Tag) string {
+	// Check region-specific overrides first (e.g., Swiss locales use different conventions)
+	base, _ := tag.Base()
+	region, _ := tag.Region()
+	if region.String() == "CH" {
+		switch base.String() {
+		case "de", "it":
+			return "." // Swiss German/Italian use . for decimal
+		case "fr":
+			return "," // Swiss French keeps comma
+		}
+	}
+
+	switch base.String() {
+	case "de", "fr", "es", "it", "pt", "nl", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "tr", "el", "ru", "uk", "be", "fi", "sv", "no", "nb", "nn", "da", "is":
+		return ","
+	default:
+		return "."
+	}
+}
+
+// getThousandSeparator returns the thousand separator for the given locale
+func getThousandSeparator(tag language.Tag) string {
+	// Check region-specific overrides first
+	base, _ := tag.Base()
+	region, _ := tag.Region()
+	if region.String() == "CH" {
+		// Swiss locales use apostrophe as thousand separator
+		return "\u2019" // right single quotation mark (typographic apostrophe)
+	}
+
+	switch base.String() {
+	case "fr", "ru", "uk", "be", "fi", "sv", "no", "nb", "nn":
+		// These locales use a non-breaking space as the thousand separator
+		return "\u00a0"
+	case "de", "es", "it", "pt", "nl", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "tr", "el", "da", "is":
+		return "."
+	default:
+		return ","
+	}
+}
+
+// addThousandSeparators adds thousand separators to an integer string
+func addThousandSeparators(s string, tag language.Tag) string {
+	sep := getThousandSeparator(tag)
+	if len(s) <= 3 {
+		return s
+	}
+
+	var result strings.Builder
+	start := len(s) % 3
+	if start == 0 {
+		start = 3
+	}
+	result.WriteString(s[:start])
+	for i := start; i < len(s); i += 3 {
+		result.WriteString(sep)
+		result.WriteString(s[i : i+3])
+	}
+	return result.String()
+}
+
+// getLocaleDateTimeFormats returns the date and time format strings for the locale
+func getLocaleDateTimeFormats(tag language.Tag) (dateFmt, timeFmt string) {
+	// Default to ISO format
+	dateFmt = "2006-01-02"
+	timeFmt = "15:04:05"
+
+	base, _ := tag.Base()
+	region, _ := tag.Region()
+
+	// Set date format based on locale
+	switch base.String() {
+	case "en":
+		if region.String() == "US" {
+			dateFmt = "01/02/2006"
+		} else {
+			dateFmt = "02/01/2006"
+		}
+	case "de", "ru", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "uk", "be":
+		dateFmt = "02.01.2006"
+	case "fr", "pt", "es", "it", "nl", "tr", "el":
+		dateFmt = "02/01/2006"
+	case "ja", "zh", "ko":
+		dateFmt = "2006/01/02"
+	case "fi", "sv", "no", "da", "is":
+		dateFmt = "2006-01-02"
+	}
+
+	// Set time format based on locale (12hr vs 24hr)
+	switch base.String() {
+	case "en":
+		if region.String() == "US" || region.String() == "CA" || region.String() == "AU" {
+			timeFmt = "03:04:05 PM"
+		}
+	case "ja", "ko":
+		// These can use 12hr with different AM/PM
+		timeFmt = "15:04:05"
+	}
+
+	return dateFmt, timeFmt
+}

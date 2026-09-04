@@ -27,6 +27,7 @@ func NewSQLCmdAsciiFormatter(vars *Variables, removeTrailingSpaces bool, ccb Con
 			colorizer:            color.New(false),
 			ccb:                  ccb,
 			vars:                 vars,
+			regional:             *NewRegionalSettings(false),
 		},
 	}
 }
