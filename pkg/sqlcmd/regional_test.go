@@ -167,6 +167,11 @@ func TestNewSQLCmdDefaultFormatterWithRegionalSettings(t *testing.T) {
 	assert.True(t, f.(*asciiFormatter).regional.IsEnabled())
 }
 
+func TestFormatterZeroValueDisablesRegionalSettings(t *testing.T) {
+	var formatter sqlCmdFormatterType
+	assert.False(t, formatter.regional.IsEnabled())
+}
+
 func TestRegionalDateTimeFormatting(t *testing.T) {
 	r := &RegionalSettings{
 		enabled: true,

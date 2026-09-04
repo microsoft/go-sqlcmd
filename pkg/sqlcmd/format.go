@@ -85,7 +85,7 @@ type sqlCmdFormatterType struct {
 	maxColNameLen        int
 	colorizer            color.Colorizer
 	xml                  bool
-	regional             *RegionalSettings
+	regional             RegionalSettings
 	rawErrors            bool
 }
 
@@ -100,7 +100,7 @@ func WithRawErrors(raw bool) FormatterOption {
 
 // WithRegionalSettings enables locale-aware numeric and date/time formatting.
 func WithRegionalSettings(enabled bool) FormatterOption {
-	return func(f *sqlCmdFormatterType) { f.regional = NewRegionalSettings(enabled) }
+	return func(f *sqlCmdFormatterType) { f.regional = *NewRegionalSettings(enabled) }
 }
 
 // NewSQLCmdDefaultFormatter returns an ASCII formatter when SQLCMDFORMAT is "ascii",
@@ -116,7 +116,7 @@ func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb C
 		format:               "horizontal",
 		colorizer:            color.New(false),
 		ccb:                  ccb,
-		regional:             NewRegionalSettings(false),
+		regional:             *NewRegionalSettings(false),
 	}
 	applyFormatterOptions(f, opts)
 	return f
