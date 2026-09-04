@@ -172,6 +172,16 @@ func TestFormatterZeroValueDisablesRegionalSettings(t *testing.T) {
 	assert.False(t, formatter.regional.IsEnabled())
 }
 
+func TestFormatterRegionalNumericValues(t *testing.T) {
+	formatter := sqlCmdFormatterType{
+		regional: RegionalSettings{enabled: true, tag: language.MustParse("de-DE")},
+	}
+
+	assert.Equal(t, "1.234,56", formatter.formatNumericValue("DECIMAL", []byte("1234.56")))
+	assert.Equal(t, "1.234,5600", formatter.formatNumericValue("MONEY", []byte("1234.56")))
+	assert.Equal(t, "text", formatter.formatNumericValue("VARCHAR", []byte("text")))
+}
+
 func TestRegionalDateTimeFormatting(t *testing.T) {
 	r := &RegionalSettings{
 		enabled: true,

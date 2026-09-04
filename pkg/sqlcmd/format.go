@@ -531,22 +531,10 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 						row[n] = uuid.New().String()
 					}
 				} else {
-					row[n] = string(x)
+					row[n] = f.formatNumericValue(typeName, x)
 				}
 			case string:
-				// Apply regional formatting for DECIMAL/NUMERIC/MONEY when represented as string
-				if f.regional.IsEnabled() {
-					switch typeName {
-					case "DECIMAL", "NUMERIC":
-						row[n] = f.regional.FormatNumber(x)
-					case "MONEY", "SMALLMONEY":
-						row[n] = f.regional.FormatMoney(x)
-					default:
-						row[n] = x
-					}
-				} else {
-					row[n] = x
-				}
+				row[n] = f.formatNumericValue(typeName, x)
 			case time.Time:
 				// Apply regional formatting when -R is enabled
 				if f.regional.IsEnabled() {
@@ -590,24 +578,31 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 					row[n] = "0"
 				}
 			default:
-				val := fmt.Sprintf("%v", x)
-				// Apply regional formatting for numeric types
-				if f.regional.IsEnabled() {
-					switch typeName {
-					case "DECIMAL", "NUMERIC":
-						row[n] = f.regional.FormatNumber(val)
-					case "MONEY", "SMALLMONEY":
-						row[n] = f.regional.FormatMoney(val)
-					default:
-						row[n] = val
-					}
-				} else {
-					row[n] = val
-				}
+				row[n] = f.formatNumericValue(typeName, x)
 			}
 		}
 	}
 	return row, nil
+}
+
+func (f *sqlCmdFormatterType) formatNumericValue(typeName string, value interface{}) string {
+	var text string
+	if bytes, ok := value.([]byte); ok {
+		text = string(bytes)
+	} else {
+		text = fmt.Sprintf("%v", value)
+	}
+	if !f.regional.IsEnabled() {
+		return text
+	}
+	switch typeName {
+	case "DECIMAL", "NUMERIC":
+		return f.regional.FormatNumber(text)
+	case "MONEY", "SMALLMONEY":
+		return f.regional.FormatMoney(text)
+	default:
+		return text
+	}
 }
 
 func dateTimeScale(typeName string, scale int) int {
