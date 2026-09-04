@@ -1,7 +1,7 @@
 steps: 
   - task: GoTool@0
     inputs:
-      version: '1.22.10'
+      version: '1.25.7'
   - task: Go@0
     displayName: 'Go: get dependencies'
     inputs:
@@ -18,18 +18,10 @@ steps:
       workingDirectory: '$(System.DefaultWorkingDirectory)'
   
   - task: Go@0
-    displayName: 'Go: install github.com/axw/gocov/gocov'
+    displayName: 'Go: install github.com/boumenot/gocover-cobertura'
     inputs:
       command: 'custom'
       customCommand: 'install'
-      arguments: 'github.com/axw/gocov/gocov@latest'
-      workingDirectory: '$(System.DefaultWorkingDirectory)'
-  
-  - task: Go@0
-    displayName: 'Go: install github.com/axw/gocov/gocov'
-    inputs:
-      command: 'custom'
-      customCommand: 'install'
-      arguments: 'github.com/AlekSi/gocov-xml@latest'
+      arguments: 'github.com/boumenot/gocover-cobertura@latest'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
   
