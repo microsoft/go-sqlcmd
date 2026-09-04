@@ -409,6 +409,12 @@ func getOptionalIntArgument(cmd *cobra.Command, name string) (i *int) {
 	if val != nil && val.Changed {
 		i = new(int)
 		value := val.Value.String()
+		// Bare flag with no argument (e.g., -r) defaults to 0.
+		// This only applies to -r (errorsToStderr); other callers always provide a value.
+		if value == "" {
+			*i = 0
+			return
+		}
 		v, e := strconv.Atoi(value)
 		if e != nil {
 			*i = -1
