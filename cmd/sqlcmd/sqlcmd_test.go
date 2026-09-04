@@ -105,6 +105,9 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-p", "1"}, func(args SQLCmdArguments) bool {
 			return args.PrintStatistics != nil && *args.PrintStatistics == 1
 		}},
+		{[]string{"-p1"}, func(args SQLCmdArguments) bool {
+			return args.PrintStatistics != nil && *args.PrintStatistics == 1
+		}},
 		{[]string{"-N"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true"
 		}},

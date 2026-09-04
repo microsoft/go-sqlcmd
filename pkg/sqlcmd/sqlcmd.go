@@ -645,15 +645,15 @@ func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int, out io.Writer)
 	if *s.PrintStatistics == 1 {
 		// Colon-separated format: n:x:t1:t2:t3
 		// packetSize:numBatches:totalTime:avgTime:batchesPerSec
-		_, _ = fmt.Fprintf(out, "\n%d:%d:%d:%.2f:%.2f\n", packetSize, numBatches, displayElapsedMs, avgTime, batchesPerSec)
+		_, _ = fmt.Fprintf(out, "%s%d:%d:%d:%.2f:%.2f%s", SqlcmdEol, packetSize, numBatches, displayElapsedMs, avgTime, batchesPerSec, SqlcmdEol)
 	} else {
 		// Standard format
-		_, _ = fmt.Fprintf(out, "\nNetwork packet size (bytes): %d\n", packetSize)
-		_, _ = fmt.Fprintf(out, "%d xact(s):\n", numBatches)
+		_, _ = fmt.Fprintf(out, "%sNetwork packet size (bytes): %d%s", SqlcmdEol, packetSize, SqlcmdEol)
+		_, _ = fmt.Fprintf(out, "%d xact(s):%s", numBatches, SqlcmdEol)
 		if displayElapsedMs < 1 {
-			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total     < 1  avg   %.2f (%.2f xacts per sec.)\n", avgTime, batchesPerSec)
+			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total     < 1  avg   %.2f (%.2f xacts per sec.)%s", avgTime, batchesPerSec, SqlcmdEol)
 		} else {
-			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total   %7d  avg   %.2f (%.2f xacts per sec.)\n", displayElapsedMs, avgTime, batchesPerSec)
+			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total   %7d  avg   %.2f (%.2f xacts per sec.)%s", displayElapsedMs, avgTime, batchesPerSec, SqlcmdEol)
 		}
 	}
 }

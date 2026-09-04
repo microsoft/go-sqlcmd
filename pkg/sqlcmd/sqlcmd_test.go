@@ -798,8 +798,11 @@ func TestPrintStatisticsUnit(t *testing.T) {
 		var buf bytes.Buffer
 		s.printStatistics(0, 1, &buf)
 		out := buf.String()
-		assert.Contains(t, out, "total     < 1", "sub-ms should show < 1")
-		assert.Contains(t, out, "avg   0.00")
+		assert.Equal(t, SqlcmdEol+
+			"Network packet size (bytes): 4096"+SqlcmdEol+
+			"1 xact(s):"+SqlcmdEol+
+			"Clock Time (ms.): total     < 1  avg   0.00 (1000.00 xacts per sec.)"+SqlcmdEol,
+			out)
 	})
 
 	t.Run("sub-millisecond colon", func(t *testing.T) {
@@ -807,7 +810,7 @@ func TestPrintStatisticsUnit(t *testing.T) {
 		var buf bytes.Buffer
 		s.printStatistics(0, 1, &buf)
 		out := buf.String()
-		assert.Contains(t, out, "4096:1:0:0.00:", "colon format should show zero total and average")
+		assert.Equal(t, SqlcmdEol+"4096:1:0:0.00:1000.00"+SqlcmdEol, out)
 	})
 
 	t.Run("disabled", func(t *testing.T) {
