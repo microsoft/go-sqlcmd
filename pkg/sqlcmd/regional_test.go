@@ -185,6 +185,12 @@ func TestRegionalDateTimeFormatting(t *testing.T) {
 	assert.Equal(t, "01/15/2024 02:30:45.123456789 PM -00:30", r.FormatDateTime(value, 10, true))
 }
 
+func TestDateTimeScale(t *testing.T) {
+	assert.Equal(t, 3, dateTimeScale("DATETIME", 0))
+	assert.Equal(t, 0, dateTimeScale("SMALLDATETIME", 7))
+	assert.Equal(t, 7, dateTimeScale("DATETIME2", 7))
+}
+
 func TestRegionalTimeFormatting(t *testing.T) {
 	value := time.Date(2024, 1, 15, 14, 30, 45, 123456789, time.UTC)
 

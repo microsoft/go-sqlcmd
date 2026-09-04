@@ -554,7 +554,7 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 					case "DATE":
 						row[n] = f.regional.FormatDate(x)
 					case "DATETIME", "DATETIME2", "SMALLDATETIME":
-						row[n] = f.regional.FormatDateTime(x, f.columnDetails[n].scale, false)
+						row[n] = f.regional.FormatDateTime(x, dateTimeScale(typeName, f.columnDetails[n].scale), false)
 					case "DATETIMEOFFSET":
 						row[n] = f.regional.FormatDateTime(x, f.columnDetails[n].scale, true)
 					case "TIME":
@@ -566,12 +566,8 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 					switch typeName {
 					case "DATE":
 						row[n] = x.Format("2006-01-02")
-					case "DATETIME":
-						row[n] = x.Format(dateTimeFormatString(3, false))
-					case "DATETIME2":
-						row[n] = x.Format(dateTimeFormatString(f.columnDetails[n].scale, false))
-					case "SMALLDATETIME":
-						row[n] = x.Format(dateTimeFormatString(0, false))
+					case "DATETIME", "DATETIME2", "SMALLDATETIME":
+						row[n] = x.Format(dateTimeFormatString(dateTimeScale(typeName, f.columnDetails[n].scale), false))
 					case "DATETIMEOFFSET":
 						row[n] = x.Format(dateTimeFormatString(f.columnDetails[n].scale, true))
 					case "TIME":
@@ -612,6 +608,17 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 		}
 	}
 	return row, nil
+}
+
+func dateTimeScale(typeName string, scale int) int {
+	switch typeName {
+	case "DATETIME":
+		return 3
+	case "SMALLDATETIME":
+		return 0
+	default:
+		return scale
+	}
 }
 
 func dateTimeFormatString(scale int, addOffset bool) string {

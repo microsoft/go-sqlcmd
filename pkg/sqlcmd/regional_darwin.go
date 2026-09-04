@@ -38,7 +38,7 @@ func detectUserLocale() language.Tag {
 // getMacOSLocale gets the locale from macOS system preferences
 func getMacOSLocale() string {
 	// Try to get the locale from defaults
-	cmd := exec.Command("defaults", "read", "-g", "AppleLocale")
+	cmd := exec.Command("/usr/bin/defaults", "read", "-g", "AppleLocale")
 	output, err := cmd.Output()
 	if err != nil {
 		return ""
