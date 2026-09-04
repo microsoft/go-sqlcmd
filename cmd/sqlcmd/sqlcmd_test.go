@@ -123,7 +123,6 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "true", "-J", "/path/to/cert2.pem"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true" && args.ServerCertificate == "/path/to/cert2.pem"
 		}},
-		// Codepage flag tests
 		{[]string{"-f", "65001"}, func(args SQLCmdArguments) bool {
 			return args.CodePage == "65001"
 		}},
@@ -139,12 +138,17 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"--list-codepages"}, func(args SQLCmdArguments) bool {
 			return args.ListCodePages
 		}},
-		// Regional settings flag test
 		{[]string{"-R"}, func(args SQLCmdArguments) bool {
 			return args.UseRegionalSettings
 		}},
 		{[]string{"--client-regional-setting"}, func(args SQLCmdArguments) bool {
 			return args.UseRegionalSettings
+		}},
+		{[]string{"-j"}, func(args SQLCmdArguments) bool {
+			return args.RawErrors
+		}},
+		{[]string{"--raw-errors"}, func(args SQLCmdArguments) bool {
+			return args.RawErrors
 		}},
 	}
 
@@ -547,6 +551,26 @@ func TestConditionsForPasswordPrompt(t *testing.T) {
 	}
 }
 
+func TestAuthenticationMethodForUseAad(t *testing.T) {
+	tests := []struct {
+		name        string
+		userName    string
+		hasPassword bool
+		expected    string
+	}{
+		{"-G no username picks Default", "", false, azuread.ActiveDirectoryDefault},
+		{"-G no username, password ignored", "", true, azuread.ActiveDirectoryDefault},
+		{"-G with username, no password picks Interactive", "user@contoso", false, azuread.ActiveDirectoryInteractive},
+		{"-G with username and password picks Password", "user@contoso", true, azuread.ActiveDirectoryPassword},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			a := SQLCmdArguments{UseAad: true, UserName: tc.userName}
+			assert.Equal(t, tc.expected, a.authenticationMethod(tc.hasPassword))
+		})
+	}
+}
+
 func TestStartupScript(t *testing.T) {
 	o, err := os.CreateTemp("", "sqlcmdmain")
 	assert.NoError(t, err, "os.CreateTemp")
@@ -617,6 +641,30 @@ func TestConvertOsArgs(t *testing.T) {
 		t.Run(c.name, func(t *testing.T) {
 			actual := convertOsArgs(c.in)
 			assert.ElementsMatch(t, c.expected, actual, "Incorrect converted args")
+		})
+	}
+}
+
+func TestPreprocessHelpFlags(t *testing.T) {
+	type test struct {
+		name     string
+		in       []string
+		expected []string
+	}
+
+	tests := []test{
+		{"empty args", []string{}, []string{}},
+		{"-help to --help", []string{"-help"}, []string{"--help"}},
+		{"-h alone to -?", []string{"-h"}, []string{"-?"}},
+		{"-h with number stays", []string{"-h", "5"}, []string{"-h", "5"}},
+		{"-h with flag becomes -?", []string{"-h", "-S"}, []string{"-?", "-S"}},
+		{"mixed args", []string{"-S", "server", "-h", "-Q", "select 1"}, []string{"-S", "server", "-?", "-Q", "select 1"}},
+		{"preserve -h N in context", []string{"-S", "srv", "-h", "10", "-Q", "x"}, []string{"-S", "srv", "-h", "10", "-Q", "x"}},
+	}
+	for _, c := range tests {
+		t.Run(c.name, func(t *testing.T) {
+			actual := preprocessHelpFlags(c.in)
+			assert.Equal(t, c.expected, actual, "Incorrect preprocessed args")
 		})
 	}
 }

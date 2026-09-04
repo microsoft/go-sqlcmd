@@ -4,15 +4,18 @@
 package config
 
 import (
+	"os"
+	"path/filepath"
+	"reflect"
+	"strings"
+	"testing"
+
 	. "github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
 	"github.com/microsoft/go-sqlcmd/internal/output"
 	"github.com/microsoft/go-sqlcmd/internal/pal"
 	"github.com/microsoft/go-sqlcmd/internal/secret"
 	"github.com/stretchr/testify/assert"
-	"os"
-	"reflect"
-	"strings"
-	"testing"
+	"github.com/stretchr/testify/require"
 )
 
 func TestConfig(t *testing.T) {
@@ -378,6 +381,32 @@ func TestConfig_GetCurrentContextEndPointNotFoundPanic(t *testing.T) {
 	assert.Panics(t, func() {
 		CurrentContext()
 	})
+}
+
+func TestSetFileName_RejectsNonYAMLExtension(t *testing.T) {
+	var gotErr error
+	originalCallback := errorCallback
+	errorCallback = func(err error) { gotErr = err }
+	t.Cleanup(func() { errorCallback = originalCallback })
+
+	SetFileName("config.json")
+	require.Error(t, gotErr)
+	assert.Contains(t, gotErr.Error(), ".json")
+
+	gotErr = nil
+	SetFileName("config.toml")
+	require.Error(t, gotErr)
+	assert.Contains(t, gotErr.Error(), ".toml")
+
+	tempDir := t.TempDir()
+
+	gotErr = nil
+	SetFileName(filepath.Join(tempDir, t.Name()+".yaml"))
+	assert.NoError(t, gotErr)
+
+	gotErr = nil
+	SetFileName(filepath.Join(tempDir, t.Name()+".yml"))
+	assert.NoError(t, gotErr)
 }
 
 func TestConfig_DeleteContextThatDoesNotExist(t *testing.T) {

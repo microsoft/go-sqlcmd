@@ -55,10 +55,10 @@ func TestGetDecimalSeparator(t *testing.T) {
 		{"en-US", "."},
 		{"en-GB", "."},
 		{"de-DE", ","},
-		{"de-CH", "."},  // Swiss German uses . for decimal
+		{"de-CH", "."}, // Swiss German uses . for decimal
 		{"fr-FR", ","},
-		{"fr-CH", ","},  // Swiss French keeps comma
-		{"it-CH", "."},  // Swiss Italian uses . for decimal
+		{"fr-CH", ","}, // Swiss French keeps comma
+		{"it-CH", "."}, // Swiss Italian uses . for decimal
 		{"es-ES", ","},
 		{"ja-JP", "."},
 		{"zh-CN", "."},
@@ -183,8 +183,8 @@ func TestPow10(t *testing.T) {
 		{2, 100},
 		{3, 1000},
 		{6, 1000000},
-		{-1, 1},  // negative clamped to 1
-		{-5, 1},  // negative clamped to 1
+		{-1, 1}, // negative clamped to 1
+		{-5, 1}, // negative clamped to 1
 	}
 
 	for _, tc := range tests {
@@ -212,18 +212,18 @@ func TestPadLeftStr(t *testing.T) {
 	}
 }
 
-func TestNewSQLCmdDefaultFormatterWithRegional(t *testing.T) {
-	// Test that the formatter is created correctly with regional settings
-	f := NewSQLCmdDefaultFormatterWithRegional(false, ControlIgnore, true)
-	assert.NotNil(t, f)
+func TestNewSQLCmdDefaultFormatterWithRegionalSettings(t *testing.T) {
+	vars := Variables{}
 
-	// Test without regional settings
-	f2 := NewSQLCmdDefaultFormatterWithRegional(false, ControlIgnore, false)
-	assert.NotNil(t, f2)
+	f := NewSQLCmdDefaultFormatter(&vars, false, ControlIgnore, WithRegionalSettings(true))
+	assert.True(t, f.(*sqlCmdFormatterType).regional.IsEnabled())
 
-	// Test backward compatibility - NewSQLCmdDefaultFormatter should work
-	f3 := NewSQLCmdDefaultFormatter(false, ControlIgnore)
-	assert.NotNil(t, f3)
+	f = NewSQLCmdDefaultFormatter(&vars, false, ControlIgnore)
+	assert.False(t, f.(*sqlCmdFormatterType).regional.IsEnabled())
+
+	vars[SQLCMDFORMAT] = "ascii"
+	f = NewSQLCmdDefaultFormatter(&vars, false, ControlIgnore, WithRegionalSettings(true))
+	assert.True(t, f.(*asciiFormatter).regional.IsEnabled())
 }
 
 func TestFormatMoneyRounding(t *testing.T) {
