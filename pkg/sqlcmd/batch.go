@@ -3,6 +3,8 @@
 
 package sqlcmd
 
+import "strings"
+
 const minCapIncrease = 512
 
 // lineend is the slice to use when appending a line.
@@ -175,6 +177,29 @@ parse:
 		b.Reset(nil)
 	}
 	return command, args, err
+}
+
+func (b *Batch) nextQuery(query string) (*Command, []string, error) {
+	lines := strings.Split(query, "\n")
+	line := 0
+	read := b.read
+	defer func() {
+		b.read = read
+	}()
+	b.read = func() (string, error) {
+		value := strings.TrimSuffix(lines[line], "\r")
+		line++
+		return value, nil
+	}
+
+	b.Reset(nil)
+	for range lines {
+		command, args, err := b.Next()
+		if command != nil || err != nil {
+			return command, args, err
+		}
+	}
+	return nil, nil, nil
 }
 
 // append appends r to b.Buffer separated by sep when b.Buffer is not already empty.

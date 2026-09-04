@@ -101,6 +101,19 @@ func TestBatchNextErrOnInvalidVariable(t *testing.T) {
 	}
 }
 
+func TestBatchNextQueryFindsCommandAfterNewlines(t *testing.T) {
+	b := NewBatch(nil, newCommands())
+
+	command, args, err := b.nextQuery("SELECT 2;\r\n\r\n:EXIT(SELECT 200)")
+
+	assert.NoError(t, err)
+	if assert.NotNil(t, command) {
+		assert.Equal(t, "EXIT", command.name)
+	}
+	assert.Equal(t, []string{"(SELECT 200)"}, args)
+	assert.Equal(t, "SELECT 2;"+SqlcmdEol, b.String())
+}
+
 func TestReadString(t *testing.T) {
 	tests := []struct {
 		// input string
