@@ -77,6 +77,15 @@ func TestParseInstances(t *testing.T) {
 		assert.Contains(t, result, "MSSQLSERVER")
 		assert.Contains(t, result, "SQLEXPRESS")
 	})
+
+	t.Run("missing final terminator", func(t *testing.T) {
+		data := append([]byte{5, 0, 0}, []byte("ServerName;MYSERVER;InstanceName;SQLEXPRESS;tcp;1434")...)
+
+		result := parseInstances(data)
+
+		assert.Equal(t, "MYSERVER", result["SQLEXPRESS"]["ServerName"])
+		assert.Equal(t, "1434", result["SQLEXPRESS"]["tcp"])
+	})
 }
 
 func TestLocalServerInstanceNamesSkipsMissingServerNames(t *testing.T) {

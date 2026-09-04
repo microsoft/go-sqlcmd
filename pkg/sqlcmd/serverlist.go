@@ -112,6 +112,11 @@ func parseInstances(msg []byte) msdsn.BrowserData {
 		instanceDict := map[string]string{}
 		gotName := false
 		var name string
+		addInstance := func() {
+			if instName, ok := instanceDict["InstanceName"]; ok && instName != "" {
+				results[strings.ToUpper(instName)] = instanceDict
+			}
+		}
 		for _, token := range tokens {
 			if gotName {
 				instanceDict[name] = token
@@ -123,14 +128,15 @@ func parseInstances(msg []byte) msdsn.BrowserData {
 						break
 					}
 					// Skip malformed responses without a valid instance name.
-					if instName, ok := instanceDict["InstanceName"]; ok && instName != "" {
-						results[strings.ToUpper(instName)] = instanceDict
-					}
+					addInstance()
 					instanceDict = map[string]string{}
 					continue
 				}
 				gotName = true
 			}
+		}
+		if !gotName && len(instanceDict) > 0 {
+			addInstance()
 		}
 	}
 	return results
