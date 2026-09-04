@@ -1,5 +1,7 @@
 # SQLCMD CLI
 
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](.devcontainer/README.md)
+
 This repo contains the `sqlcmd` command line tool and Go packages for working with Microsoft SQL Server, Azure SQL Database, and Azure Synapse.  
 
 Learn more about how `sqlcmd` is used from a articles/posts written by the community: [Community Buzz][].
@@ -55,9 +57,9 @@ The Homebrew package manager may be used on Linux and Windows Subsystem for Linu
 | --------------------- | --------------------- |
 | `brew install sqlcmd` | `brew upgrade sqlcmd` |
 
-## Use sqlcmd to create local SQL Server and Azure SQL Edge instances
+## Use sqlcmd to create local SQL Server instances
 
-Use `sqlcmd` to create SQL Server and Azure SQL Edge instances using a local container runtime (e.g. [Docker][] or [Podman][])
+Use `sqlcmd` to create SQL Server instances using a local container runtime (e.g. [Docker][] or [Podman][])
 
 ### Create SQL Server instance using local container runtime and connect using Azure Data Studio
 
@@ -80,6 +82,15 @@ To view connection strings (ODBC/ADO.NET/JDBC etc.) for the current context and 
 ```
 sqlcmd config connection-strings
 sqlcmd config view
+```
+
+#### Custom configuration files
+
+The `--sqlconfig` flag specifies a custom configuration file. The file must be YAML. Extensionless filenames are allowed; if the file has an extension, it must be `.yaml` or `.yml`:
+
+```
+sqlcmd config --sqlconfig ./myproject.yaml add-endpoint --name ep1434 --address localhost --port 1434
+sqlcmd config --sqlconfig ./myproject.yaml view
 ```
 
 ### Versions
@@ -174,11 +185,12 @@ switches are most important to you to have implemented next in the new sqlcmd.
 - Sqlcmd can now print results using a vertical format. Use the new `--vertical` command line option to set it. It's also controlled by the `SQLCMDFORMAT` scripting variable.
 - `:help` displays a list of available sqlcmd commands.
 - `:serverlist` lists local SQL Server instances discovered via the SQL Server Browser service (UDP port 1434). The command queries the SQL Browser service and displays the server name and instance name for each discovered instance. If no instances are found or the Browser service is not running, no output is produced. Non-timeout errors are printed to stderr.
+- Sqlcmd defaults to a horizontal output format (space separated, no borders). To use the new ASCII table format, use the new `--ascii` command line option or set `SQLCMDFORMAT` to `ascii` (`-v SQLCMDFORMAT=ascii`). Note that when using the ASCII table format, individual column widths are determined by the content, but the `SQLCMDCOLWIDTH` variable and the `-w` parameter are still used to control the maximum screen width, determining when columns wrap into separate table segments. The following variables are ignored: `SQLCMDMAXFIXEDTYPEWIDTH`, `SQLCMDMAXVARTYPEWIDTH`, and `SQLCMDHEADERS`.
 
 ```
 1> :serverlist
-MYSERVER\SQL2019
-MYSERVER\SQL2022
+  MYSERVER\SQL2019
+  MYSERVER\SQL2022
 ```
 
 #### Using :serverlist in batch scripts
@@ -341,6 +353,52 @@ e.g.
 \git\go-sqlcmd>.\sqlcmd.exe -w 4
 sqlcmd.exe: error: sqlcmd.exe: '-w 4': Der Wert muss größer als 8 und kleiner als 65536 sein.
 ```
+
+## Development
+
+### Quick Start with Dev Containers
+
+The easiest way to develop and test sqlcmd is to use the included [Dev Container](.devcontainer/README.md), which works with:
+
+- **VS Code**: Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers), open this repo, and click "Reopen in Container"
+- **GitHub Codespaces**: Click the "Code" button on GitHub and select "Create codespace"
+
+The dev container includes:
+- Go 1.24 with all development tools (golangci-lint, gopls, delve)
+- SQL Server 2025 ready for integration tests
+- Your locally built `sqlcmd` added to PATH automatically
+- Pre-configured environment variables for tests
+
+Once inside the container:
+```bash
+# Build sqlcmd from source
+ginstall
+
+# Run the test suite
+gtest
+
+# Connect to SQL Server
+sql -Q "SELECT @@VERSION"
+```
+
+### Manual Setup
+
+If you prefer to set up your environment manually:
+
+1. Install Go 1.24 or higher
+2. Clone this repository
+3. Set up a SQL Server instance (2017 or later)
+4. Configure environment variables:
+   - `SQLCMDSERVER` - Server hostname (e.g., `localhost`)
+   - `SQLCMDUSER` - Username (e.g., `sa`)
+   - `SQLCMDPASSWORD` - Password
+   - `SQLCMDDATABASE` - Database name (optional)
+
+5. Build and run:
+   ```bash
+   go build -o sqlcmd ./cmd/modern
+   ./sqlcmd --version
+   ```
 
 ## Contributing
 

@@ -65,6 +65,10 @@ func GetLocalServerInstances() ([]string, error) {
 	}
 
 	data := parseInstances(resp[:read])
+	return localServerInstanceNames(data), nil
+}
+
+func localServerInstanceNames(data msdsn.BrowserData) []string {
 	instances := make([]string, 0, len(data))
 
 	// Sort instance names for deterministic output
@@ -86,7 +90,7 @@ func GetLocalServerInstances() ([]string, error) {
 			instances = append(instances, fmt.Sprintf(`%s\%s`, serverName, s))
 		}
 	}
-	return instances, nil
+	return instances
 }
 
 func parseInstances(msg []byte) msdsn.BrowserData {
@@ -107,9 +111,7 @@ func parseInstances(msg []byte) msdsn.BrowserData {
 					if len(instanceDict) == 0 {
 						break
 					}
-				// Deliberate behavior change from go-mssqldb's parseInstances:
-				// skip entries with missing or empty InstanceName (e.g. malformed
-				// registry data) instead of adding them under an empty key.
+					// Skip malformed responses without a valid instance name.
 					if instName, ok := instanceDict["InstanceName"]; ok && instName != "" {
 						results[strings.ToUpper(instName)] = instanceDict
 					}

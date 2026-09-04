@@ -85,15 +85,41 @@ type sqlCmdFormatterType struct {
 	maxColNameLen        int
 	colorizer            color.Colorizer
 	xml                  bool
+	rawErrors            bool
 }
 
-// NewSQLCmdDefaultFormatter returns a Formatter that mimics the original ODBC-based sqlcmd formatter
-func NewSQLCmdDefaultFormatter(removeTrailingSpaces bool, ccb ControlCharacterBehavior) Formatter {
-	return &sqlCmdFormatterType{
+// FormatterOption customizes the formatter returned by NewSQLCmdDefaultFormatter.
+type FormatterOption func(*sqlCmdFormatterType)
+
+// WithRawErrors makes AddError preserve the "mssql: " prefix that go-mssqldb
+// adds to error text instead of stripping it.
+func WithRawErrors(raw bool) FormatterOption {
+	return func(f *sqlCmdFormatterType) { f.rawErrors = raw }
+}
+
+// NewSQLCmdDefaultFormatter returns an ASCII formatter when SQLCMDFORMAT is "ascii",
+// otherwise a formatter that mimics the original ODBC-based sqlcmd formatter.
+func NewSQLCmdDefaultFormatter(vars *Variables, removeTrailingSpaces bool, ccb ControlCharacterBehavior, opts ...FormatterOption) Formatter {
+	if vars.Format() == "ascii" {
+		f := NewSQLCmdAsciiFormatter(vars, removeTrailingSpaces, ccb).(*asciiFormatter)
+		applyFormatterOptions(f.sqlCmdFormatterType, opts)
+		return f
+	}
+	f := &sqlCmdFormatterType{
 		removeTrailingSpaces: removeTrailingSpaces,
 		format:               "horizontal",
 		colorizer:            color.New(false),
 		ccb:                  ccb,
+	}
+	applyFormatterOptions(f, opts)
+	return f
+}
+
+func applyFormatterOptions(f *sqlCmdFormatterType, opts []FormatterOption) {
+	for _, opt := range opts {
+		if opt != nil {
+			opt(f)
+		}
 	}
 }
 
@@ -228,7 +254,9 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 			} else {
 				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
 			}
-			msg = strings.TrimPrefix(msg, "mssql: ")
+			if !f.rawErrors {
+				msg = strings.TrimPrefix(msg, "mssql: ")
+			}
 		}
 	}
 	if print {

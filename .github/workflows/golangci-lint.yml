@@ -4,21 +4,24 @@ on:
     branches:
       - main
   pull_request:
+
+permissions:
+  contents: read
+
 jobs:
   golangci-pr:
     name: lint-pr-changes
     runs-on: ubuntu-latest
     steps:
-      # Pinned to commit SHA for supply chain security (CWE-829)
-      # Verify: gh api repos/actions/setup-go/git/ref/tags/v6 --jq '.object.sha'
-      - uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          go-version: '1.24'
-      - uses: actions/checkout@v6
+          go-version-file: go.mod
+          check-latest: true
       - name: golangci-lint
         # Pinned to commit SHA for supply chain security (CWE-829)
         # Verify: gh api repos/golangci/golangci-lint-action/git/ref/tags/v9 --jq '.object.sha'
-        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9.0.0
+        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.0.0
         with:
           version: latest
           only-new-issues: true

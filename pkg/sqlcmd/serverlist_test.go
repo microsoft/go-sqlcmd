@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"testing"
 
+	"github.com/microsoft/go-mssqldb/msdsn"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -76,6 +77,16 @@ func TestParseInstances(t *testing.T) {
 		assert.Contains(t, result, "MSSQLSERVER")
 		assert.Contains(t, result, "SQLEXPRESS")
 	})
+}
+
+func TestLocalServerInstanceNamesSkipsMissingServerNames(t *testing.T) {
+	data := msdsn.BrowserData{
+		"MISSING": {"InstanceName": "MISSING"},
+		"EMPTY":   {"ServerName": "", "InstanceName": "EMPTY"},
+		"VALID":   {"ServerName": "MYSERVER", "InstanceName": "VALID"},
+	}
+
+	assert.Equal(t, []string{`MYSERVER\VALID`}, localServerInstanceNames(data))
 }
 
 func TestServerlistCommand(t *testing.T) {
