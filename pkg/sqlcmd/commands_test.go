@@ -6,6 +6,7 @@ package sqlcmd
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 	"testing"
@@ -54,6 +55,12 @@ func TestCommandParsing(t *testing.T) {
 		{`:XML ON `, "XML", []string{`ON `}},
 		{`:RESET`, "RESET", []string{""}},
 		{`RESET`, "RESET", []string{""}},
+		{`:HELP`, "HELP", []string{""}},
+		{`:help`, "HELP", []string{""}},
+		{`:HELP CONNECT`, "HELP", []string{"CONNECT"}},
+		{`:help exit`, "HELP", []string{"exit"}},
+		{`:PERFTRACE stderr`, "PERFTRACE", []string{"stderr"}},
+		{`:perftrace c:/logs/perf.txt`, "PERFTRACE", []string{"c:/logs/perf.txt"}},
 	}
 
 	for _, test := range commands {
@@ -463,4 +470,184 @@ func TestExitCommandAppendsParameterToCurrentBatch(t *testing.T) {
 		assert.Equal(t, -101, s.Exitcode, "exit should not set Exitcode on script error")
 	}
 
+}
+
+func TestHelpCommand(t *testing.T) {
+	s := New(nil, "", InitializeVariables(false))
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	defer func() { _ = buf.Close() }()
+
+	// helpCommand writes to os.Stdout; capture it with a pipe
+	captureHelp := func(fn func() error) (string, error) {
+		old := os.Stdout
+		r, w, pErr := os.Pipe()
+		require.NoError(t, pErr)
+		defer func() {
+			os.Stdout = old
+			_ = w.Close()
+			_ = r.Close()
+		}()
+		os.Stdout = w
+		fnErr := fn()
+		_ = w.Close()
+		os.Stdout = old
+		var out bytes.Buffer
+		_, _ = io.Copy(&out, r)
+		return out.String(), fnErr
+	}
+
+	// Full listing
+	output, err := captureHelp(func() error { return helpCommand(s, []string{""}, 1) })
+	assert.NoError(t, err, "helpCommand should not error")
+	for name, cmd := range s.Cmd {
+		if cmd.help != "" {
+			assert.Contains(t, output, cmd.help,
+				"help output missing text for command %s", name)
+		}
+	}
+
+	// :HELP <command> should show only that command's help
+	output, err = captureHelp(func() error { return helpCommand(s, []string{"CONNECT"}, 1) })
+	assert.NoError(t, err, "helpCommand CONNECT should not error")
+	assert.Contains(t, output, ":connect", "HELP CONNECT should show connect help")
+	assert.NotContains(t, output, ":exit", "HELP CONNECT should not show exit help")
+
+	// Case-insensitive lookup
+	output, err = captureHelp(func() error { return helpCommand(s, []string{"exit"}, 1) })
+	assert.NoError(t, err, "helpCommand exit should not error")
+	assert.Contains(t, output, ":exit", "HELP exit should show exit help")
+	assert.NotContains(t, output, ":connect", "HELP exit should not show connect help")
+
+	// Interactive command spelling is accepted.
+	output, err = captureHelp(func() error { return helpCommand(s, []string{"ON ERROR"}, 1) })
+	assert.NoError(t, err, "helpCommand ON ERROR should not error")
+	assert.Contains(t, output, ":on error", "HELP ON ERROR should show on error help")
+	assert.NotContains(t, output, ":connect", "HELP ON ERROR should not show connect help")
+
+	for _, tc := range []struct {
+		name string
+		help string
+	}{
+		{"r", ":r <filename>"},
+		{"ed", ":ed"},
+		{"!!", ":!! [<command>]"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			output, err := captureHelp(func() error { return helpCommand(s, []string{tc.name}, 1) })
+			assert.NoError(t, err)
+			assert.Contains(t, output, tc.help)
+			assert.NotContains(t, output, ":connect")
+		})
+	}
+
+	// Unknown commands fall through to the full listing.
+	output, err = captureHelp(func() error { return helpCommand(s, []string{"NOSUCHCMD"}, 1) })
+	assert.NoError(t, err, "helpCommand unknown should not error")
+	assert.Contains(t, output, ":connect", "HELP unknown should show the full listing")
+	assert.Contains(t, output, ":exit", "HELP unknown should show the full listing")
+}
+
+func TestAllCommandsHaveHelp(t *testing.T) {
+	cmds := newCommands()
+	for name, cmd := range cmds {
+		assert.NotEmpty(t, cmd.help,
+			"command %q has no help text; add a help field to prevent it being hidden from :help", name)
+	}
+}
+
+func TestPerftraceCommand(t *testing.T) {
+	s := New(nil, "", InitializeVariables(false))
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	defer func() { _ = buf.Close() }()
+
+	// Test empty argument returns error
+	err := perftraceCommand(s, []string{""}, 1)
+	assert.EqualError(t, err, InvalidCommandError("PERFTRACE", 1).Error(), "perftraceCommand with empty argument")
+
+	// Test redirect to stdout
+	err = perftraceCommand(s, []string{"stdout"}, 1)
+	assert.NoError(t, err, "perftraceCommand with stdout")
+	assert.Equal(t, os.Stdout, s.GetStat(), "stat set to stdout")
+
+	err = perftraceCommand(s, []string{" stdout "}, 1)
+	assert.NoError(t, err, "perftraceCommand with padded stdout")
+	assert.Equal(t, os.Stdout, s.GetStat(), "stat set to stdout with surrounding whitespace")
+
+	// Test redirect to stderr
+	err = perftraceCommand(s, []string{"stderr"}, 1)
+	assert.NoError(t, err, "perftraceCommand with stderr")
+	assert.Equal(t, os.Stderr, s.GetStat(), "stat set to stderr")
+
+	err = perftraceCommand(s, []string{"   "}, 1)
+	assert.EqualError(t, err, InvalidCommandError("PERFTRACE", 1).Error(), "perftraceCommand with whitespace argument")
+
+	// Test redirect to file
+	file, err := os.CreateTemp("", "sqlcmdperf")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer func() { _ = os.Remove(file.Name()) }()
+	fileName := file.Name()
+	_ = file.Close()
+
+	err = perftraceCommand(s, []string{fileName}, 1)
+	assert.NoError(t, err, "perftraceCommand with file path")
+	// Clean up by setting stat to nil
+	s.SetStat(nil)
+
+	// Test variable resolution
+	s.vars.Set("myvar", "stdout")
+	err = perftraceCommand(s, []string{"$(myvar)"}, 1)
+	assert.NoError(t, err, "perftraceCommand with a variable")
+	assert.Equal(t, os.Stdout, s.GetStat(), "stat set to stdout using a variable")
+}
+
+func TestPerftraceCloseChain(t *testing.T) {
+	s := New(nil, "", InitializeVariables(false))
+	buf := &memoryBuffer{buf: new(bytes.Buffer)}
+	s.SetOutput(buf)
+	defer func() { _ = buf.Close() }()
+
+	file1, err := os.CreateTemp("", "sqlcmdperf1")
+	assert.NoError(t, err)
+	defer func() { _ = os.Remove(file1.Name()) }()
+	_ = file1.Close()
+
+	file2, err := os.CreateTemp("", "sqlcmdperf2")
+	assert.NoError(t, err)
+	defer func() { _ = os.Remove(file2.Name()) }()
+	_ = file2.Close()
+
+	// Redirect to file1, then to file2 -- file1 should be closed
+	err = perftraceCommand(s, []string{file1.Name()}, 1)
+	require.NoError(t, err)
+	firstStat, ok := s.GetStat().(*os.File)
+	require.True(t, ok, "first stat writer should be an *os.File")
+	err = perftraceCommand(s, []string{file2.Name()}, 1)
+	require.NoError(t, err)
+
+	assert.Error(t, firstStat.Close(), "first stat writer should already be closed")
+
+	// Clean up
+	s.SetStat(nil)
+}
+
+func TestUnicodeOutClosesFile(t *testing.T) {
+	s := New(nil, "", InitializeVariables(false))
+	s.UnicodeOutputFile = true
+
+	file, err := os.CreateTemp("", "sqlcmdout")
+	require.NoError(t, err)
+	fileName := file.Name()
+	require.NoError(t, file.Close())
+	defer func() { _ = os.Remove(fileName) }()
+
+	require.NoError(t, outCommand(s, []string{fileName}, 1))
+	output, ok := s.GetOutput().(*transformWriteCloser)
+	require.True(t, ok)
+	outputFile, ok := output.closer.(*os.File)
+	require.True(t, ok)
+
+	require.NoError(t, outCommand(s, []string{"stdout"}, 1))
+	assert.Error(t, outputFile.Close(), "Unicode output file should already be closed")
 }
