@@ -81,6 +81,7 @@ type Sqlcmd struct {
 	// Cmd provides the implementation of commands like :list and GO
 	Cmd Commands
 	// PrintError allows the host to redirect errors away from the default output. Returns false if the error is not redirected by the host.
+	// For server errors msg includes the "Msg N, Level N, State N, ..." header line, as the default output would show it.
 	PrintError func(msg string, severity uint8) bool
 	// UnicodeOutputFile is true when UTF16 file output is needed
 	UnicodeOutputFile bool
@@ -485,7 +486,7 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		case sqlexp.MsgError:
 			switch e := m.Error.(type) {
 			case mssql.Error:
-				if !s.PrintError(e.Message, e.Class) {
+				if !s.PrintError(errorHeader(e)+e.Message, e.Class) {
 					s.Format.AddError(m.Error)
 				}
 			}

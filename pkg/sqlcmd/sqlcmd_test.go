@@ -505,6 +505,26 @@ func TestSqlCmdDefersToPrintError(t *testing.T) {
 	}
 }
 
+// A host that redirects errors (sqlcmd -r) must receive the same
+// "Msg N, Level N, State N, ..." header the default output shows.
+func TestPrintErrorIncludesErrorHeader(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	redirected := ""
+	s.PrintError = func(msg string, severity uint8) bool {
+		if severity > 10 {
+			redirected += msg
+			return true
+		}
+		return false
+	}
+	err := runSqlCmd(t, s, []string{"RAISERROR (N'Testing!' , 11, 1)", "GO"})
+	if assert.NoError(t, err, "runSqlCmd failed") {
+		assert.Regexp(t, "^Msg 50000, Level 11, State 1, Server .+, Line 1"+SqlcmdEol+"Testing!$", redirected)
+		assert.Empty(t, buf.buf.String(), "redirected errors should not reach the default output")
+	}
+}
+
 func TestSqlCmdMaintainsConnectionBetweenBatches(t *testing.T) {
 	s, buf := setupSqlCmdWithMemoryOutput(t)
 	defer buf.Close()

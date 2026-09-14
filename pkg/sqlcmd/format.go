@@ -249,11 +249,7 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 	switch e := (err).(type) {
 	case mssql.Error:
 		if print = f.vars.ErrorLevel() <= 0 || e.Class >= uint8(f.vars.ErrorLevel()); print {
-			if len(e.ProcName) > 0 {
-				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.ProcName, e.LineNo, SqlcmdEol))
-			} else {
-				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
-			}
+			b.WriteString(errorHeader(e))
 			if !f.rawErrors {
 				msg = strings.TrimPrefix(msg, "mssql: ")
 			}
@@ -264,6 +260,15 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 		b.WriteString(SqlcmdEol)
 		f.mustWriteErr(fitToScreen(b, f.vars.ScreenWidth()).String())
 	}
+}
+
+// errorHeader returns the "Msg N, Level N, State N, ..." line that precedes a
+// server error message.
+func errorHeader(e mssql.Error) string {
+	if len(e.ProcName) > 0 {
+		return localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Procedure %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.ProcName, e.LineNo, SqlcmdEol)
+	}
+	return localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol)
 }
 
 // XmlMode enables or disables XML mode
