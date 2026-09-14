@@ -193,7 +193,7 @@ func errorDisabled(s *Sqlcmd, args []string, line uint) error {
 }
 
 func batchTerminatorRegex(terminator string) string {
-	return fmt.Sprintf(`(?im)^[\t ]*?%s(?:[ ]+(.*$)|$)`, regexp.QuoteMeta(terminator))
+	return fmt.Sprintf(`(?im)^[\t ]*?%s(?:[\t ]+(.*$)|$)`, regexp.QuoteMeta(terminator))
 }
 
 // SetBatchTerminator attempts to set the batch terminator to the given value

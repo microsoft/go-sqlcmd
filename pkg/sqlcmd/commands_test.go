@@ -54,6 +54,10 @@ func TestCommandParsing(t *testing.T) {
 		{`:XML ON `, "XML", []string{`ON `}},
 		{`:RESET`, "RESET", []string{""}},
 		{`RESET`, "RESET", []string{""}},
+		{"GO", "GO", []string{""}},
+		{"GO\t\t", "GO", []string{""}},
+		{"go\t5", "GO", []string{"5"}},
+		{" \tGO \t 5", "GO", []string{"5"}},
 	}
 
 	for _, test := range commands {
@@ -128,6 +132,10 @@ func TestCustomBatchSeparator(t *testing.T) {
 		cmd, args := c.matchCommand("  me! 5 \n")
 		if assert.NotNil(t, cmd, "matchCommand didn't find GO for custom batch separator") {
 			assert.Equal(t, "GO", cmd.name, "command name")
+			assert.Equal(t, "5", strings.TrimSpace(args[0]), "go argument")
+		}
+		cmd, args = c.matchCommand("me!\t5")
+		if assert.NotNil(t, cmd, "matchCommand didn't find custom batch separator followed by a tab") {
 			assert.Equal(t, "5", strings.TrimSpace(args[0]), "go argument")
 		}
 	}
