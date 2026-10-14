@@ -105,6 +105,19 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 		return "", err
 	}
 
+	if isLocalDB(serverName) {
+		if protocol != "" && protocol != "np" || connect.DedicatedAdminConnection {
+			return "", &InvalidServerName
+		}
+		pipeName, err := resolveLocalDBPipe(instance)
+		if err != nil {
+			return "", err
+		}
+		serverName = pipeName
+		instance = ""
+		protocol = "np"
+	}
+
 	if connect.useServerNameOverride(protocol, connect.ServerName) {
 		overrideName, overrideInstance, _, _, err := splitServer(connect.ServerNameOverride)
 		if err != nil {
@@ -200,7 +213,7 @@ func (connect ConnectSettings) useServerNameOverride(protocol string, serverName
 	if connect.ServerNameOverride == "" {
 		return false
 	}
-	if protocol == "np" || strings.HasPrefix(serverName, `\\`) {
+	if protocol == "np" || strings.HasPrefix(serverName, `\\`) || isLocalDB(serverName) {
 		return false
 	}
 	return true

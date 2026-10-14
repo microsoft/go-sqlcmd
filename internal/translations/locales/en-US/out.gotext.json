@@ -2848,6 +2848,31 @@
             "fuzzy": true
         },
         {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translation": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
@@ -2903,6 +2928,13 @@
                     "expr": "localizer.StdoutName"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": "Do not strip the \"mssql: \" prefix from error messages",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
@@ -3659,6 +3691,70 @@
                     "expr": "SqlcmdEol"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "LocalDB is only supported on Windows",
+            "message": "LocalDB is only supported on Windows",
+            "translation": "LocalDB is only supported on Windows",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Unable to load the LocalDB instance API {ApiPath}: {Err}",
+            "message": "Unable to load the LocalDB instance API {ApiPath}: {Err}",
+            "translation": "Unable to load the LocalDB instance API {ApiPath}: {Err}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "ApiPath",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "apiPath"
+                },
+                {
+                    "id": "Err",
+                    "string": "%[2]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 2,
+                    "expr": "err"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Unable to start LocalDB instance {Instance}: {Message}",
+            "message": "Unable to start LocalDB instance {Instance}: {Message}",
+            "translation": "Unable to start LocalDB instance {Instance}: {Message}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Instance",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "instance"
+                },
+                {
+                    "id": "Message",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "message"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "SQL Server Express LocalDB is not installed",
+            "message": "SQL Server Express LocalDB is not installed",
+            "translation": "SQL Server Express LocalDB is not installed",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
