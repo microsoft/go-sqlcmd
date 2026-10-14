@@ -204,6 +204,7 @@ program_name          sqlcmd
 2> go
 net_transport Named pipe
 ```
+- On Windows, `sqlcmd` can connect to SQL Server Express LocalDB instances: `sqlcmd -S (localdb)\MSSQLLocalDB`. The instance is started (and created, for the automatic `MSSQLLocalDB` instance) if needed, and the connection uses the instance's named pipe.
 
 ### Azure Active Directory Authentication
 
