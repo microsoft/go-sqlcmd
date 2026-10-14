@@ -3,7 +3,12 @@
 
 package sqlcmd
 
-import "strings"
+import (
+	"errors"
+	"strings"
+
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
+)
 
 // localDBServerName is the pseudo server name used to address SQL Server Express LocalDB instances
 const localDBServerName = "(localdb)"
@@ -26,5 +31,8 @@ var resolveLocalDBPipe = func(instance string) (string, error) {
 		instance = defaultLocalDBInstance
 	}
 	pipeName, err := startLocalDBInstance(instance)
+	if errors.Is(err, errors.ErrUnsupported) {
+		return "", localizer.Errorf("LocalDB is only supported on Windows")
+	}
 	return strings.TrimPrefix(pipeName, "np:"), err
 }

@@ -3684,6 +3684,11 @@
             "fuzzy": true
         },
         {
+            "id": "LocalDB is only supported on Windows",
+            "message": "LocalDB is only supported on Windows",
+            "translation": ""
+        },
+        {
             "id": "Unable to load the LocalDB instance API {ApiPath}: {Err}",
             "message": "Unable to load the LocalDB instance API {ApiPath}: {Err}",
             "translation": "",

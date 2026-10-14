@@ -106,7 +106,7 @@ func (connect ConnectSettings) ConnectionString() (connectionString string, err 
 	}
 
 	if isLocalDB(serverName) {
-		if protocol != "" && protocol != "np" {
+		if protocol != "" && protocol != "np" || connect.DedicatedAdminConnection {
 			return "", &InvalidServerName
 		}
 		pipeName, err := resolveLocalDBPipe(instance)

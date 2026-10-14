@@ -4,6 +4,7 @@
 package sqlcmd
 
 import (
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -27,7 +28,6 @@ func TestSplitServerLocalDB(t *testing.T) {
 	}{
 		{`(localdb)\MSSQLLocalDB`, `(localdb)`, `MSSQLLocalDB`, ``},
 		{`(LocalDb)\.\shared`, `(LocalDb)`, `.\shared`, ``},
-		{`np:(localdb)\myinstance`, `(localdb)`, `myinstance`, `np`},
 		{`(localdb)`, `(localdb)`, ``, ``},
 	}
 	for _, test := range tests {
@@ -38,6 +38,18 @@ func TestSplitServerLocalDB(t *testing.T) {
 			assert.Equal(t, uint64(0), port, test.input)
 			assert.Equal(t, test.protocol, protocol, test.input)
 		}
+	}
+}
+
+func TestSplitServerLocalDBWithNamedPipePrefix(t *testing.T) {
+	if runtime.GOOS != "windows" || runtime.GOARCH != "amd64" {
+		t.Skip("The np protocol is only registered on Windows amd64")
+	}
+	serverName, instance, _, protocol, err := splitServer(`np:(localdb)\myinstance`)
+	if assert.NoError(t, err) {
+		assert.Equal(t, `(localdb)`, serverName)
+		assert.Equal(t, `myinstance`, instance)
+		assert.Equal(t, `np`, protocol)
 	}
 }
 
@@ -60,4 +72,8 @@ func TestConnectionStringLocalDB(t *testing.T) {
 	settings = ConnectSettings{ServerName: `tcp:(localdb)\MSSQLLocalDB`}
 	_, err = settings.ConnectionString()
 	assert.Error(t, err, "LocalDB only supports named pipes")
+
+	settings = ConnectSettings{ServerName: `(localdb)\MSSQLLocalDB`, DedicatedAdminConnection: true}
+	_, err = settings.ConnectionString()
+	assert.Error(t, err, "LocalDB does not support the dedicated admin connection")
 }
