@@ -4,10 +4,12 @@
 package sqlcmd
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/microsoft/go-mssqldb/integratedauth"
@@ -92,4 +94,41 @@ func TestKrb5ProviderRegistered(t *testing.T) {
 	require.NoError(t, err)
 	_, err = integratedauth.GetIntegratedAuthenticator(config)
 	assert.NotContains(t, fmt.Sprint(err), "unknown authenticator")
+}
+
+func TestConnectDbKerberos(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("-E uses SSPI on Windows")
+	}
+	t.Setenv("KRB5CCNAME", "API:x")
+	const unsupported = "is not supported"
+	tests := []struct {
+		name       string
+		settings   ConnectSettings
+		useCurrent bool
+		kerberos   bool
+		printed    bool
+	}{
+		{"-E alone", ConnectSettings{UseTrustedConnection: true}, false, true, true},
+		{"-E on current connection", ConnectSettings{UseTrustedConnection: true}, true, true, false},
+		{"-E with SqlPassword", ConnectSettings{UseTrustedConnection: true, AuthenticationMethod: SqlPassword, UserName: "u", Password: "p"}, false, false, false},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			test.settings.ServerName = "127.0.0.1:1"
+			s := New(nil, "", InitializeVariables(false))
+			buf := &memoryBuffer{buf: new(bytes.Buffer)}
+			s.SetOutput(buf)
+			var err error
+			if test.useCurrent {
+				s.Connect = &test.settings
+				err = s.ConnectDb(nil, true)
+			} else {
+				err = s.ConnectDb(&test.settings, true)
+			}
+			require.Error(t, err)
+			assert.Equal(t, test.kerberos, strings.Contains(err.Error(), unsupported), "error: %v", err)
+			assert.Equal(t, test.printed, strings.Contains(buf.buf.String(), unsupported), "output: %q", buf.buf.String())
+		})
+	}
 }
