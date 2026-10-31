@@ -271,6 +271,14 @@ func (s *Sqlcmd) ConnectDb(connect *ConnectSettings, nopw bool) error {
 	if err != nil {
 		return err
 	}
+	if connect.UseTrustedConnection && !connect.sqlAuthentication() {
+		if connstr, err = kerberosConnectionString(connstr); err != nil {
+			if newConnection {
+				_, _ = fmt.Fprintln(s.GetOutput(), err)
+			}
+			return err
+		}
+	}
 
 	if !useAad {
 		var c *mssql.Connector
