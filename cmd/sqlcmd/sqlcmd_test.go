@@ -619,6 +619,28 @@ func TestConvertOsArgs(t *testing.T) {
 	}
 }
 
+func TestConvertOsArgsEmptyValues(t *testing.T) {
+	tests := []struct {
+		name string
+		args []string
+		want []string
+	}{
+		{"empty password", []string{"-P", ""}, []string{"-P", ""}},
+		{"connection options", []string{"-S", "server", "-U", "user", "-P", "", "-d", "database"}, []string{"-S", "server", "-U", "user", "-P", "", "-d", "database"}},
+		{"empty server and user", []string{"-S", "", "-U", "", "-d", "database"}, []string{"-S", "", "-U", "", "-d", "database"}},
+		{"empty argument", []string{""}, []string{""}},
+		{"empty list values", []string{"-i", "", "file.sql", "-v", "", "x=y"}, []string{"-i", "", "-i", "file.sql", "-v", "", "-v", "x=y"}},
+		{"empty optional values", []string{"-r", "", "-k", "", "-L", "", "-X", "", "-N", ""}, []string{"-r", "", "-k", "", "-L", "", "-X", "", "-N", ""}},
+		{"optional defaults before flag", []string{"-r", "-N", "-C"}, []string{"-r", "0", "-N", "true", "-C"}},
+		{"optional defaults at end", []string{"-X", "-N"}, []string{"-X", "0", "-N", "true"}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, convertOsArgs(tt.args))
+		})
+	}
+}
+
 func TestPreprocessHelpFlags(t *testing.T) {
 	type test struct {
 		name     string
