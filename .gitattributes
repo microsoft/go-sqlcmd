@@ -1,2 +1,7 @@
 * text=auto
 
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sh text eol=lf
+utf8out_linux.txt text eol=lf
+utf8out.txt text eol=crlf
