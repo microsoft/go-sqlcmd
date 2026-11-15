@@ -55,4 +55,4 @@ RUN go install golang.org/x/tools/gopls@v0.21.1 \
 # files. chown the entire tree so vscode can write (GOTOOLCHAIN=auto downloads).
 RUN mkdir -p /home/vscode/bin \
     && chown -R vscode:vscode /home/vscode/go /home/vscode/bin
-ENV PATH="/home/vscode/bin:${PATH}"
+ENV PATH="${GOPATH}/bin:/home/vscode/bin:${PATH}"
