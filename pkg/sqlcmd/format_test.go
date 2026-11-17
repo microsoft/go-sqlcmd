@@ -85,6 +85,51 @@ func TestCalcColumnDetails(t *testing.T) {
 	}
 }
 
+func TestFormatFloat64UsesDatabaseTypePrecision(t *testing.T) {
+	tests := []struct {
+		name         string
+		value        float64
+		databaseType string
+		expected     string
+	}{
+		{"REAL scientific notation", float64(float32(1e-20)), "REAL", "1e-20"},
+		{"FLOAT keeps double precision", 1.2345678901234567, "FLOAT", "1.2345678901234567"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			assert.Equal(t, test.expected, formatFloat64(test.value, test.databaseType))
+		})
+	}
+}
+
+func TestScanRowFormatsFloatingPointTypesAtTheirPrecision(t *testing.T) {
+	db, err := ConnectDb(t)
+	if !assert.NoError(t, err, "ConnectDB failed") {
+		return
+	}
+	defer db.Close()
+
+	rows, err := db.QueryContext(context.Background(),
+		"SELECT CAST(1E-20 AS REAL) AS r, CAST(1.2345678901234567 AS FLOAT) AS f")
+	if !assert.NoError(t, err, "Query failed") {
+		return
+	}
+	defer rows.Close()
+
+	cols, err := rows.ColumnTypes()
+	if !assert.NoError(t, err, "ColumnTypes failed") {
+		return
+	}
+	details, _ := calcColumnDetails(cols, 0, 0)
+	f := &sqlCmdFormatterType{columnDetails: details}
+	if assert.True(t, rows.Next(), "Expected one row") {
+		values, err := f.scanRow(rows)
+		assert.NoError(t, err, "scanRow failed")
+		assert.Equal(t, []string{"1e-20", "1.2345678901234567"}, values)
+	}
+}
+
 func TestControlCharacterBehavior(t *testing.T) {
 	type ccbTest struct {
 		raw                 string
@@ -176,6 +221,7 @@ func TestAddErrorStripsMssqlPrefixByDefault(t *testing.T) {
 	assert.Contains(t, got, "Msg 50000, Level 16, State 1, Server server, Line 7")
 	assert.Contains(t, got, "Something failed")
 	assert.NotContains(t, got, "mssql:")
+	assert.NotContains(t, got, "(50000)")
 }
 
 func TestAddErrorWithRawErrorsKeepsMssqlPrefix(t *testing.T) {
