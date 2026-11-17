@@ -108,14 +108,18 @@ func TestScanRowFormatsFloatingPointTypesAtTheirPrecision(t *testing.T) {
 	if !assert.NoError(t, err, "ConnectDB failed") {
 		return
 	}
-	defer db.Close()
+	defer func() {
+		assert.NoError(t, db.Close())
+	}()
 
 	rows, err := db.QueryContext(context.Background(),
 		"SELECT CAST(1E-20 AS REAL) AS r, CAST(1.2345678901234567 AS FLOAT) AS f")
 	if !assert.NoError(t, err, "Query failed") {
 		return
 	}
-	defer rows.Close()
+	defer func() {
+		assert.NoError(t, rows.Close())
+	}()
 
 	cols, err := rows.ColumnTypes()
 	if !assert.NoError(t, err, "ColumnTypes failed") {
