@@ -256,6 +256,19 @@ These environment variables can be set to configure some aspects of AAD auth and
 
 `SQLCMDCLIENTID` - set this to the identifier of an application registered in your AAD which is authorized to authenticate to Azure SQL Database. Applies to `ActiveDirectoryInteractive` and `ActiveDirectoryPassword` methods.
 
+### Kerberos Authentication on Linux and macOS
+
+On Linux and macOS, `-E` authenticates with Kerberos using the ticket from `kinit`. This also applies when no user name is given, such as `sqlcmd query` with a context that has no user, or the flag CLI without `-U`.
+
+```
+kinit alice@EXAMPLE.COM
+sqlcmd -S sqlhost.example.com,1433 -E
+```
+
+`KRB5_CONFIG` sets the location of `krb5.conf` (default `/etc/krb5.conf`) and `KRB5CCNAME` sets the credential cache (default `/tmp/krb5cc_<uid>`). Only `FILE:` caches are supported, so on Linux distributions that default to `KCM:` or `KEYRING:` (Fedora, RHEL), run `kinit -c FILE:...` and set `KRB5CCNAME`.
+
+macOS has no `krb5.conf` by default and keeps tickets in an `API:` cache that `sqlcmd` can't read. Create a `krb5.conf` and add `default_cc_name = FILE:/tmp/krb5cc_%{uid}` to its `[libdefaults]` section so `kinit` writes a file cache (this is the Heimdal setting name used on macOS; MIT Kerberos calls it `default_ccache_name`). Alternatively, point `KRB5CCNAME` to a `FILE:` cache.
+
 ### Console colors
 
 Sqlcmd now supports syntax coloring the output of `:list` and the results of TSQL queries when output to the terminal.
