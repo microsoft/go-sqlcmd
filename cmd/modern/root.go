@@ -4,8 +4,6 @@
 package main
 
 import (
-	"runtime"
-
 	"github.com/microsoft/go-sqlcmd/cmd/modern/root"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
@@ -28,10 +26,6 @@ type Root struct {
 func (c *Root) DefineCommand(...cmdparser.CommandOptions) {
 	// Example usage steps
 	steps := []string{"sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak"}
-
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		steps = append(steps, "sqlcmd open ads")
-	}
 
 	steps = append(steps, `sqlcmd query "SELECT @@version"`)
 	steps = append(steps, "sqlcmd delete")
@@ -64,7 +58,7 @@ Feedback:
 func (c *Root) SubCommands() []cmdparser.Command {
 	dependencies := c.Dependencies()
 
-	subCommands := []cmdparser.Command{
+	return []cmdparser.Command{
 		cmdparser.New[*root.Config](dependencies),
 		cmdparser.New[*root.Install](dependencies),
 		cmdparser.New[*root.Query](dependencies),
@@ -72,13 +66,6 @@ func (c *Root) SubCommands() []cmdparser.Command {
 		cmdparser.New[*root.Stop](dependencies),
 		cmdparser.New[*root.Uninstall](dependencies),
 	}
-
-	// BUG(stuartpa): - Add Linux support
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		subCommands = append(subCommands, cmdparser.New[*root.Open](dependencies))
-	}
-
-	return subCommands
 }
 
 // Execute runs the application based on the command-line

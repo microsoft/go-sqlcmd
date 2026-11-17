@@ -23,7 +23,6 @@ go-sqlcmd is a Go-based command line tool (`sqlcmd`) for working with Microsoft 
 │   ├── color/              # Console coloring
 │   ├── config/             # Configuration management
 │   ├── container/          # Docker/Podman container management
-│   ├── credman/            # Credential management
 │   ├── http/               # HTTP utilities
 │   ├── io/                 # I/O utilities
 │   ├── localizer/          # Localization support
@@ -33,7 +32,6 @@ go-sqlcmd is a Go-based command line tool (`sqlcmd`) for working with Microsoft 
 │   ├── secret/             # Secret/credential management
 │   ├── sql/                # SQL-related utilities
 │   ├── test/               # Test utilities
-│   ├── tools/              # Development tools
 │   └── translations/       # Localized string translations
 ├── build/                  # Build scripts and templates
 ├── testdata/               # Test data files
