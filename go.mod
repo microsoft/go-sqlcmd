@@ -2,7 +2,7 @@ module github.com/microsoft/go-sqlcmd
 
 go 1.26.0
 
-toolchain go1.26.10
+toolchain go1.26.11
 
 require (
 	github.com/alecthomas/chroma/v2 v2.27.0
