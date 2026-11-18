@@ -1100,7 +1100,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Disabled {Sa} account (and rotated {Sa_1} password). Creating user {UserName}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[已停用 {Sa} 帳戶 (和旋轉 {Sa_1} 密碼)。正在建立使用者 {UserName}]]></Val>
+            <Val><![CDATA[已停用 {Sa} 帳戶 (和輪換 {Sa_1} 密碼)。正在建立使用者 {UserName}]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Starting {ImageName}]]></Val>
