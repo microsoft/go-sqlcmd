@@ -4,10 +4,11 @@
 package main
 
 import (
+	"testing"
+
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser/dependency"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 // TestRoot is a quick sanity test
@@ -24,4 +25,11 @@ func TestIsValidSubCommand(t *testing.T) {
 	assert.Equal(t, false, invalid)
 	valid := c.IsValidSubCommand("query")
 	assert.Equal(t, true, valid)
+}
+
+// TestOpenSubCommandRegistered guards against regressing the platform gate
+// that previously hid `open` on non-Windows builds.
+func TestOpenSubCommandRegistered(t *testing.T) {
+	c := cmdparser.New[*Root](dependency.Options{})
+	assert.True(t, c.IsValidSubCommand("open"), "open subcommand should be registered on all platforms")
 }
