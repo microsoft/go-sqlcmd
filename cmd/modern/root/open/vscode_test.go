@@ -389,6 +389,14 @@ func TestVSCodeProfileWithoutUser(t *testing.T) {
 		t.Error("Expected profile to not have 'user' field when no user configured")
 	}
 
+	if profile["authenticationType"] != "Integrated" {
+		t.Errorf("Expected authenticationType 'Integrated', got '%v'", profile["authenticationType"])
+	}
+
+	if uri := mssqlConnectURI(endpoint, user); !strings.Contains(uri, "authenticationType=Integrated") {
+		t.Errorf("Expected integrated authentication in connection URI, got %q", uri)
+	}
+
 	// Verify other fields are still set correctly
 	if profile["profileName"] != "no-user-context" {
 		t.Errorf("Expected profileName 'no-user-context', got '%v'", profile["profileName"])
