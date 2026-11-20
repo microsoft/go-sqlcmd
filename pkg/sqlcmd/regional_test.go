@@ -138,6 +138,7 @@ func TestGetLocaleDateTimeFormats(t *testing.T) {
 	}{
 		{"en-US", "01/02/2006", "03:04:05 PM", "US English uses M/D/Y and 12-hour time"},
 		{"en-GB", "02/01/2006", "15:04:05", "UK English uses D/M/Y and 24-hour time"},
+		{"en-CA", "2006-01-02", "03:04:05 PM", "Canadian English uses Y-M-D and 12-hour time"},
 		{"de-DE", "02.01.2006", "15:04:05", "German uses D.M.Y format"},
 		{"ja-JP", "2006/01/02", "15:04:05", "Japanese uses Y/M/D format"},
 		{"fi-FI", "2006-01-02", "15:04:05", "Finnish uses ISO format"},

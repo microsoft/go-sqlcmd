@@ -32,47 +32,58 @@ func ParseCodePage(arg string) (*CodePageSettings, error) {
 
 	settings := &CodePageSettings{}
 	parts := strings.Split(arg, ",")
+	inputSet := false
+	outputSet := false
 
 	for _, part := range parts {
 		part = strings.TrimSpace(part)
 		if part == "" {
-			continue
+			return nil, fmt.Errorf("invalid codepage format: %s", arg)
 		}
 
-		if strings.HasPrefix(strings.ToLower(part), "i:") {
+		lowerPart := strings.ToLower(part)
+		if strings.HasPrefix(lowerPart, "i:") {
+			if inputSet {
+				return nil, fmt.Errorf("duplicate input codepage: %s", part)
+			}
 			// Input codepage
-			cp, err := strconv.Atoi(strings.TrimPrefix(strings.ToLower(part), "i:"))
+			cp, err := strconv.Atoi(strings.TrimPrefix(lowerPart, "i:"))
 			if err != nil {
 				return nil, fmt.Errorf("invalid input codepage: %s", part)
 			}
+			if _, err := GetEncoding(cp); err != nil {
+				return nil, err
+			}
 			settings.InputCodePage = cp
-		} else if strings.HasPrefix(strings.ToLower(part), "o:") {
+			inputSet = true
+		} else if strings.HasPrefix(lowerPart, "o:") {
+			if outputSet {
+				return nil, fmt.Errorf("duplicate output codepage: %s", part)
+			}
 			// Output codepage
-			cp, err := strconv.Atoi(strings.TrimPrefix(strings.ToLower(part), "o:"))
+			cp, err := strconv.Atoi(strings.TrimPrefix(lowerPart, "o:"))
 			if err != nil {
 				return nil, fmt.Errorf("invalid output codepage: %s", part)
 			}
+			if _, err := GetEncoding(cp); err != nil {
+				return nil, err
+			}
 			settings.OutputCodePage = cp
+			outputSet = true
 		} else {
+			if len(parts) != 1 {
+				return nil, fmt.Errorf("invalid codepage format: %s", arg)
+			}
 			// Both input and output
 			cp, err := strconv.Atoi(part)
 			if err != nil {
 				return nil, fmt.Errorf("invalid codepage: %s", part)
 			}
+			if _, err := GetEncoding(cp); err != nil {
+				return nil, err
+			}
 			settings.InputCodePage = cp
 			settings.OutputCodePage = cp
-		}
-	}
-
-	// Validate codepages
-	if settings.InputCodePage != 0 {
-		if _, err := GetEncoding(settings.InputCodePage); err != nil {
-			return nil, err
-		}
-	}
-	if settings.OutputCodePage != 0 {
-		if _, err := GetEncoding(settings.OutputCodePage); err != nil {
-			return nil, err
 		}
 	}
 

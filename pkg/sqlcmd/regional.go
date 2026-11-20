@@ -286,9 +286,12 @@ func getLocaleDateTimeFormats(tag language.Tag) (dateFmt, timeFmt string) {
 	// Set date format based on locale
 	switch base.String() {
 	case "en":
-		if region.String() == "US" {
+		switch region.String() {
+		case "US":
 			dateFmt = "01/02/2006"
-		} else {
+		case "CA":
+			dateFmt = "2006-01-02"
+		default:
 			dateFmt = "02/01/2006"
 		}
 	case "de", "ru", "pl", "cs", "sk", "hu", "ro", "bg", "hr", "sl", "sr", "uk", "be":
