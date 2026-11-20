@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
 	"time"
 
@@ -262,7 +263,7 @@ func (f *sqlCmdFormatterType) AddError(err error) {
 				b.WriteString(localizer.Sprintf("Msg %#v, Level %d, State %d, Server %s, Line %#v%s", e.Number, e.Class, e.State, e.ServerName, e.LineNo, SqlcmdEol))
 			}
 			if !f.rawErrors {
-				msg = strings.TrimPrefix(msg, "mssql: ")
+				msg = e.Message
 			}
 		}
 	}
@@ -577,6 +578,8 @@ func (f *sqlCmdFormatterType) scanRow(rows *sql.Rows) ([]string, error) {
 				} else {
 					row[n] = "0"
 				}
+			case float64:
+				row[n] = formatFloat64(x, f.columnDetails[n].col.DatabaseTypeName())
 			default:
 				row[n] = f.formatNumericValue(typeName, x)
 			}
@@ -614,6 +617,14 @@ func dateTimeScale(typeName string, scale int) int {
 	default:
 		return scale
 	}
+}
+
+func formatFloat64(value float64, databaseType string) string {
+	bitSize := 64
+	if databaseType == "REAL" {
+		bitSize = 32
+	}
+	return strconv.FormatFloat(value, 'g', -1, bitSize)
 }
 
 func dateTimeFormatString(scale int, addOffset bool) string {
