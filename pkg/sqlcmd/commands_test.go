@@ -13,6 +13,7 @@ import (
 	"github.com/microsoft/go-sqlcmd/internal/color"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/text/encoding/unicode"
 )
 
 func TestQuitCommand(t *testing.T) {
@@ -323,10 +324,27 @@ func TestErrorCommand(t *testing.T) {
 	if assert.NoError(t, err, "ReadFile") {
 		assert.Regexp(t, "Msg 50000, Level 16, State 1, Server .*, Line 2"+SqlcmdEol+"Error"+SqlcmdEol, string(errText), "Error file contents: "+string(errText))
 	}
+
 	s.vars.Set("myvar", "stdout")
 	err = errorCommand(s, []string{"$(myvar)"}, 1)
 	assert.NoError(t, err, "errorCommand with a variable")
 	assert.Equal(t, os.Stdout, s.err, "error set to stdout using a variable")
+}
+
+func TestEncodingWriteCloserFlushesAndClosesFile(t *testing.T) {
+	file, err := os.CreateTemp(t.TempDir(), "encoded-output")
+	require.NoError(t, err)
+	writer := newEncodingWriteCloser(file, unicode.UTF16(unicode.LittleEndian, unicode.UseBOM).NewEncoder())
+
+	_, err = writer.Write([]byte("x"))
+	require.NoError(t, err)
+	require.NoError(t, writer.Close())
+
+	content, err := os.ReadFile(file.Name())
+	require.NoError(t, err)
+	assert.Equal(t, []byte{0xff, 0xfe, 'x', 0}, content)
+	_, err = file.Write([]byte("y"))
+	assert.Error(t, err)
 }
 
 func TestOnErrorCommand(t *testing.T) {
