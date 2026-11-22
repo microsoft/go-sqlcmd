@@ -555,8 +555,13 @@ func restoreDatabaseQuery(backupFile string, databaseName string) string {
 	const text = `SET NOCOUNT ON;
 
 DECLARE @backupFile NVARCHAR(4000) = %s;
-DECLARE @databaseName SYSNAME = %s;
+DECLARE @databaseName NVARCHAR(MAX) = %s;
 DECLARE @filePrefix NVARCHAR(260) = %s;
+
+IF DATALENGTH(@databaseName) / 2 > 128
+BEGIN
+    THROW 50000, N'The database name is longer than 128 characters.', 1;
+END
 
 -- This table definition works since SQL Server 2017, therefore
 -- works for all SQL Server containers (which started in 2017)

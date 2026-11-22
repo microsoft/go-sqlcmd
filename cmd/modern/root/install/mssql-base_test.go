@@ -93,7 +93,7 @@ func TestRestoreDatabaseQueryQuotesValues(t *testing.T) {
 	query := restoreDatabaseQuery("/var/opt/mssql/backup/O'Brien.bak", "Sales O'Brien")
 
 	assert.Contains(t, query, "DECLARE @backupFile NVARCHAR(4000) = N'/var/opt/mssql/backup/O''Brien.bak';")
-	assert.Contains(t, query, "DECLARE @databaseName SYSNAME = N'Sales O''Brien';")
+	assert.Contains(t, query, "DECLARE @databaseName NVARCHAR(MAX) = N'Sales O''Brien';")
 	assert.Contains(t, query, "DECLARE @filePrefix NVARCHAR(260) = N'/var/opt/mssql/Sales_O_Brien';")
 }
 
@@ -159,6 +159,28 @@ func TestRestoreDatabaseQueryDoesNotCollideWithUserDatabase(t *testing.T) {
 
 	assert.Equal(t, "ONLINE",
 		s.ScalarString(fmt.Sprintf("DECLARE @s NVARCHAR(60); SELECT @s = state_desc FROM sys.databases WHERE name = N'%s'; PRINT @s", restoredDb)))
+}
+
+func TestRestoreDatabaseQueryRejectsOverlongName(t *testing.T) {
+	s := connectToTestServer(t)
+	failOnQueryError(t)
+
+	suffix := strconv.FormatInt(time.Now().UnixNano(), 36)
+	sourceDb := "restore_source_" + suffix
+	backupFile := "/var/opt/mssql/data/" + sourceDb + ".bak"
+	overlongName := suffix + strings.Repeat("x", 129-len(suffix))
+	truncatedName := overlongName[:128]
+
+	s.Query(fmt.Sprintf("CREATE DATABASE [%s]", sourceDb))
+	defer s.Query(fmt.Sprintf("DROP DATABASE [%s]", sourceDb))
+	s.Query(fmt.Sprintf("BACKUP DATABASE [%s] TO DISK = %s WITH INIT", sourceDb, sqlStringLiteral(backupFile)))
+
+	// Restore errors are printed, not returned, so check the outcome instead.
+	s.Query(restoreDatabaseQuery(backupFile, overlongName))
+	defer s.Query(fmt.Sprintf("IF DB_ID(N'%[1]s') IS NOT NULL DROP DATABASE [%[1]s]", truncatedName))
+
+	assert.Equal(t, "0",
+		s.ScalarString(fmt.Sprintf("DECLARE @n INT; SELECT @n = COUNT(*) FROM sys.databases WHERE name = N'%s'; PRINT @n", truncatedName)))
 }
 
 // connectToTestServer connects to the server named by the SQLCMD* environment
