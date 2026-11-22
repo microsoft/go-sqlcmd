@@ -625,7 +625,7 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	containerId string,
 	userName string,
 ) {
-	output := c.Cmd.Output()
+	output := c.Output()
 	databaseName := parseDbName(c.usingDatabaseUrl)
 	databaseUrl := extractUrl(c.usingDatabaseUrl)
 
