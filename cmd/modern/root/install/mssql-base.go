@@ -353,7 +353,7 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 			Password:           secret.Encode(saPassword, c.passwordEncryption)},
 		Name: "sa"}
 
-	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false})
+	c.sql.Connect(endpoint, saUser, sql.ConnectOptions{Database: "master", Interactive: false, ExitOnError: true})
 
 	c.createNonSaUser(userName, password)
 
@@ -480,11 +480,6 @@ CHECK_POLICY=OFF`
 	}
 }
 
-func getDbNameAsIdentifier(dbName string) string {
-	escapedDbNAme := strings.ReplaceAll(dbName, "'", "''")
-	return strings.ReplaceAll(escapedDbNAme, "]", "]]")
-}
-
 func getDbNameAsNonIdentifier(dbName string) string {
 	return strings.ReplaceAll(dbName, "]", "]]")
 }
@@ -520,6 +515,106 @@ func extractUrl(usingArg string) string {
 	return usingArg
 }
 
+// sqlStringLiteral returns s as a T-SQL Unicode string literal.
+func sqlStringLiteral(s string) string {
+	return "N'" + strings.ReplaceAll(s, "'", "''") + "'"
+}
+
+// restoreFileStem returns a file name stem for restored database files that
+// contains only ASCII letters, digits, '_' and '-'.
+func restoreFileStem(databaseName string) string {
+	const maxLength = 64
+	var b strings.Builder
+	for _, r := range databaseName {
+		if b.Len() == maxLength {
+			break
+		}
+		switch {
+		case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z', r >= '0' && r <= '9', r == '_', r == '-':
+			b.WriteRune(r)
+		default:
+			b.WriteByte('_')
+		}
+	}
+	if b.Len() == 0 {
+		return "database"
+	}
+	return b.String()
+}
+
+// restoreDatabaseQuery returns a batch that restores backupFile as
+// databaseName. Logical file names read from the backup are kept as they are;
+// each file is moved to /var/opt/mssql/data/<stem>_<FileID> with an
+// extension chosen from its file type.
+func restoreDatabaseQuery(backupFile string, databaseName string) string {
+	const text = `SET NOCOUNT ON;
+
+DECLARE @backupFile NVARCHAR(4000) = %s;
+DECLARE @databaseName SYSNAME = %s;
+DECLARE @filePrefix NVARCHAR(260) = %s;
+
+-- This table definition works since SQL Server 2017, therefore
+-- works for all SQL Server containers (which started in 2017)
+DECLARE @fileListTable TABLE (
+    [LogicalName]           NVARCHAR(128),
+    [PhysicalName]          NVARCHAR(260),
+    [Type]                  CHAR(1),
+    [FileGroupName]         NVARCHAR(128),
+    [Size]                  NUMERIC(20,0),
+    [MaxSize]               NUMERIC(20,0),
+    [FileID]                BIGINT,
+    [CreateLSN]             NUMERIC(25,0),
+    [DropLSN]               NUMERIC(25,0),
+    [UniqueID]              UNIQUEIDENTIFIER,
+    [ReadOnlyLSN]           NUMERIC(25,0),
+    [ReadWriteLSN]          NUMERIC(25,0),
+    [BackupSizeInBytes]     BIGINT,
+    [SourceBlockSize]       INT,
+    [FileGroupID]           INT,
+    [LogGroupGUID]          UNIQUEIDENTIFIER,
+    [DifferentialBaseLSN]   NUMERIC(25,0),
+    [DifferentialBaseGUID]  UNIQUEIDENTIFIER,
+    [IsReadOnly]            BIT,
+    [IsPresent]             BIT,
+    [TDEThumbprint]         VARBINARY(32),
+    [SnapshotURL]           NVARCHAR(360)
+);
+
+INSERT INTO @fileListTable
+EXEC sp_executesql N'RESTORE FILELISTONLY FROM DISK = @backupFile',
+    N'@backupFile NVARCHAR(4000)', @backupFile = @backupFile;
+
+IF EXISTS (SELECT 1 FROM @fileListTable WHERE IsPresent = 1 AND [Type] NOT IN ('D', 'L', 'S'))
+BEGIN
+    THROW 50000, N'The backup contains a file type that cannot be restored. Supported types are D, L and S.', 1;
+END
+
+DECLARE @moveClauses NVARCHAR(MAX);
+SELECT @moveClauses = STRING_AGG(
+    CAST(N'MOVE N''' + REPLACE(LogicalName, N'''', N'''''') + N''' TO N''' + @filePrefix + N'_'
+        + CAST(FileID AS NVARCHAR(20))
+        + CASE WHEN [Type] = 'L' THEN N'.ldf' WHEN [Type] = 'S' THEN N'' WHEN FileID = 1 THEN N'.mdf' ELSE N'.ndf' END
+        + N'''' AS NVARCHAR(MAX)),
+    N', ') WITHIN GROUP (ORDER BY FileID)
+FROM @fileListTable
+WHERE IsPresent = 1;
+
+IF @moveClauses IS NULL
+BEGIN
+    THROW 50000, N'The backup does not contain any files to restore.', 1;
+END
+
+DECLARE @sql NVARCHAR(MAX) = N'RESTORE DATABASE @databaseName FROM DISK = @backupFile WITH ' + @moveClauses;
+EXEC sp_executesql @sql,
+    N'@databaseName SYSNAME, @backupFile NVARCHAR(4000)',
+    @databaseName = @databaseName, @backupFile = @backupFile;`
+
+	return fmt.Sprintf(text,
+		sqlStringLiteral(backupFile),
+		sqlStringLiteral(databaseName),
+		sqlStringLiteral("/var/opt/mssql/data/"+restoreFileStem(databaseName)))
+}
+
 func (c *MssqlBase) downloadAndRestoreDb(
 	controller *container.Controller,
 	containerId string,
@@ -545,51 +640,9 @@ func (c *MssqlBase) downloadAndRestoreDb(
 	// Restore database from file
 	output.Info(localizer.Sprintf("Restoring database %s", databaseName))
 
-	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
+	c.query(restoreDatabaseQuery(temporaryFolder+"/"+file, databaseName))
+
 	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
-
-	text := `SET NOCOUNT ON;
-
--- Build a SQL Statement to restore any .bak file to the Linux filesystem
-DECLARE @sql NVARCHAR(max)
-
--- This table definition works since SQL Server 2017, therefore 
--- works for all SQL Server containers (which started in 2017)
-DECLARE @fileListTable TABLE (
-    [LogicalName]           NVARCHAR(128),
-    [PhysicalName]          NVARCHAR(260),
-    [Type]                  CHAR(1),
-    [FileGroupName]         NVARCHAR(128),
-    [Size]                  NUMERIC(20,0),
-    [MaxSize]               NUMERIC(20,0),
-    [FileID]                BIGINT,
-    [CreateLSN]             NUMERIC(25,0),
-    [DropLSN]               NUMERIC(25,0),
-    [UniqueID]              UNIQUEIDENTIFIER,
-    [ReadOnlyLSN]           NUMERIC(25,0),
-    [ReadWriteLSN]          NUMERIC(25,0),
-    [BackupSizeInBytes]     BIGINT,
-    [SourceBlockSize]       INT,
-    [FileGroupID]           INT,
-    [LogGroupGUID]          UNIQUEIDENTIFIER,
-    [DifferentialBaseLSN]   NUMERIC(25,0),
-    [DifferentialBaseGUID]  UNIQUEIDENTIFIER,
-    [IsReadOnly]            BIT,
-    [IsPresent]             BIT,
-    [TDEThumbprint]         VARBINARY(32),
-    [SnapshotURL]           NVARCHAR(360)
-)
-
-INSERT INTO @fileListTable
-EXEC('RESTORE FILELISTONLY FROM DISK = ''%s/%s''')
-SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''%s/%s'' WITH '
-SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
-FROM @fileListTable
-WHERE IsPresent = 1
-SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
-EXEC(@sql)`
-
-	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
 
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",

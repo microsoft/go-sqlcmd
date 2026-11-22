@@ -17,4 +17,8 @@ type ConnectOptions struct {
 	Database string
 
 	Interactive bool
+
+	// ExitOnError makes Query and ScalarString fail when the server reports
+	// an error, instead of only printing it.
+	ExitOnError bool
 }

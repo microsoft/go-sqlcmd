@@ -2848,6 +2848,31 @@
             "fuzzy": true
         },
         {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translation": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
@@ -2903,6 +2928,13 @@
                     "expr": "localizer.StdoutName"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": "Do not strip the \"mssql: \" prefix from error messages",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
@@ -3367,6 +3399,23 @@
             "message": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
             "translation": "sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools",
             "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Query failed with exit code {Exitcode}",
+            "message": "Query failed with exit code {Exitcode}",
+            "translation": "Query failed with exit code {Exitcode}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Exitcode",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "m.sqlcmd.Exitcode"
+                }
+            ],
             "fuzzy": true
         },
         {

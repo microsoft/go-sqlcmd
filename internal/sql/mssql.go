@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/internal/buffer"
+	"github.com/microsoft/go-sqlcmd/internal/localizer"
 	"github.com/microsoft/go-sqlcmd/pkg/console"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
@@ -45,6 +46,9 @@ func (m *mssql) Connect(
 		connect.Database = options.Database
 	}
 
+	connect.ExitOnError = options.ExitOnError
+	m.exitOnError = options.ExitOnError
+
 	if user == nil {
 		connect.UseTrustedConnection = true
 	} else {
@@ -77,8 +81,7 @@ func (m *mssql) Query(text string) {
 		m.sqlcmd.SetOutput(os.Stdout)
 		m.sqlcmd.SetError(os.Stderr)
 		trace("Running query: %v", text)
-		err := m.sqlcmd.Run(true, false)
-		checkErr(err)
+		checkErr(m.runOnce())
 	} else {
 		// sqlcmd prints the ErrCtrlC message before returning
 		// In modern mode we do not exit the process on ctrl-c during interactive mode
@@ -98,8 +101,19 @@ func (m *mssql) ScalarString(query string) string {
 	m.sqlcmd.SetError(os.Stderr)
 
 	trace("Running query: %v", query)
-	err := m.sqlcmd.Run(true, false)
-	checkErr(err)
+	checkErr(m.runOnce())
 
 	return strings.TrimRight(buf.String(), "\r\n")
+}
+
+// runOnce runs the pending query. Run(true, false) prints server errors but
+// does not return them, so when exitOnError is set the exit code recorded by
+// the batch is checked as well.
+func (m *mssql) runOnce() error {
+	m.sqlcmd.Exitcode = 0
+	err := m.sqlcmd.Run(true, false)
+	if err == nil && m.exitOnError && m.sqlcmd.Exitcode != 0 {
+		err = localizer.Errorf("Query failed with exit code %d", m.sqlcmd.Exitcode)
+	}
+	return err
 }
