@@ -94,7 +94,7 @@ func TestRestoreDatabaseQueryQuotesValues(t *testing.T) {
 
 	assert.Contains(t, query, "DECLARE @backupFile NVARCHAR(4000) = N'/var/opt/mssql/backup/O''Brien.bak';")
 	assert.Contains(t, query, "DECLARE @databaseName SYSNAME = N'Sales O''Brien';")
-	assert.Contains(t, query, "DECLARE @filePrefix NVARCHAR(260) = N'/var/opt/mssql/data/Sales_O_Brien';")
+	assert.Contains(t, query, "DECLARE @filePrefix NVARCHAR(260) = N'/var/opt/mssql/Sales_O_Brien';")
 }
 
 func TestRestoreDatabaseQueryRestoresLogicalNamesWithApostrophes(t *testing.T) {
@@ -126,8 +126,39 @@ WHERE database_id = DB_ID(%s);
 PRINT @files`, sqlStringLiteral(restoredDb)))
 
 	assert.Equal(t,
-		fmt.Sprintf("Sales O'Brien|/var/opt/mssql/data/%[1]s_1.mdf;Sales O'Brien log|/var/opt/mssql/data/%[1]s_2.ldf", restoreFileStem(restoredDb)),
+		fmt.Sprintf("Sales O'Brien|/var/opt/mssql/%[1]s_1.mdf;Sales O'Brien log|/var/opt/mssql/%[1]s_2.ldf", restoreFileStem(restoredDb)),
 		files)
+}
+
+func TestRestoreDatabaseQueryDoesNotCollideWithUserDatabase(t *testing.T) {
+	s := connectToTestServer(t)
+	failOnQueryError(t)
+
+	if platform := s.ScalarString("DECLARE @platform NVARCHAR(256); SELECT @platform = host_platform FROM sys.dm_os_host_info; PRINT @platform"); platform != "Linux" {
+		t.Skipf("restore paths are for SQL Server on Linux, server runs on %q", platform)
+	}
+
+	suffix := strconv.FormatInt(time.Now().UnixNano(), 36)
+	sourceDb := "restore_source_" + suffix
+	restoredDb := "Sales_" + suffix
+	userDb := restoredDb + "_1"
+	backupFile := "/var/opt/mssql/data/" + sourceDb + ".bak"
+
+	s.Query(fmt.Sprintf("CREATE DATABASE [%s]", sourceDb))
+	defer s.Query(fmt.Sprintf("DROP DATABASE [%s]", sourceDb))
+	s.Query(fmt.Sprintf("BACKUP DATABASE [%s] TO DISK = %s WITH INIT", sourceDb, sqlStringLiteral(backupFile)))
+
+	// --user-database is created with default file paths before the restore runs.
+	s.Query(fmt.Sprintf("CREATE DATABASE [%s]", userDb))
+	defer s.Query(fmt.Sprintf("DROP DATABASE [%s]", userDb))
+	assert.Equal(t, "/var/opt/mssql/data/"+userDb+".mdf",
+		s.ScalarString(fmt.Sprintf("DECLARE @f NVARCHAR(260); SELECT @f = physical_name FROM sys.master_files WHERE database_id = DB_ID(N'%s') AND file_id = 1; PRINT @f", userDb)))
+
+	s.Query(restoreDatabaseQuery(backupFile, restoredDb))
+	defer s.Query(fmt.Sprintf("DROP DATABASE [%s]", restoredDb))
+
+	assert.Equal(t, "ONLINE",
+		s.ScalarString(fmt.Sprintf("DECLARE @s NVARCHAR(60); SELECT @s = state_desc FROM sys.databases WHERE name = N'%s'; PRINT @s", restoredDb)))
 }
 
 func TestRestoreDatabaseQueryReportsFailure(t *testing.T) {

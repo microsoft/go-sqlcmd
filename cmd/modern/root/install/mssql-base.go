@@ -520,6 +520,11 @@ func sqlStringLiteral(s string) string {
 	return "N'" + strings.ReplaceAll(s, "'", "''") + "'"
 }
 
+// restoreFolder is outside the default data folder (/var/opt/mssql/data), so
+// restored files cannot collide with files of databases created there, such
+// as the one created for --user-database.
+const restoreFolder = "/var/opt/mssql"
+
 // restoreFileStem returns a file name stem for restored database files that
 // contains only ASCII letters, digits, '_' and '-'.
 func restoreFileStem(databaseName string) string {
@@ -544,7 +549,7 @@ func restoreFileStem(databaseName string) string {
 
 // restoreDatabaseQuery returns a batch that restores backupFile as
 // databaseName. Logical file names read from the backup are kept as they are;
-// each file is moved to /var/opt/mssql/data/<stem>_<FileID> with an
+// each file is moved to /var/opt/mssql/<stem>_<FileID> with an
 // extension chosen from its file type.
 func restoreDatabaseQuery(backupFile string, databaseName string) string {
 	const text = `SET NOCOUNT ON;
@@ -612,7 +617,7 @@ EXEC sp_executesql @sql,
 	return fmt.Sprintf(text,
 		sqlStringLiteral(backupFile),
 		sqlStringLiteral(databaseName),
-		sqlStringLiteral("/var/opt/mssql/data/"+restoreFileStem(databaseName)))
+		sqlStringLiteral(restoreFolder+"/"+restoreFileStem(databaseName)))
 }
 
 func (c *MssqlBase) downloadAndRestoreDb(
