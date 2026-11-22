@@ -589,16 +589,11 @@ INSERT INTO @fileListTable
 EXEC sp_executesql N'RESTORE FILELISTONLY FROM DISK = @backupFile',
     N'@backupFile NVARCHAR(4000)', @backupFile = @backupFile;
 
-IF EXISTS (SELECT 1 FROM @fileListTable WHERE IsPresent = 1 AND [Type] NOT IN ('D', 'L', 'S'))
-BEGIN
-    THROW 50000, N'The backup contains a file type that cannot be restored. Supported types are D, L and S.', 1;
-END
-
 DECLARE @moveClauses NVARCHAR(MAX);
 SELECT @moveClauses = STRING_AGG(
     CAST(N'MOVE N''' + REPLACE(LogicalName, N'''', N'''''') + N''' TO N''' + @filePrefix + N'_'
         + CAST(FileID AS NVARCHAR(20))
-        + CASE WHEN [Type] = 'L' THEN N'.ldf' WHEN [Type] = 'S' THEN N'' WHEN FileID = 1 THEN N'.mdf' ELSE N'.ndf' END
+        + CASE WHEN [Type] = 'L' THEN N'.ldf' WHEN [Type] <> 'D' THEN N'' WHEN FileID = 1 THEN N'.mdf' ELSE N'.ndf' END
         + N'''' AS NVARCHAR(MAX)),
     N', ') WITHIN GROUP (ORDER BY FileID)
 FROM @fileListTable
