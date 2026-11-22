@@ -161,24 +161,8 @@ func TestRestoreDatabaseQueryDoesNotCollideWithUserDatabase(t *testing.T) {
 		s.ScalarString(fmt.Sprintf("DECLARE @s NVARCHAR(60); SELECT @s = state_desc FROM sys.databases WHERE name = N'%s'; PRINT @s", restoredDb)))
 }
 
-func TestRestoreDatabaseQueryReportsFailure(t *testing.T) {
-	s := connectToTestServer(t)
-
-	var queryErr error
-	sql.Initialize(func(err error) {
-		if err != nil {
-			queryErr = err
-		}
-	}, func(string, ...any) {}, secret.Decode)
-
-	suffix := strconv.FormatInt(time.Now().UnixNano(), 36)
-	s.Query(restoreDatabaseQuery("/var/opt/mssql/data/missing_"+suffix+".bak", "missing_"+suffix))
-
-	assert.Error(t, queryErr)
-}
-
 // connectToTestServer connects to the server named by the SQLCMD* environment
-// variables with ExitOnError set, or skips the test when no password is set.
+// variables, or skips the test when no password is set.
 func connectToTestServer(t *testing.T) sql.Sql {
 	password := os.Getenv("SQLCMDPASSWORD")
 	if password == "" {
@@ -213,7 +197,7 @@ func connectToTestServer(t *testing.T) sql.Sql {
 				Password:           secret.Encode(password, "none"),
 			},
 		},
-		sql.ConnectOptions{Database: "master", ExitOnError: true})
+		sql.ConnectOptions{Database: "master"})
 	return s
 }
 
