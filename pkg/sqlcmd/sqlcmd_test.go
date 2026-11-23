@@ -10,6 +10,7 @@ import (
 	"io"
 	"os"
 	"os/user"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
@@ -353,6 +354,57 @@ func TestSqlCmdExitOnError(t *testing.T) {
 	assert.Contains(t, o, "Level 15", "Level 15 should be in the output")
 	assert.Equal(t, 15, s.Exitcode, "s.ExitCode for a syntax error")
 	assert.NoError(t, err, "Run should not return an error for a SQL error")
+}
+
+// With ExitOnError, a batch that fails in a file read with :r runs once and stops the outer input
+func TestSqlCmdExitOnErrorInIncludedFile(t *testing.T) {
+	failFile := filepath.Join(t.TempDir(), "fail.sql")
+	err := os.WriteFile(failFile, []byte("PRINT 'fail.sql ran'"+SqlcmdEol+"RAISERROR(N'e', 16, 1)"+SqlcmdEol+"GO"+SqlcmdEol), 0644)
+	assert.NoError(t, err, "os.WriteFile")
+
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.Connect.ExitOnError = true
+	err = runSqlCmd(t, s, []string{":r " + failFile, "PRINT 'after :r'", "GO"})
+	o := buf.buf.String()
+	assert.NoError(t, err, "Run should not return an error for a SQL error")
+	assert.Equal(t, 1, strings.Count(o, "fail.sql ran"), "The failing batch should run once. Output: %s", o)
+	assert.NotContains(t, o, "after :r", "The batch after :r should not run")
+	assert.Equal(t, 1, s.Exitcode, "s.Exitcode")
+
+	s, buf = setupSqlCmdWithMemoryOutput(t)
+	defer buf.Close()
+	s.Connect.ExitOnError = true
+	err = s.IncludeFile(failFile, true)
+	assert.ErrorIs(t, err, ErrExitRequested, "IncludeFile should report the exit request")
+	assert.Equal(t, 1, s.Exitcode, "s.Exitcode")
+}
+
+// :QUIT in a file read with :r ends the outer input too
+func TestQuitInIncludedFile(t *testing.T) {
+	dir := t.TempDir()
+	quitFile := filepath.Join(dir, "quit.sql")
+	err := os.WriteFile(quitFile, []byte(":QUIT"+SqlcmdEol+":setvar inner 1"+SqlcmdEol), 0644)
+	assert.NoError(t, err, "os.WriteFile")
+	wrapper := filepath.Join(dir, "wrapper.sql")
+	err = os.WriteFile(wrapper, []byte(":r "+quitFile+SqlcmdEol+":setvar outer 1"+SqlcmdEol), 0644)
+	assert.NoError(t, err, "os.WriteFile")
+
+	v := InitializeVariables(false)
+	s := New(nil, "", v)
+	err = s.IncludeFile(wrapper, true)
+	assert.ErrorIs(t, err, ErrExitRequested, "IncludeFile should report the exit request")
+	_, ok := v.Get("inner")
+	assert.False(t, ok, "Commands after :QUIT should not run")
+	_, ok = v.Get("outer")
+	assert.False(t, ok, "Commands after :r should not run")
+
+	v = InitializeVariables(false)
+	s = New(nil, "", v)
+	err = runSqlCmd(t, s, []string{":r " + quitFile, ":setvar outer 1"})
+	assert.NoError(t, err, "Run should not return an error for :QUIT")
+	_, ok = v.Get("outer")
+	assert.False(t, ok, "Commands after :r should not run")
 }
 
 func TestSqlCmdSetErrorLevel(t *testing.T) {

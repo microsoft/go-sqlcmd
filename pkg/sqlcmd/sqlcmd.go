@@ -121,6 +121,17 @@ func (s *Sqlcmd) scanNext() (string, error) {
 // The error returned from Run is mainly of informational value. Its Message will have been printed
 // before Run returns.
 func (s *Sqlcmd) Run(once bool, processAll bool) error {
+	err := s.run(once, processAll)
+	if err == ErrExitRequested {
+		return nil
+	}
+	return err
+}
+
+// run is Run, except that it returns ErrExitRequested when a command asks to exit.
+// Input read through IncludeFile (:r, -i) uses it so the exit request reaches the
+// outer input instead of being dropped there.
+func (s *Sqlcmd) run(once bool, processAll bool) error {
 	iactive := s.lineIo != nil
 	var lastError error
 	for {
@@ -163,7 +174,10 @@ func (s *Sqlcmd) Run(once bool, processAll bool) error {
 		if cmd != nil {
 			lastError = nil
 			err = s.RunCommand(cmd, args)
-			if err == ErrExitRequested || once {
+			if err == ErrExitRequested {
+				return err
+			}
+			if once {
 				break
 			}
 			if err != nil {
@@ -356,7 +370,9 @@ func (s *Sqlcmd) promptPassword() (string, error) {
 }
 
 // IncludeFile opens the given file and processes its batches.
-// When processAll is true, text not followed by a go statement is run as a query
+// When processAll is true, text not followed by a go statement is run as a query.
+// It returns ErrExitRequested when a command in the file asks to exit, for example
+// :EXIT, :QUIT, or a batch that fails while ExitOnError is set.
 func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 	f, err := os.Open(path)
 	if err != nil {
@@ -390,7 +406,7 @@ func (s *Sqlcmd) IncludeFile(path string, processAll bool) error {
 		ln = ln[:0]
 		return t, err
 	}
-	err = s.Run(false, processAll)
+	err = s.run(false, processAll)
 	s.batch.read = curLine
 	if !s.echoFileLines {
 		if s.batch.State() == "=" {
