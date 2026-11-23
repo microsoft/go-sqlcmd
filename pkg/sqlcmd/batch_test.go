@@ -40,6 +40,7 @@ func TestBatchNext(t *testing.T) {
 		{"exit_1", []string{"exit_1"}, nil, "-"},
 		{"print ('me\n!!me')", []string{"print ('me" + SqlcmdEol + "!!me')"}, nil, "-"},
 		{"/*comment\n!!me*/", []string{"/*comment" + SqlcmdEol + "!!me*/"}, nil, "-"},
+		{"select 1\nGO\t\t\nselect 2\nGO", []string{"select 1" + SqlcmdEol + "select 2"}, []string{"GO", "GO"}, "-"},
 	}
 	for _, test := range tests {
 		b := NewBatch(sp(test.s, "\n"), newCommands())
