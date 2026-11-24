@@ -110,13 +110,6 @@
             "fuzzy": true
         },
         {
-            "id": "Open tools (e.g Azure Data Studio) for current context",
-            "message": "Open tools (e.g Azure Data Studio) for current context",
-            "translation": "Open tools (e.g Azure Data Studio) for current context",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "Run a query against the current context",
             "message": "Run a query against the current context",
             "translation": "Run a query against the current context",
@@ -659,13 +652,6 @@
                     "expr": "c.userName"
                 }
             ],
-            "fuzzy": true
-        },
-        {
-            "id": "Open in Azure Data Studio",
-            "message": "Open in Azure Data Studio",
-            "translation": "Open in Azure Data Studio",
-            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
@@ -2369,41 +2355,6 @@
             "fuzzy": true
         },
         {
-            "id": "sqlcmd start",
-            "message": "sqlcmd start",
-            "translation": "sqlcmd start",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Container is not running",
-            "message": "Container is not running",
-            "translation": "Container is not running",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Press Ctrl+C to exit this process...",
-            "message": "Press Ctrl+C to exit this process...",
-            "translation": "Press Ctrl+C to exit this process...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "message": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translation": "A 'Not enough memory resources are available' error can be caused by too many credentials already stored in Windows Credential Manager",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Failed to write credential to Windows Credential Manager",
-            "message": "Failed to write credential to Windows Credential Manager",
-            "translation": "Failed to write credential to Windows Credential Manager",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
             "id": "The -L parameter can not be used in combination with other parameters.",
             "message": "The -L parameter can not be used in combination with other parameters.",
             "translation": "The -L parameter can not be used in combination with other parameters.",
@@ -2848,6 +2799,31 @@
             "fuzzy": true
         },
         {
+            "id": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "message": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translation": "Prints the output in ASCII table format. This option sets the sqlcmd scripting variable {SQLCMDFORMAT} to '{Ascii}'. The default is false",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "SQLCMDFORMAT",
+                    "string": "%[1]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "sqlcmd.SQLCMDFORMAT"
+                },
+                {
+                    "id": "Ascii",
+                    "string": "%[2]s",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "\"ascii\""
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "message": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
             "translation": "{_r0__1} Redirects error messages with severity \u003e= 11 output to stderr. Pass 1 to to redirect all errors including PRINT.",
@@ -2903,6 +2879,13 @@
                     "expr": "localizer.StdoutName"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Do not strip the \"mssql: \" prefix from error messages",
+            "message": "Do not strip the \"mssql: \" prefix from error messages",
+            "translation": "Do not strip the \"mssql: \" prefix from error messages",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {

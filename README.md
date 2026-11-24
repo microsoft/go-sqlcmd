@@ -61,14 +61,13 @@ The Homebrew package manager may be used on Linux and Windows Subsystem for Linu
 
 Use `sqlcmd` to create SQL Server instances using a local container runtime (e.g. [Docker][] or [Podman][])
 
-### Create SQL Server instance using local container runtime and connect using Azure Data Studio
+### Create SQL Server instance using local container runtime and run a query
 
-To create a local SQL Server instance with the AdventureWorksLT database restored, query it, and connect to it using Azure Data Studio, run:
+To create a local SQL Server instance with the AdventureWorksLT database restored and query it, run:
 
 ```
 sqlcmd create mssql --accept-eula --using https://aka.ms/AdventureWorksLT.bak
 sqlcmd query "SELECT DB_NAME()"
-sqlcmd open ads
 ```
 
 Use `sqlcmd --help` to view all the available sub-commands.  Use `sqlcmd -?` to view the original ODBC `sqlcmd` flags.

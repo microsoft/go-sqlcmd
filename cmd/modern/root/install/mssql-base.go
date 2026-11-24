@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"path"
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	"github.com/microsoft/go-sqlcmd/cmd/modern/sqlconfig"
@@ -367,11 +366,6 @@ func (c *MssqlBase) createContainer(imageName string, contextName string) {
 	}
 
 	hints := [][]string{}
-
-	// TODO: sqlcmd open ads only support on Windows right now, add Mac support
-	if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
-		hints = append(hints, []string{localizer.Sprintf("Open in Azure Data Studio"), "sqlcmd open ads"})
-	}
 
 	hints = append(hints, []string{localizer.Sprintf("Run a query"), "sqlcmd query \"SELECT @@version\""})
 	hints = append(hints, []string{localizer.Sprintf("Start interactive session"), "sqlcmd query"})
