@@ -514,35 +514,45 @@ func extractUrl(usingArg string) string {
 	return usingArg
 }
 
-func (c *MssqlBase) downloadAndRestoreDb(
-	controller *container.Controller,
-	containerId string,
-	userName string,
-) {
-	output := c.Cmd.Output()
-	databaseName := parseDbName(c.usingDatabaseUrl)
-	databaseUrl := extractUrl(c.usingDatabaseUrl)
+// sqlStringLiteral returns s as a T-SQL Unicode string literal.
+func sqlStringLiteral(s string) string {
+	return "N'" + strings.ReplaceAll(s, "'", "''") + "'"
+}
 
-	_, file := filepath.Split(databaseUrl)
+// restoreFolder is outside the default data folder (/var/opt/mssql/data), so
+// restored files cannot collide with files of databases created there, such
+// as the one created for --user-database.
+const restoreFolder = "/var/opt/mssql"
 
-	// Download file from URL into container
-	output.Info(localizer.Sprintf("Downloading %s", file))
+// restoreFileStem returns a file name stem for restored database files that
+// contains only ASCII letters, digits, '_' and '-'.
+func restoreFileStem(databaseName string) string {
+	const maxLength = 64
+	var b strings.Builder
+	for _, r := range databaseName {
+		if b.Len() == maxLength {
+			break
+		}
+		switch {
+		case r >= 'a' && r <= 'z', r >= 'A' && r <= 'Z', r >= '0' && r <= '9', r == '_', r == '-':
+			b.WriteRune(r)
+		default:
+			b.WriteByte('_')
+		}
+	}
+	if b.Len() == 0 {
+		return "database"
+	}
+	return b.String()
+}
 
-	temporaryFolder := "/var/opt/mssql/backup"
+// restoreDatabaseQuery returns a batch that restores backupFile as
+// databaseName, moving each file to /var/opt/mssql/<stem>_<FileID> with an
+// extension chosen from its file type.
+func restoreDatabaseQuery(backupFile string, databaseName string) string {
+	const text = `SET NOCOUNT ON;
 
-	controller.DownloadFile(
-		containerId,
-		databaseUrl,
-		temporaryFolder,
-	)
-
-	// Restore database from file
-	output.Info(localizer.Sprintf("Restoring database %s", databaseName))
-
-	dbNameAsIdentifier := getDbNameAsIdentifier(databaseName)
-	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
-
-	text := `SET NOCOUNT ON;
+DECLARE @backupFile NVARCHAR(4000) = %s
 
 -- Build a SQL Statement to restore any .bak file to the Linux filesystem
 DECLARE @sql NVARCHAR(max)
@@ -575,15 +585,49 @@ DECLARE @fileListTable TABLE (
 )
 
 INSERT INTO @fileListTable
-EXEC('RESTORE FILELISTONLY FROM DISK = ''%s/%s''')
-SET @sql = 'RESTORE DATABASE [%s] FROM DISK = ''%s/%s'' WITH '
-SELECT @sql = @sql + char(13) + ' MOVE ''' + LogicalName + ''' TO ''/var/opt/mssql/' + LogicalName + '.' + RIGHT(PhysicalName,CHARINDEX('\',PhysicalName)) + ''','
+EXEC sp_executesql N'RESTORE FILELISTONLY FROM DISK = @backupFile', N'@backupFile NVARCHAR(4000)', @backupFile = @backupFile
+SET @sql = N'RESTORE DATABASE [%s] FROM DISK = @backupFile WITH '
+SELECT @sql = @sql + char(13) + N' MOVE N''' + REPLACE(LogicalName, N'''', N'''''') + N''' TO N''%s_' + CAST(FileID AS NVARCHAR(20))
+    + CASE WHEN [Type] = 'L' THEN N'.ldf' WHEN [Type] <> 'D' THEN N'' WHEN FileID = 1 THEN N'.mdf' ELSE N'.ndf' END + N''','
 FROM @fileListTable
 WHERE IsPresent = 1
 SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
-EXEC(@sql)`
+EXEC sp_executesql @sql, N'@backupFile NVARCHAR(4000)', @backupFile = @backupFile`
 
-	c.query(fmt.Sprintf(text, temporaryFolder, file, dbNameAsIdentifier, temporaryFolder, file))
+	return fmt.Sprintf(text,
+		sqlStringLiteral(backupFile),
+		getDbNameAsIdentifier(databaseName),
+		restoreFolder+"/"+restoreFileStem(databaseName))
+}
+
+func (c *MssqlBase) downloadAndRestoreDb(
+	controller *container.Controller,
+	containerId string,
+	userName string,
+) {
+	output := c.Output()
+	databaseName := parseDbName(c.usingDatabaseUrl)
+	databaseUrl := extractUrl(c.usingDatabaseUrl)
+
+	_, file := filepath.Split(databaseUrl)
+
+	// Download file from URL into container
+	output.Info(localizer.Sprintf("Downloading %s", file))
+
+	temporaryFolder := "/var/opt/mssql/backup"
+
+	controller.DownloadFile(
+		containerId,
+		databaseUrl,
+		temporaryFolder,
+	)
+
+	// Restore database from file
+	output.Info(localizer.Sprintf("Restoring database %s", databaseName))
+
+	c.query(restoreDatabaseQuery(temporaryFolder+"/"+file, databaseName))
+
+	dbNameAsNonIdentifier := getDbNameAsNonIdentifier(databaseName)
 
 	alterDefaultDb := fmt.Sprintf(
 		"ALTER LOGIN [%s] WITH DEFAULT_DATABASE = [%s]",
