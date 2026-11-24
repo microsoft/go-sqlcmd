@@ -302,6 +302,19 @@ func TestExitInitialQuery(t *testing.T) {
 
 }
 
+func TestExitInMultilineInitialQuery(t *testing.T) {
+	s, buf := setupSqlCmdWithMemoryOutput(t)
+	defer func() {
+		assert.NoError(t, buf.Close())
+	}()
+	s.Query = "SELECT 2;" + SqlcmdEol + SqlcmdEol + ":EXIT(SELECT 200)"
+
+	err := s.Run(true, false)
+
+	assert.NoError(t, err)
+	assert.Equal(t, 200, s.Exitcode)
+}
+
 func TestExitCodeSetOnError(t *testing.T) {
 	s, _ := setupSqlCmdWithMemoryOutput(t)
 	s.Connect.ErrorSeverityLevel = 12
