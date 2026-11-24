@@ -123,6 +123,27 @@ func TestValidCommandLineToArgsConversion(t *testing.T) {
 		{[]string{"-N", "true", "-J", "/path/to/cert2.pem"}, func(args SQLCmdArguments) bool {
 			return args.EncryptConnection == "true" && args.ServerCertificate == "/path/to/cert2.pem"
 		}},
+		{[]string{"-f", "65001"}, func(args SQLCmdArguments) bool {
+			return args.CodePage == "65001"
+		}},
+		{[]string{"-f", "i:1252,o:65001"}, func(args SQLCmdArguments) bool {
+			return args.CodePage == "i:1252,o:65001"
+		}},
+		{[]string{"-f", "o:65001,i:1252"}, func(args SQLCmdArguments) bool {
+			return args.CodePage == "o:65001,i:1252"
+		}},
+		{[]string{"--code-page", "1252"}, func(args SQLCmdArguments) bool {
+			return args.CodePage == "1252"
+		}},
+		{[]string{"--list-codepages"}, func(args SQLCmdArguments) bool {
+			return args.ListCodePages
+		}},
+		{[]string{"-R"}, func(args SQLCmdArguments) bool {
+			return args.UseRegionalSettings
+		}},
+		{[]string{"--client-regional-setting"}, func(args SQLCmdArguments) bool {
+			return args.UseRegionalSettings
+		}},
 		{[]string{"-j"}, func(args SQLCmdArguments) bool {
 			return args.RawErrors
 		}},
@@ -184,6 +205,11 @@ func TestInvalidCommandLine(t *testing.T) {
 		{[]string{"-N", "optional", "-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
 		{[]string{"-N", "disable", "-J", "/path/to/cert.pem"}, "The -J parameter requires encryption to be enabled (-N true, -N mandatory, or -N strict)."},
 		{[]string{"-N", "strict", "-F", "myserver.domain.com", "-J", "/path/to/cert.pem"}, "The -F and the -J options are mutually exclusive."},
+		// Codepage validation tests
+		{[]string{"-f", "invalid"}, `'-f invalid': invalid codepage: invalid`},
+		{[]string{"-f", "99999"}, `'-f 99999': unsupported codepage 99999`},
+		{[]string{"-f", "i:invalid"}, `'-f i:invalid': invalid input codepage: i:invalid`},
+		{[]string{"-f", "x:1252"}, `'-f x:1252': invalid codepage: x:1252`},
 	}
 
 	for _, test := range commands {
