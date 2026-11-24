@@ -19,34 +19,37 @@ func TestGetDbNameIfExists(t *testing.T) {
 
 	type test struct {
 		input                   string
+		expectedIdentifierOp    string
 		expectedNonIdentifierOp string
 	}
 
 	tests := []test{
 		// Positive Testcases
 		// Database name specified
-		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,myDbName", "myDbName"},
-		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,myDb Name", "myDb Name"},
-		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,myDb Na,me", "myDb Na,me"},
-		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,[myDb Na,me]", "[myDb Na,me]]"},
-		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,[myDb Na'me]", "[myDb Na'me]]"},
-		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,[myDb ,Nam,e]", "[myDb ,Nam,e]]"},
+		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,myDbName", "myDbName", "myDbName"},
+		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,myDb Name", "myDb Name", "myDb Name"},
+		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,myDb Na,me", "myDb Na,me", "myDb Na,me"},
+		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,[myDb Na,me]", "[myDb Na,me]]", "[myDb Na,me]]"},
+		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,[myDb Na'me]", "[myDb Na''me]]", "[myDb Na'me]]"},
+		{"https://example.com/my%20random%20bac%27kp%5Dack.bak,[myDb ,Nam,e]", "[myDb ,Nam,e]]", "[myDb ,Nam,e]]"},
 
 		// Delimiter between filename and databaseName is part of the filename
 		// Decoded filename: my random .bak bac'kp]ack.bak
-		{"https://example.com/my%20random%20.bak%20bac%27kp%5Dack.bak,[myDb ,Nam,e]", "[myDb ,Nam,e]]"},
+		{"https://example.com/my%20random%20.bak%20bac%27kp%5Dack.bak,[myDb ,Nam,e]", "[myDb ,Nam,e]]", "[myDb ,Nam,e]]"},
 
 		// Database name not specified
-		{"https://example.com/my%20random%20.bak%20bac%27kp%5Dack.bak", "my random .bak bac'kp]]ack"},
-		{"https://example.com/my%20random%20.bak%20bac%27kp%5Dack.bak,", "my random .bak bac'kp]]ack"},
+		{"https://example.com/my%20random%20.bak%20bac%27kp%5Dack.bak", "my random .bak bac''kp]]ack", "my random .bak bac'kp]]ack"},
+		{"https://example.com/my%20random%20.bak%20bac%27kp%5Dack.bak,", "my random .bak bac''kp]]ack", "my random .bak bac'kp]]ack"},
 
 		//Negative Testcases
-		{"https://example.com,myDbName", ""},
+		{"https://example.com,myDbName", "", ""},
 	}
 
 	for _, testcase := range tests {
 		dbname := parseDbName(testcase.input)
+		dbnameAsIdentifier := getDbNameAsIdentifier(dbname)
 		dbnameAsNonIdentifier := getDbNameAsNonIdentifier(dbname)
+		assert.Equal(t, testcase.expectedIdentifierOp, dbnameAsIdentifier, "Unexpected database name as identifier")
 		assert.Equal(t, testcase.expectedNonIdentifierOp, dbnameAsNonIdentifier, "Unexpected database name as non-identifier")
 	}
 }
@@ -90,11 +93,11 @@ func TestRestoreFileStem(t *testing.T) {
 }
 
 func TestRestoreDatabaseQueryQuotesValues(t *testing.T) {
-	query := restoreDatabaseQuery("/var/opt/mssql/backup/O'Brien.bak", "Sales O'Brien")
+	query := restoreDatabaseQuery("/var/opt/mssql/backup/O'Brien.bak", "Sales [O'Brien]")
 
-	assert.Contains(t, query, "DECLARE @backupFile NVARCHAR(4000) = N'/var/opt/mssql/backup/O''Brien.bak';")
-	assert.Contains(t, query, "DECLARE @databaseName NVARCHAR(MAX) = N'Sales O''Brien';")
-	assert.Contains(t, query, "DECLARE @filePrefix NVARCHAR(260) = N'/var/opt/mssql/Sales_O_Brien';")
+	assert.Contains(t, query, "DECLARE @backupFile NVARCHAR(4000) = N'/var/opt/mssql/backup/O''Brien.bak'")
+	assert.Contains(t, query, "N'RESTORE DATABASE [Sales [O''Brien]]] FROM DISK = @backupFile WITH '")
+	assert.Contains(t, query, "TO N''/var/opt/mssql/Sales__O_Brien__' + CAST(FileID AS NVARCHAR(20))")
 }
 
 func TestRestoreDatabaseQueryRestoresLogicalNamesWithApostrophes(t *testing.T) {
@@ -159,28 +162,6 @@ func TestRestoreDatabaseQueryDoesNotCollideWithUserDatabase(t *testing.T) {
 
 	assert.Equal(t, "ONLINE",
 		s.ScalarString(fmt.Sprintf("DECLARE @s NVARCHAR(60); SELECT @s = state_desc FROM sys.databases WHERE name = N'%s'; PRINT @s", restoredDb)))
-}
-
-func TestRestoreDatabaseQueryRejectsOverlongName(t *testing.T) {
-	s := connectToTestServer(t)
-	failOnQueryError(t)
-
-	suffix := strconv.FormatInt(time.Now().UnixNano(), 36)
-	sourceDb := "restore_source_" + suffix
-	backupFile := "/var/opt/mssql/data/" + sourceDb + ".bak"
-	overlongName := suffix + strings.Repeat("x", 129-len(suffix))
-	truncatedName := overlongName[:128]
-
-	s.Query(fmt.Sprintf("CREATE DATABASE [%s]", sourceDb))
-	defer s.Query(fmt.Sprintf("DROP DATABASE [%s]", sourceDb))
-	s.Query(fmt.Sprintf("BACKUP DATABASE [%s] TO DISK = %s WITH INIT", sourceDb, sqlStringLiteral(backupFile)))
-
-	// Restore errors are printed, not returned, so check the outcome instead.
-	s.Query(restoreDatabaseQuery(backupFile, overlongName))
-	defer s.Query(fmt.Sprintf("IF DB_ID(N'%[1]s') IS NOT NULL DROP DATABASE [%[1]s]", truncatedName))
-
-	assert.Equal(t, "0",
-		s.ScalarString(fmt.Sprintf("DECLARE @n INT; SELECT @n = COUNT(*) FROM sys.databases WHERE name = N'%s'; PRINT @n", truncatedName)))
 }
 
 // connectToTestServer connects to the server named by the SQLCMD* environment

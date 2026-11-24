@@ -480,6 +480,11 @@ CHECK_POLICY=OFF`
 	}
 }
 
+func getDbNameAsIdentifier(dbName string) string {
+	escapedDbNAme := strings.ReplaceAll(dbName, "'", "''")
+	return strings.ReplaceAll(escapedDbNAme, "]", "]]")
+}
+
 func getDbNameAsNonIdentifier(dbName string) string {
 	return strings.ReplaceAll(dbName, "]", "]]")
 }
@@ -548,22 +553,17 @@ func restoreFileStem(databaseName string) string {
 }
 
 // restoreDatabaseQuery returns a batch that restores backupFile as
-// databaseName. Logical file names read from the backup are kept as they are;
-// each file is moved to /var/opt/mssql/<stem>_<FileID> with an
+// databaseName, moving each file to /var/opt/mssql/<stem>_<FileID> with an
 // extension chosen from its file type.
 func restoreDatabaseQuery(backupFile string, databaseName string) string {
 	const text = `SET NOCOUNT ON;
 
-DECLARE @backupFile NVARCHAR(4000) = %s;
-DECLARE @databaseName NVARCHAR(MAX) = %s;
-DECLARE @filePrefix NVARCHAR(260) = %s;
+DECLARE @backupFile NVARCHAR(4000) = %s
 
-IF DATALENGTH(@databaseName) / 2 > 128
-BEGIN
-    THROW 50000, N'The database name is longer than 128 characters.', 1;
-END
+-- Build a SQL Statement to restore any .bak file to the Linux filesystem
+DECLARE @sql NVARCHAR(max)
 
--- This table definition works since SQL Server 2017, therefore
+-- This table definition works since SQL Server 2017, therefore 
 -- works for all SQL Server containers (which started in 2017)
 DECLARE @fileListTable TABLE (
     [LogicalName]           NVARCHAR(128),
@@ -588,36 +588,22 @@ DECLARE @fileListTable TABLE (
     [IsPresent]             BIT,
     [TDEThumbprint]         VARBINARY(32),
     [SnapshotURL]           NVARCHAR(360)
-);
+)
 
 INSERT INTO @fileListTable
-EXEC sp_executesql N'RESTORE FILELISTONLY FROM DISK = @backupFile',
-    N'@backupFile NVARCHAR(4000)', @backupFile = @backupFile;
-
-DECLARE @moveClauses NVARCHAR(MAX);
-SELECT @moveClauses = STRING_AGG(
-    CAST(N'MOVE N''' + REPLACE(LogicalName, N'''', N'''''') + N''' TO N''' + @filePrefix + N'_'
-        + CAST(FileID AS NVARCHAR(20))
-        + CASE WHEN [Type] = 'L' THEN N'.ldf' WHEN [Type] <> 'D' THEN N'' WHEN FileID = 1 THEN N'.mdf' ELSE N'.ndf' END
-        + N'''' AS NVARCHAR(MAX)),
-    N', ') WITHIN GROUP (ORDER BY FileID)
+EXEC sp_executesql N'RESTORE FILELISTONLY FROM DISK = @backupFile', N'@backupFile NVARCHAR(4000)', @backupFile = @backupFile
+SET @sql = N'RESTORE DATABASE [%s] FROM DISK = @backupFile WITH '
+SELECT @sql = @sql + char(13) + N' MOVE N''' + REPLACE(LogicalName, N'''', N'''''') + N''' TO N''%s_' + CAST(FileID AS NVARCHAR(20))
+    + CASE WHEN [Type] = 'L' THEN N'.ldf' WHEN [Type] <> 'D' THEN N'' WHEN FileID = 1 THEN N'.mdf' ELSE N'.ndf' END + N''','
 FROM @fileListTable
-WHERE IsPresent = 1;
-
-IF @moveClauses IS NULL
-BEGIN
-    THROW 50000, N'The backup does not contain any files to restore.', 1;
-END
-
-DECLARE @sql NVARCHAR(MAX) = N'RESTORE DATABASE @databaseName FROM DISK = @backupFile WITH ' + @moveClauses;
-EXEC sp_executesql @sql,
-    N'@databaseName SYSNAME, @backupFile NVARCHAR(4000)',
-    @databaseName = @databaseName, @backupFile = @backupFile;`
+WHERE IsPresent = 1
+SET @sql = SUBSTRING(@sql, 1, LEN(@sql)-1)
+EXEC sp_executesql @sql, N'@backupFile NVARCHAR(4000)', @backupFile = @backupFile`
 
 	return fmt.Sprintf(text,
 		sqlStringLiteral(backupFile),
-		sqlStringLiteral(databaseName),
-		sqlStringLiteral(restoreFolder+"/"+restoreFileStem(databaseName)))
+		getDbNameAsIdentifier(databaseName),
+		restoreFolder+"/"+restoreFileStem(databaseName))
 }
 
 func (c *MssqlBase) downloadAndRestoreDb(
