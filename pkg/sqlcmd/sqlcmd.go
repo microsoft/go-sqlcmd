@@ -86,8 +86,11 @@ type Sqlcmd struct {
 	UnicodeOutputFile bool
 	// EchoInput tells the GO command to print the batch text before running the query
 	EchoInput bool
-	colorizer color.Colorizer
-	termchan  chan os.Signal
+	// PrintStatistics controls printing of performance statistics after each batch
+	// nil means disabled, 0 means standard format, 1 means colon-separated format
+	PrintStatistics *int
+	colorizer       color.Colorizer
+	termchan        chan os.Signal
 }
 
 // New creates a new Sqlcmd instance.
@@ -446,13 +449,14 @@ func (s *Sqlcmd) getRunnableQuery(q string) string {
 	return b.String()
 }
 
-// runQuery runs the query and prints the results
-// The return value is based on the first cell of the last column of the last result set.
+// runQuery runs the query and prints the results.
+// Returns (exitcode, elapsedMs, error).
+// The exitcode is based on the first cell of the last column of the last result set.
 // If it's numeric, it will be converted to int
 // -100 : Error encountered prior to selecting return value
 // -101: No rows found
 // -102: Conversion error occurred when selecting return value
-func (s *Sqlcmd) runQuery(query string) (int, error) {
+func (s *Sqlcmd) runQuery(query string) (int, int64, error) {
 	retcode := -101
 	s.Format.BeginBatch(query, s.vars, s.GetOutput(), s.GetError())
 	ctx := context.Background()
@@ -463,6 +467,7 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 		ctx = ct
 	}
 	retmsg := &sqlexp.ReturnMessage{}
+	startTime := time.Now()
 	rows, qe := s.db.QueryContext(ctx, query, retmsg)
 	if qe != nil {
 		s.Format.AddError(qe)
@@ -540,8 +545,9 @@ func (s *Sqlcmd) runQuery(query string) (int, error) {
 			s.Format.EndResultSet()
 		}
 	}
+	elapsedMs := time.Since(startTime).Milliseconds()
 	s.Format.EndBatch()
-	return retcode, qe
+	return retcode, elapsedMs, qe
 }
 
 // returns ErrExitRequested if the error is a SQL error and satisfies the connection's error handling configuration
@@ -612,4 +618,42 @@ func (s *Sqlcmd) SetupCloseHandler() {
 // StopCloseHandler unsubscribes the Sqlcmd from the SIGTERM signal
 func (s *Sqlcmd) StopCloseHandler() {
 	signal.Stop(s.termchan)
+}
+
+// printStatistics writes batch performance statistics when enabled.
+func (s *Sqlcmd) printStatistics(elapsedMs int64, numBatches int, out io.Writer) {
+	if s.PrintStatistics == nil || numBatches <= 0 {
+		return
+	}
+
+	// Get packet size from connect settings or use default
+	packetSize := s.Connect.PacketSize
+	if packetSize <= 0 {
+		packetSize = 4096 // default packet size
+	}
+
+	// Ensure minimum 1ms for rate calculations, but display actual 0 as "< 1"
+	displayElapsedMs := elapsedMs
+	calcElapsedMs := elapsedMs
+	if calcElapsedMs < 1 {
+		calcElapsedMs = 1
+	}
+
+	avgTime := float64(displayElapsedMs) / float64(numBatches)
+	batchesPerSec := float64(numBatches) / (float64(calcElapsedMs) / 1000.0)
+
+	if *s.PrintStatistics == 1 {
+		// Colon-separated format: n:x:t1:t2:t3
+		// packetSize:numBatches:totalTime:avgTime:batchesPerSec
+		_, _ = fmt.Fprintf(out, "%s%d:%d:%d:%.2f:%.2f%s", SqlcmdEol, packetSize, numBatches, displayElapsedMs, avgTime, batchesPerSec, SqlcmdEol)
+	} else {
+		// Standard format
+		_, _ = fmt.Fprintf(out, "%sNetwork packet size (bytes): %d%s", SqlcmdEol, packetSize, SqlcmdEol)
+		_, _ = fmt.Fprintf(out, "%d xact(s):%s", numBatches, SqlcmdEol)
+		if displayElapsedMs < 1 {
+			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total     < 1  avg   %.2f (%.2f xacts per sec.)%s", avgTime, batchesPerSec, SqlcmdEol)
+		} else {
+			_, _ = fmt.Fprintf(out, "Clock Time (ms.): total   %7d  avg   %.2f (%.2f xacts per sec.)%s", displayElapsedMs, avgTime, batchesPerSec, SqlcmdEol)
+		}
+	}
 }
