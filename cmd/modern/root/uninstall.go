@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/microsoft/go-sqlcmd/cmd/modern/root/open"
 	"github.com/microsoft/go-sqlcmd/internal/cmdparser"
 	"github.com/microsoft/go-sqlcmd/internal/config"
 	"github.com/microsoft/go-sqlcmd/internal/container"
@@ -84,6 +85,7 @@ func (c *Uninstall) run() {
 		}, localizer.Sprintf("No current context"))
 	}
 	if c.currentContextEndPointExists() {
+		contextName := config.CurrentContextName()
 		if config.CurrentContextEndpointHasContainer() {
 			controller := container.NewController()
 			id := config.ContainerId()
@@ -128,6 +130,10 @@ func (c *Uninstall) run() {
 
 		config.RemoveCurrentContext()
 		config.Save()
+
+		for _, path := range open.RemoveContextFromVSCodeSettings(contextName) {
+			output.Info(localizer.Sprintf("Removed VS Code connection profile from %s", path))
+		}
 
 		newContextName := config.CurrentContextName()
 		if newContextName != "" {

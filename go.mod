@@ -21,6 +21,7 @@ require (
 	github.com/spf13/pflag v1.1.0
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.12.1
+	github.com/tailscale/hujson v0.0.0-20260302212456-ecc657c15afd
 	golang.org/x/sys v0.48.0
 	golang.org/x/term v0.46.0
 	golang.org/x/text v0.42.0
