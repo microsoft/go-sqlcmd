@@ -924,7 +924,7 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 			s.WriteError(s.GetError(), sqlcmd.InvalidVariableValue(sqlcmd.SQLCMDINI, script))
 		} else {
 			_ = f.Close()
-			// IncludeFile won't return an error for a SQL error, but ExitCode will be non-zero if -b was passed on the commandline
+			// IncludeFile won't return an error for a SQL error unless -b was passed on the commandline; then it returns ErrExitRequested and ExitCode is non-zero
 			err = s.IncludeFile(script, true)
 		}
 	}
@@ -946,12 +946,18 @@ func run(vars *sqlcmd.Variables, args *SQLCmdArguments) (int, error) {
 		} else {
 			for f := range args.InputFile {
 				if err = s.IncludeFile(args.InputFile[f], true); err != nil {
-					s.WriteError(s.GetError(), err)
-					s.Exitcode = 1
+					// The command that asked to exit has already set Exitcode
+					if err != sqlcmd.ErrExitRequested {
+						s.WriteError(s.GetError(), err)
+						s.Exitcode = 1
+					}
 					break
 				}
 			}
 		}
+	}
+	if err == sqlcmd.ErrExitRequested {
+		err = nil
 	}
 	s.SetOutput(nil)
 	s.SetError(nil)

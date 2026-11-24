@@ -436,6 +436,39 @@ func TestExitOnError(t *testing.T) {
 	t.Logf("Test Completed") // Needs some output to stdout to count as a test
 }
 
+// With -b, a batch that fails in one input file stops the run before the next file
+func TestExitOnErrorStopsInputFileList(t *testing.T) {
+	dir := t.TempDir()
+	failFile := filepath.Join(dir, "fail.sql")
+	err := os.WriteFile(failFile, []byte("PRINT 'fail.sql ran'"+sqlcmd.SqlcmdEol+"RAISERROR(N'e', 16, 1)"+sqlcmd.SqlcmdEol+"GO"+sqlcmd.SqlcmdEol), 0644)
+	assert.NoError(t, err, "os.WriteFile")
+	nextFile := filepath.Join(dir, "next.sql")
+	err = os.WriteFile(nextFile, []byte("PRINT 'next.sql ran'"+sqlcmd.SqlcmdEol+"GO"+sqlcmd.SqlcmdEol), 0644)
+	assert.NoError(t, err, "os.WriteFile")
+	o, err := os.CreateTemp("", "sqlcmdmain")
+	assert.NoError(t, err, "os.CreateTemp")
+	defer os.Remove(o.Name())
+	defer o.Close()
+
+	args = newArguments()
+	args.InputFile = []string{failFile, nextFile}
+	args.OutputFile = o.Name()
+	args.ExitOnError = true
+	setAzureAuthArgIfNeeded(&args)
+	vars := sqlcmd.InitializeVariables(args.useEnvVars())
+	setVars(vars, &args)
+
+	exitCode, err := run(vars, &args)
+	assert.NoError(t, err, "run")
+	assert.Equal(t, 1, exitCode, "exitCode")
+	bytes, err := os.ReadFile(o.Name())
+	if assert.NoError(t, err, "os.ReadFile") {
+		out := string(bytes)
+		assert.Equal(t, 1, strings.Count(out, "fail.sql ran"), "The failing batch should run once. Output: %s", out)
+		assert.NotContains(t, out, "next.sql ran", "The next input file should not run")
+	}
+}
+
 func TestAzureAuth(t *testing.T) {
 	if !canTestAzureAuth() {
 		t.Skip("Server name is not an Azure DB name")
