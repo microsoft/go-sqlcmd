@@ -152,6 +152,7 @@ var messageKeyToIndex = map[string]int{
 	"Display one or many users from the sqlconfig file":                                   142,
 	"Display raw byte data":                                                               159,
 	"Display the current-context":                                                         106,
+	"Do not strip the \"mssql: \" prefix from error messages":                             307,
 	"Don't download image.  Use already downloaded image":                                 169,
 	"Download (into container) and attach database (.bak) from URL":                       176,
 	"Downloading %s":                                                                      196,
@@ -202,6 +203,7 @@ var messageKeyToIndex = map[string]int{
 	"List all the users in your sqlconfig file":                                                            143,
 	"List connection strings for all client drivers":                                                       103,
 	"List tags":                                                        213,
+	"LocalDB is only supported on Windows":                             308,
 	"Minimum number of numeric characters":                             166,
 	"Minimum number of special characters":                             165,
 	"Minimum number of upper characters":                               167,
@@ -231,7 +233,8 @@ var messageKeyToIndex = map[string]int{
 	"Port (next available port from 1433 upwards used by default)": 175,
 	"Press Ctrl+C to exit this process...":                         216,
 	"Print version information and exit":                           231,
-	"Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false": 251,
+	"Prints the output in ASCII table format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false": 306,
+	"Prints the output in vertical format. This option sets the sqlcmd scripting variable %s to '%s'. The default is false":    251,
 	"Provide a username with the %s flag":                                                                                    95,
 	"Provide a valid encryption method (%s) with the %s flag":                                                                97,
 	"Provide password in the %s (or %s) environment variable":                                                                93,
@@ -248,9 +251,10 @@ var messageKeyToIndex = map[string]int{
 	"Run a query":                                                   12,
 	"Run a query against the current context":                       11,
 	"Run a query using [%s] database":                               13,
+	"SQL Server Express LocalDB is not installed":                   311,
 	"See all release tags for SQL Server, install previous version": 207,
 	"See connection strings":                                        187,
-	"Server name override is not supported with the current authentication method": 306,
+	"Server name override is not supported with the current authentication method": 312,
 	"Servers:":                 222,
 	"Set new default database": 14,
 	"Set the current context":  149,
@@ -317,6 +321,8 @@ var messageKeyToIndex = map[string]int{
 	"Unable to continue, a user (non-system) database (%s) is present": 49,
 	"Unable to download file":                                          205,
 	"Unable to download image %s":                                      203,
+	"Unable to load the LocalDB instance API %s: %v":                   309,
+	"Unable to start LocalDB instance %s: %s":                          310,
 	"Uninstall/Delete the current context":                             28,
 	"Uninstall/Delete the current context, no user prompt":             29,
 	"Uninstall/Delete the current context, no user prompt and override safety check for user databases": 30,
@@ -357,7 +363,7 @@ var messageKeyToIndex = map[string]int{
 	"sqlcmd: Install/Create/Query SQL Server, Azure SQL, and Tools": 285,
 }
 
-var de_DEIndex = []uint32{ // 308 elements
+var de_DEIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x0000007e, 0x00000096,
 	0x000000d1, 0x000000e9, 0x000000fd, 0x00000148,
@@ -445,7 +451,9 @@ var de_DEIndex = []uint32{ // 308 elements
 	0x00004cbf, 0x00004d1a, 0x00004d65, 0x00004d6f,
 	0x00004d83, 0x00004d9c, 0x00004dc2, 0x00004de2,
 	0x00004de2, 0x00004de2, 0x00004de2, 0x00004de2,
-} // Size: 1256 bytes
+	0x00004de2, 0x00004de2, 0x00004de2, 0x00004de2,
+	0x00004de2, 0x00004de2,
+} // Size: 1280 bytes
 
 const de_DEData string = "" + // Size: 19938 bytes
 	"\x02SQL Server installieren/erstellen, abfragen, deinstallieren\x02Konfi" +
@@ -738,7 +746,7 @@ const de_DEData string = "" + // Size: 19938 bytes
 	":\x02(1 Zeile betroffen)\x02(%[1]d Zeilen betroffen)\x02Ungültiger Varia" +
 	"blenbezeichner %[1]s\x02Ungültiger Variablenwert %[1]s"
 
-var en_USIndex = []uint32{ // 308 elements
+var en_USIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002c, 0x00000062, 0x0000007a,
 	0x000000b3, 0x000000cb, 0x000000de, 0x00000113,
@@ -825,10 +833,12 @@ var en_USIndex = []uint32{ // 308 elements
 	0x00003bf5, 0x00003c26, 0x00003c75, 0x00003c95,
 	0x00003ca5, 0x00003cfb, 0x00003d40, 0x00003d4a,
 	0x00003d5b, 0x00003d71, 0x00003d93, 0x00003db0,
-	0x00003e0a, 0x00003eba, 0x00003fb5, 0x00004002,
-} // Size: 1256 bytes
+	0x00003e0a, 0x00003eba, 0x00003fb5, 0x00004034,
+	0x0000406a, 0x0000408f, 0x000040c4, 0x000040f2,
+	0x0000411e, 0x0000416b,
+} // Size: 1280 bytes
 
-const en_USData string = "" + // Size: 16386 bytes
+const en_USData string = "" + // Size: 16747 bytes
 	"\x02Install/Create, Query, Uninstall SQL Server\x02View configuration in" +
 	"formation and connection strings\x04\x02\x0a\x0a\x00\x12\x02Feedback:" +
 	"\x0a  %[1]s\x02help for backwards compatibility flags (-S, -U, -E etc.)" +
@@ -1070,10 +1080,16 @@ const en_USData string = "" + // Size: 16386 bytes
 	"r name sent to SQL Server.\x02Specifies the path to a server certificate" +
 	" file (PEM, DER, or CER) to match against the server's TLS certificate. " +
 	"Use when encryption is enabled (-N true, -N mandatory, or -N strict) for" +
-	" certificate pinning instead of standard certificate validation.\x02Serv" +
-	"er name override is not supported with the current authentication method"
+	" certificate pinning instead of standard certificate validation.\x02Prin" +
+	"ts the output in ASCII table format. This option sets the sqlcmd scripti" +
+	"ng variable %[1]s to '%[2]s'. The default is false\x02Do not strip the " +
+	"\x22mssql: \x22 prefix from error messages\x02LocalDB is only supported " +
+	"on Windows\x02Unable to load the LocalDB instance API %[1]s: %[2]v\x02Un" +
+	"able to start LocalDB instance %[1]s: %[2]s\x02SQL Server Express LocalD" +
+	"B is not installed\x02Server name override is not supported with the cur" +
+	"rent authentication method"
 
-var es_ESIndex = []uint32{ // 308 elements
+var es_ESIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000032, 0x00000081, 0x0000009c,
 	0x000000ec, 0x0000010d, 0x00000127, 0x0000017f,
@@ -1161,7 +1177,9 @@ var es_ESIndex = []uint32{ // 308 elements
 	0x00004c6c, 0x00004ccf, 0x00004d1d, 0x00004d2a,
 	0x00004d3c, 0x00004d54, 0x00004d7f, 0x00004da2,
 	0x00004da2, 0x00004da2, 0x00004da2, 0x00004da2,
-} // Size: 1256 bytes
+	0x00004da2, 0x00004da2, 0x00004da2, 0x00004da2,
+	0x00004da2, 0x00004da2,
+} // Size: 1280 bytes
 
 const es_ESData string = "" + // Size: 19874 bytes
 	"\x02Instalar/Crear, Consultar, Desinstalar SQL Server\x02Visualización d" +
@@ -1455,7 +1473,7 @@ const es_ESData string = "" + // Size: 19874 bytes
 	" afectadas)\x02Identificador de variable %[1]s no válido\x02Valor de var" +
 	"iable %[1]s no válido"
 
-var fr_FRIndex = []uint32{ // 308 elements
+var fr_FRIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000037, 0x0000007f, 0x0000009d,
 	0x000000e1, 0x000000fe, 0x00000117, 0x00000169,
@@ -1543,7 +1561,9 @@ var fr_FRIndex = []uint32{ // 308 elements
 	0x00004fbe, 0x00005014, 0x00005059, 0x00005069,
 	0x0000507e, 0x00005098, 0x000050bf, 0x000050e1,
 	0x000050e1, 0x000050e1, 0x000050e1, 0x000050e1,
-} // Size: 1256 bytes
+	0x000050e1, 0x000050e1, 0x000050e1, 0x000050e1,
+	0x000050e1, 0x000050e1,
+} // Size: 1280 bytes
 
 const fr_FRData string = "" + // Size: 20705 bytes
 	"\x02Installer/créer, interroger, désinstaller SQL Server\x02Afficher les" +
@@ -1847,7 +1867,7 @@ const fr_FRData string = "" + // Size: 20705 bytes
 	"\x02Identifiant de variable invalide %[1]s\x02Valeur de variable invalid" +
 	"e %[1]s"
 
-var it_ITIndex = []uint32{ // 308 elements
+var it_ITIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000003c, 0x00000088, 0x000000a0,
 	0x000000f7, 0x00000114, 0x0000012b, 0x0000016a,
@@ -1935,7 +1955,9 @@ var it_ITIndex = []uint32{ // 308 elements
 	0x00004a16, 0x00004a74, 0x00004ac1, 0x00004acb,
 	0x00004ae0, 0x00004afa, 0x00004b2a, 0x00004b52,
 	0x00004b52, 0x00004b52, 0x00004b52, 0x00004b52,
-} // Size: 1256 bytes
+	0x00004b52, 0x00004b52, 0x00004b52, 0x00004b52,
+	0x00004b52, 0x00004b52,
+} // Size: 1280 bytes
 
 const it_ITData string = "" + // Size: 19282 bytes
 	"\x02Installare/creare, eseguire query, disinstallare SQL Server\x02Visua" +
@@ -2221,7 +2243,7 @@ const it_ITData string = "" + // Size: 19282 bytes
 	"riga interessata)\x02(%[1]d righe interessate)\x02Identificatore della v" +
 	"ariabile %[1]s non valido\x02Valore della variabile %[1]s non valido"
 
-var ja_JPIndex = []uint32{ // 308 elements
+var ja_JPIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000004f, 0x00000077, 0x0000009d,
 	0x000000d8, 0x000000f8, 0x0000010b, 0x0000014c,
@@ -2309,7 +2331,9 @@ var ja_JPIndex = []uint32{ // 308 elements
 	0x00005d02, 0x00005d7c, 0x00005ddb, 0x00005dec,
 	0x00005e0c, 0x00005e30, 0x00005e56, 0x00005e79,
 	0x00005e79, 0x00005e79, 0x00005e79, 0x00005e79,
-} // Size: 1256 bytes
+	0x00005e79, 0x00005e79, 0x00005e79, 0x00005e79,
+	0x00005e79, 0x00005e79,
+} // Size: 1280 bytes
 
 const ja_JPData string = "" + // Size: 24185 bytes
 	"\x02インストール/作成、クエリ、SQL Server のアンインストール\x02構成情報と接続文字列の表示\x04\x02\x0a\x0a" +
@@ -2474,7 +2498,7 @@ const ja_JPData string = "" + // Size: 24185 bytes
 	"\x02パスワード:\x02(1 行が影響を受けます)\x02(%[1]d 行が影響を受けます)\x02変数識別子 %[1]s が無効です" +
 	"\x02変数値の %[1]s が無効です"
 
-var ko_KRIndex = []uint32{ // 308 elements
+var ko_KRIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000029, 0x00000053, 0x0000006c,
 	0x000000b8, 0x000000d0, 0x000000de, 0x00000121,
@@ -2562,7 +2586,9 @@ var ko_KRIndex = []uint32{ // 308 elements
 	0x00004cc5, 0x00004d25, 0x00004d71, 0x00004d79,
 	0x00004d8e, 0x00004dae, 0x00004dcf, 0x00004dea,
 	0x00004dea, 0x00004dea, 0x00004dea, 0x00004dea,
-} // Size: 1256 bytes
+	0x00004dea, 0x00004dea, 0x00004dea, 0x00004dea,
+	0x00004dea, 0x00004dea,
+} // Size: 1280 bytes
 
 const ko_KRData string = "" + // Size: 19946 bytes
 	"\x02SQL Server 설치/생성, 쿼리, 제거\x02구성 정보 및 연결 문자열 보기\x04\x02\x0a\x0a\x00" +
@@ -2719,7 +2745,7 @@ const ko_KRData string = "" + // Size: 19946 bytes
 	"%[6]s\x02암호:\x02(1개 행 적용됨)\x02(영향을 받은 행 %[1]d개)\x02잘못된 변수 식별자 %[1]s\x02잘" +
 	"못된 변수 값 %[1]s"
 
-var pt_BRIndex = []uint32{ // 308 elements
+var pt_BRIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000034, 0x00000071, 0x0000008d,
 	0x000000e3, 0x00000103, 0x0000011e, 0x0000016d,
@@ -2807,7 +2833,9 @@ var pt_BRIndex = []uint32{ // 308 elements
 	0x00004920, 0x0000497e, 0x000049c8, 0x000049cf,
 	0x000049e1, 0x000049f9, 0x00004a24, 0x00004a47,
 	0x00004a47, 0x00004a47, 0x00004a47, 0x00004a47,
-} // Size: 1256 bytes
+	0x00004a47, 0x00004a47, 0x00004a47, 0x00004a47,
+	0x00004a47, 0x00004a47,
+} // Size: 1280 bytes
 
 const pt_BRData string = "" + // Size: 19015 bytes
 	"\x02Instalar/Criar, Consultar, Desinstalar o SQL Server\x02Exibir inform" +
@@ -3087,7 +3115,7 @@ const pt_BRData string = "" + // Size: 19015 bytes
 	"fetada)\x02(%[1]d linhas afetadas)\x02Identificador de variável %[1]s in" +
 	"válido\x02Valor de variável inválido %[1]s"
 
-var ru_RUIndex = []uint32{ // 308 elements
+var ru_RUIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000056, 0x000000c1, 0x000000ec,
 	0x00000151, 0x00000172, 0x00000195, 0x0000023b,
@@ -3175,7 +3203,9 @@ var ru_RUIndex = []uint32{ // 308 elements
 	0x00007e41, 0x00007ed3, 0x00007f4b, 0x00007f59,
 	0x00007f7d, 0x00007fa4, 0x00007ff3, 0x00008038,
 	0x00008038, 0x00008038, 0x00008038, 0x00008038,
-} // Size: 1256 bytes
+	0x00008038, 0x00008038, 0x00008038, 0x00008038,
+	0x00008038, 0x00008038,
+} // Size: 1280 bytes
 
 const ru_RUData string = "" + // Size: 32824 bytes
 	"\x02Установка или создание, запрос, удаление SQL Server\x02Просмотреть с" +
@@ -3464,7 +3494,7 @@ const ru_RUData string = "" + // Size: 32824 bytes
 	"идентификатор переменной %[1]s\x02Недопустимое значение переменной %[1]" +
 	"s"
 
-var zh_CNIndex = []uint32{ // 308 elements
+var zh_CNIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x0000002b, 0x00000050, 0x00000065,
 	0x00000096, 0x000000ab, 0x000000b8, 0x000000fc,
@@ -3552,7 +3582,9 @@ var zh_CNIndex = []uint32{ // 308 elements
 	0x00003805, 0x00003861, 0x000038ae, 0x000038b6,
 	0x000038c7, 0x000038dc, 0x000038f9, 0x00003910,
 	0x00003910, 0x00003910, 0x00003910, 0x00003910,
-} // Size: 1256 bytes
+	0x00003910, 0x00003910, 0x00003910, 0x00003910,
+	0x00003910, 0x00003910,
+} // Size: 1280 bytes
 
 const zh_CNData string = "" + // Size: 14608 bytes
 	"\x02安装/创建、查询、卸载 SQL Server\x02查看配置信息和连接字符串\x04\x02\x0a\x0a\x00\x0f\x02反馈" +
@@ -3673,7 +3705,7 @@ const zh_CNData string = "" + // Size: 14608 bytes
 	"[5]s，行 %#[6]v%[7]s\x02Msg %#[1]v，级别 %[2]d，状态 %[3]d，服务器 %[4]s，行 %#[5]v%[6" +
 	"]s\x02密码:\x02(1 行受影响)\x02(%[1]d 行受影响)\x02变量标识符 %[1]s 无效\x02变量值 %[1]s 无效"
 
-var zh_TWIndex = []uint32{ // 308 elements
+var zh_TWIndex = []uint32{ // 314 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000031, 0x00000053, 0x0000006e,
 	0x000000a1, 0x000000b8, 0x000000c2, 0x00000106,
@@ -3761,7 +3793,9 @@ var zh_TWIndex = []uint32{ // 308 elements
 	0x00003853, 0x000038b2, 0x00003902, 0x0000390a,
 	0x00003924, 0x00003942, 0x00003961, 0x00003978,
 	0x00003978, 0x00003978, 0x00003978, 0x00003978,
-} // Size: 1256 bytes
+	0x00003978, 0x00003978, 0x00003978, 0x00003978,
+	0x00003978, 0x00003978,
+} // Size: 1280 bytes
 
 const zh_TWData string = "" + // Size: 14712 bytes
 	"\x02安裝/建立、查詢、解除安裝 SQL Server\x02檢視組態資訊和連接字串\x04\x02\x0a\x0a\x00\x15\x02意" +
@@ -3880,4 +3914,4 @@ const zh_TWData string = "" + // Size: 14712 bytes
 	"#[5]v%[6]s\x02密碼:\x02(1 個資料列受影響)\x02(%[1]d 個資料列受影響)\x02無效的變數識別碼 %[1]s" +
 	"\x02變數值 %[1]s 無效"
 
-	// Total table size 235291 bytes (229KiB); checksum: AA9B2EAD
+	// Total table size 235916 bytes (230KiB); checksum: 6594D58E

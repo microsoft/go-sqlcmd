@@ -33,6 +33,10 @@ func splitServer(serverName string) (string, instance string, port uint64, proto
 			return "", "", 0, "", &InvalidServerName
 		}
 		protocol = "np"
+	} else if isLocalDB(serverName) {
+		// (localdb)\instance or (localdb)\.\sharedinstance; resolved to a named pipe at connect time
+		instance = strings.TrimPrefix(serverName[len(localDBServerName):], `\`)
+		serverName = serverName[:len(localDBServerName)]
 	} else {
 		serverNameParts := strings.Split(serverName, ",")
 		if len(serverNameParts) > 2 {
